@@ -1,0 +1,43 @@
+{
+  "translation": {
+    "navigation": {
+      "main": "MAIN",
+      "app": "APP",
+      "docs": "DOCS"
+    },
+    "main": {
+      "elyfi": "ELYFI",
+      "elyfi-title": "Real asset liquidity protocol",
+      "elyfi-content": "ELYFI is a new decentralized platfrom that applies NFTs to connect real assets"
+    },
+    "service": {
+      "title": "How does it work?",
+      "sub-title": "Elysia creates contracts that convert real world assets into Non-Fungible Tokens (NFTs),\na unique digital identifier used to represent the underlying asset.\nELYFI will utilize NFTs to connect reliable real world assets with cryptocurrency liquidity.",
+      "blockchain": "Blockchain",
+      "blockchain-content": "Experience a hybrid financial system on a public blockchain.\nELYFI contracts will be open source and records will be stored on distributed ledgers.\n“ELYFI” is a new DEFI protocol and a project that everyone can participate in.",
+      "real-asset": "Real Assets", 
+      "real-asset-content": "“ELYFI” links real-world assets to cryptocurrency financial systems.\nReal assets are clearly valuable and secure, but they have a number of limitations.\nOur platform brings real assets to cryptocurrency financial systems to help make transactions more convenient.",
+      "nfts": "NFTs",
+      "nfts-content": "ELYFI creates a variety of contracts to connect reality with virtual currency financial systems.\nThese contracts are unique and must be trusted.\nAt ELYFI, most of the contracts are created and managed as\nNFTs(Non Fungible Tokens)."
+    },
+    "forum": {
+      "title": "Forum",
+      "topic": "Topic",
+      "activity": "Activity"
+    },
+    "app": {
+      "title": "The Liquidity Protocol",
+      "title-bold": "COMING SOON",
+      "sub-title": "ELYFI is an open source and non-custodial liquidity protocol for earning\ninterest on deposits and borrowing assets.",
+      "token": "TOKENS",
+      "asset-token": "REAL ASSET TOKENS",
+      "asset": "Assets",
+      "market-size": "Market Size",
+      "total-borrowed": "Total Borrowed",
+      "deposit-apy": "Deposit APY",
+      "borrow-apr": "Borrow APR",
+      "deposit": "Deposit",
+      "borrow": "Borrow"
+    }
+  }
+}

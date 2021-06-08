@@ -1,0 +1,32 @@
+{
+  "files": {
+    "main.css": "/static/css/main.be5ca81c.chunk.css",
+    "main.js": "/static/js/main.a2f84107.chunk.js",
+    "main.js.map": "/static/js/main.a2f84107.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.432c43e7.js",
+    "runtime-main.js.map": "/static/js/runtime-main.432c43e7.js.map",
+    "static/js/2.ea8a4999.chunk.js": "/static/js/2.ea8a4999.chunk.js",
+    "static/js/2.ea8a4999.chunk.js.map": "/static/js/2.ea8a4999.chunk.js.map",
+    "static/js/3.15dc0c59.chunk.js": "/static/js/3.15dc0c59.chunk.js",
+    "static/js/3.15dc0c59.chunk.js.map": "/static/js/3.15dc0c59.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.be5ca81c.chunk.css.map": "/static/css/main.be5ca81c.chunk.css.map",
+    "static/js/2.ea8a4999.chunk.js.LICENSE.txt": "/static/js/2.ea8a4999.chunk.js.LICENSE.txt",
+    "static/media/style.scss": "/static/media/Montserrat-Regular.3cd78665.ttf",
+    "static/media/White-logo.65f7f061.svg": "/static/media/White-logo.65f7f061.svg",
+    "static/media/forum-background.3f7c58d2.png": "/static/media/forum-background.3f7c58d2.png",
+    "static/media/main-background.876d3f58.png": "/static/media/main-background.876d3f58.png",
+    "static/media/pinned.1f8e37ba.svg": "/static/media/pinned.1f8e37ba.svg",
+    "static/media/service-background.b252d311.png": "/static/media/service-background.b252d311.png",
+    "static/media/service00.e53cb041.png": "/static/media/service00.e53cb041.png",
+    "static/media/service01.addcb84f.png": "/static/media/service01.addcb84f.png",
+    "static/media/service02.a90489ea.png": "/static/media/service02.a90489ea.png",
+    "static/media/twitter.f3a585a0.svg": "/static/media/twitter.f3a585a0.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.432c43e7.js",
+    "static/js/2.ea8a4999.chunk.js",
+    "static/css/main.be5ca81c.chunk.css",
+    "static/js/main.a2f84107.chunk.js"
+  ]
+}

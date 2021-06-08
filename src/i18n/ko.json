@@ -1,0 +1,43 @@
+{
+  "translation": {
+    "navigation": {
+      "main": "MAIN",
+      "app": "APP",
+      "docs": "DOCS"
+    },
+    "main": {
+      "elyfi": "ELYFI",
+      "elyfi-title": "현물 자산 유동화 프로토콜",
+      "elyfi-content": "ELYFI는 NFT를 적용해서 현물 자산을 블록체인 네트워크에 등록하는 새로운 탈중앙화 플랫폼입니다."
+    },
+    "service": {
+      "title": "어떻게 작동하나요?",
+      "sub-title": "엘리시아는 현물 자산을 대체 불가능 토큰(NFT)로 발행하는 컨트렉트를 생성합니다.\nELYFI는 NFT를 활용하여 안전한 현물 자산을 토큰화 한 뒤 유동적인 암호화폐 시장으로 연결합니다.",
+      "blockchain": "블록체인",
+      "blockchain-content": "공용 블록체인 메인넷에서 하이브리드 금융 시스템을 경험하실 수 있습니다.\n모든 ELYFI 컨트렉트는 오픈소스이며, 모두 블록체인 네트워크에 기록될 것입니다.\n“ELYFI”는 모두가 참여할 수 있는 새로운 DEFI 프로토콜 프로젝트입니다.",
+      "real-asset": "현물 자산", 
+      "real-asset-content": "\"ELYFI\"는 현물 자산을 암호화폐 금융시장에 연결합니다.\n현물 자산은 그 가치가 보장되고 안전하다는 장점을 가지지만 여러 한계점이 있습니다.\n엘리시아 플랫폼은 현물 자산을 암호화폐 금융시장으로 연동하여 더욱 쉽고 안전하게 거래할 수 있게 합니다.",
+      "nfts": "NFTs",
+      "nfts-content": "ELYFI는 가상 화폐 금융 시스템과 현실을 연결하기 위해 다양한 컨트랙트를 생성합니다.\n이렇게 생성된 컨트랙트는 고유하며 신뢰할 수 있습니다.\nELYFI에서는 거의 모든 컨트랙트를 NFT(Non Fungible Tokens)로 생성 및 관리할 수 있습니다."
+    },
+    "forum": {
+      "title": "Forum",
+      "topic": "Topic",
+      "activity": "Activity"
+    },
+    "app": {
+      "title": "유동성 프로토콜",
+      "coming-soon": "출시 예정",
+      "title-content": "ELYFI는 투자 및 대출 자산에 대한 이자를 획득하기 위한 오픈 소스 및 비 구축 유동성 프로토콜 입니다.",
+      "token": "TOKENS",
+      "asset-token": "REAL ASSET TOKENS",
+      "asset": "Assets",
+      "market-size": "Market Size",
+      "total-borrowed": "Total Borrowed",
+      "deposit-apy": "Deposit APY",
+      "borrow-apr": "Borrow APR",
+      "deposit": "Deposit",
+      "borrow": "Borrow"
+    }
+  }
+}
