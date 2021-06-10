@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { ServicePage } from '../../../enums/pageEnum';
 import Borrow from './apps/Borrow';
 import Buy from './apps/Buy';
-import Dashboard from './apps/Dashboard';
+import Dashboard from '../dashboard/Dashboard';
 import Deposit from './apps/Deposit';
 import MoneyPool from './apps/MoneyPool';
 import PageContext from '../../../contexts/PageContext';

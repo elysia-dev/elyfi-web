@@ -9,13 +9,12 @@ import "./i18n";
 import TokenProvider from './providers/TokenProvider';
 import WalletProvider from './providers/WalletProvider';
 
-import Main from './modules/pc/main/Main';
 import Service from './modules/pc/service/Service';
+import RouteWithFooter from './modules/pc/RouteWithFooter';
 
-import MainM from './modules/mobile/main/Main';
-import ServiceM from './modules/mobile/service/Service';
+// import ServiceM from './modules/mobile/service/Service';
 
-import { useMediaQuery } from 'react-responsive';
+// import { useMediaQuery } from 'react-responsive';
 // import { useTranslation } from 'react-i18next';
 
 // import LanguageContext from './contexts/LanguageContext';
@@ -26,7 +25,6 @@ import LanguageProvider from './providers/LanguageProvider';
 import { Web3ReactProvider } from '@web3-react/core';
 import getLibrary from './core/utils/getLibrary';
 
-import { useEagerConnect } from './hooks/connectHoots'
 
 import PageProvider from './providers/PageProvider';
 
@@ -34,40 +32,33 @@ const App: React.FC = () => {
   // const { i18n } = useTranslation();
   // const { language, setLanguage } = useContext(LanguageContext)
 
-  const triedEager = useEagerConnect()
 
-  const isPc = useMediaQuery({
-    query: "(min-width: 768px)"
-  })
+  // const isPc = useMediaQuery({
+  //   query: "(min-width: 768px)"
+  // })
 
   const PcRouter = () => {
     return (
       <Router>
         <Switch>
-          <Route path="/service">
+          <RouteWithFooter path="/">
             <Service />
-          </Route>
-          <Route path="/">
-            <Main />
-          </Route>
+          </RouteWithFooter>
         </Switch>
       </Router>
     );
   }
-  const MobileRouter = () => {
-    return (
-      <Router>
-        <Switch>
-          <Route path="/service">
-            <ServiceM triedEager={triedEager} />
-          </Route>
-          <Route path="/">
-            <MainM />
-          </Route>
-        </Switch>
-      </Router>
-    );
-  }
+  // const MobileRouter = () => {
+  //   return (
+  //     <Router>
+  //       <Switch>
+  //         <Route path="/">
+  //           <ServiceM triedEager={triedEager} />
+  //         </Route>
+  //       </Switch>
+  //     </Router>
+  //   );
+  // }
 
 
   return (
@@ -76,12 +67,13 @@ const App: React.FC = () => {
         <Web3ReactProvider getLibrary={getLibrary}>
           <WalletProvider>
             <PageProvider>
-              {
+              {/* {
               isPc ?
                 <PcRouter />
                 :
                 <MobileRouter />
-              }
+              } */}
+              <PcRouter />
             </PageProvider>
           </WalletProvider>
         </Web3ReactProvider>

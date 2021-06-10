@@ -1,24 +1,19 @@
-import '../../css/style.scss';
-import Navigation from '../../component/Navigation';
-import TokenListing from '../component/TokenListing';
-import MainBackground from '../../../../shared/images/main-background.png';
-import TokenContext from '../../../../contexts/TokenContext';
+import '../css/style.scss';
+import Navigation from '../component/Navigation';
+import MainBackground from '../../../shared/images/main-background.png';
 import { useContext } from 'react';
-import TokenTypes from '../../../../enums/TokenType';
 import { useTranslation } from 'react-i18next';
-import { useEagerConnect } from '../../../../hooks/connectHoots';
-import Wallet from '../../component/Wallet';
 import { useWeb3React } from '@web3-react/core';
-import InjectedConnector from '../../../../core/connectors/injectedConnector';
-import WalletContext from '../../../../contexts/WalletContext';
-import UserType from '../../../../enums/UserType';
-import Borrowers from './Dashboard/Borrowers';
-import Investors from './Dashboard/Investors';
+import InjectedConnector from '../../../core/connectors/injectedConnector';
+import WalletContext from '../../../contexts/WalletContext';
+import UserType from '../../../enums/UserType';
+import Borrowers from './Borrowers';
+import Investors from './Investors';
+import Footer from '../footer/Footer';
 
 const Dashboard = () => {
-  const { tokenlist } = useContext(TokenContext);
   const { t } = useTranslation();
-  const { account, activate, deactivate, error, active, connector, library, chainId } = useWeb3React();
+  const { activate, active } = useWeb3React();
   const { userType } = useContext(WalletContext)
 
   const CopiedWallet = () => {

@@ -1,11 +1,11 @@
-import '../../../css/style.scss';
-import Navigation from '../../../component/Navigation';
-import TokenListing from '../../component/TokenListing';
-import ServiceBackground from '../../images/service-background.png'
-import TokenContext from '../../../../../contexts/TokenContext';
-import WalletContext from '../../../../../contexts/WalletContext';
+import '../css/style.scss';
+import Navigation from '../component/Navigation';
+import TokenListing from '../service/component/TokenListing';
+import ServiceBackground from '../../../shared/images/service-background.png'
+import TokenContext from '../../../contexts/TokenContext';
+import WalletContext from '../../../contexts/WalletContext';
 import { useContext } from 'react';
-import TokenTypes from '../../../../../enums/TokenType';
+import TokenTypes from '../../../enums/TokenType';
 import { useTranslation } from 'react-i18next';
 
 const Borrowers = () => {

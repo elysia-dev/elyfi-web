@@ -27,6 +27,7 @@ span {
   text-decoration: none;
   cursor: default;
 }
+
 .elysia--pc {
   background-color: #fff;
   min-width: 1190px;
@@ -150,6 +151,7 @@ span {
     width: 40px;
     height: 17px;
   }
+  
 
   .main {
     position: relative;
@@ -343,32 +345,7 @@ span {
       }
     }
   }
-  .lang {
-    position: relative;
-    &__select-image {
-      display: inline-block;
-      width: 26px;
-      height: 26px;
-      &__text {
-        display: inline-block;
-        color: #FFF;
-      }
-    }
-    &__image-wrapper {
-      justify-content: space-between;
-      flex-direction: column;
-      position: absolute;
-      bottom: 55px;
-      height: 63px;
-    }
-    &__button-wrapper {
-      justify-content: space-between;
-      display: inline-flex;
-      flex-direction: row;
-      align-items: center;
-      width: 100px;
-    }
-  }
+  
   .works {
     height: 100%;
     width: 1190px;
@@ -547,9 +524,6 @@ span {
         align-items: center;
         height: 50px;
       }
-      &-white-logo {
-        display: inline;
-      }
       &-logo-wrapper {
         display: flex;
         float: right;
@@ -708,8 +682,59 @@ span {
         }
       }
     }
-
-
+  }
+}
+.footer {
+  padding-top: 25px;
+  padding-bottom: 25px;
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    width: 1190px;
+    margin: 0 auto;
+  }
+  &__white-logo {
+    display: inline;
+  }
+  &__wrapper {
+    display: flex;
+    width: 300px;
+    flex-direction: row;
+    align-items: center;
+    height: 50px;
+  }
+  &__logo-wrapper {
+    display: flex;
+    float: right;
+    width: 120px;
+    height: 26px;
+    justify-content: space-between;
+  }
+  .lang {
+    position: relative;
+    &__select-image {
+      display: inline-block;
+      width: 26px;
+      height: 26px;
+      &__text {
+        display: inline-block;
+        color: #FFF;
+      }
+    }
+    &__image-wrapper {
+      justify-content: space-between;
+      flex-direction: column;
+      position: absolute;
+      bottom: 55px;
+      height: 63px;
+    }
+    &__button-wrapper {
+      justify-content: space-between;
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      width: 100px;
+    }
   }
 }
 

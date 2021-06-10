@@ -1,13 +1,13 @@
-import '../../../css/style.scss';
-import Navigation from '../../../component/Navigation';
-import ServiceBackground from '../../images/service-background.png';
-import TokenContext from '../../../../../contexts/TokenContext';
-import WalletContext from '../../../../../contexts/WalletContext';
+import '../css/style.scss';
+import Navigation from '../component/Navigation';
+import ServiceBackground from '../../../shared/images/service-background.png';
+import TokenContext from '../../../contexts/TokenContext';
+import WalletContext from '../../../contexts/WalletContext';
 import { useContext } from 'react';
-import TokenTypes from '../../../../../enums/TokenType';
+import TokenTypes from '../../../enums/TokenType';
 import { useTranslation } from 'react-i18next';
-import DepositToken from '../../component/DepositToken';
-import MintedToken from '../../component/MintedToken';
+import DepositToken from '../service/component/DepositToken';
+import MintedToken from '../service/component/MintedToken';
 
 const Investors = () => {
   const { t } = useTranslation();

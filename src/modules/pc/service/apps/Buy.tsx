@@ -1,7 +1,7 @@
 import '../../css/style.scss';
 import Navigation from '../../component/Navigation';
 import TokenListing from '../component/TokenListing';
-import ServiceBackground from '../images/service-background.png'
+import ServiceBackground from '../../../../shared/images/service-background.png';
 import TokenContext from '../../../../contexts/TokenContext';
 import { useContext } from 'react';
 import TokenTypes from '../../../../enums/TokenType';
