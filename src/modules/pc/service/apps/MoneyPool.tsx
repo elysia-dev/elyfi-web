@@ -8,7 +8,7 @@ import TokenTypes from '../../../../enums/TokenType';
 import { useTranslation } from 'react-i18next';
 
 const MoneyPool = () => {
-  const { tokenlist } = useContext(TokenContext);
+  // const { tokenlist } = useContext(TokenContext);
   const { t } = useTranslation();
 
   return (
@@ -23,7 +23,7 @@ const MoneyPool = () => {
           </div>
         </section>
         <section className="tokens">
-          <TokenListing 
+          {/* <TokenListing 
             header={t("app.token")}
             tokenlist={tokenlist.filter((item) => {
               return item.type === TokenTypes.CRYPTO
@@ -34,7 +34,7 @@ const MoneyPool = () => {
             tokenlist={tokenlist.filter((item) => {
               return item.type === TokenTypes.ASSETS
             })}
-          />  
+          />   */}
         </section>
       </div>
     </div>

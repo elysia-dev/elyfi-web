@@ -2,31 +2,33 @@ import '../css/style.scss';
 import Navigation from '../component/Navigation';
 import ServiceBackground from '../../../shared/images/service-background.png';
 import TokenContext from '../../../contexts/TokenContext';
-import WalletContext from '../../../contexts/WalletContext';
 import { useContext } from 'react';
-import TokenTypes from '../../../enums/TokenType';
 import { useTranslation } from 'react-i18next';
-import DepositToken from '../service/component/DepositToken';
-import MintedToken from '../service/component/MintedToken';
+import TokenListing from './component/TokenListing';
+import TableType from '../../../enums/TableType';
 
 const Investors = () => {
   const { t } = useTranslation();
-  const { userType } = useContext(WalletContext)
+  const { depositToken, mintedToken } = useContext(TokenContext);
 
   return (
     <>
-      <section className="main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
+      <section className="dashboard" style={{ backgroundImage: `url(${ServiceBackground})` }}>
         <Navigation />
-        <div className="main__title-wrapper">
-          <h2 className="main__title-text">Dashboard</h2>
+        <div className="dashboard__title-wrapper">
+          <h2 className="dashboard__title-text">Dashboard</h2>
         </div>
       </section>
       <section className="tokens">
-        <DepositToken 
+        <TokenListing 
           header={"DEPOSITED TOKENS IN ELYFI"}
+          type={TableType.Deposit}
+          token={depositToken}
         />
-        <MintedToken 
+        <TokenListing 
           header={"MINTED TOKEN"}
+          type={TableType.Minted}
+          token={mintedToken}
         />
       </section>
     </>

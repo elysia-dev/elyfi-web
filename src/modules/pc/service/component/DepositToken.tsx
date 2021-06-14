@@ -1,7 +1,6 @@
 import { FunctionComponent, useContext, useState } from 'react';
 import '../../css/style.scss';
 
-import Asset000 from '../../../../shared/images/assets/elysia-asset00.png';
 import Token000 from '../../../../shared/images/tokens/bnb.png';
 
 import numberFormat from '../../../../utiles/numberFormat';
@@ -16,7 +15,7 @@ const DepositToken: FunctionComponent<Props> = (props: Props) => {
     columnActivation: false
   })
   return (
-    <div className="tokens__token-wrapper">
+    <div className="tokens__container">
       <div className="tokens__header-wrapper">
         <h1 className="tokens__header-text">
           {props.header}
@@ -24,10 +23,10 @@ const DepositToken: FunctionComponent<Props> = (props: Props) => {
         <hr className="tokens__header-line"/>
       </div>
       <table className="tokens__table">
-        <thead className="tokens__table-header">
+        <thead className="tokens__table__header">
           <tr>
             <th>
-              <p className={`tokens__table-header-column${state.selectColumn === 1 && state.columnActivation ? "--selected" : ""}`}
+              <p className={`tokens__table__header__column${state.selectColumn === 1 && state.columnActivation ? "--selected" : ""}`}
                 onClick={() => {
                   state.selectColumn === 1
                   ?
@@ -37,7 +36,7 @@ const DepositToken: FunctionComponent<Props> = (props: Props) => {
                 }}>Assets</p>
             </th>
             <th>
-              <p className={`tokens__table-header-column${state.selectColumn === 2 && state.columnActivation ? "--selected" : ""}`}
+              <p className={`tokens__table__header__column${state.selectColumn === 2 && state.columnActivation ? "--selected" : ""}`}
                 onClick={() => {
                   state.selectColumn === 2
                   ?
@@ -47,7 +46,7 @@ const DepositToken: FunctionComponent<Props> = (props: Props) => {
                 }}>Deposit Balance</p>
             </th>
             <th>
-              <p className={`tokens__table-header-column${state.selectColumn === 3 && state.columnActivation ? "--selected" : ""}`}
+              <p className={`tokens__table__header__column${state.selectColumn === 3 && state.columnActivation ? "--selected" : ""}`}
                 onClick={() => {
                   state.selectColumn === 3
                   ?
@@ -57,7 +56,7 @@ const DepositToken: FunctionComponent<Props> = (props: Props) => {
                 }}>Deposit Rates</p>
             </th>
             <th>
-              <p className={`tokens__table-header-column${state.selectColumn === 4 && state.columnActivation ? "--selected" : ""}`}
+              <p className={`tokens__table__header__column${state.selectColumn === 4 && state.columnActivation ? "--selected" : ""}`}
                 onClick={() => {
                   state.selectColumn === 4
                   ?

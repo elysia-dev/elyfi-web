@@ -40,13 +40,13 @@ const Dashboard = () => {
   }
   const DisableWalletPage = () => {
     return (
-      <section className="main--full" style={{ backgroundImage: `url(${MainBackground})` }}>
+      <section className="dashboard--disable" style={{ backgroundImage: `url(${MainBackground})` }}>
         <Navigation />
-        <div className="main__content-container">
-          <h1 className="main__content--bold">
+        <div className="dashboard__content-container">
+          <h1 className="dashboard__content--bold">
             DASHBOARD
           </h1>
-          <p className="main__content">
+          <p className="dashboard__content">
             To get access to the dashboard page, please connect your wallet first!
           </p>
           <div style={{ margin: "30px auto 0px", display: "inline-block" }}>
@@ -59,16 +59,17 @@ const Dashboard = () => {
 
   return (
     <div className="elysia--pc">
-      <div className="dashboard">
-        {!active ? 
-          DisableWalletPage() 
-          : 
-          userType === UserType.Borrowers ?
-            <Borrowers />
+      {!active ? 
+        DisableWalletPage() 
+        : 
+        userType === UserType.Borrowers ?
+          <Borrowers />
+          :
+          userType === UserType.Collateral ?
+            <Investors />
             :
             <Investors />
-          }
-      </div>
+        }
     </div>
   );
 }

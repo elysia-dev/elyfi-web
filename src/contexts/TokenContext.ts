@@ -1,12 +1,15 @@
 import { createContext } from 'react';
-import { TokenList } from '../types/TokenList';
 import AssetTypes from '../enums/AssetType';
 import TokenTypes from '../enums/TokenType';
 import Token000 from '../shared/images/tokens/el.png';
 import Token001 from '../shared/images/tokens/eth.png';
+import Token002 from '../shared/images/tokens/bnb.png';
+import { DepositTokenType } from '../types/DepositTokenType';
+import { MintedTokenType } from '../types/MintedTokenType';
 
 export type TokenContextState = {
-  tokenlist: TokenList[];
+  depositToken: DepositTokenType[];
+  mintedToken: MintedTokenType[];
 }
 
 export interface ITokenContext extends TokenContextState {
@@ -14,30 +17,16 @@ export interface ITokenContext extends TokenContextState {
 }
 
 export const initialTokenState = {
-  tokenlist: [
+  depositToken: [
     {
-      tokenName: "ELA21",
-      type: TokenTypes.ASSETS,
-      image: AssetTypes.COMMERCIAL,
-      marketSize: 0,
-    }, 
+      tokenName: "BUSD",
+      image: Token002,
+    }
+  ],
+  mintedToken: [
     {
-      tokenName: "ELA18",
-      type: TokenTypes.ASSETS,
-      image: AssetTypes.RESIDENTIAL,
-      marketSize: 0,
-    }, 
-    {
-      tokenName: "EL",
-      type: TokenTypes.CRYPTO,
-      image: Token000,
-      marketSize: 0,
-    }, 
-    {
-      tokenName: "ETH",
-      type: TokenTypes.CRYPTO,
-      image: Token001,
-      marketSize: 0,
+      tokenName: "ELFI",
+      image: Token000
     }
   ]
 }

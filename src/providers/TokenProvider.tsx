@@ -5,7 +5,6 @@ import TokenTypes from '../enums/TokenType';
 import Token000 from '../shared/images/tokens/el.png';
 import Token001 from '../shared/images/tokens/eth.png';
 import Token002 from '../shared/images/tokens/bnb.png';
-import { TokenList } from '../types/TokenList';
 
 const TokenProvider: React.FC = (props) => {
   const [state, setState] = useState<ITokenContext>(initialTokenContext);
@@ -13,87 +12,74 @@ const TokenProvider: React.FC = (props) => {
   const stateSetting = () => {
     setState({
       ...state,
-      tokenlist: [
+      depositToken: [
         {
-          tokenName: "ELA001",
-          type: TokenTypes.ASSETS,
-          image: AssetTypes.COMMERCIAL,
-          marketSize: 564651234,
-          totalBorrowed: 2323123321323423,
-          depositApy: 29.2,
-          borrowApr: 1.23
-        },
-        {
-          tokenName: "ELA002",
-          type: TokenTypes.ASSETS,
-          image: AssetTypes.RESIDENTIAL,
-          marketSize: 23123123123,
-          totalBorrowed: 0,
-          depositApy: 4.422,
-          borrowApr: 20
-        },
-        {
-          tokenName: "ELA003",
-          type: TokenTypes.ASSETS,
-          image: AssetTypes.COMMERCIAL,
-          marketSize: 11123132213133,
-          totalBorrowed: 23214123232,
-          depositApy: 3.3,
-          borrowApr: 44
-        },
-        {
-          tokenName: "EL",
-          type: TokenTypes.CRYPTO,
-          image: Token000,
-          marketSize: 312312233,
-          totalBorrowed: 33121233,
-          depositApy: 2.93,
-          borrowApr: 192
+          tokenName: "BUSD",
+          image: Token002,
+          deposit: {
+            balance: 664929430,
+            apyRate: 3042,
+            aprRate: 3529,
+            total: 123941234
+          }
         },
         {
           tokenName: "ETH",
-          type: TokenTypes.CRYPTO,
           image: Token001,
-          marketSize: 0,
+          deposit: {
+            balance: 23429430,
+            apyRate: 42,
+            aprRate: 29,
+            total: 34122211234
+          }
+        }
+      ],
+      mintedToken: [
+        {
+          tokenName: "ELFI",
+          image: Token000,
+          minted: {
+            elfi: 39204,
+            walletBalance: 483822.3342
+          }
         },
         {
-          tokenName: "BNB",
-          type: TokenTypes.CRYPTO,
-          image: Token002,
-          marketSize: 11323123213,
-          totalBorrowed: 2212312312312,
-          depositApy: 0.33,
-          borrowApr: 0
-        },
+          tokenName: "EL",
+          image: Token000,
+          minted: {
+            elfi: 44243,
+            walletBalance: 922
+          }
+        }
       ]
     })
   }
 
-  const SortToken = async (key: "marketSize" | "totalBorrowed" | "depositApy" | "borrowApr" , ascending: boolean) => {
-    return function (a: TokenList, b: TokenList) {
-      if (a[key] === b[key]) {
-        return 0;
-      } else if (a[key] === null) {
-        return 1;
-      } else if (b[key] === null) {
-        return -1;
-      } else if (ascending) {
-        return a[key]! < b[key]! ? -1 : 1;
-      } else {
-        return a[key]! < b[key]! ? 1 : -1;
-      }
-    }
-  }
-  const TokenReturn = async (key: "marketSize" | "totalBorrowed" | "depositApy" | "borrowApr", ascending: boolean, tokenType: TokenTypes) => {
-    let arrayCopy: TokenList[] = state.tokenlist.filter((item) => {
-      return item.type === tokenType
-    });
-    arrayCopy.sort(await SortToken(key, ascending))
-    setState({
-      ...state,
-      tokenlist: arrayCopy
-    })
-  }
+  // const SortToken = async (key: "marketSize" | "totalBorrowed" | "depositApy" | "borrowApr" , ascending: boolean) => {
+  //   return function (a: TokenList, b: TokenList) {
+  //     if (a[key] === b[key]) {
+  //       return 0;
+  //     } else if (a[key] === null) {
+  //       return 1;
+  //     } else if (b[key] === null) {
+  //       return -1;
+  //     } else if (ascending) {
+  //       return a[key]! < b[key]! ? -1 : 1;
+  //     } else {
+  //       return a[key]! < b[key]! ? 1 : -1;
+  //     }
+  //   }
+  // }
+  // const TokenReturn = async (key: "marketSize" | "totalBorrowed" | "depositApy" | "borrowApr", ascending: boolean, tokenType: TokenTypes) => {
+  //   let arrayCopy: TokenList[] = state.tokenlist.filter((item) => {
+  //     return item.type === tokenType
+  //   });
+  //   arrayCopy.sort(await SortToken(key, ascending))
+  //   setState({
+  //     ...state,
+  //     tokenlist: arrayCopy
+  //   })
+  // }
   useEffect(() => {
     stateSetting();
   } ,[])
@@ -101,7 +87,7 @@ const TokenProvider: React.FC = (props) => {
   return (
     <TokenContext.Provider value={{
       ...state,
-      TokenReturn
+      // TokenReturn
     }}>
       {props.children}
     </TokenContext.Provider>

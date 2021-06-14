@@ -18,7 +18,7 @@ import { useEagerConnect, useInactiveListener } from '../../../hooks/connectHoot
 const Service = (props: any) => {
   const { account, activate, deactivate, error } = useWeb3React();
   const [connected, setConnected] = useState<boolean>(false);
-  const { tokenlist } = useContext(TokenContext);
+  // const { tokenlist } = useContext(TokenContext);
   const { t } = useTranslation();
 
   // const context = useWeb3React()

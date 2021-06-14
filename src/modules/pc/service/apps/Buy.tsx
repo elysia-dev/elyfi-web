@@ -8,7 +8,7 @@ import TokenTypes from '../../../../enums/TokenType';
 import { useTranslation } from 'react-i18next';
 
 const Buy = () => {
-  const { tokenlist } = useContext(TokenContext);
+  // const { tokenlist } = useContext(TokenContext);
   const { t } = useTranslation();
 
   return (
@@ -24,7 +24,7 @@ const Buy = () => {
           </div>
         </section>
         <section className="tokens">
-          <TokenListing 
+          {/* <TokenListing 
             header={t("app.token")}
             tokenlist={tokenlist.filter((item) => {
               return item.type === TokenTypes.CRYPTO
@@ -35,7 +35,7 @@ const Buy = () => {
             tokenlist={tokenlist.filter((item) => {
               return item.type === TokenTypes.ASSETS
             })}
-          />  
+          />   */}
         </section>
       </div>
     </div>

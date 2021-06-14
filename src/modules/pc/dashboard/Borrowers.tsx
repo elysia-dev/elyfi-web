@@ -9,12 +9,11 @@ import TokenTypes from '../../../enums/TokenType';
 import { useTranslation } from 'react-i18next';
 
 const Borrowers = () => {
-  const { tokenlist } = useContext(TokenContext);
+  // const { tokenlist } = useContext(TokenContext);
   const { t } = useTranslation();
   const { userType } = useContext(WalletContext)
 
   return (
-    <div className="elysia--pc">
       <div className={`service`}>
         <section className="main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
           <Navigation />
@@ -24,7 +23,7 @@ const Borrowers = () => {
           </div>
         </section>
         <section className="tokens">
-          <TokenListing 
+          {/* <TokenListing 
             header={t("app.token")}
             tokenlist={tokenlist.filter((item) => {
               return item.type === TokenTypes.CRYPTO
@@ -35,10 +34,9 @@ const Borrowers = () => {
             tokenlist={tokenlist.filter((item) => {
               return item.type === TokenTypes.ASSETS
             })}
-          />  
+          />   */}
         </section>
       </div>
-    </div>
   );
 }
 
