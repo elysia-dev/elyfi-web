@@ -559,7 +559,57 @@ span {
         }
       }
       &__deposit {
-        
+        &__contaier {
+          border-bottom: 2px solid #F0F0F1;
+        }
+        &__despositable {
+          &-amount {
+            &-container {
+              margin: 36px 26px 0px;
+              padding-bottom: 36px;
+              justify-content: space-between;
+              border-bottom: 1px solid #F0F0F1;
+              > p {
+                margin: 0 0 25px 0;
+                color: #B7B7B7;
+                font-size: 13px;
+              }
+            }
+            &-wrapper {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              > div { 
+                text-align: right;
+                > p {
+                  margin: 2.5px 0px;
+                  font-size: 15px;
+                }
+                > p:last-child {
+                  color: #888888;
+                  font-size: 13px;
+                }
+              }
+            }
+          }
+          &-value {
+            &-wrapper {
+              margin: 36px 26px 31px;
+              > p {
+                margin: 0 0 16px;
+                color: #B7B7B7;
+                font-size: 13px;
+              }
+              > div {
+                display: flex;
+                justify-content: space-between;
+                > p {
+                  margin: 20px 0;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

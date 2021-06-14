@@ -27,43 +27,42 @@ const DepositModal: FunctionComponent<Props> = (props: Props) => {
           </p>
         </div>
         <div className="modal__deposit__container">
-          <p>
-            Depositable Amount
-          </p>
-          <div className="modal__deposit__amount-wrapper">
-            <p>
-              Wallet Balance
+          <div className="modal__deposit__despositable-amount-container">
+            <p className="bold">
+              Depositable Amount
             </p>
-            <div>
-              <p>
-                $ 1,000.00
+            <div className="modal__deposit__despositable-amount-wrapper">
+              <p className="bold">
+                Wallet Balance
               </p>
-              <p>
-                0 EL
-              </p>
+              <div className="modal__deposit__despositable-wallet-balance-wrapper">
+                <p className="bold">
+                  $ 1,000.00
+                </p>
+                <p className="bold">
+                  0 EL
+                </p>
+              </div>
             </div>
           </div>
-          <hr />
-          <p>
-            Deposit Balance
-          </p>
-          <div>
-            <p>Before this deposit</p>
-            <img src={DownArrow} />
-            <p>After this deposit</p>
-          </div>
-          <div>
-            <p>$ 1,000.00</p>
-            <img src={DownArrow} />
-            <p>$ 2,000.00</p>
+          <div className="modal__deposit__despositable-value-wrapper">
+            <p className="bold">
+              Deposit Balance
+            </p>
+            <div>
+              <p className="bold">Before this deposit</p>
+              <p className="bold">$ 1,000.00</p>
+            </div>
+            <div>
+              <p className="bold">After this deposit</p>
+              <p className="bold">$ 2,000.00</p>
+            </div>
           </div>
         </div>
-        <div>
-          <div>
-            <p>
-              Deposit
-            </p>
-          </div>
+        <div className="modal__button">
+          <p>
+            Deposit
+          </p>
         </div>
       </div>
     )
