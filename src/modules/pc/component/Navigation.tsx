@@ -1,4 +1,4 @@
-import { FunctionComponent, useContext, useState } from 'react';
+import { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { useLocation, Link, useHistory } from 'react-router-dom'
 import ElysiaLogo from '../../../shared/images/Elysia_Logo.png';
 import ElysiaLogoBeta from '../../../shared/images/Elysia_Logo_Beta.png';
@@ -6,7 +6,6 @@ import InstallMetamask from './InstallMetamask';
 import Wallet from './Wallet';
 import { useEagerConnect } from '../../../hooks/connectHoots';
 import PageContext from '../../../contexts/PageContext';
-import { ServicePage } from '../../../enums/pageEnum';
 import WalletContext from '../../../contexts/WalletContext';
 import UserType from '../../../enums/UserType';
 
@@ -17,117 +16,109 @@ const Navigation: FunctionComponent = () => {
   const { setPage, page } = useContext(PageContext);
   const { userType } = useContext(WalletContext)
   const history = useHistory();
-  // const handleHover = () => {
-  //   setVisible(true);
-  // };
-  // const handleOut = () => {
-  //   setVisible(false);
-  // };
-  // const LNB = () => {
-  //   const checkService = (page: ServicePage) => {
-  //     if(location.pathname !== "/service") {
-  //       history.push('/service');
-  //     }
-  //     setPage(page)
-  //   }
-  //   return (
-  //     <div 
-  //       onMouseEnter={handleHover} 
-  //       onMouseLeave={handleOut}
-  //       style={{ paddingTop: 20, paddingBottom: 20 }} 
-  //     >
-  //       <li style={{ position: "relative" }}>
-  //         <p className="navigation__link" 
-  //           style={{ 
-  //             fontFamily: location.pathname === "/service" ? "Montserrat-bold" : "Montserrat",
-  //             }}
-  //           onClick={() => checkService(UserType.Collateral ? ServicePage.Borrow : ServicePage.Deposit)}>
-  //           APP
-  //         </p>
-  //         <ul className="navigation__sub-menu" style={{ display: visible ? "block" : "none" }}>
-  //           {userType === UserType.Collateral && (
-  //             <>
-  //               <li className="navigation__sub-menu__item"
-  //                 onClick={() => checkService(ServicePage.Borrow)}
-  //                 style={{ 
-  //                   color: page === ServicePage.Borrow ? "#3679b5" : "#000000",
-  //                   fontFamily: page === ServicePage.Borrow ? "Montserrat-bold" : "Montserrat",
-  //                 }}>
-  //                 Go to Borrow
-  //               </li>
-  //               <li className="navigation__sub-menu__item" 
-  //                 onClick={() => checkService(ServicePage.Buy)}
-  //                 style={{ 
-  //                   color: page === ServicePage.Buy ? "#3679b5" : "#000000",
-  //                   fontFamily: page === ServicePage.Buy ? "Montserrat-bold" : "Montserrat",
-  //                 }}>
-  //                 Go to Buy
-  //               </li>
-  //             </>
-  //           )}
-  //           <li className="navigation__sub-menu__item" 
-  //             onClick={() => checkService(ServicePage.Deposit)}
-  //             style={{ 
-  //               color: page === ServicePage.Deposit ? "#3679b5" : "#000000",
-  //               fontFamily: page === ServicePage.Deposit ? "Montserrat-bold" : "Montserrat",
-  //             }}>
-  //             Go to Deposit
-  //           </li>
-  //           <li className="navigation__sub-menu__item" 
-  //             onClick={() =>  checkService(ServicePage.Dashboard)}
-  //             style={{ 
-  //               color: page === ServicePage.Dashboard ? "#3679b5" : "#000000",
-  //               fontFamily: page === ServicePage.Dashboard ? "Montserrat-bold" : "Montserrat",
-  //             }}>
-  //             Dashboard
-  //           </li>
-  //           <li className="navigation__sub-menu__item" 
-  //             onClick={() =>  checkService(ServicePage.MoneyPool)}
-  //             style={{ 
-  //               color: page === ServicePage.MoneyPool ? "#3679b5" : "#000000",
-  //               fontFamily: page === ServicePage.MoneyPool ? "Montserrat-bold" : "Montserrat",
-  //             }}>
-  //             Money pool's Portfolio
-  //           </li>
-  //           <li className="navigation__sub-menu__item" 
-  //             onClick={() =>  checkService(ServicePage.MoneyPool)}
-  //             style={{ 
-  //               color: page === ServicePage.MoneyPool ? "#3679b5" : "#000000",
-  //               fontFamily: page === ServicePage.MoneyPool ? "Montserrat-bold" : "Montserrat",
-  //             }}>
-  //             Profile of Linkage Institutions
-  //           </li>
-  //         </ul>
-  //       </li>
-  //     </div>
-  //   )
-  // }
-  return (
-    <nav className="navigation">
-      <Link to="/">
-        <div className="logo-wrapper">
-          <img src={ElysiaLogo} className="elysia-logo" alt="Elysia_Logo" />
-          <img src={ElysiaLogoBeta} className="elysia-logo-beta" alt="beta" />
+  const [hover, setHover] = useState(0);
+
+  useEffect(() => {
+    console.log(userType)
+  },[])
+
+  const CollateralPage = () => {
+    return (
+      <div className="navigation__dashboard__container"
+        style={{ display: hover === 1 ? "block" : "none" }}
+        onMouseEnter={() => setHover(1)}
+        onMouseLeave={() => setHover(0)}
+      >
+        <div className="navigation__dashboard__wrapper">
+          <p className="navigation__dashboard__link">
+            Borrow
+          </p>
+          <p className="navigation__dashboard__link">
+            NPL market
+          </p>
+          <p className="navigation__dashboard__link">
+            Deposit / Withdraw
+          </p>
+          <p className="navigation__dashboard__link">
+            Repayment Statement
+          </p>
         </div>
-      </Link>
-      <div className="navigation__link-wrapper">
-        <Link to="/">
-          <p className={"navigation__link"} style={{ fontFamily: location.pathname === "/" ? "Montserrat-bold" : "Montserrat" }}>
+      </div>
+    )
+  }
+  const BorrowerPage = () => {
+    return (
+      <div className="navigation__dashboard__container"
+        style={{ display: hover === 1 ? "block" : "none" }}
+        onMouseEnter={() => setHover(1)}
+        onMouseLeave={() => setHover(0)}
+      >
+        <div className="navigation__dashboard__wrapper">
+          <p className="navigation__dashboard__link">
             Dashboard
           </p>
-        </Link>
-        <a href='https://elyfi-docs.elysia.land'>
-          <p className="navigation__link">
-            Money Pool’s portfolio
+          <p className="navigation__dashboard__link">
+            Deposit / Withdraw
           </p>
-        </a>
-        <a href='https://elyfi-docs.elysia.land'>
-          <p className="navigation__link">
-            Linkage Institutions
-          </p>
-        </a>
-        {window.ethereum?.isMetaMask ? <Wallet triedEager={triedEager}/> : <InstallMetamask />}
+        </div>
       </div>
+    )
+  }
+  return (
+    <nav className="navigation">
+      <div className="navigation__container">
+        <Link to="/">
+          <div className="logo-wrapper">
+            <img src={ElysiaLogo} className="elysia-logo" alt="Elysia_Logo" />
+            <img src={ElysiaLogoBeta} className="elysia-logo-beta" alt="beta" />
+          </div>
+        </Link>
+        <div className="navigation__link-wrapper">
+          <Link to="/">
+            <div className="navigation__link__wrapper">
+              <p className="navigation__link" 
+                onMouseEnter={() => setHover(1)}
+                onMouseLeave={() => setHover(0)}
+              >
+                Dashboard
+                <div className={`navigation__link__under-line${hover === 1 ? " hover" : " blur"}`} />
+              </p>
+            </div>
+          </Link>
+          <a href='https://elyfi-docs.elysia.land'>
+            <div className="navigation__link__wrapper">
+              <p className="navigation__link" 
+                onMouseEnter={() => setHover(2)}
+                onMouseLeave={() => setHover(0)}
+              >
+                Money Pool’s portfolio
+                <div className={`navigation__link__under-line${hover === 2 ? " hover" : " blur"}`} />
+              </p>
+            </div>
+          </a>
+          <a href='https://elyfi-docs.elysia.land'>
+            <div className="navigation__link__wrapper">
+              <p className="navigation__link" 
+                onMouseEnter={() => setHover(3)}
+                onMouseLeave={() => setHover(0)}
+              >
+                Linkage Institutions
+                <div className={`navigation__link__under-line${hover === 3 ? " hover" : " blur"}`} />
+              </p>
+            </div>
+          </a>
+          {window.ethereum?.isMetaMask ? <Wallet triedEager={triedEager}/> : <InstallMetamask />}
+        </div>
+      </div>
+      {userType === UserType.Borrowers 
+        ? 
+        <BorrowerPage />
+        : userType === UserType.Collateral
+          ?
+          <CollateralPage />
+          :
+          ""
+       }
     </nav>
   );
 }
