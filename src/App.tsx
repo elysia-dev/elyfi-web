@@ -25,8 +25,9 @@ import LanguageProvider from './providers/LanguageProvider';
 import { Web3ReactProvider } from '@web3-react/core';
 import getLibrary from './core/utils/getLibrary';
 
-
 import PageProvider from './providers/PageProvider';
+
+import Portfolio from './modules/pc/portfolio/Portfolio';
 
 const App: React.FC = () => {
   // const { i18n } = useTranslation();
@@ -41,6 +42,9 @@ const App: React.FC = () => {
     return (
       <Router>
         <Switch>
+          <RouteWithFooter path="/portfolio">
+            <Portfolio />
+          </RouteWithFooter>
           <RouteWithFooter path="/">
             <Service />
           </RouteWithFooter>

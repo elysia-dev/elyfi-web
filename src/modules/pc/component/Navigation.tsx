@@ -85,7 +85,7 @@ const Navigation: FunctionComponent = () => {
               </p>
             </div>
           </Link>
-          <a href='https://elyfi-docs.elysia.land'>
+          <Link to="/portfolio">
             <div className="navigation__link__wrapper">
               <p className="navigation__link" 
                 onMouseEnter={() => setHover(2)}
@@ -95,7 +95,7 @@ const Navigation: FunctionComponent = () => {
                 <div className={`navigation__link__under-line${hover === 2 ? " hover" : " blur"}`} />
               </p>
             </div>
-          </a>
+          </Link>
           <a href='https://elyfi-docs.elysia.land'>
             <div className="navigation__link__wrapper">
               <p className="navigation__link" 
