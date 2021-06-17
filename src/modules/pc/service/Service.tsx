@@ -2,7 +2,7 @@ import '../css/style.scss';
 import React, { FunctionComponent, useState } from 'react';
 import { useContext } from 'react';
 import { ServicePage } from '../../../enums/pageEnum';
-import Borrowers from '../dashboard/borrowers/Borrowers';
+import Borrowers from '../dashboard/borrowers/Repay';
 import Buy from './apps/Buy';
 import Dashboard from '../dashboard/Dashboard';
 import Deposit from './apps/Deposit';

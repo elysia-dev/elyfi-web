@@ -11,6 +11,7 @@ const Investors = () => {
   const { t } = useTranslation();
   const { depositToken, mintedToken } = useContext(TokenContext);
 
+  console.log("뭐임?")
   return (
     <>
       <section className="dashboard main" style={{ backgroundImage: `url(${ServiceBackground})` }}>

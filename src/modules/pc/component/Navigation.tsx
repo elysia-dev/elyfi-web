@@ -13,13 +13,11 @@ const Navigation: FunctionComponent = () => {
   const location = useLocation();
   const triedEager = useEagerConnect()
   const [visible, setVisible] = useState(false);
-  const { setPage, page } = useContext(PageContext);
   const { userType } = useContext(WalletContext)
   const history = useHistory();
   const [hover, setHover] = useState(0);
 
   useEffect(() => {
-    console.log(userType)
   },[])
 
   const CollateralPage = () => {
