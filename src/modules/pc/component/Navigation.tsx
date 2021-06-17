@@ -55,7 +55,7 @@ const Navigation: FunctionComponent = () => {
       >
         <div className="navigation__dashboard__wrapper">
           <p className="navigation__dashboard__link">
-            Dashboard
+            Repay
           </p>
           <p className="navigation__dashboard__link">
             Deposit / Withdraw

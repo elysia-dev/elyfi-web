@@ -1,14 +1,16 @@
+import { useState } from 'react';
 import Navigation from "../component/Navigation"
 import InvestmentStatus from './component/InvestmentStatus';
 import PieChart from '../../../utiles/PieChart';
 import AssetList from './component/AssetList';
+import ServiceBackground from '../../../shared/images/service-background.png'
 
 const Portfolio = () => {
   // To Do = 에셋 리스트 3개 이상이면 flex 분리하기
-  return (
-    <div className="elysia--pc">
-      <Navigation />
-      <div className="portfolio">
+  const [state, setState] = useState(false)
+  const Main = () => {
+    return (
+      <>
         <div className="portfolio__container">
           <InvestmentStatus
             loan={1000}
@@ -59,6 +61,7 @@ const Portfolio = () => {
               loan={1000}
               interest={12.5}
               expiration={1607110465663}
+              onClick={() => setState(true)}
             />
             <AssetList
               title={"Loan #2"}
@@ -66,6 +69,7 @@ const Portfolio = () => {
               loan={1300}
               interest={15}
               expiration={1623906828465}
+              onClick={() => setState(true)}
             />
             <AssetList
               title={"Loan #3"}
@@ -73,9 +77,34 @@ const Portfolio = () => {
               loan={4320}
               interest={1.2}
               expiration={1633906828465}
+              onClick={() => setState(true)}
             />
           </div>
         </div>
+      </>
+    )
+  }
+  const Test = () => {
+    return (
+      <div>
+
+      </div>
+    )
+  }
+  return (
+    <div className="elysia--pc">
+      <section className="main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
+        <Navigation />
+        <div className="main__title-wrapper">
+          <h1 className="main__title-text">PORTFOLIO</h1>
+        </div>
+      </section>
+      <div className="portfolio">
+        {state ? (
+          <Test />
+        ) : (
+          <Main />
+        )}
       </div>
     </div>
   )

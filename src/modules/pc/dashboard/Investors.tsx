@@ -13,10 +13,10 @@ const Investors = () => {
 
   return (
     <>
-      <section className="dashboard" style={{ backgroundImage: `url(${ServiceBackground})` }}>
+      <section className="dashboard main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
         <Navigation />
-        <div className="dashboard__title-wrapper">
-          <h2 className="dashboard__title-text">Dashboard</h2>
+        <div className="main__title-wrapper">
+          <h2 className="main__title-text">Dashboard</h2>
         </div>
       </section>
       <section className="tokens">

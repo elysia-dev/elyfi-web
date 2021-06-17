@@ -7,7 +7,7 @@ import { useWeb3React } from '@web3-react/core';
 import InjectedConnector from '../../../core/connectors/injectedConnector';
 import WalletContext from '../../../contexts/WalletContext';
 import UserType from '../../../enums/UserType';
-import Borrowers from './Borrowers';
+import Borrowers from './borrowers/Borrowers';
 import Investors from './Investors';
 import Footer from '../footer/Footer';
 

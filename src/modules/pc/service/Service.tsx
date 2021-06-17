@@ -2,7 +2,7 @@ import '../css/style.scss';
 import React, { FunctionComponent, useState } from 'react';
 import { useContext } from 'react';
 import { ServicePage } from '../../../enums/pageEnum';
-import Borrow from './apps/Borrow';
+import Borrowers from '../dashboard/borrowers/Borrowers';
 import Buy from './apps/Buy';
 import Dashboard from '../dashboard/Dashboard';
 import Deposit from './apps/Deposit';
@@ -14,18 +14,18 @@ export const Service: FunctionComponent = () => {
   
   const InitialRouteType = () => {
     switch (page) {
-      case ServicePage.Deposit:
-        return <Deposit />
-      case ServicePage.Borrow:
-        return <Borrow />
-      case ServicePage.Dashboard:
-        return <Dashboard />
-      case ServicePage.Buy:
-        return <Buy />
-      case ServicePage.MoneyPool:
-        return <MoneyPool />
+      // case ServicePage.Deposit:
+      //   return <Deposit />
+      // case ServicePage.Borrow:
+      //   return <Borrowers />
+      // case ServicePage.Dashboard:
+      //   return <Dashboard />
+      // case ServicePage.Buy:
+      //   return <Buy />
+      // case ServicePage.MoneyPool:
+        // return <MoneyPool />
       default:
-        return <Deposit />
+        return <Dashboard />
     }
   }
 

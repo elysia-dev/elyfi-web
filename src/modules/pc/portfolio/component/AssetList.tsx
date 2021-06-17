@@ -5,13 +5,14 @@ interface Props {
   status: number,
   loan: number,
   interest: number,
-  expiration: number
+  expiration: number,
+  onClick: () => void,
 }
 const AssetList: FunctionComponent<Props> = (props: Props) => {
   const timestamp = new Date(props.expiration);
 
   return (
-    <div className="portfolio__asset-list__info">
+    <div className="portfolio__asset-list__info" onClick={props.onClick}>
       <p className="portfolio__asset-list__info__status">
         {props.status === 2 ? 
           "Repayment Completed"
