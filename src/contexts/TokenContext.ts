@@ -1,5 +1,4 @@
 import { createContext } from 'react';
-import AssetTypes from '../enums/AssetType';
 import Token000 from '../shared/images/tokens/el.png';
 import Token001 from '../shared/images/tokens/eth.png';
 import Token002 from '../shared/images/tokens/bnb.png';

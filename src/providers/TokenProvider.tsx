@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
 import TokenContext, { initialTokenContext, ITokenContext } from '../contexts/TokenContext'
-import AssetTypes from '../enums/AssetType';
-import TokenTypes from '../enums/TokenType';
 import Token000 from '../shared/images/tokens/el.png';
 import Token001 from '../shared/images/tokens/eth.png';
 import Token002 from '../shared/images/tokens/bnb.png';

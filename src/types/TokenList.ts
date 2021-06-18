@@ -1,8 +1,7 @@
-import AssetTypes from '../enums/AssetType';
 
 export type TokenList = {
   tokenName: string;
-  image: string | AssetTypes;
+  image: string;
   marketSize: number;
   totalBorrowed?: number;
   depositApy?: number;

@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 import Navigation from "../component/Navigation"
 import InvestmentStatus from './component/InvestmentStatus';
 import PieChart from '../../../utiles/PieChart';
 import AssetList from './component/AssetList';
 import ServiceBackground from '../../../shared/images/service-background.png'
+import AssetContext from '../../../contexts/AssetContext';
 
 const Portfolio = () => {
   // To Do = 에셋 리스트 3개 이상이면 flex 분리하기
-  const [state, setState] = useState(false)
+  const { assets, getABToken } = useContext(AssetContext);
+  console.log(getABToken("0x123456789c"))
+
   const Main = () => {
     return (
       <>
@@ -25,9 +28,9 @@ const Portfolio = () => {
             <p className="portfolio__asset-allocation__title bold">Asset Allocation</p>
             <div className="portfolio__chart-wrapper">
               <PieChart
-                num1={20}
-                num2={60}
-                num3={30}
+                num1={40}
+                num2={25}
+                num3={35}
               />
             </div>
             <div className="portfolio__asset-allocation__wrapper">
@@ -55,40 +58,19 @@ const Portfolio = () => {
             </div>
           </div>
           <div className="portfolio__asset-list__info__container">
-            <AssetList
-              title={"Loan #1"}
-              status={0}
-              loan={1000}
-              interest={12.5}
-              expiration={1607110465663}
-              onClick={() => setState(true)}
-            />
-            <AssetList
-              title={"Loan #2"}
-              status={1}
-              loan={1300}
-              interest={15}
-              expiration={1623906828465}
-              onClick={() => setState(true)}
-            />
-            <AssetList
-              title={"Loan #3"}
-              status={2}
-              loan={4320}
-              interest={1.2}
-              expiration={1633906828465}
-              onClick={() => setState(true)}
-            />
+            {assets.map((asset) => {
+              return (
+                <AssetList
+                  assets={asset}
+                  onClick={() => {
+                    console.log("dz")
+                  }}
+                />
+              )
+            })}
           </div>
         </div>
       </>
-    )
-  }
-  const Test = () => {
-    return (
-      <div>
-
-      </div>
     )
   }
   return (
@@ -100,11 +82,7 @@ const Portfolio = () => {
         </div>
       </section>
       <div className="portfolio">
-        {state ? (
-          <Test />
-        ) : (
-          <Main />
-        )}
+        <Main />
       </div>
     </div>
   )

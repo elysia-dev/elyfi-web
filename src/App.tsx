@@ -8,6 +8,7 @@ import { Web3ReactProvider } from '@web3-react/core';
 import getLibrary from './core/utils/getLibrary';
 import PageProvider from './providers/PageProvider';
 import AppNavigator from './AppNavigator';
+import AssetProvider from './providers/AssetProvider';
 
 const App: React.FC = () => {
   return (
@@ -15,9 +16,11 @@ const App: React.FC = () => {
       <TokenProvider>
         <Web3ReactProvider getLibrary={getLibrary}>
           <WalletProvider>
-            <PageProvider>
-              <AppNavigator />
-            </PageProvider>
+            <AssetProvider>
+              <PageProvider>
+                <AppNavigator />
+              </PageProvider>
+            </AssetProvider>
           </WalletProvider>
         </Web3ReactProvider>
       </TokenProvider>

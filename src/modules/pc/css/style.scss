@@ -795,9 +795,11 @@ span {
         box-shadow: 0px 0px 6px #00000029;
         border-radius: 5px;
         &__container {
-          display: flex;
+          display: grid;
           margin-bottom: 125px;
-          justify-content: space-between;
+          grid-template-columns: repeat(3,1fr);
+          grid-template-rows: 1fr;
+          grid-gap: 35px;
         }
         &__status {
           margin: 0;
