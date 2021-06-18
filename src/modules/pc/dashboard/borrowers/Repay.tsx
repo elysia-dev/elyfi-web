@@ -2,8 +2,12 @@ import '../../css/style.scss';
 import Navigation from '../../component/Navigation';
 import ServiceBackground from '../../../../shared/images/service-background.png'
 import ContractInformation from '../component/ContractInformation';
+import { Redirect } from 'react-router';
+import { useHistory } from 'react-router-dom';
 
 const Repay = () => {
+  let history = useHistory();
+  const TempAbToken = "0xB91e9f737B2227E92A373fb071b66B10eC6770d0"
   return (
     <>
       <section className="borrowers main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
@@ -46,22 +50,22 @@ const Repay = () => {
           <tbody>
             <ContractInformation 
               id={1}
-              ABToken={"0xB91e9f737B2227E92A373fb071b66B10eC6770d0"}
+              ABToken={TempAbToken}
               borrowDate={1607110465663}
               maturityDate={1623982671403}
               isLiquidation={false}
               onClick={() => {
-                alert("어서일해라")
+                history.push(`/repay_detail/${TempAbToken}`)
               }}
             />
             <ContractInformation 
               id={2}
-              ABToken={"0xB91e9f737B2227E92A373fb071b66B10eC6770d0"}
+              ABToken={TempAbToken}
               borrowDate={1607110465663}
               maturityDate={1607110465663}
               isLiquidation={false}
               onClick={() => {
-                alert("어서일해라")
+                history.push(`/repay_detail/${TempAbToken}`)
               }}
             />
             <ContractInformation 
@@ -71,7 +75,7 @@ const Repay = () => {
               maturityDate={1673982671403}
               isLiquidation={false}
               onClick={() => {
-                alert("어서일해라")
+                history.push(`/repay_detail/${TempAbToken}`)
               }}
             />
             <ContractInformation 
@@ -81,7 +85,7 @@ const Repay = () => {
               maturityDate={1673982671403}
               isLiquidation={true}
               onClick={() => {
-                alert("어서일해라")
+                history.push(`/repay_detail/${TempAbToken}`)
               }}
             />
             <ContractInformation 
@@ -91,7 +95,7 @@ const Repay = () => {
               maturityDate={1673982671403}
               isLiquidation={false}
               onClick={() => {
-                alert("어서일해라")
+                history.push(`/repay_detail/${TempAbToken}`)
               }}
             />
           </tbody>

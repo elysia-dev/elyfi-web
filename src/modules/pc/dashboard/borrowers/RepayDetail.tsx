@@ -24,7 +24,7 @@ const RepayDetail: FunctionComponent<RouteComponentProps<MatchParams>> = ({ matc
   return (
       <>
         <div>
-          <p>ㅇ? : {match.params.value}</p>
+          <p>{match.params.value}</p>
         </div>
       </>
   );
