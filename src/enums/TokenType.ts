@@ -1,6 +1,10 @@
 enum TokenTypes {
-  CRYPTO = "Crypto",
-  ASSETS = "Assets"
+  EL = "EL",
+  BUSD = "BUSD",
+  COMPOUND = "COMPOUND",
+  DAI = "DAI",
+  ETH = "ETH",
+  TETHER = "TETHER"
 }
 
 export default TokenTypes;

@@ -4,7 +4,7 @@ import UserType from '../enums/UserType';
 import { useWeb3React } from '@web3-react/core';
 
 const WalletProvider: React.FC = (props) => {
-  const { account, chainId, activate } = useWeb3React();
+  const { account } = useWeb3React();
   const [state, setState] = useState<IWalletContext>(initialWalletContext);
 
   const TempCollateralAddress = "0x6A040998EeB628Cf40683833812F0463C4FC79F9";

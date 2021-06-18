@@ -854,7 +854,39 @@ span {
   background: rgba(0, 0, 0, 0.7);
   z-index: 900;
   overflow: hidden;
+  &__text-input {
+    text-align: right;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #B7B7B7;
+    font-size: 60px;
+    width: 100%;
+    font-family: "Montserrat-bold";
+    outline: 0;
+  }::placeholder {
+    color: #B7B7B7;
+  }::-webkit-outer-spin-button,
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
   &__button {
+    width: 445px;
+    height: 55px;
+    background-color: #00BFFF;
+    border-radius: 5px;
+    margin: 30px auto;
+    text-align: center;
+    line-height: 55px;
+    > p {
+      font-size: 20px;
+      margin: 0;
+      color: #fff;
+      cursor: pointer ;
+    }
+  }
+  &__button--disable {
     width: 445px;
     height: 55px;
     background-color: #B7B7B7;
@@ -889,7 +921,7 @@ span {
       height: 41px;
     }
     &__name {
-      font-size: 17px;
+      font-size: 20px;
       margin: 0;
     }
     &__token-info-wrapper {
@@ -906,9 +938,6 @@ span {
     justify-content: space-between;
     padding: 0px 40px;
     align-items: center;
-  }
-  &__deposit__value-wrapper {
-    justify-content: flex-end;
   }
 
   &--deposit {
@@ -945,6 +974,7 @@ span {
           display: flex;
           font-size: 20px;
           color: #B7B7B7;
+          cursor: pointer;
         }
         &__value {
           margin: 0;
@@ -966,14 +996,24 @@ span {
       &__withdraw {
         &__withdrawalable {
           border-bottom: 2px solid #F0F0F1;
+          &__title {
+            > p {
+              color: #B7B7B7;
+              font-size: 13px;
+              margin: 20px 0;
+            }
+          }
           &-amount-wrapper {
             margin: 36px 26px 0px;
             padding-bottom: 36px;
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
             border-bottom: 1px solid #F0F0F1;
-            > p {
-              margin: 0;
+            > div {
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
             }
           }
           &-value-wrapper {
@@ -982,8 +1022,8 @@ span {
               display: flex;
               justify-content: space-between;
               > p {
-                margin: 12px 0;
-                color: #888888;
+                margin: 20px 0;
+                font-size: 15px;
               }
             }
           } 
@@ -1016,10 +1056,10 @@ span {
                   margin: 2.5px 0px;
                   font-size: 15px;
                 }
-                > p:last-child {
-                  color: #888888;
-                  font-size: 13px;
-                }
+                // > p:last-child {
+                //   color: #888888;
+                //   font-size: 13px;
+                // }
               }
             }
           }
@@ -1058,6 +1098,7 @@ span {
           display: flex;
           font-size: 20px;
           color: #B7B7B7;
+          cursor: pointer;
         }
         &__value {
           margin: 0;
