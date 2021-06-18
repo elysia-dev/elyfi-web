@@ -1,6 +1,5 @@
 import { createContext } from 'react';
 import AssetTypes from '../enums/AssetType';
-import TokenTypes from '../enums/TokenType';
 import Token000 from '../shared/images/tokens/el.png';
 import Token001 from '../shared/images/tokens/eth.png';
 import Token002 from '../shared/images/tokens/bnb.png';
@@ -13,7 +12,7 @@ export type TokenContextState = {
 }
 
 export interface ITokenContext extends TokenContextState {
-  TokenReturn: (key: "marketSize" | "totalBorrowed" | "depositApy" | "borrowApr", ascending: boolean, tokenType: TokenTypes) => void;
+  TokenReturn: (key: "marketSize" | "totalBorrowed" | "depositApy" | "borrowApr", ascending: boolean) => void;
 }
 
 export const initialTokenState = {
@@ -33,7 +32,7 @@ export const initialTokenState = {
 
 export const initialTokenContext = {
   ...initialTokenState,
-  TokenReturn: (key: "marketSize" | "totalBorrowed" | "depositApy" | "borrowApr", ascending: boolean, tokenType: TokenTypes) => { },
+  TokenReturn: (key: "marketSize" | "totalBorrowed" | "depositApy" | "borrowApr", ascending: boolean) => { },
 }
 
 const TokenContext = createContext<ITokenContext>(initialTokenContext);
