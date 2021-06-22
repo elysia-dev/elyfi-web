@@ -1,6 +1,5 @@
+import 'src/stylesheets/style.scss';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import '../../css/style.scss';
-
 import TableListItem from './TableListItem';
 import TableType from 'src/enums/TableType';
 import { DepositTokenType } from 'src/types/DepositTokenType';

@@ -1,5 +1,5 @@
+import 'src/stylesheets/style.scss';
 import { useState } from 'react';
-import '../css/style.scss';
 import ForumBackground from 'src/shared/images/forum-background.png';
 import Pinned from './images/pinned.svg';
 import WhiteLogo from './images/White-logo.svg';

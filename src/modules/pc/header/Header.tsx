@@ -1,4 +1,4 @@
-import '../css/style.scss';
+import 'src/stylesheets/style.scss';
 import Navigation from '../component/Navigation';
 import ServiceBackground from 'src/shared/images/service-background.png'
 import { FunctionComponent } from 'react';

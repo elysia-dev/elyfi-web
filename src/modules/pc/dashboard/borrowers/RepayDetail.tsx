@@ -1,5 +1,4 @@
-import '../../css/style.scss';
-// import { useTranslation } from 'react-i18next';
+import 'src/stylesheets/style.scss';
 import { FunctionComponent, useEffect } from 'react';
 import { withRouter, RouteComponentProps, useHistory } from "react-router";
 

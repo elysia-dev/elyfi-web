@@ -2,7 +2,7 @@ import 'src/stylesheets/style.scss';
 import ServiceBackground from 'src/shared/images/service-background.png';
 import TokenContext from 'src/contexts/TokenContext';
 import { useContext } from 'react';
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import TokenListing from './component/TokenListing';
 import TableType from 'src/enums/TableType';
 import { useQuery } from '@apollo/client';
@@ -10,7 +10,7 @@ import { GetAllReserves } from 'src/queries/__generated__/GetAllReserves';
 import { GET_ALL_RESERVES } from 'src/queries/getReserves';
 
 const Investors = () => {
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
   const { depositToken, mintedToken } = useContext(TokenContext);
   const {
     loading: isReservesLoading,

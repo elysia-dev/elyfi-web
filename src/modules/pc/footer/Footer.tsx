@@ -1,4 +1,4 @@
-import '../css/style.scss';
+import 'src/stylesheets/style.scss';
 import WhiteLogo from './images/White-logo.svg';
 import Twitter from './images/twitter.svg';
 import Telegram from './images/telegram@2x.png';

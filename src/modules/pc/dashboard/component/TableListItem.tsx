@@ -1,3 +1,4 @@
+import 'src/stylesheets/style.scss';
 import { FunctionComponent, useEffect, useState } from 'react';
 import numberFormat from 'src/utiles/numberFormat';
 import { DepositTokenType } from 'src/types/DepositTokenType';

@@ -1,4 +1,4 @@
-import '../../css/style.scss';
+import 'src/stylesheets/style.scss';
 import ServiceBackground from 'src/shared/images/service-background.png'
 import ContractInformation from '../component/ContractInformation';
 import { useHistory } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import '../css/style.scss';
+import 'src/stylesheets/style.scss';
 import { useWeb3React } from '@web3-react/core';
 import { useContext } from 'react';
 import WalletContext from 'src/contexts/WalletContext';
