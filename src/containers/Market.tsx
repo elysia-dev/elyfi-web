@@ -2,13 +2,15 @@ import 'src/stylesheets/style.scss';
 import ServiceBackground from 'src/shared/images/service-background.png';
 import { useQuery } from '@apollo/client';
 import { GetAllReserves } from 'src/queries/__generated__/GetAllReserves';
-import { GET_ALL_RESERVES } from 'src/queries/getReserves';
+import { GET_ALL_RESERVES } from 'src/queries/reserveQueries';
 import TokenImage from 'src/shared/images/tokens/bnb.png';
 import { BigNumber, constants, utils } from 'ethers';
+import { useHistory } from 'react-router-dom';
 
 const usdFormatter = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' })
 
 const Market: React.FunctionComponent = () => {
+  const history = useHistory();
   const {
     loading: isReservesLoading,
     data: reserveConnection,
@@ -55,7 +57,7 @@ const Market: React.FunctionComponent = () => {
             {
               reserveConnection?.reserves.map((reserve, index) => {
                 return (
-                  <tr key={index}>
+                  <tr key={index} onClick={() => { history.push(`markets/${reserve.id}`) }}>
                     <th>
                       <div style={{ justifyContent: 'left', gap: 10 }}>
                         <img src={TokenImage} alt='token' />

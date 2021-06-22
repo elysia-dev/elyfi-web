@@ -20,6 +20,7 @@ import { useWeb3React } from '@web3-react/core';
 import WalletContext from './contexts/WalletContext';
 import Footer from './modules/pc/footer/Footer';
 import Navigation from './modules/pc/component/Navigation';
+import MarketDetail from './containers/MarketDetails';
 
 const AppNavigator: React.FC = () => {
   const { userType } = useContext(WalletContext);
@@ -50,6 +51,7 @@ const AppNavigator: React.FC = () => {
           <Route exact path="/portfolio" component={Portfolio} />
           <Route exact path="/asset_detail" component={AssetDetail} />
           <Route exact path="/repay_detail/:value" component={RepayDetail} />
+          <Route exact path="/markets/:id" component={MarketDetail} />
           <Route path="/" component={Market} />
         </Switch>
         <Footer />
