@@ -16,7 +16,7 @@ const Navigation: FunctionComponent = () => {
     <nav className="navigation">
       <div className="navigation__container">
         <Link to="/">
-          <div className="logo-wrapper">
+          <div className="logo-wrapper" style={{ cursor: "pointer" }}>
             <img src={ElysiaLogo} className="elysia-logo" alt="Elysia_Logo" />
             <img src={ElysiaLogoBeta} className="elysia-logo-beta" alt="beta" />
           </div>
@@ -24,7 +24,6 @@ const Navigation: FunctionComponent = () => {
         <div className="navigation__link-wrapper">
           {
             [
-              ["/", "Market"],
               ["/dashboard", "Dashboard"],
               ["/portfolio", "Money Pools's portfolio"],
             ].map((data, index) => {
