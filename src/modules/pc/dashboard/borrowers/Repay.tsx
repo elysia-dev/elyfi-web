@@ -1,5 +1,4 @@
 import '../../css/style.scss';
-import Navigation from '../../component/Navigation';
 import ServiceBackground from 'src/shared/images/service-background.png'
 import ContractInformation from '../component/ContractInformation';
 import { useHistory } from 'react-router-dom';
@@ -10,7 +9,6 @@ const Repay = () => {
   return (
     <>
       <section className="borrowers main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
-        <Navigation />
         <div className="main__title-wrapper">
           <h2 className="main__title-text">Repay</h2>
         </div>

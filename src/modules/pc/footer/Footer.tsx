@@ -7,7 +7,6 @@ import LanguageConverter from '../component/LanguageConverter';
 import FooterBackgroundImg from './images/footer.png';
 
 const Footer = () => {
-
   return (
     <footer className="footer" style={{ backgroundImage: `url(${FooterBackgroundImg})` }}>
       <div className="footer__container">
@@ -26,7 +25,7 @@ const Footer = () => {
               <img className="footer-logo" src={Github} style={{ width: 22, height: 21 }} alt="Github" />
             </a>
           </div>
-       </div>
+        </div>
       </div>
     </footer>
   )

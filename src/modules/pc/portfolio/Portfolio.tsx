@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import Navigation from "../component/Navigation"
 import InvestmentStatus from './component/InvestmentStatus';
 import PieChart from 'src/utiles/PieChart';
 import AssetList from './component/AssetList';
@@ -80,7 +79,6 @@ const Portfolio = () => {
   return (
     <div className="elysia--pc">
       <section className="main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
-        <Navigation />
         <div className="main__title-wrapper">
           <h1 className="main__title-text">PORTFOLIO</h1>
         </div>

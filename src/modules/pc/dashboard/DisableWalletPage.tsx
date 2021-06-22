@@ -2,7 +2,6 @@
 import '../css/style.scss';
 import { useWeb3React } from '@web3-react/core';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
-import Navigation from '../component/Navigation';
 import MainBackground from 'src/shared/images/main-background.png';
 
 const DisableWalletPage = () => {
@@ -33,7 +32,6 @@ const DisableWalletPage = () => {
 
   return (
     <section className="dashboard--disable" style={{ backgroundImage: `url(${MainBackground})` }}>
-      <Navigation />
       <div className="dashboard__content-container">
         <h1 className="dashboard__content--bold">
           DASHBOARD

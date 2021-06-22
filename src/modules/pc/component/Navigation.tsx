@@ -1,69 +1,17 @@
-import { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { 
-  // useLocation, 
-  // useHistory,
-  Link } from 'react-router-dom'
+import { FunctionComponent, useState } from 'react';
+import { Link } from 'react-router-dom'
 import ElysiaLogo from 'src/shared/images/Elysia_Logo.png';
 import ElysiaLogoBeta from 'src/shared/images/Elysia_Logo_Beta.png';
 import InstallMetamask from './InstallMetamask';
 import Wallet from './Wallet';
 import { useEagerConnect } from 'src/hooks/connectHoots';
-import WalletContext from 'src/contexts/WalletContext';
-import UserType from 'src/enums/UserType';
 
+// TODO
+// Use NavLink for ActiveClass
 const Navigation: FunctionComponent = () => {
-  // const location = useLocation();
   const triedEager = useEagerConnect()
-  // const [visible, setVisible] = useState(false);
-  const { userType } = useContext(WalletContext)
-  // const history = useHistory();
   const [hover, setHover] = useState(0);
 
-  useEffect(() => {
-  }, [])
-
-  const CollateralPage = () => {
-    return (
-      <div className="navigation__dashboard__container"
-        style={{ display: hover === 1 ? "block" : "none" }}
-        onMouseEnter={() => setHover(1)}
-        onMouseLeave={() => setHover(0)}
-      >
-        <div className="navigation__dashboard__wrapper">
-          <p className="navigation__dashboard__link">
-            Borrow
-          </p>
-          <p className="navigation__dashboard__link">
-            NPL market
-          </p>
-          <p className="navigation__dashboard__link">
-            Deposit / Withdraw
-          </p>
-          <p className="navigation__dashboard__link">
-            Repayment Statement
-          </p>
-        </div>
-      </div>
-    )
-  }
-  const BorrowerPage = () => {
-    return (
-      <div className="navigation__dashboard__container"
-        style={{ display: hover === 1 ? "block" : "none" }}
-        onMouseEnter={() => setHover(1)}
-        onMouseLeave={() => setHover(0)}
-      >
-        <div className="navigation__dashboard__wrapper">
-          <p className="navigation__dashboard__link">
-            Repay
-          </p>
-          <p className="navigation__dashboard__link">
-            Deposit / Withdraw
-          </p>
-        </div>
-      </div>
-    )
-  }
   return (
     <nav className="navigation">
       <div className="navigation__container">
@@ -74,51 +22,41 @@ const Navigation: FunctionComponent = () => {
           </div>
         </Link>
         <div className="navigation__link-wrapper">
-          <Link to="/">
-            <div className="navigation__link__wrapper">
-              <p className="navigation__link"
-                onMouseEnter={() => setHover(1)}
-                onMouseLeave={() => setHover(0)}
-              >
-                Dashboard
-                <div className={`navigation__link__under-line${hover === 1 ? " hover" : " blur"}`} />
-              </p>
-            </div>
-          </Link>
-          <Link to="/portfolio">
-            <div className="navigation__link__wrapper">
-              <p className="navigation__link"
-                onMouseEnter={() => setHover(2)}
-                onMouseLeave={() => setHover(0)}
-              >
-                Money Pool’s portfolio
-                <div className={`navigation__link__under-line${hover === 2 ? " hover" : " blur"}`} />
-              </p>
-            </div>
-          </Link>
+          {
+            [
+              ["/", "Market"],
+              ["/dashboard", "Dashboard"],
+              ["/portfolio", "Money Pools's portfolio"],
+            ].map((data, index) => {
+              return (
+                <Link to={data[0]} key={index}>
+                  <div className="navigation__link__wrapper">
+                    <div className="navigation__link"
+                      onMouseEnter={() => setHover(index + 1)}
+                      onMouseLeave={() => setHover(0)}
+                    >
+                      {data[1]}
+                      <div className={`navigation__link__under-line${hover === index + 1 ? " hover" : " blur"}`} />
+                    </div>
+                  </div>
+                </Link>
+              )
+            })
+          }
           <a href='https://elyfi-docs.elysia.land'>
             <div className="navigation__link__wrapper">
-              <p className="navigation__link"
-                onMouseEnter={() => setHover(3)}
+              <div className="navigation__link"
+                onMouseEnter={() => setHover(4)}
                 onMouseLeave={() => setHover(0)}
               >
                 Linkage Institutions
-                <div className={`navigation__link__under-line${hover === 3 ? " hover" : " blur"}`} />
-              </p>
+                <div className={`navigation__link__under-line${hover === 4 ? " hover" : " blur"}`} />
+              </div>
             </div>
           </a>
           {window.ethereum?.isMetaMask ? <Wallet triedEager={triedEager} /> : <InstallMetamask />}
         </div>
       </div>
-      {userType === UserType.Borrowers
-        ?
-        <BorrowerPage />
-        : userType === UserType.Collateral
-          ?
-          <CollateralPage />
-          :
-          ""
-      }
     </nav>
   );
 }
