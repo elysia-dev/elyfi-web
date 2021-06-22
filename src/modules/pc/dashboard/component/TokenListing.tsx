@@ -2,9 +2,9 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 import '../../css/style.scss';
 
 import TableListItem from './TableListItem';
-import TableType from '../../../../enums/TableType';
-import { DepositTokenType } from '../../../../types/DepositTokenType';
-import { MintedTokenType } from '../../../../types/MintedTokenType';
+import TableType from 'src/enums/TableType';
+import { DepositTokenType } from 'src/types/DepositTokenType';
+import { MintedTokenType } from 'src/types/MintedTokenType';
 import DepositModal from './DepositModal';
 import MintedModal from './MintedModal';
 
@@ -31,7 +31,8 @@ const TokenListing: FunctionComponent<Props> = (props: Props) => {
   const [minted, setMinted] = useState<MintedTokenType>()
 
   useEffect(() => {
-    setState({ ...state, 
+    setState({
+      ...state,
       TableArray: props.type === TableType.Deposit ?
         tempDeposit
         :
@@ -48,24 +49,24 @@ const TokenListing: FunctionComponent<Props> = (props: Props) => {
   return (
     <div className="tokens__container">
       {(deposit !== undefined && state.isModalOpened) ?
-        <Deposit 
+        <Deposit
           visible={(state.isModalOpened && state.selectModal === TableType.Deposit)}
           tokenlist={deposit}
           onClose={() => setState({ ...state, isModalOpened: false })}
         />
-      :null}
-      {(minted !== undefined && state.isModalOpened) ? 
-        <Minted 
+        : null}
+      {(minted !== undefined && state.isModalOpened) ?
+        <Minted
           visible={(state.isModalOpened && state.selectModal === TableType.Minted)}
           tokenlist={minted}
           onClose={() => setState({ ...state, isModalOpened: false })}
         />
-      :null}
+        : null}
       <div className="tokens__header-wrapper">
         <h1 className="tokens__header-text">
           {props.header}
         </h1>
-        <hr className="tokens__header-line"/>
+        <hr className="tokens__header-line" />
       </div>
       <table className="tokens__table">
         <thead className="tokens__table__header">
@@ -76,10 +77,10 @@ const TokenListing: FunctionComponent<Props> = (props: Props) => {
                   <p className={`tokens__table__header__column${state.selectColumn === index + 1 && state.columnActivation ? "--selected" : ""}`}
                     onClick={() => {
                       state.selectColumn === index + 1
-                      ?
-                      (setState({ ...state, columnActivation: !state.columnActivation }))
-                      :
-                      (setState({ ...state, selectColumn: index + 1, columnActivation: true }))
+                        ?
+                        (setState({ ...state, columnActivation: !state.columnActivation }))
+                        :
+                        (setState({ ...state, selectColumn: index + 1, columnActivation: true }))
                     }}>{name}</p>
                 </th>
               )

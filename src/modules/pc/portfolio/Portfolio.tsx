@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 import Navigation from "../component/Navigation"
 import InvestmentStatus from './component/InvestmentStatus';
-import PieChart from '../../../utiles/PieChart';
+import PieChart from 'src/utiles/PieChart';
 import AssetList from './component/AssetList';
-import ServiceBackground from '../../../shared/images/service-background.png'
-import AssetContext from '../../../contexts/AssetContext';
 import { useHistory } from 'react-router-dom';
+import ServiceBackground from 'src/shared/images/service-background.png'
+import AssetContext from 'src/contexts/AssetContext';
 
 const Portfolio = () => {
   const { assets, getABToken } = useContext(AssetContext);
@@ -20,7 +20,7 @@ const Portfolio = () => {
             loan={1000}
             totalLoan={1000}
             interest={100}
-            overdueInterest={100} 
+            overdueInterest={100}
             mortgageRate={0.08}
             abToken={500}
           />
@@ -53,7 +53,7 @@ const Portfolio = () => {
         <div className="portfolio__asset-list__container">
           <div className="portfolio__asset-list__title__wrapper">
             <p className="portfolio__asset-list__title bold">List of Assets</p>
-            <hr className="portfolio__asset-list__title__line"/>
+            <hr className="portfolio__asset-list__title__line" />
             <div className="portfolio__asset-list__title__button">
               <p>Repayment Completed</p>
             </div>

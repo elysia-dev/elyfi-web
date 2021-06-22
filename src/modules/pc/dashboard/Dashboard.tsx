@@ -1,8 +1,8 @@
 import '../css/style.scss';
 import { useWeb3React } from '@web3-react/core';
 import { useContext } from 'react';
-import WalletContext from '../../../contexts/WalletContext';
-import UserType from '../../../enums/UserType';
+import WalletContext from 'src/contexts/WalletContext';
+import UserType from 'src/enums/UserType';
 import Borrowers from './borrowers/Repay';
 import Investors from './Investors';
 import DisableWalletPage from './DisableWalletPage';
@@ -10,12 +10,12 @@ import DisableWalletPage from './DisableWalletPage';
 const Dashboard = () => {
   const { userType } = useContext(WalletContext);
   const { active } = useWeb3React();
-  
+
   return (
     <div className="elysia--pc">
-      {!active ? 
+      {!active ?
         <DisableWalletPage />
-        : 
+        :
         userType === UserType.Borrowers ?
           <Borrowers />
           :
@@ -23,7 +23,7 @@ const Dashboard = () => {
             <Investors />
             :
             <Investors />
-        }
+      }
     </div>
   );
 }

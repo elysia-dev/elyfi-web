@@ -1,9 +1,9 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 import "../../css/style.scss";
-import numberFormat from '../../../../utiles/numberFormat';
-import { DepositTokenType } from '../../../../types/DepositTokenType';
-import { MintedTokenType } from '../../../../types/MintedTokenType';
-import TableType from '../../../../enums/TableType';
+import numberFormat from 'src/utiles/numberFormat';
+import { DepositTokenType } from 'src/types/DepositTokenType';
+import { MintedTokenType } from 'src/types/MintedTokenType';
+import TableType from 'src/enums/TableType';
 
 interface Props {
   tokenProps: any;
@@ -16,15 +16,15 @@ const TableListItem: FunctionComponent<Props> = (props: Props) => {
   const [minted, setMinted] = useState<MintedTokenType>()
 
   const initialState = () => {
-    props.tableType === TableType.Deposit ? 
-    setDeposit(props.tokenProps) : 
-    setMinted(props.tokenProps)
+    props.tableType === TableType.Deposit ?
+      setDeposit(props.tokenProps) :
+      setMinted(props.tokenProps)
   }
 
   useEffect(() => {
     initialState();
   }, [])
-  
+
   return (
     <>
       <tr onClick={props.handler}>
@@ -56,7 +56,7 @@ const TableListItem: FunctionComponent<Props> = (props: Props) => {
           <>
             <th>
               <p>
-                {minted?.minted?.elfi === undefined ? "-" : numberFormat(minted?.minted?.elfi!) + " " +  props.tokenProps.tokenName}
+                {minted?.minted?.elfi === undefined ? "-" : numberFormat(minted?.minted?.elfi!) + " " + props.tokenProps.tokenName}
               </p>
             </th>
             <th>
@@ -70,7 +70,6 @@ const TableListItem: FunctionComponent<Props> = (props: Props) => {
     </>
   );
 }
- 
+
 
 export default TableListItem;
- 

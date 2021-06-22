@@ -1,12 +1,12 @@
 import { FunctionComponent } from "react";
-import numberFormat from "../../../../utiles/numberFormat";
+import numberFormat from "src/utiles/numberFormat";
 
 interface Props {
   loan: number,
-  totalLoan: number, 
-  interest: number, 
-  overdueInterest: number, 
-  mortgageRate: number, 
+  totalLoan: number,
+  interest: number,
+  overdueInterest: number,
+  mortgageRate: number,
   abToken: number
 }
 const InvestmentStatus: FunctionComponent<Props> = (props: Props) => {
