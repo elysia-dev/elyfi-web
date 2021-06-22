@@ -1,6 +1,5 @@
-import { FunctionComponent, useRef, useState } from 'react'
-import { DepositTokenType } from "../../../../types/DepositTokenType";
-import DownArrow from "../images/down-arrow.png";
+import { FunctionComponent, useState } from 'react'
+import { DepositTokenType } from "src/types/DepositTokenType";
 
 interface Props {
   visible?: boolean
@@ -17,12 +16,12 @@ const DepositModal: FunctionComponent<Props> = (props: Props) => {
   console.log(props.tokenlist)
   const DepositBody = () => {
     const [deposit, setDeposit] = useState<number>(0);
-    
+
     const handler = (e: any) => {
       const { value } = e.target;
       (value < 0) ? setDeposit(0) : setDeposit(value)
     }
-    
+
     return (
       <div className="modal__deposit">
         <div className="modal__deposit__value-wrapper">
@@ -30,7 +29,7 @@ const DepositModal: FunctionComponent<Props> = (props: Props) => {
             MAX
           </p>
           <p className="modal__deposit__value bold">
-            <input 
+            <input
               type="number"
               className="modal__text-input"
               placeholder="0"
@@ -84,7 +83,7 @@ const DepositModal: FunctionComponent<Props> = (props: Props) => {
   }
   const WithdrawBody = () => {
     const [withdraw, setWithdraw] = useState<number>(0);
-    
+
     const handler = (e: any) => {
       const { value } = e.target;
       (value < 0) ? setWithdraw(0) : setWithdraw(value)
@@ -97,7 +96,7 @@ const DepositModal: FunctionComponent<Props> = (props: Props) => {
             MAX
           </p>
           <p className="modal__withdraw__value bold">
-          <input 
+            <input
               type="number"
               className="modal__text-input"
               placeholder="0"
@@ -167,13 +166,13 @@ const DepositModal: FunctionComponent<Props> = (props: Props) => {
           </div>
         </div>
         <div className='modal__converter'>
-          <div 
+          <div
             className={`modal__converter__column${state.selectColumn === 1 ? "--selected" : ""}`}
             onClick={() => setState({ ...state, selectColumn: 1 })}
           >
             <p className="bold">Deposit</p>
           </div>
-          <div 
+          <div
             className={`modal__converter__column${state.selectColumn === 2 ? "--selected" : ""}`}
             onClick={() => setState({ ...state, selectColumn: 2 })}
           >

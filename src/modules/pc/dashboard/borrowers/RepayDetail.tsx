@@ -1,6 +1,4 @@
 import '../../css/style.scss';
-import Navigation from '../../component/Navigation';
-import ServiceBackground from '../../../../shared/images/service-background.png'
 import { useTranslation } from 'react-i18next';
 import { FunctionComponent, useEffect } from 'react';
 import { withRouter, RouteComponentProps, useHistory } from "react-router";
@@ -22,11 +20,11 @@ const RepayDetail: FunctionComponent<RouteComponentProps<MatchParams>> = ({ matc
     }
   }, [])
   return (
-      <>
-        <div>
-          <p>{match.params.value}</p>
-        </div>
-      </>
+    <>
+      <div>
+        <p>{match.params.value}</p>
+      </div>
+    </>
   );
 }
 

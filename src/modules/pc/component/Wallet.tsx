@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useWeb3React } from '@web3-react/core';
-import InjectedConnector from '../../../core/connectors/injectedConnector';
-import mainnetConverter from '../../../utiles/mainnetConverter';
+import InjectedConnector from 'src/core/connectors/injectedConnector';
+import mainnetConverter from 'src/utiles/mainnetConverter';
 
 type Account = string | null | undefined;
 
@@ -20,7 +20,7 @@ const Wallet = (props: any) => {
   const { account, activate, deactivate, error, active, connector, library, chainId } = useWeb3React();
   const [connected, setConnected] = useState<boolean>(false);
   const [userAccount, setUserAccount] = useState<Account>(undefined);
-  
+
   const WalletRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const handleHover = () => {
@@ -48,9 +48,9 @@ const Wallet = (props: any) => {
 
   const LNB = () => {
     return (
-      <ul className="navigation__wallet__sub-menu" 
+      <ul className="navigation__wallet__sub-menu"
         style={{ display: visible ? "block" : "none" }}
-        >
+      >
         <li className="navigation__wallet__sub-menu__item">
           {account}
         </li>
@@ -90,7 +90,7 @@ const Wallet = (props: any) => {
           {connected && (
             <p className="navigation__wallet__mainnet">{mainnetConverter(chainId)}</p>
           )}
-          <p className={`navigation__wallet__status${connected ? "--connected" : ""}`}>{connected ? `${account?.slice(0, 6)}....${account?.slice(-4)}`: "Connect Wallet"}</p>
+          <p className={`navigation__wallet__status${connected ? "--connected" : ""}`}>{connected ? `${account?.slice(0, 6)}....${account?.slice(-4)}` : "Connect Wallet"}</p>
         </div>
         <LNB />
       </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import '../css/style.scss';
-import ForumBackground from '../../../shared/images/forum-background.png';
+import ForumBackground from 'src/shared/images/forum-background.png';
 import Pinned from './images/pinned.svg';
 import WhiteLogo from './images/White-logo.svg';
 import Twitter from './images/twitter.svg';
@@ -33,7 +33,7 @@ const Forum = () => {
               <th>
                 <p>
                   {t("forum.activity")}
-              </p>
+                </p>
               </th>
             </tr>
           </thead>
@@ -50,12 +50,12 @@ const Forum = () => {
                   }}
                 >
                   ELYFI DOCS released
-              </p>
+                </p>
               </th>
               <th>
                 <p>
                   21.04.05
-              </p>
+                </p>
               </th>
             </tr>
             <tr style={{ display: state.forumPage === 1 ? "table-row" : "none" }}>
@@ -63,8 +63,8 @@ const Forum = () => {
               </th>
               <th colSpan={2}>
                 <p>We are excited to announce the release of ELYFI, a decentralized crypto lending protocol using real estate assets as collateral.<br /><br />Read the docs here (Korean only): <a href='https://elyfi-docs.elysia.land' style={{ cursor: 'pointer', color: 'white' }}>[https://elyfi-docs.elysia.land]</a><br /><br />
-ELYFI will be the first DeFi protocol to apply real world assets into the money pool. real estate owners will be able to borrow cryptocurrencies using their properties as collateral, while lenders receive APYs from margin deposit wallets reflecting property income.
-English docs released later this week. We will also introduce detailed specs each week while we continue testing the product. Beta App coming soon!</p>
+                  ELYFI will be the first DeFi protocol to apply real world assets into the money pool. real estate owners will be able to borrow cryptocurrencies using their properties as collateral, while lenders receive APYs from margin deposit wallets reflecting property income.
+                  English docs released later this week. We will also introduce detailed specs each week while we continue testing the product. Beta App coming soon!</p>
               </th>
             </tr>
           </tbody>

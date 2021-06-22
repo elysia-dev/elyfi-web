@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import dateFillZero from '../../../../utiles/dateFillZero'
+import dateFillZero from 'src/utiles/dateFillZero'
 
 interface Props {
   id: number,
@@ -47,18 +47,18 @@ const ContractInformation: FunctionComponent<Props> = ({ id, ABToken, borrowDate
         </p>
       </th>
       <th>
-        <div 
+        <div
           className={`borrowers__repay__table__button${disable ? "--disable" : ""}`}
-          onClick={disable ? 
+          onClick={disable ?
             () => { }
             :
             onClick
           }>
-          <p style={{fontSize: isLiquidation ? 13 : 15}}>
-            {isLiquidation ? 
+          <p style={{ fontSize: isLiquidation ? 13 : 15 }}>
+            {isLiquidation ?
               "Liquidation in progress"
               :
-              (Days > 0) ? 
+              (Days > 0) ?
                 `D+${Days}`
                 :
                 (Days < 0) ?

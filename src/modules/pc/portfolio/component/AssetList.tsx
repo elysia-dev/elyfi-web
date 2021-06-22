@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react'
-import Assets from '../../../../types/Assets';
-import dateFillZero from '../../../../utiles/dateFillZero';
+import Assets from 'src/types/Assets';
+import dateFillZero from 'src/utiles/dateFillZero';
 
 interface Props {
   assets: Assets,
@@ -16,9 +16,9 @@ const AssetList: FunctionComponent<Props> = ({ assets, onClick }) => {
       <p className="portfolio__asset-list__info__status">
         {assets.status}
       </p>
-      <iframe style={{ 
-        width: "100%", height: 304, border: 0 
-        }} 
+      <iframe style={{
+        width: "100%", height: 304, border: 0
+      }}
         src={assets.map}
       />
       <div className="portfolio__asset-list__info__value__container">

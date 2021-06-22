@@ -1,10 +1,9 @@
 import { useContext, useState, useEffect, useRef } from 'react';
-import LanguageType from "../../../enums/LanguageType";
-import LanguageContext from '../../../contexts/LanguageContext';
-import ko from "../../../shared/images/korea@2x.png";
-import cn from "../../../shared/images/china@2x.png";
-import en from "../../../shared/images/america@2x.png";
-
+import LanguageType from 'src/enums/LanguageType';
+import LanguageContext from 'src/contexts/LanguageContext';
+import ko from "src/shared/images/korea@2x.png";
+import cn from "src/shared/images/china@2x.png";
+import en from "src/shared/images/america@2x.png";
 
 export const LanguageConverter = () => {
   const { language, languageArray, setLanguage, ChangeLanguageArray } = useContext(LanguageContext);
@@ -66,27 +65,27 @@ export const LanguageConverter = () => {
   let ChangeLang = () => {
     return (
       <div className="lang__image-wrapper" style={{ display: visible ? "flex" : "none" }}>
-        <img 
-            className="lang__select-image" src={en}
-            style={{ display: languageArray.includes(LanguageType.EN) ? "block" : "none" }}
-            onClick={() => {
-              setLanguage(LanguageType.EN)
-              handleHover()
-            }}/>
-          <img 
-            className="lang__select-image" src={ko}
-            style={{ display: languageArray.includes(LanguageType.KO) ? "block" : "none" }} 
-            onClick={() => {
-              setLanguage(LanguageType.KO)
-              handleHover()
-          }}/>
-          <img 
-            className="lang__select-image" src={cn}
-            style={{ display: languageArray.includes(LanguageType.ZHHANS) ? "block" : "none" }} 
-            onClick={() => {
-              setLanguage(LanguageType.ZHHANS)
-              handleHover()
-          }}/>
+        <img
+          className="lang__select-image" src={en}
+          style={{ display: languageArray.includes(LanguageType.EN) ? "block" : "none" }}
+          onClick={() => {
+            setLanguage(LanguageType.EN)
+            handleHover()
+          }} />
+        <img
+          className="lang__select-image" src={ko}
+          style={{ display: languageArray.includes(LanguageType.KO) ? "block" : "none" }}
+          onClick={() => {
+            setLanguage(LanguageType.KO)
+            handleHover()
+          }} />
+        <img
+          className="lang__select-image" src={cn}
+          style={{ display: languageArray.includes(LanguageType.ZHHANS) ? "block" : "none" }}
+          onClick={() => {
+            setLanguage(LanguageType.ZHHANS)
+            handleHover()
+          }} />
       </div>
     )
   }
@@ -97,7 +96,7 @@ export const LanguageConverter = () => {
         {showingLangIcon(language)}
       </div>
     </div>
- )
+  )
 
 }
 

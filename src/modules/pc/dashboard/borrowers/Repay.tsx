@@ -1,8 +1,7 @@
 import '../../css/style.scss';
 import Navigation from '../../component/Navigation';
-import ServiceBackground from '../../../../shared/images/service-background.png'
+import ServiceBackground from 'src/shared/images/service-background.png'
 import ContractInformation from '../component/ContractInformation';
-import { Redirect } from 'react-router';
 import { useHistory } from 'react-router-dom';
 
 const Repay = () => {
@@ -48,7 +47,7 @@ const Repay = () => {
             <td />
           </thead>
           <tbody>
-            <ContractInformation 
+            <ContractInformation
               id={1}
               ABToken={TempAbToken}
               borrowDate={1607110465663}
@@ -58,7 +57,7 @@ const Repay = () => {
                 history.push(`/repay_detail/${TempAbToken}`)
               }}
             />
-            <ContractInformation 
+            <ContractInformation
               id={2}
               ABToken={TempAbToken}
               borrowDate={1607110465663}
@@ -68,7 +67,7 @@ const Repay = () => {
                 history.push(`/repay_detail/${TempAbToken}`)
               }}
             />
-            <ContractInformation 
+            <ContractInformation
               id={3}
               ABToken={"0xB91e9f737B2227E92A373fb071b66B10eC6770d0"}
               borrowDate={1607110465663}
@@ -78,7 +77,7 @@ const Repay = () => {
                 history.push(`/repay_detail/${TempAbToken}`)
               }}
             />
-            <ContractInformation 
+            <ContractInformation
               id={4}
               ABToken={"0xB91e9f737B2227E92A373fb071b66B10eC6770d0"}
               borrowDate={1607110465663}
@@ -88,7 +87,7 @@ const Repay = () => {
                 history.push(`/repay_detail/${TempAbToken}`)
               }}
             />
-            <ContractInformation 
+            <ContractInformation
               id={5}
               ABToken={"0xB91e9f737B2227E92A373fb071b66B10eC6770d0"}
               borrowDate={1507110465663}
@@ -100,7 +99,7 @@ const Repay = () => {
             />
           </tbody>
         </table>
-      </section>  
+      </section>
     </>
   );
 }

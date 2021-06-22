@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react'
-import { MintedTokenType } from '../../../../types/MintedTokenType';
+import { MintedTokenType } from 'src/types/MintedTokenType';
 
 interface Props {
   visible?: boolean

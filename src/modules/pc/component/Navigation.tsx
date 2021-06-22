@@ -1,13 +1,12 @@
 import { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { useLocation, Link, useHistory } from 'react-router-dom'
-import ElysiaLogo from '../../../shared/images/Elysia_Logo.png';
-import ElysiaLogoBeta from '../../../shared/images/Elysia_Logo_Beta.png';
+import ElysiaLogo from 'src/shared/images/Elysia_Logo.png';
+import ElysiaLogoBeta from 'src/shared/images/Elysia_Logo_Beta.png';
 import InstallMetamask from './InstallMetamask';
 import Wallet from './Wallet';
-import { useEagerConnect } from '../../../hooks/connectHoots';
-import PageContext from '../../../contexts/PageContext';
-import WalletContext from '../../../contexts/WalletContext';
-import UserType from '../../../enums/UserType';
+import { useEagerConnect } from 'src/hooks/connectHoots';
+import WalletContext from 'src/contexts/WalletContext';
+import UserType from 'src/enums/UserType';
 
 const Navigation: FunctionComponent = () => {
   const location = useLocation();
@@ -18,7 +17,7 @@ const Navigation: FunctionComponent = () => {
   const [hover, setHover] = useState(0);
 
   useEffect(() => {
-  },[])
+  }, [])
 
   const CollateralPage = () => {
     return (
@@ -74,7 +73,7 @@ const Navigation: FunctionComponent = () => {
         <div className="navigation__link-wrapper">
           <Link to="/">
             <div className="navigation__link__wrapper">
-              <p className="navigation__link" 
+              <p className="navigation__link"
                 onMouseEnter={() => setHover(1)}
                 onMouseLeave={() => setHover(0)}
               >
@@ -85,7 +84,7 @@ const Navigation: FunctionComponent = () => {
           </Link>
           <Link to="/portfolio">
             <div className="navigation__link__wrapper">
-              <p className="navigation__link" 
+              <p className="navigation__link"
                 onMouseEnter={() => setHover(2)}
                 onMouseLeave={() => setHover(0)}
               >
@@ -96,7 +95,7 @@ const Navigation: FunctionComponent = () => {
           </Link>
           <a href='https://elyfi-docs.elysia.land'>
             <div className="navigation__link__wrapper">
-              <p className="navigation__link" 
+              <p className="navigation__link"
                 onMouseEnter={() => setHover(3)}
                 onMouseLeave={() => setHover(0)}
               >
@@ -105,18 +104,18 @@ const Navigation: FunctionComponent = () => {
               </p>
             </div>
           </a>
-          {window.ethereum?.isMetaMask ? <Wallet triedEager={triedEager}/> : <InstallMetamask />}
+          {window.ethereum?.isMetaMask ? <Wallet triedEager={triedEager} /> : <InstallMetamask />}
         </div>
       </div>
-      {userType === UserType.Borrowers 
-        ? 
+      {userType === UserType.Borrowers
+        ?
         <BorrowerPage />
         : userType === UserType.Collateral
           ?
           <CollateralPage />
           :
           ""
-       }
+      }
     </nav>
   );
 }
