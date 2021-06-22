@@ -5,8 +5,6 @@ import { GetReserve } from 'src/queries/__generated__/GetReserve';
 import { GET_RESERVE } from 'src/queries/reserveQueries';
 import { useParams } from 'react-router-dom';
 
-const usdFormatter = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' })
-
 const MarketDetail: React.FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
   const {
