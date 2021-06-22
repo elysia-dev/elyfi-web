@@ -2,11 +2,11 @@
 import { FunctionComponent, useEffect, useContext, useState } from 'react';
 import { useLocation } from "react-router";
 import { useHistory } from 'react-router-dom';
-import Header from '../header/Header';
-import Assets from '../../../types/Assets';
-import AssetContext from '../../../contexts/AssetContext';
-import ABToken from '../../../types/ABToken';
-import returnTimpstamp from '../../../utiles/retrunTimestamp';
+import Header from 'src/modules/pc/header/Header'
+import Assets from 'src/types/Assets';
+import AssetContext from 'src/contexts/AssetContext';
+import ABToken from 'src/types/ABToken';
+import returnTimpstamp from 'src/utiles/retrunTimestamp';
 
 
 const AssetDetail: FunctionComponent = () => {
@@ -30,7 +30,7 @@ const AssetDetail: FunctionComponent = () => {
     } else {
       setState(getABToken(assets.abTokenId))
     }
-  }, [])
+  }, [history, assets, getABToken])
 
   return (
     <section id="portfolio">

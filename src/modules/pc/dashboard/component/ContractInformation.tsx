@@ -21,8 +21,7 @@ const ContractInformation: FunctionComponent<Props> = ({ id, ABToken, borrowDate
 
   useEffect(() => {
     if (Days < 0 && !isLiquidation) setDisable(true)
-    console.log(disable)
-  }, [])
+  }, [Days, isLiquidation])
 
   return (
     <tr>

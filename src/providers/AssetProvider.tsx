@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import AssetContext, { initialAssetContext, IAssetContext } from '../contexts/AssetContext'
 import AssetStatus from '../enums/AssetStatus';
 import TokenTypes from '../enums/TokenType';
-import ABToken from '../types/ABToken';
 
 const AssetProvider: React.FC = (props) => {
   const [state, setState] = useState<IAssetContext>(initialAssetContext);
@@ -134,7 +133,7 @@ const AssetProvider: React.FC = (props) => {
 
   useEffect(() => {
     initialAssets();
-  } ,[])
+  }, [])
 
   return (
     <AssetContext.Provider value={{

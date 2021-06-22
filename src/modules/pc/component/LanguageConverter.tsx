@@ -6,9 +6,11 @@ import cn from "src/shared/images/china@2x.png";
 import en from "src/shared/images/america@2x.png";
 
 export const LanguageConverter = () => {
-  const { language, languageArray, setLanguage, ChangeLanguageArray } = useContext(LanguageContext);
+  const { language, languageArray, setLanguage } = useContext(LanguageContext);
   const [visible, setVisible] = useState(false);
   const LangRef = useRef<HTMLDivElement>(null);
+
+
   const handleHover = () => {
     setVisible(!visible);
   };
@@ -32,23 +34,19 @@ export const LanguageConverter = () => {
 
   HandleClickOutside(LangRef);
 
-  useEffect(() => {
-    ChangeLanguageArray(language);
-  }, [language])
-
   const showingLangIcon = (lang: LanguageType) => {
     switch (lang) {
       case LanguageType.KO:
         return (
           <>
-            <img className="lang__select-image" src={ko} />
+            <img className="lang__select-image" src={ko} alt="KOR" />
             <p className="lang__select-image__text">KOR</p>
           </>
         )
       case LanguageType.ZHHANS:
         return (
           <>
-            <img className="lang__select-image" src={cn} />
+            <img className="lang__select-image" src={cn} alt="CHA" />
             <p className="lang__select-image__text">CHA</p>
           </>
         )
@@ -56,7 +54,7 @@ export const LanguageConverter = () => {
       default:
         return (
           <>
-            <img className="lang__select-image" src={en} />
+            <img className="lang__select-image" src={en} alt="ENG" />
             <p className="lang__select-image__text">ENG</p>
           </>
         )
@@ -66,21 +64,21 @@ export const LanguageConverter = () => {
     return (
       <div className="lang__image-wrapper" style={{ display: visible ? "flex" : "none" }}>
         <img
-          className="lang__select-image" src={en}
+          className="lang__select-image" src={en} alt="ENG" 
           style={{ display: languageArray.includes(LanguageType.EN) ? "block" : "none" }}
           onClick={() => {
             setLanguage(LanguageType.EN)
             handleHover()
           }} />
         <img
-          className="lang__select-image" src={ko}
+          className="lang__select-image" src={ko} alt="KOR"
           style={{ display: languageArray.includes(LanguageType.KO) ? "block" : "none" }}
           onClick={() => {
             setLanguage(LanguageType.KO)
             handleHover()
           }} />
         <img
-          className="lang__select-image" src={cn}
+          className="lang__select-image" src={cn} alt="CHA"
           style={{ display: languageArray.includes(LanguageType.ZHHANS) ? "block" : "none" }}
           onClick={() => {
             setLanguage(LanguageType.ZHHANS)

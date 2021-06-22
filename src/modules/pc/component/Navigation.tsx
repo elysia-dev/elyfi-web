@@ -1,5 +1,8 @@
 import { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { useLocation, Link, useHistory } from 'react-router-dom'
+import { 
+  // useLocation, 
+  // useHistory,
+  Link } from 'react-router-dom'
 import ElysiaLogo from 'src/shared/images/Elysia_Logo.png';
 import ElysiaLogoBeta from 'src/shared/images/Elysia_Logo_Beta.png';
 import InstallMetamask from './InstallMetamask';
@@ -9,11 +12,11 @@ import WalletContext from 'src/contexts/WalletContext';
 import UserType from 'src/enums/UserType';
 
 const Navigation: FunctionComponent = () => {
-  const location = useLocation();
+  // const location = useLocation();
   const triedEager = useEagerConnect()
-  const [visible, setVisible] = useState(false);
+  // const [visible, setVisible] = useState(false);
   const { userType } = useContext(WalletContext)
-  const history = useHistory();
+  // const history = useHistory();
   const [hover, setHover] = useState(0);
 
   useEffect(() => {

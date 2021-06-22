@@ -13,7 +13,7 @@ const MintedModal: FunctionComponent<Props> = (props: Props) => {
       <div className="modal__container">
         <div className="modal__header">
           <div className="modal__header__token-info-wrapper">
-            <img className="modal__header__image" src={props.tokenlist!.image} />
+            <img className="modal__header__image" src={props.tokenlist!.image} alt="Token" />
             <p className="modal__header__name bold">{props.tokenlist!.tokenName}</p>
           </div>
           <div className="close-button" onClick={props.onClose}>

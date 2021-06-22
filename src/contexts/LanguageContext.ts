@@ -8,7 +8,6 @@ export type LanguageContextState = {
 
 export interface ILanguageContext extends LanguageContextState {
   setLanguage: (language: LanguageType) => void; 
-  ChangeLanguageArray: (language: LanguageType) => void;
 }
 
 export const initialLanguageState = {
@@ -21,8 +20,7 @@ export const initialLanguageState = {
 
 export const initialLanguageContext = {
   ...initialLanguageState,
-  setLanguage: (language: LanguageType) => { },
-  ChangeLanguageArray: (language: LanguageType) => { }
+  setLanguage: (language: LanguageType) => { }
 }
 
 const LanguageContext = createContext<ILanguageContext>(initialLanguageContext);

@@ -3,23 +3,10 @@ import { useWeb3React } from '@web3-react/core';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
 import mainnetConverter from 'src/utiles/mainnetConverter';
 
-type Account = string | null | undefined;
-
-let throttle_flag = false;
-const throttle = (func: () => void, delay: number) => {
-  if (!throttle_flag) {
-    func();
-    throttle_flag = true;
-    setTimeout(() => {
-      throttle_flag = false;
-    }, delay);
-  }
-};
 
 const Wallet = (props: any) => {
-  const { account, activate, deactivate, error, active, connector, library, chainId } = useWeb3React();
+  const { account, activate, deactivate, active, chainId } = useWeb3React();
   const [connected, setConnected] = useState<boolean>(false);
-  const [userAccount, setUserAccount] = useState<Account>(undefined);
 
   const WalletRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -68,11 +55,6 @@ const Wallet = (props: any) => {
     setConnected(!!account)
   }, [account])
 
-  useEffect(() => {
-    if (account) {
-      throttle(() => setUserAccount(account), 500);
-    }
-  }, [account]);
 
   return (
     <>

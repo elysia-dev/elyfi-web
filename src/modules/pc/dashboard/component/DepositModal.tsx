@@ -153,7 +153,7 @@ const DepositModal: FunctionComponent<Props> = (props: Props) => {
       <div className="modal__container">
         <div className="modal__header">
           <div className="modal__header__token-info-wrapper">
-            <img className="modal__header__image" src={props.tokenlist!.image} />
+            <img className="modal__header__image" src={props.tokenlist!.image} alt="Token"/>
             <div className="modal__header__name-wrapper">
               <p className="modal__header__name bold">{props.tokenlist!.tokenName}</p>
               {/* <p className="modal__header__type">(On dollar basis) <div>(?)</div></p> */}

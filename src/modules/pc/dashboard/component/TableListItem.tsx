@@ -1,5 +1,4 @@
 import { FunctionComponent, useEffect, useState } from 'react';
-import "../../css/style.scss";
 import numberFormat from 'src/utiles/numberFormat';
 import { DepositTokenType } from 'src/types/DepositTokenType';
 import { MintedTokenType } from 'src/types/MintedTokenType';
@@ -15,22 +14,18 @@ const TableListItem: FunctionComponent<Props> = (props: Props) => {
   const [deposit, setDeposit] = useState<DepositTokenType>()
   const [minted, setMinted] = useState<MintedTokenType>()
 
-  const initialState = () => {
+  useEffect(() => {
     props.tableType === TableType.Deposit ?
       setDeposit(props.tokenProps) :
       setMinted(props.tokenProps)
-  }
-
-  useEffect(() => {
-    initialState();
-  }, [])
+  }, [props.tableType, props.tokenProps, setDeposit, setMinted])
 
   return (
     <>
       <tr onClick={props.handler}>
         <th>
           <div style={{ justifyContent: 'left', gap: 10 }}>
-            <img src={props.tokenProps.image} />
+            <img src={props.tokenProps.image} alt="Token" />
             <p>{props.tokenProps.tokenName}</p>
           </div>
         </th>

@@ -19,6 +19,7 @@ const AssetList: FunctionComponent<Props> = ({ assets, onClick }) => {
       <iframe style={{
         width: "100%", height: 304, border: 0
       }}
+        title="Map"
         src={assets.map}
       />
       <div className="portfolio__asset-list__info__value__container">

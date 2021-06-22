@@ -15,33 +15,33 @@ interface Props {
   token: DepositTokenType[] | MintedTokenType[];
 }
 
-const tempDeposit: string[] = ["Assets", "Deposit Balance", "Deposit Rates", "Wallet Balance"]
-const tempMinted: string[] = ["Assets", "ELFI Balance", "Wallet Balance"]
-const tempCollateral: string[] = ["Assets", "Available Liquidity", "Borrow Rate", "Borrow Balance", "Wallet Balance"]
 
 const TokenListing: FunctionComponent<Props> = (props: Props) => {
   const [state, setState] = useState({
     selectColumn: 0,
     columnActivation: false,
-    TableArray: [""],
     isModalOpened: false,
     selectModal: ""
   })
+  const [array, setArray] = useState([""])
   const [deposit, setDeposit] = useState<DepositTokenType>()
   const [minted, setMinted] = useState<MintedTokenType>()
 
   useEffect(() => {
-    setState({
-      ...state,
-      TableArray: props.type === TableType.Deposit ?
+    const tempDeposit: string[] = ["Assets", "Deposit Balance", "Deposit Rates", "Wallet Balance"]
+    const tempMinted: string[] = ["Assets", "ELFI Balance", "Wallet Balance"]
+    const tempCollateral: string[] = ["Assets", "Available Liquidity", "Borrow Rate", "Borrow Balance", "Wallet Balance"]
+
+    setArray(
+      props.type === TableType.Deposit ?
         tempDeposit
         :
         props.type === TableType.Minted ?
           tempMinted
           :
           tempCollateral
-    })
-  }, [])
+    )
+  }, [props.type])
 
   const Deposit = React.memo(DepositModal)
   const Minted = React.memo(MintedModal)
@@ -71,7 +71,7 @@ const TokenListing: FunctionComponent<Props> = (props: Props) => {
       <table className="tokens__table">
         <thead className="tokens__table__header">
           <tr>
-            {state.TableArray.map((name, index) => {
+            {array.map((name, index) => {
               return (
                 <th>
                   <p className={`tokens__table__header__column${state.selectColumn === index + 1 && state.columnActivation ? "--selected" : ""}`}
