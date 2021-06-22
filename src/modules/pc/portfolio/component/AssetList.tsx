@@ -32,7 +32,7 @@ const AssetList: FunctionComponent<Props> = ({ assets, onClick }) => {
             대출금
           </p>
           <div>
-            <span className="bold">{assets.loan}</span> <span>{assets.method}</span>
+            <span className="bold">{assets.loan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</span> <span>{assets.method}</span>
           </div>
         </div>
         <div className="portfolio__asset-list__info__value__wrapper">

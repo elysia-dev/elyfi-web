@@ -15,6 +15,7 @@ import Investors from './modules/pc/dashboard/Investors';
 import DisableWalletPage from './modules/pc/dashboard/DisableWalletPage';
 
 import RepayDetail from './modules/pc/dashboard/borrowers/RepayDetail';
+import AssetDetail from './modules/pc/portfolio/AssetDetail';
 
 import { useWeb3React } from '@web3-react/core';
 import WalletContext from './contexts/WalletContext';
@@ -49,6 +50,9 @@ const AppNavigator: React.FC = () => {
           </RouteWithFooter>
           <RouteWithFooter path="/repay_detail">
             <RepayDetail />
+          </RouteWithFooter>
+          <RouteWithFooter path="/asset_detail">
+            <AssetDetail />
           </RouteWithFooter>
           <RouteWithFooter path="/">
             {DashboardHandler()}

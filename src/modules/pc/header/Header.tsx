@@ -1,6 +1,6 @@
 import '../css/style.scss';
 import Navigation from '../component/Navigation';
-import ServiceBackground from '../../../../shared/images/service-background.png'
+import ServiceBackground from '../../../shared/images/service-background.png'
 import { FunctionComponent } from 'react';
 
 interface Props {

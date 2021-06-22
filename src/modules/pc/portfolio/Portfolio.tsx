@@ -5,11 +5,12 @@ import PieChart from '../../../utiles/PieChart';
 import AssetList from './component/AssetList';
 import ServiceBackground from '../../../shared/images/service-background.png'
 import AssetContext from '../../../contexts/AssetContext';
+import { useHistory } from 'react-router-dom';
 
 const Portfolio = () => {
-  // To Do = 에셋 리스트 3개 이상이면 flex 분리하기
   const { assets, getABToken } = useContext(AssetContext);
   console.log(getABToken("0x123456789c"))
+  let history = useHistory();
 
   const Main = () => {
     return (
@@ -63,7 +64,10 @@ const Portfolio = () => {
                 <AssetList
                   assets={asset}
                   onClick={() => {
-                    console.log("dz")
+                    history.push({
+                      pathname: "asset_detail",
+                      state: asset
+                    })
                   }}
                 />
               )
