@@ -1,14 +1,17 @@
 import 'src/stylesheets/style.scss';
 import ServiceBackground from 'src/shared/images/service-background.png';
 import TokenContext from 'src/contexts/TokenContext';
+import { useWeb3React } from '@web3-react/core';
 import { useContext } from 'react';
-// import { useTranslation } from 'react-i18next';
 import TokenListing from './component/TokenListing';
 import TableType from 'src/enums/TableType';
+import DisableWalletPage from './DisableWalletPage';
 
 const Investors = () => {
-  // const { t } = useTranslation();
   const { depositToken, mintedToken } = useContext(TokenContext);
+  const { active } = useWeb3React();
+
+  if (!active) return <DisableWalletPage />
 
   return (
     <>
