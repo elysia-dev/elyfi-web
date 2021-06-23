@@ -127,35 +127,47 @@ const MarketDetail: React.FunctionComponent = () => {
           </div>
           <div className="market__detail__wrapper">
             <div className="market__detail__pie-chart__wrapper">
-              <div>
-                <p>
+              <div className="market__detail__pie-chart__data__wrapper--total">
+                <p className="bold">
                   Total Deposit
                 </p>
-                <p>
+                <p className="bold">
                   1,000 BUSD
                 </p>
               </div>
               <div>
-                <div>
-                  <div />
-                  <p>
-                    Total Borrow
-                  </p>
+                <div className="market__detail__pie-chart__data__wrapper">
+                  <div className="market__detail__pie-chart__data__block__wrapper" >
+                    <div className="market__detail__pie-chart__data__block" 
+                      style={{
+                        backgroundColor: "#00A7FF"
+                      }}
+                    />
+                    <p>
+                      Total Borrow
+                    </p>
+                  </div>
                   <p>
                     700 BUSD
                   </p>
                 </div>
-                <div>
-                  <div />
-                  <p>
-                    Available Liquidity
-                  </p>
+                <div className="market__detail__pie-chart__data__wrapper">
+                  <div className="market__detail__pie-chart__data__block__wrapper" >
+                    <div className="market__detail__pie-chart__data__block" 
+                      style={{
+                        backgroundColor: "#1C5E9A"
+                      }}
+                    />
+                    <p>
+                      Available Liquidity
+                    </p>
+                  </div>
                   <p>
                     300 BUSD
                   </p>
                 </div>
               </div>
-              <div>
+              <div className="market__detail__pie-chart">
                 <Circle 
                   progress={90}
                   style={{
@@ -163,7 +175,7 @@ const MarketDetail: React.FunctionComponent = () => {
                   }}
                 />
               </div>
-              <div>
+              <div className="market__detail__pie-chart__data">
                 <div>
                   <p>
                     Utilization rate

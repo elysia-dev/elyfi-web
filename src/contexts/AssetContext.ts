@@ -56,6 +56,6 @@ export const initialAssetContext = {
   getABToken: (abTokenId: string) => { return undefined }
 }
 
-const TokenContext = createContext<IAssetContext>(initialAssetContext);
+const AssetContext = createContext<IAssetContext>(initialAssetContext);
 
-export default TokenContext;
+export default AssetContext;

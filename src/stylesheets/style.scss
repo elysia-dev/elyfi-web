@@ -651,7 +651,66 @@ span {
         margin-bottom: 100px;
       }
       &__pie-chart {
+        margin: 0 auto;
+        width: 240px;
+        padding: 15px;
+        &__data {
+          border-top: 1px solid #F0F0F1;
+          border-bottom: 1px solid #F0F0F1;
+          padding: 20px 0;
+          > div {
+            display: flex;
+            justify-content: space-between;
+            > p {
+              margin: 10px 0;
+              font-size: 17px;
+              font-family: "Montserrat-bold";
+            }
+          }
+          &__block {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            &__wrapper {
+              display: flex;
+              justify-content: left;
+              gap: 10px;
+              align-items: center;
+              > p {
+                font-size: 13px;
+                color: #888888;
+                margin: 0;
+              }
+            }
+          }
+          &__wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 13px;
+            &:last-child {
+              margin-bottom: 20px;
+            }
+            > p {
+              font-size: 13px;
+              margin: 0;
+              color: #888888;
+            }
+            &--total {
+              display: flex;
+              justify-content: space-between;
+              padding-bottom: 15px;
+              border-bottom: 1px solid #F0F0F1;
+              > p {
+                font-size: 17px;
+                margin: 0;
+              }
+            }
+          }
+        }
         &__wrapper {
+          padding: 34px 29px;
+          box-sizing: border-box;
           width: 383px;
           height: 620px;
           background: #FFFFFF 0% 0% no-repeat padding-box;
