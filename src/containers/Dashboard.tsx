@@ -5,14 +5,14 @@ import { useQuery } from '@apollo/client';
 import { GetUser } from 'src/queries/__generated__/GetUser';
 import { GET_USER } from 'src/queries/userQueries';
 import ReserveData from 'src/core/data/reserves';
-import { BigNumber, constants } from 'ethers';
-import { useState } from 'react';
 import { useEffect } from 'react';
-import { getERC20 } from 'src/core/utils/getContracts';
 import { daiToUsd, toPercent } from 'src/utiles/formatters';
+import { useContext } from 'react';
+import BalanceContext from 'src/contexts/BalanceContext';
 
 const Dashboard: React.FunctionComponent = () => {
-  const { account, library } = useWeb3React();
+  const { account } = useWeb3React();
+  const { balance, loadBalance } = useContext(BalanceContext);
   const {
     loading,
     data: userConnection,
@@ -21,22 +21,13 @@ const Dashboard: React.FunctionComponent = () => {
     GET_USER,
     { variables: { id: account?.toLocaleLowerCase() } }
   )
-  const [userBalace, setUserBalance] = useState<BigNumber>(constants.Zero);
-
-  const loadUserAssetBalance = async (address: string) => {
-    const contract = getERC20(address, library);
-
-    if (!contract) return;
-
-    setUserBalance(await contract.balanceOf(account))
-  }
 
   useEffect(() => {
     if (!account || !userConnection?.user?.lTokenBalance[0].lToken.reserve.id) {
       return
     }
 
-    loadUserAssetBalance(userConnection.user?.lTokenBalance[0].lToken.reserve.id)
+    loadBalance(userConnection?.user?.lTokenBalance[0].lToken.reserve.id);
   }, [account, userConnection])
 
   if (loading) return (<div> Loading </div>)
@@ -68,9 +59,9 @@ const Dashboard: React.FunctionComponent = () => {
           <thead className="tokens__table__header">
             <tr>
               {
-                ["Assets", "Deposit Balance", "Deposit Rates", "Wallet Balance"].map((key) => {
+                ["Assets", "Deposit Balance", "Deposit Rates", "Wallet Balance"].map((key, index) => {
                   return (
-                    <th>
+                    <th key={index}>
                       <p className="tokens__table__header__column$">
                         {key}
                       </p>
@@ -113,7 +104,7 @@ const Dashboard: React.FunctionComponent = () => {
                       <p>
                         {
                           index === 0 ?
-                            daiToUsd(userBalace) : '-'
+                            daiToUsd(balance) : '-'
                         }
                       </p>
                     </th>

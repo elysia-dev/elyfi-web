@@ -7,6 +7,7 @@ import { Web3ReactProvider } from '@web3-react/core';
 import getLibrary from './core/utils/getLibrary';
 import AppNavigator from './AppNavigator';
 import AssetProvider from './providers/AssetProvider';
+import BalanceProvider from './providers/BalanceProvider';
 import {
   ApolloProvider,
   InMemoryCache,
@@ -24,9 +25,11 @@ const App: React.FC = () => {
       <LanguageProvider>
         <TokenProvider>
           <Web3ReactProvider getLibrary={getLibrary}>
-            <AssetProvider>
-              <AppNavigator />
-            </AssetProvider>
+            <BalanceProvider>
+              <AssetProvider>
+                <AppNavigator />
+              </AssetProvider>
+            </BalanceProvider>
           </Web3ReactProvider>
         </TokenProvider>
       </LanguageProvider>
