@@ -3,9 +3,10 @@ import ServiceBackground from 'src/shared/images/service-background.png';
 import { useQuery } from '@apollo/client';
 import { GetAllReserves } from 'src/queries/__generated__/GetAllReserves';
 import { GET_ALL_RESERVES } from 'src/queries/reserveQueries';
-import TokenImage from 'src/shared/images/tokens/bnb.png';
 import { BigNumber, constants, utils } from 'ethers';
 import { useHistory } from 'react-router-dom';
+import ReserveData from 'src/core/data/reserves';
+import { daiToUsd, toPercent } from 'src/utiles/formatters';
 
 const usdFormatter = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' })
 
@@ -55,33 +56,36 @@ const Market: React.FunctionComponent = () => {
           </thead>
           <tbody className="tokens__table-body">
             {
-              reserveConnection?.reserves.map((reserve, index) => {
+              ReserveData.map((reserve, index) => {
                 return (
-                  <tr key={index} onClick={() => { history.push(`markets/${reserve.id}`) }}>
+                  <tr
+                    key={index}
+                    onClick={() => { index === 0 && history.push(`markets/${reserveConnection?.reserves[0].id}`) }}
+                  >
                     <th>
-                      <div style={{ justifyContent: 'left', gap: 10 }}>
-                        <img src={TokenImage} alt='token' />
-                        <p>DAI</p>
+                      <div>
+                        <img src={reserve.image} alt='token' style={{ width: 40 }} />
+                        <p>{reserve.name}</p>
                       </div>
                     </th>
                     <th>
                       <p>
-                        {usdFormatter.format(parseInt(utils.formatEther(reserve.toatlDeposit)))}
+                        {index === 0 ? daiToUsd(reserveConnection?.reserves[0].toatlDeposit) : '-'}
                       </p>
                     </th>
                     <th>
                       <p>
-                        {utils.formatUnits(reserve.depositAPY, 25) + "%"}
+                        {index === 0 ? toPercent(reserveConnection?.reserves[0].depositAPY) : '-'}
                       </p>
                     </th>
                     <th>
                       <p>
-                        {usdFormatter.format(parseInt(utils.formatEther(reserve.totalBorrow)))}
+                        {index === 0 ? daiToUsd(reserveConnection?.reserves[0].totalBorrow) : '-'}
                       </p>
                     </th>
                     <th>
                       <p>
-                        {utils.formatUnits(reserve.borrowAPY, 25) + "%"}
+                        {index === 0 ? toPercent(reserveConnection?.reserves[0].borrowAPY) : '-'}
                       </p>
                     </th>
                   </tr>
