@@ -3,14 +3,23 @@ import ServiceBackground from 'src/shared/images/service-background.png';
 import { useQuery } from '@apollo/client';
 import { GetAllReserves } from 'src/queries/__generated__/GetAllReserves';
 import { GET_ALL_RESERVES } from 'src/queries/reserveQueries';
-import TokenImage from 'src/shared/images/tokens/bnb.png';
 import { BigNumber, constants, utils } from 'ethers';
 import { useHistory } from 'react-router-dom';
+import ReserveData from 'src/core/data/reserves';
+import { daiToUsd, toPercent } from 'src/utiles/formatters';
+import DepositOrWithdrawModal from 'src/components/DepositOrWithdrawModal';
+import { useState } from 'react';
+import { useWeb3React } from '@web3-react/core';
+import { useEffect } from 'react';
+import { useContext } from 'react';
+import BalanceContext from 'src/contexts/BalanceContext';
 
 const usdFormatter = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' })
 
 const Market: React.FunctionComponent = () => {
   const history = useHistory();
+  const { account } = useWeb3React();
+  const { balance, loadBalance } = useContext(BalanceContext);
   const {
     loading: isReservesLoading,
     data: reserveConnection,
@@ -19,11 +28,32 @@ const Market: React.FunctionComponent = () => {
     GET_ALL_RESERVES
   )
 
+  useEffect(() => {
+    if (!account || !reserveConnection?.reserves[0].id) {
+      return
+    }
+
+    loadBalance(reserveConnection?.reserves[0].id);
+  }, [account, reserveConnection])
+
+  const [modalVisiblity, setModalVisivility] = useState<boolean>(false);
+
   if (isReservesLoading) return (<div> Loading </div>)
   if (error) return (<div> Error </div>)
 
   return (
     <>
+      {
+        reserveConnection?.reserves[0] &&
+        <DepositOrWithdrawModal
+          reserve={reserveConnection?.reserves[0]}
+          tokenName={ReserveData[0].name}
+          tokenImage={ReserveData[0].image}
+          visible={modalVisiblity}
+          onClose={() => setModalVisivility(false)}
+          balance={balance}
+        />
+      }
       <section className="dashboard main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
         <div className="main__title-wrapper">
           <h4 className="main__title-text">Total Market Size</h4>
@@ -46,7 +76,7 @@ const Market: React.FunctionComponent = () => {
             <tr>
               {["Assets", "Total Deposits", "Deposit APY", "Total Loans", "Loan APY"].map((name, index) => {
                 return (
-                  <th>
+                  <th key={index}>
                     <p className={`tokens__table__header__column`}>{name}</p>
                   </th>
                 )
@@ -55,35 +85,75 @@ const Market: React.FunctionComponent = () => {
           </thead>
           <tbody className="tokens__table-body">
             {
-              reserveConnection?.reserves.map((reserve, index) => {
+              ReserveData.map((reserve, index) => {
+                if (index === 0) {
+                  return (
+                    <tr
+                      key={index}
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => { index === 0 && history.push(`markets/${reserveConnection?.reserves[0].id}`) }}
+                    >
+                      <th>
+                        <div>
+                          <img src={reserve.image} alt='token' style={{ width: 40 }} />
+                          <p>{reserve.name}</p>
+                        </div>
+                      </th>
+                      <th>
+                        <p>
+                          {daiToUsd(reserveConnection?.reserves[0].toatlDeposit)}
+                        </p>
+                      </th>
+                      <th>
+                        <p>
+                          {toPercent(reserveConnection?.reserves[0].depositAPY)}
+                        </p>
+                      </th>
+                      <th>
+                        <p>
+                          {daiToUsd(reserveConnection?.reserves[0].totalBorrow)}
+                        </p>
+                      </th>
+                      <th>
+                        <p>
+                          {toPercent(reserveConnection?.reserves[0].borrowAPY)}
+                        </p>
+                      </th>
+                      {
+                        account &&
+                        <th>
+                          <div onClick={(e) => { e.stopPropagation(); setModalVisivility(true) }}>
+                            {"Deposit | Withdraw"}
+                          </div>
+                        </th>
+                      }
+                    </tr>
+                  )
+                }
                 return (
-                  <tr key={index} onClick={() => { history.push(`markets/${reserve.id}`) }}>
+                  <tr
+                    key={index}
+                  >
                     <th>
-                      <div style={{ justifyContent: 'left', gap: 10 }}>
-                        <img src={TokenImage} alt='token' />
-                        <p>DAI</p>
+                      <div>
+                        <img src={reserve.image} alt='token' style={{ width: 40 }} />
+                        <p>{reserve.name}</p>
                       </div>
                     </th>
-                    <th>
-                      <p>
-                        {usdFormatter.format(parseInt(utils.formatEther(reserve.toatlDeposit)))}
-                      </p>
-                    </th>
-                    <th>
-                      <p>
-                        {utils.formatUnits(reserve.depositAPY, 25) + "%"}
-                      </p>
-                    </th>
-                    <th>
-                      <p>
-                        {usdFormatter.format(parseInt(utils.formatEther(reserve.totalBorrow)))}
-                      </p>
-                    </th>
-                    <th>
-                      <p>
-                        {utils.formatUnits(reserve.borrowAPY, 25) + "%"}
-                      </p>
-                    </th>
+                    <th><p>-</p></th>
+                    <th><p>-</p></th>
+                    <th><p>-</p></th>
+                    <th><p>-</p></th>
+                    {
+                      account &&
+                      <th>
+                        <div
+                          style={{ color: 'grey' }}
+                        >
+                          {"Deposit"}
+                        </div>
+                      </th>
+                    }
                   </tr>
                 )
               })

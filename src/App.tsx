@@ -2,13 +2,12 @@ import React from 'react';
 import "./i18n";
 
 import TokenProvider from './providers/TokenProvider';
-import WalletProvider from './providers/WalletProvider';
 import LanguageProvider from './providers/LanguageProvider';
 import { Web3ReactProvider } from '@web3-react/core';
 import getLibrary from './core/utils/getLibrary';
-import PageProvider from './providers/PageProvider';
 import AppNavigator from './AppNavigator';
 import AssetProvider from './providers/AssetProvider';
+import BalanceProvider from './providers/BalanceProvider';
 import {
   ApolloProvider,
   InMemoryCache,
@@ -16,7 +15,7 @@ import {
 } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: 'http://127.0.0.1:8000/subgraphs/name/elysia-dev/elyfi-subgraph',
+  uri: 'https://api.thegraph.com/subgraphs/name/modonguk/elyfikovan',
   cache: new InMemoryCache()
 });
 
@@ -26,13 +25,11 @@ const App: React.FC = () => {
       <LanguageProvider>
         <TokenProvider>
           <Web3ReactProvider getLibrary={getLibrary}>
-            <WalletProvider>
+            <BalanceProvider>
               <AssetProvider>
-                <PageProvider>
-                  <AppNavigator />
-                </PageProvider>
+                <AppNavigator />
               </AssetProvider>
-            </WalletProvider>
+            </BalanceProvider>
           </Web3ReactProvider>
         </TokenProvider>
       </LanguageProvider>

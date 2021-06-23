@@ -2,5 +2,6 @@
   "search.exclude": {
     "**/.node_modules": true,
     "**/build": true
-  }
+  },
+  "editor.tabSize":2
 }

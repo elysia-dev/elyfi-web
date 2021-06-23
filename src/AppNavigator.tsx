@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Switch,
   BrowserRouter as Router,
@@ -8,46 +8,25 @@ import {
 import Portfolio from './modules/pc/portfolio/Portfolio';
 import Market from 'src/containers/Market';
 
-import UserType from './enums/UserType';
-import Borrowers from './modules/pc/dashboard/borrowers/Repay';
-import Investors from './modules/pc/dashboard/Investors';
-import DisableWalletPage from './modules/pc/dashboard/DisableWalletPage';
-
 import RepayDetail from './modules/pc/dashboard/borrowers/RepayDetail';
 import AssetDetail from './modules/pc/portfolio/AssetDetail';
 
-import { useWeb3React } from '@web3-react/core';
-import WalletContext from './contexts/WalletContext';
 import Footer from './modules/pc/footer/Footer';
 import Navigation from './modules/pc/component/Navigation';
 import MarketDetail from './containers/MarketDetails';
+import Dashboard from './containers/Dashboard';
+import { useWeb3React } from '@web3-react/core';
+import DisableWalletPage from './components/DisableWalletPage';
 
 const AppNavigator: React.FC = () => {
-  const { userType } = useContext(WalletContext);
   const { active } = useWeb3React();
-  const DashboardHandler = () => {
-    return (
-      !active ?
-        <DisableWalletPage />
-        :
-        userType === UserType.Borrowers ?
-          <Borrowers />
-          :
-          userType === UserType.Collateral ?
-            <Investors />
-            :
-            <Investors />
-    )
-  }
 
   return (
     <div className="elysia">
       <Router>
         <Navigation />
         <Switch>
-          <Route exact path="/dashboard">
-            {DashboardHandler()}
-          </Route>
+          <Route exact path="/dashboard" component={active ? Dashboard : DisableWalletPage} />
           <Route exact path="/portfolio" component={Portfolio} />
           <Route exact path="/asset_detail" component={AssetDetail} />
           <Route exact path="/repay_detail/:value" component={RepayDetail} />
