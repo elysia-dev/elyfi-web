@@ -7,6 +7,7 @@ import Assets from 'src/types/Assets';
 import AssetContext from 'src/contexts/AssetContext';
 import ABToken from 'src/types/ABToken';
 import returnTimpstamp from 'src/utiles/retrunTimestamp';
+import { StaticGoogleMap, Marker, Path } from 'react-static-google-map';
 
 
 const AssetDetail: FunctionComponent = () => {
@@ -288,6 +289,22 @@ const AssetDetail: FunctionComponent = () => {
           )}
         </table>
       </div>
+      {/* To do */}
+      <StaticGoogleMap size="600x600" apiKey="AIzaSyDoZyTjSHKbfP217yeEvWZhuH8p9DGC9m8">
+        <Marker
+          location={{ lat: 40.737102, lng: -73.990318 }}
+          color="blue"
+          label="P"
+        />
+        <Path
+          points={[
+            '40.737102,-73.990318',
+            '40.749825,-73.987963',
+            '40.752946,-73.987384',
+            '40.755823,-73.986397',
+          ]}
+        />
+      </StaticGoogleMap>
     </section>
   );
 }
