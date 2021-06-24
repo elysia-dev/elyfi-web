@@ -14,11 +14,12 @@ import ReservesContext from 'src/contexts/ReservesContext';
 import { getERC20 } from 'src/core/utils/getContracts';
 import { BigNumber, constants } from 'ethers';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
   const location = useLocation();
+  const history = useHistory();
   const { reserves } = useContext(ReservesContext);
   const reserveId = new URLSearchParams(location.search).get("reserveId")
   const [reserve, setReserve] = useState<GetAllReserves_reserves | undefined>(
@@ -63,7 +64,18 @@ const Dashboard: React.FunctionComponent = () => {
           tokenName={ReserveData[0].name}
           tokenImage={ReserveData[0].image}
           visible={!!reserve}
-          onClose={() => setReserve(undefined)}
+          onClose={() => {
+            const queryParams = new URLSearchParams(location.search)
+
+            if (queryParams.has('reserveId')) {
+              queryParams.delete('reserveId')
+              history.replace({
+                search: queryParams.toString(),
+              })
+            }
+
+            setReserve(undefined)
+          }}
           balance={balance}
           depositBalance={BigNumber.from(userConnection?.user?.lTokenBalance[0]?.balance || '0')}
         />

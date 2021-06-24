@@ -1,4 +1,5 @@
 import { BigNumber, utils } from 'ethers';
+import { useEffect } from 'react';
 import { useState } from 'react'
 
 const DepositBody: React.FunctionComponent<{
@@ -9,27 +10,26 @@ const DepositBody: React.FunctionComponent<{
 	isApproved: boolean,
 	txWating: boolean,
 	increaseAllownace: () => void,
-}> = ({ tokenName, depositAPY, miningAPR, balance, isApproved, txWating, increaseAllownace }) => {
-	const [deposit, setDeposit] = useState<number>(0);
+	deposit: (amount: BigNumber) => void,
+}> = ({ tokenName, depositAPY, miningAPR, balance, isApproved, txWating, increaseAllownace, deposit }) => {
+	const [amount, setAmount] = useState<string>('0');
 
-	const handler = (e: any) => {
-		const { value } = e.target;
-		(value < 0) ? setDeposit(0) : setDeposit(value)
-	}
+	const amountGtBalance = utils.parseEther(amount).gt(balance);
+	const amountLteZero = parseInt(amount) <= 0;
 
 	return (
 		<div className="modal__deposit">
 			<div className="modal__deposit__value-wrapper">
-				<p className="modal__deposit__maximum bold">
+				<p className="modal__deposit__maximum bold" onClick={() => { setAmount(utils.formatEther(balance)) }}>
 					MAX
 				</p>
 				<p className="modal__deposit__value bold">
 					<input
 						type="number"
 						className="modal__text-input"
-						placeholder="0"
+						value={amount}
 						onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => { ["-", "+", "e"].includes(e.key) && e.preventDefault() }}
-						onChange={(e: React.ChangeEvent<HTMLDivElement>) => handler(e)}
+						onChange={({ target }) => !txWating && setAmount(target.value)}
 					/>
 				</p>
 			</div>
@@ -68,9 +68,15 @@ const DepositBody: React.FunctionComponent<{
 			{
 				txWating ? <div className="modal__button">Wating...</div>
 					: isApproved ?
-						<div className={`modal__button${deposit > 0 ? "" : "--disable"}`} onClick={() => console.log(deposit)}>
+						<div
+							className={`modal__button${amountLteZero || amountGtBalance ? "--disable" : ""}`}
+							onClick={() => !amountLteZero && !amountGtBalance && deposit(utils.parseEther(amount))}
+						>
 							<p>
-								{deposit > 0 ? "Deposit" : "NO FUNDS AVAILABLE"}
+								{
+									amountLteZero ? "Enter an amount" :
+										amountGtBalance ? `Insufficient ${tokenName} balance` : "Deposit"
+								}
 							</p>
 						</div>
 						:

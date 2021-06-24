@@ -1,4 +1,5 @@
 import ERC20Abi from 'src/core/abis/ERC20.json';
+import MoneyPoolAbi from 'src/core/abis/MoneyPool.json';
 import getProviderOrSigner from './getSignerOrProvider';
 import { Contract, constants, utils, providers } from 'ethers';
 
@@ -22,6 +23,14 @@ export function getERC20(address: string, library: providers.Web3Provider): Cont
   return getContract(
     address,
     ERC20Abi,
+    library
+  )
+}
+
+export function getMoneyPool(address: string, library: providers.Web3Provider): Contract | null {
+  return getContract(
+    address,
+    MoneyPoolAbi,
     library
   )
 }

@@ -3,7 +3,7 @@ import { BigNumber, constants, providers } from 'ethers';
 import { useEffect } from 'react';
 import { FunctionComponent, useState } from 'react'
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
-import { getAllowance, increaseAllownace } from 'src/utiles/contractHelpers';
+import { deposit, getAllowance, increaseAllownace } from 'src/utiles/contractHelpers';
 import { toPercent } from 'src/utiles/formatters';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
@@ -41,6 +41,22 @@ const DepositOrWithdrawModal: FunctionComponent<{
       await (library as providers.Web3Provider).waitForTransaction(txHash);
     } finally {
       setWating(false);
+    }
+  }
+
+  const requestDeposit = async (amount: BigNumber) => {
+    if (!account) return;
+
+    const txHash = await deposit(account, reserve.id, amount, library);
+
+    if (!txHash) return;
+
+    setWating(true);
+    try {
+      await (library as providers.Web3Provider).waitForTransaction(txHash);
+    } finally {
+      setWating(false);
+      onClose();
     }
   }
 
@@ -88,6 +104,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
               isApproved={allownace.gt(balance)}
               txWating={txWating}
               increaseAllownace={requestAllowance}
+              deposit={requestDeposit}
             />
           ) : (
             <WithdrawBody
