@@ -8,4 +8,4 @@ export const daiToUsd = (value: any) => new Intl.NumberFormat('en', { style: 'cu
   )
 );
 
-export const toPercent = (value: any) => `${utils.formatUnits(value, 25)}%`
+export const toPercent = (value: any) => `${parseFloat(utils.formatUnits(value, 25)).toFixed(2)}%`
