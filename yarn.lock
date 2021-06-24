@@ -1654,7 +1654,7 @@
   dependencies:
     "@ethersproject/bignumber" "^5.3.0"
 
-"@ethersproject/contracts@5.3.0", "@ethersproject/contracts@^5.2.0":
+"@ethersproject/contracts@5.3.0":
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/contracts/-/contracts-5.3.0.tgz#ad699a3abaae30bfb6422cf31813a663b2d4099c"
   integrity sha512-eDyQ8ltykvyQqnGZxb/c1e0OnEtzqXhNNC4BX8nhYBCaoBrYYuK/1fLmyEvc5+XUMoxNhwpYkoSSwvPLci7/Zg==
@@ -1756,7 +1756,7 @@
   dependencies:
     "@ethersproject/logger" "^5.3.0"
 
-"@ethersproject/providers@5.3.0", "@ethersproject/providers@^5.2.0":
+"@ethersproject/providers@5.3.0":
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/providers/-/providers-5.3.0.tgz#bccb49f1073a7d56e24f49abb14bb281c9b08636"
   integrity sha512-HtL+DEbzPcRyfrkrMay7Rk/4he+NbUpzI/wHXP4Cqtra82nQOnqqCgTQc4HbdDrl75WVxG/JRMFhyneIPIMZaA==
