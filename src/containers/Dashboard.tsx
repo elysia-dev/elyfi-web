@@ -86,7 +86,7 @@ const Dashboard: React.FunctionComponent = () => {
                       <p>
                         {
                           index === 0 ?
-                            daiToUsd(userConnection?.user?.lTokenBalance[0]?.balance) :
+                            daiToUsd(userConnection?.user?.lTokenBalance[0]?.balance || '0') :
                             '-'
                         }
                       </p>
@@ -95,7 +95,7 @@ const Dashboard: React.FunctionComponent = () => {
                       <p>
                         {
                           index === 0 ?
-                            toPercent(userConnection?.user?.lTokenBalance[0]?.lToken.reserve.depositAPY) :
+                            toPercent(userConnection?.user?.lTokenBalance[0]?.lToken.reserve.depositAPY || '0') :
                             '-'
                         }
                       </p>
@@ -104,7 +104,7 @@ const Dashboard: React.FunctionComponent = () => {
                       <p>
                         {
                           index === 0 ?
-                            daiToUsd(balance) : '-'
+                            daiToUsd(balance || '0') : '-'
                         }
                       </p>
                     </th>
