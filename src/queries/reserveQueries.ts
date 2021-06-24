@@ -9,7 +9,7 @@ export const GET_RESERVE = gql`
       depositAPY,
       totalBorrow,
       toatlDeposit,
-      reserveHistory {
+      reserveHistory(orderBy: timestamp) {
         id,
         timestamp,
         borrowAPY,

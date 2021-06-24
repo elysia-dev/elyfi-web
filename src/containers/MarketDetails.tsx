@@ -12,10 +12,15 @@ import { useState } from 'react';
 import BNB from 'src/shared/images/tokens/bnb@2x.png'
 import { Circle } from 'src/utiles/Circle';
 import { daiToUsd, toPercent } from 'src/utiles/formatters';
-import { BigNumber, utils } from 'ethers';
+import { BigNumber, constants, utils } from 'ethers';
+import { Chart } from "react-google-charts";
+import numberFormat from 'src/utiles/numberFormat';
+
+import moment from 'moment';
 
 const MarketDetail: React.FunctionComponent = () => {
   const [mouseHover, setMouseHover] = useState(false);
+  const [graphConverter, setGraphConverter] = useState(false);
   const { id } = useParams<{ id: string }>();
   const {
     loading,
@@ -27,7 +32,6 @@ const MarketDetail: React.FunctionComponent = () => {
       variables: { id },
     }
   )
-
   // FIXME
   const miningAPR = utils.parseUnits('10', 25);
 
@@ -35,6 +39,48 @@ const MarketDetail: React.FunctionComponent = () => {
   if (error) return (<div> Error </div>)
 
   const utilization = BigNumber.from(data?.reserve?.totalBorrow || '0').div(data?.reserve?.toatlDeposit).toNumber();
+
+  const DivProvider = (text: "Total Rate" | "Total Deposit", value: string) => {
+    return `
+      <div class="google-div-jailbreak" style="left: ${text === "Total Rate" ? -74 : -86}px" >
+        <p class="google-div-jailbreak__text">
+          ${text}
+        </p>
+        <p class="google-div-jailbreak__value bold">
+          ${text === "Total Rate" ?
+            (value + "%")
+            :
+            (value)
+          }
+        </p>
+      </div>
+    `
+  }
+
+  const avgDeposit = data?.reserve?.reserveHistory.reduce((res, cur) => 
+    res < parseInt(utils.formatEther(cur.toatlDeposit)) ? parseInt(utils.formatEther(cur.toatlDeposit)) : res
+  , 0) || 0
+
+  const avgBorrow = data?.reserve?.reserveHistory.reduce((res, cur) => 
+    res < parseInt(utils.formatEther(cur.totalBorrow)) ? parseInt(utils.formatEther(cur.totalBorrow)) : res
+  , 0)  || 0
+
+  const test = (data?.reserve?.reserveHistory.map((reserve, _x) => {
+    const getTimestamp = moment(reserve.timestamp * 1000);
+
+    const apy = utils.formatUnits(BigNumber.from(!graphConverter ? reserve.depositAPY: reserve.borrowAPY), 25);
+    const base = Math.round(!graphConverter ? avgDeposit : avgBorrow);
+
+    const rate = (parseInt(apy)/100) * base + base * 1.2;
+
+    return [
+      getTimestamp.format("MMMM d"),
+      parseInt(utils.formatEther(!graphConverter ? reserve.toatlDeposit : reserve.totalBorrow)), 
+      DivProvider(`Total Deposit`, daiToUsd(!graphConverter ? reserve.toatlDeposit : reserve.totalBorrow)), 
+      rate,
+      DivProvider(`Total Rate`, (utils.formatUnits(!graphConverter ? reserve.depositAPY : reserve.borrowAPY, 25)).toString())
+    ]
+  }) || [])
 
   return (
     <>
@@ -184,20 +230,75 @@ const MarketDetail: React.FunctionComponent = () => {
             </div>
           </div>
           <div className="market__detail__graph__wrapper">
-            <div>
-              <div>
-                <p>
+            <div className="market__detail__graph__converter__wrapper">
+              <div 
+                className={`market__detail__graph__converter${graphConverter ? "--disable" : ""}`}
+                onClick={() => setGraphConverter(false)} 
+              >
+                <p className="bold">
                   Deposit
                 </p>
               </div>
-              <div>
-                <p>
+              <div 
+                className={`market__detail__graph__converter${!graphConverter ? "--disable" : ""}`}
+                onClick={() => setGraphConverter(true)} 
+              >
+                <p className="bold">
                   Borrow
                 </p>
               </div>
             </div>
-            <div>
-              으악
+            <div className="market__detail__graph">
+              <Chart
+                width={'700px'}
+                height={'500px'}
+                chartType="ComboChart"
+                loader={<div>Loading Chart</div>}
+                data={[
+                  [
+                    'Month',
+                    'Deposit',
+                    {role: 'tooltip', p : { html: true }},
+                    'k',
+                    {role: 'tooltip', p : { html: true }}
+                  ],
+                  ...test,
+                  //["123",123, "div",123,123]
+                ]}
+                options={{
+                  chartArea:{left:0,top:100,width:"100%",height:"400px"},
+                  backgroundColor: "transparent",
+                  tooltip: {
+                    textStyle: {
+                      color: '#FF0000'
+                    }, 
+                    showColorCode: true, 
+                    isHtml: true,
+                    ignoreBounds: true
+                  },
+                  seriesType: 'bars',
+                  bar: {
+                    groupWidth: 30
+                  },
+                  vAxis: {
+                    gridlines: {
+                      count: 0
+                    },
+                    textPosition: 'none'
+                  },
+                  curveType: "function",
+                  legend: {position: 'none'},
+                  series: { 
+                    0: {
+                      color: "#E6E6E6",
+                    },
+                    1: { 
+                      type: 'line',
+                      color: "#1C5E9A"
+                    }
+                  },
+                }}
+              />
             </div>
           </div>
         </div>
