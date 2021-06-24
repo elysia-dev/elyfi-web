@@ -1,15 +1,15 @@
 import 'src/stylesheets/style.scss';
-import ServiceBackground from 'src/shared/images/service-background.png';
+import ServiceBackground from 'src/assets/images/service-background.png';
 import { useQuery } from '@apollo/client';
 import {
   GetReserve,
 } from 'src/queries/__generated__/GetReserve';
 import { GET_RESERVE } from 'src/queries/reserveQueries';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useState } from 'react';
+import DaiImage from 'src/assets/images/dai.png';
 
 /* temp */
-import BNB from 'src/shared/images/tokens/bnb@2x.png'
 import { Circle } from 'src/utiles/Circle';
 import { daiToUsd, toPercent } from 'src/utiles/formatters';
 import { BigNumber, constants, utils } from 'ethers';
@@ -19,6 +19,7 @@ import numberFormat from 'src/utiles/numberFormat';
 import moment from 'moment';
 
 const MarketDetail: React.FunctionComponent = () => {
+  const history = useHistory();
   const [mouseHover, setMouseHover] = useState(false);
   const [graphConverter, setGraphConverter] = useState(false);
   const { id } = useParams<{ id: string }>();
@@ -36,7 +37,7 @@ const MarketDetail: React.FunctionComponent = () => {
   const miningAPR = utils.parseUnits('10', 25);
 
   if (loading) return (<div> Loading </div>)
-  if (error) return (<div> Error </div>)
+  if (error || !data?.reserve) return (<div> Error </div>)
 
   const utilization = BigNumber.from(data?.reserve?.totalBorrow || '0').div(data?.reserve?.toatlDeposit).toNumber();
 
@@ -88,7 +89,7 @@ const MarketDetail: React.FunctionComponent = () => {
       <div className="market__detail">
         <div className="market__detail__title-token">
           <div className="market__detail__title-token__token-wrapper">
-            <img src={BNB} className="market__detail__title-token__token-image" alt='token' />
+            <img src={DaiImage} className="market__detail__title-token__token-image" alt='token' />
             <p className="market__detail__title-token__token-type bold">DAI</p>
           </div>
           <div className="market__detail__title-token__data-container">
@@ -302,6 +303,9 @@ const MarketDetail: React.FunctionComponent = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div onClick={() => { history.push(`/dashboard?reserveId=${id}`) }}>
+        Deposit | Withdraw
       </div>
     </>
   );

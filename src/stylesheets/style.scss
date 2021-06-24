@@ -1,11 +1,10 @@
 @font-face {
   font-family: "Montserrat";
-  src: url("../shared/fonts/montserrat/Montserrat-Regular.ttf")
-    format("truetype");
+  src: url("../assets/fonts/Montserrat-Regular.ttf") format("truetype");
 }
 @font-face {
   font-family: "Montserrat-bold";
-  src: url("../shared/fonts/montserrat/Montserrat-Bold.ttf") format("truetype");
+  src: url("../assets/fonts/Montserrat-Bold.ttf") format("truetype");
 }
 
 h1,
@@ -523,7 +522,7 @@ span {
   .market {
     &__detail {
       &__title-token {
-        $height : 120px;
+        $height: 120px;
         $width: 1190px;
 
         position: relative;
@@ -566,7 +565,7 @@ span {
             align-items: center;
             gap: 28px;
             margin-left: 29px;
-            flex: 1
+            flex: 1;
           }
           &-type {
             font-size: 25px;
@@ -603,7 +602,7 @@ span {
             align-items: center;
             > p {
               margin: 0;
-               &:first-child {
+              &:first-child {
                 color: #888888;
                 font-size: 15px;
               }
@@ -611,7 +610,7 @@ span {
             &__icon {
               font-size: 12px;
               line-height: 13px;
-              border: 1px solid #4C4D72;
+              border: 1px solid #4c4d72;
               width: 12px;
               height: 12px;
               text-align: center;
@@ -655,8 +654,8 @@ span {
         width: 240px;
         padding: 15px;
         &__data {
-          border-top: 1px solid #F0F0F1;
-          border-bottom: 1px solid #F0F0F1;
+          border-top: 1px solid #f0f0f1;
+          border-bottom: 1px solid #f0f0f1;
           padding: 20px 0;
           > div {
             display: flex;
@@ -700,7 +699,7 @@ span {
               display: flex;
               justify-content: space-between;
               padding-bottom: 15px;
-              border-bottom: 1px solid #F0F0F1;
+              border-bottom: 1px solid #f0f0f1;
               > p {
                 font-size: 17px;
                 margin: 0;
@@ -713,7 +712,7 @@ span {
           box-sizing: border-box;
           width: 383px;
           height: 620px;
-          background: #FFFFFF 0% 0% no-repeat padding-box;
+          background: #ffffff 0% 0% no-repeat padding-box;
           box-shadow: 0px 0px 6px #00000029;
           border-radius: 5px;
         }
@@ -749,7 +748,7 @@ span {
         }
         &__wrapper {
           width: 776px;
-          background: #FFFFFF 0% 0% no-repeat padding-box;
+          background: #ffffff 0% 0% no-repeat padding-box;
           box-shadow: 0px 0px 6px #00000029;
           border-radius: 5px;
           height: 620px;
@@ -1106,22 +1105,23 @@ span {
         border-radius: 6px;
         border-spacing: 0px;
         border-collapse: separate;
-        border: 1px solid #B7B7B7;
+        border: 1px solid #b7b7b7;
         margin-bottom: 40px;
         table-layout: fixed;
         > tr > td {
-          border-left: 1px solid #B7B7B7;
-          border-top: 1px solid #B7B7B7;
+          border-left: 1px solid #b7b7b7;
+          border-top: 1px solid #b7b7b7;
         }
         > tr:first-child {
           > td {
             border-top: 0px;
-          }:first-child {
+          }
+          :first-child {
             border-radius: 5px 0 0 0;
           }
         }
         &__title {
-          background-color: #41425C;
+          background-color: #41425c;
           width: 263px;
           border-left: 0px !important;
           box-sizing: border-box;
@@ -1129,7 +1129,7 @@ span {
             color: #ffffff;
           }
           &--last {
-            background-color: #41425C;
+            background-color: #41425c;
             width: 263px;
             box-sizing: border-box;
             border-left: 0px !important;

@@ -1,30 +1,36 @@
-import { Contract } from '@ethersproject/contracts';
-import { AddressZero } from '@ethersproject/constants';
-import { getAddress } from '@ethersproject/address';
 import ERC20Abi from 'src/core/abis/ERC20.json';
+import MoneyPoolAbi from 'src/core/abis/MoneyPool.json';
 import getProviderOrSigner from './getSignerOrProvider';
-import { Web3Provider } from '@ethersproject/providers';
+import { Contract, constants, utils, providers } from 'ethers';
 
 export function isAddress(value: any): string | false {
   try {
-    return getAddress(value);
+    return utils.getAddress(value);
   } catch {
     return false;
   }
 }
 
-function getContract(address: string, ABI: any, library: Web3Provider): Contract {
-  if (!isAddress(address) || address === AddressZero) {
+function getContract(address: string, ABI: any, library: providers.Web3Provider): Contract {
+  if (!isAddress(address) || address === constants.AddressZero) {
     throw Error(`Invalid 'address' parameter '${address}'.`);
   }
 
   return new Contract(address, ABI, getProviderOrSigner(library) as any);
 }
 
-export function getERC20(address: string, library: Web3Provider): Contract | null {
+export function getERC20(address: string, library: providers.Web3Provider): Contract | null {
   return getContract(
     address,
     ERC20Abi,
+    library
+  )
+}
+
+export function getMoneyPool(address: string, library: providers.Web3Provider): Contract | null {
+  return getContract(
+    address,
+    MoneyPoolAbi,
     library
   )
 }

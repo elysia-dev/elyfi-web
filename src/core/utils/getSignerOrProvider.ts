@@ -1,6 +1,6 @@
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
+import { providers } from 'ethers';
 
-function getProviderOrSigner(library: Web3Provider, account?: string): Web3Provider | JsonRpcSigner {
+function getProviderOrSigner(library: providers.Web3Provider, account?: string): providers.Web3Provider | providers.JsonRpcSigner {
   return account ? library.getSigner(account).connectUnchecked() : library
 }
 

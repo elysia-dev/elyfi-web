@@ -5,14 +5,13 @@ import {
   Route,
 } from "react-router-dom";
 
-import Portfolio from './modules/pc/portfolio/Portfolio';
+import Portfolio from './containers/Portfolio';
 import Market from 'src/containers/Market';
 
-import RepayDetail from './modules/pc/dashboard/borrowers/RepayDetail';
-import AssetDetail from './modules/pc/portfolio/AssetDetail';
+import AssetDetail from './containers/AssetDetail';
 
-import Footer from './modules/pc/footer/Footer';
-import Navigation from './modules/pc/component/Navigation';
+import Footer from './components/Footer';
+import Navigation from './components/Navigation';
 import MarketDetail from './containers/MarketDetails';
 import Dashboard from './containers/Dashboard';
 import { useWeb3React } from '@web3-react/core';
@@ -29,7 +28,6 @@ const AppNavigator: React.FC = () => {
           <Route exact path="/dashboard" component={active ? Dashboard : DisableWalletPage} />
           <Route exact path="/portfolio" component={Portfolio} />
           <Route exact path="/asset_detail" component={AssetDetail} />
-          <Route exact path="/repay_detail/:value" component={RepayDetail} />
           <Route exact path="/markets/:id" component={MarketDetail} />
           <Route path="/" component={Market} />
         </Switch>
