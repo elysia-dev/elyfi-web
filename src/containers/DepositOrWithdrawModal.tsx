@@ -1,10 +1,14 @@
-import { BigNumber } from 'ethers';
+import { useWeb3React } from '@web3-react/core';
+import { BigNumber, constants, providers } from 'ethers';
+import { useEffect } from 'react';
 import { FunctionComponent, useState } from 'react'
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
+import { getAllowance, increaseAllownace } from 'src/utiles/contractHelpers';
 import { toPercent } from 'src/utiles/formatters';
-import DepositBody from './DepositBody';
-import WithdrawBody from './WithdrawBody';
+import DepositBody from '../components/DepositBody';
+import WithdrawBody from '../components/WithdrawBody';
 
+// Create deposit & withdraw
 const DepositOrWithdrawModal: FunctionComponent<{
   tokenName: string,
   visible: boolean,
@@ -14,9 +18,35 @@ const DepositOrWithdrawModal: FunctionComponent<{
   reserve: GetAllReserves_reserves,
   onClose: () => void,
 }> = ({ tokenName, visible, tokenImage, balance, depositBalance, reserve, onClose, }) => {
-  const [state, setState] = useState({
-    selectColumn: 1
-  })
+  const { account, library } = useWeb3React()
+  const [selected, select] = useState<boolean>(true)
+  const [allownace, setAllowance] = useState<BigNumber>(constants.Zero);
+  const [txWating, setWating] = useState<boolean>(false);
+
+  const loadAllowance = async () => {
+    if (!account) return;
+
+    setAllowance(await getAllowance(account, reserve.id, library))
+  }
+
+  const requestAllowance = async () => {
+    if (!account) return;
+
+    const txHash = await increaseAllownace(account, reserve.id, library);
+
+    if (!txHash) return;
+
+    setWating(true);
+    try {
+      await (library as providers.Web3Provider).waitForTransaction(txHash);
+    } finally {
+      setWating(false);
+    }
+  }
+
+  useEffect(() => {
+    loadAllowance();
+  }, [account])
 
   return (
     <div className="modal modal--deposit" style={{ display: visible ? "block" : "none" }}>
@@ -36,25 +66,28 @@ const DepositOrWithdrawModal: FunctionComponent<{
         </div>
         <div className='modal__converter'>
           <div
-            className={`modal__converter__column${state.selectColumn === 1 ? "--selected" : ""}`}
-            onClick={() => setState({ ...state, selectColumn: 1 })}
+            className={`modal__converter__column${selected ? "--selected" : ""}`}
+            onClick={() => select(true)}
           >
             <p className="bold">Deposit</p>
           </div>
           <div
-            className={`modal__converter__column${state.selectColumn === 2 ? "--selected" : ""}`}
-            onClick={() => setState({ ...state, selectColumn: 2 })}
+            className={`modal__converter__column${!selected ? "--selected" : ""}`}
+            onClick={() => select(false)}
           >
             <p className="bold">Withdraw</p>
           </div>
         </div>
         <div className="modal__body">
-          {state.selectColumn === 1 ? (
+          {selected ? (
             <DepositBody
               tokenName={tokenName}
               depositAPY={toPercent(reserve.depositAPY || '0')}
               miningAPR={toPercent(reserve.depositAPY || '0')}
               balance={balance}
+              isApproved={allownace.gt(balance)}
+              txWating={txWating}
+              increaseAllownace={requestAllowance}
             />
           ) : (
             <WithdrawBody

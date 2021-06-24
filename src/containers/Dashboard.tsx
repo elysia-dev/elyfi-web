@@ -8,7 +8,7 @@ import ReserveData from 'src/core/data/reserves';
 import { useEffect } from 'react';
 import { daiToUsd, toPercent } from 'src/utiles/formatters';
 import { useContext } from 'react';
-import DepositOrWithdrawModal from 'src/components/DepositOrWithdrawModal';
+import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
 import { useState } from 'react';
 import ReservesContext from 'src/contexts/ReservesContext';
 import { getERC20 } from 'src/core/utils/getContracts';

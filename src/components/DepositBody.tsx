@@ -2,8 +2,14 @@ import { BigNumber, utils } from 'ethers';
 import { useState } from 'react'
 
 const DepositBody: React.FunctionComponent<{
-	tokenName: string, depositAPY: string, miningAPR: string, balance: BigNumber
-}> = ({ tokenName, depositAPY, miningAPR, balance }) => {
+	tokenName: string,
+	depositAPY: string,
+	miningAPR: string,
+	balance: BigNumber,
+	isApproved: boolean,
+	txWating: boolean,
+	increaseAllownace: () => void,
+}> = ({ tokenName, depositAPY, miningAPR, balance, isApproved, txWating, increaseAllownace }) => {
 	const [deposit, setDeposit] = useState<number>(0);
 
 	const handler = (e: any) => {
@@ -59,11 +65,21 @@ const DepositBody: React.FunctionComponent<{
 					</div>
 				</div>
 			</div>
-			<div className={`modal__button${deposit > 0 ? "" : "--disable"}`} onClick={() => console.log(deposit)}>
-				<p>
-					{deposit > 0 ? "Deposit" : "NO FUNDS AVAILABLE"}
-				</p>
-			</div>
+			{
+				txWating ? <div className="modal__button">Wating...</div>
+					: isApproved ?
+						<div className={`modal__button${deposit > 0 ? "" : "--disable"}`} onClick={() => console.log(deposit)}>
+							<p>
+								{deposit > 0 ? "Deposit" : "NO FUNDS AVAILABLE"}
+							</p>
+						</div>
+						:
+						<div className="modal__button" onClick={() => increaseAllownace()}>
+							<p>
+								{`Allow the Elyfi Protocol to use your ${tokenName}`}
+							</p>
+						</div>
+			}
 		</div>
 	)
 }
