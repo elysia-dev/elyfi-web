@@ -1,9 +1,9 @@
 import { useContext, useState, useEffect, useRef } from 'react';
 import LanguageType from 'src/enums/LanguageType';
 import LanguageContext from 'src/contexts/LanguageContext';
-import ko from "src/shared/images/korea@2x.png";
-import cn from "src/shared/images/china@2x.png";
-import en from "src/shared/images/america@2x.png";
+import ko from "src/assets/images/korea@2x.png";
+import cn from "src/assets/images/china@2x.png";
+import en from "src/assets/images/america@2x.png";
 
 export const LanguageConverter = () => {
   const { language, languageArray, setLanguage } = useContext(LanguageContext);
@@ -64,7 +64,7 @@ export const LanguageConverter = () => {
     return (
       <div className="lang__image-wrapper" style={{ display: visible ? "flex" : "none" }}>
         <img
-          className="lang__select-image" src={en} alt="ENG" 
+          className="lang__select-image" src={en} alt="ENG"
           style={{ display: languageArray.includes(LanguageType.EN) ? "block" : "none" }}
           onClick={() => {
             setLanguage(LanguageType.EN)

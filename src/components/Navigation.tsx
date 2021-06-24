@@ -1,7 +1,7 @@
 import { FunctionComponent, useState } from 'react';
 import { Link } from 'react-router-dom'
-import ElysiaLogo from 'src/shared/images/Elysia_Logo.png';
-import ElysiaLogoBeta from 'src/shared/images/Elysia_Logo_Beta.png';
+import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
+import ElysiaLogoBeta from 'src/assets/images/Elysia_Logo_Beta.png';
 import InstallMetamask from './InstallMetamask';
 import Wallet from './Wallet';
 import { useEagerConnect } from 'src/hooks/connectHoots';

@@ -1,7 +1,6 @@
 import React from 'react';
 import "./i18n";
 
-import TokenProvider from './providers/TokenProvider';
 import LanguageProvider from './providers/LanguageProvider';
 import { Web3ReactProvider } from '@web3-react/core';
 import getLibrary from './core/utils/getLibrary';
@@ -23,15 +22,13 @@ const App: React.FC = () => {
   return (
     <ApolloProvider client={client} >
       <LanguageProvider>
-        <TokenProvider>
-          <Web3ReactProvider getLibrary={getLibrary}>
-            <ReservesProvider>
-              <AssetProvider>
-                <AppNavigator />
-              </AssetProvider>
-            </ReservesProvider>
-          </Web3ReactProvider>
-        </TokenProvider>
+        <Web3ReactProvider getLibrary={getLibrary}>
+          <ReservesProvider>
+            <AssetProvider>
+              <AppNavigator />
+            </AssetProvider>
+          </ReservesProvider>
+        </Web3ReactProvider>
       </LanguageProvider>
     </ApolloProvider>
   );

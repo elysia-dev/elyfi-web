@@ -2,7 +2,7 @@
 import 'src/stylesheets/style.scss';
 import { useWeb3React } from '@web3-react/core';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
-import MainBackground from 'src/shared/images/main-background.png';
+import MainBackground from 'src/assets/images/main-background.png';
 
 const DisableWalletPage = () => {
   const { activate, active } = useWeb3React();

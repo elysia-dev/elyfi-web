@@ -1,9 +1,9 @@
 import { useContext } from 'react';
-import InvestmentStatus from './component/InvestmentStatus';
+import InvestmentStatus from 'src/components/InvestmentStatus';
 import PieChart from 'src/utiles/PieChart';
-import AssetList from './component/AssetList';
+import AssetList from 'src/components/AssetList';
 import { useHistory } from 'react-router-dom';
-import ServiceBackground from 'src/shared/images/service-background.png'
+import ServiceBackground from 'src/assets/images/service-background.png'
 import AssetContext from 'src/contexts/AssetContext';
 
 const Portfolio = () => {

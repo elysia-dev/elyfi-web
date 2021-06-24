@@ -1,5 +1,5 @@
 import 'src/stylesheets/style.scss';
-import ServiceBackground from 'src/shared/images/service-background.png';
+import ServiceBackground from 'src/assets/images/service-background.png';
 import { BigNumber, constants, utils } from 'ethers';
 import { useHistory } from 'react-router-dom';
 import ReserveData from 'src/core/data/reserves';

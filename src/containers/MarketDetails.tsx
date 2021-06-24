@@ -1,5 +1,5 @@
 import 'src/stylesheets/style.scss';
-import ServiceBackground from 'src/shared/images/service-background.png';
+import ServiceBackground from 'src/assets/images/service-background.png';
 import { useQuery } from '@apollo/client';
 import {
   GetReserve,
@@ -7,9 +7,9 @@ import {
 import { GET_RESERVE } from 'src/queries/reserveQueries';
 import { useHistory, useParams } from 'react-router-dom';
 import { useState } from 'react';
+import DaiImage from 'src/assets/images/dai.png';
 
 /* temp */
-import BNB from 'src/shared/images/tokens/bnb@2x.png'
 import { Circle } from 'src/utiles/Circle';
 import { daiToUsd, toPercent } from 'src/utiles/formatters';
 import { BigNumber, utils } from 'ethers';
@@ -43,7 +43,7 @@ const MarketDetail: React.FunctionComponent = () => {
       <div className="market__detail">
         <div className="market__detail__title-token">
           <div className="market__detail__title-token__token-wrapper">
-            <img src={BNB} className="market__detail__title-token__token-image" alt='token' />
+            <img src={DaiImage} className="market__detail__title-token__token-image" alt='token' />
             <p className="market__detail__title-token__token-type bold">DAI</p>
           </div>
           <div className="market__detail__title-token__data-container">

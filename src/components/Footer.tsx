@@ -1,10 +1,10 @@
 import 'src/stylesheets/style.scss';
-import WhiteLogo from './images/White-logo.svg';
-import Twitter from './images/twitter.svg';
-import Telegram from './images/telegram@2x.png';
-import Github from './images/github@2x.png';
-import LanguageConverter from '../component/LanguageConverter';
-import FooterBackgroundImg from './images/footer.png';
+import WhiteLogo from 'src/assets/images/White-logo.svg';
+import Twitter from 'src/assets/images/twitter.svg';
+import Telegram from 'src/assets/images/telegram@2x.png';
+import Github from 'src/assets/images/github@2x.png';
+import LanguageConverter from './LanguageConverter';
+import FooterBackgroundImg from 'src/assets/images/footer.png';
 
 const Footer = () => {
   return (

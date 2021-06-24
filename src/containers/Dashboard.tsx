@@ -1,5 +1,5 @@
 import 'src/stylesheets/style.scss';
-import ServiceBackground from 'src/shared/images/service-background.png';
+import ServiceBackground from 'src/assets/images/service-background.png';
 import { useWeb3React } from '@web3-react/core';
 import { useQuery } from '@apollo/client';
 import { GetUser } from 'src/queries/__generated__/GetUser';
