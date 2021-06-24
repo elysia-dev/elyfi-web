@@ -58,11 +58,11 @@ const MarketDetail: React.FunctionComponent = () => {
     `
   }
 
-  const avgDeposit = data?.reserve?.reserveHistory.reduce((res, cur) => 
+  const maxDeposit = data?.reserve?.reserveHistory.reduce((res, cur) => 
     res < parseInt(utils.formatEther(cur.toatlDeposit)) ? parseInt(utils.formatEther(cur.toatlDeposit)) : res
   , 0) || 0
 
-  const avgBorrow = data?.reserve?.reserveHistory.reduce((res, cur) => 
+  const maxBorrow = data?.reserve?.reserveHistory.reduce((res, cur) => 
     res < parseInt(utils.formatEther(cur.totalBorrow)) ? parseInt(utils.formatEther(cur.totalBorrow)) : res
   , 0)  || 0
 
@@ -70,7 +70,7 @@ const MarketDetail: React.FunctionComponent = () => {
     const getTimestamp = moment(reserve.timestamp * 1000);
 
     const apy = utils.formatUnits(BigNumber.from(!graphConverter ? reserve.depositAPY: reserve.borrowAPY), 25);
-    const base = Math.round(!graphConverter ? avgDeposit : avgBorrow);
+    const base = Math.round(!graphConverter ? maxDeposit : maxBorrow);
 
     const rate = (parseInt(apy)/100) * base + base * 1.2;
 
