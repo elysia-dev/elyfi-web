@@ -14,11 +14,16 @@ import ReservesContext from 'src/contexts/ReservesContext';
 import { getERC20 } from 'src/core/utils/getContracts';
 import { BigNumber, constants } from 'ethers';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
+import { useLocation } from 'react-router-dom';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
+  const location = useLocation();
   const { reserves } = useContext(ReservesContext);
-  const [state, setState] = useState<{ modalVisible: boolean, reserve: GetAllReserves_reserves }>({ modalVisible: false, reserve: reserves[0] });
+  const reserveId = new URLSearchParams(location.search).get("reserveId")
+  const [reserve, setReserve] = useState<GetAllReserves_reserves | undefined>(
+    reserves.find((reserve) => reserveId === reserve.id)
+  );
   const [balance, setBalance] = useState<BigNumber>(constants.Zero);
 
   const {
@@ -38,7 +43,6 @@ const Dashboard: React.FunctionComponent = () => {
     setBalance(await contract.balanceOf(account))
   }
 
-
   useEffect(() => {
     if (!account) {
       return
@@ -53,13 +57,13 @@ const Dashboard: React.FunctionComponent = () => {
   return (
     <>
       {
-        state.reserve &&
+        reserve &&
         <DepositOrWithdrawModal
-          reserve={state.reserve}
+          reserve={reserve}
           tokenName={ReserveData[0].name}
           tokenImage={ReserveData[0].image}
-          visible={state.modalVisible}
-          onClose={() => setState({ ...state, modalVisible: false })}
+          visible={!!reserve}
+          onClose={() => setReserve(undefined)}
           balance={balance}
           depositBalance={BigNumber.from(userConnection?.user?.lTokenBalance[0]?.balance || '0')}
         />
@@ -109,7 +113,7 @@ const Dashboard: React.FunctionComponent = () => {
                       key={index}
                       onClick={(e) => {
                         e.preventDefault();
-                        setState({ modalVisible: true, reserve: reserves[0] })
+                        setReserve(reserves[0])
                       }}
                     >
                       <th>

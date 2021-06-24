@@ -5,7 +5,7 @@ import {
   GetReserve,
 } from 'src/queries/__generated__/GetReserve';
 import { GET_RESERVE } from 'src/queries/reserveQueries';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useState } from 'react';
 
 /* temp */
@@ -15,6 +15,7 @@ import { daiToUsd, toPercent } from 'src/utiles/formatters';
 import { BigNumber, utils } from 'ethers';
 
 const MarketDetail: React.FunctionComponent = () => {
+  const history = useHistory();
   const [mouseHover, setMouseHover] = useState(false);
   const { id } = useParams<{ id: string }>();
   const {
@@ -32,7 +33,7 @@ const MarketDetail: React.FunctionComponent = () => {
   const miningAPR = utils.parseUnits('10', 25);
 
   if (loading) return (<div> Loading </div>)
-  if (error) return (<div> Error </div>)
+  if (error || !data?.reserve) return (<div> Error </div>)
 
   const utilization = BigNumber.from(data?.reserve?.totalBorrow || '0').div(data?.reserve?.toatlDeposit).toNumber();
 
@@ -201,6 +202,9 @@ const MarketDetail: React.FunctionComponent = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div onClick={() => { history.push(`/dashboard?reserveId=${id}`) }}>
+        Deposit | Withdraw
       </div>
     </>
   );

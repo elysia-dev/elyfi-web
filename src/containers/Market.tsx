@@ -69,7 +69,7 @@ const Market: React.FunctionComponent = () => {
                       {
                         account &&
                         <th>
-                          <div onClick={(e) => { e.stopPropagation(); }}>
+                          <div onClick={(e) => { e.stopPropagation(); history.push(`dashboard?reserveId=${reserves[0].id}`) }}>
                             {"Deposit | Withdraw"}
                           </div>
                         </th>
