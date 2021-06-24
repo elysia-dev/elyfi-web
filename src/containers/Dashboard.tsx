@@ -8,11 +8,19 @@ import ReserveData from 'src/core/data/reserves';
 import { useEffect } from 'react';
 import { daiToUsd, toPercent } from 'src/utiles/formatters';
 import { useContext } from 'react';
-import BalanceContext from 'src/contexts/BalanceContext';
+import DepositOrWithdrawModal from 'src/components/DepositOrWithdrawModal';
+import { useState } from 'react';
+import ReservesContext from 'src/contexts/ReservesContext';
+import { getERC20 } from 'src/core/utils/getContracts';
+import { BigNumber, constants } from 'ethers';
+import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 
 const Dashboard: React.FunctionComponent = () => {
-  const { account } = useWeb3React();
-  const { balance, loadBalance } = useContext(BalanceContext);
+  const { account, library } = useWeb3React();
+  const { reserves } = useContext(ReservesContext);
+  const [state, setState] = useState<{ modalVisible: boolean, reserve: GetAllReserves_reserves }>({ modalVisible: false, reserve: reserves[0] });
+  const [balance, setBalance] = useState<BigNumber>(constants.Zero);
+
   const {
     loading,
     data: userConnection,
@@ -22,19 +30,40 @@ const Dashboard: React.FunctionComponent = () => {
     { variables: { id: account?.toLocaleLowerCase() } }
   )
 
+  const loadBalance = async (address: string) => {
+    const contract = getERC20(address, library);
+
+    if (!contract) return;
+
+    setBalance(await contract.balanceOf(account))
+  }
+
+
   useEffect(() => {
-    if (!account || !userConnection?.user?.lTokenBalance[0].lToken.reserve.id) {
+    if (!account) {
       return
     }
 
-    loadBalance(userConnection?.user?.lTokenBalance[0].lToken.reserve.id);
-  }, [account, userConnection])
+    loadBalance(reserves[0].id);
+  }, [account])
 
   if (loading) return (<div> Loading </div>)
   if (error) return (<div> Error </div>)
 
   return (
     <>
+      {
+        state.reserve &&
+        <DepositOrWithdrawModal
+          reserve={state.reserve}
+          tokenName={ReserveData[0].name}
+          tokenImage={ReserveData[0].image}
+          visible={state.modalVisible}
+          onClose={() => setState({ ...state, modalVisible: false })}
+          balance={balance}
+          depositBalance={BigNumber.from(userConnection?.user?.lTokenBalance[0]?.balance || '0')}
+        />
+      }
       <section className="dashboard main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
         <div className="main__title-wrapper">
           <h2 className="main__title-text">Dashboard</h2>
@@ -74,6 +103,45 @@ const Dashboard: React.FunctionComponent = () => {
           <tbody className="tokens__table-body">
             {
               ReserveData.map((reserve, index) => {
+                if (index === 0) {
+                  return (
+                    <tr
+                      key={index}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setState({ modalVisible: true, reserve: reserves[0] })
+                      }}
+                    >
+                      <th>
+                        <div>
+                          <img src={reserve.image} style={{ width: 40 }} alt="Token" />
+                          <p>{reserve.name}</p>
+                        </div>
+                      </th>
+                      <th>
+                        <p>
+                          {
+                            daiToUsd(userConnection?.user?.lTokenBalance[0]?.balance || '0')
+                          }
+                        </p>
+                      </th>
+                      <th>
+                        <p>
+                          {
+                            toPercent(userConnection?.user?.lTokenBalance[0]?.lToken?.reserve?.depositAPY || '0')
+                          }
+                        </p>
+                      </th>
+                      <th>
+                        <p>
+                          {
+                            daiToUsd(balance)
+                          }
+                        </p>
+                      </th>
+                    </tr>
+                  )
+                }
                 return (
                   <tr key={index}>
                     <th>
@@ -82,32 +150,9 @@ const Dashboard: React.FunctionComponent = () => {
                         <p>{reserve.name}</p>
                       </div>
                     </th>
-                    <th>
-                      <p>
-                        {
-                          index === 0 ?
-                            daiToUsd(userConnection?.user?.lTokenBalance[0]?.balance || '0') :
-                            '-'
-                        }
-                      </p>
-                    </th>
-                    <th>
-                      <p>
-                        {
-                          index === 0 ?
-                            toPercent(userConnection?.user?.lTokenBalance[0]?.lToken.reserve.depositAPY || '0') :
-                            '-'
-                        }
-                      </p>
-                    </th>
-                    <th>
-                      <p>
-                        {
-                          index === 0 ?
-                            daiToUsd(balance || '0') : '-'
-                        }
-                      </p>
-                    </th>
+                    <th><p>-</p></th>
+                    <th><p>-</p></th>
+                    <th><p>-</p></th>
                   </tr>
                 )
               })
