@@ -1,5 +1,4 @@
 import { BigNumber, utils } from 'ethers';
-import { useEffect } from 'react';
 import { useState } from 'react'
 
 const DepositBody: React.FunctionComponent<{
@@ -12,10 +11,10 @@ const DepositBody: React.FunctionComponent<{
 	increaseAllownace: () => void,
 	deposit: (amount: BigNumber) => void,
 }> = ({ tokenName, depositAPY, miningAPR, balance, isApproved, txWating, increaseAllownace, deposit }) => {
-	const [amount, setAmount] = useState<string>('0');
+	const [amount, setAmount] = useState<string>('');
 
-	const amountGtBalance = utils.parseEther(amount).gt(balance);
-	const amountLteZero = parseInt(amount) <= 0;
+	const amountGtBalance = utils.parseEther(amount || '0').gt(balance);
+	const amountLteZero = !amount || parseInt(amount) <= 0;
 
 	return (
 		<div className="modal__deposit">

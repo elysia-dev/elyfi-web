@@ -67,3 +67,31 @@ export const deposit = async (account: string, asset: string, amount: BigNumber,
     return
   }
 }
+
+export const withdraw = async (account: string, asset: string, amount: BigNumber, library: providers.Web3Provider): Promise<string | undefined> => {
+  const contract = getMoneyPool(moneypool, library);
+  const request = library.provider.request;
+
+  if (!contract || !request) return;
+
+  try {
+    const populatedTransaction = await contract?.populateTransaction
+      .withdraw(asset, account, amount);
+
+    const txHash = await request({
+      method: 'eth_sendTransaction',
+      params: [
+        {
+          to: populatedTransaction.to,
+          from: account,
+          data: populatedTransaction.data,
+        },
+      ],
+    })
+
+    return txHash;
+  } catch (e) {
+    console.log(e);
+    return
+  }
+}

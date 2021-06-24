@@ -3,7 +3,7 @@ import { BigNumber, constants, providers } from 'ethers';
 import { useEffect } from 'react';
 import { FunctionComponent, useState } from 'react'
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
-import { deposit, getAllowance, increaseAllownace } from 'src/utiles/contractHelpers';
+import { deposit, getAllowance, increaseAllownace, withdraw } from 'src/utiles/contractHelpers';
 import { toPercent } from 'src/utiles/formatters';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
@@ -32,23 +32,28 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const requestAllowance = async () => {
     if (!account) return;
 
-    const txHash = await increaseAllownace(account, reserve.id, library);
-
-    if (!txHash) return;
-
-    setWating(true);
-    try {
-      await (library as providers.Web3Provider).waitForTransaction(txHash);
-    } finally {
-      setWating(false);
-    }
+    waitTx(await increaseAllownace(account, reserve.id, library));
   }
 
   const requestDeposit = async (amount: BigNumber) => {
     if (!account) return;
 
-    const txHash = await deposit(account, reserve.id, amount, library);
+    waitTx(
+      await deposit(account, reserve.id, amount, library),
+      true
+    );
+  }
 
+  const reqeustWithdraw = async (amount: BigNumber) => {
+    if (!account) return;
+
+    waitTx(
+      await withdraw(account, reserve.id, amount, library),
+      true
+    );
+  }
+
+  const waitTx = async (txHash: string | undefined, withClose?: boolean) => {
     if (!txHash) return;
 
     setWating(true);
@@ -56,7 +61,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
       await (library as providers.Web3Provider).waitForTransaction(txHash);
     } finally {
       setWating(false);
-      onClose();
+      if (withClose) onClose();
     }
   }
 
@@ -110,6 +115,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
             <WithdrawBody
               tokenName={tokenName}
               depositBalance={depositBalance}
+              txWating={txWating}
+              withdraw={reqeustWithdraw}
             />
           )}
         </div>

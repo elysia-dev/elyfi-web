@@ -1,22 +1,24 @@
-import { BigNumber } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import { useState } from 'react'
 import { formatComma } from 'src/utiles/formatters';
 
+// TODO
+// * Interest values
 const WithdrawBody: React.FunctionComponent<{
 	tokenName: string
 	depositBalance: BigNumber
-}> = ({ tokenName, depositBalance }) => {
-	const [withdraw, setWithdraw] = useState<number>(0);
+	txWating: boolean
+	withdraw: (amount: BigNumber) => void
+}> = ({ tokenName, depositBalance, txWating, withdraw }) => {
+	const [amount, setAmount] = useState<string>('');
 
-	const handler = (e: any) => {
-		const { value } = e.target;
-		(value < 0) ? setWithdraw(0) : setWithdraw(value)
-	}
+	const amountGtBalance = utils.parseEther(amount || '0').gt(depositBalance);
+	const amountLteZero = !amount || parseInt(amount) <= 0;
 
 	return (
 		<div className="modal__withdraw">
 			<div className="modal__withdraw__value-wrapper">
-				<p className="modal__withdraw__maximum bold">
+				<p className="modal__withdraw__maximum bold" onClick={() => { setAmount(utils.formatEther(depositBalance)) }}>
 					MAX
 				</p>
 				<p className="modal__withdraw__value bold">
@@ -24,8 +26,9 @@ const WithdrawBody: React.FunctionComponent<{
 						type="number"
 						className="modal__text-input"
 						placeholder="0"
+						value={amount}
 						onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => { ["-", "+", "e"].includes(e.key) && e.preventDefault() }}
-						onChange={(e: React.ChangeEvent<HTMLDivElement>) => handler(e)}
+						onChange={({ target }) => { !txWating && setAmount(target.value) }}
 					/>
 				</p>
 			</div>
@@ -60,11 +63,21 @@ const WithdrawBody: React.FunctionComponent<{
 					</div>
 				</div>
 			</div>
-			<div className={`modal__button${withdraw > 0 ? "" : "--disable"}`} onClick={() => console.log(withdraw)}>
-				<p>
-					{withdraw > 0 ? "WITHDRAW" : "NOT ENOUGH BALANCE TO WITHDRAW"}
-				</p>
-			</div>
+			{
+				txWating ? <div className="modal__button">Wating...</div>
+					:
+					<div
+						className={`modal__button${amountGtBalance || amountLteZero ? "--disable" : ""}`}
+						onClick={() => !(amountLteZero || amountGtBalance) && withdraw(utils.parseEther(amount))}
+					>
+						<p>
+							{
+								amountLteZero ? "Enter an amount" :
+									amountGtBalance ? `Insufficient deposit balance` : "Withdraw"
+							}
+						</p>
+					</div>
+			}
 		</div>
 	)
 }
