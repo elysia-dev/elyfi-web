@@ -2,7 +2,6 @@
 import { FunctionComponent, useEffect, useContext, useState } from 'react';
 import { useLocation } from "react-router";
 import { useHistory } from 'react-router-dom';
-import Header from 'src/components/Header'
 import Assets from 'src/types/Assets';
 import AssetContext from 'src/contexts/AssetContext';
 import ABToken from 'src/types/ABToken';

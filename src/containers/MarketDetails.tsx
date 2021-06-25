@@ -7,6 +7,7 @@ import {
 import { GET_RESERVE } from 'src/queries/reserveQueries';
 import { useHistory, useParams } from 'react-router-dom';
 import { useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
 import DaiImage from 'src/assets/images/dai.png';
 
 /* temp */
@@ -35,10 +36,10 @@ const MarketDetail: React.FunctionComponent = () => {
   // FIXME
   const miningAPR = utils.parseUnits('10', 25);
 
-  if (loading) return (<div> Loading </div>)
-  if (error || !data?.reserve) return (<div> Error </div>)
+  //if (loading) return (<div> Loading </div>)
+  //if (error || !data?.reserve) return (<div> Error </div>)
 
-  const utilization = BigNumber.from(data?.reserve?.totalBorrow || '0').div(data?.reserve?.toatlDeposit).toNumber();
+  const utilization = BigNumber.from(data?.reserve?.totalBorrow || '0').div(data?.reserve?.toatlDeposit || '1').toNumber();
 
   const DivProvider = (text: "Total Rate" | "Total Deposit", value: string) => {
     return `
@@ -105,7 +106,7 @@ const MarketDetail: React.FunctionComponent = () => {
                 </p>
               </div>
               <p>
-                {toPercent(BigNumber.from(data?.reserve?.depositAPY).add(miningAPR))}
+                {loading ? <Skeleton /> : toPercent(BigNumber.from(data?.reserve?.depositAPY).add(miningAPR))}
               </p>
             </div>
             <div className="market__detail__title-token__data-wrapper">
@@ -113,7 +114,7 @@ const MarketDetail: React.FunctionComponent = () => {
                 Deposit APY
               </p>
               <p>
-                {toPercent(data?.reserve?.depositAPY)}
+                {loading ? <Skeleton /> : toPercent(data?.reserve?.depositAPY)}
               </p>
             </div>
             <div className="market__detail__title-token__data-wrapper">
@@ -121,7 +122,7 @@ const MarketDetail: React.FunctionComponent = () => {
                 Mining APR
               </p>
               <p>
-                {toPercent(miningAPR)}
+                {loading ? <Skeleton /> : toPercent(miningAPR)}
               </p>
             </div>
             <div className="market__detail__title-token__data-wrapper">
@@ -129,7 +130,7 @@ const MarketDetail: React.FunctionComponent = () => {
                 Borrow APY
               </p>
               <p>
-                {toPercent(data?.reserve?.borrowAPY)}
+                {loading ? <Skeleton /> : toPercent(data?.reserve?.borrowAPY)}
               </p>
             </div>
           </div>
@@ -158,7 +159,7 @@ const MarketDetail: React.FunctionComponent = () => {
                 Total Deposit
               </p>
               <p className="bold">
-                {daiToUsd(data?.reserve?.toatlDeposit)}
+                {loading ? <Skeleton width={100} /> : daiToUsd(data?.reserve?.toatlDeposit)}
               </p>
             </div>
             <div>
@@ -174,7 +175,7 @@ const MarketDetail: React.FunctionComponent = () => {
                   </p>
                 </div>
                 <p>
-                  {daiToUsd(data?.reserve?.totalBorrow)}
+                  {loading ? <Skeleton width={50} /> : daiToUsd(data?.reserve?.totalBorrow)}
                 </p>
               </div>
               <div className="market__detail__pie-chart__data__wrapper">
@@ -189,42 +190,59 @@ const MarketDetail: React.FunctionComponent = () => {
                   </p>
                 </div>
                 <p>
-                  {daiToUsd(BigNumber.from(data?.reserve?.toatlDeposit).sub(data?.reserve?.totalBorrow))}
+                  {loading ? <Skeleton width={50} /> : daiToUsd(BigNumber.from(data?.reserve?.toatlDeposit).sub(data?.reserve?.totalBorrow))}
                 </p>
               </div>
             </div>
             <div className="market__detail__pie-chart">
-              <Circle
-                progress={100 - utilization}
-                style={{
-                  width: 240
-                }}
-              />
+              {
+                loading ? <Skeleton width={240} height={240} /> :
+                  <Circle
+                    progress={100 - utilization}
+                    style={{
+                      width: 240
+                    }}
+                  />
+              }
             </div>
             <div className="market__detail__pie-chart__data">
               <div>
                 <p>
                   Utilization rate
                 </p>
-                <p>
-                  {`${utilization}%`}
-                </p>
+                {
+                  loading ?
+                    <Skeleton width={50} />
+                    :
+                    <p>
+                      {`${utilization}%`}
+                    </p>
+                }
               </div>
               <div>
                 <p>
                   Number of Depositers
                 </p>
-                <p>
-                  200M
-                </p>
+                {
+                  loading ?
+                    <Skeleton width={50} />
+                    : <p>
+                      200M
+                    </p>
+                }
               </div>
               <div>
                 <p>
                   Number of Borrowers
                 </p>
-                <p>
-                  300M
-                </p>
+                {
+                  loading ?
+                    <Skeleton width={50} />
+                    :
+                    <p>
+                      300M
+                    </p>
+                }
               </div>
             </div>
           </div>
@@ -248,56 +266,60 @@ const MarketDetail: React.FunctionComponent = () => {
               </div>
             </div>
             <div className="market__detail__graph">
-              <Chart
-                width={'700px'}
-                height={'500px'}
-                chartType="ComboChart"
-                loader={<div>Loading Chart</div>}
-                data={[
-                  [
-                    'Month',
-                    'Total Deposit',
-                    { role: 'tooltip', p: { html: true } },
-                    'Total Rate',
-                    { role: 'tooltip', p: { html: true } }
-                  ],
-                  ...chartData,
-                ]}
-                options={{
-                  chartArea: { left: 0, top: 100, width: "100%", height: "400px" },
-                  backgroundColor: "transparent",
-                  tooltip: {
-                    textStyle: {
-                      color: '#FF0000'
-                    },
-                    showColorCode: true,
-                    isHtml: true,
-                    ignoreBounds: true
-                  },
-                  seriesType: 'bars',
-                  bar: {
-                    groupWidth: 30
-                  },
-                  vAxis: {
-                    gridlines: {
-                      count: 0
-                    },
-                    textPosition: 'none'
-                  },
-                  focusTarget: "category",
-                  curveType: "function",
-                  legend: { position: 'none' },
-                  series: {
-                    0: {
-                      color: "#E6E6E6",
-                    },
-                    1: {
-                      type: 'line',
-                      color: "#1C5E9A"
-                    }
-                  },
-                }}
-              />
+              {
+                loading ?
+                  <Skeleton width={700} height={500} /> :
+                  <Chart
+                    width={'700px'}
+                    height={'500px'}
+                    chartType="ComboChart"
+                    loader={<div>Loading Chart</div>}
+                    data={[
+                      [
+                        'Month',
+                        'Total Deposit',
+                        { role: 'tooltip', p: { html: true } },
+                        'Total Rate',
+                        { role: 'tooltip', p: { html: true } }
+                      ],
+                      ...chartData,
+                    ]}
+                    options={{
+                      chartArea: { left: 0, top: 100, width: "100%", height: "400px" },
+                      backgroundColor: "transparent",
+                      tooltip: {
+                        textStyle: {
+                          color: '#FF0000'
+                        },
+                        showColorCode: true,
+                        isHtml: true,
+                        ignoreBounds: true
+                      },
+                      seriesType: 'bars',
+                      bar: {
+                        groupWidth: 30
+                      },
+                      vAxis: {
+                        gridlines: {
+                          count: 0
+                        },
+                        textPosition: 'none'
+                      },
+                      focusTarget: "category",
+                      curveType: "function",
+                      legend: { position: 'none' },
+                      series: {
+                        0: {
+                          color: "#E6E6E6",
+                        },
+                        1: {
+                          type: 'line',
+                          color: "#1C5E9A"
+                        }
+                      },
+                    }}
+                  />
+              }
             </div>
           </div>
         </div>

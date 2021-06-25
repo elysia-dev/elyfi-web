@@ -15,6 +15,7 @@ import { getERC20 } from 'src/core/utils/getContracts';
 import { BigNumber, constants } from 'ethers';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { useHistory, useLocation } from 'react-router-dom';
+import Skeleton from 'react-loading-skeleton';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -52,7 +53,6 @@ const Dashboard: React.FunctionComponent = () => {
     loadBalance(reserves[0].id);
   }, [account])
 
-  if (loading) return (<div> Loading </div>)
   if (error) return (<div> Error </div>)
 
   return (
@@ -135,25 +135,30 @@ const Dashboard: React.FunctionComponent = () => {
                         </div>
                       </th>
                       <th>
-                        <p>
-                          {
-                            daiToUsd(userConnection?.user?.lTokenBalance[0]?.balance || '0')
-                          }
-                        </p>
+                        {
+                          loading ?
+                            <Skeleton width={50} />
+                            :
+                            <p>{daiToUsd(userConnection?.user?.lTokenBalance[0]?.balance || '0')}</p>
+                        }
                       </th>
                       <th>
-                        <p>
-                          {
-                            toPercent(userConnection?.user?.lTokenBalance[0]?.lToken?.reserve?.depositAPY || '0')
-                          }
-                        </p>
+                        {
+                          loading ?
+                            <Skeleton width={50} />
+                            :
+                            <p>
+                              {toPercent(userConnection?.user?.lTokenBalance[0]?.lToken?.reserve?.depositAPY || '0')}
+                            </p>
+                        }
                       </th>
                       <th>
-                        <p>
-                          {
-                            daiToUsd(balance)
-                          }
-                        </p>
+                        {
+                          loading ?
+                            <Skeleton width={50} />
+                            :
+                            <p>{daiToUsd(balance)}</p>
+                        }
                       </th>
                     </tr>
                   )
