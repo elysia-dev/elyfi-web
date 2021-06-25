@@ -12,9 +12,10 @@ import {
   ApolloClient,
 } from "@apollo/client";
 import ReservesProvider from './providers/ReservesProvider';
+import envs from 'src/core/envs';
 
 const client = new ApolloClient({
-  uri: 'https://api.thegraph.com/subgraphs/name/modonguk/elyfikovan',
+  uri: envs.subgraphURI,
   cache: new InMemoryCache()
 });
 

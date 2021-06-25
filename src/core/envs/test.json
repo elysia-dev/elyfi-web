@@ -1,0 +1,5 @@
+{
+  "moneyPoolAddress": "0xda6C572b830C6471EcEb001e8D04279101457783",
+  "requiredNetwork": "kovan",
+  "subgraphURI": "https://api.thegraph.com/subgraphs/name/modonguk/elyfikovan"
+}
