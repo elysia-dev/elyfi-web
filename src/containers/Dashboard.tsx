@@ -16,6 +16,7 @@ import { BigNumber, constants } from 'ethers';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { useHistory, useLocation } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
+import ErrorPage from 'src/components/ErrorPage';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -53,7 +54,7 @@ const Dashboard: React.FunctionComponent = () => {
     loadBalance(reserves[0].id);
   }, [account])
 
-  if (error) return (<div> Error </div>)
+  if (error) return (<ErrorPage />)
 
   return (
     <>

@@ -17,6 +17,7 @@ import { BigNumber, utils } from 'ethers';
 import { Chart } from "react-google-charts";
 
 import moment from 'moment';
+import ErrorPage from 'src/components/ErrorPage';
 
 const MarketDetail: React.FunctionComponent = () => {
   const history = useHistory();
@@ -36,8 +37,7 @@ const MarketDetail: React.FunctionComponent = () => {
   // FIXME
   const miningAPR = utils.parseUnits('10', 25);
 
-  //if (loading) return (<div> Loading </div>)
-  //if (error || !data?.reserve) return (<div> Error </div>)
+  if (error) return (<ErrorPage />)
 
   const utilization = BigNumber.from(data?.reserve?.totalBorrow || '0').div(data?.reserve?.toatlDeposit || '1').toNumber();
 
