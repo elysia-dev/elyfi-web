@@ -35,7 +35,6 @@ const AssetDetail: FunctionComponent = () => {
 
   return (
     <section id="portfolio">
-      <Header title="PORTFOLIO" />
       <div className="portfolio__info">
         <div className="portfolio__asset-list__title__wrapper" style={{ marginTop: 100 }}>
           <p className="portfolio__asset-list__title bold">Asset Detail</p>

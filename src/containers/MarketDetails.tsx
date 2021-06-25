@@ -66,7 +66,7 @@ const MarketDetail: React.FunctionComponent = () => {
     , 0) || 0
 
   // APY scale is very tiny.
-  // So use amplified apy by max Deposit or max Borrow.
+  // So use amplified apy by base(max Deposit or max Borrow).
   // amplified apy = apy / 5 * base + base * 1.2
   const test = (data?.reserve?.reserveHistory.map((reserve, _x) => {
     const apy = utils.formatUnits(!graphConverter ? reserve.depositAPY : reserve.borrowAPY, 25);
