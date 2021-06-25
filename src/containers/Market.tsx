@@ -31,6 +31,7 @@ const Market: React.FunctionComponent = () => {
               )
             }
           </h2>
+          <div style={{ height: 50 }} />
         </div>
       </section>
       <section className="tokens">
