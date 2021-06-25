@@ -12,9 +12,8 @@ import DaiImage from 'src/assets/images/dai.png';
 /* temp */
 import { Circle } from 'src/utiles/Circle';
 import { daiToUsd, toPercent } from 'src/utiles/formatters';
-import { BigNumber, constants, utils } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import { Chart } from "react-google-charts";
-import numberFormat from 'src/utiles/numberFormat';
 
 import moment from 'moment';
 
@@ -49,37 +48,36 @@ const MarketDetail: React.FunctionComponent = () => {
         </p>
         <p class="google-div-jailbreak__value bold">
           ${text === "Total Rate" ?
-            (value + "%")
-            :
-            (value)
-          }
+        (value + "%")
+        :
+        (value)
+      }
         </p>
       </div>
     `
   }
 
-  const maxDeposit = data?.reserve?.reserveHistory.reduce((res, cur) => 
+  const maxDeposit = data?.reserve?.reserveHistory.reduce((res, cur) =>
     res < parseInt(utils.formatEther(cur.toatlDeposit)) ? parseInt(utils.formatEther(cur.toatlDeposit)) : res
-  , 0) || 0
+    , 0) || 0
 
-  const maxBorrow = data?.reserve?.reserveHistory.reduce((res, cur) => 
+  const maxBorrow = data?.reserve?.reserveHistory.reduce((res, cur) =>
     res < parseInt(utils.formatEther(cur.totalBorrow)) ? parseInt(utils.formatEther(cur.totalBorrow)) : res
-  , 0)  || 0
+    , 0) || 0
 
+  // APY scale is very tiny.
+  // So use amplified apy by max Deposit or max Borrow.
+  // amplified apy = apy / 5 * base + base * 1.2
   const test = (data?.reserve?.reserveHistory.map((reserve, _x) => {
-    const getTimestamp = moment(reserve.timestamp * 1000);
-
-    const apy = utils.formatUnits(BigNumber.from(!graphConverter ? reserve.depositAPY: reserve.borrowAPY), 25);
+    const apy = utils.formatUnits(!graphConverter ? reserve.depositAPY : reserve.borrowAPY, 25);
     const base = Math.round(!graphConverter ? maxDeposit : maxBorrow);
 
-    const rate = (parseInt(apy)/100) * base + base * 1.2;
-
     return [
-      getTimestamp.format("MMMM d"),
-      parseInt(utils.formatEther(!graphConverter ? reserve.toatlDeposit : reserve.totalBorrow)), 
-      DivProvider(`Total Deposit`, daiToUsd(!graphConverter ? reserve.toatlDeposit : reserve.totalBorrow)), 
-      rate,
-      DivProvider(`Total Rate`, (utils.formatUnits(!graphConverter ? reserve.depositAPY : reserve.borrowAPY, 25)).toString())
+      moment(reserve.timestamp * 1000).format("MMMM DD"),
+      parseInt(utils.formatEther(!graphConverter ? reserve.toatlDeposit : reserve.totalBorrow)),
+      DivProvider(`Total Deposit`, daiToUsd(!graphConverter ? reserve.toatlDeposit : reserve.totalBorrow)),
+      (parseFloat(apy) / 5) * base + base * 1.2, // i
+      DivProvider(`Total Rate`, apy.toString())
     ]
   }) || [])
 
@@ -232,17 +230,17 @@ const MarketDetail: React.FunctionComponent = () => {
           </div>
           <div className="market__detail__graph__wrapper">
             <div className="market__detail__graph__converter__wrapper">
-              <div 
+              <div
                 className={`market__detail__graph__converter${graphConverter ? "--disable" : ""}`}
-                onClick={() => setGraphConverter(false)} 
+                onClick={() => setGraphConverter(false)}
               >
                 <p className="bold">
                   Deposit
                 </p>
               </div>
-              <div 
+              <div
                 className={`market__detail__graph__converter${!graphConverter ? "--disable" : ""}`}
-                onClick={() => setGraphConverter(true)} 
+                onClick={() => setGraphConverter(true)}
               >
                 <p className="bold">
                   Borrow
@@ -259,21 +257,20 @@ const MarketDetail: React.FunctionComponent = () => {
                   [
                     'Month',
                     'Deposit',
-                    {role: 'tooltip', p : { html: true }},
+                    { role: 'tooltip', p: { html: true } },
                     'k',
-                    {role: 'tooltip', p : { html: true }}
+                    { role: 'tooltip', p: { html: true } }
                   ],
                   ...test,
-                  //["123",123, "div",123,123]
                 ]}
                 options={{
-                  chartArea:{left:0,top:100,width:"100%",height:"400px"},
+                  chartArea: { left: 0, top: 100, width: "100%", height: "400px" },
                   backgroundColor: "transparent",
                   tooltip: {
                     textStyle: {
                       color: '#FF0000'
-                    }, 
-                    showColorCode: true, 
+                    },
+                    showColorCode: true,
                     isHtml: true,
                     ignoreBounds: true
                   },
@@ -288,12 +285,12 @@ const MarketDetail: React.FunctionComponent = () => {
                     textPosition: 'none'
                   },
                   curveType: "function",
-                  legend: {position: 'none'},
-                  series: { 
+                  legend: { position: 'none' },
+                  series: {
                     0: {
                       color: "#E6E6E6",
                     },
-                    1: { 
+                    1: {
                       type: 'line',
                       color: "#1C5E9A"
                     }
