@@ -68,16 +68,16 @@ const MarketDetail: React.FunctionComponent = () => {
   // APY scale is very tiny.
   // So use amplified apy by base(max Deposit or max Borrow).
   // amplified apy = apy / 5 * base + base * 1.2
-  const test = (data?.reserve?.reserveHistory.map((reserve, _x) => {
+  const chartData = (data?.reserve?.reserveHistory.map((reserve, _x) => {
     const apy = utils.formatUnits(!graphConverter ? reserve.depositAPY : reserve.borrowAPY, 25);
     const base = Math.round(!graphConverter ? maxDeposit : maxBorrow);
 
     return [
       moment(reserve.timestamp * 1000).format("MMMM DD"),
       parseInt(utils.formatEther(!graphConverter ? reserve.toatlDeposit : reserve.totalBorrow)),
-      DivProvider(`Total Deposit`, daiToUsd(!graphConverter ? reserve.toatlDeposit : reserve.totalBorrow)),
+      daiToUsd(!graphConverter ? reserve.toatlDeposit : reserve.totalBorrow),
       (parseFloat(apy) / 5) * base + base * 1.2, // i
-      DivProvider(`Total Rate`, apy.toString())
+      apy.toString()
     ]
   }) || [])
 
@@ -256,12 +256,12 @@ const MarketDetail: React.FunctionComponent = () => {
                 data={[
                   [
                     'Month',
-                    'Deposit',
+                    'Total Deposit',
                     { role: 'tooltip', p: { html: true } },
-                    'k',
+                    'Total Rate',
                     { role: 'tooltip', p: { html: true } }
                   ],
-                  ...test,
+                  ...chartData,
                 ]}
                 options={{
                   chartArea: { left: 0, top: 100, width: "100%", height: "400px" },
@@ -284,6 +284,7 @@ const MarketDetail: React.FunctionComponent = () => {
                     },
                     textPosition: 'none'
                   },
+                  focusTarget: "category",
                   curveType: "function",
                   legend: { position: 'none' },
                   series: {

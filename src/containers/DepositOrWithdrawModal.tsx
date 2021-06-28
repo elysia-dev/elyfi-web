@@ -79,15 +79,11 @@ const DepositOrWithdrawModal: FunctionComponent<{
               <p className="modal__header__name bold">{tokenName}</p>
             </div>
           </div>
-          {txWating ? (
-            <></>
-          ) : (
             <div className="close-button" onClick={onClose}>
               <div className="close-button--1">
                 <div className="close-button--2" />
               </div>
             </div>
-          )}
         </div>
         <div className='modal__converter'>
           <div
@@ -107,15 +103,11 @@ const DepositOrWithdrawModal: FunctionComponent<{
           {txWating ? (
             <div className="loading-indicator">
               <div className="loader">
-                <div className="circles">
-                  <span className="one"></span>
-                  <span className="two"></span>
-                  <span className="three"></span>
-                </div>
-                <div className="pacman">
-                  <span className="top"></span>
-                  <span className="bottom"></span>
-                  <span className="left"></span>
+                <div className="l_main">
+                  <div className="l_square"><span></span><span></span><span></span></div>
+                  <div className="l_square"><span></span><span></span><span></span></div>
+                  <div className="l_square"><span></span><span></span><span></span></div>
+                  <div className="l_square"><span></span><span></span><span></span></div>
                 </div>
               </div>
               <div className="loading-indicator__text">

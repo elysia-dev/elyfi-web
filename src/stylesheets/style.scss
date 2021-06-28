@@ -1549,32 +1549,40 @@ span {
 
 .google-visualization-tooltip { 
   border: 0 !important;
-  box-shadow: none !important;
   -webkit-box-shadow: none !important;
-  background-color: transparent !important;
-}
-.google-div-jailbreak {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: transparent;
-  width: 100px;
-  top: 0px;
-  position: absolute;
-  white-space: nowrap;
-  &__text {
-    margin: 0;
-    text-align: center;
-    font-size: 13px;
-    color: #B7B7B7;
-    height: 20px;
-  }
-  &__value {
-    margin: 0;
-    text-align: center;
-    font-size: 17px;
-    color: #333333;
-    height: 25px;
+  background-color: #ffffff !important;
+  box-shadow: 0px 0px 6px #00000029 !important;
+  border-radius: 5px;
+  padding: 8px;
+  width: 220px !important;
+  ul li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 10px;
+    > span {
+      color: #888888 !important;
+      font-family: "Montserrat-bold" !important;
+      &:nth-child(2) {
+        flex: 1;
+        font-family: "Montserrat-bold" !important;
+      }
+      &:last-child {
+        color: #00bfff !important;
+      }
+    }
+    > div {
+      display: none !important;
+    }
+    &:first-child {
+      display: none !important;
+    }
+    &:last-child {
+      &::after {
+        content: "%";
+        color: #00bfff;
+        font-family: "Montserrat-bold";
+      }
+    }
   }
 }
 .market__detail__graph div div div div svg g {
@@ -1607,147 +1615,37 @@ span {
   }
 
   .loader {
-    position:absolute;
-    top: 50%;
-    left: 50%;
-    height: 60px;
-    width: 235px;
-    margin: 0;
-    -webkit-transform:translate(-50%,-50%);
-    transform:translate(-50%,-50%);
+    height:100%;
+    width:100%
   }
-  .circles {
-    position: absolute;
-    left: 40px;
-    top: 0;
-    height: 60px;
-    width: 200px;
-    -webkit-animation: animcircles 0.5s infinite linear;
-    animation: animcircles 0.5s infinite linear;
-    > span {
-      position: absolute;
-      top: 30px;
-      height: 12px;
-      width: 12px;
-      border-radius: 12px;
-      background-color: #3679b5;
-      right: 60px;
-      &:first-child {
-        right: 120px;
-      }
-      &:last-child {
-        right: 0;
-      }
-    }
-  }
-  .pacman {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 80px;
-    width: 80px;
-    > span {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 80px;
-      width: 80px;
-      &::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        height: 40px;
-        width: 80px;
-        background-color: #00bfff;
-      }
-      &:first-child {
-        -webkit-animation: pacmanTop 0.5s infinite;
-        animation: pacmanTop 0.5s infinite;
-        &::before {
-          top: 0;
-          border-radius: 80px 80px 0px 0px;
-        }
-      }
-      &:nth-child(2){
-        -webkit-animation: pacmanBottom 0.5s infinite;
-        animation: pacmanBottom 0.5s infinite;
-        &::before {
-          bottom: 0;
-          border-radius: 0px 0px 80px 80px;
-        }
-      }
-      &:last-child {
-        &::before {
-          bottom: 0;
-          height: 80px;
-          width: 40px;
-          border-radius: 80px 0px 0px 80px;
-        }
-      }
-    }
-  }
-  @-webkit-keyframes animcircles {
-    0% {
-      -webkit-transform: translate(0px,0px);
-      transform: translate(0px,0px);
-    }
-    100% {
-      -webkit-transform: translate(-60px,0px);
-      transform: translate(-60px,0px);
-    }
-  }
-  @keyframes animcircles {
-    0% {
-      -webkit-transform: translate(0px,0px);
-      transform: translate(0px,0px);
-    }
-    100% {
-      -webkit-transform: translate(-60px,0px);
-      transform: translate(-60px,0px);
-    }
-  }
-  
-  @-webkit-keyframes pacmanTop {
-    0%, 100% {
-      -webkit-transform: rotate(0deg);
-      transform: rotate(0deg)
-    }
-    50% {
-      -webkit-transform: rotate(-45deg);
-      transform: rotate(-45deg)
-    }
-  }
-  @keyframes pacmanTop {
-    0%, 100% {
-      -webkit-transform: rotate(0deg);
-      transform: rotate(0deg)
-    }
-    50% {
-      -webkit-transform: rotate(-45deg);
-      transform: rotate(-45deg)
-    }
-  }
+  .loader .l_main{position:absolute;top:50%;left:50%;width:172px;height:128px;margin:0;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}
+  @media (max-width:550px){.loader{-webkit-transform:scale(0.75);transform:scale(0.75)}}
+  @media (max-width:440px){.loader{-webkit-transform:scale(0.5);transform:scale(0.5)}}
+  .l_square{position:relative}
+  .l_square:nth-child(1){margin-left:0px}
+  .l_square:nth-child(2){margin-left:44px}
+  .l_square:nth-child(3){margin-left:88px}
+  .l_square:nth-child(4){margin-left:132px}
+  .l_square span{position:absolute;top:0px;left:20px;height:36px;width:36px;border-radius:2px;background-color:#00bfff}
+  .l_square span:nth-child(1){top:0px}
+  .l_square span:nth-child(2){top:44px}
+  .l_square span:nth-child(3){top:88px}
+  .l_square:nth-child(1) span{-webkit-animation:animsquare1 2s infinite ease-in;animation:animsquare1 2s infinite ease-in}
+  .l_square:nth-child(2) span{-webkit-animation:animsquare2 2s infinite ease-in;animation:animsquare2 2s infinite ease-in}
+  .l_square:nth-child(3) span{-webkit-animation:animsquare3 2s infinite ease-in;animation:animsquare3 2s infinite ease-in}
+  .l_square:nth-child(4) span{-webkit-animation:animsquare4 2s infinite ease-in;animation:animsquare4 2s infinite ease-in}
+  .l_square span:nth-child(1){-webkit-animation-delay:0.00s;animation-delay:0.00s}
+  .l_square span:nth-child(2){-webkit-animation-delay:0.15s;animation-delay:0.15s}
+  .l_square span:nth-child(3){-webkit-animation-delay:0.30s;animation-delay:0.30s}
+  @-webkit-keyframes animsquare1{0%,5%,95%,100%{-webkit-transform:translate(0px,0px) rotate(0deg);transform:translate(0px,0px) rotate(0deg)}30%,70%{-webkit-transform:translate(-40px,0px) rotate(-90deg);transform:translate(-40px,0px) rotate(-90deg)}}
+  @keyframes animsquare1{0%,5%,95%,100%{-webkit-transform:translate(0px,0px) rotate(0deg);transform:translate(0px,0px) rotate(0deg)}30%,70%{-webkit-transform:translate(-40px,0px) rotate(-90deg);transform:translate(-40px,0px) rotate(-90deg)}}
+  @-webkit-keyframes animsquare2{0%,10%,90%,100%{-webkit-transform:translate(0px,0px) rotate(0deg);transform:translate(0px,0px) rotate(0deg)}35%,65%{-webkit-transform:translate(-40px,0px) rotate(-90deg);transform:translate(-40px,0px) rotate(-90deg)}}
+  @keyframes animsquare2{0%,10%,90%,100%{-webkit-transform:translate(0px,0px) rotate(0deg);transform:translate(0px,0px) rotate(0deg)}35%,65%{-webkit-transform:translate(-40px,0px) rotate(-90deg);transform:translate(-40px,0px) rotate(-90deg)}}
+  @-webkit-keyframes animsquare3{0%,15%,85%,100%{-webkit-transform:translate(0px,0px) rotate(0deg);transform:translate(0px,0px) rotate(0deg)}40%,60%{-webkit-transform:translate(-40px,0px) rotate(-90deg);transform:translate(-40px,0px) rotate(-90deg)}}
+  @keyframes animsquare3{0%,15%,85%,100%{-webkit-transform:translate(0px,0px) rotate(0deg);transform:translate(0px,0px) rotate(0deg)}40%,60%{-webkit-transform:translate(-40px,0px) rotate(-90deg);transform:translate(-40px,0px) rotate(-90deg)}}
+  @-webkit-keyframes animsquare4{0%,20%,80%,100%{-webkit-transform:translate(0px,0px) rotate(0deg);transform:translate(0px,0px) rotate(0deg)}45%,55%{-webkit-transform:translate(-40px,0px) rotate(-90deg);transform:translate(-40px,0px) rotate(-90deg)}}
+  @keyframes animsquare4{0%,20%,80%,100%{-webkit-transform:translate(0px,0px) rotate(0deg);transform:translate(0px,0px) rotate(0deg)}45%,55%{-webkit-transform:translate(-40px,0px) rotate(-90deg);transform:translate(-40px,0px) rotate(-90deg)}}
 
-  @-webkit-keyframes pacmanBottom {
-    0%, 100% {
-      -webkit-transform: rotate(0deg);
-      transform: rotate(0deg)
-    }
-    50% {
-      -webkit-transform: rotate(45deg);
-      transform: rotate(45deg)
-    }
-  }
-  @keyframes pacmanBottom {
-    0%, 100% {
-      -webkit-transform: rotate(0deg);
-      transform: rotate(0deg)
-    }
-    50% {
-      -webkit-transform: rotate(45deg);
-      transform: rotate(45deg)
-    }
-  }
   @-webkit-keyframes changeContent {
     0% {
       content: ".";
