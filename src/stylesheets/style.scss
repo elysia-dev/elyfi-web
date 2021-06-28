@@ -785,24 +785,8 @@ span {
         margin: 20px;
         &__column {
           position: relative;
-          &::after {
-            content: "";
-            position: absolute;
-            border: 6px solid transparent;
-            border-bottom: 10px solid #1c1c1c;
-            margin-left: 3px;
-            bottom: 5px;
-          }
           &--selected {
             position: relative;
-            &::after {
-              content: "";
-              position: absolute;
-              border: 6px solid transparent;
-              border-top: 10px solid #1c1c1c;
-              margin-left: 3px;
-              top: 5px;
-            }
           }
         }
         > tr > th {
