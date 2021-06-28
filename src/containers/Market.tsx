@@ -20,7 +20,7 @@ const Market: React.FunctionComponent = () => {
       <section className="dashboard main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
         <div className="main__title-wrapper">
           <h4 className="main__title-text">Total Market Size</h4>
-          <h2 className="main__title-text">
+          <h2 className="main__title-text--blue">
             {
               usdFormatter.format(
                 parseInt(
@@ -69,8 +69,10 @@ const Market: React.FunctionComponent = () => {
                       {
                         account &&
                         <th>
-                          <div onClick={(e) => { e.stopPropagation(); history.push(`dashboard?reserveId=${reserves[0].id}`) }}>
-                            {"Deposit | Withdraw"}
+                          <div className="tokens__table__button" onClick={(e) => { e.stopPropagation(); history.push(`dashboard?reserveId=${reserves[0].id}`) }}>
+                            <p>
+                              {"Deposit | Withdraw"}
+                            </p>
                           </div>
                         </th>
                       }

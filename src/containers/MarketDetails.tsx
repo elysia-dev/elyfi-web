@@ -302,8 +302,10 @@ const MarketDetail: React.FunctionComponent = () => {
           </div>
         </div>
       </div>
-      <div onClick={() => { history.push(`/dashboard?reserveId=${id}`) }}>
-        Deposit | Withdraw
+      <div className="market__detail__button" onClick={() => { history.push(`/dashboard?reserveId=${id}`) }}>
+        <p>
+          Deposit | Withdraw
+        </p>
       </div>
     </>
   );

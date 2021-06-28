@@ -240,6 +240,7 @@ span {
         color: #ffffff;
         font-size: 30px;
         margin: 0 auto 20px;
+        font-family: "Montserrat-bold";
         &--blue {
           color: #00bfff;
           font-size: 60px;
@@ -354,6 +355,12 @@ span {
         color: #fff;
         font-size: 40px;
         margin: 0 auto;
+        font-family: "Montserrat-bold";
+        &--blue {
+          color: #00bfff;
+          font-size: 60px;
+          margin: 0 auto 26px;
+        }
       }
     }
   }
@@ -521,6 +528,21 @@ span {
   }
   .market {
     &__detail {
+      &__button {
+        width: 445px;
+        height: 55px;
+        background-color: #00BFFF;
+        border-radius: 5px;
+        line-height: 55px;
+        margin: 0 auto 100px;
+        cursor: pointer;
+        > p {
+          font-size: 20px;
+          text-align: center;
+          color: #ffffff;
+          cursor: pointer;
+        }
+      }
       &__title-token {
         $height: 120px;
         $width: 1190px;
@@ -616,6 +638,7 @@ span {
               text-align: center;
               border-radius: 12px;
               margin: 0 0 0 5px !important;
+              cursor: pointer;
             }
           }
         }
@@ -726,18 +749,22 @@ span {
           width: 155px;
           border-bottom: 5px solid #333333;
           padding-bottom: 10px;
+          cursor: pointer;
           &--disable {
             width: 155px;
             border-bottom: 5px solid #B7B7B7;
             padding-bottom: 10px;
+            cursor: pointer;
             > p {
               margin: 0;
               color: #B7B7B7;
+              cursor: pointer;
             }
           }
           > p {
             margin: 0;
             color: #333333;
+            cursor: pointer;
           }
           &__wrapper {
             padding: 34px 29px;
@@ -781,6 +808,16 @@ span {
       width: 100%;
       border-collapse: separate;
       border-spacing: 0 15px;
+      &__button {
+        width: 169px;
+        height: 30px;
+        border: 1px solid #333333;
+        border-radius: 3px;
+        margin: 0 auto;
+        > p {
+          font-size: 14px;
+        }
+      }
       &__header {
         margin: 20px;
         &__column {
@@ -802,6 +839,7 @@ span {
         }
       }
       &-body {
+        cursor: pointer;
         &-button {
           border: 1px solid #333333;
           border-radius: 3px;
@@ -816,10 +854,30 @@ span {
           box-shadow: 0px 0px 6px #00000029;
           border-radius: 5px;
           margin: 20px;
-          > th > div {
-            display: flex;
-            justify-content: space-evenly;
-            align-items: center;
+          cursor: pointer;
+          > th {
+            > p {
+              cursor: pointer;
+            }
+            &:first-child {
+              > div {
+                display: flex;
+                justify-content: left;
+                align-items: center;
+                gap: 10px;
+                cursor: pointer;
+              }
+            }
+            > div {
+              display: flex;
+              justify-content: space-evenly;
+              align-items: center;
+              cursor: pointer;
+              > p {
+                cursor: pointer;
+              }
+              
+            }
           }
         }
       }
@@ -1047,6 +1105,10 @@ span {
         height: 600px;
         box-shadow: 0px 0px 6px #00000029;
         border-radius: 5px;
+        cursor: pointer;
+        > iframe {
+          cursor: pointer;
+        }
         &__container {
           display: grid;
           margin-bottom: 125px;
@@ -1061,22 +1123,36 @@ span {
           line-height: 62px;
           text-align: center;
           color: #333333;
+          cursor: pointer;
         }
         &__value {
           margin: 17px 0;
+          cursor: pointer;
           color: #888888;
           &__container {
             padding: 0 20px;
             box-sizing: border-box;
+            cursor: pointer;
           }
           &__wrapper {
             border-bottom: 1px solid #f0f0f1;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            cursor: pointer;
+            > div {
+              cursor: pointer;
+              > p {
+                cursor: pointer;
+              }
+              > span {
+                cursor: pointer;
+              }
+            }
           }
           &__wrapper:last-child {
             border: 0;
+            cursor: pointer;
           }
         }
       }
@@ -1275,15 +1351,19 @@ span {
         &__column {
           flex: 1;
           text-align: center;
+          cursor: pointer;
           > p {
             color: #b7b7b7;
+            cursor: pointer;
           }
           &--selected {
             flex: 1;
             text-align: center;
             border-bottom: 3px solid #00bfff;
+            cursor: pointer;
             > p {
               color: #00bfff;
+              cursor: pointer;
             }
           }
         }
@@ -1456,6 +1536,7 @@ span {
   width: 25px;
   height: 25px;
   display: inline-block;
+  cursor: pointer;
   &--1 {
     height: 25px;
     width: 2px;
@@ -1490,7 +1571,6 @@ span {
   }
   &__wrapper {
     display: flex;
-    width: 300px;
     flex-direction: row;
     align-items: center;
     height: 50px;
