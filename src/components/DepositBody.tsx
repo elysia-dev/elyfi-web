@@ -19,7 +19,7 @@ const DepositBody: React.FunctionComponent<{
 	return (
 		<div className="modal__deposit">
 			<div className="modal__deposit__value-wrapper">
-				<p className="modal__deposit__maximum bold" onClick={() => { setAmount(utils.formatEther(balance)) }}>
+				<p className="modal__deposit__maximum bold" onClick={() => { setAmount((Math.floor(parseFloat(utils.formatEther(balance)) * 100000) / 100000).toString()) }}>
 					MAX
 				</p>
 				<p className="modal__deposit__value bold">
@@ -45,7 +45,7 @@ const DepositBody: React.FunctionComponent<{
 						</p>
 						<div className="modal__deposit__despositable-wallet-balance-wrapper">
 							<p className="bold">
-								{`${utils.formatEther(balance)} ${tokenName}`}
+								{`${Math.floor(parseFloat(utils.formatEther(balance)) * 100000) / 100000} ${tokenName}`}
 							</p>
 						</div>
 					</div>
