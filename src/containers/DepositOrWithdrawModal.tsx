@@ -79,11 +79,15 @@ const DepositOrWithdrawModal: FunctionComponent<{
               <p className="modal__header__name bold">{tokenName}</p>
             </div>
           </div>
-          <div className="close-button" onClick={onClose}>
-            <div className="close-button--1">
-              <div className="close-button--2" />
+          {txWating ? (
+            <></>
+          ) : (
+            <div className="close-button" onClick={onClose}>
+              <div className="close-button--1">
+                <div className="close-button--2" />
+              </div>
             </div>
-          </div>
+          )}
         </div>
         <div className='modal__converter'>
           <div
@@ -100,24 +104,44 @@ const DepositOrWithdrawModal: FunctionComponent<{
           </div>
         </div>
         <div className="modal__body">
-          {selected ? (
-            <DepositBody
-              tokenName={tokenName}
-              depositAPY={toPercent(reserve.depositAPY || '0')}
-              miningAPR={toPercent(reserve.depositAPY || '0')}
-              balance={balance}
-              isApproved={allownace.gt(balance)}
-              txWating={txWating}
-              increaseAllownace={requestAllowance}
-              deposit={requestDeposit}
-            />
+          {txWating ? (
+            <div className="loading-indicator">
+              <div className="loader">
+                <div className="circles">
+                  <span className="one"></span>
+                  <span className="two"></span>
+                  <span className="three"></span>
+                </div>
+                <div className="pacman">
+                  <span className="top"></span>
+                  <span className="bottom"></span>
+                  <span className="left"></span>
+                </div>
+              </div>
+              <div className="loading-indicator__text">
+                <p className="bold">Transaction is now loading</p>
+              </div>
+            </div>
           ) : (
-            <WithdrawBody
-              tokenName={tokenName}
-              depositBalance={depositBalance}
-              txWating={txWating}
-              withdraw={reqeustWithdraw}
-            />
+            selected ? (
+              <DepositBody
+                tokenName={tokenName}
+                depositAPY={toPercent(reserve.depositAPY || '0')}
+                miningAPR={toPercent(reserve.depositAPY || '0')}
+                balance={balance}
+                isApproved={allownace.gt(balance)}
+                txWating={txWating}
+                increaseAllownace={requestAllowance}
+                deposit={requestDeposit}
+              />
+            ) : (
+              <WithdrawBody
+                tokenName={tokenName}
+                depositBalance={depositBalance}
+                txWating={txWating}
+                withdraw={reqeustWithdraw}
+              />
+            )
           )}
         </div>
       </div>

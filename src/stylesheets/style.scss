@@ -1583,3 +1583,203 @@ span {
     fill: #00A7FF;
   }
 } 
+
+.loading-indicator {
+  height: 450px;
+  &__text {
+    position: absolute;
+    bottom: 30px;
+    font-size: 24px;
+    text-align: center;
+    width: 100%;
+    right: 10px;
+    > p {
+      display: inline;
+    }
+    &::after {
+      content: "....";
+      position: absolute;
+      width: 30px;
+      animation: changeContent 3s linear infinite alternate;
+      text-align: left;
+      margin-left: 5px;
+    }
+  }
+
+  .loader {
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    height: 60px;
+    width: 235px;
+    margin: 0;
+    -webkit-transform:translate(-50%,-50%);
+    transform:translate(-50%,-50%);
+  }
+  .circles {
+    position: absolute;
+    left: 40px;
+    top: 0;
+    height: 60px;
+    width: 200px;
+    -webkit-animation: animcircles 0.5s infinite linear;
+    animation: animcircles 0.5s infinite linear;
+    > span {
+      position: absolute;
+      top: 30px;
+      height: 12px;
+      width: 12px;
+      border-radius: 12px;
+      background-color: #3679b5;
+      right: 60px;
+      &:first-child {
+        right: 120px;
+      }
+      &:last-child {
+        right: 0;
+      }
+    }
+  }
+  .pacman {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 80px;
+    width: 80px;
+    > span {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 80px;
+      width: 80px;
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        height: 40px;
+        width: 80px;
+        background-color: #00bfff;
+      }
+      &:first-child {
+        -webkit-animation: pacmanTop 0.5s infinite;
+        animation: pacmanTop 0.5s infinite;
+        &::before {
+          top: 0;
+          border-radius: 80px 80px 0px 0px;
+        }
+      }
+      &:nth-child(2){
+        -webkit-animation: pacmanBottom 0.5s infinite;
+        animation: pacmanBottom 0.5s infinite;
+        &::before {
+          bottom: 0;
+          border-radius: 0px 0px 80px 80px;
+        }
+      }
+      &:last-child {
+        &::before {
+          bottom: 0;
+          height: 80px;
+          width: 40px;
+          border-radius: 80px 0px 0px 80px;
+        }
+      }
+    }
+  }
+  @-webkit-keyframes animcircles {
+    0% {
+      -webkit-transform: translate(0px,0px);
+      transform: translate(0px,0px);
+    }
+    100% {
+      -webkit-transform: translate(-60px,0px);
+      transform: translate(-60px,0px);
+    }
+  }
+  @keyframes animcircles {
+    0% {
+      -webkit-transform: translate(0px,0px);
+      transform: translate(0px,0px);
+    }
+    100% {
+      -webkit-transform: translate(-60px,0px);
+      transform: translate(-60px,0px);
+    }
+  }
+  
+  @-webkit-keyframes pacmanTop {
+    0%, 100% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg)
+    }
+    50% {
+      -webkit-transform: rotate(-45deg);
+      transform: rotate(-45deg)
+    }
+  }
+  @keyframes pacmanTop {
+    0%, 100% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg)
+    }
+    50% {
+      -webkit-transform: rotate(-45deg);
+      transform: rotate(-45deg)
+    }
+  }
+
+  @-webkit-keyframes pacmanBottom {
+    0%, 100% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg)
+    }
+    50% {
+      -webkit-transform: rotate(45deg);
+      transform: rotate(45deg)
+    }
+  }
+  @keyframes pacmanBottom {
+    0%, 100% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg)
+    }
+    50% {
+      -webkit-transform: rotate(45deg);
+      transform: rotate(45deg)
+    }
+  }
+  @-webkit-keyframes changeContent {
+    0% {
+      content: ".";
+    }
+    25% {
+      content: "..";
+    }
+    50% {
+      content: "...";
+    }
+    75% {
+      content: "....";
+    }
+    100% {
+      content: ".....";
+    }
+  }
+  @keyframes changeContent {
+    0% {
+      content: ".";
+    }
+    25% {
+      content: "..";
+    }
+    50% {
+      content: "...";
+    }
+    75% {
+      content: "....";
+    }
+    100% {
+      content: ".....";
+    }
+  }
+}

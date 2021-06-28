@@ -65,7 +65,9 @@ const DepositBody: React.FunctionComponent<{
 				</div>
 			</div>
 			{
-				txWating ? <div className="modal__button">Wating...</div>
+				txWating ? (
+					<div className="modal__button">Wating...</div>
+				)
 					: isApproved ?
 						<div
 							className={`modal__button${amountLteZero || amountGtBalance ? "--disable" : ""}`}
@@ -86,6 +88,7 @@ const DepositBody: React.FunctionComponent<{
 						</div>
 			}
 		</div>
+		
 	)
 }
 
