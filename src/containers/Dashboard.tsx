@@ -88,12 +88,10 @@ const Dashboard: React.FunctionComponent = () => {
       </section>
       <section className="tokens">
         <div className="tokens__container">
-          <div className="tokens__header-wrapper">
-            <h1 className="tokens__header-text">
-              TOKENS YOU DEPOSITED
-            </h1>
-            <hr className="tokens__header-line" />
-          </div>
+        <div className="tokens__title">
+          <p className="bold">TOKENS YOU DEPOSITED</p>
+          <hr />
+        </div>
           <table className="tokens__table">
             <thead className="tokens__table__header">
               <tr>

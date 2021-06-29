@@ -1287,6 +1287,12 @@ span {
   .linkage {
     width: 1190px;
     margin: 100px auto 130px;
+    &__google-map__wrapper {
+      width: 287px;
+      height: 287px;
+      border: 0;
+      border-radius: 5px;
+    }
     &__title-line {
       display: flex;
       flex-direction: row;
@@ -1351,16 +1357,16 @@ span {
         flex-direction: column;
         &__title {
           border-bottom: 1px solid #F0F0F1;
-          padding: 15px 0;
+          padding: 15px;
           margin: 0;
         }
         &__content {
           flex: 1;
-          margin: 15px 0;
+          margin: 15px;
         }
         &__link {
           border-top: 1px solid #F0F0F1;
-          padding: 15px 0;
+          padding: 15px;
           margin: 0;
         }
         &__container {

@@ -1,7 +1,11 @@
 import ServiceBackground from 'src/assets/images/service-background.png';
 import 'src/stylesheets/style.scss';
+import GoogleMapReact from 'google-map-react';
 
 const LinkageInstitution = () => {
+
+  const defaultLat = 37.5172;
+  const defaultLng = 127.0473;
 
   return (
     <>
@@ -16,13 +20,17 @@ const LinkageInstitution = () => {
           <hr />
         </div>
         <div className="linkage__collateral__providers__container">
-          <iframe 
-            style={{
-              width: 287, height: 287, border: 0, borderRadius: 5
-            }}
-            title="Map"
-            src={"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1620699.5027926632!2d126.25985618515162!3d37.49780551845179!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3564be80a579fa1d%3A0xd03511f6c7ffaae7!2z7LaU64W4!5e0!3m2!1sko!2skr!4v1624956237170!5m2!1sko!2skr"}
-          />
+          <div className="linkage__google-map__wrapper">
+            <GoogleMapReact
+              bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY! }}
+              defaultCenter={{
+                lat: defaultLat,
+                lng: defaultLng,
+              }}
+              
+              defaultZoom={10}
+            />
+          </div>
           <div className="linkage__collateral__providers">
             <p className="linkage__collateral__providers__title bold">
               (주) 비스컴퍼니
@@ -89,13 +97,17 @@ const LinkageInstitution = () => {
           </div>
         </div>
         <div className="linkage__legal__providers__container">
-          <iframe 
-            style={{
-              width: 287, height: 287, border: 0, borderRadius: 5
-            }}
-            title="Map"
-            src={"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1620699.5027926632!2d126.25985618515162!3d37.49780551845179!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3564be80a579fa1d%3A0xd03511f6c7ffaae7!2z7LaU64W4!5e0!3m2!1sko!2skr!4v1624956237170!5m2!1sko!2skr"}
-          />
+          <div className="linkage__google-map__wrapper">
+            <GoogleMapReact
+              bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY! }}
+              defaultCenter={{
+                lat: defaultLat,
+                lng: defaultLng,
+              }}
+              
+              defaultZoom={10}
+            />
+          </div>
           <div className="linkage__legal__providers">
             <p className="linkage__legal__providers__title bold">
               (주) 비스컴퍼니
