@@ -16,6 +16,7 @@ import MarketDetail from './containers/MarketDetails';
 import Dashboard from './containers/Dashboard';
 import { useWeb3React } from '@web3-react/core';
 import DisableWalletPage from './components/DisableWalletPage';
+import LinkageInstitution from 'src/containers/LinkageInstitution';
 
 const AppNavigator: React.FC = () => {
   const { active } = useWeb3React();
@@ -25,6 +26,7 @@ const AppNavigator: React.FC = () => {
       <Router>
         <Navigation />
         <Switch>
+          <Route exact path="/linkage_institution" component={LinkageInstitution} />
           <Route exact path="/dashboard" component={active ? Dashboard : DisableWalletPage} />
           <Route exact path="/portfolio" component={Portfolio} />
           <Route exact path="/asset_detail" component={AssetDetail} />

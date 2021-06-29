@@ -42,7 +42,7 @@ const Navigation: FunctionComponent = () => {
               )
             })
           }
-          <a href='https://elyfi-docs.elysia.land'>
+          <Link to="/linkage_institution">
             <div className="navigation__link__wrapper">
               <div className="navigation__link"
                 onMouseEnter={() => setHover(4)}
@@ -52,7 +52,7 @@ const Navigation: FunctionComponent = () => {
                 <div className={`navigation__link__under-line${hover === 4 ? " hover" : " blur"}`} />
               </div>
             </div>
-          </a>
+          </Link>
           {window.ethereum?.isMetaMask ? <Wallet triedEager={triedEager} /> : <InstallMetamask />}
         </div>
       </div>
