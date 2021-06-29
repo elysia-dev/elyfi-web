@@ -3,5 +3,7 @@
     "**/.node_modules": true,
     "**/build": true
   },
-  "editor.tabSize":2
+  "[typescript]": {
+    "editor.tabSize":2
+  }
 }
