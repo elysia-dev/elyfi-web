@@ -30,3 +30,4 @@ src/queries/__generated__/*
 
 aws/*
 
+.env
