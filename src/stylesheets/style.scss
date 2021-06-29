@@ -1629,7 +1629,7 @@ span {
   border: 0 !important;
   -webkit-box-shadow: none !important;
   background-color: #ffffff !important;
-  box-shadow: 0px 0px 6px #00000029 !important;
+  // box-shadow: 0px 0px 6px #00000029 !important;
   border-radius: 5px;
   padding: 8px;
   width: 220px !important;
@@ -1667,6 +1667,18 @@ span {
   // transform: scale(1.2) translate(-10%, -10%);
   > g rect:hover {
     fill: #00a7ff;
+    stroke: transparent;
+    z-index: 99;
+  }
+  > g g g rect {
+    fill: #00a7ff;
+    stroke: transparent;
+    z-index: 99;
+  }
+  > g g circle {
+    stroke: transparent;
+    fill: #1C5E9A;
+    r: 6;
   }
 }
 
