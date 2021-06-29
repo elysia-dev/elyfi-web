@@ -78,7 +78,7 @@ const Portfolio = () => {
                   abToken={abToken}
                   onClick={() => {
                     history.push({
-                      pathname: "asset_detail",
+                      pathname: `/portfolio/${abToken.id}`,
                     })
                   }}
                 />
