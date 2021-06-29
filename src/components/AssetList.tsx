@@ -1,31 +1,48 @@
+import moment from 'moment';
 import { FunctionComponent } from 'react'
-import Assets from 'src/types/Assets';
-import dateFillZero from 'src/utiles/dateFillZero';
+import { GetAllAssetBonds_assetBondTokens } from 'src/queries/__generated__/GetAllAssetBonds';
+import { daiToUsd, toPercent } from 'src/utiles/formatters';
+import { parseTokenId } from 'src/utiles/parseTokenId';
+import GoogleMapReact from 'google-map-react';
 
-interface Props {
-  assets: Assets,
+const abTokenStates = [
+  'Empty',
+  'Settled',
+  'Confirmed',
+  'Collateralized',
+  'Matured',
+  'Redeemed',
+  'Not_performed',
+]
+
+const defaultLat = 37.5172;
+const defaultLng = 127.0473;
+
+const AssetList: FunctionComponent<{
+  abToken: GetAllAssetBonds_assetBondTokens,
   onClick: () => void,
-}
-const AssetList: FunctionComponent<Props> = ({ assets, onClick }) => {
-  const timestamp = new Date(
-    assets.maturityDate
-  );
+}> = ({ abToken, onClick }) => {
+  const parsedTokenId = parseTokenId(abToken.id);
 
   return (
     <div className="portfolio__asset-list__info" onClick={onClick}>
       <p className="portfolio__asset-list__info__status">
-        {assets.status}
+        {abTokenStates[abToken.state || 0]}
       </p>
-      <iframe style={{
-        width: "100%", height: 304, border: 0
-      }}
-        title="Map"
-        src={assets.map}
-      />
+      <div style={{ width: "100%", height: 304, border: 0 }}>
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY! }}
+          defaultCenter={{
+            lat: (parsedTokenId.collateralLatitude / 100000) || defaultLat,
+            lng: (parsedTokenId.collateralLatitude / 100000) || defaultLng,
+          }}
+          defaultZoom={10}
+        />
+      </div>
       <div className="portfolio__asset-list__info__value__container">
         <div className="portfolio__asset-list__info__value__wrapper">
           <p className="portfolio__asset-list__info__value bold" style={{ color: "#333333" }}>
-            Loan #{assets.loanNumber}
+            Loan #{parsedTokenId.nonce}
           </p>
         </div>
         <div className="portfolio__asset-list__info__value__wrapper">
@@ -33,7 +50,7 @@ const AssetList: FunctionComponent<Props> = ({ assets, onClick }) => {
             대출금
           </p>
           <div>
-            <span className="bold">{assets.loan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</span> <span>{assets.method}</span>
+            <span className="bold">{daiToUsd(abToken.principal || '0')}</span>
           </div>
         </div>
         <div className="portfolio__asset-list__info__value__wrapper">
@@ -41,7 +58,7 @@ const AssetList: FunctionComponent<Props> = ({ assets, onClick }) => {
             이자율
           </p>
           <div>
-            <span className="bold">{assets.interest / 100}</span> <span>%</span>
+            {toPercent(abToken.interestRate || '0')}
           </div>
         </div>
         <div className="portfolio__asset-list__info__value__wrapper">
@@ -50,7 +67,7 @@ const AssetList: FunctionComponent<Props> = ({ assets, onClick }) => {
           </p>
           <div>
             <p className="bold">
-              {timestamp.getFullYear() + "." + dateFillZero(timestamp.getMonth() + 1) + "." + dateFillZero(timestamp.getDate())}
+              {abToken.maturityTimestamp ? moment(abToken.maturityTimestamp * 1000).format('YYYY.MM.DD') : '-'}
             </p>
           </div>
         </div>

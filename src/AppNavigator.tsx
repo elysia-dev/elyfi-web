@@ -29,7 +29,7 @@ const AppNavigator: React.FC = () => {
           <Route exact path="/linkage_institution" component={LinkageInstitution} />
           <Route exact path="/dashboard" component={active ? Dashboard : DisableWalletPage} />
           <Route exact path="/portfolio" component={Portfolio} />
-          <Route exact path="/asset_detail" component={AssetDetail} />
+          <Route exact path="/portfolio/:id" component={AssetDetail} />
           <Route exact path="/markets/:id" component={MarketDetail} />
           <Route path="/" component={Market} />
         </Switch>

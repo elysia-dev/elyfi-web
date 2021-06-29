@@ -1,18 +1,21 @@
 import { FunctionComponent } from "react";
-import numberFormat from "src/utiles/numberFormat";
+import { GetAllReserves_reserves } from "src/queries/__generated__/GetAllReserves";
+import { daiToUsd } from "src/utiles/formatters";
+import Skeleton from 'react-loading-skeleton';
+import { constants } from "ethers";
 
-interface Props {
-  loan: number,
-  totalLoan: number,
-  interest: number,
-  overdueInterest: number,
-  mortgageRate: number,
-  abToken: number
-}
-const InvestmentStatus: FunctionComponent<Props> = (props: Props) => {
-  const TempBUSDValue = 1117.43;
-  // loan: 대출금, totalLoan: 총 대출금, interest: 이자, overdueInterest: 연체이자, mortgageRate: 금리, abToken: 부실토큰 판매금
-
+/*
+    대출금 : borrow(repay filter) 총합
+    누적 대출금 : borrow 총합
+    상환예정금액 : totalBorrow
+    예상 수익률 : deposit APR + mining?
+    누적 상환 완료 금액 : repay fee까지 포함
+    누적 수익? : repay 총합
+  */
+const InvestmentStatus: FunctionComponent<{
+  loading: boolean,
+  reserve?: GetAllReserves_reserves,
+}> = ({ loading, reserve }) => {
   return (
     <div className="portfolio__investment-status__container">
       <p className="portfolio__investment-status__title bold">
@@ -25,8 +28,16 @@ const InvestmentStatus: FunctionComponent<Props> = (props: Props) => {
           </td>
           <td>
             <div>
-              <p>$ {numberFormat(props.totalLoan * TempBUSDValue)}</p>
-              <p>{props.totalLoan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} BUSD</p>
+              {
+                loading || !reserve ? <Skeleton /> :
+                  <p>
+                    {daiToUsd(
+                      reserve.borrow
+                        .filter((borrow) => !reserve.repay.find((repay) => repay.tokenId === borrow.tokenId))
+                        .reduce((res, borrow) => res.add(borrow.amount), constants.Zero)
+                    )}
+                  </p>
+              }
             </div>
           </td>
         </tr>
@@ -36,8 +47,10 @@ const InvestmentStatus: FunctionComponent<Props> = (props: Props) => {
           </td>
           <td>
             <div>
-              <p>$ {numberFormat(props.totalLoan + props.interest + props.overdueInterest * TempBUSDValue)}</p>
-              <p>{(props.totalLoan + props.interest + props.overdueInterest).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} BUSD</p>
+              {
+                loading || !reserve ? <Skeleton /> :
+                  <p>{daiToUsd(reserve.totalBorrow)}</p>
+              }
             </div>
           </td>
         </tr>
@@ -47,7 +60,10 @@ const InvestmentStatus: FunctionComponent<Props> = (props: Props) => {
           </td>
           <td>
             <div>
-              <p>{props.mortgageRate * 100}%</p>
+              {
+                loading || !reserve ? <Skeleton /> :
+                  <p>8.00%</p>
+              }
             </div>
           </td>
         </tr>
@@ -59,8 +75,15 @@ const InvestmentStatus: FunctionComponent<Props> = (props: Props) => {
           </td>
           <td>
             <div>
-              <p>$ {numberFormat(props.loan * TempBUSDValue)}</p>
-              <p>{props.loan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} BUSD</p>
+              {
+                loading || !reserve ? <Skeleton /> :
+                  <p>
+                    {daiToUsd(
+                      reserve.borrow
+                        .reduce((res, borrow) => res.add(borrow.amount), constants.Zero)
+                    )}
+                  </p>
+              }
             </div>
           </td>
         </tr>
@@ -70,8 +93,15 @@ const InvestmentStatus: FunctionComponent<Props> = (props: Props) => {
           </td>
           <td>
             <div>
-              <p>$ {numberFormat(props.loan * props.interest * props.overdueInterest + props.abToken * TempBUSDValue)}</p>
-              <p>{(props.loan * props.interest * props.overdueInterest + props.abToken).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} BUSD</p>
+              {
+                loading || !reserve ? <Skeleton /> :
+                  <p>
+                    {daiToUsd(
+                      reserve.repay
+                        .reduce((res, repay) => res.add(repay.userDTokenBalance).add(repay.feeOnCollateralServiceProvider), constants.Zero)
+                    )}
+                  </p>
+              }
             </div>
           </td>
         </tr>
@@ -81,8 +111,15 @@ const InvestmentStatus: FunctionComponent<Props> = (props: Props) => {
           </td>
           <td>
             <div>
-              <p>$ {numberFormat(props.loan * props.interest * props.overdueInterest * TempBUSDValue)}</p>
-              <p>{(props.loan * props.interest * props.overdueInterest * TempBUSDValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} BUSD</p>
+              {
+                loading || !reserve ? <Skeleton /> :
+                  <p>
+                    {daiToUsd(
+                      reserve.repay
+                        .reduce((res, repay) => res.add(repay.userDTokenBalance), constants.Zero)
+                    )}
+                  </p>
+              }
             </div>
           </td>
         </tr>
