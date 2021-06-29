@@ -28,3 +28,5 @@ yarn-error.log*
 __generated__/*
 src/queries/__generated__/*
 
+aws/*
+
