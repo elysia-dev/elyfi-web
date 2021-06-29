@@ -13,6 +13,7 @@ import { Chart } from "react-google-charts";
 import moment from 'moment';
 import ErrorPage from 'src/components/ErrorPage';
 import ReservesContext from 'src/contexts/ReservesContext';
+import { GetAllReserves_reserves_reserveHistory } from 'src/queries/__generated__/GetAllReserves';
 
 const MarketDetail: React.FunctionComponent = () => {
   const history = useHistory();
@@ -29,18 +30,50 @@ const MarketDetail: React.FunctionComponent = () => {
 
   const utilization = BigNumber.from(data.totalBorrow || '0').div(data.totalDeposit || '1').toNumber();
 
-  const maxDeposit = data.reserveHistory.reduce((res, cur) =>
-    res < parseInt(utils.formatEther(cur.totalDeposit)) ? parseInt(utils.formatEther(cur.totalDeposit)) : res
-    , 0) || 0
+  const reducedData = data.reserveHistory.reduce((res: GetAllReserves_reserves_reserveHistory[], cur) => {
+    if (res.length === 0) {
+      res.push(cur)
+      return res;
+    }
 
-  const maxBorrow = data.reserveHistory.reduce((res, cur) =>
+    const lastElement = res[res.length - 1];
+
+    if (moment(cur.timestamp * 1000).format('YYYY-MM-DD') === moment(lastElement.timestamp * 1000).format('YYYY-MM-DD')) {
+      res.pop();
+    }
+
+    res.push(cur);
+
+    return res
+  }, [])
+
+  const emptyData = Array(7 - reducedData.length).fill(0).map((_data, index) => {
+    const baseTime = reducedData.length > 0 ? moment(reducedData[0].timestamp * 1000) : moment();
+
+    return {
+      id: '0x',
+      borrowAPY: '0',
+      depositAPY: '0',
+      totalBorrow: '0',
+      totalDeposit: '0',
+      timestamp: baseTime.subtract((index + 1), 'days').unix(),
+    } as GetAllReserves_reserves_reserveHistory
+  })
+
+  const filledData = [...emptyData.reverse(), ...reducedData];
+
+  const maxDeposit = reducedData.reduce((res, cur) =>
+    res < parseInt(utils.formatEther(cur.totalDeposit)) ? parseInt(utils.formatEther(cur.totalDeposit)) : res
+    , 0) || 1
+
+  const maxBorrow = reducedData.reduce((res, cur) =>
     res < parseInt(utils.formatEther(cur.totalBorrow)) ? parseInt(utils.formatEther(cur.totalBorrow)) : res
-    , 0) || 0
+    , 0) || 1
 
   // APY scale is very tiny.
   // So use amplified apy by base(max Deposit or max Borrow).
   // amplified apy = apy / 5 * base + base * 1.2
-  const chartData = (data.reserveHistory.map((reserve, _x) => {
+  const chartData = (filledData.map((reserve, _x) => {
     const apy = utils.formatUnits(!graphConverter ? reserve.depositAPY : reserve.borrowAPY, 25);
     const base = Math.round(!graphConverter ? maxDeposit : maxBorrow);
 

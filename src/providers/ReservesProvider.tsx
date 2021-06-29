@@ -4,6 +4,7 @@ import { GET_ALL_RESERVES } from 'src/queries/reserveQueries';
 import { GetAllReserves } from 'src/queries/__generated__/GetAllReserves';
 import Loading from 'src/components/Loading';
 import ErrorPage from 'src/components/ErrorPage';
+import moment from 'moment';
 
 const ReservesProvider: React.FC = (props) => {
   const {
@@ -12,6 +13,9 @@ const ReservesProvider: React.FC = (props) => {
     error,
   } = useQuery<GetAllReserves>(
     GET_ALL_RESERVES,
+    {
+      variables: { minTimestamp: moment().subtract(7, 'days').unix() }
+    }
   )
 
   if (loading) return (<Loading />)

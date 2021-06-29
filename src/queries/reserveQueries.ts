@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const GET_ALL_RESERVES = gql`
-  query GetAllReserves {
+  query GetAllReserves($minimumTimestamp: Int) {
 	reserves {
     id,
     lTokenInterestIndex,
@@ -22,7 +22,7 @@ export const GET_ALL_RESERVES = gql`
       timestamp,
       tokenId
     },
-    reserveHistory(orderBy: timestamp) {
+    reserveHistory(orderBy: timestamp, timestamp: { gt: minimumTimestamp })  {
         id,
         timestamp,
         borrowAPY,
