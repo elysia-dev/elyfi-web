@@ -39,7 +39,7 @@ const MarketDetail: React.FunctionComponent = () => {
 
   if (error) return (<ErrorPage />)
 
-  const utilization = BigNumber.from(data?.reserve?.totalBorrow || '0').div(data?.reserve?.toatlDeposit || '1').toNumber();
+  const utilization = BigNumber.from(data?.reserve?.totalBorrow || '0').div(data?.reserve?.totalDeposit || '1').toNumber();
 
   const DivProvider = (text: "Total Rate" | "Total Deposit", value: string) => {
     return `
@@ -59,7 +59,7 @@ const MarketDetail: React.FunctionComponent = () => {
   }
 
   const maxDeposit = data?.reserve?.reserveHistory.reduce((res, cur) =>
-    res < parseInt(utils.formatEther(cur.toatlDeposit)) ? parseInt(utils.formatEther(cur.toatlDeposit)) : res
+    res < parseInt(utils.formatEther(cur.totalDeposit)) ? parseInt(utils.formatEther(cur.totalDeposit)) : res
     , 0) || 0
 
   const maxBorrow = data?.reserve?.reserveHistory.reduce((res, cur) =>
@@ -75,8 +75,8 @@ const MarketDetail: React.FunctionComponent = () => {
 
     return [
       moment(reserve.timestamp * 1000).format("MMMM DD"),
-      parseInt(utils.formatEther(!graphConverter ? reserve.toatlDeposit : reserve.totalBorrow)),
-      daiToUsd(!graphConverter ? reserve.toatlDeposit : reserve.totalBorrow),
+      parseInt(utils.formatEther(!graphConverter ? reserve.totalDeposit : reserve.totalBorrow)),
+      daiToUsd(!graphConverter ? reserve.totalDeposit : reserve.totalBorrow),
       (parseFloat(apy) / 5) * base + base * 1.2, // i
       apy.toString()
     ]
@@ -159,7 +159,7 @@ const MarketDetail: React.FunctionComponent = () => {
                 Total Deposit
               </p>
               <p className="bold">
-                {loading ? <Skeleton width={100} /> : daiToUsd(data?.reserve?.toatlDeposit)}
+                {loading ? <Skeleton width={100} /> : daiToUsd(data?.reserve?.totalDeposit)}
               </p>
             </div>
             <div>
@@ -190,7 +190,7 @@ const MarketDetail: React.FunctionComponent = () => {
                   </p>
                 </div>
                 <p>
-                  {loading ? <Skeleton width={50} /> : daiToUsd(BigNumber.from(data?.reserve?.toatlDeposit).sub(data?.reserve?.totalBorrow))}
+                  {loading ? <Skeleton width={50} /> : daiToUsd(BigNumber.from(data?.reserve?.totalDeposit).sub(data?.reserve?.totalBorrow))}
                 </p>
               </div>
             </div>

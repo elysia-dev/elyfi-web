@@ -8,14 +8,14 @@ export const GET_RESERVE = gql`
       borrowAPY,
       depositAPY,
       totalBorrow,
-      toatlDeposit,
+      totalDeposit,
       reserveHistory(orderBy: timestamp) {
         id,
         timestamp,
         borrowAPY,
         depositAPY,
         totalBorrow,
-        toatlDeposit
+        totalDeposit
       }
     }
   }
@@ -29,7 +29,7 @@ export const GET_ALL_RESERVES = gql`
     borrowAPY,
     depositAPY,
     totalBorrow,
-    toatlDeposit,
+    totalDeposit,
     }
   }
 `

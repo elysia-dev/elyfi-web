@@ -10970,7 +10970,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit",
+            "name": "totalDeposit",
             "description": null,
             "args": [],
             "type": {
@@ -11110,7 +11110,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit",
+            "name": "totalDeposit",
             "description": null,
             "args": [],
             "type": {
@@ -11995,7 +11995,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit",
+            "name": "totalDeposit",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -12007,7 +12007,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit_not",
+            "name": "totalDeposit_not",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -12019,7 +12019,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit_gt",
+            "name": "totalDeposit_gt",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -12031,7 +12031,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit_lt",
+            "name": "totalDeposit_lt",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -12043,7 +12043,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit_gte",
+            "name": "totalDeposit_gte",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -12055,7 +12055,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit_lte",
+            "name": "totalDeposit_lte",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -12067,7 +12067,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit_in",
+            "name": "totalDeposit_in",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -12087,7 +12087,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit_not_in",
+            "name": "totalDeposit_not_in",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -12163,7 +12163,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit",
+            "name": "totalDeposit",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -12979,7 +12979,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit",
+            "name": "totalDeposit",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -12991,7 +12991,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit_not",
+            "name": "totalDeposit_not",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -13003,7 +13003,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit_gt",
+            "name": "totalDeposit_gt",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -13015,7 +13015,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit_lt",
+            "name": "totalDeposit_lt",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -13027,7 +13027,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit_gte",
+            "name": "totalDeposit_gte",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -13039,7 +13039,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit_lte",
+            "name": "totalDeposit_lte",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -13051,7 +13051,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit_in",
+            "name": "totalDeposit_in",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -13071,7 +13071,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit_not_in",
+            "name": "totalDeposit_not_in",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -13195,7 +13195,7 @@
             "deprecationReason": null
           },
           {
-            "name": "toatlDeposit",
+            "name": "totalDeposit",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null

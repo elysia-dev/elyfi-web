@@ -25,7 +25,7 @@ const Market: React.FunctionComponent = () => {
               usdFormatter.format(
                 parseInt(
                   utils.formatEther(
-                    reserves.reduce((res, cur) => res.add(BigNumber.from(cur.toatlDeposit)), constants.Zero) || constants.Zero
+                    reserves.reduce((res, cur) => res.add(BigNumber.from(cur.totalDeposit)), constants.Zero) || constants.Zero
                   )
                 )
               )
@@ -63,7 +63,7 @@ const Market: React.FunctionComponent = () => {
                           <p>{reserve.name}</p>
                         </div>
                       </th>
-                      <th><p>{daiToUsd(reserves[0].toatlDeposit)}</p></th>
+                      <th><p>{daiToUsd(reserves[0].totalDeposit)}</p></th>
                       <th><p>{toPercent(reserves[0].depositAPY)}</p></th>
                       <th><p>{daiToUsd(reserves[0].totalBorrow)}</p></th>
                       <th><p>{toPercent(reserves[0].borrowAPY)}</p></th>
