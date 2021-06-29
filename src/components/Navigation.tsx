@@ -1,5 +1,5 @@
-import { FunctionComponent, useState } from 'react';
-import { Link } from 'react-router-dom'
+import { FunctionComponent, useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom'
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
 import ElysiaLogoBeta from 'src/assets/images/Elysia_Logo_Beta.png';
 import InstallMetamask from './InstallMetamask';
@@ -11,6 +11,7 @@ import { useEagerConnect } from 'src/hooks/connectHoots';
 const Navigation: FunctionComponent = () => {
   const triedEager = useEagerConnect()
   const [hover, setHover] = useState(0);
+  const location = useLocation();
 
   return (
     <nav className="navigation">
@@ -26,33 +27,29 @@ const Navigation: FunctionComponent = () => {
             [
               ["/dashboard", "Dashboard"],
               ["/portfolio", "Money Pool's portfolio"],
+              ["/linkage_institution", "Linkage Institutions"]
             ].map((data, index) => {
               return (
                 <Link to={data[0]} key={index}>
                   <div className="navigation__link__wrapper">
-                    <div className="navigation__link"
+                    <div className={`navigation__link${location.pathname === data[0] ? " bold" : ""}`}
                       onMouseEnter={() => setHover(index + 1)}
                       onMouseLeave={() => setHover(0)}
                     >
                       {data[1]}
-                      <div className={`navigation__link__under-line${hover === index + 1 ? " hover" : " blur"}`} />
+                      <div className={`navigation__link__under-line${hover === index + 1 ? " hover" : " blur"}`} 
+                        style={{
+                          opacity: location.pathname === data[0] ? 1 : 0,
+                          width: location.pathname === data[0] ? "100%" : 0,
+                          left: location.pathname === data[0] ? 0 : -20
+                        }}
+                      />
                     </div>
                   </div>
                 </Link>
               )
             })
           }
-          <Link to="/linkage_institution">
-            <div className="navigation__link__wrapper">
-              <div className="navigation__link"
-                onMouseEnter={() => setHover(4)}
-                onMouseLeave={() => setHover(0)}
-              >
-                Linkage Institutions
-                <div className={`navigation__link__under-line${hover === 4 ? " hover" : " blur"}`} />
-              </div>
-            </div>
-          </Link>
           {window.ethereum?.isMetaMask ? <Wallet triedEager={triedEager} /> : <InstallMetamask />}
         </div>
       </div>
