@@ -107,8 +107,8 @@ const Dashboard: React.FunctionComponent = () => {
               {
                 ["Assets", "Deposit Balance", "Deposit Rates", "Wallet Balance"].map((key, index) => {
                   return (
-                    <th key={index}>
-                      <p className="tokens__table__header__column$">
+                    <th key={index} style={{ width: index === 0 ? 150 : 342 }}>
+                      <p className="tokens__table__header__column">
                         {key}
                       </p>
                     </th>

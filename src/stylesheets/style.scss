@@ -841,14 +841,6 @@ span {
         > tr > th {
           padding-bottom: 0 !important;
         }
-        > tr {
-          > :first-child {
-            width: 150px;
-          }
-          > :last-child {
-            width: 220px;
-          }
-        }
       }
       &-body {
         cursor: pointer;
@@ -867,7 +859,18 @@ span {
           border-radius: 5px;
           margin: 20px;
           cursor: pointer;
+          box-sizing: border-box;
+          > :first-child {
+            width: 150px;
+            box-sizing: border-box;
+          }
+          > :last-child {
+            width: 220px;
+            box-sizing: border-box;
+          }
           > th {
+            width: 205px;
+            box-sizing: border-box;
             > p {
               cursor: pointer;
             }
