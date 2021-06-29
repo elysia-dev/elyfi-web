@@ -19,7 +19,7 @@ const Market: React.FunctionComponent = () => {
     <>
       <section className="dashboard main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
         <div className="main__title-wrapper">
-          <h4 className="main__title-text">Total Market Size</h4>
+          <h4 className="main__title-text--market">Total Market Size</h4>
           <h2 className="main__title-text--blue">
             {
               usdFormatter.format(
@@ -31,10 +31,13 @@ const Market: React.FunctionComponent = () => {
               )
             }
           </h2>
-          <div style={{ height: 50 }} />
         </div>
       </section>
       <section className="tokens">
+        <div className="tokens__title">
+          <p className="bold">TOKENS</p>
+          <hr />
+        </div>
         <table className="tokens__table">
           <thead className="tokens__table__header">
             <tr>
@@ -98,9 +101,9 @@ const Market: React.FunctionComponent = () => {
                       account &&
                       <th>
                         <div
-                          style={{ color: 'grey' }}
+                          className="tokens__table__button--disable"
                         >
-                          {"Deposit"}
+                          <p>{"Deposit"}</p>
                         </div>
                       </th>
                     }

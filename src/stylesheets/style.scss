@@ -6,6 +6,20 @@
   font-family: "Montserrat-bold";
   src: url("../assets/fonts/Montserrat-Bold.ttf") format("truetype");
 }
+@font-face {
+  font-family: "SpoqaHanSansNeo";
+  src: url("../assets/fonts/SpoqaHanSansNeo-Regular.ttf")
+  format("truetype");
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF,
+    U+0030-0039;
+}
+@font-face {
+  font-family: "SpoqaHanSansNeo-Bold";
+  src: url("../assets/fonts/SpoqaHanSansNeo-Bold.ttf")
+  format("truetype");
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF,
+    U+0030-0039;
+}
 
 h1,
 h2 {
@@ -361,10 +375,16 @@ span {
         font-size: 40px;
         margin: 0 auto;
         font-family: "Montserrat-bold";
+        &--market {
+          margin: 20px;
+          color: #fff;
+          font-size: 30px;
+          font-family: "Montserrat-bold";
+        }
         &--blue {
           color: #00bfff;
           font-size: 60px;
-          margin: 0 auto 26px;
+          margin: 0 0 63px;
         }
       }
       &-highlight-text {
@@ -800,6 +820,24 @@ span {
     width: 1190px;
     margin: 0 auto;
     padding-bottom: 100px;
+    &__title {
+      margin: 126px 0 30px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      > p {
+        margin: 0 20px 0 0;
+        white-space: nowrap;
+        font-size: 20px;
+        color: #333333;
+      }
+      > hr {
+        width: 100%;
+        height: 1px;
+        border: 0px;
+        background-color: #f0f0f1;
+      }
+    }
     &__container {
       margin-top: 85px;
     }
@@ -828,6 +866,18 @@ span {
         margin: 0 auto;
         > p {
           font-size: 14px;
+          color: #333333;
+        }
+        &--disable {
+          width: 169px;
+          height: 30px;
+          border: 1px solid #B7B7B7;
+          border-radius: 3px;
+          margin: 0 auto;
+          > p {
+            font-size: 14px;
+            color: #B7B7B7;
+          }
         }
       }
       &__header {
