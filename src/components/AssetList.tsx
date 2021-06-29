@@ -67,7 +67,7 @@ const AssetList: FunctionComponent<{
           </p>
           <div>
             <p className="bold">
-              {moment((abToken.maturityTimestamp || 0) * 1000).format('YYYY.MM.DD')}
+              {abToken.maturityTimestamp ? moment(abToken.maturityTimestamp * 1000).format('YYYY.MM.DD') : '-'}
             </p>
           </div>
         </div>
