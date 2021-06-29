@@ -1,26 +1,5 @@
 import { gql } from "@apollo/client";
 
-export const GET_RESERVE = gql`
-  query GetReserve($id: String!) {
-	  reserve (id: $id) {
-      id,
-      lTokenInterestIndex,
-      borrowAPY,
-      depositAPY,
-      totalBorrow,
-      totalDeposit,
-      reserveHistory(orderBy: timestamp) {
-        id,
-        timestamp,
-        borrowAPY,
-        depositAPY,
-        totalBorrow,
-        totalDeposit
-      }
-    }
-  }
-`
-
 export const GET_ALL_RESERVES = gql`
   query GetAllReserves {
 	reserves {
@@ -30,6 +9,26 @@ export const GET_ALL_RESERVES = gql`
     depositAPY,
     totalBorrow,
     totalDeposit,
+    borrow {
+      id,
+      amount,
+      timestamp,
+      tokenId,
+    },
+    repay {
+      id,
+      userDTokenBalance,
+      feeOnCollateralServiceProvider,
+      timestamp,
+      tokenId
+    },
+    reserveHistory(orderBy: timestamp) {
+        id,
+        timestamp,
+        borrowAPY,
+        depositAPY,
+        totalBorrow,
+        totalDeposit
     }
-  }
+  }}
 `
