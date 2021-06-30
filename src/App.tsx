@@ -5,7 +5,6 @@ import LanguageProvider from './providers/LanguageProvider';
 import { Web3ReactProvider } from '@web3-react/core';
 import getLibrary from './core/utils/getLibrary';
 import AppNavigator from './AppNavigator';
-import AssetProvider from './providers/AssetProvider';
 import {
   ApolloProvider,
   InMemoryCache,
@@ -25,9 +24,7 @@ const App: React.FC = () => {
       <LanguageProvider>
         <Web3ReactProvider getLibrary={getLibrary}>
           <ReservesProvider>
-            <AssetProvider>
-              <AppNavigator />
-            </AssetProvider>
+            <AppNavigator />
           </ReservesProvider>
         </Web3ReactProvider>
       </LanguageProvider>
