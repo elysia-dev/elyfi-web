@@ -13,7 +13,7 @@ const WithdrawBody: React.FunctionComponent<{
 	const [amount, setAmount] = useState<string>('');
 
 	const amountGtBalance = utils.parseEther(amount || '0').gt(depositBalance);
-	const amountLteZero = !amount || parseInt(amount) <= 0;
+	const amountLteZero = !amount || parseFloat(amount) <= 0;
 
 	return (
 		<div className="modal__withdraw">
