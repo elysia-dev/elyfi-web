@@ -9,6 +9,8 @@ export const GET_ALL_RESERVES = gql`
     depositAPY,
     totalBorrow,
     totalDeposit,
+    lTokenUserBalanceCount,
+    dTokenUserBalanceCount,
     borrow {
       id,
       amount,
