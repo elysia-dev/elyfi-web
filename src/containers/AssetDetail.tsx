@@ -10,6 +10,7 @@ import { parseTokenId } from 'src/utiles/parseTokenId';
 import { daiToUsd, toPercent } from 'src/utiles/formatters';
 import moment from 'moment';
 import ABTokenState from 'src/enums/ABTokenState';
+import ServiceBackground from 'src/assets/images/service-background.png'
 
 const AssetDetail: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,6 +33,11 @@ const AssetDetail: FunctionComponent = () => {
 
   return (
     <section id="portfolio">
+      <section className="main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
+        <div className="main__title-wrapper">
+          <h1 className="main__title-text">PORTFOLIO</h1>
+        </div>
+      </section>
       <div className="portfolio__info">
         <div className="portfolio__asset-list__title__wrapper" style={{ marginTop: 100 }}>
           <p className="portfolio__asset-list__title bold">Asset Details</p>
