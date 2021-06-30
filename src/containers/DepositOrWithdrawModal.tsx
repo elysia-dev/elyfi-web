@@ -73,10 +73,6 @@ const DepositOrWithdrawModal: FunctionComponent<{
     loadAllowance();
   }, [account])
 
-  useEffect(() => {
-    console.log(allowance)
-  }, [allowance])
-
   return (
     <div className="modal modal--deposit" style={{ display: visible ? "block" : "none" }}>
       <div className="modal__container">
