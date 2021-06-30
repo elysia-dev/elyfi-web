@@ -56,6 +56,7 @@ const Market: React.FunctionComponent = () => {
                 if (index === 0) {
                   return (
                     <tr
+                      className="tokens__table__row"
                       key={index}
                       style={{ cursor: 'pointer' }}
                       onClick={() => { index === 0 && history.push(`markets/${reserves[0].id}`) }}
@@ -85,10 +86,18 @@ const Market: React.FunctionComponent = () => {
                 }
                 return (
                   <tr
+                    className="tokens__table__row--disable"
                     key={index}
                   >
                     <th>
                       <div>
+                        <div style={{
+                          backgroundColor: "#1C1C1CA2",
+                          width: 40,
+                          height: 40,
+                          borderRadius: 40,
+                          position: "absolute"                         
+                        }} />
                         <img src={reserve.image} alt='token' style={{ width: 40 }} />
                         <p>{reserve.name}</p>
                       </div>
@@ -103,7 +112,7 @@ const Market: React.FunctionComponent = () => {
                         <div
                           className="tokens__table__button--disable"
                         >
-                          <p>{"Deposit"}</p>
+                          <p>{"Coming Soon!"}</p>
                         </div>
                       </th>
                     }
