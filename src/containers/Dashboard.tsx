@@ -172,6 +172,16 @@ const Dashboard: React.FunctionComponent = () => {
                   >
                     <th>
                       <div>
+                        <div 
+                          className="tokens__table__image--disable"
+                          style={{
+                            backgroundColor: "#1C1C1CA2",
+                            width: 40,
+                            height: 40,
+                            borderRadius: 40,
+                            position: "absolute"                         
+                          }} 
+                        />
                         <img src={reserve.image} style={{ width: 40 }} alt="Token" />
                         <p>{reserve.name}</p>
                       </div>

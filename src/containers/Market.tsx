@@ -91,13 +91,16 @@ const Market: React.FunctionComponent = () => {
                   >
                     <th>
                       <div>
-                        <div style={{
-                          backgroundColor: "#1C1C1CA2",
-                          width: 40,
-                          height: 40,
-                          borderRadius: 40,
-                          position: "absolute"                         
-                        }} />
+                        <div 
+                          className="tokens__table__image--disable"
+                          style={{
+                            backgroundColor: "#1C1C1CA2",
+                            width: 40,
+                            height: 40,
+                            borderRadius: 40,
+                            position: "absolute"                         
+                          }} 
+                        />
                         <img src={reserve.image} alt='token' style={{ width: 40 }} />
                         <p>{reserve.name}</p>
                       </div>

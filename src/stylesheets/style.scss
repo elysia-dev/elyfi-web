@@ -942,6 +942,11 @@ span {
           > :first-child {
             width: 150px;
             box-sizing: border-box;
+            > div {
+              > img, .tokens__table__image--disable {
+                margin-left: 15px;
+              }
+            }
           }
           > :last-child {
             width: 220px;
