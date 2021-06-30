@@ -15,6 +15,23 @@ const Navigation: FunctionComponent = () => {
 
   return (
     <nav className="navigation">
+      <div className="navigation__alert">
+        <p>
+          This website is an <span className="bold" style={{ color: "#00A7FF" }}>ELYFI beta version. </span> 
+          Please connect to the Kovan network, and you can get tokens used in this site from&nbsp;
+          <a 
+            
+            target="_blank" 
+            style={{ 
+              color: "#00A7FF", 
+              textDecoration: "underline",
+              cursor: "pointer"
+            }}
+          >
+            here!
+          </a>
+        </p>
+      </div>
       <div className="navigation__container">
         <Link to="/">
           <div className="logo-wrapper" style={{ cursor: "pointer" }}>
@@ -25,9 +42,9 @@ const Navigation: FunctionComponent = () => {
         <div className="navigation__link-wrapper">
           {
             [
-              ["/dashboard", "Dashboard"],
-              ["/portfolio", "Money Pool's portfolio"],
-              ["/linkage_institution", "Linkage Institutions"]
+              ["/dashboard", "DASHBOARD"],
+              ["/portfolio", "PORTFOLIO"],
+              ["/partners", "PARTNERS"]
             ].map((data, index) => {
               return (
                 <Link to={data[0]} key={index}>
