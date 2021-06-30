@@ -17,19 +17,8 @@ const Navigation: FunctionComponent = () => {
     <nav className="navigation">
       <div className="navigation__alert">
         <p>
-          This website is an <span className="bold" style={{ color: "#00A7FF" }}>ELYFI beta version. </span> 
-          Please connect to the Kovan network, and you can get tokens used in this site from&nbsp;
-          <a 
-            
-            target="_blank" 
-            style={{ 
-              color: "#00A7FF", 
-              textDecoration: "underline",
-              cursor: "pointer"
-            }}
-          >
-            here!
-          </a>
+          This website is an <span className="bold" style={{ color: "#00A7FF" }}>ELYFI beta version. </span>
+          Please connect to the Kovan network.
         </p>
       </div>
       <div className="navigation__container">
@@ -54,7 +43,7 @@ const Navigation: FunctionComponent = () => {
                       onMouseLeave={() => setHover(0)}
                     >
                       {data[1]}
-                      <div className={`navigation__link__under-line${hover === index + 1 ? " hover" : " blur"}`} 
+                      <div className={`navigation__link__under-line${hover === index + 1 ? " hover" : " blur"}`}
                         style={{
                           opacity: location.pathname === data[0] ? 1 : 0,
                           width: location.pathname === data[0] ? "100%" : 0,
