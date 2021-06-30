@@ -124,6 +124,7 @@ const Dashboard: React.FunctionComponent = () => {
                   return (
                     <tr
                       key={index}
+                      className="tokens__table__row"
                       onClick={(e) => {
                         e.preventDefault();
                         setReserve(reserves[0])
@@ -165,7 +166,10 @@ const Dashboard: React.FunctionComponent = () => {
                   )
                 }
                 return (
-                  <tr key={index}>
+                  <tr 
+                    className="tokens__table__row--disable"
+                    key={index}
+                  >
                     <th>
                       <div>
                         <img src={reserve.image} style={{ width: 40 }} alt="Token" />
@@ -212,7 +216,10 @@ const Dashboard: React.FunctionComponent = () => {
             </tr>
           </thead>
           <tbody className="tokens__table-body">
-            <tr key={0}>
+            <tr 
+              className="tokens__table__row--disable"
+              key={0}
+            >
               <th>
                 <div>
                   <img src={ELFI} style={{ width: 40 }} alt="Token" />
