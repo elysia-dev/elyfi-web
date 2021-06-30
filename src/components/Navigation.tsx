@@ -44,7 +44,7 @@ const Navigation: FunctionComponent = () => {
             [
               ["/dashboard", "DASHBOARD"],
               ["/portfolio", "PORTFOLIO"],
-              ["/partners", "PARTNERS"]
+              ["/linkage_institution", "PARTNERS"]
             ].map((data, index) => {
               return (
                 <Link to={data[0]} key={index}>
