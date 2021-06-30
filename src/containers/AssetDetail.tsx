@@ -10,7 +10,6 @@ import { parseTokenId } from 'src/utiles/parseTokenId';
 import { daiToUsd, toPercent } from 'src/utiles/formatters';
 import moment from 'moment';
 import ABTokenState from 'src/enums/ABTokenState';
-import Loading from 'src/components/Loading';
 
 const AssetDetail: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
@@ -111,12 +110,12 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title">
               <p>
-                대출 이자율 | 연체 이자율
+                대출 이자율
               </p>
             </td>
             <td colSpan={2}>
               <p>
-                {`${toPercent(abToken?.interestRate || '0')} | ${toPercent(abToken?.overdueInterestRate || '0')}`}
+                {toPercent(abToken?.interestRate || '0')}
               </p>
             </td>
           </tr>
