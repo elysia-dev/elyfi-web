@@ -219,7 +219,7 @@ const MarketDetail: React.FunctionComponent = () => {
                   Number of Depositers
                 </p>
                 <p>
-                  200M
+                  {data.lTokenUserBalanceCount}
                 </p>
               </div>
               <div>
@@ -227,7 +227,7 @@ const MarketDetail: React.FunctionComponent = () => {
                   Number of Borrowers
                 </p>
                 <p>
-                  300M
+                  {data.dTokenUserBalanceCount}
                 </p>
               </div>
             </div>

@@ -52,8 +52,8 @@ const Wallet = (props: any) => {
   }
 
   useEffect(() => {
-    setConnected(!!account)
-  }, [account])
+    setConnected(!!account && chainId?.toString() === process.env.REACT_APP_REQUIRED_CHAIN_ID)
+  }, [account, chainId])
 
 
   return (

@@ -19,15 +19,21 @@ import DisableWalletPage from './components/DisableWalletPage';
 import LinkageInstitution from 'src/containers/LinkageInstitution';
 
 const AppNavigator: React.FC = () => {
-  const { active } = useWeb3React();
+  const { active, chainId } = useWeb3React();
 
   return (
     <div className="elysia">
       <Router>
         <Navigation />
         <Switch>
-          <Route exact path="/partners" component={LinkageInstitution} />
-          <Route exact path="/dashboard" component={active ? Dashboard : DisableWalletPage} />
+          <Route exact path="/linkage_institution" component={LinkageInstitution} />
+          <Route
+            exact
+            path="/dashboard"
+            component={
+              active && chainId?.toString() === process.env.REACT_APP_REQUIRED_CHAIN_ID ? Dashboard : DisableWalletPage
+            }
+          />
           <Route exact path="/portfolio" component={Portfolio} />
           <Route exact path="/portfolio/:id" component={AssetDetail} />
           <Route exact path="/markets/:id" component={MarketDetail} />

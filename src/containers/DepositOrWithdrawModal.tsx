@@ -20,13 +20,16 @@ const DepositOrWithdrawModal: FunctionComponent<{
 }> = ({ tokenName, visible, tokenImage, balance, depositBalance, reserve, onClose, }) => {
   const { account, library } = useWeb3React()
   const [selected, select] = useState<boolean>(true)
-  const [allownace, setAllowance] = useState<BigNumber>(constants.Zero);
+  const [allowance, setAllowance] = useState<{ value: BigNumber, loaded: boolean }>({ value: constants.Zero, loaded: false });
   const [txWating, setWating] = useState<boolean>(false);
 
   const loadAllowance = async () => {
     if (!account) return;
 
-    setAllowance(await getAllowance(account, reserve.id, library))
+    setAllowance({
+      value: await getAllowance(account, reserve.id, library),
+      loaded: true
+    })
   }
 
   const requestAllowance = async () => {
@@ -59,6 +62,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     setWating(true);
     try {
       await (library as providers.Web3Provider).waitForTransaction(txHash);
+      loadAllowance();
     } finally {
       setWating(false);
       if (withClose) onClose();
@@ -68,6 +72,10 @@ const DepositOrWithdrawModal: FunctionComponent<{
   useEffect(() => {
     loadAllowance();
   }, [account])
+
+  useEffect(() => {
+    console.log(allowance)
+  }, [allowance])
 
   return (
     <div className="modal modal--deposit" style={{ display: visible ? "block" : "none" }}>
@@ -79,11 +87,11 @@ const DepositOrWithdrawModal: FunctionComponent<{
               <p className="modal__header__name bold">{tokenName}</p>
             </div>
           </div>
-            <div className="close-button" onClick={onClose}>
-              <div className="close-button--1">
-                <div className="close-button--2" />
-              </div>
+          <div className="close-button" onClick={onClose}>
+            <div className="close-button--1">
+              <div className="close-button--2" />
             </div>
+          </div>
         </div>
         <div className='modal__converter'>
           <div
@@ -121,7 +129,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
                 depositAPY={toPercent(reserve.depositAPY || '0')}
                 miningAPR={toPercent(reserve.depositAPY || '0')}
                 balance={balance}
-                isApproved={allownace.gt(balance)}
+                isApproved={!allowance.loaded || allowance.value.gt(balance)}
                 txWating={txWating}
                 increaseAllownace={requestAllowance}
                 deposit={requestDeposit}
