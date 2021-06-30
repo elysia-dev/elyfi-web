@@ -35,13 +35,13 @@ const Market: React.FunctionComponent = () => {
       </section>
       <section className="tokens">
         <div className="tokens__title">
-          <p className="bold">TOKENS</p>
+          <p className="bold">TOKEN</p>
           <hr />
         </div>
         <table className="tokens__table">
           <thead className="tokens__table__header">
             <tr>
-              {["Assets", "Total Deposits", "Deposit APY", "Total Loans", "Loan APY"].map((name, index) => {
+              {["Asset", "Total Deposits", "Deposit APY", "Total Borrowed", "Borrow APY"].map((name, index) => {
                 return (
                   <th key={index}>
                     <p className={`tokens__table__header__column`}>{name}</p>

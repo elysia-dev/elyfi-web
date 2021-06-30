@@ -6,13 +6,20 @@ import { parseTokenId } from 'src/utiles/parseTokenId';
 import GoogleMapReact from 'google-map-react';
 
 const abTokenStates = [
-  'Empty',
-  'Settled',
-  'Confirmed',
-  'Collateralized',
-  'Matured',
-  'Redeemed',
-  'Not_performed',
+  // 'Empty',
+  // 'Settled',
+  // 'Confirmed',
+  // 'Collateralized',
+  // 'Matured',
+  // 'Redeemed',
+  // 'Not performed',
+  'To be repayed',
+  'To be repayed',
+  'To be repayed',
+  'ABToken Liquidation in progress',
+  'ABToken Liquidation in progress',
+  'Repayment Complete',
+  'To be repayed',
 ]
 
 const defaultLat = 37.5172;
@@ -47,7 +54,7 @@ const AssetList: FunctionComponent<{
         </div>
         <div className="portfolio__asset-list__info__value__wrapper">
           <p className="portfolio__asset-list__info__value">
-            대출금
+            Borrowed
           </p>
           <div>
             <span className="bold">{daiToUsd(abToken.principal || '0')}</span>
@@ -55,7 +62,7 @@ const AssetList: FunctionComponent<{
         </div>
         <div className="portfolio__asset-list__info__value__wrapper">
           <p className="portfolio__asset-list__info__value">
-            이자율
+            Borrow APY
           </p>
           <div>
             {toPercent(abToken.interestRate || '0')}
@@ -63,7 +70,7 @@ const AssetList: FunctionComponent<{
         </div>
         <div className="portfolio__asset-list__info__value__wrapper">
           <p className="portfolio__asset-list__info__value">
-            만기일
+            Maturity Date
           </p>
           <div>
             <p className="bold">

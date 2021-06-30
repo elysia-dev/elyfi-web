@@ -24,7 +24,7 @@ const InvestmentStatus: FunctionComponent<{
       <table>
         <tr>
           <td>
-            대출금
+            Total Borrowed
           </td>
           <td>
             <div>
@@ -43,7 +43,7 @@ const InvestmentStatus: FunctionComponent<{
         </tr>
         <tr>
           <td>
-            상환 예정 금액
+            Estimated Repayments
           </td>
           <td>
             <div>
@@ -56,7 +56,7 @@ const InvestmentStatus: FunctionComponent<{
         </tr>
         <tr>
           <td>
-            예상 수익률
+            Borrow APY
           </td>
           <td>
             <div>
@@ -71,7 +71,7 @@ const InvestmentStatus: FunctionComponent<{
       <table>
         <tr>
           <td>
-            누적 대출금
+            Accumulated Borrowed
           </td>
           <td>
             <div>
@@ -89,7 +89,7 @@ const InvestmentStatus: FunctionComponent<{
         </tr>
         <tr>
           <td>
-            누적 상환 완료 금액
+            Accumulated Repayments
           </td>
           <td>
             <div>
@@ -107,7 +107,7 @@ const InvestmentStatus: FunctionComponent<{
         </tr>
         <tr>
           <td>
-            누적 수익
+            Accumulated Yield
           </td>
           <td>
             <div>

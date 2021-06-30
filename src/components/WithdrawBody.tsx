@@ -27,17 +27,16 @@ const WithdrawBody: React.FunctionComponent<{
 						className="modal__text-input"
 						placeholder="0"
 						value={amount}
+						style={{ fontSize: amount.length < 8 ? 60 : amount.length > 12 ? 35 : 45 }}
 						onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => { ["-", "+", "e"].includes(e.key) && e.preventDefault() }}
 						onChange={({ target }) => { !txWating && setAmount(target.value) }}
 					/>
 				</p>
 			</div>
-			<div className="modal__withdraw__value-converter-wrapper">
-			</div>
 			<div className="modal__withdraw__withdrawalable">
 				<div className="modal__withdraw__withdrawalable-amount-wrapper">
 					<div className="modal__withdraw__withdrawalable__title">
-						<p className="bold">Withdrawalable Amount</p>
+						<p className="bold">Withdraw Available</p>
 						<p className="bold">{`${formatComma(depositBalance)} ${tokenName}`}</p>
 					</div>
 					<div>
@@ -45,20 +44,20 @@ const WithdrawBody: React.FunctionComponent<{
 						<p className="bold">{`${formatComma(depositBalance)} ${tokenName}`}</p>
 					</div>
 					<div>
-						<p className="bold">Total Balance in ELYFI</p>
+						<p className="bold">{tokenName} reserves in ELYFI</p>
 						<p className="bold">1,000.00 {tokenName}</p>
 					</div>
 				</div>
 				<div className="modal__withdraw__withdrawalable-value-wrapper">
 					<div className="modal__withdraw__withdrawalable__title">
-						<p className="bold">Accrual Interest</p>
+						<p className="bold">Yield</p>
 					</div>
 					<div>
-						<p className="bold">Interest after the prior withdraw</p>
+						<p className="bold">Yield produced after the prior withdrawal</p>
 						<p className="bold">1,000.00 {tokenName}</p>
 					</div>
 					<div>
-						<p className="bold">Accumulated Interest</p>
+						<p className="bold">Accumulated Yield</p>
 						<p className="bold">1,000.00 {tokenName}</p>
 					</div>
 				</div>
@@ -73,7 +72,7 @@ const WithdrawBody: React.FunctionComponent<{
 						<p>
 							{
 								amountLteZero ? "Enter an amount" :
-									amountGtBalance ? `Insufficient deposit balance` : "Withdraw"
+									amountGtBalance ? `INSUFFICIENT BALANCE` : "WITHDRAW"
 							}
 						</p>
 					</div>

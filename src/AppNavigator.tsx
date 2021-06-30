@@ -26,7 +26,7 @@ const AppNavigator: React.FC = () => {
       <Router>
         <Navigation />
         <Switch>
-          <Route exact path="/linkage_institution" component={LinkageInstitution} />
+          <Route exact path="/partners" component={LinkageInstitution} />
           <Route exact path="/dashboard" component={active ? Dashboard : DisableWalletPage} />
           <Route exact path="/portfolio" component={Portfolio} />
           <Route exact path="/portfolio/:id" component={AssetDetail} />

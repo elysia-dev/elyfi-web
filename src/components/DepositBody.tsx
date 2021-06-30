@@ -1,5 +1,5 @@
 import { BigNumber, utils } from 'ethers';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const DepositBody: React.FunctionComponent<{
 	tokenName: string,
@@ -26,18 +26,18 @@ const DepositBody: React.FunctionComponent<{
 					<input
 						type="number"
 						className="modal__text-input"
+						placeholder="0"
 						value={amount}
+						style={{ fontSize: amount.length < 8 ? 60 : amount.length > 12 ? 35 : 45 }}
 						onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => { ["-", "+", "e"].includes(e.key) && e.preventDefault() }}
 						onChange={({ target }) => !txWating && setAmount(target.value)}
 					/>
 				</p>
 			</div>
-			<div className="modal__deposit__value-converter-wrapper">
-			</div>
 			<div className="modal__deposit__container">
 				<div className="modal__deposit__despositable-amount-container">
 					<p className="bold">
-						Depositable Amount
+						Deposit Available
 					</p>
 					<div className="modal__deposit__despositable-amount-wrapper">
 						<p className="bold">
@@ -52,7 +52,7 @@ const DepositBody: React.FunctionComponent<{
 				</div>
 				<div className="modal__deposit__despositable-value-wrapper">
 					<p className="bold">
-						Deposit Rates
+						Total Deposit Yield
 					</p>
 					<div>
 						<p className="bold">Deposit APY</p>
@@ -76,7 +76,7 @@ const DepositBody: React.FunctionComponent<{
 							<p>
 								{
 									amountLteZero ? "Enter an amount" :
-										amountGtBalance ? `Insufficient ${tokenName} balance` : "Deposit"
+										amountGtBalance ? `INSUFFICIENT ${tokenName} BALANCE` : "DEPOSIT"
 								}
 							</p>
 						</div>

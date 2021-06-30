@@ -1,7 +1,7 @@
 // import { useTranslation } from 'react-i18next';
 import { FunctionComponent } from 'react';
 import { useParams } from 'react-router-dom';
-import { StaticGoogleMap, Marker, Path } from 'react-static-google-map';
+import GoogleMapReact from 'google-map-react';
 import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
 import ErrorPage from 'src/components/ErrorPage';
 import { useQuery } from '@apollo/client';
@@ -28,18 +28,21 @@ const AssetDetail: FunctionComponent = () => {
 
   const parsedTokenId = parseTokenId(abToken?.id || '');
 
+  const mapLat = 37.3674541706433;
+  const mapLng = 126.64780198475671;
+
   return (
     <section id="portfolio">
       <div className="portfolio__info">
         <div className="portfolio__asset-list__title__wrapper" style={{ marginTop: 100 }}>
-          <p className="portfolio__asset-list__title bold">Asset Detail</p>
+          <p className="portfolio__asset-list__title bold">Asset Details</p>
           <hr className="portfolio__asset-list__title__line" />
         </div>
         <table className="portfolio__info__table">
           <tr>
             <td className="portfolio__info__table__title">
               <p>
-                대출 번호
+                Loan Number
               </p>
             </td>
             <td colSpan={2}>
@@ -51,7 +54,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title">
               <p>
-                대출 상태
+                Loan Status
               </p>
             </td>
             <td colSpan={2}>
@@ -63,7 +66,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title">
               <p>
-                차입자
+                Borrower
               </p>
             </td>
             <td colSpan={2}>
@@ -75,7 +78,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title">
               <p>
-                차입자 주소
+                Collateral Service Provider Info
               </p>
             </td>
             <td colSpan={2}>
@@ -87,7 +90,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title">
               <p>
-                대출금 수취인
+                Loan Receiver
               </p>
             </td>
             <td colSpan={2}>
@@ -99,7 +102,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title">
               <p>
-                대출금
+                Borrowed
               </p>
             </td>
             <td colSpan={2}>
@@ -111,19 +114,19 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title">
               <p>
-                대출 이자율 | 연체 이자율
+                Borrow APY
               </p>
             </td>
             <td colSpan={2}>
               <p>
-                {`${toPercent(abToken?.interestRate || '0')} | ${toPercent(abToken?.overdueInterestRate || '0')}`}
+                {`${toPercent(abToken?.interestRate || '0')}`}
               </p>
             </td>
           </tr>
           <tr>
             <td className="portfolio__info__table__title">
               <p>
-                대출일
+                Loan Date
               </p>
             </td>
             <td colSpan={2}>
@@ -135,7 +138,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title">
               <p>
-                만기일
+                Maturity Date
               </p>
             </td>
             <td colSpan={2}>
@@ -150,50 +153,14 @@ const AssetDetail: FunctionComponent = () => {
             <col style={{ width: "100%" }} />
           </colgroup>
           <tr>
-            <td rowSpan={9} className="portfolio__info__table__title--last">
+            <td rowSpan={13} className="portfolio__info__table__title--last">
               <p>
-                담보물 정보
+                Collateral Infomration
               </p>
             </td>
             <td className="portfolio__info__table__title--second">
               <p>
-                대출 상품
-              </p>
-            </td>
-            <td>
-              <p>
-                {parsedTokenId.collateralDetail}
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td className="portfolio__info__table__title--second">
-              <p>
-                채권최고액
-              </p>
-            </td>
-            <td>
-              <p>
-                {daiToUsd(abToken?.debtCeiling || '0')}
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td className="portfolio__info__table__title--second">
-              <p>
-                담보 유형
-              </p>
-            </td>
-            <td>
-              <p>
-                {parsedTokenId.collateralCategory}
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td className="portfolio__info__table__title--second">
-              <p>
-                담보물 주소
+                ABToken ID
               </p>
             </td>
             <td>
@@ -205,7 +172,139 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title--second">
               <p>
-                계약서 이미지
+                Collateral Service Provider
+              </p>
+            </td>
+            <td>
+              <p>
+                {'-'}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td className="portfolio__info__table__title--second">
+              <p>
+                Business License Number
+              </p>
+            </td>
+            <td>
+              <p>
+                {'-'}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td className="portfolio__info__table__title--second">
+              <p>
+                Loan Product
+              </p>
+            </td>
+            <td>
+              <p>
+                {parsedTokenId.collateralDetail}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td className="portfolio__info__table__title--second">
+              <p>
+                Loan Name
+              </p>
+            </td>
+            <td>
+              <p>
+                {`-`}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td className="portfolio__info__table__title--second">
+              <p>
+                Loans
+              </p>
+            </td>
+            <td>
+              <p>
+                {`-`}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td className="portfolio__info__table__title--second">
+              <p>
+                Loan Interest Rate
+              </p>
+            </td>
+            <td>
+              <p>
+                {parsedTokenId.collateralDetail}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td className="portfolio__info__table__title--second">
+              <p>
+                Loan Date
+              </p>
+            </td>
+            <td>
+              <p>
+                {parsedTokenId.collateralDetail}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td className="portfolio__info__table__title--second">
+              <p>
+                Maturity Date
+              </p>
+            </td>
+            <td>
+              <p>
+                {parsedTokenId.collateralDetail}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td className="portfolio__info__table__title--second">
+              <p>
+                Maximum Pledge Amount
+              </p>
+            </td>
+            <td>
+              <p>
+                {daiToUsd(abToken?.debtCeiling || '0')}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td className="portfolio__info__table__title--second">
+              <p>
+                Collateral Type
+              </p>
+            </td>
+            <td>
+              <p>
+                {parsedTokenId.collateralCategory}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td className="portfolio__info__table__title--second">
+              <p>
+                Collateral Address
+              </p>
+            </td>
+            <td>
+              <p>
+                {'-'}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td className="portfolio__info__table__title--second">
+              <p>
+                Contract Image
               </p>
             </td>
             <td>
@@ -217,21 +316,17 @@ const AssetDetail: FunctionComponent = () => {
         </table>
       </div>
       {/* To do */}
-      <StaticGoogleMap size="600x600" apiKey="AIzaSyDoZyTjSHKbfP217yeEvWZhuH8p9DGC9m8">
-        <Marker
-          location={{ lat: 40.737102, lng: -73.990318 }}
-          color="blue"
-          label="P"
-        />
-        <Path
-          points={[
-            '40.737102,-73.990318',
-            '40.749825,-73.987963',
-            '40.752946,-73.987384',
-            '40.755823,-73.986397',
-          ]}
-        />
-      </StaticGoogleMap>
+      <div className="portfolio__info__google-map__wrapper">
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY! }}
+          defaultCenter={{ 
+            lat: mapLat, 
+            lng: mapLng 
+          }}
+          defaultZoom={15}
+        >
+        </GoogleMapReact>
+      </div>
     </section>
   );
 }

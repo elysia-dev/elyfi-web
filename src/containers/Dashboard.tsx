@@ -18,6 +18,8 @@ import { useHistory, useLocation } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
 import ErrorPage from 'src/components/ErrorPage';
 
+import ELFI from 'src/assets/images/ELFI.png'
+
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
   const location = useLocation();
@@ -83,13 +85,13 @@ const Dashboard: React.FunctionComponent = () => {
       }
       <section className="dashboard main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
         <div className="main__title-wrapper">
-          <h2 className="main__title-text">Dashboard</h2>
+          <h2 className="main__title-text">DASHBOARD</h2>
         </div>
       </section>
       <section className="tokens">
         <div className="tokens__container">
         <div className="tokens__title">
-          <p className="bold">TOKENS YOU DEPOSITED</p>
+          <p className="bold">DEPOSITS</p>
           <hr />
         </div>
           <table className="tokens__table">
@@ -103,7 +105,7 @@ const Dashboard: React.FunctionComponent = () => {
           <thead className="tokens__table__header">
             <tr>
               {
-                ["Assets", "Deposit Balance", "Deposit Rates", "Wallet Balance"].map((key, index) => {
+                ["Asset", "Deposit Balance", "Deposit APY", "Wallet Balance"].map((key, index) => {
                   return (
                     <th key={index} style={{ width: index === 0 ? 150 : 342 }}>
                       <p className="tokens__table__header__column">
@@ -177,6 +179,49 @@ const Dashboard: React.FunctionComponent = () => {
                 )
               })
             }
+          </tbody>
+        </table>
+      </section>
+      <section className="tokens">
+        <div className="tokens__container">
+        <div className="tokens__title">
+          <p className="bold">ELFI Token</p>
+          <hr />
+        </div>
+          <table className="tokens__table">
+            <thead className="tokens__table__header">
+              <tr>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <table className="tokens__table">
+          <thead className="tokens__table__header">
+            <tr>
+              {
+                ["Assets", "ELFI Balance", "Wallet Balance"].map((key, index) => {
+                  return (
+                    <th key={index} style={{ width: index === 0 ? 150 : 342 }}>
+                      <p className="tokens__table__header__column">
+                        {key}
+                      </p>
+                    </th>
+                  )
+                })
+              }
+            </tr>
+          </thead>
+          <tbody className="tokens__table-body">
+            <tr key={0}>
+              <th>
+                <div>
+                  <img src={ELFI} style={{ width: 40 }} alt="Token" />
+                  <p>ELFI</p>
+                </div>
+              </th>
+              <th><p>-</p></th>
+              <th><p>-</p></th>
+            </tr>
           </tbody>
         </table>
       </section>

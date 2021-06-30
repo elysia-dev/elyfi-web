@@ -48,6 +48,17 @@ span {
   min-height: calc(100vh - 100px);
   .navigation {
     background-color: #101010;
+    &__alert {
+      height: 40px;
+      background-color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      > p {
+        width: 1190px;
+        margin: 0 auto;
+      }
+    }
     &__container {
       max-width: 1190px;
       margin: 0 auto;
@@ -127,15 +138,18 @@ span {
       justify-content: center;
       align-items: center;
       margin-left: 50px;
+      cursor: pointer;
       &__status {
         color: #fff;
         font-family: "Montserrat-bold";
+        cursor: pointer;
         &--connected {
           color: #fff;
           font-family: "Montserrat";
           text-align: right;
           margin: 0;
           margin-right: 12px;
+          cursor: pointer;
         }
       }
       &__mainnet {
@@ -144,6 +158,7 @@ span {
         text-align: right;
         font-family: "Montserrat-bold";
         margin-right: 12px;
+        cursor: pointer;
       }
       &--connected {
         display: inline-flex;
@@ -158,6 +173,7 @@ span {
         text-align: right;
         margin-left: 50px;
         position: relative;
+        cursor: pointer;
       }
       &__sub-menu {
         display: block;
@@ -1112,6 +1128,7 @@ span {
           }
           > p {
             margin: 0;
+            font-size: 13px;
           }
         }
         :nth-child(1) > div {
@@ -1223,6 +1240,15 @@ span {
     &__info {
       width: 1190px;
       margin: 0 auto;
+      &__google-map {
+        &__wrapper {
+          width: 1190px;
+          height: 541px;
+          border: 1px solid #C0C0C0;
+          border-radius: 5px;
+          margin: 0 auto 105px;
+        }
+      }
       &__table {
         width: 100%;
         border-radius: 6px;
@@ -1273,10 +1299,11 @@ span {
         }
         > tr {
           > td {
-            padding: 0px 32px;
+            padding: 0px 17px;
             > p {
               margin: 10px 0px;
               line-break: anywhere;
+              font-size: 15px;
             }
           }
         }
@@ -1286,11 +1313,15 @@ span {
   .linkage {
     width: 1190px;
     margin: 100px auto 130px;
-    &__google-map__wrapper {
+    &__logo__wrapper {
       width: 287px;
       height: 287px;
       border: 0;
       border-radius: 5px;
+      background-color: #e0e0e0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     &__title-line {
       display: flex;
@@ -1411,8 +1442,10 @@ span {
     color: #1c1c1c;
     font-size: 60px;
     width: 100%;
+    float: right;
     font-family: "Montserrat-bold";
     outline: 0;
+    transition: all 0.7s linear;
   }
   ::placeholder {
     color: #b7b7b7;
@@ -1534,8 +1567,7 @@ span {
           cursor: pointer;
         }
         &__value {
-          margin: 0;
-          display: flex;
+          margin: 0 0 0 20px;
           font-size: 60px;
           color: #b7b7b7;
           &-converter {
@@ -1557,7 +1589,7 @@ span {
             > p {
               color: #b7b7b7;
               font-size: 13px;
-              margin: 20px 0;
+              margin: 0px 0px 16px !important;
             }
           }
           &-amount-wrapper {
@@ -1587,7 +1619,7 @@ span {
         }
       }
       &__deposit {
-        &__contaier {
+        &__container {
           border-bottom: 2px solid #f0f0f1;
         }
         &__despositable {

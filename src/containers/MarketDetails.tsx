@@ -73,10 +73,10 @@ const MarketDetail: React.FunctionComponent = () => {
   // APY scale is very tiny.
   // So use amplified apy by base(max Deposit or max Borrow).
   // amplified apy = apy / 5 * base + base * 1.2
+
   const chartData = (filledData.map((reserve, _x) => {
     const apy = utils.formatUnits(!graphConverter ? reserve.depositAPY : reserve.borrowAPY, 25);
     const base = Math.round(!graphConverter ? maxDeposit : maxBorrow);
-
     return [
       moment(reserve.timestamp * 1000).format("MMMM DD"),
       parseInt(utils.formatEther(!graphConverter ? reserve.totalDeposit : reserve.totalBorrow)),
@@ -99,7 +99,7 @@ const MarketDetail: React.FunctionComponent = () => {
             <div className="market__detail__title-token__data-wrapper">
               <div className="market__detail__title-token__data-wrapper--popup">
                 <p>
-                  Total Rate
+                  Total Deposit Yield
                 </p>
                 <p
                   className="market__detail__title-token__data-wrapper--popup__icon"
@@ -131,7 +131,7 @@ const MarketDetail: React.FunctionComponent = () => {
             </div>
             <div className="market__detail__title-token__data-wrapper">
               <p>
-                Borrow APY
+                Loan APY
               </p>
               <p>
                 {toPercent(data.borrowAPY)}
@@ -140,11 +140,10 @@ const MarketDetail: React.FunctionComponent = () => {
           </div>
           <div className="market__detail__title-token--popup" style={{ opacity: mouseHover ? 1 : 0 }}>
             <h2>
-              Total Rate
+              Total Deposit Yield
             </h2>
             <p>
-              This rate is the value of adding the ELFI Mining APR
-              to the Deposit APY
+              Combines Deposit APY and Mining APR
             </p>
           </div>
         </div>
@@ -160,7 +159,7 @@ const MarketDetail: React.FunctionComponent = () => {
           <div className="market__detail__pie-chart__wrapper">
             <div className="market__detail__pie-chart__data__wrapper--total">
               <p className="bold">
-                Total Deposit
+                Total Deposits
               </p>
               <p className="bold">
                 {daiToUsd(data.totalDeposit)}
@@ -175,7 +174,7 @@ const MarketDetail: React.FunctionComponent = () => {
                     }}
                   />
                   <p>
-                    Total Borrow
+                    Total Borrowed
                   </p>
                 </div>
                 <p>
@@ -209,7 +208,7 @@ const MarketDetail: React.FunctionComponent = () => {
             <div className="market__detail__pie-chart__data">
               <div>
                 <p>
-                  Utilization rate
+                  Utilization Rate
                 </p>
                 <p>
                   {`${utilization}%`}
@@ -261,9 +260,9 @@ const MarketDetail: React.FunctionComponent = () => {
                 data={[
                   [
                     'Month',
-                    'Total Deposit',
+                    graphConverter ? 'Total Borrowed' : 'Total Deposits',
                     { role: 'tooltip', p: { html: true } },
-                    'Total Rate',
+                    graphConverter ? 'Borrow APY' : 'Total Deposit Yield',
                     { role: 'tooltip', p: { html: true } }
                   ],
                   ...chartData,

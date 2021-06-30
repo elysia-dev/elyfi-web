@@ -37,7 +37,7 @@ const DisableWalletPage = () => {
           DASHBOARD
         </h1>
         <p className="dashboard__content">
-          To get access to the dashboard page, please connect your wallet first!
+          Connect your wallet to continue
         </p>
         <div style={{ margin: "30px auto 0px", display: "inline-block" }}>
           {CopiedWallet()}
