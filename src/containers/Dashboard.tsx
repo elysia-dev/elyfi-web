@@ -19,6 +19,7 @@ import Skeleton from 'react-loading-skeleton';
 import ErrorPage from 'src/components/ErrorPage';
 
 import ELFI from 'src/assets/images/ELFI.png'
+import { useTranslation } from 'react-i18next';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -30,6 +31,7 @@ const Dashboard: React.FunctionComponent = () => {
     reserves.find((reserve) => reserveId === reserve.id)
   );
   const [balance, setBalance] = useState<BigNumber>(constants.Zero);
+  const { t } = useTranslation();
 
   const {
     loading,
@@ -85,13 +87,13 @@ const Dashboard: React.FunctionComponent = () => {
       }
       <section className="dashboard main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
         <div className="main__title-wrapper">
-          <h2 className="main__title-text">DASHBOARD</h2>
+          <h2 className="main__title-text">{t("navigation.dashboard")}</h2>
         </div>
       </section>
       <section className="tokens">
         <div className="tokens__container">
         <div className="tokens__title">
-          <p className="bold">DEPOSITS</p>
+          <p className="bold">{t("dashboard.deposits--header")}</p>
           <hr />
         </div>
           <table className="tokens__table">
@@ -105,7 +107,7 @@ const Dashboard: React.FunctionComponent = () => {
           <thead className="tokens__table__header">
             <tr>
               {
-                ["Asset", "Deposit Balance", "Deposit APY", "Wallet Balance"].map((key, index) => {
+                [t("dashboard.asset"), t("dashboard.deposit_balance"), t("dashboard.deposit_apy"), t("dashboard.wallet_balance")].map((key, index) => {
                   return (
                     <th key={index} style={{ width: index === 0 ? 150 : 342 }}>
                       <p className="tokens__table__header__column">
@@ -199,7 +201,7 @@ const Dashboard: React.FunctionComponent = () => {
       <section className="tokens">
         <div className="tokens__container">
         <div className="tokens__title">
-          <p className="bold">ELFI Token</p>
+          <p className="bold">{t("dashboard.minted")}</p>
           <hr />
         </div>
           <table className="tokens__table">
@@ -213,7 +215,7 @@ const Dashboard: React.FunctionComponent = () => {
           <thead className="tokens__table__header">
             <tr>
               {
-                ["Assets", "ELFI Balance", "Wallet Balance"].map((key, index) => {
+                [t("dashboard.asset"), t("dashboard.minted_balance"), t("dashboard.wallet_balance")].map((key, index) => {
                   return (
                     <th key={index} style={{ width: index === 0 ? 150 : 342 }}>
                       <p className="tokens__table__header__column">

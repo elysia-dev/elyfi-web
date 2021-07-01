@@ -3,6 +3,7 @@ import { GetAllReserves_reserves } from "src/queries/__generated__/GetAllReserve
 import { daiToUsd } from "src/utiles/formatters";
 import Skeleton from 'react-loading-skeleton';
 import { constants } from "ethers";
+import { useTranslation } from "react-i18next";
 
 /*
     대출금 : borrow(repay filter) 총합
@@ -16,15 +17,16 @@ const InvestmentStatus: FunctionComponent<{
   loading: boolean,
   reserve?: GetAllReserves_reserves,
 }> = ({ loading, reserve }) => {
+  const { t } = useTranslation();
   return (
     <div className="portfolio__investment-status__container">
       <p className="portfolio__investment-status__title bold">
-        Investment Status
+        {t("portfolio.investment_status")}
       </p>
       <table>
         <tr>
           <td>
-            Total Borrowed
+            {t("portfolio.total_borrowed")}
           </td>
           <td>
             <div>
@@ -43,7 +45,7 @@ const InvestmentStatus: FunctionComponent<{
         </tr>
         <tr>
           <td>
-            Estimated Repayments
+            {t("portfolio.estimated_repayments")}
           </td>
           <td>
             <div>
@@ -56,7 +58,7 @@ const InvestmentStatus: FunctionComponent<{
         </tr>
         <tr>
           <td>
-            Borrow APY
+            {t("portfolio.borrow_apy")}
           </td>
           <td>
             <div>
@@ -71,7 +73,7 @@ const InvestmentStatus: FunctionComponent<{
       <table>
         <tr>
           <td>
-            Accumulated Borrowed
+            {t("portfolio.accumulated_borrowed")}
           </td>
           <td>
             <div>
@@ -89,7 +91,7 @@ const InvestmentStatus: FunctionComponent<{
         </tr>
         <tr>
           <td>
-            Accumulated Repayments
+            {t("portfolio.accumulated_repayment")}
           </td>
           <td>
             <div>
@@ -107,7 +109,7 @@ const InvestmentStatus: FunctionComponent<{
         </tr>
         <tr>
           <td>
-            Accumulated Yield
+            {t("portfolio.accumulated_yield")}
           </td>
           <td>
             <div>

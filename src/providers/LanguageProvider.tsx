@@ -14,6 +14,7 @@ const TokenProvider: React.FC = (props) => {
       language: language,
       languageArray: [LanguageType.EN, LanguageType.KO, LanguageType.ZHHANS].filter(num => num !== language) 
     })
+    console.log(i18n.language)
   }
 
 

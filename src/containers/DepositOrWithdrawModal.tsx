@@ -2,6 +2,7 @@ import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants, providers } from 'ethers';
 import { useEffect } from 'react';
 import { FunctionComponent, useState } from 'react'
+import { useTranslation } from 'react-i18next';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { deposit, getAllowance, increaseAllownace, withdraw } from 'src/utiles/contractHelpers';
 import { toPercent } from 'src/utiles/formatters';
@@ -22,6 +23,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const [selected, select] = useState<boolean>(true)
   const [allowance, setAllowance] = useState<{ value: BigNumber, loaded: boolean }>({ value: constants.Zero, loaded: false });
   const [txWating, setWating] = useState<boolean>(false);
+  const { t } = useTranslation();
 
   const loadAllowance = async () => {
     if (!account) return;
@@ -94,13 +96,13 @@ const DepositOrWithdrawModal: FunctionComponent<{
             className={`modal__converter__column${selected ? "--selected" : ""}`}
             onClick={() => select(true)}
           >
-            <p className="bold">Deposit</p>
+            <p className="bold">{t("dashboard.deposit")}</p>
           </div>
           <div
             className={`modal__converter__column${!selected ? "--selected" : ""}`}
             onClick={() => select(false)}
           >
-            <p className="bold">Withdraw</p>
+            <p className="bold">{t("dashboard.withdraw")}</p>
           </div>
         </div>
         <div className="modal__body">
@@ -115,7 +117,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
                 </div>
               </div>
               <div className="loading-indicator__text">
-                <p className="bold">Transaction is now loading</p>
+                <p className="bold">{t("dashboard.loading")}</p>
               </div>
             </div>
           ) : (

@@ -2,11 +2,13 @@ import { useState, useEffect, useRef } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
 import mainnetConverter from 'src/utiles/mainnetConverter';
+import { useTranslation } from 'react-i18next';
 
 
 const Wallet = (props: any) => {
   const { account, activate, deactivate, active, chainId } = useWeb3React();
   const [connected, setConnected] = useState<boolean>(false);
+  const { t } = useTranslation();
 
   const WalletRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -45,7 +47,7 @@ const Wallet = (props: any) => {
           onClick={() => {
             deactivate();
           }}>
-          Disconnect
+          {t("navigation.disconnect")}
         </li>
       </ul>
     )
@@ -72,7 +74,8 @@ const Wallet = (props: any) => {
           {connected && (
             <p className="navigation__wallet__mainnet">{mainnetConverter(chainId)}</p>
           )}
-          <p className={`navigation__wallet__status${connected ? "--connected" : ""}`}>{connected ? `${account?.slice(0, 6)}....${account?.slice(-4)}` : "Connect Wallet"}</p>
+          <p className={`navigation__wallet__status${connected ? "--connected" : ""}`}>
+            {connected ? `${account?.slice(0, 6)}....${account?.slice(-4)}` : t("navigation.connect-wallet")}</p>
         </div>
         <LNB />
       </div>

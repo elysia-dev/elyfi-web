@@ -5,6 +5,7 @@ import ElysiaLogoBeta from 'src/assets/images/Elysia_Logo_Beta.png';
 import InstallMetamask from './InstallMetamask';
 import Wallet from './Wallet';
 import { useEagerConnect } from 'src/hooks/connectHoots';
+import { useTranslation } from 'react-i18next';
 
 // TODO
 // Use NavLink for ActiveClass
@@ -12,6 +13,7 @@ const Navigation: FunctionComponent = () => {
   const triedEager = useEagerConnect()
   const [hover, setHover] = useState(0);
   const location = useLocation();
+  const { t, i18n } = useTranslation();
 
   return (
     <nav className="navigation">
@@ -31,9 +33,9 @@ const Navigation: FunctionComponent = () => {
         <div className="navigation__link-wrapper">
           {
             [
-              ["/dashboard", "DASHBOARD"],
-              ["/portfolio", "PORTFOLIO"],
-              ["/linkage_institution", "PARTNERS"]
+              ["/dashboard", t("navigation.dashboard")],
+              ["/portfolio", t("navigation.portfolio")],
+              ["/linkage_institution", t("navigation.partners")]
             ].map((data, index) => {
               return (
                 <Link to={data[0]} key={index}>

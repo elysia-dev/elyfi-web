@@ -9,6 +9,7 @@ import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
 import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
 import ReservesContext from 'src/contexts/ReservesContext';
 import ErrorPage from 'src/components/ErrorPage';
+import { useTranslation } from 'react-i18next';
 
 const Portfolio = () => {
   const { reserves } = useContext(ReservesContext);
@@ -20,16 +21,8 @@ const Portfolio = () => {
     GET_ALL_ASSET_BONDS,
   )
   let history = useHistory();
-  const selectAttribute = [
-    'Empty',
-    'Settled',
-    'Confirmed',
-    'Collateralized',
-    'Matured',
-    'Redeemed',
-    'Not_performed'
-  ]
-  const [select, setSelect] = useState("")
+  
+  const { t } = useTranslation();
 
   if (error) return (<ErrorPage />)
 
@@ -37,7 +30,7 @@ const Portfolio = () => {
     <div className="elysia--pc">
       <section className="main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
         <div className="main__title-wrapper">
-          <h1 className="main__title-text">PORTFOLIO</h1>
+          <h1 className="main__title-text">{t("navigation.portfolio")}</h1>
         </div>
       </section>
       <div className="portfolio">
@@ -48,7 +41,7 @@ const Portfolio = () => {
           />
           {/* loan: 대출금, totalLoan: 총 대출금, interest: 이자, overdueInterest: 연체이자, mortgageRate: 금리, abToken: 부실토큰 판매금 */}
           <div className="portfolio__asset-allocation__container">
-            <p className="portfolio__asset-allocation__title bold">Portfolio Asset Components</p>
+            <p className="portfolio__asset-allocation__title bold">{t("portfolio.portfolio_asset")}</p>
             <div className="portfolio__chart-wrapper">
               <PieChart
                 num1={40}
@@ -59,22 +52,22 @@ const Portfolio = () => {
             <div className="portfolio__asset-allocation__wrapper">
               <div>
                 <div />
-                <p>Mortgage Loans</p>
+                <p>{t("portfolio.mortgage")}</p>
               </div>
               <div>
                 <div />
-                <p>Auction Balance Loans</p>
+                <p>{t("portfolio.auction_balance")}</p>
               </div>
               <div>
                 <div />
-                <p>Short-term loans with charter returns</p>
+                <p>{t("portfolio.charter_returns")}</p>
               </div>
             </div>
           </div>
         </div>
         <div className="portfolio__asset-list__container">
           <div className="portfolio__asset-list__title__wrapper">
-            <p className="portfolio__asset-list__title bold">Portolio List</p>
+            <p className="portfolio__asset-list__title bold">{t("portfolio.portfolio_list")}</p>
             <hr className="portfolio__asset-list__title__line" />
             {/* <div className="portfolio__asset-list__title__button">
               <p>Lending</p>

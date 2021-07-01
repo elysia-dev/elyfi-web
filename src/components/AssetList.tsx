@@ -4,22 +4,16 @@ import { GetAllAssetBonds_assetBondTokens } from 'src/queries/__generated__/GetA
 import { daiToUsd, toPercent } from 'src/utiles/formatters';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import GoogleMapReact from 'google-map-react';
+import { useTranslation } from 'react-i18next';
 
 const abTokenStates = [
-  // 'Empty',
-  // 'Settled',
-  // 'Confirmed',
-  // 'Collateralized',
-  // 'Matured',
-  // 'Redeemed',
-  // 'Not performed',
-  'To be repayed',
-  'To be repayed',
-  'To be repayed',
-  'ABToken Liquidation in progress',
-  'ABToken Liquidation in progress',
-  'Repayment Complete',
-  'To be repayed',
+  'Empty',
+  'Settled',
+  'Confirmed',
+  'Collateralized',
+  'Matured',
+  'Redeemed',
+  'Not performed',
 ]
 
 const defaultLat = 37.5172;
@@ -30,6 +24,7 @@ const AssetList: FunctionComponent<{
   onClick: () => void,
 }> = ({ abToken, onClick }) => {
   const parsedTokenId = parseTokenId(abToken.id);
+  const { t } = useTranslation();
 
   return (
     <div className="portfolio__asset-list__info" onClick={onClick}>
@@ -49,12 +44,12 @@ const AssetList: FunctionComponent<{
       <div className="portfolio__asset-list__info__value__container">
         <div className="portfolio__asset-list__info__value__wrapper">
           <p className="portfolio__asset-list__info__value bold" style={{ color: "#333333" }}>
-            Loan #{parsedTokenId.nonce}
+            {t("portfolio.loan_number", {nonce: parsedTokenId.nonce})}
           </p>
         </div>
         <div className="portfolio__asset-list__info__value__wrapper">
           <p className="portfolio__asset-list__info__value">
-            Borrowed
+            {t("portfolio.borrowed")}
           </p>
           <div>
             <span className="bold">{daiToUsd(abToken.principal || '0')}</span>
@@ -62,7 +57,7 @@ const AssetList: FunctionComponent<{
         </div>
         <div className="portfolio__asset-list__info__value__wrapper">
           <p className="portfolio__asset-list__info__value">
-            Borrow APY
+            {t("portfolio.borrow_apy")}
           </p>
           <div>
             {toPercent(abToken.interestRate || '0')}
@@ -70,7 +65,7 @@ const AssetList: FunctionComponent<{
         </div>
         <div className="portfolio__asset-list__info__value__wrapper">
           <p className="portfolio__asset-list__info__value">
-            Maturity Date
+            {t("portfolio.maturity_date")}
           </p>
           <div>
             <p className="bold">

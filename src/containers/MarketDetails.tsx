@@ -14,6 +14,7 @@ import moment from 'moment';
 import ErrorPage from 'src/components/ErrorPage';
 import ReservesContext from 'src/contexts/ReservesContext';
 import { GetAllReserves_reserves_reserveHistory } from 'src/queries/__generated__/GetAllReserves';
+import { useTranslation } from 'react-i18next';
 
 const MarketDetail: React.FunctionComponent = () => {
   const history = useHistory();
@@ -22,6 +23,8 @@ const MarketDetail: React.FunctionComponent = () => {
   const { reserves } = useContext(ReservesContext);
   const { id } = useParams<{ id: string }>();
   const data = reserves.find((reserve) => reserve.id === id);
+
+  const { t } = useTranslation();
 
   // FIXME
   const miningAPR = utils.parseUnits('10', 25);
@@ -99,7 +102,7 @@ const MarketDetail: React.FunctionComponent = () => {
             <div className="market__detail__title-token__data-wrapper">
               <div className="market__detail__title-token__data-wrapper--popup">
                 <p>
-                  Total Deposit Yield
+                  {t("market.total_deposit_yield")}
                 </p>
                 <p
                   className="market__detail__title-token__data-wrapper--popup__icon"
@@ -115,7 +118,7 @@ const MarketDetail: React.FunctionComponent = () => {
             </div>
             <div className="market__detail__title-token__data-wrapper">
               <p>
-                Deposit APY
+                {t("market.deposit_apy")}
               </p>
               <p>
                 {toPercent(data.depositAPY)}
@@ -123,7 +126,7 @@ const MarketDetail: React.FunctionComponent = () => {
             </div>
             <div className="market__detail__title-token__data-wrapper">
               <p>
-                Mining APR
+                {t("market.mining_apr")}
               </p>
               <p>
                 {toPercent(miningAPR)}
@@ -131,7 +134,7 @@ const MarketDetail: React.FunctionComponent = () => {
             </div>
             <div className="market__detail__title-token__data-wrapper">
               <p>
-                Loan APY
+                {t("market.borrow_apy")}
               </p>
               <p>
                 {toPercent(data.borrowAPY)}
@@ -140,10 +143,10 @@ const MarketDetail: React.FunctionComponent = () => {
           </div>
           <div className="market__detail__title-token--popup" style={{ opacity: mouseHover ? 1 : 0 }}>
             <h2>
-              Total Deposit Yield
+              {t("market.total_deposit_yield")}
             </h2>
             <p>
-              Combines Deposit APY and Mining APR
+              {t("market.deposit_info")}
             </p>
           </div>
         </div>
@@ -151,7 +154,7 @@ const MarketDetail: React.FunctionComponent = () => {
       <div className="market__detail__container">
         <div className="market__detail__title__wrapper">
           <p className="bold">
-            Liquidity Details
+            {t("market.details")}
           </p>
           <hr />
         </div>
@@ -159,7 +162,7 @@ const MarketDetail: React.FunctionComponent = () => {
           <div className="market__detail__pie-chart__wrapper">
             <div className="market__detail__pie-chart__data__wrapper--total">
               <p className="bold">
-                Total Deposits
+                {t("market.total_deposit")}
               </p>
               <p className="bold">
                 {daiToUsd(data.totalDeposit)}
@@ -174,7 +177,7 @@ const MarketDetail: React.FunctionComponent = () => {
                     }}
                   />
                   <p>
-                    Total Borrowed
+                    {t("market.total_borrowed")}
                   </p>
                 </div>
                 <p>
@@ -189,7 +192,7 @@ const MarketDetail: React.FunctionComponent = () => {
                     }}
                   />
                   <p>
-                    Available Liquidity
+                    {t("market.available_liquidity")}
                   </p>
                 </div>
                 <p>
@@ -208,7 +211,7 @@ const MarketDetail: React.FunctionComponent = () => {
             <div className="market__detail__pie-chart__data">
               <div>
                 <p>
-                  Utilization Rate
+                  {t("market.utilization")}
                 </p>
                 <p>
                   {`${utilization}%`}
@@ -216,7 +219,7 @@ const MarketDetail: React.FunctionComponent = () => {
               </div>
               <div>
                 <p>
-                  Number of Depositers
+                  {t("market.depositers")}
                 </p>
                 <p>
                   {data.lTokenUserBalanceCount}
@@ -224,7 +227,7 @@ const MarketDetail: React.FunctionComponent = () => {
               </div>
               <div>
                 <p>
-                  Number of Borrowers
+                  {t("market.borrowers")}
                 </p>
                 <p>
                   {data.dTokenUserBalanceCount}
@@ -239,7 +242,7 @@ const MarketDetail: React.FunctionComponent = () => {
                 onClick={() => setGraphConverter(false)}
               >
                 <p className="bold">
-                  Deposit
+                  {t("market.deposit")}
                 </p>
               </div>
               <div
@@ -247,7 +250,7 @@ const MarketDetail: React.FunctionComponent = () => {
                 onClick={() => setGraphConverter(true)}
               >
                 <p className="bold">
-                  Borrow
+                  {t("market.borrow")}
                 </p>
               </div>
             </div>
@@ -260,9 +263,9 @@ const MarketDetail: React.FunctionComponent = () => {
                 data={[
                   [
                     'Month',
-                    graphConverter ? 'Total Borrowed' : 'Total Deposits',
+                    graphConverter ? t("market.total_borrowed") : t("market.total_deposit"),
                     { role: 'tooltip', p: { html: true } },
-                    graphConverter ? 'Borrow APY' : 'Total Deposit Yield',
+                    graphConverter ? t("market.borrow_apy") : t("market.total_deposit_yield"),
                     { role: 'tooltip', p: { html: true } }
                   ],
                   ...chartData,
@@ -308,7 +311,7 @@ const MarketDetail: React.FunctionComponent = () => {
       </div>
       <div className="market__detail__button" onClick={() => { history.push(`/dashboard?reserveId=${id}`) }}>
         <p>
-          Deposit | Withdraw
+          {t("market.button")}
         </p>
       </div>
     </>

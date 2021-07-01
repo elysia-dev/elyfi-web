@@ -1,5 +1,6 @@
 import { BigNumber, utils } from 'ethers';
-import { useEffect, useState } from 'react'
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const DepositBody: React.FunctionComponent<{
   tokenName: string,
@@ -16,11 +17,13 @@ const DepositBody: React.FunctionComponent<{
   const amountGtBalance = utils.parseEther(amount || '0').gt(balance);
   const amountLteZero = !amount || parseFloat(amount) <= 0;
 
+	const { t } = useTranslation();
+
 	return (
 		<div className="modal__deposit">
 			<div className="modal__deposit__value-wrapper">
 				<p className="modal__deposit__maximum bold" onClick={() => { setAmount((Math.floor(parseFloat(utils.formatEther(balance)) * 100000) / 100000).toString()) }}>
-					MAX
+					{t("dashboard.max")}
 				</p>
 				<p className="modal__deposit__value bold">
 					<input
@@ -37,11 +40,11 @@ const DepositBody: React.FunctionComponent<{
 			<div className="modal__deposit__container">
 				<div className="modal__deposit__despositable-amount-container">
 					<p className="bold">
-						Deposit Available
+						{t("dashboard.deposit_available")}
 					</p>
 					<div className="modal__deposit__despositable-amount-wrapper">
 						<p className="bold">
-							Wallet Balance
+							{t("dashboard.wallet_balance")}
 						</p>
 						<div className="modal__deposit__despositable-wallet-balance-wrapper">
 							<p className="bold">
@@ -52,14 +55,14 @@ const DepositBody: React.FunctionComponent<{
 				</div>
 				<div className="modal__deposit__despositable-value-wrapper">
 					<p className="bold">
-						Total Deposit Yield
+						{t("dashboard.total_deposit_yield")}
 					</p>
 					<div>
-						<p className="bold">Deposit APY</p>
+						<p className="bold">{t("dashboard.deposit_apy")}</p>
 						<p className="bold">{depositAPY}</p>
 					</div>
 					<div>
-						<p className="bold">Mining APR</p>
+						<p className="bold">{t("dashboard.mining_apr")}</p>
 						<p className="bold">{miningAPR}</p>
 					</div>
 				</div>
@@ -75,15 +78,15 @@ const DepositBody: React.FunctionComponent<{
 						>
 							<p>
 								{
-									amountLteZero ? "Enter an amount" :
-										amountGtBalance ? `INSUFFICIENT ${tokenName} BALANCE` : "DEPOSIT"
+									amountLteZero ? t("dashboard.enter_amount") :
+										amountGtBalance ? t("dashboard.insufficient_balance", {tokenName: tokenName}) : t("dashboard.deposit--button")
 								}
 							</p>
 						</div>
 						:
 						<div className="modal__button" onClick={() => increaseAllownace()}>
 							<p>
-								{`Allow the Elyfi Protocol to use your ${tokenName}`}
+								{t("dashboard.protocol_allow", {tokenName: tokenName})}
 							</p>
 						</div>
 			}

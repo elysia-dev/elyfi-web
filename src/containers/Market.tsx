@@ -7,6 +7,7 @@ import { daiToUsd, toPercent } from 'src/utiles/formatters';
 import { useWeb3React } from '@web3-react/core';
 import { useContext } from 'react';
 import ReservesContext from 'src/contexts/ReservesContext';
+import { useTranslation } from 'react-i18next';
 
 const usdFormatter = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' })
 
@@ -14,12 +15,13 @@ const Market: React.FunctionComponent = () => {
   const history = useHistory();
   const { account } = useWeb3React();
   const { reserves } = useContext(ReservesContext);
+  const { t } = useTranslation();
 
   return (
     <>
       <section className="dashboard main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
         <div className="main__title-wrapper">
-          <h4 className="main__title-text--market">Total Market Size</h4>
+          <h4 className="main__title-text--market">{t("market.total_size")}</h4>
           <h2 className="main__title-text--blue">
             {
               usdFormatter.format(
@@ -35,13 +37,13 @@ const Market: React.FunctionComponent = () => {
       </section>
       <section className="tokens">
         <div className="tokens__title">
-          <p className="bold">TOKEN</p>
+          <p className="bold">{t("market.token--header")}</p>
           <hr />
         </div>
         <table className="tokens__table">
           <thead className="tokens__table__header">
             <tr>
-              {["Asset", "Total Deposits", "Deposit APY", "Total Borrowed", "Borrow APY"].map((name, index) => {
+              {[t("market.asset"), t("market.total_deposit"), t("market.deposit_apy"), t("market.total_borrowed"), t("market.borrow_apy")].map((name, index) => {
                 return (
                   <th key={index}>
                     <p className={`tokens__table__header__column`}>{name}</p>
@@ -76,7 +78,7 @@ const Market: React.FunctionComponent = () => {
                         <th>
                           <div className="tokens__table__button" onClick={(e) => { e.stopPropagation(); history.push(`dashboard?reserveId=${reserves[0].id}`) }}>
                             <p>
-                              {"Deposit | Withdraw"}
+                              {t("market.button")}
                             </p>
                           </div>
                         </th>
@@ -115,7 +117,7 @@ const Market: React.FunctionComponent = () => {
                         <div
                           className="tokens__table__button--disable"
                         >
-                          <p>{"Coming Soon!"}</p>
+                          <p>{t("market.coming_soon")}</p>
                         </div>
                       </th>
                     }

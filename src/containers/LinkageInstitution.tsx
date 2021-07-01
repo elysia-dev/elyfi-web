@@ -1,19 +1,20 @@
 import ServiceBackground from 'src/assets/images/service-background.png';
 import 'src/stylesheets/style.scss';
 import Logo from 'src/assets/images/ELYFI.png';
+import { useTranslation } from 'react-i18next';
 
 const LinkageInstitution = () => {
-
+  const { t } = useTranslation();
   return (
     <>
       <section className="dashboard main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
         <div className="main__title-wrapper">
-          <h2 className="main__title-text">PARTNERS</h2>
+          <h2 className="main__title-text">{t("navigation.partners")}</h2>
         </div>
       </section>
       <section className="linkage">
         <div className="linkage__title-line">
-          <p className="bold">Collateral Service Providers</p>
+          <p className="bold">{t("partners.collateral_provider")}</p>
           <hr />
         </div>
         <div className="linkage__collateral__providers__container">
@@ -25,49 +26,49 @@ const LinkageInstitution = () => {
               주식회사 엘리파이대부
             </p>
             <p className="linkage__collateral__providers__content">
-              Business License Number : 115-88-01240
+              {t("partners.license_number")}: 115-88-01240
             </p>
             <p className="linkage__collateral__providers__link">
-              Website: -
+              {t("partners.website")}: -
             </p>
           </div>
         </div>
         <div className="linkage__status__title">
-          <p className="bold">Borrow Status</p>
+          <p className="bold">{t("partners.borrow_status")}</p>
         </div>
         <div className="linkage__status__container">
           <div className="linkage__status__wrapper">
             <div className="linkage__status">
-              <p>Collateral Service Provider Deposit</p>
-              <p>Deposits by Collateral Service Providers</p>
+              <p>{t("partners.collateral_provider_deposit")}</p>
+              <p>{t("partners.collateral_provider_deposit--content")}</p>
             </div>
             <p className="linkage__status__value">-</p>
           </div>
           <div className="linkage__status__wrapper">
             <div className="linkage__status">
-              <p>Borrow Limit</p>
-              <p>Collateral Service Provider Deposit * 10</p>
+              <p>{t("partners.borrow_limit")}</p>
+              <p>{t("partners.borrow_limit--content")}</p>
             </div>
             <p className="linkage__status__value">-</p>
           </div>
           <div className="linkage__status__wrapper">
             <div className="linkage__status">
-              <p>Borrowed</p>
-              <p>Current Loan Receivable</p>
+              <p>{t("partners.borrowed")}</p>
+              <p>{t("partners.borrowed--content")}</p>
             </div>
             <p className="linkage__status__value">-</p>
           </div>
           <div className="linkage__status__wrapper">
             <div className="linkage__status">
-              <p>Borrow Limit Used</p>
-              <p>% of Borrowed relative to Borrow Limit</p>
+              <p>{t("partners.limit_used")}</p>
+              <p>{t("partners.limit_used--content")}</p>
             </div>
             <p className="linkage__status__value">- %</p>
           </div>
           <div className="linkage__status__wrapper">
             <div className="linkage__status">
-              <p>Available Borrow Limit</p>
-              <p>Borrow Limit minus Borrowed</p>
+              <p>{t("partners.available_borrow_limit")}</p>
+              <p>{t("partners.available_borrow_limit--content ")}</p>
             </div>
             <p className="linkage__status__value">-</p>
           </div>

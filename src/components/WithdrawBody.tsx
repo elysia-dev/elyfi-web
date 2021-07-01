@@ -1,5 +1,6 @@
 import { BigNumber, utils } from 'ethers';
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next';
 import { formatComma } from 'src/utiles/formatters';
 
 // TODO
@@ -15,11 +16,13 @@ const WithdrawBody: React.FunctionComponent<{
 	const amountGtBalance = utils.parseEther(amount || '0').gt(depositBalance);
 	const amountLteZero = !amount || parseFloat(amount) <= 0;
 
+	const { t } = useTranslation();
+
 	return (
 		<div className="modal__withdraw">
 			<div className="modal__withdraw__value-wrapper">
 				<p className="modal__withdraw__maximum bold" onClick={() => { setAmount(utils.formatEther(depositBalance)) }}>
-					MAX
+					{t("dashboard.max")}
 				</p>
 				<p className="modal__withdraw__value bold">
 					<input
@@ -36,28 +39,28 @@ const WithdrawBody: React.FunctionComponent<{
 			<div className="modal__withdraw__withdrawalable">
 				<div className="modal__withdraw__withdrawalable-amount-wrapper">
 					<div className="modal__withdraw__withdrawalable__title">
-						<p className="bold">Withdraw Available</p>
+						<p className="bold">{t("dashboard.withdraw_availble")}</p>
 						<p className="bold">{`${formatComma(depositBalance)} ${tokenName}`}</p>
 					</div>
 					<div>
-						<p className="bold">Deposit Balance</p>
+						<p className="bold">{t("dashboard.deposit_balance")}</p>
 						<p className="bold">{`${formatComma(depositBalance)} ${tokenName}`}</p>
 					</div>
 					<div>
-						<p className="bold">{tokenName} reserves in ELYFI</p>
+						<p className="bold">{t("dashboard.reserves_elyfi", {tokenName: tokenName})}</p>
 						<p className="bold">1,000.00 {tokenName}</p>
 					</div>
 				</div>
 				<div className="modal__withdraw__withdrawalable-value-wrapper">
 					<div className="modal__withdraw__withdrawalable__title">
-						<p className="bold">Yield</p>
+						<p className="bold">{t("dashboard.yield")}</p>
 					</div>
 					<div>
-						<p className="bold">Yield produced after the prior withdrawal</p>
+						<p className="bold">{t("dashboard.yield_produced")}</p>
 						<p className="bold">1,000.00 {tokenName}</p>
 					</div>
 					<div>
-						<p className="bold">Accumulated Yield</p>
+						<p className="bold">{t("dashboard.accumulated")}</p>
 						<p className="bold">1,000.00 {tokenName}</p>
 					</div>
 				</div>
@@ -71,8 +74,8 @@ const WithdrawBody: React.FunctionComponent<{
 					>
 						<p>
 							{
-								amountLteZero ? "Enter an amount" :
-									amountGtBalance ? `INSUFFICIENT BALANCE` : "WITHDRAW"
+								amountLteZero ? t("dashboard.enter_amount") :
+									amountGtBalance ? t("dashboard.insufficient_balance", {tokenName: tokenName}) : t("dashboard.withdraw--button")
 							}
 						</p>
 					</div>

@@ -1,6 +1,6 @@
 import 'src/stylesheets/style.scss';
 import WhiteLogo from 'src/assets/images/White-logo.svg';
-// import LanguageConverter from './LanguageConverter';
+import LanguageConverter from './LanguageConverter';
 import FooterBackgroundImg from 'src/assets/images/footer.png';
 
 const Footer = () => {
@@ -9,7 +9,7 @@ const Footer = () => {
       <div className="footer__container">
         <img className="footer__white-logo" src={WhiteLogo} alt="Elysia" />
         <div className="footer__wrapper">
-          {/* <LanguageConverter /> */}
+          <LanguageConverter />
         </div>
       </div>
     </footer>

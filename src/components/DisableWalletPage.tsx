@@ -3,10 +3,11 @@ import 'src/stylesheets/style.scss';
 import { useWeb3React } from '@web3-react/core';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
 import MainBackground from 'src/assets/images/main-background.png';
+import { useTranslation } from 'react-i18next';
 
 const DisableWalletPage = () => {
   const { activate, active, chainId } = useWeb3React();
-
+  const { t } = useTranslation();
   const CopiedWallet = () => {
     return (
       active && chainId?.toString() === process.env.REACT_APP_REQUIRED_CHAIN_ID ?
@@ -24,7 +25,7 @@ const DisableWalletPage = () => {
           style={{ margin: 0 }}
         >
           <div className="navigation__wallet__wrapper">
-            <p className={`navigation__wallet__status`}>Connect Wallet</p>
+            <p className={`navigation__wallet__status`}>{t("navigation.connect_wallet")}</p>
           </div>
         </div>
     )
@@ -34,13 +35,13 @@ const DisableWalletPage = () => {
     <section className="dashboard--disable" style={{ backgroundImage: `url(${MainBackground})` }}>
       <div className="dashboard__content-container">
         <h1 className="dashboard__content--bold">
-          DASHBOARD
+          {t("navigation.dashboard")}
         </h1>
         <p className="dashboard__content">
-          Connect your wallet to continue
+          {t("dashboard.disable_content--1")}
         </p>
         <p className="dashboard__content">
-          Kovan network is required
+          {t("dashboard.disable_content--2")}
         </p>
         <div style={{ margin: "30px auto 0px", display: "inline-block" }}>
           {CopiedWallet()}

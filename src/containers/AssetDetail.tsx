@@ -11,6 +11,7 @@ import { daiToUsd, toPercent } from 'src/utiles/formatters';
 import moment from 'moment';
 import ABTokenState from 'src/enums/ABTokenState';
 import ServiceBackground from 'src/assets/images/service-background.png'
+import { useTranslation } from 'react-i18next';
 
 const AssetDetail: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,6 +23,7 @@ const AssetDetail: FunctionComponent = () => {
     GET_ALL_ASSET_BONDS,
   )
 
+  const { t } = useTranslation();
   const abToken = data?.assetBondTokens.find((ab) => ab.id === id);
 
   if (error || (!abToken && !loading)) return (<ErrorPage />)
@@ -35,19 +37,19 @@ const AssetDetail: FunctionComponent = () => {
     <section id="portfolio">
       <section className="main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
         <div className="main__title-wrapper">
-          <h1 className="main__title-text">PORTFOLIO</h1>
+          <h1 className="main__title-text">{t("navigation.portfolio")}</h1>
         </div>
       </section>
       <div className="portfolio__info">
         <div className="portfolio__asset-list__title__wrapper" style={{ marginTop: 100 }}>
-          <p className="portfolio__asset-list__title bold">Asset Details</p>
+          <p className="portfolio__asset-list__title bold">{t("portfolio.asset_detail")}</p>
           <hr className="portfolio__asset-list__title__line" />
         </div>
         <table className="portfolio__info__table">
           <tr>
             <td className="portfolio__info__table__title">
               <p>
-                Loan Number
+                {t("portfolio.loan_number--table")}
               </p>
             </td>
             <td colSpan={2}>
@@ -59,7 +61,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title">
               <p>
-                Loan Status
+                {t("portfolio.loan_status")}
               </p>
             </td>
             <td colSpan={2}>
@@ -71,7 +73,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title">
               <p>
-                Borrower
+                {t("portfolio.borrower")}
               </p>
             </td>
             <td colSpan={2}>
@@ -83,7 +85,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title">
               <p>
-                Collateral Service Provider Info
+                {t("portfolio.service_provider_info")}
               </p>
             </td>
             <td colSpan={2}>
@@ -95,7 +97,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title">
               <p>
-                Loan Receiver
+                {t("portfolio.loan_receiver")}
               </p>
             </td>
             <td colSpan={2}>
@@ -107,7 +109,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title">
               <p>
-                Borrowed
+                {t("portfolio.borrowed")}
               </p>
             </td>
             <td colSpan={2}>
@@ -119,7 +121,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title">
               <p>
-                Borrow APY
+                {t("portfolio.borrow_apy")}
               </p>
             </td>
             <td colSpan={2}>
@@ -131,7 +133,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title">
               <p>
-                Loan Date
+                {t("portfolio.loan_date")}
               </p>
             </td>
             <td colSpan={2}>
@@ -143,7 +145,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title">
               <p>
-                Maturity Date
+                {t("portfolio.maturity_date")}
               </p>
             </td>
             <td colSpan={2}>
@@ -160,12 +162,12 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td rowSpan={13} className="portfolio__info__table__title--last">
               <p>
-                Collateral Infomration
+                {t("portfolio.collateral_infomation")}
               </p>
             </td>
             <td className="portfolio__info__table__title--second">
               <p>
-                ABToken ID
+                {t("portfolio.abtokenid")}
               </p>
             </td>
             <td>
@@ -177,7 +179,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title--second">
               <p>
-                Collateral Service Provider
+                {t("portfolio.service_provider")}
               </p>
             </td>
             <td>
@@ -189,7 +191,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title--second">
               <p>
-                Business License Number
+                {t("portfolio.license_number")}
               </p>
             </td>
             <td>
@@ -201,7 +203,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title--second">
               <p>
-                Loan Product
+                {t("portfolio.loan_product")}
               </p>
             </td>
             <td>
@@ -213,7 +215,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title--second">
               <p>
-                Loan Name
+                {t("portfolio.loan_name")}
               </p>
             </td>
             <td>
@@ -225,7 +227,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title--second">
               <p>
-                Loans
+                {t("portfolio.loans")}
               </p>
             </td>
             <td>
@@ -237,7 +239,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title--second">
               <p>
-                Loan Interest Rate
+                {t("portfolio.loan_interest_rate")}
               </p>
             </td>
             <td>
@@ -249,7 +251,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title--second">
               <p>
-                Loan Date
+                {t("portfolio.loan_date")}
               </p>
             </td>
             <td>
@@ -261,7 +263,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title--second">
               <p>
-                Maturity Date
+                {t("portfolio.maturity_date")}
               </p>
             </td>
             <td>
@@ -273,7 +275,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title--second">
               <p>
-                Maximum Pledge Amount
+                {t("portfolio.maximum_amount")}
               </p>
             </td>
             <td>
@@ -285,7 +287,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title--second">
               <p>
-                Collateral Type
+                {t("portfolio.collateral_type")}
               </p>
             </td>
             <td>
@@ -297,7 +299,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title--second">
               <p>
-                Collateral Address
+                {t("portfolio.collateral_address")}
               </p>
             </td>
             <td>
@@ -309,7 +311,7 @@ const AssetDetail: FunctionComponent = () => {
           <tr>
             <td className="portfolio__info__table__title--second">
               <p>
-                Contract Image
+                {t("portfolio.contract_image")}
               </p>
             </td>
             <td>
