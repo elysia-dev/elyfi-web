@@ -1,5 +1,5 @@
 import { BigNumber, constants, providers } from "ethers";
-import { getERC20, getMoneyPool } from "src/core/utils/getContracts";
+import { getERC20, getIncentivePool, getMoneyPool } from "src/core/utils/getContracts";
 import envs from 'src/core/envs';
 
 export const getAllowance = async (account: string, contractAddress: string, library: providers.Web3Provider): Promise<BigNumber> => {
@@ -39,7 +39,7 @@ export const increaseAllownace = async (account: string, contractAddress: string
 };
 
 export const deposit = async (account: string, asset: string, amount: BigNumber, library: providers.Web3Provider): Promise<string | undefined> => {
-  const contract = getMoneyPool(envs.moneyPoolAddress, library);
+  const contract = getMoneyPool(library);
   const request = library.provider.request;
 
   if (!contract || !request) return;
@@ -67,7 +67,7 @@ export const deposit = async (account: string, asset: string, amount: BigNumber,
 }
 
 export const withdraw = async (account: string, asset: string, amount: BigNumber, library: providers.Web3Provider): Promise<string | undefined> => {
-  const contract = getMoneyPool(envs.moneyPoolAddress, library);
+  const contract = getMoneyPool(library);
   const request = library.provider.request;
 
   if (!contract || !request) return;
@@ -92,4 +92,20 @@ export const withdraw = async (account: string, asset: string, amount: BigNumber
     console.log(e);
     return
   }
+}
+
+export const getUserIncentiveReward = async (account: string, library: providers.Web3Provider): Promise<BigNumber> => {
+  const contract = getIncentivePool(library);
+
+  if (!contract) return constants.Zero;
+
+  return await contract.getUserIncentiveReward(account) as BigNumber;
+}
+
+export const getErc20Balance = async (address: string, account: string, library: providers.Web3Provider): Promise<BigNumber> => {
+  const contract = getERC20(address, library);
+
+  if (!contract) return constants.Zero;
+
+  return await contract.balanceOf(account) as BigNumber
 }

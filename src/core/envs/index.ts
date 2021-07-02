@@ -3,6 +3,8 @@ import prodVars from './prod.json';
 
 interface EnvironmentVariables {
   moneyPoolAddress: string
+  incentivePoolAddress: string
+  governanceAddress: string
   requiredNetwork: string
   subgraphURI: string
 }
