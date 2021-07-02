@@ -1,8 +1,8 @@
 {
-  "moneyPoolAddress": "0xDaC74130ED8FABcB24d077Ff0072c96A703625CC",
-  "incentivePoolAddress": "0xd2e1aA7e6B9153d38F18D5B719A7529c78edBb0C",
+  "moneyPoolAddress": "0x14B6Bd0B18Bf4af28776c2a6789c5c201BEED6b9",
+  "incentivePoolAddress": "0xc0722C1a3171aEEb17011d9a9854a0E73fcA4b40",
   "governanceAddress": "0x13a902Bf1D18DaAeA3DC6C401e5171F4Ab2A4833",
-  "testStableAddress": "0x7009e97a6331ccfbf7119238F12762f378a1eEc1",
+  "testStableAddress": "0x4E3072Fd717Ba1E1b8503Ff16D77f9B12F8B8D83",
   "requiredNetwork": "Ropsten",
   "requiredChainId": 3,
   "subgraphURI": "https://api.thegraph.com/subgraphs/name/modonguk/elyfi"
