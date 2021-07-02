@@ -75,7 +75,7 @@ const Wallet = (props: any) => {
             <p className="navigation__wallet__mainnet">{mainnetConverter(chainId)}</p>
           )}
           <p className={`navigation__wallet__status${connected ? "--connected" : ""}`}>
-            {connected ? `${account?.slice(0, 6)}....${account?.slice(-4)}` : t("navigation.connect-wallet")}</p>
+            {connected ? `${account?.slice(0, 6)}....${account?.slice(-4)}` : t("navigation.connect_wallet")}</p>
         </div>
         <LNB />
       </div>
