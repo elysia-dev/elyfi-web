@@ -21,26 +21,36 @@ const Navigation: FunctionComponent = () => {
   return (
     <nav className="navigation">
       <div className="navigation__alert">
-        <p>
-          This website is an <span className="bold" style={{ color: "#00A7FF" }}>ELYFI beta version. </span>
-          Please connect to the Kovan network, and you can get some test tokens by &nbsp;
-          <span
-            style={{
-              color: "#00A7FF",
-              textDecoration: "underline",
-              cursor: "pointer"
-            }}
-            onClick={() => {
-              if (account && chainId?.toString() === process.env.REACT_APP_REQUIRED_CHAIN_ID) {
-                faucetTestERC20(account, library)
-              } else {
-                alert("Please connet to the Kovan network")
-              }
-            }}
-          >
-            creating a transaction!
-          </span>
-        </p>
+        <div className="navigation__alert__container">
+          <p>
+            This website is an <span className="bold" style={{ color: "#00A7FF" }}>ELYFI beta version. </span>
+            Please connect to the Kovan network, and you can get some test tokens by&nbsp;
+            <span
+              style={{
+                color: "#00A7FF",
+                textDecoration: "underline",
+                cursor: "pointer"
+              }}
+              onClick={() => {
+                if (account && chainId?.toString() === process.env.REACT_APP_REQUIRED_CHAIN_ID) {
+                  faucetTestERC20(account, library)
+                } else {
+                  alert("Please connet to the Kovan network")
+                }
+              }}
+            >
+              here!
+            </span>
+          </p>
+          <div className="navigation__alert__wrapper">
+            <Link to="/security">
+              <p className="bold">Security</p>
+            </Link>
+            <Link to="/guide">
+              <p className="bold">Guide</p>
+            </Link>
+          </div>  
+        </div>
       </div>
       <div className="navigation__container">
         <Link to="/">

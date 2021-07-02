@@ -59,6 +59,22 @@ span {
         margin: 0 auto;
         font-size: 13px;
       }
+      &__container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 1190px;
+      }
+      &__wrapper {
+        display: flex;
+        justify-content: space-between;
+        width: 160px;
+        > a p {
+          color: #00A7FF;
+          text-decoration: underline;
+          cursor: pointer;
+        }
+      }
     }
     &__container {
       max-width: 1190px;
@@ -1427,7 +1443,33 @@ span {
         }
       }
     }
-    
+  }
+  .guide {
+    width: 1190px;
+    margin: 100px auto 80px;
+    > div div {
+      margin-top: 50px;
+    }
+    &__alert {
+      font-size: 17px;
+      color: #cc1111;
+    }
+    &__link {
+      color: #00A7FF;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    &__image {
+      width: 400px;
+      transition: 0.2s all ease-in-out;
+      box-shadow: 0px 0px 3px #00bfff81;
+      border-radius: 5px;
+      cursor: pointer;
+      position: relative;
+      &:hover {
+        box-shadow: 0px 0px 15px #00bfff81;
+      }
+    }
   }
 }
 .pie-chart {

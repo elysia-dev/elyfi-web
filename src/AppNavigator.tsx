@@ -18,6 +18,8 @@ import { useWeb3React } from '@web3-react/core';
 import DisableWalletPage from './components/DisableWalletPage';
 import LinkageInstitution from 'src/containers/LinkageInstitution';
 import ScrollToTop from './hooks/ScrollToTop';
+import Security from 'src/containers/Security';
+import InvestmentGuide from 'src/containers/InvestmentGuide';
 
 const AppNavigator: React.FC = () => {
   const { active, chainId } = useWeb3React();
@@ -36,6 +38,8 @@ const AppNavigator: React.FC = () => {
               active && chainId?.toString() === process.env.REACT_APP_REQUIRED_CHAIN_ID ? Dashboard : DisableWalletPage
             }
           />
+          <Route exact path="/security" component={Security} />
+          <Route exact path="/guide" component={InvestmentGuide} />
           <Route exact path="/portfolio" component={Portfolio} />
           <Route exact path="/portfolio/:id" component={AssetDetail} />
           <Route exact path="/markets/:id" component={MarketDetail} />
