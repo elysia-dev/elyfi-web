@@ -7,6 +7,7 @@ interface EnvironmentVariables {
   governanceAddress: string
   testStableAddress: string
   requiredNetwork: string
+  requiredChainId: number
   subgraphURI: string
 }
 

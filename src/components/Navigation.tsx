@@ -7,6 +7,7 @@ import Wallet from './Wallet';
 import { useEagerConnect } from 'src/hooks/connectHoots';
 import { useWeb3React } from '@web3-react/core';
 import { faucetTestERC20 } from 'src/utiles/contractHelpers';
+import envs from 'src/core/envs';
 
 // TODO
 // Use NavLink for ActiveClass
@@ -21,7 +22,7 @@ const Navigation: FunctionComponent = () => {
       <div className="navigation__alert">
         <p>
           This website is an <span className="bold" style={{ color: "#00A7FF" }}>ELYFI beta version. </span>
-          Please connect to the Kovan network, and you can get some test tokens by &nbsp;
+          Please connect to the {envs.requiredNetwork} network, and you can get some test tokens by &nbsp;
           <span
             style={{
               color: "#00A7FF",
@@ -29,10 +30,10 @@ const Navigation: FunctionComponent = () => {
               cursor: "pointer"
             }}
             onClick={() => {
-              if (account && chainId?.toString() === process.env.REACT_APP_REQUIRED_CHAIN_ID) {
+              if (account && chainId === envs.requiredChainId) {
                 faucetTestERC20(account, library)
               } else {
-                alert("Please connet to the Kovan network")
+                alert(`Please connet to the ${envs.requiredNetwork} network`)
               }
             }}
           >

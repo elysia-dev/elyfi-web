@@ -3,13 +3,14 @@ import 'src/stylesheets/style.scss';
 import { useWeb3React } from '@web3-react/core';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
 import MainBackground from 'src/assets/images/main-background.png';
+import envs from 'src/core/envs';
 
 const DisableWalletPage = () => {
   const { activate, active, chainId } = useWeb3React();
 
   const CopiedWallet = () => {
     return (
-      active && chainId?.toString() === process.env.REACT_APP_REQUIRED_CHAIN_ID ?
+      active && chainId === envs.requiredChainId ?
         <div style={{ border: "2px solid #00BFFF", borderRadius: 5, padding: 20, width: 200 }}>
           <p style={{ color: "#FFFFFF", margin: 0 }}>
             Access Completed!<br />
@@ -40,7 +41,7 @@ const DisableWalletPage = () => {
           Connect your wallet to continue
         </p>
         <p className="dashboard__content">
-          Kovan network is required
+          {`${envs.requiredNetwork} network is required`}
         </p>
         <div style={{ margin: "30px auto 0px", display: "inline-block" }}>
           {CopiedWallet()}
