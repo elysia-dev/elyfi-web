@@ -4,6 +4,7 @@ import InjectedConnector from 'src/core/connectors/injectedConnector';
 import mainnetConverter from 'src/utiles/mainnetConverter';
 import { useTranslation } from 'react-i18next';
 
+import envs from 'src/core/envs';
 
 const Wallet = (props: any) => {
   const { account, activate, deactivate, active, chainId } = useWeb3React();
@@ -54,7 +55,7 @@ const Wallet = (props: any) => {
   }
 
   useEffect(() => {
-    setConnected(!!account && chainId?.toString() === process.env.REACT_APP_REQUIRED_CHAIN_ID)
+    setConnected(!!account && chainId === envs.requiredChainId)
   }, [account, chainId])
 
 

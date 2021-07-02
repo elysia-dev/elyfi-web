@@ -4,13 +4,14 @@ import { useWeb3React } from '@web3-react/core';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
 import MainBackground from 'src/assets/images/main-background.png';
 import { useTranslation } from 'react-i18next';
+import envs from 'src/core/envs';
 
 const DisableWalletPage = () => {
   const { activate, active, chainId } = useWeb3React();
   const { t } = useTranslation();
   const CopiedWallet = () => {
     return (
-      active && chainId?.toString() === process.env.REACT_APP_REQUIRED_CHAIN_ID ?
+      active && chainId === envs.requiredChainId ?
         <div style={{ border: "2px solid #00BFFF", borderRadius: 5, padding: 20, width: 200 }}>
           <p style={{ color: "#FFFFFF", margin: 0 }}>
             Access Completed!<br />
@@ -41,7 +42,7 @@ const DisableWalletPage = () => {
           {t("dashboard.disable_content--1")}
         </p>
         <p className="dashboard__content">
-          {t("dashboard.disable_content--2")}
+          {`${envs.requiredNetwork} network is required`}
         </p>
         <div style={{ margin: "30px auto 0px", display: "inline-block" }}>
           {CopiedWallet()}

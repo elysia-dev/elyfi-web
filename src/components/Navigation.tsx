@@ -8,6 +8,7 @@ import { useEagerConnect } from 'src/hooks/connectHoots';
 import { useTranslation } from 'react-i18next';
 import { useWeb3React } from '@web3-react/core';
 import { faucetTestERC20 } from 'src/utiles/contractHelpers';
+import envs from 'src/core/envs';
 
 // TODO
 // Use NavLink for ActiveClass

@@ -1,5 +1,9 @@
 {
-  "moneyPoolAddress": "0xda6C572b830C6471EcEb001e8D04279101457783",
-  "requiredNetwork": "mainnet",
-  "subgraphURI": "https://api.thegraph.com/subgraphs/name/modonguk/elyfikovan"
+  "moneyPoolAddress": "0xDaC74130ED8FABcB24d077Ff0072c96A703625CC",
+  "incentivePoolAddress": "0xd2e1aA7e6B9153d38F18D5B719A7529c78edBb0C",
+  "governanceAddress": "0x13a902Bf1D18DaAeA3DC6C401e5171F4Ab2A4833",
+  "testStableAddress": "0x7009e97a6331ccfbf7119238F12762f378a1eEc1",
+  "requiredNetwork": "Ropsten",
+  "requiredChainId": 3,
+  "subgraphURI": "https://api.thegraph.com/subgraphs/name/modonguk/elyfi"
 }
