@@ -12,7 +12,6 @@ ELYFI is adding real estate to the DEFI concept. This is the expansion of the cu
 
 ```
 REACT_APP_GOOGLE_MAP_API_KEY=***
-REACT_APP_REQUIRED_CHAIN_ID=42
 ```
 
 - Install dependencies with `yarn`
