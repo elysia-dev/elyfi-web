@@ -1,5 +1,5 @@
 import { BigNumber, constants, providers } from "ethers";
-import { getERC20, getIncentivePool, getMoneyPool } from "src/core/utils/getContracts";
+import { getERC20, getERC20Test, getIncentivePool, getMoneyPool } from "src/core/utils/getContracts";
 import envs from 'src/core/envs';
 
 export const getAllowance = async (account: string, contractAddress: string, library: providers.Web3Provider): Promise<BigNumber> => {
@@ -118,6 +118,33 @@ export const claimIncentive = async (account: string, library: providers.Web3Pro
 
   try {
     const populatedTransaction = await contract?.populateTransaction.claimIncentive(account);
+
+    const txHash = await request({
+      method: 'eth_sendTransaction',
+      params: [
+        {
+          to: populatedTransaction.to,
+          from: account,
+          data: populatedTransaction.data,
+        },
+      ],
+    })
+
+    return txHash;
+  } catch (e) {
+    console.log(e);
+    return
+  }
+}
+
+export const faucetTestERC20 = async (account: string, library: providers.Web3Provider): Promise<string | undefined> => {
+  const contract = getERC20Test(envs.testStableAddress, library);
+  const request = library.provider.request;
+
+  if (!contract || !request) return;
+
+  try {
+    const populatedTransaction = await contract?.populateTransaction.faucet();
 
     const txHash = await request({
       method: 'eth_sendTransaction',
