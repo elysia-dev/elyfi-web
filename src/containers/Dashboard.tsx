@@ -252,7 +252,7 @@ const Dashboard: React.FunctionComponent = () => {
           </thead>
           <tbody className="tokens__table-body">
             <tr
-              className="tokens__table__row--disable"
+              className="tokens__table__row"
               key={0}
               onClick={(e) => {
                 e.preventDefault();
