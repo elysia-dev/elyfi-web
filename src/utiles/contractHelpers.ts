@@ -109,3 +109,30 @@ export const getErc20Balance = async (address: string, account: string, library:
 
   return await contract.balanceOf(account) as BigNumber
 }
+
+export const claimIncentive = async (account: string, library: providers.Web3Provider): Promise<string | undefined> => {
+  const contract = getIncentivePool(library);
+  const request = library.provider.request;
+
+  if (!contract || !request) return;
+
+  try {
+    const populatedTransaction = await contract?.populateTransaction.claimIncentive(account);
+
+    const txHash = await request({
+      method: 'eth_sendTransaction',
+      params: [
+        {
+          to: populatedTransaction.to,
+          from: account,
+          data: populatedTransaction.data,
+        },
+      ],
+    })
+
+    return txHash;
+  } catch (e) {
+    console.log(e);
+    return
+  }
+}

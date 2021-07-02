@@ -20,6 +20,7 @@ import ErrorPage from 'src/components/ErrorPage';
 import ELFI from 'src/assets/images/ELFI.png'
 import { getErc20Balance, getUserIncentiveReward } from 'src/utiles/contractHelpers';
 import envs from 'src/core/envs';
+import IncentiveModal from './IncentiveModal';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -36,6 +37,7 @@ const Dashboard: React.FunctionComponent = () => {
     incentive: constants.Zero,
     governance: constants.Zero,
   });
+  const [incentiveModalVisible, setIncentiveModalVisible] = useState<boolean>(false);
 
   const {
     loading,
@@ -97,6 +99,13 @@ const Dashboard: React.FunctionComponent = () => {
           depositBalance={BigNumber.from(userConnection?.user?.lTokenBalance[0]?.balance || '0')}
         />
       }
+      <IncentiveModal
+        visible={incentiveModalVisible}
+        onClose={() => {
+          setIncentiveModalVisible(false)
+        }}
+        balance={balances.incentive}
+      />
       <section className="dashboard main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
         <div className="main__title-wrapper">
           <h2 className="main__title-text">DASHBOARD</h2>
@@ -243,6 +252,10 @@ const Dashboard: React.FunctionComponent = () => {
             <tr
               className="tokens__table__row--disable"
               key={0}
+              onClick={(e) => {
+                e.preventDefault();
+                setIncentiveModalVisible(true);
+              }}
             >
               <th>
                 <div>
