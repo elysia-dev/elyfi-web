@@ -1,5 +1,5 @@
 import { BigNumber, constants, providers } from "ethers";
-import { getERC20, getMoneyPool } from "src/core/utils/getContracts";
+import { getERC20, getERC20Test, getIncentivePool, getMoneyPool } from "src/core/utils/getContracts";
 import envs from 'src/core/envs';
 
 export const getAllowance = async (account: string, contractAddress: string, library: providers.Web3Provider): Promise<BigNumber> => {
@@ -39,7 +39,7 @@ export const increaseAllownace = async (account: string, contractAddress: string
 };
 
 export const deposit = async (account: string, asset: string, amount: BigNumber, library: providers.Web3Provider): Promise<string | undefined> => {
-  const contract = getMoneyPool(envs.moneyPoolAddress, library);
+  const contract = getMoneyPool(library);
   const request = library.provider.request;
 
   if (!contract || !request) return;
@@ -67,7 +67,7 @@ export const deposit = async (account: string, asset: string, amount: BigNumber,
 }
 
 export const withdraw = async (account: string, asset: string, amount: BigNumber, library: providers.Web3Provider): Promise<string | undefined> => {
-  const contract = getMoneyPool(envs.moneyPoolAddress, library);
+  const contract = getMoneyPool(library);
   const request = library.provider.request;
 
   if (!contract || !request) return;
@@ -75,6 +75,76 @@ export const withdraw = async (account: string, asset: string, amount: BigNumber
   try {
     const populatedTransaction = await contract?.populateTransaction
       .withdraw(asset, account, amount);
+
+    const txHash = await request({
+      method: 'eth_sendTransaction',
+      params: [
+        {
+          to: populatedTransaction.to,
+          from: account,
+          data: populatedTransaction.data,
+        },
+      ],
+    })
+
+    return txHash;
+  } catch (e) {
+    console.log(e);
+    return
+  }
+}
+
+export const getUserIncentiveReward = async (account: string, library: providers.Web3Provider): Promise<BigNumber> => {
+  const contract = getIncentivePool(library);
+
+  if (!contract) return constants.Zero;
+
+  return await contract.getUserIncentiveReward(account) as BigNumber;
+}
+
+export const getErc20Balance = async (address: string, account: string, library: providers.Web3Provider): Promise<BigNumber> => {
+  const contract = getERC20(address, library);
+
+  if (!contract) return constants.Zero;
+
+  return await contract.balanceOf(account) as BigNumber
+}
+
+export const claimIncentive = async (account: string, library: providers.Web3Provider): Promise<string | undefined> => {
+  const contract = getIncentivePool(library);
+  const request = library.provider.request;
+
+  if (!contract || !request) return;
+
+  try {
+    const populatedTransaction = await contract?.populateTransaction.claimIncentive(account);
+
+    const txHash = await request({
+      method: 'eth_sendTransaction',
+      params: [
+        {
+          to: populatedTransaction.to,
+          from: account,
+          data: populatedTransaction.data,
+        },
+      ],
+    })
+
+    return txHash;
+  } catch (e) {
+    console.log(e);
+    return
+  }
+}
+
+export const faucetTestERC20 = async (account: string, library: providers.Web3Provider): Promise<string | undefined> => {
+  const contract = getERC20Test(envs.testStableAddress, library);
+  const request = library.provider.request;
+
+  if (!contract || !request) return;
+
+  try {
+    const populatedTransaction = await contract?.populateTransaction.faucet();
 
     const txHash = await request({
       method: 'eth_sendTransaction',

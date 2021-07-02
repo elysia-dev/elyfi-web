@@ -6,12 +6,11 @@ import { GetUser } from 'src/queries/__generated__/GetUser';
 import { GET_USER } from 'src/queries/userQueries';
 import ReserveData from 'src/core/data/reserves';
 import { useEffect } from 'react';
-import { daiToUsd, toPercent } from 'src/utiles/formatters';
+import { daiToUsd, formatComma, toPercent } from 'src/utiles/formatters';
 import { useContext } from 'react';
 import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
 import { useState } from 'react';
 import ReservesContext from 'src/contexts/ReservesContext';
-import { getERC20 } from 'src/core/utils/getContracts';
 import { BigNumber, constants } from 'ethers';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -20,6 +19,9 @@ import ErrorPage from 'src/components/ErrorPage';
 
 import ELFI from 'src/assets/images/ELFI.png'
 import { useTranslation } from 'react-i18next';
+import { getErc20Balance, getUserIncentiveReward } from 'src/utiles/contractHelpers';
+import envs from 'src/core/envs';
+import IncentiveModal from './IncentiveModal';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -30,8 +32,14 @@ const Dashboard: React.FunctionComponent = () => {
   const [reserve, setReserve] = useState<GetAllReserves_reserves | undefined>(
     reserves.find((reserve) => reserveId === reserve.id)
   );
-  const [balance, setBalance] = useState<BigNumber>(constants.Zero);
   const { t } = useTranslation();
+  const [balances, setBalances] = useState<{ loading: boolean, dai: BigNumber, incentive: BigNumber, governance: BigNumber }>({
+    loading: true,
+    dai: constants.Zero,
+    incentive: constants.Zero,
+    governance: constants.Zero,
+  });
+  const [incentiveModalVisible, setIncentiveModalVisible] = useState<boolean>(false);
 
   const {
     loading,
@@ -42,21 +50,29 @@ const Dashboard: React.FunctionComponent = () => {
     { variables: { id: account?.toLocaleLowerCase() } }
   )
 
-  const loadBalance = async (address: string) => {
-    const contract = getERC20(address, library);
+  const loadBalances = async () => {
+    if (!account) {
+      return;
+    }
 
-    if (!contract) return;
-
-    setBalance(await contract.balanceOf(account))
+    try {
+      setBalances({
+        loading: false,
+        dai: await getErc20Balance(reserves[0].id, account, library),
+        incentive: await getUserIncentiveReward(account || '', library),
+        governance: await getErc20Balance(envs.governanceAddress, account, library),
+      })
+    } catch {
+      setBalances({
+        ...balances,
+        loading: false,
+      })
+    }
   }
 
   useEffect(() => {
-    if (!account) {
-      return
-    }
-
-    loadBalance(reserves[0].id);
-  }, [account])
+    loadBalances();
+  })
 
   if (error) return (<ErrorPage />)
 
@@ -81,10 +97,17 @@ const Dashboard: React.FunctionComponent = () => {
 
             setReserve(undefined)
           }}
-          balance={balance}
+          balance={balances.dai}
           depositBalance={BigNumber.from(userConnection?.user?.lTokenBalance[0]?.balance || '0')}
         />
       }
+      <IncentiveModal
+        visible={incentiveModalVisible}
+        onClose={() => {
+          setIncentiveModalVisible(false)
+        }}
+        balance={balances.incentive}
+      />
       <section className="dashboard main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
         <div className="main__title-wrapper">
           <h2 className="main__title-text">{t("navigation.dashboard")}</h2>
@@ -158,17 +181,17 @@ const Dashboard: React.FunctionComponent = () => {
                       </th>
                       <th>
                         {
-                          loading ?
+                          loading || balances.loading ?
                             <Skeleton width={50} />
                             :
-                            <p>{daiToUsd(balance)}</p>
+                            <p>{daiToUsd(balances.dai)}</p>
                         }
                       </th>
                     </tr>
                   )
                 }
                 return (
-                  <tr 
+                  <tr
                     className="tokens__table__row--disable"
                     key={index}
                   >
@@ -228,9 +251,13 @@ const Dashboard: React.FunctionComponent = () => {
             </tr>
           </thead>
           <tbody className="tokens__table-body">
-            <tr 
+            <tr
               className="tokens__table__row--disable"
               key={0}
+              onClick={(e) => {
+                e.preventDefault();
+                setIncentiveModalVisible(true);
+              }}
             >
               <th>
                 <div>
@@ -238,8 +265,22 @@ const Dashboard: React.FunctionComponent = () => {
                   <p>ELFI</p>
                 </div>
               </th>
-              <th><p>-</p></th>
-              <th><p>-</p></th>
+              <th>
+                {
+                  loading || balances.loading ?
+                    <Skeleton width={50} />
+                    :
+                    <p>{`${formatComma(balances.incentive)} ELFI`}</p>
+                }
+              </th>
+              <th>
+                {
+                  loading || balances.loading ?
+                    <Skeleton width={50} />
+                    :
+                    <p>{`${formatComma(balances.governance)} ELFI`}</p>
+                }
+              </th>
             </tr>
           </tbody>
         </table>

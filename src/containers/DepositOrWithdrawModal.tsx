@@ -3,6 +3,7 @@ import { BigNumber, constants, providers } from 'ethers';
 import { useEffect } from 'react';
 import { FunctionComponent, useState } from 'react'
 import { useTranslation } from 'react-i18next';
+import LoadingIndicator from 'src/components/LoadingIndicator';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { deposit, getAllowance, increaseAllownace, withdraw } from 'src/utiles/contractHelpers';
 import { toPercent } from 'src/utiles/formatters';
@@ -107,19 +108,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
         </div>
         <div className="modal__body">
           {txWating ? (
-            <div className="loading-indicator">
-              <div className="loader">
-                <div className="l_main">
-                  <div className="l_square"><span></span><span></span><span></span></div>
-                  <div className="l_square"><span></span><span></span><span></span></div>
-                  <div className="l_square"><span></span><span></span><span></span></div>
-                  <div className="l_square"><span></span><span></span><span></span></div>
-                </div>
-              </div>
-              <div className="loading-indicator__text">
-                <p className="bold">{t("dashboard.loading")}</p>
-              </div>
-            </div>
+            <LoadingIndicator />
           ) : (
             selected ? (
               <DepositBody

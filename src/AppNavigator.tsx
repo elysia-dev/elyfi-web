@@ -17,6 +17,7 @@ import Dashboard from './containers/Dashboard';
 import { useWeb3React } from '@web3-react/core';
 import DisableWalletPage from './components/DisableWalletPage';
 import LinkageInstitution from 'src/containers/LinkageInstitution';
+import ScrollToTop from './hooks/ScrollToTop';
 
 const AppNavigator: React.FC = () => {
   const { active, chainId } = useWeb3React();
@@ -24,6 +25,7 @@ const AppNavigator: React.FC = () => {
   return (
     <div className="elysia">
       <Router>
+        <ScrollToTop />
         <Navigation />
         <Switch>
           <Route exact path="/linkage_institution" component={LinkageInstitution} />

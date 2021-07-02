@@ -6,15 +6,15 @@ import { formatComma } from 'src/utiles/formatters';
 // TODO
 // * Interest values
 const WithdrawBody: React.FunctionComponent<{
-	tokenName: string
-	depositBalance: BigNumber
-	txWating: boolean
-	withdraw: (amount: BigNumber) => void
+  tokenName: string
+  depositBalance: BigNumber
+  txWating: boolean
+  withdraw: (amount: BigNumber) => void
 }> = ({ tokenName, depositBalance, txWating, withdraw }) => {
-	const [amount, setAmount] = useState<string>('');
+  const [amount, setAmount] = useState<string>('');
 
-	const amountGtBalance = utils.parseEther(amount || '0').gt(depositBalance);
-	const amountLteZero = !amount || parseFloat(amount) <= 0;
+  const amountGtBalance = utils.parseEther(amount || '0').gt(depositBalance);
+  const amountLteZero = !amount || parseFloat(amount) <= 0;
 
 	const { t } = useTranslation();
 
