@@ -55,8 +55,7 @@
       "deposit--button": "DEPOSIT",
       "withdral--button": "WITHDRAW",
       "protocol_allow": "Allow the ELYFI Protocol to use your {{tokenName}}",
-      "disable_content--1": "Connect your wallet to continue",
-      "disable_content--2": "Kovan network is required"
+      "disable_content--1": "Connect your wallet to continue"
     },
     "portfolio": {
       "investment_status": "Investment Status",
@@ -79,7 +78,7 @@
       "loan_number": "Loan #{{nonce}}",
       "borrowed": "Borrowed",
       "maturity_date": "Maturity Date",
-      
+
       "asset_detail": "Asset Details",
       "loan_number--table": "Loan Number",
       "loan_status": "Loan Status",
@@ -104,7 +103,7 @@
       "collateral_provider": "Collateral Service Providers",
       "license_number": "Business License Number",
       "website": "Website",
-      
+
       "borrow_status": "Borrow Status",
       "collateral_provider_deposit": "Collateral Service Provider Deposit",
       "collateral_provider_deposit--content": "Deposits by Collateral Service Providers",

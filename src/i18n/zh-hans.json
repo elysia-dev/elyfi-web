@@ -55,8 +55,7 @@
       "deposit--button": "存款",
       "withdral--button": "出金",
       "protocol_allow": "Allow the ELYFI Protocol to use your {{tokenName}}",
-      "disable_content--1": "请绑定您的钱包以访问该页面.",
-      "disable_content--2": "Kovan network is required"
+      "disable_content--1": "请绑定您的钱包以访问该页面."
     },
     "portfolio": {
       "investment_status": "Investment Status",
@@ -79,7 +78,7 @@
       "loan_number": "贷款 #{{nonce}}",
       "borrowed": "贷款金额",
       "maturity_date": "到期日期",
-      
+
       "asset_detail": "资产详情",
       "loan_number--table": "贷款编号",
       "loan_status": "贷款现状",
@@ -104,7 +103,7 @@
       "collateral_provider": "担保公司",
       "license_number": "营业执照号码",
       "website": "公司主页",
-      
+
       "borrow_status": "借款状态",
       "collateral_provider_deposit": "担保法人保证金余额",
       "collateral_provider_deposit--content": "担保公司登陆ELYFI平台需要缴纳的保证金",

@@ -25,7 +25,7 @@ const Navigation: FunctionComponent = () => {
         <div className="navigation__alert__container">
           <p>
             This website is an <span className="bold" style={{ color: "#00A7FF" }}>ELYFI beta version. </span>
-            Please connect to the Kovan network, and you can get some test tokens by&nbsp;
+            Please connect to the {envs.requiredNetwork} network, and you can get some test tokens by&nbsp;
             <span
               style={{
                 color: "#00A7FF",
@@ -33,10 +33,10 @@ const Navigation: FunctionComponent = () => {
                 cursor: "pointer"
               }}
               onClick={() => {
-                if (account && chainId?.toString() === process.env.REACT_APP_REQUIRED_CHAIN_ID) {
+                if (account && chainId === envs.requiredChainId) {
                   faucetTestERC20(account, library)
                 } else {
-                  alert("Please connet to the Kovan network")
+                  alert(`Please connet to the ${envs.requiredNetwork} network`)
                 }
               }}
             >
@@ -50,7 +50,7 @@ const Navigation: FunctionComponent = () => {
             <Link to="/guide">
               <p className="bold">Guide</p>
             </Link>
-          </div>  
+          </div>
         </div>
       </div>
       <div className="navigation__container">
