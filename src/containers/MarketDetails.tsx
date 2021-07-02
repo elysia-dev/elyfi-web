@@ -7,13 +7,13 @@ import DaiImage from 'src/assets/images/dai.png';
 /* temp */
 import { Circle } from 'src/utiles/Circle';
 import { daiToUsd, toPercent } from 'src/utiles/formatters';
-import { BigNumber, utils } from 'ethers';
+import { BigNumber } from 'ethers';
 import { Chart } from "react-google-charts";
 
-import moment from 'moment';
 import ErrorPage from 'src/components/ErrorPage';
 import ReservesContext from 'src/contexts/ReservesContext';
-import { GetAllReserves_reserves_reserveHistory } from 'src/queries/__generated__/GetAllReserves';
+import calcMiningAPR from 'src/utiles/calcMiningAPR';
+import calcHistoryChartData from 'src/utiles/calcHistoryChartData';
 
 const MarketDetail: React.FunctionComponent = () => {
   const history = useHistory();
@@ -23,68 +23,10 @@ const MarketDetail: React.FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
   const data = reserves.find((reserve) => reserve.id === id);
 
-  // FIXME
-  const miningAPR = utils.parseUnits('10', 25);
-
   if (!data) return (<ErrorPage />)
 
+  const miningAPR = calcMiningAPR(BigNumber.from(data.totalDeposit));
   const utilization = BigNumber.from(data.totalBorrow || '0').div(data.totalDeposit || '1').toNumber();
-
-  const reducedData = data.reserveHistory.reduce((res: GetAllReserves_reserves_reserveHistory[], cur) => {
-    if (res.length === 0) {
-      res.push(cur)
-      return res;
-    }
-
-    const lastElement = res[res.length - 1];
-
-    if (moment(cur.timestamp * 1000).format('YYYY-MM-DD') === moment(lastElement.timestamp * 1000).format('YYYY-MM-DD')) {
-      res.pop();
-    }
-
-    res.push(cur);
-
-    return res
-  }, [])
-
-  const emptyData = Array(7 - reducedData.length).fill(0).map((_data, index) => {
-    const baseTime = reducedData.length > 0 ? moment(reducedData[0].timestamp * 1000) : moment();
-
-    return {
-      id: '0x',
-      borrowAPY: '0',
-      depositAPY: '0',
-      totalBorrow: '0',
-      totalDeposit: '0',
-      timestamp: baseTime.subtract((index + 1), 'days').unix(),
-    } as GetAllReserves_reserves_reserveHistory
-  })
-
-  const filledData = [...emptyData.reverse(), ...reducedData];
-
-  const maxDeposit = reducedData.reduce((res, cur) =>
-    res < parseInt(utils.formatEther(cur.totalDeposit)) ? parseInt(utils.formatEther(cur.totalDeposit)) : res
-    , 0) || 1
-
-  const maxBorrow = reducedData.reduce((res, cur) =>
-    res < parseInt(utils.formatEther(cur.totalBorrow)) ? parseInt(utils.formatEther(cur.totalBorrow)) : res
-    , 0) || 1
-
-  // APY scale is very tiny.
-  // So use amplified apy by base(max Deposit or max Borrow).
-  // amplified apy = apy / 5 * base + base * 1.2
-
-  const chartData = (filledData.map((reserve, _x) => {
-    const apy = utils.formatUnits(!graphConverter ? reserve.depositAPY : reserve.borrowAPY, 25);
-    const base = Math.round(!graphConverter ? maxDeposit : maxBorrow);
-    return [
-      moment(reserve.timestamp * 1000).format("MMMM DD"),
-      parseInt(utils.formatEther(!graphConverter ? reserve.totalDeposit : reserve.totalBorrow)),
-      daiToUsd(!graphConverter ? reserve.totalDeposit : reserve.totalBorrow),
-      (parseFloat(apy) / 5) * base + base * 1.2, // i
-      apy.toString()
-    ]
-  }) || [])
 
   return (
     <>
@@ -265,7 +207,9 @@ const MarketDetail: React.FunctionComponent = () => {
                     graphConverter ? 'Borrow APY' : 'Total Deposit Yield',
                     { role: 'tooltip', p: { html: true } }
                   ],
-                  ...chartData,
+                  ...(
+                    calcHistoryChartData(data, graphConverter ? "borrow" : "deposit")
+                  ),
                 ]}
                 options={{
                   chartArea: { left: 0, top: 100, width: "100%", height: "400px" },

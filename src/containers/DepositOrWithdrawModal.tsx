@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { FunctionComponent, useState } from 'react'
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
+import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import { deposit, getAllowance, increaseAllownace, withdraw } from 'src/utiles/contractHelpers';
 import { toPercent } from 'src/utiles/formatters';
 import DepositBody from '../components/DepositBody';
@@ -112,7 +113,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
               <DepositBody
                 tokenName={tokenName}
                 depositAPY={toPercent(reserve.depositAPY || '0')}
-                miningAPR={toPercent(reserve.depositAPY || '0')}
+                miningAPR={toPercent(calcMiningAPR(BigNumber.from(reserve.totalDeposit)))}
                 balance={balance}
                 isApproved={!allowance.loaded || allowance.value.gt(balance)}
                 txWating={txWating}
