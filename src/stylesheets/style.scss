@@ -1471,6 +1471,56 @@ span {
       }
     }
   }
+  .security {
+    width: 1190px;
+    margin: 100px auto 80px;
+    &__title {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 33px;
+      > p {
+        margin: 0 20px 0 0;
+        white-space: nowrap;
+        font-size: 20px;
+        color: #333333;
+      }
+      > hr {
+        width: 100%;
+        height: 1px;
+        border: 0px;
+        background-color: #f0f0f1;
+      }
+    }
+    &__link {
+      color: #00A7FF;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    > div {
+      margin-bottom: 50px;
+    }
+    &__table {
+      width: 100%;
+      border-radius: 6px;
+      border-spacing: 0;
+      border-collapse: separate;
+      border: 1px solid #b7b7b7;
+      margin-bottom: 40px;
+      table-layout: fixed;
+      > tr td {
+        padding: 0 17px;
+        border-left: 1px solid #b7b7b7;
+        border-top: 1px solid #b7b7b7;
+      }
+      > tr:first-child > td {
+        border-top: 0;
+      }
+      > tr > td:first-child {
+        border-left: 0px !important;
+      }
+    }
+  }
 }
 .pie-chart {
   display: inline-block;

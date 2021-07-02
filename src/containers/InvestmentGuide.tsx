@@ -35,10 +35,11 @@ const InvestmentGuide = () => {
           해당 메뉴얼은 ELYFI beta version의 Kovan network 기반 투자 메뉴얼이며,<br/>
           실제로 정식 ELYFI 출시시 해당 문서와 사용 방식에서 차이점이 있을 수 있다는 점을 미리 안내드립니다.
         </p>
+        <div className="security__title">
+          <p className="bold">ELYFI Platform Manual</p>
+          <hr />
+        </div>
         <div>
-          <h2>
-            ELYFI 플랫폼을 이용 메뉴얼
-          </h2>
           <div className="guide__connect-wallet">
             <h3>지갑 연결하기</h3>
             <ol>
