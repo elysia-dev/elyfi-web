@@ -85,7 +85,7 @@ const InvestmentGuide = () => {
               <li>
                 <p>
                   Metamask에서 토큰 추가 버튼을 클릭하신 뒤 토큰 계약 주소란에 아래 주소를 입력해주신 뒤 확인을 눌러주세요.<br />
-                  Contract Address : <span style={{ color: "#00A7FF", cursor: "pointer" }} onClick={() => AddressCopy("0x9715cc3d82b131f39bad0a2eace8a80433ff0bad")}>0x9715cc3d82b131f39bad0a2eace8a80433ff0bad</span>
+                  Contract Address : <span style={{ color: "#00A7FF", cursor: "pointer" }} onClick={() => AddressCopy(envs.testStableAddress)}>{envs.testStableAddress}</span>
                 </p>
               </li>
             </ol>
@@ -174,7 +174,7 @@ const InvestmentGuide = () => {
               <li>
                 <p>
                   먼저, Metamask로 접근하신 뒤 토큰 추가 버튼을 클릭하신 후 토큰 계약 주소란에 아래 주소를 입력해주신 뒤 확인을 눌러주세요.<br />
-                  Contract Address : <span style={{ color: "#00A7FF", cursor: "pointer" }} onClick={() => AddressCopy("0x9EAF333044ea90c849b127e60BB297AdE115D12c")}>0x9EAF333044ea90c849b127e60BB297AdE115D12c</span>
+                  Contract Address : <span style={{ color: "#00A7FF", cursor: "pointer" }} onClick={() => AddressCopy(envs.governanceAddress)}>{envs.governanceAddress}</span>
                 </p>
               </li>
               <li>
