@@ -32,5 +32,8 @@ export const GET_ALL_RESERVES = gql`
         totalBorrow,
         totalDeposit
     }
+    lToken {
+      id,
+    }
   }}
 `

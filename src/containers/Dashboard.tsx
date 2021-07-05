@@ -1,9 +1,6 @@
 import 'src/stylesheets/style.scss';
 import ServiceBackground from 'src/assets/images/service-background.png';
 import { useWeb3React } from '@web3-react/core';
-import { useQuery } from '@apollo/client';
-import { GetUser } from 'src/queries/__generated__/GetUser';
-import { GET_USER } from 'src/queries/userQueries';
 import ReserveData from 'src/core/data/reserves';
 import { useEffect } from 'react';
 import { daiToUsd, formatComma, toPercent } from 'src/utiles/formatters';
@@ -15,7 +12,6 @@ import { BigNumber, constants } from 'ethers';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { useHistory, useLocation } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
-import ErrorPage from 'src/components/ErrorPage';
 
 import ELFI from 'src/assets/images/ELFI.png'
 import { useTranslation } from 'react-i18next';
@@ -33,22 +29,20 @@ const Dashboard: React.FunctionComponent = () => {
     reserves.find((reserve) => reserveId === reserve.id)
   );
   const { t } = useTranslation();
-  const [balances, setBalances] = useState<{ loading: boolean, dai: BigNumber, incentive: BigNumber, governance: BigNumber }>({
+  const [balances, setBalances] = useState<{
+    loading: boolean,
+    dai: BigNumber,
+    incentive: BigNumber,
+    governance: BigNumber
+    lTokens: BigNumber[],
+  }>({
     loading: true,
     dai: constants.Zero,
     incentive: constants.Zero,
     governance: constants.Zero,
+    lTokens: Array.from(Array(reserves.length), () => constants.Zero),
   });
   const [incentiveModalVisible, setIncentiveModalVisible] = useState<boolean>(false);
-
-  const {
-    loading,
-    data: userConnection,
-    error,
-  } = useQuery<GetUser>(
-    GET_USER,
-    { variables: { id: account?.toLocaleLowerCase() } }
-  )
 
   const loadBalances = async () => {
     if (!account) {
@@ -61,6 +55,9 @@ const Dashboard: React.FunctionComponent = () => {
         dai: await getErc20Balance(reserves[0].id, account, library),
         incentive: await getUserIncentiveReward(account || '', library),
         governance: await getErc20Balance(envs.governanceAddress, account, library),
+        lTokens: await Promise.all(reserves.map((reserve) => {
+          return getErc20Balance(reserve.lToken.id, account, library)
+        })),
       })
     } catch {
       setBalances({
@@ -73,8 +70,6 @@ const Dashboard: React.FunctionComponent = () => {
   useEffect(() => {
     loadBalances();
   })
-
-  if (error) return (<ErrorPage />)
 
   return (
     <>
@@ -98,7 +93,7 @@ const Dashboard: React.FunctionComponent = () => {
             setReserve(undefined)
           }}
           balance={balances.dai}
-          depositBalance={BigNumber.from(userConnection?.user?.lTokenBalance[0]?.balance || '0')}
+          depositBalance={BigNumber.from(balances.lTokens[0])}
         />
       }
       <IncentiveModal
@@ -115,10 +110,10 @@ const Dashboard: React.FunctionComponent = () => {
       </section>
       <section className="tokens">
         <div className="tokens__container">
-        <div className="tokens__title">
-          <p className="bold">{t("dashboard.deposits--header")}</p>
-          <hr />
-        </div>
+          <div className="tokens__title">
+            <p className="bold">{t("dashboard.deposits--header")}</p>
+            <hr />
+          </div>
           <table className="tokens__table">
             <thead className="tokens__table__header">
               <tr>
@@ -163,25 +158,25 @@ const Dashboard: React.FunctionComponent = () => {
                       </th>
                       <th>
                         {
-                          loading ?
+                          balances.loading ?
                             <Skeleton width={50} />
                             :
-                            <p>{daiToUsd(userConnection?.user?.lTokenBalance[0]?.balance || '0')}</p>
+                            <p>{daiToUsd(balances.lTokens[index])}</p>
                         }
                       </th>
                       <th>
                         {
-                          loading ?
+                          balances.loading ?
                             <Skeleton width={50} />
                             :
                             <p>
-                              {toPercent(userConnection?.user?.lTokenBalance[0]?.lToken?.reserve?.depositAPY || '0')}
+                              {toPercent(reserves[index].depositAPY || '0')}
                             </p>
                         }
                       </th>
                       <th>
                         {
-                          loading || balances.loading ?
+                          balances.loading ?
                             <Skeleton width={50} />
                             :
                             <p>{daiToUsd(balances.dai)}</p>
@@ -197,15 +192,15 @@ const Dashboard: React.FunctionComponent = () => {
                   >
                     <th>
                       <div>
-                        <div 
+                        <div
                           className="tokens__table__image--disable"
                           style={{
                             backgroundColor: "#1C1C1CA2",
                             width: 40,
                             height: 40,
                             borderRadius: 40,
-                            position: "absolute"                         
-                          }} 
+                            position: "absolute"
+                          }}
                         />
                         <img src={reserve.image} style={{ width: 40 }} alt="Token" />
                         <p>{reserve.name}</p>
@@ -223,10 +218,10 @@ const Dashboard: React.FunctionComponent = () => {
       </section>
       <section className="tokens">
         <div className="tokens__container">
-        <div className="tokens__title">
-          <p className="bold">{t("dashboard.minted")}</p>
-          <hr />
-        </div>
+          <div className="tokens__title">
+            <p className="bold">{t("dashboard.minted")}</p>
+            <hr />
+          </div>
           <table className="tokens__table">
             <thead className="tokens__table__header">
               <tr>
@@ -267,7 +262,7 @@ const Dashboard: React.FunctionComponent = () => {
               </th>
               <th>
                 {
-                  loading || balances.loading ?
+                  balances.loading ?
                     <Skeleton width={50} />
                     :
                     <p>{`${formatComma(balances.incentive)} ELFI`}</p>
@@ -275,7 +270,7 @@ const Dashboard: React.FunctionComponent = () => {
               </th>
               <th>
                 {
-                  loading || balances.loading ?
+                  balances.loading ?
                     <Skeleton width={50} />
                     :
                     <p>{`${formatComma(balances.governance)} ELFI`}</p>
