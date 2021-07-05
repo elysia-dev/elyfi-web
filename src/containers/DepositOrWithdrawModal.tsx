@@ -20,7 +20,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
   depositBalance: BigNumber
   reserve: GetAllReserves_reserves,
   onClose: () => void,
-}> = ({ tokenName, visible, tokenImage, balance, depositBalance, reserve, onClose, }) => {
+  afterTx: () => Promise<void>,
+}> = ({ tokenName, visible, tokenImage, balance, depositBalance, reserve, onClose, afterTx }) => {
   const { account, library } = useWeb3React()
   const [selected, select] = useState<boolean>(true)
   const [allowance, setAllowance] = useState<{ value: BigNumber, loaded: boolean }>({ value: constants.Zero, loaded: false });
@@ -39,37 +40,37 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const requestAllowance = async () => {
     if (!account) return;
 
-    waitTx(await increaseAllownace(account, reserve.id, library));
+    waitTx(await increaseAllownace(account, reserve.id, library)).then(() => {
+      loadAllowance();
+    });
   }
 
   const requestDeposit = async (amount: BigNumber) => {
     if (!account) return;
 
-    waitTx(
-      await deposit(account, reserve.id, amount, library),
-      true
-    );
+    waitTx(await deposit(account, reserve.id, amount, library)).then(() => {
+      afterTx();
+      onClose();
+    })
   }
 
   const reqeustWithdraw = async (amount: BigNumber) => {
     if (!account) return;
 
-    waitTx(
-      await withdraw(account, reserve.id, amount, library),
-      true
-    );
+    waitTx(await withdraw(account, reserve.id, amount, library)).then(() => {
+      afterTx();
+      onClose()
+    })
   }
 
-  const waitTx = async (txHash: string | undefined, withClose?: boolean) => {
+  const waitTx = async (txHash: string | undefined) => {
     if (!txHash) return;
 
     setWating(true);
     try {
       await (library as providers.Web3Provider).waitForTransaction(txHash);
-      loadAllowance();
     } finally {
       setWating(false);
-      if (withClose) onClose();
     }
   }
 

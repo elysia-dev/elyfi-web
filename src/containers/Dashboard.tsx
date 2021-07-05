@@ -44,6 +44,26 @@ const Dashboard: React.FunctionComponent = () => {
   });
   const [incentiveModalVisible, setIncentiveModalVisible] = useState<boolean>(false);
 
+  const refrechBalancesAfterTx = async (index: number) => {
+    if (!account) return;
+
+    try {
+      setBalances({
+        ...balances,
+        dai: await getErc20Balance(reserves[index].id, account, library),
+        lTokens: {
+          ...balances.lTokens,
+          [index]: await getErc20Balance(reserves[index].lToken.id, account, library),
+        },
+      })
+    } catch {
+      setBalances({
+        ...balances,
+        loading: false,
+      })
+    }
+  }
+
   const loadBalances = async () => {
     if (!account) {
       return;
@@ -94,6 +114,7 @@ const Dashboard: React.FunctionComponent = () => {
           }}
           balance={balances.dai}
           depositBalance={BigNumber.from(balances.lTokens[0])}
+          afterTx={() => refrechBalancesAfterTx(0)}
         />
       }
       <IncentiveModal
