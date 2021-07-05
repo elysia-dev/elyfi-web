@@ -75,7 +75,7 @@ const WithdrawBody: React.FunctionComponent<{
             <p>
               {
                 amountLteZero ? t("dashboard.enter_amount") :
-                  amountGtBalance ? t("dashboard.insufficient_balance", { tokenName: tokenName }) : t("dashboard.withdraw--button")
+                  amountGtBalance ? t("dashboard.insufficient_balance", { tokenName: tokenName }) : t("dashboard.withdraw")
               }
             </p>
           </div>
