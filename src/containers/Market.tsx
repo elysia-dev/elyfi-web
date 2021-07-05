@@ -8,6 +8,7 @@ import { useWeb3React } from '@web3-react/core';
 import { useContext } from 'react';
 import ReservesContext from 'src/contexts/ReservesContext';
 import { useTranslation } from 'react-i18next';
+import calcMiningAPR from 'src/utiles/calcMiningAPR';
 
 const usdFormatter = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' })
 
@@ -70,7 +71,10 @@ const Market: React.FunctionComponent = () => {
                         </div>
                       </th>
                       <th><p>{daiToUsd(reserves[0].totalDeposit)}</p></th>
-                      <th><p>{toPercent(reserves[0].depositAPY)}</p></th>
+                      <th>
+                        <p>{toPercent(reserves[0].depositAPY)}</p>
+                        <p>{toPercent(calcMiningAPR(BigNumber.from(reserves[0].totalDeposit)))}</p>
+                      </th>
                       <th><p>{daiToUsd(reserves[0].totalBorrow)}</p></th>
                       <th><p>{toPercent(reserves[0].borrowAPY)}</p></th>
                       {
@@ -93,15 +97,15 @@ const Market: React.FunctionComponent = () => {
                   >
                     <th>
                       <div>
-                        <div 
+                        <div
                           className="tokens__table__image--disable"
                           style={{
                             backgroundColor: "#1C1C1CA2",
                             width: 40,
                             height: 40,
                             borderRadius: 40,
-                            position: "absolute"                         
-                          }} 
+                            position: "absolute"
+                          }}
                         />
                         <img src={reserve.image} alt='token' style={{ width: 40 }} />
                         <p>{reserve.name}</p>

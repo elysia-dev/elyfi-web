@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { getErc20Balance, getUserIncentiveReward } from 'src/utiles/contractHelpers';
 import envs from 'src/core/envs';
 import IncentiveModal from './IncentiveModal';
+import calcMiningAPR from 'src/utiles/calcMiningAPR';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -190,9 +191,14 @@ const Dashboard: React.FunctionComponent = () => {
                           balances.loading ?
                             <Skeleton width={50} />
                             :
-                            <p>
-                              {toPercent(reserves[index].depositAPY || '0')}
-                            </p>
+                            <>
+                              <p>
+                                {toPercent(reserves[index].depositAPY || '0')}
+                              </p>
+                              <p>
+                                <p>{toPercent(calcMiningAPR(BigNumber.from(reserves[index].totalDeposit)))}</p>
+                              </p>
+                            </>
                         }
                       </th>
                       <th>
