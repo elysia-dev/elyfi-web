@@ -1,28 +1,28 @@
 import Header from "src/components/Header";
 import { useState } from "react";
 
-const Security = () => {
+const Bounty = () => {
 
   return (
     <>
-      <Header title={"SECURITY"} />
-      <section className="security">
-        <div className="security__title">
+      <Header title={"BUG BOUNTY"} />
+      <section className="bounty">
+        <div className="bounty__title">
           <p className="bold">Bug Bounty</p>
           <hr />
         </div>
-        <div className="security__notice">
+        <div className="bounty__notice">
           <p>엘리시아 개발팀은 엘리시아 서비스의 품질을 높이기 위해 최선을 다하고 있습니다.</p>
           <p>엘리시아 생태계 참여자분들이 주시는 버그 리포팅 또는 좋은 제안은 서비스 품질을 높이는데 크게 도움이 되어 매우 감사함을 느끼고 있습니다.</p>
           <p>이에 따라 버그리포팅이나 제안하는 분들에게 보상을 드릴 수 있도록 보상 체계를 마련했습니다.</p>
-          <p>특별한 양식은 없으며, 모든 제안 또는 보고는 support@elysia.land이나, <a href={"https://elysia.land"} target="_blank:" className="security__link">https://elysia.land</a>의 contact에 제출해주시면 됩니다.</p>
+          <p>특별한 양식은 없으며, 모든 제안 또는 보고는 support@elysia.land이나, <a href={"https://elysia.land"} target="_blank:" className="bounty__link">https://elysia.land</a>의 contact에 제출해주시면 됩니다.</p>
         </div>
         <div>
-          <div className="security__title">
+          <div className="bounty__title">
             <p className="bold">Copy of Bounty</p>
             <hr />
           </div>
-          <table className="security__table">
+          <table className="bounty__table">
             <tr>
               <td>
                 <p>
@@ -220,7 +220,7 @@ const Security = () => {
               <li>
                 <p>
                   Elyfi contract:&nbsp;
-                  <a href="https://github.com/elysia-dev/elyfi" target="_blank" className="security__link">
+                  <a href="https://github.com/elysia-dev/elyfi" target="_blank" className="bounty__link">
                     https://github.com/elysia-dev/elyfi
                   </a>
                 </p>
@@ -228,7 +228,7 @@ const Security = () => {
               <li>
                 <p>
                   Elyfi sub-graph:&nbsp;
-                  <a href="https://github.com/elysia-dev/elyfi-subgraph" target="_blank" className="security__link">
+                  <a href="https://github.com/elysia-dev/elyfi-subgraph" target="_blank" className="bounty__link">
                     https://github.com/elysia-dev/elyfi-subgraph
                   </a>
                 </p>
@@ -236,7 +236,7 @@ const Security = () => {
               <li>
                 <p>
                   Elyfi web interface:&nbsp;
-                  <a href="https://github.com/elysia-dev/elyfi-web" target="_blank" className="security__link">
+                  <a href="https://github.com/elysia-dev/elyfi-web" target="_blank" className="bounty__link">
                     https://github.com/elysia-dev/elyfi-web
                   </a>
                 </p>
@@ -248,4 +248,4 @@ const Security = () => {
   )
 }
 
-export default Security;
+export default Bounty;

@@ -24,8 +24,8 @@ const Navigation: FunctionComponent = () => {
       <div className="navigation__alert">
         <div className="navigation__alert__container">
           <p>
-            This website is an <span className="bold" style={{ color: "#00A7FF" }}>ELYFI beta version. </span>
-            Please connect to the {envs.requiredNetwork} network, and you can get some test tokens by&nbsp;
+            This website is for <span className="bold" style={{ color: "#00A7FF" }}>ELYFI beta version only. </span>
+            Please connect to the {envs.requiredNetwork} network! You may get some test tokens &nbsp;
             <span
               style={{
                 color: "#00A7FF",
@@ -44,8 +44,8 @@ const Navigation: FunctionComponent = () => {
             </span>
           </p>
           <div className="navigation__alert__wrapper">
-            <Link to="/security">
-              <p className="bold">Security</p>
+            <Link to="/bounty">
+              <p className="bold">Bounty</p>
             </Link>
             <Link to="/guide">
               <p className="bold">Guide</p>

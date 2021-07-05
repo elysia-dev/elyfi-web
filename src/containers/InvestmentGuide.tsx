@@ -35,7 +35,7 @@ const InvestmentGuide = () => {
           해당 메뉴얼은 ELYFI beta version의 {envs.requiredNetwork} network 기반 투자 메뉴얼이며,<br />
           실제로 정식 ELYFI 출시시 해당 문서와 사용 방식에서 차이점이 있을 수 있다는 점을 미리 안내드립니다.
         </p>
-        <div className="security__title">
+        <div className="bounty__title">
           <p className="bold">ELYFI Platform Manual</p>
           <hr />
         </div>
@@ -70,7 +70,7 @@ const InvestmentGuide = () => {
                       cursor: "pointer"
                     }}
                     onClick={() => {
-                      if (account && chainId?.toString() === process.env.REACT_APP_REQUIRED_CHAIN_ID) {
+                      if (account && chainId === envs.requiredChainId) {
                         faucetTestERC20(account, library)
                       } else {
                         alert(`Please connet to the ${envs.requiredNetwork} network`)
