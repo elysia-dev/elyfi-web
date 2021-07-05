@@ -18,7 +18,7 @@ export const increaseAllownace = async (account: string, contractAddress: string
 
   try {
     const populatedTransaction = await contract?.populateTransaction
-      .approve(envs.moneyPoolAddress, '9' + '0'.repeat(32))
+      .approve(envs.moneyPoolAddress, constants.MaxUint256);
 
     const txHash = await request({
       method: 'eth_sendTransaction',
