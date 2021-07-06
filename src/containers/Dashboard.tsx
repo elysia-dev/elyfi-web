@@ -209,7 +209,7 @@ const Dashboard: React.FunctionComponent = () => {
                                 {toPercent(reserves[index].depositAPY || '0')}
                               </p>
                               <p>
-                                <p>{toPercent(calcMiningAPR(BigNumber.from(reserves[index].totalDeposit)))}</p>
+                                {toPercent(calcMiningAPR(BigNumber.from(reserves[index].totalDeposit)))}
                               </p>
                             </>
                         }

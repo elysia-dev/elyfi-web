@@ -1,39 +1,41 @@
 @font-face {
   font-family: "Montserrat";
   src: url("../assets/fonts/Montserrat-Regular.ttf") format("truetype");
+  unicode-range: U+0041-005A, U+0061-007A
 }
 @font-face {
   font-family: "Montserrat-bold";
   src: url("../assets/fonts/Montserrat-Bold.ttf") format("truetype");
+  unicode-range: U+0041-005A, U+0061-007A
 }
 @font-face {
   font-family: "SpoqaHanSansNeo";
   src: url("../assets/fonts/SpoqaHanSansNeo-Regular.ttf") format("truetype");
-  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF,
-    U+0030-0039;
+  unicode-range: U+0030-0039
+    U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
 }
 @font-face {
   font-family: "SpoqaHanSansNeo-Bold";
   src: url("../assets/fonts/SpoqaHanSansNeo-Bold.ttf") format("truetype");
-  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF,
-    U+0030-0039;
+  unicode-range: U+0030-0039
+    U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
 }
 
 h1,
 h2 {
-  font-family: "Montserrat-bold";
+  font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
   color: #000;
   opacity: 0.88;
   font-weight: bold;
   cursor: default;
 }
 .bold {
-  font-family: "Montserrat-bold";
+  font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
 }
 p,
 a,
 span {
-  font-family: "Montserrat";
+  font-family: "Montserrat", "SpoqaHanSansNeo";
   color: #333333;
   text-decoration: none;
   cursor: default;
@@ -131,7 +133,7 @@ span {
       z-index: 99;
       &__item {
         padding: 20px;
-        font-family: "Montserrat";
+        font-family: "Montserrat", "SpoqaHanSansNeo";
       }
       :hover {
         background-color: #f0f0f1;
@@ -156,11 +158,11 @@ span {
       cursor: pointer;
       &__status {
         color: #fff;
-        font-family: "Montserrat-bold";
+        font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
         cursor: pointer;
         &--connected {
           color: #fff;
-          font-family: "Montserrat";
+          font-family: "Montserrat", "SpoqaHanSansNeo";
           text-align: right;
           margin: 0;
           margin-right: 12px;
@@ -171,7 +173,7 @@ span {
         margin: 0;
         color: #fff;
         text-align: right;
-        font-family: "Montserrat-bold";
+        font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
         margin-right: 12px;
         cursor: pointer;
       }
@@ -203,7 +205,7 @@ span {
         z-index: 99;
         &__item {
           padding: 20px;
-          font-family: "Montserrat";
+          font-family: "Montserrat", "SpoqaHanSansNeo";
         }
         :hover {
           background-color: #f0f0f1;
@@ -284,7 +286,7 @@ span {
         color: #ffffff;
         font-size: 30px;
         margin: 0 auto 20px;
-        font-family: "Montserrat-bold";
+        font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
         &--blue {
           color: #00bfff;
           font-size: 60px;
@@ -404,12 +406,12 @@ span {
         color: #fff;
         font-size: 40px;
         margin: 0 auto;
-        font-family: "Montserrat-bold";
+        font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
         &--market {
           margin: 20px;
           color: #fff;
           font-size: 30px;
-          font-family: "Montserrat-bold";
+          font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
         }
         &--blue {
           color: #00bfff;
@@ -555,7 +557,7 @@ span {
             border-radius: 5px;
             > th {
               > p {
-                font-family: "Montserrat-bold";
+                font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
               }
             }
             > th:last-child {
@@ -677,7 +679,7 @@ span {
             &:last-child {
               color: #333333;
               font-size: 20px;
-              font-family: "Montserrat-bold";
+              font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
               margin-top: 15px;
             }
           }
@@ -748,7 +750,7 @@ span {
             > p {
               margin: 10px 0;
               font-size: 17px;
-              font-family: "Montserrat-bold";
+              font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
             }
           }
           &__block {
@@ -970,8 +972,11 @@ span {
           > th {
             width: 205px;
             box-sizing: border-box;
+            padding: 10px;
             > p {
               cursor: pointer;
+              font-size: 17px;
+              margin: 0;
             }
             &:first-child {
               > div {
@@ -980,6 +985,14 @@ span {
                 align-items: center;
                 gap: 10px;
                 cursor: pointer;
+              }
+            }
+            &:nth-child(3) > p {
+              margin: 5px;
+              &:nth-child(2) {
+                font-size: 13px;
+                margin: 5px;
+                color: #888888;
               }
             }
             > div {
@@ -993,9 +1006,6 @@ span {
             }
           }
         }
-      }
-      tr > th {
-        padding: 10px;
       }
     }
   }
@@ -1109,7 +1119,7 @@ span {
               :first-child {
                 color: #333333 !important;
                 font-size: 17px !important;
-                font-family: "Montserrat-bold";
+                font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
               }
               :last-child {
                 color: #888888;
@@ -1384,14 +1394,14 @@ span {
         font-size: 15px;
         color: #b7b7b7;
         &:first-child {
-          font-family: "Montserrat-bold";
+          font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
           font-size: 17px;
           color: #333333;
         }
       }
       &__value {
         margin: 0;
-        font-family: "Montserrat-bold";
+        font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
       }
       &__title {
         margin: 36px 0 26px;
@@ -1565,7 +1575,7 @@ span {
     font-size: 60px;
     width: 100%;
     float: right;
-    font-family: "Montserrat-bold";
+    font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
     outline: 0;
     transition: all 0.7s linear;
   }
@@ -1939,10 +1949,10 @@ span {
     padding: 0px 10px;
     > span {
       color: #888888 !important;
-      font-family: "Montserrat-bold" !important;
+      font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold" !important;
       &:nth-child(2) {
         flex: 1;
-        font-family: "Montserrat-bold" !important;
+        font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold" !important;
       }
       &:last-child {
         color: #00bfff !important;
@@ -1958,7 +1968,7 @@ span {
       &::after {
         content: "%";
         color: #00bfff;
-        font-family: "Montserrat-bold";
+        font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
       }
     }
   }
