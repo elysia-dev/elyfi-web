@@ -22,6 +22,7 @@ import envs from 'src/core/envs';
 import IncentiveModal from './IncentiveModal';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import ErrorPage from 'src/components/ErrorPage';
+import numberFormat from 'src/utiles/numberFormat';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -196,7 +197,7 @@ const Dashboard: React.FunctionComponent = () => {
                           balances.loading ?
                             <Skeleton width={50} />
                             :
-                            <p>{daiToUsd(balances.lTokens[index])}</p>
+                            <p>{numberFormat(balances.lTokens[index], "$")}</p>
                         }
                       </th>
                       <th>
@@ -219,7 +220,7 @@ const Dashboard: React.FunctionComponent = () => {
                           balances.loading ?
                             <Skeleton width={50} />
                             :
-                            <p>{daiToUsd(balances.dai)}</p>
+                            <p>{numberFormat(balances.dai, "$")}</p>
                         }
                       </th>
                     </tr>
@@ -305,7 +306,7 @@ const Dashboard: React.FunctionComponent = () => {
                   balances.loading ?
                     <Skeleton width={50} />
                     :
-                    <p>{`${formatComma(balances.incentive)} ELFI`}</p>
+                    <p>{`${numberFormat(balances.incentive)} ELFI`}</p>
                 }
               </th>
               <th>
@@ -313,7 +314,7 @@ const Dashboard: React.FunctionComponent = () => {
                   balances.loading ?
                     <Skeleton width={50} />
                     :
-                    <p>{`${formatComma(balances.governance)} ELFI`}</p>
+                    <p>{`${numberFormat(balances.governance)} ELFI`}</p>
                 }
               </th>
             </tr>

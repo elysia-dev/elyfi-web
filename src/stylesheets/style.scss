@@ -28,6 +28,11 @@ h2 {
   opacity: 0.88;
   font-weight: bold;
   cursor: default;
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  user-select:none;
 }
 .bold {
   font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
@@ -39,6 +44,11 @@ span {
   color: #333333;
   text-decoration: none;
   cursor: default;
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  user-select:none;
 }
 
 .elysia {

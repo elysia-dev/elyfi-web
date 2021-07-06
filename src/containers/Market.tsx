@@ -9,6 +9,7 @@ import { useContext } from 'react';
 import ReservesContext from 'src/contexts/ReservesContext';
 import { useTranslation } from 'react-i18next';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
+import numberFormat from 'src/utiles/numberFormat';
 
 const usdFormatter = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' })
 
@@ -70,12 +71,12 @@ const Market: React.FunctionComponent = () => {
                           <p>{reserve.name}</p>
                         </div>
                       </th>
-                      <th><p>{daiToUsd(reserves[0].totalDeposit)}</p></th>
+                      <th><p>{numberFormat(reserves[0].totalDeposit, "$")}</p></th>
                       <th>
                         <p>{toPercent(reserves[0].depositAPY)}</p>
                         <p>{toPercent(calcMiningAPR(BigNumber.from(reserves[0].totalDeposit)))}</p>
                       </th>
-                      <th><p>{daiToUsd(reserves[0].totalBorrow)}</p></th>
+                      <th><p>{numberFormat(reserves[0].totalBorrow, "$")}</p></th>
                       <th><p>{toPercent(reserves[0].borrowAPY)}</p></th>
                       {
                         account &&
