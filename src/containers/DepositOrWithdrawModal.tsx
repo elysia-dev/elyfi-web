@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
-import { deposit, getAllowance, increaseAllownace, withdraw } from 'src/utiles/contractHelpers';
+import { deposit, getAllowance, getErc20Balance, increaseAllownace, withdraw } from 'src/utiles/contractHelpers';
 import { toPercent } from 'src/utiles/formatters';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
@@ -25,6 +25,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const { account, library } = useWeb3React()
   const [selected, select] = useState<boolean>(true)
   const [allowance, setAllowance] = useState<{ value: BigNumber, loaded: boolean }>({ value: constants.Zero, loaded: false });
+  const [liquidity, setLiquidity] = useState<{ value: BigNumber, loaded: boolean }>({ value: constants.Zero, loaded: false });
   const [txWating, setWating] = useState<boolean>(false);
   const { t } = useTranslation();
 
@@ -54,10 +55,10 @@ const DepositOrWithdrawModal: FunctionComponent<{
     })
   }
 
-  const reqeustWithdraw = async (amount: BigNumber) => {
+  const reqeustWithdraw = async (amount: BigNumber, max: boolean) => {
     if (!account) return;
 
-    waitTx(await withdraw(account, reserve.id, amount, library)).then(() => {
+    waitTx(await withdraw(account, reserve.id, max ? constants.MaxUint256 : amount, library)).then(() => {
       afterTx();
       onClose()
     })
@@ -77,6 +78,17 @@ const DepositOrWithdrawModal: FunctionComponent<{
   useEffect(() => {
     loadAllowance();
   }, [account])
+
+  useEffect(() => {
+    if (!reserve) return
+
+    getErc20Balance(reserve.id, reserve.lToken.id, library).then((value) => {
+      setLiquidity({
+        value,
+        loaded: true
+      })
+    })
+  }, [reserve, library])
 
   return (
     <div className="modal modal--deposit" style={{ display: visible ? "block" : "none" }}>
@@ -127,6 +139,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
               <WithdrawBody
                 tokenName={tokenName}
                 depositBalance={depositBalance}
+                liquidity={liquidity.value}
                 txWating={txWating}
                 withdraw={reqeustWithdraw}
               />
