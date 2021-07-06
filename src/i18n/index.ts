@@ -12,8 +12,8 @@ i18n
       ko,
       zhHans
     },
-    lng: "ko",
-    fallbackLng: "ko",
+    lng: "en",
+    fallbackLng: "en",
 
     interpolation: {
       escapeValue: false

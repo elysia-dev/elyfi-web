@@ -1,22 +1,33 @@
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import LanguageContext, { initialLanguageContext, ILanguageContext } from '../contexts/LanguageContext';
 import LanguageType from '../enums/LanguageType';
 
-const TokenProvider: React.FC = (props) => {
+const LanguageProvider: React.FC = (props) => {
   const [state, setState] = useState<ILanguageContext>(initialLanguageContext);
   const { i18n } = useTranslation();
 
   const setLanguage = (language: LanguageType) => {
+    window.localStorage.setItem("@language", language);
     i18n.changeLanguage(language)
     setState({
       ...state,
       language: language,
-      languageArray: [LanguageType.EN, LanguageType.KO, LanguageType.ZHHANS].filter(num => num !== language) 
     })
-    console.log(i18n.language)
   }
 
+  useEffect(() => {
+    const language = window.localStorage.getItem("@language") as LanguageType
+
+    if (language) {
+      i18n.changeLanguage(language)
+      setState({
+        ...state,
+        language,
+      })
+    }
+  }, [])
 
   return (
     <LanguageContext.Provider value={{
@@ -28,4 +39,4 @@ const TokenProvider: React.FC = (props) => {
   );
 }
 
-export default TokenProvider;
+export default LanguageProvider;
