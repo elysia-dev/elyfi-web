@@ -28,7 +28,7 @@ const KorNotice = () => {
       </div>
       <div>
         <div className="bounty__title">
-          <p className="bold">제보 현상금</p>
+          <p className="bold">포상금</p>
           <hr />
         </div>
         <table className="bounty__table">

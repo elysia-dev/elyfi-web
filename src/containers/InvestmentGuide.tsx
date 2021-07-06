@@ -8,6 +8,8 @@ import { useState } from "react";
 import { faucetTestERC20 } from 'src/utiles/contractHelpers';
 import { useWeb3React } from '@web3-react/core';
 import envs from 'src/core/envs';
+import { useTranslation } from "react-i18next";
+import LanguageType from "src/enums/LanguageType";
 
 const InvestmentGuide = () => {
   const [onClick, setClick] = useState(0);
@@ -15,9 +17,10 @@ const InvestmentGuide = () => {
   const ClickHandler = (no: number) => {
     setClick(onClick === no ? 0 : no);
   }
+  const { i18n } = useTranslation();
   const AddressCopy = (add: string) => {
     if (!document.queryCommandSupported("copy")) {
-      return alert("복사 기능이 지원되지 않는 브라우저입니다.");
+      return alert("This browser does not support the copy function.");
     }
     const area = document.createElement('textarea');
     area.value = add;
@@ -27,9 +30,189 @@ const InvestmentGuide = () => {
     document.body.removeChild(area);
     alert("Copied!!");
   }
-  return (
-    <>
-      <Header title={"INVESTMENT GUIDE"} />
+
+  const EngGuide = () => {
+    return (
+      <section className="guide">
+        <p className="guide__alert bold">
+          Please be advised that this guide is for ELYFI beta on the {envs.requiredNetwork} network only, and may differ from ELYFI V1<br />
+        </p>
+        <div className="bounty__title">
+          <p className="bold">ELYFI Platform Manual</p>
+          <hr />
+        </div>
+        <div>
+          <div className="guide__connect-wallet">
+            <h3>Connect wallet</h3>
+            <ol>
+              <li>
+                <p>
+                  You will need to have Metamask. Install Metmask&nbsp;
+                  <a className="guide__link" href={"https://metamask.io/download.html"} target="_blank">here</a>.
+                </p>
+              </li>
+              <li>
+                <p>
+                  After you have created a wallet on Metmask, change the network from Ethereum Mainnet to {envs.requiredNetwork} Test Network.
+                </p>
+                <img
+                  className="guide__image"
+                  src={Guide01}
+                  alt="Guide"
+                  style={{ width: onClick === 1 ? "100%" : 300 }}
+                  onClick={() => { ClickHandler(1) }}
+                />
+              </li>
+              <li>
+                <p>
+                  Click&nbsp;
+                  <span
+                    style={{
+                      color: "#00A7FF",
+                      textDecoration: "underline",
+                      cursor: "pointer"
+                    }}
+                    onClick={() => {
+                      if (account && chainId === envs.requiredChainId) {
+                        faucetTestERC20(account, library)
+                      } else {
+                        alert(`Please connet to the ${envs.requiredNetwork} network`)
+                      }
+                    }}
+                  >
+                    here
+                  </span> to use Metamask Faucet so you can review free test tokens. Keep in mind that you must be connected to the {envs.requiredNetwork} network.<br/>
+                  Also, to receive {envs.requiredNetwork} ETH for the test, click <a className="guide__link" href={"https://faucet.ropsten.be/"} target="_blank">here</a> and enter the wallet address you created above.
+                </p>
+              </li>
+              <li>
+                <p>
+                  Click add tokens on Metamask, and enter the address below and click next<br />
+                  Contract Address : <span style={{ color: "#00A7FF", cursor: "pointer" }} onClick={() => AddressCopy(envs.testStableAddress)}>{envs.testStableAddress}</span>
+                </p>
+              </li>
+            </ol>
+            <br />
+            <p>
+              Your are ready to test!
+            </p>
+          </div>
+          <div className="guide__connect-page">
+            <h3>Connect wallet to ELYFI</h3>
+            <ol>
+              <li>
+                <p>
+                  First, click on the ‘Connect Wallet’ button on the top right corner. Find your Metamask notification pop-up to complete
+                </p>
+                <img
+                  className="guide__image"
+                  src={Guide02}
+                  alt="Guide"
+                  style={{ width: onClick === 2 ? "100%" : 300 }}
+                  onClick={() => { ClickHandler(2) }}
+                />
+              </li>
+              <li>
+                <p>
+                You will be able to find the deposit token list on your dashboard By clicking on the token received from Faucet, you may use the tokens to make deposits on the money pool or make withdrawals
+                </p>
+              </li>
+            </ol>
+          </div>
+          <div className="guide__deposit">
+            <h3>Making Deposits</h3>
+            <ol>
+              <li>
+                <p>
+                  Click on the token you want to deposit from the dashboard and enter amount.
+                </p>
+              </li>
+              <li>
+                <p>
+                  Click on the DEPOSIT button in which a Metmask notification will show to confirm the transaction.
+                </p>
+                <img
+                  className="guide__image"
+                  src={Guide03}
+                  alt="Guide"
+                  style={{ width: onClick === 3 ? "100%" : 300 }}
+                  onClick={() => { ClickHandler(3) }}
+                />
+              </li>
+              <li>
+                <p>
+                  After the transaction has been approved, please check the deposit balance, wallet balance, and money pool size.
+                </p>
+              </li>
+            </ol>
+          </div>
+          <div className="guide__withdraw">
+            <h3>Making Withdrawals</h3>
+            <ol>
+              <li>
+                <p>
+                  You must first have deposits in the money pool. Please find the deposit guide above.
+                </p>
+              </li>
+              <li>
+                <p>
+                  Check the numbers on ‘Withdraw Available’ and enter the amount you would like to withdraw.
+                </p>
+              </li>
+              <li>
+                <p>
+                  By clicking the WITHDRAW button you will see a Metamask notification to confirm the transaction request.
+                </p>
+              </li>
+              <li>
+                <p>
+                  After it is approved, please check the deposit balance, wallet balance, and money pool size.
+                </p>
+              </li>
+            </ol>
+          </div>
+          <div className="guide__minted-token">
+            <h3>ELFI Withdrawals</h3>
+            <ol>
+              <li>
+                <p>
+                  First, Go to your Metmask, click Add Token and enter the following Token Contract Address.<br />
+                  Contract Address : <span style={{ color: "#00A7FF", cursor: "pointer" }} onClick={() => AddressCopy(envs.governanceAddress)}>{envs.governanceAddress}</span>
+                </p>
+              </li>
+              <li>
+                <p>
+                  Check the minted ELFI on your dashboard. If you have deposits in the money pool, you will be able to mine ELFI and see the changes in real-time.
+                </p>
+                <img
+                  className="guide__image"
+                  src={Guide04}
+                  alt="Guide"
+                  style={{ width: onClick === 4 ? "100%" : 300 }}
+                  onClick={() => { ClickHandler(4) }}
+                />
+              </li>
+              <li>
+                <p>
+                  Click ELFI and complete withdrawals. Please check if ELFI has been sent to your address.
+                </p>
+                <img
+                  className="guide__image"
+                  src={Guide05}
+                  alt="Guide"
+                  style={{ width: onClick === 5 ? "100%" : 300 }}
+                  onClick={() => { ClickHandler(5) }}
+                />
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  const KorGuide = () => {
+    return (
       <section className="guide">
         <p className="guide__alert bold">
           해당 메뉴얼은 ELYFI beta version의 {envs.requiredNetwork} network 기반 투자 메뉴얼이며,<br />
@@ -79,7 +262,8 @@ const InvestmentGuide = () => {
                   >
                     이 곳
                   </span>
-                  을 클릭해 Faucet 과정을 진행해주세요. 테스트 토큰을 무료로 지갑주소에 발급받으실 수 있습니다. 단, 반드시 {envs.requiredNetwork} network에 연결되어 있어야 합니다.
+                  을 클릭해 Faucet 과정을 진행해주세요. 무료로 지갑주소에 테스트 토큰을 발급 받으실 수 있습니다. 단, 반드시 {envs.requiredNetwork} network에 연결되어 있어야 합니다.<br/>
+                  또한, 테스트 진행을 위한 {envs.requiredNetwork} ETH를 지급받기 위해서 <a className="guide__link" href={"https://faucet.ropsten.be/"} target="_blank">이 곳</a>을 클릭 후 발급 받으신 지갑주소를 입력해주세요.
                 </p>
               </li>
               <li>
@@ -139,7 +323,9 @@ const InvestmentGuide = () => {
                 />
               </li>
               <li>
-                승인 후 Deposit Balance 및 Wallet Balance, 그리고 머니풀 사이즈를 확인해주시면 됩니다.
+                <p>
+                  승인 후 Deposit Balance 및 Wallet Balance, 그리고 머니풀 사이즈를 확인해주시면 됩니다.
+                </p>
               </li>
             </ol>
           </div>
@@ -205,6 +391,13 @@ const InvestmentGuide = () => {
           </div>
         </div>
       </section>
+    )
+  }
+  
+  return (
+    <>
+      <Header title={"INVESTMENT GUIDE"} />
+      {i18n.language === LanguageType.KO ? KorGuide() : EngGuide()}
     </>
   )
 }
