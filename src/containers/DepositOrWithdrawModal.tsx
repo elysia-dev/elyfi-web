@@ -131,7 +131,6 @@ const DepositOrWithdrawModal: FunctionComponent<{
                 miningAPR={toPercent(calcMiningAPR(BigNumber.from(reserve.totalDeposit)))}
                 balance={balance}
                 isApproved={!allowance.loaded || allowance.value.gt(balance)}
-                txWating={txWating}
                 increaseAllownace={requestAllowance}
                 deposit={requestDeposit}
               />
@@ -140,7 +139,6 @@ const DepositOrWithdrawModal: FunctionComponent<{
                 tokenName={tokenName}
                 depositBalance={depositBalance}
                 liquidity={liquidity.value}
-                txWating={txWating}
                 withdraw={reqeustWithdraw}
               />
             )

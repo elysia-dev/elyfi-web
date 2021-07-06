@@ -10,9 +10,8 @@ const WithdrawBody: React.FunctionComponent<{
   tokenName: string
   depositBalance: BigNumber
   liquidity: BigNumber
-  txWating: boolean
   withdraw: (amount: BigNumber, max: boolean) => void
-}> = ({ tokenName, depositBalance, liquidity, txWating, withdraw }) => {
+}> = ({ tokenName, depositBalance, liquidity, withdraw }) => {
   const [amount, setAmount] = useState<{ value: string, max: boolean }>({ value: '', max: false });
 
   const amountGtBalance = utils.parseEther(amount.value || '0').gt(depositBalance);
@@ -41,7 +40,7 @@ const WithdrawBody: React.FunctionComponent<{
             style={{ fontSize: amount.value.length < 8 ? 60 : amount.value.length > 12 ? 35 : 45 }}
             onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => { ["-", "+", "e"].includes(e.key) && e.preventDefault() }}
             onChange={({ target }) => {
-              !txWating && setAmount({
+              setAmount({
                 value: target.value,
                 max: false,
               })

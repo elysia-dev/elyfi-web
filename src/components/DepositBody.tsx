@@ -9,10 +9,9 @@ const DepositBody: React.FunctionComponent<{
   miningAPR: string,
   balance: BigNumber,
   isApproved: boolean,
-  txWating: boolean,
   increaseAllownace: () => void,
   deposit: (amount: BigNumber) => void,
-}> = ({ tokenName, depositAPY, miningAPR, balance, isApproved, txWating, increaseAllownace, deposit }) => {
+}> = ({ tokenName, depositAPY, miningAPR, balance, isApproved, increaseAllownace, deposit }) => {
   const [amount, setAmount] = useState<string>('');
 
   const amountGtBalance = utils.parseEther(amount || '0').gt(balance);
@@ -34,7 +33,7 @@ const DepositBody: React.FunctionComponent<{
             value={amount}
             style={{ fontSize: amount.length < 8 ? 60 : amount.length > 12 ? 35 : 45 }}
             onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => { ["-", "+", "e"].includes(e.key) && e.preventDefault() }}
-            onChange={({ target }) => !txWating && setAmount(target.value)}
+            onChange={({ target }) => setAmount(target.value)}
           />
         </p>
       </div>
@@ -69,27 +68,24 @@ const DepositBody: React.FunctionComponent<{
         </div>
       </div>
       {
-        txWating ? (
-          <div className="modal__button">Wating...</div>
-        )
-          : isApproved ?
-            <div
-              className={`modal__button${amountLteZero || amountGtBalance ? "--disable" : ""}`}
-              onClick={() => !amountLteZero && !amountGtBalance && deposit(utils.parseEther(amount))}
-            >
-              <p>
-                {
-                  amountLteZero ? t("dashboard.enter_amount") :
-                    amountGtBalance ? t("dashboard.insufficient_balance", { tokenName: tokenName }) : t("dashboard.deposit--button")
-                }
-              </p>
-            </div>
-            :
-            <div className="modal__button" onClick={() => increaseAllownace()}>
-              <p>
-                {t("dashboard.protocol_allow", { tokenName: tokenName })}
-              </p>
-            </div>
+        isApproved ?
+          <div
+            className={`modal__button${amountLteZero || amountGtBalance ? "--disable" : ""}`}
+            onClick={() => !amountLteZero && !amountGtBalance && deposit(utils.parseEther(amount))}
+          >
+            <p>
+              {
+                amountLteZero ? t("dashboard.enter_amount") :
+                  amountGtBalance ? t("dashboard.insufficient_balance", { tokenName: tokenName }) : t("dashboard.deposit--button")
+              }
+            </p>
+          </div>
+          :
+          <div className="modal__button" onClick={() => increaseAllownace()}>
+            <p>
+              {t("dashboard.protocol_allow", { tokenName: tokenName })}
+            </p>
+          </div>
       }
     </div>
 
