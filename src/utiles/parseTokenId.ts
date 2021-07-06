@@ -1,3 +1,5 @@
+import { BigNumber } from "ethers";
+
 type AssetBondIdData = {
   nonce: number;
   countryCode: number;
@@ -10,6 +12,19 @@ type AssetBondIdData = {
   collateralCategory: number;
   productNumber: number;
 };
+
+const EmptyAssetBondIdData: AssetBondIdData = {
+  nonce: 0,
+  countryCode: 0,
+  collateralServiceProviderIdentificationNumber: 0,
+  collateralLatitude: 0,
+  collateralLatitudeSign: 0,
+  collateralLongitude: 0,
+  collateralLongitudeSign: 0,
+  collateralDetail: 0,
+  collateralCategory: 0,
+  productNumber: 0,
+}
 
 type AssetBondIdDataDigits = {
   nonce: number;
@@ -37,18 +52,20 @@ const assetBondIdDataDigits = {
   productNumber: 10,
 };
 
-const wholeNumber = "1".repeat(256);
+export const parseTokenId = (tokenId: string | null | undefined): AssetBondIdData => {
+  if (!tokenId) return EmptyAssetBondIdData;
 
-export const parseTokenId = (tokenId: string) => {
+  const binaryTokenId = BigNumber.from(tokenId).toBigInt().toString(2);
   const parsedTokenId = {} as AssetBondIdData;
 
-  let end = wholeNumber.length;
+  let end = 256;
+
   (Object.keys(
     assetBondIdDataDigits
   ) as (keyof AssetBondIdDataDigits)[]).forEach((key) => {
     let start = end - assetBondIdDataDigits[key] + 1;
     start = start !== end ? start : start - 1;
-    parsedTokenId[key] = parseInt(tokenId.slice(start, end), 2) || 0;
+    parsedTokenId[key] = parseInt(binaryTokenId.slice(start, end), 2) || 0;
     end -= assetBondIdDataDigits[key];
   });
 
