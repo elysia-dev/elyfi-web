@@ -3,15 +3,14 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { formatComma } from 'src/utiles/formatters';
 
-// TODO
-// 1) Accumulated reward
-// 2) Acuumulated reward after last withdrawal event
 const WithdrawBody: React.FunctionComponent<{
   tokenName: string
   depositBalance: BigNumber
-  liquidity: BigNumber
+  liquidity: BigNumber,
+  yieldProduced: BigNumber,
+  accumulatedYield: BigNumber,
   withdraw: (amount: BigNumber, max: boolean) => void
-}> = ({ tokenName, depositBalance, liquidity, withdraw }) => {
+}> = ({ tokenName, depositBalance, liquidity, yieldProduced, accumulatedYield, withdraw }) => {
   const [amount, setAmount] = useState<{ value: string, max: boolean }>({ value: '', max: false });
 
   const amountGtBalance = utils.parseEther(amount.value || '0').gt(depositBalance);
@@ -69,11 +68,11 @@ const WithdrawBody: React.FunctionComponent<{
           </div>
           <div>
             <p className="bold">{t("dashboard.yield_produced")}</p>
-            <p className="bold"> - {tokenName}</p>
+            <p className="bold">{`${formatComma(yieldProduced)} ${tokenName}`}</p>
           </div>
           <div>
             <p className="bold">{t("dashboard.accumulated")}</p>
-            <p className="bold"> - {tokenName}</p>
+            <p className="bold">{`${formatComma(accumulatedYield)} ${tokenName}`}</p>
           </div>
         </div>
       </div>

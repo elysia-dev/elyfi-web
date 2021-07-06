@@ -1,17 +1,19 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants, providers } from 'ethers';
 import { useEffect } from 'react';
+import { useMemo } from 'react';
 import { FunctionComponent, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
+import { GetUser_user } from 'src/queries/__generated__/GetUser';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
+import calcAccumulatedYield from 'src/utiles/calcAccumulatedYield';
 import { deposit, getAllowance, getErc20Balance, increaseAllownace, withdraw } from 'src/utiles/contractHelpers';
 import { toPercent } from 'src/utiles/formatters';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
 
-// Create deposit & withdraw
 const DepositOrWithdrawModal: FunctionComponent<{
   tokenName: string,
   visible: boolean,
@@ -19,15 +21,32 @@ const DepositOrWithdrawModal: FunctionComponent<{
   balance: BigNumber,
   depositBalance: BigNumber
   reserve: GetAllReserves_reserves,
+  userData: GetUser_user | undefined | null,
   onClose: () => void,
   afterTx: () => Promise<void>,
-}> = ({ tokenName, visible, tokenImage, balance, depositBalance, reserve, onClose, afterTx }) => {
+}> = ({ tokenName, visible, tokenImage, balance, depositBalance, reserve, userData, onClose, afterTx }) => {
   const { account, library } = useWeb3React()
   const [selected, select] = useState<boolean>(true)
   const [allowance, setAllowance] = useState<{ value: BigNumber, loaded: boolean }>({ value: constants.Zero, loaded: false });
   const [liquidity, setLiquidity] = useState<{ value: BigNumber, loaded: boolean }>({ value: constants.Zero, loaded: false });
   const [txWating, setWating] = useState<boolean>(false);
   const { t } = useTranslation();
+  const acuumulatedYield = useMemo(() => {
+    return calcAccumulatedYield(
+      BigNumber.from(reserve.lTokenInterestIndex),
+      userData?.lTokenMint.filter((mint) => mint.lToken.id === reserve.id) || [],
+      userData?.lTokenBurn.filter((burn) => burn.lToken.id === reserve.id) || []
+    )
+  }, [reserve, userData])
+  const yieldProduced = useMemo(() => {
+    return acuumulatedYield.sub(
+      calcAccumulatedYield(
+        userData?.lTokenBurn[userData.lTokenBurn.length - 1].index || reserve.lTokenInterestIndex,
+        userData?.lTokenMint.filter((mint) => mint.lToken.id === reserve.id) || [],
+        userData?.lTokenBurn.filter((burn) => burn.lToken.id === reserve.id) || []
+      )
+    );
+  }, [acuumulatedYield, reserve, userData])
 
   const loadAllowance = async () => {
     if (!account) return;
@@ -77,7 +96,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
 
   useEffect(() => {
     loadAllowance();
-  }, [account])
+  })
 
   useEffect(() => {
     if (!reserve) return
@@ -138,6 +157,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
               <WithdrawBody
                 tokenName={tokenName}
                 depositBalance={depositBalance}
+                accumulatedYield={acuumulatedYield}
+                yieldProduced={yieldProduced}
                 liquidity={liquidity.value}
                 withdraw={reqeustWithdraw}
               />

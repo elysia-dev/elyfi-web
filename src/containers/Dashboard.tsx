@@ -12,13 +12,16 @@ import { BigNumber, constants } from 'ethers';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { useHistory, useLocation } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
-
+import { useQuery } from '@apollo/client';
+import { GetUser } from 'src/queries/__generated__/GetUser';
+import { GET_USER } from 'src/queries/userQueries';
 import ELFI from 'src/assets/images/ELFI.png'
 import { useTranslation } from 'react-i18next';
 import { getErc20Balance, getUserIncentiveReward } from 'src/utiles/contractHelpers';
 import envs from 'src/core/envs';
 import IncentiveModal from './IncentiveModal';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
+import ErrorPage from 'src/components/ErrorPage';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -44,6 +47,13 @@ const Dashboard: React.FunctionComponent = () => {
     lTokens: Array.from(Array(reserves.length), () => constants.Zero),
   });
   const [incentiveModalVisible, setIncentiveModalVisible] = useState<boolean>(false);
+  const {
+    data: userConnection,
+    error,
+  } = useQuery<GetUser>(
+    GET_USER,
+    { variables: { id: account?.toLocaleLowerCase() } }
+  )
 
   const refrechBalancesAfterTx = async (index: number) => {
     if (!account) return;
@@ -92,12 +102,15 @@ const Dashboard: React.FunctionComponent = () => {
     loadBalances();
   })
 
+  if (error) return (<ErrorPage />)
+
   return (
     <>
       {
         reserve &&
         <DepositOrWithdrawModal
           reserve={reserve}
+          userData={userConnection?.user}
           tokenName={ReserveData[0].name}
           tokenImage={ReserveData[0].image}
           visible={!!reserve}

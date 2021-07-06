@@ -30,6 +30,22 @@ export const GET_USER = gql`
           id
         }
       },
+      lTokenMint(orderBy: timestamp) {
+        lToken {
+          id,
+        },
+        amount,
+        index,
+        timestamp
+      }
+      lTokenBurn(orderBy: timestamp) {
+        lToken {
+          id,
+        },
+        amount,
+        index,
+        timestamp
+      }
     }
   }
 `;
