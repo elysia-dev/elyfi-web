@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 import isLat from 'src/utiles/isLat';
 import isLng from 'src/utiles/isLng';
+import Marker from './Marker';
 
 const abTokenStates = [
   'Empty',
@@ -35,8 +36,8 @@ const AssetList: FunctionComponent<{
   const lng = parsedTokenId.collateralLongitude / 100000;
 
   return (
-    <div className="portfolio__asset-list__info" onClick={onClick}>
-      <p className="portfolio__asset-list__info__status">
+    <div className="portfolio__asset-list__info">
+      <p className="portfolio__asset-list__info__status" onClick={onClick}>
         {abTokenStates[abToken.state || 0]}
       </p>
       <div style={{ width: "100%", height: 304, border: 0 }}>
@@ -46,10 +47,12 @@ const AssetList: FunctionComponent<{
             lat: isLat(lat) ? lat : defaultLat,
             lng: isLng(lng) ? lng : defaultLng,
           }}
-          defaultZoom={10}
-        />
+          defaultZoom={15}
+        >
+          <Marker lat={lat} lng={lng} />
+        </GoogleMapReact>
       </div>
-      <div className="portfolio__asset-list__info__value__container">
+      <div className="portfolio__asset-list__info__value__container" onClick={onClick}>
         <div className="portfolio__asset-list__info__value__wrapper">
           <p className="portfolio__asset-list__info__value bold" style={{ color: "#333333" }}>
             {t("portfolio.loan_number", { nonce: parsedTokenId.nonce })}

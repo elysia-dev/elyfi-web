@@ -13,6 +13,19 @@ type AssetBondIdData = {
   productNumber: number;
 };
 
+const EmptyAssetBondIdData: AssetBondIdData = {
+  nonce: 0,
+  countryCode: 0,
+  collateralServiceProviderIdentificationNumber: 0,
+  collateralLatitude: 0,
+  collateralLatitudeSign: 0,
+  collateralLongitude: 0,
+  collateralLongitudeSign: 0,
+  collateralDetail: 0,
+  collateralCategory: 0,
+  productNumber: 0,
+}
+
 type AssetBondIdDataDigits = {
   nonce: number;
   countryCode: number;
@@ -39,7 +52,9 @@ const assetBondIdDataDigits = {
   productNumber: 10,
 };
 
-export const parseTokenId = (tokenId: string) => {
+export const parseTokenId = (tokenId: string | null | undefined): AssetBondIdData => {
+  if (!tokenId) return EmptyAssetBondIdData;
+
   const binaryTokenId = BigNumber.from(tokenId).toBigInt().toString(2);
   const parsedTokenId = {} as AssetBondIdData;
 
@@ -50,7 +65,6 @@ export const parseTokenId = (tokenId: string) => {
   ) as (keyof AssetBondIdDataDigits)[]).forEach((key) => {
     let start = end - assetBondIdDataDigits[key] + 1;
     start = start !== end ? start : start - 1;
-    console.log(start, end)
     parsedTokenId[key] = parseInt(binaryTokenId.slice(start, end), 2) || 0;
     end -= assetBondIdDataDigits[key];
   });

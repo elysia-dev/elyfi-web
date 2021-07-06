@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import InvestmentStatus from 'src/components/InvestmentStatus';
 import PieChart from 'src/utiles/PieChart';
 import AssetList from 'src/components/AssetList';
@@ -21,7 +21,7 @@ const Portfolio = () => {
     GET_ALL_ASSET_BONDS,
   )
   let history = useHistory();
-  
+
   const { t } = useTranslation();
 
   if (error) return (<ErrorPage />)
@@ -44,9 +44,9 @@ const Portfolio = () => {
             <p className="portfolio__asset-allocation__title bold">{t("portfolio.portfolio_asset")}</p>
             <div className="portfolio__chart-wrapper">
               <PieChart
-                num1={40}
-                num2={25}
-                num3={35}
+                num1={100}
+                num2={0}
+                num3={0}
               />
             </div>
             <div className="portfolio__asset-allocation__wrapper">
