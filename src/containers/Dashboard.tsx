@@ -3,7 +3,7 @@ import ServiceBackground from 'src/assets/images/service-background.png';
 import { useWeb3React } from '@web3-react/core';
 import ReserveData from 'src/core/data/reserves';
 import { useEffect } from 'react';
-import { daiToUsd, formatComma, toPercent } from 'src/utiles/formatters';
+import { daiToUsd, formatComma, toPercent, toCompactForBignumber } from 'src/utiles/formatters';
 import { useContext } from 'react';
 import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
 import { useState } from 'react';
@@ -22,7 +22,6 @@ import envs from 'src/core/envs';
 import IncentiveModal from './IncentiveModal';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import ErrorPage from 'src/components/ErrorPage';
-import numberFormat from 'src/utiles/numberFormat';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -197,7 +196,7 @@ const Dashboard: React.FunctionComponent = () => {
                           balances.loading ?
                             <Skeleton width={50} />
                             :
-                            <p>{numberFormat(balances.lTokens[index], "$")}</p>
+                            <p>$ {toCompactForBignumber(balances.lTokens[index])}</p>
                         }
                       </th>
                       <th>
@@ -220,7 +219,7 @@ const Dashboard: React.FunctionComponent = () => {
                           balances.loading ?
                             <Skeleton width={50} />
                             :
-                            <p>{numberFormat(balances.dai, "$")}</p>
+                            <p>$ {toCompactForBignumber(balances.dai)}</p>
                         }
                       </th>
                     </tr>
@@ -306,7 +305,7 @@ const Dashboard: React.FunctionComponent = () => {
                   balances.loading ?
                     <Skeleton width={50} />
                     :
-                    <p>{`${numberFormat(balances.incentive)} ELFI`}</p>
+                    <p>{`${toCompactForBignumber(balances.incentive)} ELFI`}</p>
                 }
               </th>
               <th>
@@ -314,7 +313,7 @@ const Dashboard: React.FunctionComponent = () => {
                   balances.loading ?
                     <Skeleton width={50} />
                     :
-                    <p>{`${numberFormat(balances.governance)} ELFI`}</p>
+                    <p>{`${toCompactForBignumber(balances.governance)} ELFI`}</p>
                 }
               </th>
             </tr>

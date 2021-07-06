@@ -3,13 +3,12 @@ import ServiceBackground from 'src/assets/images/service-background.png';
 import { BigNumber, constants, utils } from 'ethers';
 import { useHistory } from 'react-router-dom';
 import ReserveData from 'src/core/data/reserves';
-import { daiToUsd, toPercent } from 'src/utiles/formatters';
+import { toCompactForBignumber, toPercent } from 'src/utiles/formatters';
 import { useWeb3React } from '@web3-react/core';
 import { useContext } from 'react';
 import ReservesContext from 'src/contexts/ReservesContext';
 import { useTranslation } from 'react-i18next';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
-import numberFormat from 'src/utiles/numberFormat';
 
 const usdFormatter = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' })
 
@@ -71,12 +70,12 @@ const Market: React.FunctionComponent = () => {
                           <p>{reserve.name}</p>
                         </div>
                       </th>
-                      <th><p>{numberFormat(reserves[0].totalDeposit, "$")}</p></th>
+                      <th><p>$ {toCompactForBignumber(reserves[0].totalDeposit)}</p></th>
                       <th>
                         <p>{toPercent(reserves[0].depositAPY)}</p>
                         <p>{toPercent(calcMiningAPR(BigNumber.from(reserves[0].totalDeposit)))}</p>
                       </th>
-                      <th><p>{numberFormat(reserves[0].totalBorrow, "$")}</p></th>
+                      <th><p>$ {toCompactForBignumber(reserves[0].totalBorrow)}</p></th>
                       <th><p>{toPercent(reserves[0].borrowAPY)}</p></th>
                       {
                         account &&
