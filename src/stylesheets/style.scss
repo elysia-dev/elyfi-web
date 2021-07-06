@@ -165,13 +165,13 @@ span {
       display: inline-flex;
       width: 147px;
       height: 37px;
-      background: #00bfff 0% 0% no-repeat padding-box;
-      box-shadow: 0px 0px 6px #00bfff81;
+      background: #00bfff 0% 0%;
       border-radius: 5px;
       justify-content: center;
       align-items: center;
       margin-left: 50px;
       cursor: pointer;
+      animation: glow 1.5s linear infinite alternate;
       &__status {
         color: #fff;
         font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
@@ -2297,6 +2297,18 @@ span {
     100% {
       content: ".....";
     }
+  }
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 2px #00bfff44, 0 0 4px #00bfff44, 0 0 5px #00bfff44,
+      0 0 7px #00bfff44, 0 0 8px #00bfff44, 0 0 10px #00bfff44, 0 0 12px #00bfff44;
+  }
+  to {
+    box-shadow: 0 0 2px #ffffff44, 0 0 4px #ffffff44, 0 0 6px #ffffff44,
+      0 0 7px #ffffff44, 0 0 11px #ffffff44, 0 0 13px #ffffff44,
+      0 0 15px #ffffff44;
   }
 }
 
