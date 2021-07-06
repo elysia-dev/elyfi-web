@@ -5,6 +5,8 @@ import InjectedConnector from 'src/core/connectors/injectedConnector';
 import MainBackground from 'src/assets/images/main-background.png';
 import { useTranslation } from 'react-i18next';
 import envs from 'src/core/envs';
+import WhiteLogo from 'src/assets/images/White-logo.svg';
+import LanguageConverter from './LanguageConverter';
 
 const DisableWalletPage = () => {
   const { activate, active, chainId } = useWeb3React();
@@ -48,6 +50,14 @@ const DisableWalletPage = () => {
           {CopiedWallet()}
         </div>
       </div>
+      <footer className="footer footer--dashboard">
+        <div className="footer__container">
+          <img className="footer__white-logo" src={WhiteLogo} alt="Elysia" />
+          <div className="footer__wrapper">
+            <LanguageConverter />
+          </div>
+        </div>
+      </footer>
     </section>
   )
 }
