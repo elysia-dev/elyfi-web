@@ -26,6 +26,24 @@ const LanguageProvider: React.FC = (props) => {
         ...state,
         language,
       })
+    } else {
+      let localLanguage = LanguageType.EN;
+
+      const userLang = navigator.language;
+
+      if (userLang?.includes('ko')) {
+        localLanguage = LanguageType.KO
+      }
+
+      if (userLang?.includes('zh')) {
+        localLanguage = LanguageType.ZHHANS
+      }
+
+      i18n.changeLanguage(localLanguage)
+      setState({
+        ...state,
+        language: localLanguage,
+      })
     }
   }, [])
 
