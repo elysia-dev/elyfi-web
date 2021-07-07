@@ -100,7 +100,7 @@ const Dashboard: React.FunctionComponent = () => {
 
   useEffect(() => {
     loadBalances();
-  })
+  }, [account])
 
   if (error) return (<ErrorPage />)
 
