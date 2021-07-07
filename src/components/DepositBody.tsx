@@ -39,31 +39,31 @@ const DepositBody: React.FunctionComponent<{
       </div>
       <div className="modal__deposit__container">
         <div className="modal__deposit__despositable-amount-container">
-          <p className="bold">
+          <p className="spoqa__bold">
             {t("dashboard.deposit_available")}
           </p>
           <div className="modal__deposit__despositable-amount-wrapper">
-            <p className="bold">
+            <p className="spoqa__bold">
               {t("dashboard.wallet_balance")}
             </p>
             <div className="modal__deposit__despositable-wallet-balance-wrapper">
-              <p className="bold">
+              <p className="spoqa__bold">
                 {`${formatComma(balance)} ${tokenName}`}
               </p>
             </div>
           </div>
         </div>
         <div className="modal__deposit__despositable-value-wrapper">
-          <p className="bold">
+          <p className="spoqa__bold">
             {t("dashboard.total_deposit_yield")}
           </p>
           <div>
-            <p className="bold">{t("dashboard.deposit_apy")}</p>
-            <p className="bold">{depositAPY}</p>
+            <p className="spoqa__bold">{t("dashboard.deposit_apy")}</p>
+            <p className="spoqa__bold">{depositAPY}</p>
           </div>
           <div>
-            <p className="bold">{t("dashboard.mining_apr")}</p>
-            <p className="bold">{miningAPR}</p>
+            <p className="spoqa__bold">{t("dashboard.mining_apr")}</p>
+            <p className="spoqa__bold">{miningAPR}</p>
           </div>
         </div>
       </div>

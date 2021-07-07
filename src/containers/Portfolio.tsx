@@ -52,15 +52,15 @@ const Portfolio = () => {
             <div className="portfolio__asset-allocation__wrapper">
               <div>
                 <div />
-                <p>{t("portfolio.mortgage")}</p>
+                <p className="spoqa">{t("portfolio.mortgage")}</p>
               </div>
               <div>
                 <div />
-                <p>{t("portfolio.auction_balance")}</p>
+                <p className="spoqa">{t("portfolio.auction_balance")}</p>
               </div>
               <div>
                 <div />
-                <p>{t("portfolio.charter_returns")}</p>
+                <p className="spoqa">{t("portfolio.charter_returns")}</p>
               </div>
             </div>
           </div>

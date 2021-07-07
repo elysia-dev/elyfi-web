@@ -16,6 +16,7 @@ import { GetAllReserves_reserves_reserveHistory } from 'src/queries/__generated_
 import { useTranslation } from 'react-i18next';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcHistoryChartData from 'src/utiles/calcHistoryChartData';
+import { Title } from 'src/components/Texts';
 
 const MarketDetail: React.FunctionComponent = () => {
   const history = useHistory();
@@ -42,7 +43,7 @@ const MarketDetail: React.FunctionComponent = () => {
         <div className="market__detail__title-token">
           <div className="market__detail__title-token__token-wrapper">
             <img src={DaiImage} className="market__detail__title-token__token-image" alt='token' />
-            <p className="market__detail__title-token__token-type bold">DAI</p>
+            <p className="market__detail__title-token__token-type spoqa__bold">DAI</p>
           </div>
           <div className="market__detail__title-token__data-container">
             <div className="market__detail__title-token__data-wrapper">
@@ -98,19 +99,14 @@ const MarketDetail: React.FunctionComponent = () => {
         </div>
       </div>
       <div className="market__detail__container">
-        <div className="market__detail__title__wrapper">
-          <p className="bold">
-            {t("market.details")}
-          </p>
-          <hr />
-        </div>
+        <Title label={t("market.details")} style={{ marginBottom: 33 }} />
         <div className="market__detail__wrapper">
           <div className="market__detail__pie-chart__wrapper">
             <div className="market__detail__pie-chart__data__wrapper--total">
-              <p className="bold">
+              <p className="spoqa__bold">
                 {t("market.total_deposit")}
               </p>
-              <p className="bold">
+              <p className="spoqa__bold">
                 {daiToUsd(data.totalDeposit)}
               </p>
             </div>
@@ -122,11 +118,11 @@ const MarketDetail: React.FunctionComponent = () => {
                       backgroundColor: "#00A7FF"
                     }}
                   />
-                  <p>
+                  <p className="spoqa">
                     {t("market.total_borrowed")}
                   </p>
                 </div>
-                <p>
+                <p className="spoqa">
                   {daiToUsd(data.totalBorrow)}
                 </p>
               </div>
@@ -137,11 +133,11 @@ const MarketDetail: React.FunctionComponent = () => {
                       backgroundColor: "#1C5E9A"
                     }}
                   />
-                  <p>
+                  <p className="spoqa">
                     {t("market.available_liquidity")}
                   </p>
                 </div>
-                <p>
+                <p className="spoqa">
                   {daiToUsd(BigNumber.from(data.totalDeposit).sub(data.totalBorrow))}
                 </p>
               </div>
@@ -156,26 +152,26 @@ const MarketDetail: React.FunctionComponent = () => {
             </div>
             <div className="market__detail__pie-chart__data">
               <div>
-                <p>
+                <p className="spoqa__bold">
                   {t("market.utilization")}
                 </p>
-                <p>
+                <p className="spoqa__bold">
                   {`${utilization}%`}
                 </p>
               </div>
               <div>
-                <p>
+                <p className="spoqa__bold">
                   {t("market.depositors")}
                 </p>
-                <p>
+                <p className="spoqa__bold">
                   {data.lTokenUserBalanceCount}
                 </p>
               </div>
               <div>
-                <p>
+                <p className="spoqa__bold">
                   {t("market.borrowers")}
                 </p>
-                <p>
+                <p className="spoqa__bold">
                   {data.dTokenUserBalanceCount}
                 </p>
               </div>
@@ -187,7 +183,7 @@ const MarketDetail: React.FunctionComponent = () => {
                 className={`market__detail__graph__converter${graphConverter ? "--disable" : ""}`}
                 onClick={() => setGraphConverter(false)}
               >
-                <p className="bold">
+                <p className="spoqa__bold">
                   {t("market.deposit")}
                 </p>
               </div>
@@ -195,7 +191,7 @@ const MarketDetail: React.FunctionComponent = () => {
                 className={`market__detail__graph__converter${!graphConverter ? "--disable" : ""}`}
                 onClick={() => setGraphConverter(true)}
               >
-                <p className="bold">
+                <p className="spoqa__bold">
                   {t("market.borrow")}
                 </p>
               </div>

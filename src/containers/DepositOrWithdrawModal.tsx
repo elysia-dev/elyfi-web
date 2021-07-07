@@ -141,7 +141,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
           <div className="modal__header__token-info-wrapper">
             <img className="modal__header__image" src={tokenImage} alt="Token" />
             <div className="modal__header__name-wrapper">
-              <p className="modal__header__name bold">{tokenName}</p>
+              <p className="modal__header__name spoqa__bold">{tokenName}</p>
             </div>
           </div>
           <div className="close-button" onClick={onClose}>

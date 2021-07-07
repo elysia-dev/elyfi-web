@@ -50,29 +50,29 @@ const WithdrawBody: React.FunctionComponent<{
       <div className="modal__withdraw__withdrawalable">
         <div className="modal__withdraw__withdrawalable-amount-wrapper">
           <div className="modal__withdraw__withdrawalable__title">
-            <p className="bold">{t("dashboard.withdraw_availble")}</p>
-            <p className="bold">{`${formatComma(depositBalance.lte(liquidity) ? depositBalance : liquidity)} ${tokenName}`}</p>
+            <p className="spoqa__bold">{t("dashboard.withdraw_availble")}</p>
+            <p className="spoqa__bold">{`${formatComma(depositBalance.lte(liquidity) ? depositBalance : liquidity)} ${tokenName}`}</p>
           </div>
           <div>
-            <p className="bold">{t("dashboard.deposit_balance")}</p>
-            <p className="bold">{`${formatComma(depositBalance)} ${tokenName}`}</p>
+            <p className="spoqa__bold">{t("dashboard.deposit_balance")}</p>
+            <p className="spoqa__bold">{`${formatComma(depositBalance)} ${tokenName}`}</p>
           </div>
           <div>
-            <p className="bold">{t("dashboard.reserves_elyfi", { tokenName: tokenName })}</p>
-            <p className="bold">{`${formatComma(liquidity)} ${tokenName}`}</p>
+            <p className="spoqa__bold">{t("dashboard.reserves_elyfi", { tokenName: tokenName })}</p>
+            <p className="spoqa__bold">{`${formatComma(liquidity)} ${tokenName}`}</p>
           </div>
         </div>
         <div className="modal__withdraw__withdrawalable-value-wrapper">
           <div className="modal__withdraw__withdrawalable__title">
-            <p className="bold">{t("dashboard.yield")}</p>
+            <p className="spoqa__bold">{t("dashboard.yield")}</p>
           </div>
           <div>
-            <p className="bold">{t("dashboard.yield_produced")}</p>
-            <p className="bold">{`${formatCommaSmall(yieldProduced)} ${tokenName}`}</p>
+            <p className="spoqa__bold">{t("dashboard.yield_produced")}</p>
+            <p className="spoqa__bold">{`${formatCommaSmall(yieldProduced)} ${tokenName}`}</p>
           </div>
           <div>
-            <p className="bold">{t("dashboard.accumulated")}</p>
-            <p className="bold">{`${formatCommaSmall(accumulatedYield)} ${tokenName}`}</p>
+            <p className="spoqa__bold">{t("dashboard.accumulated")}</p>
+            <p className="spoqa__bold">{`${formatCommaSmall(accumulatedYield)} ${tokenName}`}</p>
           </div>
         </div>
       </div>

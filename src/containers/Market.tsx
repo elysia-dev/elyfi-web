@@ -65,7 +65,7 @@ const Market: React.FunctionComponent = () => {
                       <th>
                         <div>
                           <img src={reserve.image} alt='token' style={{ width: 40 }} />
-                          <p>{reserve.name}</p>
+                          <p className="spoqa__bold">{reserve.name}</p>
                         </div>
                       </th>
                       <th><p>$ {toCompactForBignumber(reserves[0].totalDeposit)}</p></th>
@@ -106,7 +106,7 @@ const Market: React.FunctionComponent = () => {
                           }}
                         />
                         <img src={reserve.image} alt='token' style={{ width: 40 }} />
-                        <p>{reserve.name}</p>
+                        <p className="spoqa__bold">{reserve.name}</p>
                       </div>
                     </th>
                     <th><p>-</p></th>

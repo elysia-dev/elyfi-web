@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { FunctionComponent } from 'react'
 import { GetAllAssetBonds_assetBondTokens } from 'src/queries/__generated__/GetAllAssetBonds';
-import { daiToUsd, toPercent } from 'src/utiles/formatters';
+import { toCompactForBignumber, toPercent } from 'src/utiles/formatters';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import GoogleMapReact from 'google-map-react';
 import { useTranslation } from 'react-i18next';
@@ -37,7 +37,7 @@ const AssetList: FunctionComponent<{
 
   return (
     <div className="portfolio__asset-list__info">
-      <p className="portfolio__asset-list__info__status" onClick={onClick}>
+      <p className="portfolio__asset-list__info__status spoqa" onClick={onClick}>
         {abTokenStates[abToken.state || 0]}
       </p>
       <div style={{ width: "100%", height: 304, border: 0 }}>
@@ -54,20 +54,20 @@ const AssetList: FunctionComponent<{
       </div>
       <div className="portfolio__asset-list__info__value__container" onClick={onClick}>
         <div className="portfolio__asset-list__info__value__wrapper">
-          <p className="portfolio__asset-list__info__value bold" style={{ color: "#333333" }}>
+          <p className="portfolio__asset-list__info__value spoqa__bold" style={{ color: "#333333" }}>
             {t("portfolio.loan_number", { nonce: parsedTokenId.nonce })}
           </p>
         </div>
         <div className="portfolio__asset-list__info__value__wrapper">
-          <p className="portfolio__asset-list__info__value">
+          <p className="portfolio__asset-list__info__value spoqa">
             {t("portfolio.borrowed")}
           </p>
           <div>
-            <span className="bold">{daiToUsd(abToken.principal || '0')}</span>
+            <span className="bold">{"$ " + toCompactForBignumber(abToken.principal || '0')}</span>
           </div>
         </div>
         <div className="portfolio__asset-list__info__value__wrapper">
-          <p className="portfolio__asset-list__info__value">
+          <p className="portfolio__asset-list__info__value spoqa">
             {t("portfolio.borrow_apy")}
           </p>
           <div>
@@ -75,7 +75,7 @@ const AssetList: FunctionComponent<{
           </div>
         </div>
         <div className="portfolio__asset-list__info__value__wrapper">
-          <p className="portfolio__asset-list__info__value">
+          <p className="portfolio__asset-list__info__value spoqa">
             {t("portfolio.maturity_date")}
           </p>
           <div>

@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import { GetAllReserves_reserves } from "src/queries/__generated__/GetAllReserves";
-import { daiToUsd } from "src/utiles/formatters";
+import { daiToUsd, toCompactForBignumber } from "src/utiles/formatters";
 import Skeleton from 'react-loading-skeleton';
 import { constants } from "ethers";
 import { useTranslation } from "react-i18next";
@@ -26,14 +26,16 @@ const InvestmentStatus: FunctionComponent<{
       <table>
         <tr>
           <td>
-            {t("portfolio.total_borrowed")}
+            <p className="spoqa">
+              {t("portfolio.total_borrowed")}
+            </p>
           </td>
           <td>
             <div>
               {
                 loading || !reserve ? <Skeleton /> :
                   <p>
-                    {daiToUsd(
+                    {"$ " + toCompactForBignumber(
                       reserve.borrow
                         .filter((borrow) => !reserve.repay.find((repay) => repay.tokenId === borrow.tokenId))
                         .reduce((res, borrow) => res.add(borrow.amount), constants.Zero)
@@ -45,20 +47,24 @@ const InvestmentStatus: FunctionComponent<{
         </tr>
         <tr>
           <td>
-            {t("portfolio.estimated_repayments")}
+            <p className="spoqa">
+              {t("portfolio.estimated_repayments")}
+            </p>
           </td>
           <td>
             <div>
               {
                 loading || !reserve ? <Skeleton /> :
-                  <p>{daiToUsd(reserve.totalBorrow)}</p>
+                  <p>{"$ " + toCompactForBignumber(reserve.totalBorrow)}</p>
               }
             </div>
           </td>
         </tr>
         <tr>
           <td>
-            {t("portfolio.borrow_apy")}
+            <p className="spoqa">
+              {t("portfolio.borrow_apy")}
+            </p>
           </td>
           <td>
             <div>
@@ -73,14 +79,16 @@ const InvestmentStatus: FunctionComponent<{
       <table>
         <tr>
           <td>
-            {t("portfolio.accumulated_borrowed")}
+            <p className="spoqa">
+              {t("portfolio.accumulated_borrowed")}
+            </p>
           </td>
           <td>
             <div>
               {
                 loading || !reserve ? <Skeleton /> :
                   <p>
-                    {daiToUsd(
+                    {"$ " + toCompactForBignumber(
                       reserve.borrow
                         .reduce((res, borrow) => res.add(borrow.amount), constants.Zero)
                     )}
@@ -91,14 +99,16 @@ const InvestmentStatus: FunctionComponent<{
         </tr>
         <tr>
           <td>
-            {t("portfolio.accumulated_repayment")}
+            <p className="spoqa">
+              {t("portfolio.accumulated_repayment")}
+            </p>
           </td>
           <td>
             <div>
               {
                 loading || !reserve ? <Skeleton /> :
                   <p>
-                    {daiToUsd(
+                    {"$ " + toCompactForBignumber(
                       reserve.repay
                         .reduce((res, repay) => res.add(repay.userDTokenBalance).add(repay.feeOnCollateralServiceProvider), constants.Zero)
                     )}
@@ -109,14 +119,16 @@ const InvestmentStatus: FunctionComponent<{
         </tr>
         <tr>
           <td>
-            {t("portfolio.accumulated_yield")}
+            <p className="spoqa">
+              {t("portfolio.accumulated_yield")}
+            </p>
           </td>
           <td>
             <div>
               {
                 loading || !reserve ? <Skeleton /> :
                   <p>
-                    {daiToUsd(
+                    {"$ " + toCompactForBignumber(
                       reserve.repay
                         .reduce((res, repay) => res.add(repay.userDTokenBalance), constants.Zero)
                     )}

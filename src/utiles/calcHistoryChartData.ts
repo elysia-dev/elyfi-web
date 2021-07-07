@@ -74,7 +74,7 @@ const calcHistoryChartData = (data: GetAllReserves_reserves, historyType: 'borro
     return [
       moment(d.timestamp * 1000).format("MMMM DD"),
       parseInt(utils.formatEther(d.selectedAmount)),
-      daiToUsd(d.selectedAmount),
+      "$ " + toCompact(parseInt(utils.formatEther(d.selectedAmount))),
       d.calculatedAPY / divider * base + base * 1.2,
       toCompact(d.calculatedAPY)
     ]
