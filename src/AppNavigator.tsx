@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Switch,
   BrowserRouter as Router,
@@ -23,7 +23,11 @@ import InvestmentGuide from 'src/containers/InvestmentGuide';
 import envs from 'src/core/envs';
 
 const AppNavigator: React.FC = () => {
-  const { active, chainId } = useWeb3React();
+  const { active, chainId, deactivate } = useWeb3React();
+  
+  useEffect(() => {
+    window.sessionStorage.getItem("@connect") === "false" && deactivate();
+  }, [active])
 
   return (
     <div className="elysia">

@@ -23,7 +23,9 @@ const DisableWalletPage = () => {
         :
         <div className={`navigation__wallet`}
           onClick={() => {
-            activate(InjectedConnector)
+            activate(InjectedConnector).then(()=> {
+              window.sessionStorage.setItem("@connect", "ture");
+            })
           }}
           style={{ margin: 0 }}
         >

@@ -47,6 +47,7 @@ const Wallet = (props: any) => {
         <li className="navigation__wallet__sub-menu__item"
           onClick={() => {
             deactivate();
+            window.sessionStorage.setItem("@connect", "false");
           }}>
           {t("navigation.disconnect")}
         </li>
@@ -65,7 +66,9 @@ const Wallet = (props: any) => {
         ref={WalletRef}
         onClick={() => {
           if (!active) {
-            activate(InjectedConnector)
+            activate(InjectedConnector).then(()=> {
+              window.sessionStorage.setItem("@connect", "ture");
+            })
           }
           if (connected) {
             handleHover();
