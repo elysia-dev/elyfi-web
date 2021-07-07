@@ -33,7 +33,7 @@ const MarketDetail: React.FunctionComponent = () => {
   if (!data) return (<ErrorPage />)
 
   const miningAPR = calcMiningAPR(BigNumber.from(data.totalDeposit));
-  const utilization = BigNumber.from(data.totalBorrow).mul(100).div(data.totalDeposit).toNumber();
+  const utilization = (BigNumber.from(data.totalBorrow).mul(1000).div(data.totalDeposit).toNumber() / 10);
 
   return (
     <>
@@ -148,7 +148,7 @@ const MarketDetail: React.FunctionComponent = () => {
             </div>
             <div className="market__detail__pie-chart">
               <Circle
-                progress={100 - utilization}
+                progress={Math.round(100 - utilization)}
                 style={{
                   width: 240
                 }}
