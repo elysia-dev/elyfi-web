@@ -5,6 +5,7 @@ export const GET_ALL_RESERVES = gql`
 	reserves {
     id,
     lTokenInterestIndex,
+    lastUpdateTimestamp,
     borrowAPY,
     depositAPY,
     totalBorrow,

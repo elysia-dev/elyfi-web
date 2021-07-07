@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber, constants, providers } from 'ethers';
+import { BigNumber, constants, providers, utils } from 'ethers';
 import { useEffect } from 'react';
 import { useMemo } from 'react';
 import { FunctionComponent, useState } from 'react'
@@ -13,6 +13,8 @@ import { deposit, getAllowance, getErc20Balance, increaseAllownace, withdraw } f
 import { toPercent } from 'src/utiles/formatters';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
+import { useCallback } from 'react';
+import calcCurrentIndex from 'src/utiles/calcCurrentIndex';
 
 const DepositOrWithdrawModal: FunctionComponent<{
   tokenName: string,
@@ -30,32 +32,40 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const [allowance, setAllowance] = useState<{ value: BigNumber, loaded: boolean }>({ value: constants.Zero, loaded: false });
   const [liquidity, setLiquidity] = useState<{ value: BigNumber, loaded: boolean }>({ value: constants.Zero, loaded: false });
   const [txWating, setWating] = useState<boolean>(false);
-  const { t } = useTranslation();
-  const acuumulatedYield = useMemo(() => {
-    return calcAccumulatedYield(
+  const [currentIndex, setCurrentIndex] = useState<BigNumber>(
+    calcCurrentIndex(
       BigNumber.from(reserve.lTokenInterestIndex),
-      userData?.lTokenMint.filter((mint) => mint.lToken.id === reserve.id) || [],
-      userData?.lTokenBurn.filter((burn) => burn.lToken.id === reserve.id) || []
+      reserve.lastUpdateTimestamp,
+      BigNumber.from(reserve.depositAPY)
     )
-  }, [reserve, userData])
+  )
+  const { t } = useTranslation();
+  const accumulatedYield = useMemo(() => {
+    return calcAccumulatedYield(
+      currentIndex,
+      userData?.lTokenMint.filter((mint) => mint.lToken.id === reserve.lToken.id) || [],
+      userData?.lTokenBurn.filter((burn) => burn.lToken.id === reserve.lToken.id) || []
+    )
+  }, [reserve, userData, currentIndex])
+
   const yieldProduced = useMemo(() => {
-    return acuumulatedYield.sub(
+    return accumulatedYield.sub(
       calcAccumulatedYield(
-        userData?.lTokenBurn[userData.lTokenBurn.length - 1].index || reserve.lTokenInterestIndex,
-        userData?.lTokenMint.filter((mint) => mint.lToken.id === reserve.id) || [],
-        userData?.lTokenBurn.filter((burn) => burn.lToken.id === reserve.id) || []
+        BigNumber.from(userData?.lTokenBurn[userData.lTokenBurn.length - 1]?.index || reserve.lTokenInterestIndex),
+        userData?.lTokenMint.filter((mint) => mint.lToken.id === reserve.lToken.id) || [],
+        userData?.lTokenBurn.filter((burn) => burn.lToken.id === reserve.lToken.id) || []
       )
     );
-  }, [acuumulatedYield, reserve, userData])
+  }, [accumulatedYield, reserve, userData])
 
-  const loadAllowance = async () => {
+  const loadAllowance = useCallback(async () => {
     if (!account) return;
 
     setAllowance({
       value: await getAllowance(account, reserve.id, library),
       loaded: true
     })
-  }
+  }, [account, library, reserve]);
 
   const requestAllowance = async () => {
     if (!account) return;
@@ -96,7 +106,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
 
   useEffect(() => {
     loadAllowance();
-  })
+  }, [account, loadAllowance])
 
   useEffect(() => {
     if (!reserve) return
@@ -108,6 +118,21 @@ const DepositOrWithdrawModal: FunctionComponent<{
       })
     })
   }, [reserve, library])
+
+  useEffect(() => {
+    const interval = setInterval(() => setCurrentIndex(
+      calcCurrentIndex(
+        BigNumber.from(reserve.lTokenInterestIndex),
+        reserve.lastUpdateTimestamp,
+        BigNumber.from(reserve.depositAPY)
+      ))
+      , 500
+    );
+
+    return () => {
+      clearInterval(interval);
+    }
+  })
 
   return (
     <div className="modal modal--deposit" style={{ display: visible ? "block" : "none" }}>
@@ -128,13 +153,13 @@ const DepositOrWithdrawModal: FunctionComponent<{
         <div className='modal__converter'>
           <div
             className={`modal__converter__column${selected ? "--selected" : ""}`}
-            onClick={() => select(true)}
+            onClick={() => { select(true) }}
           >
             <p className="bold">{t("dashboard.deposit")}</p>
           </div>
           <div
             className={`modal__converter__column${!selected ? "--selected" : ""}`}
-            onClick={() => select(false)}
+            onClick={() => { select(false) }}
           >
             <p className="bold">{t("dashboard.withdraw")}</p>
           </div>
@@ -157,7 +182,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
               <WithdrawBody
                 tokenName={tokenName}
                 depositBalance={depositBalance}
-                accumulatedYield={acuumulatedYield}
+                accumulatedYield={accumulatedYield}
                 yieldProduced={yieldProduced}
                 liquidity={liquidity.value}
                 withdraw={reqeustWithdraw}
