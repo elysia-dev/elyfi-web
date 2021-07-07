@@ -10,6 +10,7 @@ import { useWeb3React } from '@web3-react/core';
 import envs from 'src/core/envs';
 import { useTranslation } from "react-i18next";
 import LanguageType from "src/enums/LanguageType";
+import { Title } from "src/components/Texts";
 
 const InvestmentGuide = () => {
   const [onClick, setClick] = useState(0);
@@ -37,10 +38,7 @@ const InvestmentGuide = () => {
         <p className="guide__alert bold">
           Please be advised that this guide is for ELYFI beta on the {envs.requiredNetwork} network only, and may differ from ELYFI V1<br />
         </p>
-        <div className="bounty__title">
-          <p className="bold">ELYFI Platform Manual</p>
-          <hr />
-        </div>
+        <Title label={"ELYFI Platform Manual"} />
         <div>
           <div className="guide__connect-wallet">
             <h3>Connect wallet</h3>
@@ -218,10 +216,7 @@ const InvestmentGuide = () => {
           해당 메뉴얼은 ELYFI beta version의 {envs.requiredNetwork} network 기반 투자 메뉴얼이며,<br />
           실제로 정식 ELYFI 출시시 해당 문서와 사용 방식에서 차이점이 있을 수 있다는 점을 미리 안내드립니다.
         </p>
-        <div className="bounty__title">
-          <p className="bold">ELYFI Platform Manual</p>
-          <hr />
-        </div>
+        <Title label={"ELYFI Platform Manual"} />
         <div>
           <div className="guide__connect-wallet">
             <h3>지갑 연결하기</h3>

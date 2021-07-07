@@ -25,7 +25,7 @@
       "details": "유동성 상세 정보",
       "available_liquidity": "가용 유동성",
       "utilization": "이용률",
-      "depositers": "예치자 수",
+      "depositors": "예치자 수",
       "borrowers": "차입자 수",
       "deposit": "예치",
       "borrow": "대출"

@@ -9,6 +9,7 @@ import { useContext } from 'react';
 import ReservesContext from 'src/contexts/ReservesContext';
 import { useTranslation } from 'react-i18next';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
+import { Title } from 'src/components/Texts';
 
 const usdFormatter = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' })
 
@@ -37,10 +38,7 @@ const Market: React.FunctionComponent = () => {
         </div>
       </section>
       <section className="tokens">
-        <div className="tokens__title">
-          <p className="bold">{t("market.token--header")}</p>
-          <hr />
-        </div>
+        <Title style={{ marginTop: 100 }} label={t("market.token--header")} />
         <table className="tokens__table">
           <thead className="tokens__table__header">
             <tr>

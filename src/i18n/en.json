@@ -25,7 +25,7 @@
       "details": "Liquidity Details",
       "available_liquidity": "Available Liquidity",
       "utilization": "Utilization Rate",
-      "depositers": "Number of Depositers",
+      "depositors": "Number of depositors",
       "borrowers": "Number of Borrowers",
       "deposit": "Deposit",
       "borrow": "Borrow"

@@ -23,10 +23,11 @@ const Navigation: FunctionComponent = () => {
     <nav className="navigation">
       <div className="navigation__alert">
         <div className="navigation__alert__container">
-          <p>
-            This website is for <span className="bold" style={{ color: "#00A7FF" }}>ELYFI beta version only. </span>
-            Please connect to the {envs.requiredNetwork} network! You may get some test tokens &nbsp;
+          <p className="spoqa">
+            This website is for <span className="spoqa__bold" style={{ color: "#00A7FF" }}>ELYFI beta version only. </span>
+            Please connect to the {envs.requiredNetwork} network! You may get some test tokens&nbsp;
             <span
+              className="spoqa__bold"
               style={{
                 color: "#00A7FF",
                 textDecoration: "underline",

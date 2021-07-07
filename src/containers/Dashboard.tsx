@@ -22,6 +22,7 @@ import envs from 'src/core/envs';
 import IncentiveModal from './IncentiveModal';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import ErrorPage from 'src/components/ErrorPage';
+import { Title } from 'src/components/Texts';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -144,18 +145,7 @@ const Dashboard: React.FunctionComponent = () => {
         </div>
       </section>
       <section className="tokens">
-        <div className="tokens__container">
-          <div className="tokens__title">
-            <p className="bold">{t("dashboard.deposits--header")}</p>
-            <hr />
-          </div>
-          <table className="tokens__table">
-            <thead className="tokens__table__header">
-              <tr>
-              </tr>
-            </thead>
-          </table>
-        </div>
+        <Title style={{ marginTop: 100 }} label={t("dashboard.deposits--header")} />
         <table className="tokens__table">
           <thead className="tokens__table__header">
             <tr>
@@ -188,7 +178,7 @@ const Dashboard: React.FunctionComponent = () => {
                       <th>
                         <div>
                           <img src={reserve.image} style={{ width: 40 }} alt="Token" />
-                          <p>{reserve.name}</p>
+                          <p className="spoqa">{reserve.name}</p>
                         </div>
                       </th>
                       <th>
@@ -196,7 +186,7 @@ const Dashboard: React.FunctionComponent = () => {
                           balances.loading ?
                             <Skeleton width={50} />
                             :
-                            <p>$ {toCompactForBignumber(balances.lTokens[index])}</p>
+                            <p className="spoqa">$ {toCompactForBignumber(balances.lTokens[index])}</p>
                         }
                       </th>
                       <th>
@@ -205,10 +195,10 @@ const Dashboard: React.FunctionComponent = () => {
                             <Skeleton width={50} />
                             :
                             <>
-                              <p>
+                              <p className="spoqa">
                                 {toPercent(reserves[index].depositAPY || '0')}
                               </p>
-                              <p>
+                              <p className="spoqa">
                                 {toPercent(calcMiningAPR(BigNumber.from(reserves[index].totalDeposit)))}
                               </p>
                             </>
@@ -219,7 +209,7 @@ const Dashboard: React.FunctionComponent = () => {
                           balances.loading ?
                             <Skeleton width={50} />
                             :
-                            <p>$ {toCompactForBignumber(balances.dai)}</p>
+                            <p className="spoqa">$ {toCompactForBignumber(balances.dai)}</p>
                         }
                       </th>
                     </tr>
@@ -243,7 +233,7 @@ const Dashboard: React.FunctionComponent = () => {
                           }}
                         />
                         <img src={reserve.image} style={{ width: 40 }} alt="Token" />
-                        <p>{reserve.name}</p>
+                        <p className="spoqa">{reserve.name}</p>
                       </div>
                     </th>
                     <th><p>-</p></th>
@@ -257,18 +247,7 @@ const Dashboard: React.FunctionComponent = () => {
         </table>
       </section>
       <section className="tokens">
-        <div className="tokens__container">
-          <div className="tokens__title">
-            <p className="bold">{t("dashboard.minted")}</p>
-            <hr />
-          </div>
-          <table className="tokens__table">
-            <thead className="tokens__table__header">
-              <tr>
-              </tr>
-            </thead>
-          </table>
-        </div>
+        <Title label={t("dashboard.minted")} />
         <table className="tokens__table">
           <thead className="tokens__table__header">
             <tr>
@@ -297,7 +276,7 @@ const Dashboard: React.FunctionComponent = () => {
               <th>
                 <div>
                   <img src={ELFI} style={{ width: 40 }} alt="Token" />
-                  <p>ELFI</p>
+                  <p className="spoqa">ELFI</p>
                 </div>
               </th>
               <th>
@@ -305,7 +284,7 @@ const Dashboard: React.FunctionComponent = () => {
                   balances.loading ?
                     <Skeleton width={50} />
                     :
-                    <p>{`${toCompactForBignumber(balances.incentive)} ELFI`}</p>
+                    <p className="spoqa">{`${toCompactForBignumber(balances.incentive)} ELFI`}</p>
                 }
               </th>
               <th>
@@ -313,7 +292,7 @@ const Dashboard: React.FunctionComponent = () => {
                   balances.loading ?
                     <Skeleton width={50} />
                     :
-                    <p>{`${toCompactForBignumber(balances.governance)} ELFI`}</p>
+                    <p className="spoqa">{`${toCompactForBignumber(balances.governance)} ELFI`}</p>
                 }
               </th>
             </tr>

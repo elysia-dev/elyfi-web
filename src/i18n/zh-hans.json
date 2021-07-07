@@ -25,7 +25,7 @@
       "details": "Liquidity Details",
       "available_liquidity": "可用流动性",
       "utilization": "使用率",
-      "depositers": "存款人数",
+      "depositors": "存款人数",
       "borrowers": "借款人数",
       "deposit": "存款",
       "borrow": "贷款"
