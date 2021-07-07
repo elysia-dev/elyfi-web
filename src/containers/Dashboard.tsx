@@ -51,6 +51,7 @@ const Dashboard: React.FunctionComponent = () => {
   const {
     data: userConnection,
     error,
+    refetch,
   } = useQuery<GetUser>(
     GET_USER,
     { variables: { id: account?.toLocaleLowerCase() } }
@@ -60,6 +61,7 @@ const Dashboard: React.FunctionComponent = () => {
     if (!account) return;
 
     try {
+      refetch();
       setBalances({
         ...balances,
         dai: await getErc20Balance(reserves[index].id, account, library),
