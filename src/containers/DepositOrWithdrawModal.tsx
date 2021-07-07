@@ -41,7 +41,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const yieldProduced = useMemo(() => {
     return acuumulatedYield.sub(
       calcAccumulatedYield(
-        userData?.lTokenBurn[userData.lTokenBurn.length - 1].index || reserve.lTokenInterestIndex,
+        userData?.lTokenBurn[userData.lTokenBurn.length - 1]?.index || reserve.lTokenInterestIndex,
         userData?.lTokenMint.filter((mint) => mint.lToken.id === reserve.id) || [],
         userData?.lTokenBurn.filter((burn) => burn.lToken.id === reserve.id) || []
       )
@@ -95,8 +95,9 @@ const DepositOrWithdrawModal: FunctionComponent<{
   }
 
   useEffect(() => {
+    if (!account) return;
     loadAllowance();
-  })
+  }, [account])
 
   useEffect(() => {
     if (!reserve) return
@@ -107,7 +108,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
         loaded: true
       })
     })
-  }, [reserve, library])
+  }, [reserve])
 
   return (
     <div className="modal modal--deposit" style={{ display: visible ? "block" : "none" }}>
@@ -128,13 +129,13 @@ const DepositOrWithdrawModal: FunctionComponent<{
         <div className='modal__converter'>
           <div
             className={`modal__converter__column${selected ? "--selected" : ""}`}
-            onClick={() => select(true)}
+            onClick={() => { select(true) }}
           >
             <p className="bold">{t("dashboard.deposit")}</p>
           </div>
           <div
             className={`modal__converter__column${!selected ? "--selected" : ""}`}
-            onClick={() => select(false)}
+            onClick={() => { select(false) }}
           >
             <p className="bold">{t("dashboard.withdraw")}</p>
           </div>
