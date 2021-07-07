@@ -33,7 +33,7 @@ const MarketDetail: React.FunctionComponent = () => {
   if (!data) return (<ErrorPage />)
 
   const miningAPR = calcMiningAPR(BigNumber.from(data.totalDeposit));
-  const utilization = BigNumber.from(data.totalBorrow || '0').div(data.totalDeposit || '1').toNumber();
+  const utilization = BigNumber.from(data.totalBorrow).mul(100).div(data.totalDeposit).toNumber();
 
   return (
     <>
@@ -165,7 +165,7 @@ const MarketDetail: React.FunctionComponent = () => {
               </div>
               <div>
                 <p>
-                  {t("market.depositers")}
+                  {t("market.depositors")}
                 </p>
                 <p>
                   {data.lTokenUserBalanceCount}
