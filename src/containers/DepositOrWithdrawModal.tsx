@@ -13,6 +13,7 @@ import { deposit, getAllowance, getErc20Balance, increaseAllownace, withdraw } f
 import { toPercent } from 'src/utiles/formatters';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
+import { useCallback } from 'react';
 
 const DepositOrWithdrawModal: FunctionComponent<{
   tokenName: string,
@@ -48,14 +49,14 @@ const DepositOrWithdrawModal: FunctionComponent<{
     );
   }, [acuumulatedYield, reserve, userData])
 
-  const loadAllowance = async () => {
+  const loadAllowance = useCallback(async () => {
     if (!account) return;
 
     setAllowance({
       value: await getAllowance(account, reserve.id, library),
       loaded: true
     })
-  }
+  }, [account, library, reserve]);
 
   const requestAllowance = async () => {
     if (!account) return;
@@ -95,9 +96,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
   }
 
   useEffect(() => {
-    if (!account) return;
     loadAllowance();
-  }, [account])
+  }, [account, loadAllowance])
 
   useEffect(() => {
     if (!reserve) return
@@ -108,7 +108,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
         loaded: true
       })
     })
-  }, [reserve])
+  }, [reserve, library])
 
   return (
     <div className="modal modal--deposit" style={{ display: visible ? "block" : "none" }}>

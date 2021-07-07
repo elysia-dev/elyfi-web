@@ -5,7 +5,6 @@ function ScrollToTop() {
 	const history = useHistory();
 
 	useEffect(() => {
-		console.log("scroll!")
 		const unlisten = history.listen(() => {
 			window.scrollTo(0, 0);
 		});
