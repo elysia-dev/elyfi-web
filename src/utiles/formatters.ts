@@ -16,6 +16,14 @@ export const formatComma = (value: BigNumber) => new Intl.NumberFormat('en').for
   )
 );
 
+export const formatCommaSmall = (value: BigNumber) => new Intl.NumberFormat('en', { maximumFractionDigits: 8 }).format(
+  parseFloat(
+    utils.formatEther(
+      value
+    )
+  )
+);
+
 export const toPercent = (value: any) => `${toCompact(parseFloat(utils.formatUnits(value, 25)))}%`
 
 export const toCompact = (value: number) => new Intl.NumberFormat('en-US', { maximumFractionDigits: 2, notation: "compact", compactDisplay: "short" }).format(value);

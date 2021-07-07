@@ -1,7 +1,7 @@
 import { BigNumber, utils } from 'ethers';
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next';
-import { formatComma } from 'src/utiles/formatters';
+import { formatComma, formatCommaSmall } from 'src/utiles/formatters';
 
 const WithdrawBody: React.FunctionComponent<{
   tokenName: string
@@ -68,11 +68,11 @@ const WithdrawBody: React.FunctionComponent<{
           </div>
           <div>
             <p className="bold">{t("dashboard.yield_produced")}</p>
-            <p className="bold">{`${formatComma(yieldProduced)} ${tokenName}`}</p>
+            <p className="bold">{`${formatCommaSmall(yieldProduced)} ${tokenName}`}</p>
           </div>
           <div>
             <p className="bold">{t("dashboard.accumulated")}</p>
-            <p className="bold">{`${formatComma(accumulatedYield)} ${tokenName}`}</p>
+            <p className="bold">{`${formatCommaSmall(accumulatedYield)} ${tokenName}`}</p>
           </div>
         </div>
       </div>
