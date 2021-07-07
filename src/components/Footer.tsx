@@ -9,7 +9,7 @@ import envs from 'src/core/envs';
 const Footer = () => {
   const location = useLocation();
   const { active, chainId } = useWeb3React();
-  if (location.pathname === "/dashboard" && !active && chainId !== envs.requiredChainId) {
+  if (location.pathname === "/dashboard" && (!active || (chainId !== envs.requiredChainId))) {
     return (<></>);
   }
 
