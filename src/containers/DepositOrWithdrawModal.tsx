@@ -144,11 +144,16 @@ const DepositOrWithdrawModal: FunctionComponent<{
               <p className="modal__header__name spoqa__bold">{tokenName}</p>
             </div>
           </div>
-          <div className="close-button" onClick={onClose}>
-            <div className="close-button--1">
-              <div className="close-button--2" />
+          {txWating ? (
+            <></>
+          ) : (
+            <div className="close-button" onClick={onClose}>
+              <div className="close-button--1">
+                <div className="close-button--2" />
+              </div>
             </div>
-          </div>
+          )}
+          
         </div>
         <div className='modal__converter'>
           <div
