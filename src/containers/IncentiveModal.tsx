@@ -3,7 +3,7 @@ import { BigNumber, providers } from 'ethers';
 import { FunctionComponent, useState } from 'react'
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
-import { formatComma } from 'src/utiles/formatters';
+import { formatCommaSmall } from 'src/utiles/formatters';
 import { claimIncentive } from 'src/utiles/contractHelpers';
 
 // Create deposit & withdraw
@@ -11,7 +11,8 @@ const IncentiveModal: FunctionComponent<{
   balance: BigNumber,
   visible: boolean,
   onClose: () => void,
-}> = ({ visible, balance, onClose, }) => {
+  afterTx: () => Promise<void>,
+}> = ({ visible, balance, onClose, afterTx }) => {
   const { account, library } = useWeb3React()
   const [txWating, setWating] = useState<boolean>(false);
 
@@ -26,6 +27,7 @@ const IncentiveModal: FunctionComponent<{
 
     try {
       await (library as providers.Web3Provider).waitForTransaction(txHash);
+      afterTx();
       onClose();
     } finally {
       setWating(false);
@@ -57,7 +59,7 @@ const IncentiveModal: FunctionComponent<{
                 <p></p>
                 <p className="modal__withdraw__value bold">
                   {
-                    formatComma(balance)
+                    formatCommaSmall(balance)
                   }
                 </p>
               </div>
