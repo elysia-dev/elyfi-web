@@ -346,7 +346,7 @@ const Dashboard: React.FunctionComponent = () => {
                   balances.loading ?
                     <Skeleton width={50} />
                     :
-                    <p className="spoqa">{`${toCompactForBignumber(balances.governance)} ELFI`}</p>
+                    <p className="spoqa">{`${formatCommaSmall(balances.governance)} ELFI`}</p>
                 }
               </th>
             </tr>
