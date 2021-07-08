@@ -2,7 +2,9 @@ import { GetAllReserves_reserves, GetAllReserves_reserves_reserveHistory } from 
 import moment from 'moment'
 import { BigNumber, utils } from "ethers";
 import calcMiningAPR from "./calcMiningAPR";
-import { daiToUsd, toCompact } from "./formatters";
+import { toCompact } from "./formatters";
+
+const current = moment();
 
 interface ICalculatedData extends GetAllReserves_reserves_reserveHistory {
   selectedAmount: string,
@@ -11,6 +13,10 @@ interface ICalculatedData extends GetAllReserves_reserves_reserveHistory {
 
 const calcHistoryChartData = (data: GetAllReserves_reserves, historyType: 'borrow' | 'deposit') => {
   const reducedData = data.reserveHistory.reduce((res: GetAllReserves_reserves_reserveHistory[], cur) => {
+    if (moment(cur.timestamp * 1000).format('YYYY-MM-DD') === current.format('YYYY-MM-DD')) {
+      return res;
+    }
+
     if (res.length === 0) {
       res.push(cur)
       return res;
