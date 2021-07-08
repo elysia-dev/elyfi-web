@@ -38,20 +38,37 @@ const Wallet = (props: any) => {
 
   const LNB = () => {
     return (
-      <ul className="navigation__wallet__sub-menu"
+      <div className="navigation__wallet__sub-menu"
         style={{ display: visible ? "block" : "none" }}
       >
-        <li className="navigation__wallet__sub-menu__item">
+        <p className="navigation__wallet__sub-menu__item">
           {account}
-        </li>
-        <li className="navigation__wallet__sub-menu__item"
+        </p>
+        <hr />
+        <p className="navigation__wallet__sub-menu__item"
           onClick={() => {
             deactivate();
             window.sessionStorage.setItem("@connect", "false");
           }}>
           {t("navigation.disconnect")}
-        </li>
-      </ul>
+        </p>
+      </div>
+      // <ul className="navigation__wallet__sub-menu"
+      //   style={{ display: visible ? "block" : "none" }}
+      // >
+      //   <li className="navigation__wallet__sub-menu__item">
+      //     <p>
+      //       {account}
+      //     </p>
+      //   </li>
+      //   <li className="navigation__wallet__sub-menu__item"
+      //     onClick={() => {
+      //       deactivate();
+      //       window.sessionStorage.setItem("@connect", "false");
+      //     }}>
+      //     {t("navigation.disconnect")}
+      //   </li>
+      // </ul>
     )
   }
 
