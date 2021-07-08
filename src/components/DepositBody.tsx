@@ -1,7 +1,7 @@
 import { BigNumber, utils } from 'ethers';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { formatComma } from 'src/utiles/formatters';
+import { formatCommaWithDigits } from 'src/utiles/formatters';
 
 const DepositBody: React.FunctionComponent<{
   tokenName: string,
@@ -18,11 +18,13 @@ const DepositBody: React.FunctionComponent<{
   const amountLteZero = !amount || parseFloat(amount) <= 0;
 
   const { t } = useTranslation();
+  const _pattern = /^\d*[.]\d{8}$/;
 
   return (
     <div className="modal__deposit">
       <div className="modal__deposit__value-wrapper">
-        <p className="modal__deposit__maximum bold" onClick={() => { setAmount((Math.floor(parseFloat(utils.formatEther(balance)) * 100000) / 100000).toString()) }}>
+      <div className="modal__deposit__value-wrapper">
+        <p className="modal__deposit__maximum bold" onClick={() => { setAmount((Math.floor(parseFloat(utils.formatEther(balance)) * 100000000) / 100000000).toFixed(8).toString()) }}>
           {t("dashboard.max")}
         </p>
         <p className="modal__deposit__value bold">
@@ -32,7 +34,11 @@ const DepositBody: React.FunctionComponent<{
             placeholder="0"
             value={amount}
             style={{ fontSize: amount.length < 8 ? 60 : amount.length > 12 ? 35 : 45 }}
-            onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => { ["-", "+", "e"].includes(e.key) && e.preventDefault() }}
+            onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => { 
+              ["-", "+", "e"].includes(e.key) && e.preventDefault();
+
+
+            }}
             onChange={({ target }) => setAmount(target.value)}
           />
         </p>
@@ -48,7 +54,7 @@ const DepositBody: React.FunctionComponent<{
             </p>
             <div className="modal__deposit__despositable-wallet-balance-wrapper">
               <p className="spoqa__bold">
-                {`${formatComma(balance)} ${tokenName}`}
+                {`${formatCommaWithDigits(balance, 4)} ${tokenName}`}
               </p>
             </div>
           </div>

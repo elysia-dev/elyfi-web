@@ -1,7 +1,7 @@
 import { BigNumber, utils } from 'ethers';
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next';
-import { formatComma, formatCommaSmall } from 'src/utiles/formatters';
+import { formatCommaWithDigits, formatCommaSmall, formatCommaFillZero } from 'src/utiles/formatters';
 
 const WithdrawBody: React.FunctionComponent<{
   tokenName: string
@@ -15,7 +15,7 @@ const WithdrawBody: React.FunctionComponent<{
 
   const amountGtBalance = utils.parseEther(amount.value || '0').gt(depositBalance);
   const amountLteZero = !amount.value || parseFloat(amount.value) <= 0;
-
+  
   const { t } = useTranslation();
 
   return (
@@ -23,7 +23,7 @@ const WithdrawBody: React.FunctionComponent<{
       <div className="modal__withdraw__value-wrapper">
         <p className="modal__withdraw__maximum bold" onClick={() => {
           setAmount({
-            value: utils.formatEther(depositBalance.lte(liquidity) ? depositBalance : liquidity),
+            value: (Math.floor(parseFloat(utils.formatEther((depositBalance.lte(liquidity) ? depositBalance : liquidity))) * 100000000) / 100000000).toFixed(8).toString(),
             max: depositBalance.lte(liquidity)
           })
         }}
@@ -51,15 +51,15 @@ const WithdrawBody: React.FunctionComponent<{
         <div className="modal__withdraw__withdrawalable-amount-wrapper">
           <div className="modal__withdraw__withdrawalable__title">
             <p className="spoqa__bold">{t("dashboard.withdraw_availble")}</p>
-            <p className="spoqa__bold">{`${formatComma(depositBalance.lte(liquidity) ? depositBalance : liquidity)} ${tokenName}`}</p>
+            <p className="spoqa__bold">{`${formatCommaWithDigits(depositBalance.lte(liquidity) ? depositBalance : liquidity, 4)} ${tokenName}`}</p>
           </div>
           <div>
             <p className="spoqa__bold">{t("dashboard.deposit_balance")}</p>
-            <p className="spoqa__bold">{`${formatComma(depositBalance)} ${tokenName}`}</p>
+            <p className="spoqa__bold">{`${formatCommaWithDigits(depositBalance, 4)} ${tokenName}`}</p>
           </div>
           <div>
             <p className="spoqa__bold">{t("dashboard.reserves_elyfi", { tokenName: tokenName })}</p>
-            <p className="spoqa__bold">{`${formatComma(liquidity)} ${tokenName}`}</p>
+            <p className="spoqa__bold">{`${formatCommaWithDigits(liquidity, 4)} ${tokenName}`}</p>
           </div>
         </div>
         <div className="modal__withdraw__withdrawalable-value-wrapper">
@@ -68,11 +68,11 @@ const WithdrawBody: React.FunctionComponent<{
           </div>
           <div>
             <p className="spoqa__bold">{t("dashboard.yield_produced")}</p>
-            <p className="spoqa__bold">{`${formatCommaSmall(yieldProduced)} ${tokenName}`}</p>
+            <p className="spoqa__bold">{`${formatCommaFillZero(yieldProduced)} ${tokenName}`}</p>
           </div>
           <div>
             <p className="spoqa__bold">{t("dashboard.accumulated")}</p>
-            <p className="spoqa__bold">{`${formatCommaSmall(accumulatedYield)} ${tokenName}`}</p>
+            <p className="spoqa__bold">{`${formatCommaFillZero(accumulatedYield)} ${tokenName}`}</p>
           </div>
         </div>
       </div>

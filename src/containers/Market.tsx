@@ -27,7 +27,7 @@ const Market: React.FunctionComponent = () => {
           <h2 className="main__title-text--blue">
             {
               usdFormatter.format(
-                parseInt(
+                parseFloat(
                   utils.formatEther(
                     reserves.reduce((res, cur) => res.add(BigNumber.from(cur.totalDeposit)), constants.Zero) || constants.Zero
                   )
