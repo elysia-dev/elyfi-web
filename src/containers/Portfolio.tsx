@@ -10,6 +10,8 @@ import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
 import ReservesContext from 'src/contexts/ReservesContext';
 import ErrorPage from 'src/components/ErrorPage';
 import { useTranslation } from 'react-i18next';
+import calcPortfolioRatio from 'src/utiles/calcPortfolioRatio';
+import { useMemo } from 'react';
 
 const Portfolio = () => {
   const { reserves } = useContext(ReservesContext);
@@ -20,9 +22,17 @@ const Portfolio = () => {
   } = useQuery<GetAllAssetBonds>(
     GET_ALL_ASSET_BONDS,
   )
-  let history = useHistory();
-
+  const history = useHistory();
   const { t } = useTranslation();
+  const ratioProduct1 = useMemo(() => {
+    return calcPortfolioRatio(data?.assetBondTokens || [], 1)
+  }, [data])
+  const ratioProduct2 = useMemo(() => {
+    return calcPortfolioRatio(data?.assetBondTokens || [], 2)
+  }, [data])
+  const ratioProduct3 = useMemo(() => {
+    return 100 - (ratioProduct1 + ratioProduct2)
+  }, [ratioProduct1, ratioProduct2])
 
   if (error) return (<ErrorPage />)
 
@@ -44,9 +54,9 @@ const Portfolio = () => {
             <p className="portfolio__asset-allocation__title bold">{t("portfolio.portfolio_asset")}</p>
             <div className="portfolio__chart-wrapper">
               <PieChart
-                num1={100}
-                num2={0}
-                num3={0}
+                num1={ratioProduct1}
+                num2={ratioProduct2}
+                num3={ratioProduct3}
               />
             </div>
             <div className="portfolio__asset-allocation__wrapper">
