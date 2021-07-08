@@ -28,7 +28,7 @@ const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
   const location = useLocation();
   const history = useHistory();
-  const { reserves } = useContext(ReservesContext);
+  const { reserves, refetch: refetchReserve } = useContext(ReservesContext);
   const reserveId = new URLSearchParams(location.search).get("reserveId")
   const [reserve, setReserve] = useState<GetAllReserves_reserves | undefined>(
     reserves.find((reserve) => reserveId === reserve.id)
@@ -51,7 +51,7 @@ const Dashboard: React.FunctionComponent = () => {
   const {
     data: userConnection,
     error,
-    refetch,
+    refetch: refetchUserData,
   } = useQuery<GetUser>(
     GET_USER,
     { variables: { id: account?.toLocaleLowerCase() } }
@@ -61,7 +61,8 @@ const Dashboard: React.FunctionComponent = () => {
     if (!account) return;
 
     try {
-      refetch();
+      refetchReserve();
+      refetchUserData();
       setBalances({
         ...balances,
         dai: await getErc20Balance(reserves[index].id, account, library),

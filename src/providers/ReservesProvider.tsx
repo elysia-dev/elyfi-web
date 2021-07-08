@@ -11,6 +11,7 @@ const ReservesProvider: React.FC = (props) => {
     loading,
     data,
     error,
+    refetch
   } = useQuery<GetAllReserves>(
     GET_ALL_RESERVES,
     {
@@ -25,7 +26,9 @@ const ReservesProvider: React.FC = (props) => {
     <ReserveContext.Provider
       value={{
         reserves: data?.reserves || [],
-      }}>
+        refetch,
+      }}
+    >
       {props.children}
     </ReserveContext.Provider>
   );
