@@ -1996,7 +1996,7 @@ span {
   height: 450px;
   &__text {
     position: absolute;
-    bottom: 30px;
+    bottom: 60px;
     font-size: 24px;
     text-align: center;
     width: 100%;
@@ -2011,6 +2011,18 @@ span {
       animation: changeContent 3s linear infinite alternate;
       text-align: left;
       margin-left: 5px;
+    }
+  }
+  &__text2 {
+    position: absolute;
+    bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+    width: 100%;
+    right: 10px;
+    > p {
+      font-size: 15px;
+      display: inline;
     }
   }
 

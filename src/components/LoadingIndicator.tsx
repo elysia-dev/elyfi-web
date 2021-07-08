@@ -14,6 +14,12 @@ const LoadingIndicator: React.FunctionComponent = () => {
       <div className="loading-indicator__text">
         <p className="bold">Transaction is now loading</p>
       </div>
+      <div className="loading-indicator__text2">
+        <p className="spoqa">
+          this pop-up window will close in about 15-30 seconds.
+        </p>
+      </div>
+      
     </div>
   )
 }
