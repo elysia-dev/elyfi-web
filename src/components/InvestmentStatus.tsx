@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import { GetAllReserves_reserves } from "src/queries/__generated__/GetAllReserves";
-import { daiToUsd, toCompactForBignumber } from "src/utiles/formatters";
+import { toCompactForBignumber, toPercent } from "src/utiles/formatters";
 import Skeleton from 'react-loading-skeleton';
 import { constants } from "ethers";
 import { useTranslation } from "react-i18next";
@@ -70,7 +70,7 @@ const InvestmentStatus: FunctionComponent<{
             <div>
               {
                 loading || !reserve ? <Skeleton /> :
-                  <p>8.00%</p>
+                  <p>{toPercent(reserve.borrowAPY)}</p>
               }
             </div>
           </td>
