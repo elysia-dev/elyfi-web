@@ -3,7 +3,7 @@ import ServiceBackground from 'src/assets/images/service-background.png';
 import { useWeb3React } from '@web3-react/core';
 import ReserveData from 'src/core/data/reserves';
 import { useEffect } from 'react';
-import { daiToUsd, formatComma, toPercent, toCompactForBignumber } from 'src/utiles/formatters';
+import { toPercent, toCompactForBignumber, formatCommaSmall } from 'src/utiles/formatters';
 import { useContext } from 'react';
 import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
 import { useState } from 'react';
@@ -23,12 +23,14 @@ import IncentiveModal from './IncentiveModal';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import ErrorPage from 'src/components/ErrorPage';
 import { Title } from 'src/components/Texts';
+import calcExpectedIncentive from 'src/utiles/calcExpectedIncentive';
+import moment from 'moment';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
   const location = useLocation();
   const history = useHistory();
-  const { reserves } = useContext(ReservesContext);
+  const { reserves, refetch: refetchReserve } = useContext(ReservesContext);
   const reserveId = new URLSearchParams(location.search).get("reserveId")
   const [reserve, setReserve] = useState<GetAllReserves_reserves | undefined>(
     reserves.find((reserve) => reserveId === reserve.id)
@@ -40,33 +42,43 @@ const Dashboard: React.FunctionComponent = () => {
     incentive: BigNumber,
     governance: BigNumber
     lTokens: BigNumber[],
+    updatedAt: number,
   }>({
     loading: true,
     dai: constants.Zero,
     incentive: constants.Zero,
     governance: constants.Zero,
     lTokens: Array.from(Array(reserves.length), () => constants.Zero),
+    updatedAt: moment().unix(),
   });
   const [incentiveModalVisible, setIncentiveModalVisible] = useState<boolean>(false);
   const {
     data: userConnection,
     error,
+    refetch: refetchUserData,
   } = useQuery<GetUser>(
     GET_USER,
     { variables: { id: account?.toLocaleLowerCase() } }
   )
+  const [expectedIncentive, setExpectedIncentive] = useState<BigNumber>(balances.incentive)
 
   const refrechBalancesAfterTx = async (index: number) => {
     if (!account) return;
 
     try {
+      refetchReserve();
+      refetchUserData();
+      const updatedLTokens = balances.lTokens;
+
+      if (balances.lTokens.length >= index + 1) {
+        updatedLTokens[index] = await getErc20Balance(reserves[index].lToken.id, account, library);
+      }
+
       setBalances({
         ...balances,
         dai: await getErc20Balance(reserves[index].id, account, library),
-        lTokens: {
-          ...balances.lTokens,
-          [index]: await getErc20Balance(reserves[index].lToken.id, account, library),
-        },
+        lTokens: updatedLTokens,
+        updatedAt: moment().unix(),
       })
     } catch {
       setBalances({
@@ -74,6 +86,24 @@ const Dashboard: React.FunctionComponent = () => {
         loading: false,
       })
     }
+  }
+
+  const refrechBalancesAfterClaimTx = async () => {
+    if (!account) return;
+
+    try {
+      setBalances({
+        ...balances,
+        incentive: await getUserIncentiveReward(account || '', library),
+        updatedAt: moment().unix(),
+      })
+    } catch {
+      setBalances({
+        ...balances,
+        loading: false,
+      })
+    }
+
   }
 
   const loadBalances = async () => {
@@ -90,6 +120,7 @@ const Dashboard: React.FunctionComponent = () => {
         lTokens: await Promise.all(reserves.map((reserve) => {
           return getErc20Balance(reserve.lToken.id, account, library)
         })),
+        updatedAt: moment().unix()
       })
     } catch {
       setBalances({
@@ -102,6 +133,28 @@ const Dashboard: React.FunctionComponent = () => {
   useEffect(() => {
     loadBalances();
   }, [account])
+
+  useEffect(() => {
+    const interval = setInterval(
+      () => {
+        setExpectedIncentive(
+          balances.incentive.add(
+            balances.lTokens?.reduce((res, balance, index) => res.add(
+              calcExpectedIncentive(
+                balance,
+                calcMiningAPR(BigNumber.from(reserves[index].totalDeposit)),
+                balances.updatedAt
+              )
+            ), constants.Zero)
+          )
+        )
+      }, 500
+    );
+
+    return () => {
+      clearInterval(interval);
+    }
+  })
 
   if (error) return (<ErrorPage />)
 
@@ -137,7 +190,8 @@ const Dashboard: React.FunctionComponent = () => {
         onClose={() => {
           setIncentiveModalVisible(false)
         }}
-        balance={balances.incentive}
+        balance={expectedIncentive}
+        afterTx={() => refrechBalancesAfterClaimTx()}
       />
       <section className="dashboard main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
         <div className="main__title-wrapper">
@@ -284,7 +338,7 @@ const Dashboard: React.FunctionComponent = () => {
                   balances.loading ?
                     <Skeleton width={50} />
                     :
-                    <p className="spoqa">{`${toCompactForBignumber(balances.incentive)} ELFI`}</p>
+                    <p className="spoqa">{`${formatCommaSmall(expectedIncentive.isZero() ? balances.incentive : expectedIncentive)} ELFI`}</p>
                 }
               </th>
               <th>
@@ -292,7 +346,7 @@ const Dashboard: React.FunctionComponent = () => {
                   balances.loading ?
                     <Skeleton width={50} />
                     :
-                    <p className="spoqa">{`${toCompactForBignumber(balances.governance)} ELFI`}</p>
+                    <p className="spoqa">{`${formatCommaSmall(balances.governance)} ELFI`}</p>
                 }
               </th>
             </tr>

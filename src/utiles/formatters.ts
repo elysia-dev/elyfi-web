@@ -30,7 +30,7 @@ export const formatCommaFillZero = (value: BigNumber) => new Intl.NumberFormat('
   )
 )
 
-export const formatCommaSmall = (value: BigNumber) => new Intl.NumberFormat('en', { maximumFractionDigits: 8 }).format(
+export const formatCommaSmall = (value: BigNumber) => new Intl.NumberFormat('en', { maximumFractionDigits: 6 }).format(
   parseFloat(
     utils.formatEther(
       value

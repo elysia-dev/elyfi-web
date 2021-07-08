@@ -1,7 +1,7 @@
 import { BigNumber, utils, constants } from "ethers";
 
 // FIXME : load the price from uniswap LP pool;
-const ELFI_PRICE = 0.1; // USD
+export const ELFI_PRICE = 0.1; // USD
 const ELFI_MINING_AMOUNT_PER_YEAR = 3000000 * 2;
 
 const calcMiningAPR = (totalDeposit: BigNumber): BigNumber => {
