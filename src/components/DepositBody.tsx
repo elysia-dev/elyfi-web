@@ -18,11 +18,9 @@ const DepositBody: React.FunctionComponent<{
   const amountLteZero = !amount || parseFloat(amount) <= 0;
 
   const { t } = useTranslation();
-  const _pattern = /^\d*[.]\d{8}$/;
 
   return (
     <div className="modal__deposit">
-      <div className="modal__deposit__value-wrapper">
       <div className="modal__deposit__value-wrapper">
         <p className="modal__deposit__maximum bold" onClick={() => { setAmount((Math.floor(parseFloat(utils.formatEther(balance)) * 100000000) / 100000000).toFixed(8).toString()) }}>
           {t("dashboard.max")}
