@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
   Switch,
   BrowserRouter as Router,
@@ -8,7 +8,7 @@ import {
 import Portfolio from './containers/Portfolio';
 import Market from 'src/containers/Market';
 
-import AssetDetail from './containers/AssetDetail';
+import PortfolioDetail from './containers/PortfolioDetail';
 
 import Footer from './components/Footer';
 import Navigation from './components/Navigation';
@@ -24,7 +24,7 @@ import envs from 'src/core/envs';
 
 const AppNavigator: React.FC = () => {
   const { active, chainId, deactivate } = useWeb3React();
-  
+
   useEffect(() => {
     window.sessionStorage.getItem("@connect") === "false" && deactivate();
   }, [active])
@@ -46,7 +46,7 @@ const AppNavigator: React.FC = () => {
           <Route exact path="/bounty" component={Bounty} />
           <Route exact path="/guide" component={InvestmentGuide} />
           <Route exact path="/portfolio" component={Portfolio} />
-          <Route exact path="/portfolio/:id" component={AssetDetail} />
+          <Route exact path="/portfolio/:id" component={PortfolioDetail} />
           <Route exact path="/markets/:id" component={MarketDetail} />
           <Route path="/" component={Market} />
         </Switch>

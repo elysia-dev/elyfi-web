@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import Skeleton from 'react-loading-skeleton';
 import Marker from 'src/components/Marker';
 
-const AssetDetail: FunctionComponent = () => {
+const PortfolioDetail: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
   const {
     loading,
@@ -318,4 +318,4 @@ const AssetDetail: FunctionComponent = () => {
   );
 }
 
-export default AssetDetail;
+export default PortfolioDetail;
