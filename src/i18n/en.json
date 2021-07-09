@@ -5,6 +5,7 @@
       "AuctionBalanceLoans": "Auction Balance Loans",
       "ShortTermLoansWithCharterReturns": "Short-term loans with charter returns",
       "Apartment": "Apartment",
+      "CommercialProperty": "Commercial property",
       "ToBeRepayed": "To be repayed",
       "RepaymentComplete": "Repayment complete",
       "LiquidationProgress": "ABToken Liquidation in progress",

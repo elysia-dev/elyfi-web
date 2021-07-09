@@ -5,6 +5,7 @@
       "AuctionBalanceLoans": "경매잔금 대출",
       "ShortTermLoansWithCharterReturns": "전세반환금 단기 대출",
       "Apartment": "아파트",
+      "CommercialProperty": "상가",
       "ToBeRepayed": "상환 예정",
       "RepaymentComplete": "상환 완료",
       "LiquidationProgress": "ABToken 청산 진행중",

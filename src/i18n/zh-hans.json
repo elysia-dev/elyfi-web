@@ -5,6 +5,7 @@
       "AuctionBalanceLoans": "拍卖余额贷款",
       "ShortTermLoansWithCharterReturns": "全税返还金短期贷款",
       "Apartment": "公寓",
+      "CommercialProperty": "商业楼宇",
       "ToBeRepayed": "预期还款",
       "RepaymentComplete": "还款完成",
       "LiquidationProgress": "ABToken 清算中",
