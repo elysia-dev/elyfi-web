@@ -1,5 +1,16 @@
 {
   "translation": {
+    "words": {
+      "MortgageLoans": "주택담보 대출",
+      "AuctionBalanceLoans": "경매잔금 대출",
+      "ShortTermLoansWithCharterReturns": "전세반환금 단기 대출",
+      "Apartment": "아파트",
+      "CommercialProperty": "상가",
+      "ToBeRepayed": "상환 예정",
+      "RepaymentComplete": "상환 완료",
+      "LiquidationProgress": "ABToken 청산 진행중",
+      "Default": "-"
+    },
     "navigation": {
       "dashboard": "대시보드",
       "portfolio": "포트폴리오",
@@ -60,7 +71,7 @@
       "asset_detail": "자산 상세",
       "loan_number--table": "대출 번호",
       "loan_status": "대출 상태",
-      "borrower": "차입자",
+      "borrower": "대출자",
       "service_provider_info": "담보법인 정보",
       "loan_receiver": "대출금 수취인",
       "loan_date": "대출일",
@@ -72,9 +83,11 @@
       "loan_name": "대출 상품명",
       "loans": "대출금",
       "loan_interest_rate": "대출이자율",
+      "overdue_interest_rate": "연체이자율",
       "maximum_amount": "채권최고액",
       "collateral_type": "담보유형",
       "collateral_address": "담보물주소",
+      "collateral_nft": "담보NFT",
       "contract_image": "계약서 이미지"
     },
     "partners": {

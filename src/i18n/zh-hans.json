@@ -1,5 +1,16 @@
 {
   "translation": {
+    "words": {
+      "MortgageLoans": "房地产抵押贷款",
+      "AuctionBalanceLoans": "拍卖余额贷款",
+      "ShortTermLoansWithCharterReturns": "全税返还金短期贷款",
+      "Apartment": "公寓",
+      "CommercialProperty": "商业楼宇",
+      "ToBeRepayed": "预期还款",
+      "RepaymentComplete": "还款完成",
+      "LiquidationProgress": "ABToken 清算中",
+      "Default": "-"
+    },
     "navigation": {
       "dashboard": "我的页面",
       "portfolio": "投资组合",
@@ -72,9 +83,11 @@
       "loan_name": "贷款产品名称",
       "loans": "贷款金额",
       "loan_interest_rate": "贷款利率",
+      "overdue_interest_rate": "逾期还款利率",
       "maximum_amount": "债券最高额度",
       "collateral_type": "担保类型",
       "collateral_address": "担保房地产地址",
+      "collateral_nft": "担保 NFT",
       "contract_image": "合同复印件"
     },
     "partners": {

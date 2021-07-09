@@ -9,16 +9,9 @@ import { useMemo } from 'react';
 import isLat from 'src/utiles/isLat';
 import isLng from 'src/utiles/isLng';
 import Marker from './Marker';
-
-const abTokenStates = [
-  'Empty',
-  'Settled',
-  'Confirmed',
-  'Collateralized',
-  'Matured',
-  'Redeemed',
-  'Not performed',
-]
+import LoanStatus from 'src/enums/LoanStatus';
+import toLoanStatus from 'src/utiles/toLoanStatus';
+import ABTokenState from 'src/enums/ABTokenState';
 
 const defaultLat = 37.5172;
 const defaultLng = 127.0473;
@@ -38,7 +31,9 @@ const AssetList: FunctionComponent<{
   return (
     <div className="portfolio__asset-list__info">
       <p className="portfolio__asset-list__info__status spoqa" onClick={onClick}>
-        {abTokenStates[abToken.state || 0]}
+        {
+          t(`words.${LoanStatus[toLoanStatus(abToken?.state as ABTokenState)]}`)
+        }
       </p>
       <div style={{ width: "100%", height: 304, border: 0 }}>
         <GoogleMapReact
