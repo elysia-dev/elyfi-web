@@ -9,11 +9,15 @@ import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import { daiToUsd, toPercent } from 'src/utiles/formatters';
 import moment from 'moment';
-import ABTokenState from 'src/enums/ABTokenState';
 import ServiceBackground from 'src/assets/images/service-background.png'
 import { useTranslation } from 'react-i18next';
 import Skeleton from 'react-loading-skeleton';
 import Marker from 'src/components/Marker';
+import LoanProduct from 'src/enums/LoanProduct';
+import CollateralCategory from 'src/enums/CollateralCategory';
+import LoanStatus from 'src/enums/LoanStatus';
+import toLoanStatus from 'src/utiles/toLoanStatus';
+import ABTokenState from 'src/enums/ABTokenState';
 
 const PortfolioDetail: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
@@ -68,43 +72,9 @@ const PortfolioDetail: FunctionComponent = () => {
                 </td>
                 <td colSpan={2}>
                   <p>
-                    {ABTokenState[(abToken?.state as ABTokenState)]}
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td className="portfolio__info__table__title">
-                  <p>
-                    {t("portfolio.borrower")}
-                  </p>
-                </td>
-                <td colSpan={2}>
-                  <p>
-                    {parsedTokenId.collateralServiceProviderIdentificationNumber}
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td className="portfolio__info__table__title">
-                  <p>
-                    {t("portfolio.service_provider_info")}
-                  </p>
-                </td>
-                <td colSpan={2}>
-                  <p>
-                    -
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td className="portfolio__info__table__title">
-                  <p>
-                    {t("portfolio.loan_receiver")}
-                  </p>
-                </td>
-                <td colSpan={2}>
-                  <p>
-                    {abToken?.borrower?.id}
+                    {
+                      t(`words.${LoanStatus[toLoanStatus(abToken?.state as ABTokenState)]}`)
+                    }
                   </p>
                 </td>
               </tr>
@@ -123,7 +93,7 @@ const PortfolioDetail: FunctionComponent = () => {
               <tr>
                 <td className="portfolio__info__table__title">
                   <p>
-                    {t("portfolio.borrow_apy")}
+                    {t("portfolio.loan_interest_rate")}
                   </p>
                 </td>
                 <td colSpan={2}>
@@ -152,147 +122,157 @@ const PortfolioDetail: FunctionComponent = () => {
                 </td>
                 <td colSpan={2}>
                   <p>
-                    {abToken?.maturityTimestamp ? moment(abToken?.maturityTimestamp * 1000).format('YYYY.MM.DD') : '-'}
+                    {abToken?.maturityTimestamp ? moment(abToken?.maturityTimestamp * 1000).format('YYYY.MM.DD') : '-'} </p>
+                </td>
+              </tr>
+              <tr>
+                <td className="portfolio__info__table__title">
+                  <p>
+                    {t("portfolio.collateral_nft")}
+                  </p>
+                </td>
+                <td colSpan={2}>
+                  <b>ABToken ID</b>
+                  <p>
+                    {abToken?.id}
                   </p>
                 </td>
               </tr>
-              <colgroup>
-                <col style={{ width: 263 }} />
-                <col style={{ width: 263 }} />
-                <col style={{ width: "100%" }} />
-              </colgroup>
+            </table>
+        }
+        {
+          loading ? <Skeleton height={900} /> :
+            <table className="portfolio__info__table">
               <tr>
-                <td rowSpan={13} className="portfolio__info__table__title--last">
-                  <p>
-                    {t("portfolio.collateral_infomation")}
-                  </p>
-                </td>
-                <td className="portfolio__info__table__title--second">
+                <td className="portfolio__info__table__title">
                   <p>
                     {t("portfolio.abtokenid")}
                   </p>
                 </td>
-                <td>
+                <td colSpan={2}>
                   <p>
                     {abToken?.id}
                   </p>
                 </td>
               </tr>
               <tr>
-                <td className="portfolio__info__table__title--second">
+                <td className="portfolio__info__table__title">
                   <p>
-                    {t("portfolio.service_provider")}
+                    {t("portfolio.borrower")}
                   </p>
                 </td>
-                <td>
+                <td colSpan={2}>
                   <p>
-                    {'-'}
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td className="portfolio__info__table__title--second">
-                  <p>
-                    {t("portfolio.license_number")}
-                  </p>
-                </td>
-                <td>
-                  <p>
-                    {'-'}
+                    (주)엘리파이대부
                   </p>
                 </td>
               </tr>
               <tr>
-                <td className="portfolio__info__table__title--second">
+                <td className="portfolio__info__table__title">
                   <p>
                     {t("portfolio.loan_product")}
                   </p>
                 </td>
-                <td>
+                <td colSpan={2}>
                   <p>
-                    {parsedTokenId.collateralDetail}
+                    {
+                      t(`words.${LoanProduct[parsedTokenId.productNumber as LoanProduct]}`)
+                    }
                   </p>
                 </td>
               </tr>
               <tr>
-                <td className="portfolio__info__table__title--second">
+                <td className="portfolio__info__table__title">
                   <p>
-                    {t("portfolio.loan_name")}
+                    {t("portfolio.borrowed")}
                   </p>
                 </td>
-                <td>
+                <td colSpan={2}>
                   <p>
-                    {`-`}
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td className="portfolio__info__table__title--second">
-                  <p>
-                    {t("portfolio.loans")}
-                  </p>
-                </td>
-                <td>
-                  <p>
-                    {`-`}
+                    {daiToUsd(abToken?.principal || '0')}
                   </p>
                 </td>
               </tr>
               <tr>
-                <td className="portfolio__info__table__title--second">
+                <td className="portfolio__info__table__title">
                   <p>
-                    {t("portfolio.loan_interest_rate")}
+                    {`${t("portfolio.loan_interest_rate")} | ${t('portfolio.overdue_interest_rate')}`}
                   </p>
                 </td>
-                <td>
+                <td colSpan={2}>
                   <p>
-                    {parsedTokenId.collateralDetail}
+                    {`${toPercent(abToken?.interestRate || '0')} | ${toPercent(abToken?.overdueInterestRate || '0')}`}
                   </p>
                 </td>
               </tr>
               <tr>
-                <td className="portfolio__info__table__title--second">
+                <td className="portfolio__info__table__title">
+                  <p>
+                    {t("portfolio.loan_date")}
+                  </p>
+                </td>
+                <td colSpan={2}>
+                  <p>
+                    {abToken?.loanStartTimestamp ? moment(abToken.loanStartTimestamp * 1000).format('YYYY.MM.DD') : '-'}
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td className="portfolio__info__table__title">
+                  <p>
+                    {t("portfolio.maturity_date")}
+                  </p>
+                </td>
+                <td colSpan={2}>
+                  <p>
+                    {abToken?.maturityTimestamp ? moment(abToken?.maturityTimestamp * 1000).format('YYYY.MM.DD') : '-'} </p>
+                </td>
+              </tr>
+              <tr>
+                <td className="portfolio__info__table__title">
                   <p>
                     {t("portfolio.maximum_amount")}
                   </p>
                 </td>
-                <td>
+                <td colSpan={2}>
                   <p>
                     {daiToUsd(abToken?.debtCeiling || '0')}
                   </p>
                 </td>
               </tr>
               <tr>
-                <td className="portfolio__info__table__title--second">
+                <td className="portfolio__info__table__title">
                   <p>
                     {t("portfolio.collateral_type")}
                   </p>
                 </td>
-                <td>
+                <td colSpan={2}>
                   <p>
-                    {parsedTokenId.collateralCategory}
+                    {
+                      t(`words.${CollateralCategory[parsedTokenId.collateralCategory as CollateralCategory]}`)
+                    }
                   </p>
                 </td>
               </tr>
               <tr>
-                <td className="portfolio__info__table__title--second">
+                <td className="portfolio__info__table__title">
                   <p>
                     {t("portfolio.collateral_address")}
                   </p>
                 </td>
-                <td>
+                <td colSpan={2}>
                   <p>
                     {'-'}
                   </p>
                 </td>
               </tr>
               <tr>
-                <td className="portfolio__info__table__title--second">
+                <td className="portfolio__info__table__title">
                   <p>
                     {t("portfolio.contract_image")}
                   </p>
                 </td>
-                <td>
+                <td colSpan={2}>
                   <p>
                     {abToken?.ipfsHash}
                   </p>
@@ -301,7 +281,6 @@ const PortfolioDetail: FunctionComponent = () => {
             </table>
         }
       </div>
-      {/* To do */}
       <div className="portfolio__info__google-map__wrapper">
         <GoogleMapReact
           bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY! }}
@@ -314,7 +293,7 @@ const PortfolioDetail: FunctionComponent = () => {
           <Marker lat={lat} lng={lng} />
         </GoogleMapReact>
       </div>
-    </section>
+    </section >
   );
 }
 

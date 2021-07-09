@@ -1,5 +1,15 @@
 {
   "translation": {
+    "words": {
+      "MortgageLoans": "Mortgage Loans",
+      "AuctionBalanceLoans": "Auction Balance Loans",
+      "ShortTermLoansWithCharterReturns": "Short-term loans with charter returns",
+      "Apartment": "Apartment",
+      "ToBeRepayed": "To be repayed",
+      "RepaymentComplete": "Repayment complete",
+      "LiquidationProgress": "ABToken Liquidation in progress",
+      "Default": "-"
+    },
     "navigation": {
       "dashboard": "DASHBOARD",
       "portfolio": "PORTFOLIO",
@@ -94,9 +104,11 @@
       "loan_name": "Loan Name",
       "loans": "Loans",
       "loan_interest_rate": "Loan Interest Rate",
+      "overdue_interest_rate": "Overdue Interest Rate",
       "maximum_amount": "Maximum Pledge Amount",
       "collateral_type": "Collateral Type",
       "collateral_address": "Collateral Address",
+      "collateral_nft": "Collateral NFT",
       "contract_image": "Contract Image"
     },
     "partners": {
