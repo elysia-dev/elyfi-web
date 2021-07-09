@@ -2,6 +2,7 @@
 import { FunctionComponent, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import GoogleMapReact from 'google-map-react';
+import { Client } from "@googlemaps/google-maps-services-js";
 import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
 import ErrorPage from 'src/components/ErrorPage';
 import { useQuery } from '@apollo/client';
@@ -18,6 +19,10 @@ import CollateralCategory from 'src/enums/CollateralCategory';
 import LoanStatus from 'src/enums/LoanStatus';
 import toLoanStatus from 'src/utiles/toLoanStatus';
 import ABTokenState from 'src/enums/ABTokenState';
+import isLng from 'src/utiles/isLng';
+import isLat from 'src/utiles/isLat';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 const PortfolioDetail: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
@@ -34,6 +39,30 @@ const PortfolioDetail: FunctionComponent = () => {
   const parsedTokenId = useMemo(() => { return parseTokenId(abToken?.id) }, [abToken]);
   const lat = parsedTokenId.collateralLatitude / 100000 || 37.3674541706433;
   const lng = parsedTokenId.collateralLongitude / 100000 || 126.64780198475671;
+  const [address, setAddress] = useState('-');
+
+  const loadAddress = async (lat: number, lng: number) => {
+    const client = new Client({});
+
+    try {
+      const res = await client.reverseGeocode({
+        params: {
+          latlng: [lat, lng],
+          key: process.env.REACT_APP_GOOGLE_MAP_API_KEY!
+        },
+      })
+
+      setAddress(res.data.results[0].formatted_address)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  useEffect(() => {
+    if (!isLat(lat) || !isLng(lng)) return
+
+    loadAddress(lat, lng);
+  }, [lat, lng])
 
   if (error) return (<ErrorPage />)
 
@@ -262,7 +291,7 @@ const PortfolioDetail: FunctionComponent = () => {
                 </td>
                 <td colSpan={2}>
                   <p>
-                    {'-'}
+                    {address}
                   </p>
                 </td>
               </tr>
