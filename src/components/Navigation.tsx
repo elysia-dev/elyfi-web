@@ -18,7 +18,7 @@ const Navigation: FunctionComponent = () => {
   const location = useLocation();
   const { t, i18n } = useTranslation();
   const { library, account, chainId } = useWeb3React();
-
+  console.log(location.pathname.split('/')[1])
   return (
     <nav className="navigation">
       <div className="navigation__alert">
@@ -71,16 +71,16 @@ const Navigation: FunctionComponent = () => {
               return (
                 <Link to={data[0]} key={index}>
                   <div className="navigation__link__wrapper">
-                    <div className={`navigation__link${location.pathname === data[0] ? " bold" : ""}`}
+                    <div className={`navigation__link${location.pathname.split('/')[1] === data[0].slice(1) ? " bold" : ""}`}
                       onMouseEnter={() => setHover(index + 1)}
                       onMouseLeave={() => setHover(0)}
                     >
                       {data[1]}
                       <div className={`navigation__link__under-line${hover === index + 1 ? " hover" : " blur"}`}
                         style={{
-                          opacity: location.pathname === data[0] ? 1 : 0,
-                          width: location.pathname === data[0] ? "100%" : 0,
-                          left: location.pathname === data[0] ? 0 : -20
+                          opacity: location.pathname.split('/')[1] === data[0].slice(1) ? 1 : 0,
+                          width: location.pathname.split('/')[1] === data[0].slice(1) ? "100%" : 0,
+                          left: location.pathname.split('/')[1] === data[0].slice(1) ? 0 : -20
                         }}
                       />
                     </div>
