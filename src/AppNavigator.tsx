@@ -37,7 +37,7 @@ const AppNavigator: React.FC = () => {
           <Route exact path="/bounty" component={Bounty} />
           <Route exact path="/guide" component={InvestmentGuide} />
           <Route exact path="/portfolio" component={Portfolio} />
-          <Route exact path="/portfolio/:id" component={AssetDetail} />
+          <Route exact path="/portfolio/:id" component={PortfolioDetail} />
           <Route
             exact
             path="/"
