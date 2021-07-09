@@ -8,28 +8,6 @@
       "disconnect": "연결 끊기",
       "install_metamask": "Install Metamask"
     },
-    "market": {
-      "total_size": "총 시장 규모",
-      "token--header": "토큰",
-      "asset": "자산",
-      "total_deposit": "총 예치금",
-      "deposit_apy": "예치 APY",
-      "total_borrowed": "총 대출금",
-      "borrow_apy": "대출 APY",
-      "button": "예치 | 출금",
-      "coming_soon": "Coming Soon!",
-
-      "total_deposit_yield": "총 예치 이자율",
-      "deposit_info": "예치 APY 와 채굴 APR 를 더한 값",
-      "mining_apr": "채굴 APR",
-      "details": "유동성 상세 정보",
-      "available_liquidity": "가용 유동성",
-      "utilization": "이용률",
-      "depositors": "예치자 수",
-      "borrowers": "차입자 수",
-      "deposit": "예치",
-      "borrow": "대출"
-    },
     "dashboard": {
       "deposits--header": "예치한 토큰",
       "asset": "자산",

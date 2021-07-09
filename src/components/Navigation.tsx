@@ -64,7 +64,7 @@ const Navigation: FunctionComponent = () => {
         <div className="navigation__link-wrapper">
           {
             [
-              ["/dashboard", t("navigation.dashboard")],
+              ["/", t("navigation.dashboard")],
               ["/portfolio", t("navigation.portfolio")],
               ["/linkage_institution", t("navigation.partners")]
             ].map((data, index) => {

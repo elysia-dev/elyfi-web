@@ -8,28 +8,6 @@
       "disconnect": "钱包解绑",
       "install_metamask": "Install Metamask"
     },
-    "market": {
-      "total_size": "总市场规模",
-      "token--header": "代币",
-      "asset": "资产",
-      "total_deposit": "总资金",
-      "deposit_apy": "资金APY",
-      "total_borrowed": "总贷款",
-      "borrow_apy": "贷款APY",
-      "button": "存款 | 出金",
-      "coming_soon": "Coming Soon!",
-
-      "total_deposit_yield": "总存款利率",
-      "deposit_info": "存款APY和挖矿APR的总和",
-      "mining_apr": "挖矿APR",
-      "details": "Liquidity Details",
-      "available_liquidity": "可用流动性",
-      "utilization": "使用率",
-      "depositors": "存款人数",
-      "borrowers": "借款人数",
-      "deposit": "存款",
-      "borrow": "贷款"
-    },
     "dashboard": {
       "deposits--header": "存入的代币",
       "asset": "资产",

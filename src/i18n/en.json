@@ -8,28 +8,6 @@
       "disconnect": "Disconnect",
       "install_metamask": "Install Metamask"
     },
-    "market": {
-      "total_size": "Total Market Size",
-      "token--header": "TOKEN",
-      "asset": "Asset",
-      "total_deposit": "Total Deposits",
-      "deposit_apy": "Deposit APY",
-      "total_borrowed": "Total Borrowed",
-      "borrow_apy": "Borrow APY",
-      "button": "Deposit | Withdraw",
-      "coming_soon": "Coming Soon!",
-
-      "total_deposit_yield": "Total Deposit Yield",
-      "deposit_info": "Combines Deposit APY and Mining APR",
-      "mining_apr": "Mining APR",
-      "details": "Liquidity Details",
-      "available_liquidity": "Available Liquidity",
-      "utilization": "Utilization Rate",
-      "depositors": "Number of depositors",
-      "borrowers": "Number of Borrowers",
-      "deposit": "Deposit",
-      "borrow": "Borrow"
-    },
     "dashboard": {
       "deposits--header": "DEPOSITS",
       "asset": "Asset",
