@@ -641,6 +641,15 @@ span {
       width: 100%;
       border-collapse: separate;
       border-spacing: 0 15px;
+      &__minted-header {
+        width: 684px;
+        &:first-child {
+          width: 150px;
+        }
+        &:last-child {
+          width: 342px;
+        }
+      }
       &__apr {
         width: 99px;
         height: 21px;
@@ -705,6 +714,13 @@ span {
         }
         > tr > th {
           padding-bottom: 0 !important;
+          &:first-child {
+            > p {
+              text-align: left;
+              margin: 0;
+              margin-left: 70px;
+            }
+          }
         }
       }
       &-body {
@@ -731,7 +747,7 @@ span {
             > div {
               > img,
               .tokens__table__image--disable {
-                margin-left: 15px;
+                margin-left: 10px;
               }
             }
           }
@@ -961,35 +977,6 @@ span {
         max-width: 1210px;
         margin: 0 auto;
       }
-      &__title {
-        margin: 0 20px 0 0;
-        white-space: nowrap;
-        font-size: 20px;
-        color: #333333;
-        &__wrapper {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          margin-bottom: 33px;
-        }
-        &__line {
-          width: 100%;
-          height: 1px;
-          border: 0px;
-          background-color: #f0f0f1;
-        }
-        &__button {
-          border: 1px solid #888888;
-          border-radius: 3px;
-          padding: 7px 10px;
-          white-space: nowrap;
-          > p {
-            color: #888888;
-            font-size: 13px;
-            margin: 0;
-          }
-        }
-      }
       &__info {
         width: 379px;
         height: 600px;
@@ -1050,13 +1037,59 @@ span {
     &__info {
       width: 1190px;
       margin: 0 auto;
-      &__google-map {
-        &__wrapper {
-          width: 1190px;
-          height: 541px;
-          border: 1px solid #c0c0c0;
-          border-radius: 5px;
-          margin: 0 auto 105px;
+      &__container {
+        box-shadow: 0px 0px 6px #00000029;
+        border-radius: 5px;
+        padding: 25px 31px;
+        display: flex;
+        flex-direction: row;
+        box-sizing: border-box;
+        margin-bottom: 60px;
+      }
+      &__collateral {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 360px;
+        margin-right: 25px;
+        > div {
+          display: flex;
+          align-items: center;
+          flex: 1;
+        }
+        > table {
+          border-radius: 6px;
+          border-spacing: 0px;
+          border-collapse: separate;
+          border: 1px solid #e6e6e6;
+          table-layout: fixed;
+          height: 160px;
+          box-sizing: border-box;
+          > tr {
+            &:first-child {
+              > td {
+                border-top: 0;
+                > p {
+                  text-align: center;
+                }
+              }
+            }
+            > td {
+              height: 40px;
+              box-sizing: border-box;
+              &:first-child {
+                border-left: 0;
+              }
+              border-left: 1px solid #e6e6e6;
+              border-top: 1px solid #e6e6e6;
+              padding: 0px 17px;
+              > p {
+                margin: 0px;
+                line-break: anywhere;
+                font-size: 15px;
+              }
+            }
+          }
         }
       }
       &__table {
@@ -1064,13 +1097,9 @@ span {
         border-radius: 6px;
         border-spacing: 0px;
         border-collapse: separate;
-        border: 1px solid #b7b7b7;
-        margin-bottom: 40px;
+        border: 1px solid #e6e6e6;
         table-layout: fixed;
-        > tr > td {
-          border-left: 1px solid #b7b7b7;
-          border-top: 1px solid #b7b7b7;
-        }
+        box-sizing: border-box;
         > tr:first-child {
           > td {
             border-top: 0px;
@@ -1079,22 +1108,44 @@ span {
             border-radius: 5px 0 0 0;
           }
         }
+        > tr {
+          height: 40px;
+          box-sizing: border-box;
+          &:first-child {
+            > td {
+              border-top: 0px;
+              &:first-child {
+                border-radius: 5px 0 0 0;
+              }
+            }
+          }
+          > td {
+            padding: 0px 17px;
+            border-left: 1px solid #e6e6e6;
+            border-top: 1px solid #e6e6e6;
+            > p {
+              margin: 0px;
+              line-break: anywhere;
+              font-size: 15px;
+            }
+          }
+        }
         &__title {
-          background-color: #41425c;
-          width: 263px;
+          background-color: #F5F5F5;
+          width: 240px;
           border-left: 0px !important;
           box-sizing: border-box;
           > p {
-            color: #ffffff;
+            color: #646464;
           }
           &--last {
-            background-color: #41425c;
+            background-color: #F5F5F5;
             width: 263px;
             box-sizing: border-box;
             border-left: 0px !important;
             border-radius: 0 0 0 5px;
             > p {
-              color: #ffffff;
+              color: #646464;
             }
           }
           &--second {
@@ -1103,19 +1154,35 @@ span {
             min-width: 263px;
             table-layout: fixed;
             > p {
-              color: #888888;
+              color: #646464;
             }
           }
         }
-        > tr {
-          > td {
-            padding: 0px 17px;
-            > p {
-              margin: 10px 0px;
-              line-break: anywhere;
-              font-size: 15px;
-            }
+      }
+      
+      &__details {
+        margin-bottom: 70px;
+        &__image {
+          border: 1px solid #E6E6E6;
+          border-radius: 5px;
+          padding: 50px;
+          display: flex;
+          margin: 40px 0;
+          justify-content: center;
+          > img {
+            width: 642px;
           }
+        }
+      }
+
+
+      &__google-map {
+        &__wrapper {
+          width: 1190px;
+          height: 541px;
+          border: 1px solid #c0c0c0;
+          border-radius: 5px;
+          margin: 0 auto 105px;
         }
       }
     }
