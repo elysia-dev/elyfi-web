@@ -280,11 +280,13 @@ span {
   }
   .elysia-logo {
     width: 151px;
-    height: 42px;
+    height: 38px;
   }
   .elysia-logo-beta {
     width: 40px;
     height: 17px;
+    position: relative;
+    top: 2px;
   }
 
   .service {
@@ -1657,9 +1659,12 @@ span {
     justify-content: space-between;
     width: 1190px;
     margin: 0 auto;
+    align-items: center;
   }
   &__white-logo {
     display: inline;
+    width: 100px;
+    height: 25.667px;
   }
   &__wrapper {
     display: flex;

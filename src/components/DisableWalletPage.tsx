@@ -5,7 +5,7 @@ import InjectedConnector from 'src/core/connectors/injectedConnector';
 import MainBackground from 'src/assets/images/main-background.png';
 import { useTranslation } from 'react-i18next';
 import envs from 'src/core/envs';
-import WhiteLogo from 'src/assets/images/White-logo.svg';
+import WhiteLogo from 'src/assets/images/White-logo.png';
 import LanguageConverter from './LanguageConverter';
 
 const DisableWalletPage = () => {

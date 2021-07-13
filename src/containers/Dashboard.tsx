@@ -25,7 +25,7 @@ import ErrorPage from 'src/components/ErrorPage';
 import { Title } from 'src/components/Texts';
 import calcExpectedIncentive from 'src/utiles/calcExpectedIncentive';
 import moment from 'moment';
-import ELFIIcon from 'src/assets/images/elfi--icon.png';
+import ELFIIcon from 'src/assets/images/ELFI.png';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -254,7 +254,7 @@ const Dashboard: React.FunctionComponent = () => {
                                 {toPercent(reserves[index].depositAPY || '0')}
                               </p>
                               <div className="tokens__table__apr">
-                                <img src={ELFIIcon} />
+                                <img src={ELFIIcon} style={{ width: 14, height: 14 }} />
                                 <p className="spoqa__bold">{toPercent(calcMiningAPR(BigNumber.from(reserves[index].totalDeposit)))}</p>
                               </div>
                             </>
@@ -331,7 +331,7 @@ const Dashboard: React.FunctionComponent = () => {
             >
               <th>
                 <div>
-                  <img src={ELFI} style={{ width: 40 }} alt="Token" />
+                  <img src={ELFI} style={{ width: 40.2, height: 40.2, padding: 0.1 }} alt="Token" />
                   <p className="spoqa">ELFI</p>
                 </div>
               </th>
