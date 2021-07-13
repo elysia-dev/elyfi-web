@@ -63,7 +63,7 @@ const AssetList: FunctionComponent<{
         </div>
         <div className="portfolio__asset-list__info__value__wrapper">
           <p className="portfolio__asset-list__info__value spoqa">
-            {t("portfolio.borrow_apy")}
+            {t("portfolio.borrow_apy--loan")}
           </p>
           <div>
             {toPercent(abToken.interestRate || '0')}
