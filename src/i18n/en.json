@@ -47,10 +47,11 @@
       "disable_content--1": "Connect your wallet to continue"
     },
     "portfolio": {
-      "investment_status": "Investment Status",
+      "investment_status": "Loan Status",
       "total_borrowed": "Total Borrowed",
       "estimated_repayments": "Estimated Repayments",
       "borrow_apy": "Borrow APY",
+      "borrow_apy--loan": "Loan Interest Rate",
       "accumulated_borrowed": "Accumulated Borrowed",
       "accumulated_repayment": "Accumulated Repayments",
       "accumulated_yield": "Accumulated Yield",
@@ -60,7 +61,7 @@
       "auction_balance": "Auction Balance Loans",
       "charter_returns": "Short-term loans with charter returns",
 
-      "portfolio_list": "Portfolio List",
+      "portfolio_list": "Loan List",
       "repaid": "To be repaid",
       "in_progress": "ABToken Liquidation in progress",
       "complete": "Repayment Complete",
@@ -68,7 +69,7 @@
       "borrowed": "Borrowed",
       "maturity_date": "Maturity Date",
 
-      "asset_detail": "Asset Details",
+      "asset_detail": "Loan Details",
       "loan_number--table": "Loan Number",
       "loan_status": "Loan Status",
       "borrower": "Borrower",
@@ -105,7 +106,7 @@
       "limit_used": "Borrow Limit Used",
       "limit_used--content": "% of Borrowed relative to Borrow Limit",
       "available_borrow_limit": "Available Borrow Limit",
-      "available_borrow_iimit--content": "Borrow Limit minus Borrowed"
+      "available_borrow_limit--content": "Borrow Limit minus Borrowed"
     }
   }
 }

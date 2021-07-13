@@ -66,7 +66,7 @@ const LinkageInstitution = () => {
           <div className="linkage__status__wrapper">
             <div className="linkage__status">
               <p className="spoqa__bold">{t("partners.available_borrow_limit")}</p>
-              <p>{t("partners.available_borrow_limit--content ")}</p>
+              <p>{t("partners.available_borrow_limit--content")}</p>
             </div>
             <p className="linkage__status__value">-</p>
           </div>

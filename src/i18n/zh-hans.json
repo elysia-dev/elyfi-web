@@ -47,10 +47,11 @@
       "disable_content--1": "请绑定您的钱包以访问该页面."
     },
     "portfolio": {
-      "investment_status": "Investment Status",
+      "investment_status": "贷款现状",
       "total_borrowed": "总贷款金额",
       "estimated_repayments": "应偿还金额",
-      "borrow_apy": "预期收益率",
+      "borrow_apy": "贷款APY",
+      "borrow_apy--loan": "贷款利率",
       "accumulated_borrowed": "累计贷款金额",
       "accumulated_repayment": "累计还款金额",
       "accumulated_yield": "累计收益",
@@ -60,7 +61,7 @@
       "auction_balance": "拍卖余额贷款",
       "charter_returns": "全税返还金短期贷款",
 
-      "portfolio_list": "资金池的投资组合列表",
+      "portfolio_list": "贷款列表",
       "repaid": "预期还款",
       "in_progress": "ABToken抵押房地产地址",
       "complete": "还款完成",
@@ -68,7 +69,7 @@
       "borrowed": "贷款金额",
       "maturity_date": "到期日期",
 
-      "asset_detail": "资产详情",
+      "asset_detail": "贷款详情",
       "loan_number--table": "贷款编号",
       "loan_status": "贷款现状",
       "borrower": "借款人",
@@ -105,7 +106,7 @@
       "limit_used": "借款限额利用率",
       "limit_used--content": "借款限额中的借款比例",
       "available_borrow_limit": "可用限额",
-      "available_borrow_iimit--content": "借款限额 – 借款金额"
+      "available_borrow_limit--content": "借款限额 – 借款金额"
     }
   }
 }

@@ -47,15 +47,16 @@
       "disable_content--1": "해당 페이지에 접근하기 위해 지갑을 연결해주세요."
     },
     "portfolio": {
-      "investment_status": "Investment Status",
+      "investment_status": "대출 현황",
       "total_borrowed": "총 대출금",
       "estimated_repayments": "상환 예정 금액",
-      "borrow_apy": "예상 수익률",
+      "borrow_apy": "대출 APY",
+      "borrow_apy--loan": "대출 APY",
       "accumulated_borrowed": "누적 대출금",
       "accumulated_repayment": "누적 상환 완료 금액",
       "accumulated_yield": "누적 수익",
 
-      "portfolio_asset": "Portfolio Asset Components",
+      "portfolio_asset": "포트폴리오 자산 성",
       "mortgage": "주택담보 대출",
       "auction_balance": "경매잔금 대출",
       "charter_returns": "전세반환금 단기 대출",
@@ -64,11 +65,11 @@
       "repaid": "상환 예정",
       "in_progress": "ABToken 청산 진행중",
       "complete": "상환 완료",
-      "loan_number": "Loan #{{nonce}}",
+      "loan_number": "대출 #{{nonce}}",
       "borrowed": "대출금",
       "maturity_date": "만기일",
 
-      "asset_detail": "자산 상세",
+      "asset_detail": "대출 상세",
       "loan_number--table": "대출 번호",
       "loan_status": "대출 상태",
       "borrower": "대출자",
@@ -105,7 +106,7 @@
       "limit_used": "차입 한도 사용률",
       "limit_used--content": "차입 한도에 대한 차입금 비율",
       "available_borrow_limit": "가용 한도",
-      "available_borrow_iimit--content": "차입 한도 – 차입금"
+      "available_borrow_limit--content": "차입 한도 – 차입금"
     }
   }
 }
