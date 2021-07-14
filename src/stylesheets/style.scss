@@ -64,12 +64,21 @@ span {
   min-height: calc(100vh - 100px);
   .navigation {
     background-color: #101010;
+    margin: 0 auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    transition: all 0.25s ease-in-out;
     &__alert {
       height: 40px;
       background-color: #ffffff;
       display: flex;
       justify-content: center;
       align-items: center;
+      transition: all 0.25s ease-in-out;
+      position: relative;
       > p {
         width: 1190px;
         margin: 0 auto;
@@ -510,12 +519,12 @@ span {
       background-position: 50%;
       background-repeat: no-repeat;
       width: 100%;
-      height: calc(100vh - 100px);
+      height: 100vh;
       .dashboard {
         &__content-container {
           text-align: center;
           margin: 0 auto;
-          height: calc(100% - 80px);
+          height: 100%;
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -1233,7 +1242,8 @@ span {
         height: 287px;
         border: 0;
         border-radius: 5px;
-        background-color: #e0e0e0;
+        background-color: #ffffff;
+        box-shadow: 0px 0px 6px #00000029;
         display: flex;
         justify-content: center;
         align-items: center;

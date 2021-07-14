@@ -21,7 +21,7 @@ const LinkageInstitution = () => {
           </div>
           <div className="linkage__collateral__providers">
             <p className="linkage__collateral__providers__title spoqa__bold">
-              주식회사 엘리파이대부
+              Elyloan Corp
             </p>
             <p className="linkage__collateral__providers__content spoqa">
               {t("partners.license_number")}: 115-88-01240

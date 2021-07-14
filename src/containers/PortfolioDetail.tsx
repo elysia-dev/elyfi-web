@@ -30,6 +30,17 @@ import CollateralLogo from 'src/assets/images/ELYFI.png';
 import { Title } from 'src/components/Texts';
 import PortfolioInfo from 'src/assets/images/portfolio_info.png';
 
+interface ipfsType {
+  image: string;
+  description: string;
+  document: string[];
+  address: {
+    addressLine: string;
+    city: string;
+    "state/province/region": string;
+    country: string;
+  }
+}
 
 const PortfolioDetail: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
@@ -40,6 +51,15 @@ const PortfolioDetail: FunctionComponent = () => {
   } = useQuery<GetAllAssetBonds>(
     GET_ALL_ASSET_BONDS,
   )
+  // fetch('https://slate.host/api/v2/get', {
+  //   method: 'GET',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     Authorization: 'Basic SLAb45f7723-dba0-400d-827f-53c2e27e8c58TE',
+  //   }
+  // })
+  // .then((response) => console.log("response:", response))
+  // .catch((error) => console.log("error:", error));
 
   const { t } = useTranslation();
   const { language } = useContext(LanguageContext);
@@ -113,7 +133,7 @@ const PortfolioDetail: FunctionComponent = () => {
                   </td>
                   <td>
                     <p>
-                      (주) 엘리시아 대부
+                      Elyloan Corp
                     </p>
                   </td>
                 </tr>
@@ -289,7 +309,7 @@ const PortfolioDetail: FunctionComponent = () => {
             <div className="portfolio__info__details__content">
               <b className="spoqa__bold">ABToken이란?</b>
               <p>
-                ABToken 은 담보법인인 (주)엘리파이대부와 부동산 소유주 간의 대출 계약에서 형성된 대출 채권을 기반으로 발행된 대체 불가능한 토큰(NFT) 입니다.<br/>
+                ABToken 은 담보법인인 Elyloan Corp와 부동산 소유주 간의 대출 계약에서 형성된 대출 채권을 기반으로 발행된 대체 불가능한 토큰(NFT) 입니다.<br/>
                 ABToken 소유자는 해당 채권과 1대 1로 교환할 수 있으며, 엘리파이에서 해당 토큰을 담보로 가상자산을 대출할 수 있습니다.
               </p>
               <div className="portfolio__info__details__image">
@@ -337,7 +357,7 @@ const PortfolioDetail: FunctionComponent = () => {
                   </td>
                   <td colSpan={2}>
                     <p>
-                      (주)엘리파이대부
+                      Elyloan Corp
                     </p>
                   </td>
                 </tr>

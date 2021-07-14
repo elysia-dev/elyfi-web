@@ -51,15 +51,16 @@ const DisableWalletPage = () => {
         <div style={{ margin: "30px auto 0px", display: "inline-block" }}>
           {CopiedWallet()}
         </div>
-      </div>
-      <footer className="footer footer--dashboard">
-        <div className="footer__container">
-          <img className="footer__white-logo" src={WhiteLogo} alt="Elysia" />
-          <div className="footer__wrapper">
-            <LanguageConverter />
+        <footer className="footer footer--dashboard">
+          <div className="footer__container">
+            <img className="footer__white-logo" src={WhiteLogo} alt="Elysia" />
+            <div className="footer__wrapper">
+              <LanguageConverter />
+            </div>
           </div>
-        </div>
-      </footer>
+        </footer>
+      </div>
+      
     </section>
   )
 }
