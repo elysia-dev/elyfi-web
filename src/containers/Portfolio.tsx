@@ -12,6 +12,7 @@ import ErrorPage from 'src/components/ErrorPage';
 import { useTranslation } from 'react-i18next';
 import calcPortfolioRatio from 'src/utiles/calcPortfolioRatio';
 import { useMemo } from 'react';
+import { Title } from 'src/components/Texts';
 
 const Portfolio = () => {
   const { reserves } = useContext(ReservesContext);
@@ -76,9 +77,6 @@ const Portfolio = () => {
           </div>
         </div>
         <div className="portfolio__asset-list__container">
-          <div className="portfolio__asset-list__title__wrapper">
-            <p className="portfolio__asset-list__title bold">{t("portfolio.portfolio_list")}</p>
-            <hr className="portfolio__asset-list__title__line" />
             {/* <div className="portfolio__asset-list__title__button">
               <p>Lending</p>
               To do // Repayment Complete
@@ -96,7 +94,7 @@ const Portfolio = () => {
                 <option value="mango">Mango</option>
               </select>
             </div> */}
-          </div>
+          <Title label={t("portfolio.portfolio_list")} />
           <div className="portfolio__asset-list__info__container">
             {data?.assetBondTokens.map((abToken, index) => {
               return (

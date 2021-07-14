@@ -1055,6 +1055,7 @@ span {
         > div {
           display: flex;
           align-items: center;
+          justify-content: center;
           flex: 1;
         }
         > table {
@@ -1093,7 +1094,8 @@ span {
         }
       }
       &__table {
-        width: 100%;
+        // width: 100%;
+        flex: 1;
         border-radius: 6px;
         border-spacing: 0px;
         border-collapse: separate;
@@ -1135,8 +1137,10 @@ span {
           width: 240px;
           border-left: 0px !important;
           box-sizing: border-box;
+          position: relative;
           > p {
             color: #646464;
+            display: inline-block;
           }
           &--last {
             background-color: #F5F5F5;
@@ -1174,15 +1178,47 @@ span {
           }
         }
       }
-
-
+      &__popup {
+        width: 12px;
+        height: 12px;
+        border: 1px solid #888888;
+        border-radius: 12px !important;
+        font-size: 12px !important;
+        text-align: center;
+        line-height: 12px;
+        display: inline-block;
+        margin: 0;
+        position: relative;
+        bottom: 2px;
+        color: #888888;
+        left: 3px;
+        cursor: pointer;
+        &__showing {
+          position: absolute;
+          background-color: #ffffff;
+          box-shadow: 0px 0px 6px #00000029;
+          width: 550px;
+          padding: 15px 25px;
+          top: 35px;
+          left: 40px;
+          z-index: 99;
+        }
+      }
+      &__abtoken-info {
+        display: flex;
+        box-sizing: border-box;
+        box-shadow: 0px 0px 6px #00000029;
+        border-radius: 5px;
+        padding: 25px 31px;
+        margin: 20px 0 105px;
+      }
       &__google-map {
         &__wrapper {
-          width: 1190px;
-          height: 541px;
+          width: 290px;
+          height: 440px;
           border: 1px solid #c0c0c0;
           border-radius: 5px;
-          margin: 0 auto 105px;
+          margin: 0 25px 0 0px;
         }
       }
     }
