@@ -26,12 +26,14 @@ import { Title } from 'src/components/Texts';
 import calcExpectedIncentive from 'src/utiles/calcExpectedIncentive';
 import moment from 'moment';
 import ELFIIcon from 'src/assets/images/ELFI.png';
+import PriceContext from 'src/contexts/PriceContext';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
   const location = useLocation();
   const history = useHistory();
   const { reserves, refetch: refetchReserve } = useContext(ReservesContext);
+  const { elfiPrice } = useContext(PriceContext);
   const reserveId = new URLSearchParams(location.search).get("reserveId")
   const [reserve, setReserve] = useState<GetAllReserves_reserves | undefined>(
     reserves.find((reserve) => reserveId === reserve.id)
@@ -142,8 +144,9 @@ const Dashboard: React.FunctionComponent = () => {
           balances.incentive.add(
             balances.lTokens?.reduce((res, balance, index) => res.add(
               calcExpectedIncentive(
+                elfiPrice,
                 balance,
-                calcMiningAPR(BigNumber.from(reserves[index].totalDeposit)),
+                calcMiningAPR(elfiPrice, BigNumber.from(reserves[index].totalDeposit)),
                 balances.updatedAt
               )
             ), constants.Zero)
@@ -255,7 +258,7 @@ const Dashboard: React.FunctionComponent = () => {
                               </p>
                               <div className="tokens__table__apr">
                                 <img src={ELFIIcon} style={{ width: 14, height: 14 }} />
-                                <p className="spoqa__bold">{toPercent(calcMiningAPR(BigNumber.from(reserves[index].totalDeposit)))}</p>
+                                <p className="spoqa__bold">{toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserves[index].totalDeposit)))}</p>
                               </div>
                             </>
                         }

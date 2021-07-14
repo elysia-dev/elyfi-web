@@ -12,6 +12,7 @@ import {
 } from "@apollo/client";
 import ReservesProvider from './providers/ReservesProvider';
 import envs from 'src/core/envs';
+import PriceProvider from './providers/PriceProvider';
 
 const client = new ApolloClient({
   uri: envs.subgraphURI,
@@ -21,13 +22,15 @@ const client = new ApolloClient({
 const App: React.FC = () => {
   return (
     <ApolloProvider client={client} >
-      <LanguageProvider>
-        <Web3ReactProvider getLibrary={getLibrary}>
-          <ReservesProvider>
-            <AppNavigator />
-          </ReservesProvider>
-        </Web3ReactProvider>
-      </LanguageProvider>
+      <PriceProvider>
+        <LanguageProvider>
+          <Web3ReactProvider getLibrary={getLibrary}>
+            <ReservesProvider>
+              <AppNavigator />
+            </ReservesProvider>
+          </Web3ReactProvider>
+        </LanguageProvider>
+      </PriceProvider>
     </ApolloProvider>
   );
 }
