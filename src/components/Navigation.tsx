@@ -32,13 +32,8 @@ const Navigation: FunctionComponent = () => {
       }
       setScrollTop(currentPosition <= 0 ? 0 : currentPosition);
     }
-
-
-    console.log(scrollTop)
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
-
-    
   }, [scrollTop]);
   
   return (
