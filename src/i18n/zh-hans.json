@@ -89,7 +89,27 @@
       "collateral_type": "担保类型",
       "collateral_address": "担保房地产地址",
       "collateral_nft": "担保 NFT",
-      "contract_image": "合同复印件"
+      "contract_image": "合同复印件",
+      "borrower_info": "借款人信息",
+      "borrower--loan": "借款人",
+      "wallet_address": "钱包地址",
+      "receiving_address": "贷款收款钱包地址",
+      "nft_details": "NFT抵押品",
+      "abtoken_title": "ABToken是什么？",
+      "abtoken_content": "ABToken 是基于Elyloan公司与房地产所有者之间的房地产抵押贷款协议发行的NFT（非同质化代币）。\nABToken 是以房地产抵押贷款协议的证明，使用者可以在ELYFI中使用该Token作为抵押品借入加密资产。",
+      "abtoken_details": "ABToken详细信息",
+      "infomation_popup": [
+        "该编号是在ELFYI的资金池中贷款时生成的号码。",
+        "应还贷款",
+        "借入后应归还的贷款",
+        "清算中",
+        "在到期日后的宽限期（10 天）内尚未偿还的贷款",
+        "还款完成",
+        "已还款且终止贷款关系的贷款",
+        "为了从资金池中获得贷款，将NFT（非同质化代币）作为抵押品。",
+        "它是指担保抵押公司与房地产所有者之间的抵押贷款合同相关的投资产品（房地产抵押贷款等）。",
+        "它是指担保抵押公司与房地产所有者之间的抵押贷款合同中的抵押物类型（住宅、公寓等）。"
+      ]
     },
     "partners": {
       "collateral_provider": "担保公司",
