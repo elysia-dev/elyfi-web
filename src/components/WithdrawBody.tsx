@@ -39,6 +39,7 @@ const WithdrawBody: React.FunctionComponent<{
             style={{ fontSize: amount.value.length < 8 ? 60 : amount.value.length > 12 ? 35 : 45 }}
             onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => { ["-", "+", "e"].includes(e.key) && e.preventDefault() }}
             onChange={({ target }) => {
+              target.value = target.value.replace(/(\.\d{18})\d+/g, '$1');
               setAmount({
                 value: target.value,
                 max: false,
