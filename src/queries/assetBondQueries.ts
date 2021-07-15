@@ -18,7 +18,7 @@ export const GET_ALL_ASSET_BONDS = gql`
 	    debtCeiling,
 	    couponRate,
 	    interestRate,
-	    overdueInterestRate,
+	    delinquencyRate,
 	    loanStartTimestamp,
 	    collateralizeTimestamp,
 	    maturityTimestamp,

@@ -11,7 +11,7 @@
     "aws-build": "aws cloudfront create-invalidation --distribution-id EH1U6Z7PEQO75 --paths \"/*\" --profile=hyuno",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
-    "download-schema": "apollo service:download --endpoint=https://api.thegraph.com/subgraphs/name/modonguk/elyfi graphql-schema.json",
+    "download-schema": "apollo service:download --endpoint=https://api.studio.thegraph.com/query/862/elyfi/v0.0.2 graphql-schema.json",
     "codegen": "npm run download-schema && apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql"
   },
   "eslintConfig": {

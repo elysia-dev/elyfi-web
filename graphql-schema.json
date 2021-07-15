@@ -128,7 +128,7 @@
             "deprecationReason": null
           },
           {
-            "name": "overdueInterestRate",
+            "name": "delinquencyRate",
             "description": null,
             "args": [],
             "type": {
@@ -1449,7 +1449,7 @@
             "deprecationReason": null
           },
           {
-            "name": "overdueInterestRate",
+            "name": "delinquencyRate",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -1461,7 +1461,7 @@
             "deprecationReason": null
           },
           {
-            "name": "overdueInterestRate_not",
+            "name": "delinquencyRate_not",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -1473,7 +1473,7 @@
             "deprecationReason": null
           },
           {
-            "name": "overdueInterestRate_gt",
+            "name": "delinquencyRate_gt",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -1485,7 +1485,7 @@
             "deprecationReason": null
           },
           {
-            "name": "overdueInterestRate_lt",
+            "name": "delinquencyRate_lt",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -1497,7 +1497,7 @@
             "deprecationReason": null
           },
           {
-            "name": "overdueInterestRate_gte",
+            "name": "delinquencyRate_gte",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -1509,7 +1509,7 @@
             "deprecationReason": null
           },
           {
-            "name": "overdueInterestRate_lte",
+            "name": "delinquencyRate_lte",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -1521,7 +1521,7 @@
             "deprecationReason": null
           },
           {
-            "name": "overdueInterestRate_in",
+            "name": "delinquencyRate_in",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -1541,7 +1541,7 @@
             "deprecationReason": null
           },
           {
-            "name": "overdueInterestRate_not_in",
+            "name": "delinquencyRate_not_in",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -2445,7 +2445,7 @@
             "deprecationReason": null
           },
           {
-            "name": "overdueInterestRate",
+            "name": "delinquencyRate",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
