@@ -31,7 +31,8 @@ const LinkageInstitution = () => {
             </p>
           </div>
         </div>
-        <div className="linkage__status__title">
+        <div style={{ height: "30vh" }} />
+        {/* <div className="linkage__status__title">
           <Title label={t("partners.borrow_status")} />
         </div>
         <div className="linkage__status__container">
@@ -70,7 +71,7 @@ const LinkageInstitution = () => {
             </div>
             <p className="linkage__status__value">-</p>
           </div>
-        </div>
+        </div> */}
         {/* <div className="linkage__service__container">
           <div className="linkage__title-line">
             <p className="bold">Legal Service Provider</p>

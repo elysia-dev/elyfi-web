@@ -45,9 +45,6 @@ const DisableWalletPage = () => {
         <p className="dashboard__content">
           {t("dashboard.disable_content--1")}
         </p>
-        <p className="dashboard__content">
-          {`${envs.requiredNetwork} network is required`}
-        </p>
         <div style={{ margin: "30px auto 0px", display: "inline-block" }}>
           {CopiedWallet()}
         </div>

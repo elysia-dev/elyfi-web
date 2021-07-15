@@ -16,8 +16,6 @@ import { useWeb3React } from '@web3-react/core';
 import DisableWalletPage from './components/DisableWalletPage';
 import LinkageInstitution from 'src/containers/LinkageInstitution';
 import ScrollToTop from './hooks/ScrollToTop';
-import Bounty from 'src/containers/Bounty';
-import InvestmentGuide from 'src/containers/InvestmentGuide';
 import envs from 'src/core/envs';
 
 const AppNavigator: React.FC = () => {
@@ -33,9 +31,7 @@ const AppNavigator: React.FC = () => {
         <ScrollToTop />
         <Navigation />
         <Switch>
-          <Route exact path="/linkage_institution" component={LinkageInstitution} />1
-          <Route exact path="/bounty" component={Bounty} />
-          <Route exact path="/guide" component={InvestmentGuide} />
+          <Route exact path="/linkage_institution" component={LinkageInstitution} />
           <Route exact path="/portfolio" component={Portfolio} />
           <Route exact path="/portfolio/:id" component={PortfolioDetail} />
           <Route

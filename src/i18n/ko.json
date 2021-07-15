@@ -51,7 +51,7 @@
       "total_borrowed": "총 대출금",
       "estimated_repayments": "상환 예정 금액",
       "borrow_apy": "대출 APY",
-      "borrow_apy--loan": "대출 APY",
+      "borrow_apy--loan": "대출 이자율",
       "accumulated_borrowed": "누적 대출금",
       "accumulated_repayment": "누적 상환 완료 금액",
       "accumulated_yield": "누적 수익",
@@ -61,7 +61,7 @@
       "auction_balance": "경매잔금 대출",
       "charter_returns": "전세반환금 단기 대출",
 
-      "portfolio_list": "포트폴리오 구성 자산 리스트",
+      "portfolio_list": "대출 리스트",
       "repaid": "상환 예정",
       "in_progress": "ABToken 청산 진행중",
       "complete": "상환 완료",

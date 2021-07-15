@@ -6,9 +6,9 @@ import InstallMetamask from './InstallMetamask';
 import Wallet from './Wallet';
 import { useEagerConnect } from 'src/hooks/connectHoots';
 import { useTranslation } from 'react-i18next';
-import { useWeb3React } from '@web3-react/core';
-import { faucetTestERC20 } from 'src/utiles/contractHelpers';
-import envs from 'src/core/envs';
+// import { useWeb3React } from '@web3-react/core';
+// import { faucetTestERC20 } from 'src/utiles/contractHelpers';
+// import envs from 'src/core/envs';
 
 // TODO
 // Use NavLink for ActiveClass
@@ -17,7 +17,7 @@ const Navigation: FunctionComponent = () => {
   const [hover, setHover] = useState(0);
   const location = useLocation();
   const { t, i18n } = useTranslation();
-  const { library, account, chainId } = useWeb3React();
+  // const { library, account, chainId } = useWeb3React();
 
   const [scrolling, setScrolling] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
@@ -38,7 +38,7 @@ const Navigation: FunctionComponent = () => {
   
   return (
     <nav className="navigation" style={{ opacity: scrollTop > 125 ? 0.7 : 1 }}>
-      <div className="navigation__alert" style={{ height: scrollTop > 125 ? 0 : 40, top: scrollTop > 125 ? -40 : 0 }}>
+      {/* <div className="navigation__alert" style={{ height: scrollTop > 125 ? 0 : 40, top: scrollTop > 125 ? -40 : 0 }}>
         <div className="navigation__alert__container" style={{ height: scrollTop > 125 ? 0 : 40 }}>
           <p className="spoqa">
             This website is for <span className="spoqa__bold" style={{ color: "#00A7FF" }}>ELYFI beta version only. </span>
@@ -70,7 +70,7 @@ const Navigation: FunctionComponent = () => {
             </Link>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="navigation__container">
         <Link to="/">
           <div className="logo-wrapper" style={{ cursor: "pointer" }}>
