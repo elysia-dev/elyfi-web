@@ -125,7 +125,7 @@ const Dashboard: React.FunctionComponent = () => {
         })),
         updatedAt: moment().unix()
       })
-    } catch {
+    } catch (e) {
       setBalances({
         ...balances,
         loading: false,
