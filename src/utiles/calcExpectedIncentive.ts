@@ -1,14 +1,14 @@
 import { BigNumber, constants, utils } from "ethers";
 import { RAY } from './math'
 import moment from 'moment';
-import { ELFI_PRICE } from "./calcMiningAPR";
 
 const calcExpectedIncentive = (
+	elfiPrice: number,
 	totalDeposit: BigNumber,
 	miningAPR: BigNumber,
 	lastUpdateTimestamp: number,
 ): BigNumber => {
-	if (totalDeposit.isZero()) {
+	if (totalDeposit.isZero() || !elfiPrice) {
 		return constants.Zero;
 	}
 
@@ -17,7 +17,7 @@ const calcExpectedIncentive = (
 		.div(3600 * 24 * 356)
 		.div(RAY)
 		.mul(utils.parseEther('1'))
-		.div(utils.parseEther(ELFI_PRICE.toString()))
+		.div(utils.parseEther(elfiPrice.toString()))
 }
 
 export default calcExpectedIncentive;

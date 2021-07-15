@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants, providers, utils } from 'ethers';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useMemo } from 'react';
 import { FunctionComponent, useState } from 'react'
 import { useTranslation } from 'react-i18next';
@@ -15,6 +15,7 @@ import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
 import { useCallback } from 'react';
 import calcCurrentIndex from 'src/utiles/calcCurrentIndex';
+import PriceContext from 'src/contexts/PriceContext';
 
 const DepositOrWithdrawModal: FunctionComponent<{
   tokenName: string,
@@ -28,6 +29,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   afterTx: () => Promise<void>,
 }> = ({ tokenName, visible, tokenImage, balance, depositBalance, reserve, userData, onClose, afterTx }) => {
   const { account, library } = useWeb3React()
+  const { elfiPrice } = useContext(PriceContext);
   const [selected, select] = useState<boolean>(true)
   const [allowance, setAllowance] = useState<{ value: BigNumber, loaded: boolean }>({ value: constants.Zero, loaded: false });
   const [liquidity, setLiquidity] = useState<{ value: BigNumber, loaded: boolean }>({ value: constants.Zero, loaded: false });
@@ -153,7 +155,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
               </div>
             </div>
           )}
-          
+
         </div>
         <div className='modal__converter'>
           <div
@@ -177,7 +179,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
               <DepositBody
                 tokenName={tokenName}
                 depositAPY={toPercent(reserve.depositAPY || '0')}
-                miningAPR={toPercent(calcMiningAPR(BigNumber.from(reserve.totalDeposit)))}
+                miningAPR={toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserve.totalDeposit)))}
                 balance={balance}
                 isApproved={!allowance.loaded || allowance.value.gt(balance)}
                 increaseAllownace={requestAllowance}
