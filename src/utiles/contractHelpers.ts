@@ -99,7 +99,7 @@ export const getUserIncentiveReward = async (account: string, library: providers
 
   if (!contract) return constants.Zero;
 
-  return await contract.getUserIncentiveReward(account) as BigNumber;
+  return await contract.getUserIncentive(account) as BigNumber;
 }
 
 export const getErc20Balance = async (address: string, account: string, library: providers.Web3Provider): Promise<BigNumber> => {
@@ -117,7 +117,7 @@ export const claimIncentive = async (account: string, library: providers.Web3Pro
   if (!contract || !request) return;
 
   try {
-    const populatedTransaction = await contract?.populateTransaction.claimIncentive(account);
+    const populatedTransaction = await contract?.populateTransaction.claimIncentive();
 
     const txHash = await request({
       method: 'eth_sendTransaction',
