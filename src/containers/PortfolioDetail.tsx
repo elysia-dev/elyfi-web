@@ -28,7 +28,10 @@ import LanguageContext from 'src/contexts/LanguageContext';
 import LanguageType from 'src/enums/LanguageType';
 import CollateralLogo from 'src/assets/images/ELYFI.png';
 import { Title } from 'src/components/Texts';
-import PortfolioInfo from 'src/assets/images/portfolio_info.png';
+
+import PortfolioInfoKor from 'src/assets/images/portfolio_info--kor.png';
+import PortfolioInfoEng from 'src/assets/images/portfolio_info--eng.png';
+import PortfolioInfoCha from 'src/assets/images/portfolio_info--cha.png';
 
 
 const PortfolioDetail: FunctionComponent = () => {
@@ -41,7 +44,7 @@ const PortfolioDetail: FunctionComponent = () => {
     GET_ALL_ASSET_BONDS,
   )
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { language } = useContext(LanguageContext);
   const abToken = data?.assetBondTokens.find((ab) => ab.id === id);
   const parsedTokenId = useMemo(() => { return parseTokenId(abToken?.id) }, [abToken]);
@@ -101,14 +104,14 @@ const PortfolioDetail: FunctionComponent = () => {
                 <tr>
                   <td colSpan={2}>
                     <p className="bold">
-                      차입자 정보
+                      {t("portfolio.borrower_info")}
                     </p>
                   </td>
                 </tr>
                 <tr>
                   <td>
                     <p>
-                      차입자
+                     {t("portfolio.borrower--loan")}
                     </p>
                   </td>
                   <td>
@@ -120,7 +123,7 @@ const PortfolioDetail: FunctionComponent = () => {
                 <tr>
                   <td>
                     <p>
-                      사업자 등록번호
+                      {t("portfolio.license_number")}
                     </p>
                   </td>
                   <td>
@@ -132,7 +135,7 @@ const PortfolioDetail: FunctionComponent = () => {
                 <tr>
                   <td>
                     <p>
-                      지갑주소
+                      {t("portfolio.wallet_address")}
                     </p>
                   </td>
                   <td>
@@ -156,7 +159,7 @@ const PortfolioDetail: FunctionComponent = () => {
                   <p className="portfolio__info__popup__showing"
                     style={{ display: mouseHover === 1 ? "block" : 'none'}}
                   >
-                    엘리파이 머니풀에서 대출 발생 시 표기되는 번호를 의미합니다.
+                    {t("portfolio.infomation_popup.0")}
                   </p>
                 </td>
                 <td colSpan={2}>
@@ -177,14 +180,14 @@ const PortfolioDetail: FunctionComponent = () => {
                   <p className="portfolio__info__popup__showing"
                     style={{ display: mouseHover === 2 ? "block" : 'none'}}
                   >
-                    <p className="bold">To be repaid</p>
-                    <p>- 상환 예정인 대출</p>
+                    <p className="bold">{t("portfolio.infomation_popup.1")}</p>
+                    <p>- {t("portfolio.infomation_popup.2")}</p>
                     <br />
-                    <p className="bold">Liquidation in progress</p>
-                    <p>- 만기일 이후 유예기간(10일)까지 상환하지 못한 대출</p>
+                    <p className="bold">{t("portfolio.infomation_popup.3")}</p>
+                    <p>- {t("portfolio.infomation_popup.4")}</p>
                     <br />
-                    <p className="bold">Repayment Completed</p>
-                    <p>- 상환 완료되어 대출 관계가 종료된 대출</p>
+                    <p className="bold">{t("portfolio.infomation_popup.5")}</p>
+                    <p>- {t("portfolio.infomation_popup.6")}</p>
                   </p>
                 </td>
                 <td colSpan={2}>
@@ -198,7 +201,7 @@ const PortfolioDetail: FunctionComponent = () => {
               <tr>
                 <td className="portfolio__info__table__title">
                   <p>
-                    대출금 수취 계좌
+                    {t("portfolio.receiving_address")}
                   </p>
                 </td>
                 <td colSpan={2}>
@@ -269,7 +272,7 @@ const PortfolioDetail: FunctionComponent = () => {
                       top: 60
                     }}
                   >
-                    엘리파이 머니풀에서 대출 받기 위해 담보 맡긴 대체 불가능한 토큰(NFT)을 의미합니다.
+                    {t("portfolio.infomation_popup.7")}
                   </p>
                 </td>
                 <td colSpan={2} style={{ height: 80 }}>
@@ -285,21 +288,28 @@ const PortfolioDetail: FunctionComponent = () => {
           </div>
         }
           <div className="portfolio__info__details">
-            <Title label={"담보 NFT 정보"} />
+            <Title label={t("portfolio.nft_details")} />
             <div className="portfolio__info__details__content">
-              <b className="spoqa__bold">ABToken이란?</b>
+              <b className="spoqa__bold">{t("portfolio.abtoken_title")}</b>
               <p>
-                ABToken 은 담보법인인 Elyloan Corp와 부동산 소유주 간의 대출 계약에서 형성된 대출 채권을 기반으로 발행된 대체 불가능한 토큰(NFT) 입니다.<br/>
-                ABToken 소유자는 해당 채권과 1대 1로 교환할 수 있으며, 엘리파이에서 해당 토큰을 담보로 가상자산을 대출할 수 있습니다.
+              {t("portfolio.abtoken_content")}
               </p>
               <div className="portfolio__info__details__image">
-                <img src={PortfolioInfo} />
+                {
+                  i18n.language === LanguageType.KO ?
+                    <img src={PortfolioInfoKor} /> 
+                    :
+                    i18n.language === LanguageType.ZHHANS ?
+                      <img src={PortfolioInfoCha} /> 
+                      :
+                      <img src={PortfolioInfoEng} /> 
+                }
               </div>
             </div>
           </div>
           <div>
             <b className="spoqa__bold">
-              ABToken 상세정보
+              {t("portfolio.abtoken_details")}
             </b>
             <div className="portfolio__info__abtoken-info">
               <div className="portfolio__info__google-map__wrapper">
@@ -353,7 +363,7 @@ const PortfolioDetail: FunctionComponent = () => {
                     <p className="portfolio__info__popup__showing"
                       style={{ display: mouseHover === 4 ? "block" : 'none'}}
                     >
-                      담보법인과 부동산 소유주간의 계약에서의 대출 상품(주택담보대출 등)을 의미합니다.
+                      {t("portfolio.infomation_popup.8")}
                     </p>
                   </td>
                   <td colSpan={2}>
@@ -447,7 +457,7 @@ const PortfolioDetail: FunctionComponent = () => {
                     <p className="portfolio__info__popup__showing"
                       style={{ display: mouseHover === 5 ? "block" : 'none'}}
                     >
-                      담보법인과 부동산 소유주간의 대출 계약에서의 담보물(아파트 등)의 종류를 의미합니다.
+                      {t("portfolio.infomation_popup.9")}
                     </p>
                   </td>
                   <td colSpan={2}>

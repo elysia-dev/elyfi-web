@@ -72,7 +72,7 @@
       "asset_detail": "Loan Details",
       "loan_number--table": "Loan Number",
       "loan_status": "Loan Status",
-      "borrower": "Borrower",
+      "borrower": "Lenders",
       "service_provider_info": "Collateral Service Provider Info",
       "loan_receiver": "Loan Receiver",
       "loan_date": "Loan Date",
@@ -89,7 +89,27 @@
       "collateral_type": "Collateral Type",
       "collateral_address": "Collateral Address",
       "collateral_nft": "Collateral NFT",
-      "contract_image": "Contract Image"
+      "contract_image": "Contract Image",
+      "borrower_info": "Borrower info",
+      "borrower--loan": "Borrower",
+      "wallet_address": "Wallet Address",
+      "receiving_address": "Loan receiving wallet address",
+      "nft_details": "Collatrealized NFT Details",
+      "abtoken_title": "What is ABToken?",
+      "abtoken_content": "ABToken is a non-fungible token(NFT) minted based on a loan bond formed in a loan agreement beteween Elyloan corp, a lending company, and the property owner.\nABToken proves the ownership of the underlying loan bond, and the owner with the token can borrow crypto assets using it as collateral in ELYFI.",
+      "abtoken_details": "ABToken Details",
+      "infomation_popup": [
+        "Meaning a code when a loan occurs in ELYFI Money Pool.",
+        "To be repayed",
+        "A loan to be repayed",
+        "Liquidation in progress",
+        "A loan not repayed until the last date of the grace period, 10 days after a maturity date",
+        "Repayment completed",
+        "A loan that has been repaid and ended its loan relationship",
+        "Meaning a non-fungible token(NFT) used as a collateral to get loans from ELYFI",
+        "Meaning a loan instrument (such as mortgage) in a contract between a lending company and a property owner.",
+        "Meaning a collateral (such as apartments) in a contract between a lending company and a property owner."
+      ]
     },
     "partners": {
       "collateral_provider": "Collateral Service Providers",
