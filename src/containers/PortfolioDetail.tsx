@@ -30,17 +30,6 @@ import CollateralLogo from 'src/assets/images/ELYFI.png';
 import { Title } from 'src/components/Texts';
 import PortfolioInfo from 'src/assets/images/portfolio_info.png';
 
-interface ipfsType {
-  image: string;
-  description: string;
-  document: string[];
-  address: {
-    addressLine: string;
-    city: string;
-    "state/province/region": string;
-    country: string;
-  }
-}
 
 const PortfolioDetail: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
@@ -51,15 +40,6 @@ const PortfolioDetail: FunctionComponent = () => {
   } = useQuery<GetAllAssetBonds>(
     GET_ALL_ASSET_BONDS,
   )
-  // fetch('https://slate.host/api/v2/get', {
-  //   method: 'GET',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     Authorization: 'Basic SLAb45f7723-dba0-400d-827f-53c2e27e8c58TE',
-  //   }
-  // })
-  // .then((response) => console.log("response:", response))
-  // .catch((error) => console.log("error:", error));
 
   const { t } = useTranslation();
   const { language } = useContext(LanguageContext);
@@ -344,7 +324,7 @@ const PortfolioDetail: FunctionComponent = () => {
                     </p>
                   </td>
                   <td colSpan={2}>
-                    <p title={abToken?.id} style={{ color: "#00A7FF", cursor: "pointer" }} onClick={() => AddressCopy(abToken?.id)}>
+                    <p title={abToken?.id} style={{ color: "#00A7FF", cursor: "pointer" }} onClick={() => AddressCopy(abToken?.id)} className="spoqa__bold">
                       {abToken?.id.slice(0, 12)} ... {abToken?.id.slice(-12)}
                     </p>
                   </td>
@@ -356,7 +336,7 @@ const PortfolioDetail: FunctionComponent = () => {
                     </p>
                   </td>
                   <td colSpan={2}>
-                    <p>
+                    <p className="spoqa__bold">
                       Elyloan Corp
                     </p>
                   </td>
@@ -377,7 +357,7 @@ const PortfolioDetail: FunctionComponent = () => {
                     </p>
                   </td>
                   <td colSpan={2}>
-                    <p>
+                    <p className="spoqa__bold">
                       {
                         t(`words.${LoanProduct[parsedTokenId.productNumber as LoanProduct]}`)
                       }
@@ -391,7 +371,7 @@ const PortfolioDetail: FunctionComponent = () => {
                     </p>
                   </td>
                   <td colSpan={2}>
-                    <p>
+                    <p className="spoqa__bold">
                       {daiToUsd(abToken?.principal || '0')}
                     </p>
                   </td>
@@ -399,12 +379,24 @@ const PortfolioDetail: FunctionComponent = () => {
                 <tr>
                   <td className="portfolio__info__table__title">
                     <p>
-                      {`${t("portfolio.loan_interest_rate")} | ${t('portfolio.overdue_interest_rate')}`}
+                      {t("portfolio.loan_interest_rate")}
                     </p>
                   </td>
                   <td colSpan={2}>
+                    <p className="spoqa__bold">
+                      {toPercent(abToken?.interestRate || '0')}
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="portfolio__info__table__title">
                     <p>
-                      {`${toPercent(abToken?.interestRate || '0')} | ${toPercent(abToken?.overdueInterestRate || '0')}`}
+                      {t('portfolio.overdue_interest_rate')}
+                    </p>
+                  </td>
+                  <td colSpan={2}>
+                    <p className="spoqa__bold">
+                      {toPercent(abToken?.overdueInterestRate || '0')}
                     </p>
                   </td>
                 </tr>
@@ -415,7 +407,7 @@ const PortfolioDetail: FunctionComponent = () => {
                     </p>
                   </td>
                   <td colSpan={2}>
-                    <p>
+                    <p className="spoqa__bold">
                       {abToken?.loanStartTimestamp ? moment(abToken.loanStartTimestamp * 1000).format('YYYY.MM.DD') : '-'}
                     </p>
                   </td>
@@ -427,7 +419,7 @@ const PortfolioDetail: FunctionComponent = () => {
                     </p>
                   </td>
                   <td colSpan={2}>
-                    <p>
+                    <p className="spoqa__bold">
                       {abToken?.maturityTimestamp ? moment(abToken?.maturityTimestamp * 1000).format('YYYY.MM.DD') : '-'} </p>
                   </td>
                 </tr>
@@ -438,7 +430,7 @@ const PortfolioDetail: FunctionComponent = () => {
                     </p>
                   </td>
                   <td colSpan={2}>
-                    <p>
+                    <p className="spoqa__bold">
                       {daiToUsd(abToken?.debtCeiling || '0')}
                     </p>
                   </td>
@@ -459,7 +451,7 @@ const PortfolioDetail: FunctionComponent = () => {
                     </p>
                   </td>
                   <td colSpan={2}>
-                    <p>
+                    <p className="spoqa__bold">
                       {
                         t(`words.${CollateralCategory[parsedTokenId.collateralCategory as CollateralCategory]}`)
                       }
@@ -473,7 +465,7 @@ const PortfolioDetail: FunctionComponent = () => {
                     </p>
                   </td>
                   <td colSpan={2}>
-                    <p>
+                    <p className="spoqa__bold">
                       {address}
                     </p>
                   </td>
@@ -485,7 +477,7 @@ const PortfolioDetail: FunctionComponent = () => {
                     </p>
                   </td>
                   <td colSpan={2}>
-                    <p>
+                    <p className="spoqa__bold">
                       {abToken?.ipfsHash}
                     </p>
                   </td>
