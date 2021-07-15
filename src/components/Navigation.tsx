@@ -75,7 +75,6 @@ const Navigation: FunctionComponent = () => {
         <Link to="/">
           <div className="logo-wrapper" style={{ cursor: "pointer" }}>
             <img src={ElysiaLogo} className="elysia-logo" alt="Elysia_Logo" />
-            <img src={ElysiaLogoBeta} className="elysia-logo-beta" alt="beta" />
           </div>
         </Link>
         <div className="navigation__link-wrapper">
