@@ -72,7 +72,7 @@ const Navigation: FunctionComponent = () => {
         </div>
       </div> */}
       <div className="navigation__container">
-        <a href="https://defi.elysia.land/" target='none'>
+        <a href="https://defi.elysia.land/" rel="noopener noreferrer">
           <div className="logo-wrapper" style={{ cursor: "pointer" }}>
             <img src={ElysiaLogo} className="elysia-logo" alt="Elysia_Logo" />
           </div>
