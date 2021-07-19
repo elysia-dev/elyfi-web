@@ -35,7 +35,7 @@ const Navigation: FunctionComponent = () => {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, [scrollTop]);
-  
+
   return (
     <nav className="navigation" style={{ opacity: scrollTop > 125 ? 0.7 : 1 }}>
       {/* <div className="navigation__alert" style={{ height: scrollTop > 125 ? 0 : 40, top: scrollTop > 125 ? -40 : 0 }}>
@@ -72,11 +72,11 @@ const Navigation: FunctionComponent = () => {
         </div>
       </div> */}
       <div className="navigation__container">
-        <Link to="/">
+        <a href="https://defi.elysia.land/" target='none'>
           <div className="logo-wrapper" style={{ cursor: "pointer" }}>
             <img src={ElysiaLogo} className="elysia-logo" alt="Elysia_Logo" />
           </div>
-        </Link>
+        </a>
         <div className="navigation__link-wrapper">
           {
             [
