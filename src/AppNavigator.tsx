@@ -12,6 +12,7 @@ import PortfolioDetail from './containers/PortfolioDetail';
 import Footer from './components/Footer';
 import Navigation from './components/Navigation';
 import Dashboard from './containers/Dashboard';
+import Staking from './containers/Staking';
 import { useWeb3React } from '@web3-react/core';
 import DisableWalletPage from './components/DisableWalletPage';
 import LinkageInstitution from 'src/containers/LinkageInstitution';
@@ -31,6 +32,7 @@ const AppNavigator: React.FC = () => {
         <ScrollToTop />
         <Navigation />
         <Switch>
+          <Route exact path="/staking" component={Staking} />
           <Route exact path="/linkage_institution" component={LinkageInstitution} />
           <Route exact path="/portfolio" component={Portfolio} />
           <Route exact path="/portfolio/:id" component={PortfolioDetail} />
