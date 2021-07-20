@@ -140,7 +140,7 @@ const PortfolioDetail: FunctionComponent = () => {
                     </td>
                     <td>
                       <p>
-                        0x21..4K9
+                        0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7
                       </p>
                     </td>
                   </tr>

@@ -120,14 +120,14 @@ span {
       // padding: 0 50px;
       cursor: pointer !important;
       position: relative;
-      ::after {
+      &::after {
         content: "";
         position: absolute;
         top: 100%;
         left: -45px;
         right: -45px;
         margin-top: -1px;
-        height: 80px;
+        height: 30px;
       }
       &__wrapper {
         margin: 0 50px;
@@ -258,15 +258,15 @@ span {
         background-color: #101010;
         border-top: 1px solid #b7b7b7;
         position: relative;
-        ::after {
-          content: "";
-          position: absolute;
-          top: 100%;
-          left: 0;
-          width: 100%;
-          margin-top: -1px;
-          height: 40px;
-        }
+        // ::after {
+        //   content: "";
+        //   position: absolute;
+        //   top: 100%;
+        //   left: 0;
+        //   width: 100%;
+        //   margin-top: -1px;
+        //   height: 40px;
+        // }
       }
       &__wrapper {
         max-width: 1190px;
@@ -279,7 +279,26 @@ span {
       }
       &__link {
         color: #fff;
-        margin: 0 48px;
+        display: inline;
+        cursor: pointer !important;
+        position: relative;
+        margin: 60px;
+        &__wrapper {
+          margin: 0 50px;
+        }
+        &__under-line {
+          position: absolute;
+          width: 0%;
+          height: 3px;
+          background-color: #b7b7b7;
+          margin: 0 auto;
+          bottom: -5px;
+          opacity: 0;
+        }
+        .hover {
+          animation: Hovers 0.25s;
+          animation-fill-mode: forwards;
+        }
       }
     }
   }
