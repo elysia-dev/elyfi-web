@@ -206,7 +206,9 @@ const PortfolioDetail: FunctionComponent = () => {
                   </td>
                   <td colSpan={2}>
                     <p className="spoqa__bold">
-                      여기에 정보를 입력해야 해요.
+                      {
+                        abToken?.borrower || '-'
+                      }
                     </p>
                   </td>
                 </tr>
