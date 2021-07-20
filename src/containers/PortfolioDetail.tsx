@@ -490,7 +490,7 @@ const PortfolioDetail: FunctionComponent = () => {
                     </td>
                     <td colSpan={2}>
                       <p className="spoqa__bold">
-                        {abToken?.ipfsHash}
+                        {abToken?.ipfsHash || '-'}
                       </p>
                     </td>
                   </tr>
