@@ -32,7 +32,9 @@ const AppNavigator: React.FC = () => {
         <ScrollToTop />
         <Navigation />
         <Switch>
-          <Route exact path="/staking" component={Staking} />
+          <Route exact path="/staking" component={
+            active && chainId === envs.requiredChainId ? Staking : DisableWalletPage
+          } />
           <Route exact path="/linkage_institution" component={LinkageInstitution} />
           <Route exact path="/portfolio" component={Portfolio} />
           <Route exact path="/portfolio/:id" component={PortfolioDetail} />
