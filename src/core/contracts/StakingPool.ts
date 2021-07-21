@@ -12,6 +12,12 @@ interface IPoolData {
 	lastUpdateTimestamp: BigNumber
 }
 
+interface IUserData {
+	userIndex: BigNumber
+	userReward: BigNumber
+	userPrincipal: BigNumber
+}
+
 class StakingPool {
 	contract: Contract;
 	request: ((request: {
@@ -36,6 +42,10 @@ class StakingPool {
 
 	async getPoolData(round: string): Promise<IPoolData> {
 		return await this.contract.getPoolData(round) as IPoolData
+	}
+
+	async getUserData(account: string, round: string): Promise<IUserData> {
+		return await this.contract.getUserData(round, account) as IUserData
 	}
 
 	async claim(account: string, round: string): Promise<string | undefined> {
