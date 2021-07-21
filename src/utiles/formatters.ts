@@ -39,6 +39,7 @@ export const formatCommaSmall = (value: BigNumber) => new Intl.NumberFormat('en'
 );
 
 export const toPercent = (value: any) => `${toCompact(parseFloat(utils.formatUnits(value, 25)))}%`
+export const toPercentWithoutSign = (value: any) => `${toCompact(parseFloat(utils.formatUnits(value, 25)))}`
 
 export const toCompact = (value: number) => new Intl.NumberFormat('en-US', { maximumFractionDigits: 2, notation: "compact", compactDisplay: "short" }).format(value);
 

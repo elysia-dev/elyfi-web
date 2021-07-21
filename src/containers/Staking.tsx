@@ -8,7 +8,7 @@ import { useWeb3React } from '@web3-react/core';
 import StakingPool from 'src/core/contracts/StakingPool';
 import { constants } from 'ethers';
 import Skeleton from 'react-loading-skeleton';
-import { formatCommaSmall, toPercent } from 'src/utiles/formatters';
+import { formatCommaSmall, toPercentWithoutSign } from 'src/utiles/formatters';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import PriceContext from 'src/contexts/PriceContext';
 import calcAPR from 'src/core/utils/calcAPR';
@@ -34,7 +34,52 @@ const Staking = () => {
   const [elStakingModal, setElStakingModal] = useState<boolean>(false);
   const [elStakingSelected, elStakingSelect] = useState<boolean>(true)
 
-  const [amount, setAmount] = useState<string>('');
+  const [roundData, setRoundData] = useState({
+    loading: true,
+    error: '',
+    accountReward: constants.Zero,
+    accountPrincipal: constants.Zero,
+    totalPrincipal: constants.Zero,
+    apr: constants.Zero,
+  })
+
+  const fetchRoundData = async (account: string, round: number) => {
+    setRoundData({ ...roundData, loading: true })
+
+    try {
+      const poolData = await elStakingPool.getPoolData(round.toString());
+      const userData = await elStakingPool.getUserData(account, round.toString());
+
+      setRoundData({
+        ...roundData,
+        loading: false,
+        accountReward: await elStakingPool.getUserReward(account, round.toString()),
+        totalPrincipal: poolData.totalPrincipal,
+        accountPrincipal: userData.userPrincipal,
+        apr: calcAPR(
+          poolData.totalPrincipal,
+          elPrice,
+          ELFIPerDayOnELStakingPool,
+          elfiPrice,
+        ),
+      })
+    } catch (e) {
+      console.log(e)
+      setRoundData({
+        ...roundData,
+        error: e,
+        loading: false,
+      })
+    }
+  }
+
+  console.log(roundData.apr.toString())
+
+  useEffect(() => {
+    if (account) {
+      fetchRoundData(account, state.selectPhase);
+    }
+  }, [account, state.selectPhase])
   
   const CallModal = () => { 
     return (
@@ -81,6 +126,9 @@ const Staking = () => {
       </div>
     )
   }
+
+  const [amount, setAmount] = useState<string>('');
+
   const ElStaking = () => {
     return (
       <div className="modal" style={{ display: elStakingModal ? "block" : "none" }}>
@@ -160,52 +208,6 @@ const Staking = () => {
       </div>
     )
   }
-  const [roundData, setRoundData] = useState({
-    loading: true,
-    error: '',
-    accountReward: constants.Zero,
-    accountPrincipal: constants.Zero,
-    totalPrincipal: constants.Zero,
-    apr: constants.Zero,
-  })
-
-  const fetchRoundData = async (account: string, round: number) => {
-    setRoundData({ ...roundData, loading: true })
-
-    try {
-      const poolData = await elStakingPool.getPoolData(round.toString());
-      const userData = await elStakingPool.getUserData(account, round.toString());
-
-      setRoundData({
-        ...roundData,
-        loading: false,
-        accountReward: await elStakingPool.getUserReward(account, round.toString()),
-        totalPrincipal: poolData.totalPrincipal,
-        accountPrincipal: userData.userPrincipal,
-        apr: calcAPR(
-          poolData.totalPrincipal,
-          elPrice,
-          ELFIPerDayOnELStakingPool,
-          elfiPrice,
-        ),
-      })
-    } catch (e) {
-      console.log(e)
-      setRoundData({
-        ...roundData,
-        error: e,
-        loading: false,
-      })
-    }
-  }
-
-  console.log(roundData.apr.toString())
-
-  useEffect(() => {
-    if (account) {
-      fetchRoundData(account, state.selectPhase);
-    }
-  }, [account, state.selectPhase])
 
   return (
     <>
@@ -228,19 +230,21 @@ const Staking = () => {
           </div>
           <div className="staking__progress-bar__button__wrapper">
           {
-            Array(TotalPhase).fill(0).map((_x, index) => {
+            stakingRoundTimes.map((time, index) => {
               return (
-                <div className={`staking__progress-bar__button${
-                  index + 1 === state.selectPhase ? " now" 
-                    :
-                    index + 1 < currentPhase ? " ended"
+                <div 
+                  key={`dot-${index}`}
+                  className={`staking__progress-bar__button${
+                    index + 1 === state.selectPhase ? " now" 
                       :
-                      index + 1 > currentPhase ? " waiting" 
-                        : 
-                        
-                        " ended"
+                      index + 1 < currentPhase ? " ended"
+                        :
+                        index + 1 > currentPhase ? " waiting" 
+                          : 
+                          
+                          " ended"
                   }`}
-                  onClick={() => setState({ ...state, selectPhase: index + 1 })}
+                  onClick={() => setState({ selectPhase: index + 1 })}
                 >
                   <div>
                     <p className="spoqa">
@@ -255,12 +259,11 @@ const Staking = () => {
                     }
                     </p>
                     <p style={{ display: index + 1 === state.selectPhase ? "block" : "none" }}>
-                      2021.05.21 ~ 2021.07.21 (UTC+9:00)
+                      {`${time.startedAt.format('YYYY.MM.DD')} ~ ${time.endedAt.format('YYYY.MM.DD')} (UTC+9:00)`}
                     </p>
                   </div>
-                  </div>
-            
-                 )
+                </div>
+                )
               })
             } 
           </div>
@@ -277,7 +280,7 @@ const Staking = () => {
                     roundData.loading ?
                       <Skeleton width={100} height={40} /> :
                       <span>
-                        {roundData.apr.eq(constants.MaxUint256) ? '-' : toPercent(roundData.apr)}
+                        {roundData.apr.eq(constants.MaxUint256) ? '-' : toPercentWithoutSign(roundData.apr)}
                       </span>
                   }
                   &nbsp;%
