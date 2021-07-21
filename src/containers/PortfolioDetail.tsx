@@ -207,7 +207,7 @@ const PortfolioDetail: FunctionComponent = () => {
                   <td colSpan={2}>
                     <p className="spoqa__bold">
                       {
-                        abToken?.borrower || '-'
+                        abToken?.borrower?.id || '-'
                       }
                     </p>
                   </td>
