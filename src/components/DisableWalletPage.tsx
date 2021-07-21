@@ -23,7 +23,7 @@ const DisableWalletPage = () => {
         :
         <div className={`navigation__wallet`}
           onClick={() => {
-            activate(InjectedConnector).then(()=> {
+            activate(InjectedConnector).then(() => {
               window.sessionStorage.setItem("@connect", "ture");
             })
           }}
@@ -48,16 +48,7 @@ const DisableWalletPage = () => {
         <div style={{ margin: "30px auto 0px", display: "inline-block" }}>
           {CopiedWallet()}
         </div>
-        <footer className="footer footer--dashboard">
-          <div className="footer__container">
-            <img className="footer__white-logo" src={WhiteLogo} alt="Elysia" />
-            <div className="footer__wrapper">
-              <LanguageConverter />
-            </div>
-          </div>
-        </footer>
       </div>
-      
     </section>
   )
 }
