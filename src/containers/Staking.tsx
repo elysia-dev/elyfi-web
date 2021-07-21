@@ -73,8 +73,6 @@ const Staking = () => {
     }
   }
 
-  console.log(roundData.apr.toString())
-
   useEffect(() => {
     if (account) {
       fetchRoundData(account, state.selectPhase);
