@@ -6,6 +6,8 @@ interface EnvironmentVariables {
   incentivePoolAddress: string
   governanceAddress: string
   testStableAddress: string
+  elStakingPoolAddress: string
+  elfyStakingPoolAddress: string
   requiredNetwork: string
   requiredChainId: number
   subgraphURI: string
