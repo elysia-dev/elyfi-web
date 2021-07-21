@@ -1445,14 +1445,62 @@ span {
   .staking {
     width: 1190px;
     margin: 100px auto;
+    .modal {
+      &__staking {
+        padding: 29px 26px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        &__button {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          padding: 23.75px 27.5px;
+          box-sizing: border-box;
+          border-radius: 5px;
+          border: 1px solid #333333;
+          cursor: pointer;
+          box-shadow: 0px 0px 6px #00000029;
+          transition: 0.2s all ease-in-out;
+          &:hover {
+            box-shadow: 0px 0px 14px #00a7ff77;
+            border: 1px solid #00a7ff;
+            .modal__staking__button__arrow {
+              color: #00a7ff;
+            }
+          }
+          &:nth-child(2) {
+            margin-bottom: 36px;
+            margin-top: 58px;
+          }
+          &__arrow {
+            font-size: 25px !important;
+            color: #333333;
+          }
+          > div {
+            > p {
+              margin: 0;
+              font-size: 15px;
+            }
+            > h2 {
+              margin: 5.5px 0 0;
+              font-size: 20px;
+            }
+          }
+        }
+      }
+    }
     &__progress-bar {
       margin: 0 auto;
       width: 1100px;
       height: 1px;
-      background-color: #000000; // F5f5f5
+      background-color: #F5f5f5;
       position: relative;
       &__value {
-        width: 50%;
+        width: 0%;
         height: 1px;
         background-color: #00BFFF;
       }
@@ -1462,13 +1510,32 @@ span {
       &__button {
         width: 20px;
         height: 20px;
-        background-color: #ffffff;
         border: 1px solid #00bfff;
         border-radius: 20px;
         z-index: 2;
         position: relative;
         box-sizing: border-box;
         box-shadow: 0px 0px 6px #00000029;
+        cursor: pointer;
+        transition: 0.2s all ease-in-out;
+        &:hover {
+          box-shadow: 0px 0px 6px #00bfff;
+        }
+        &.now {
+          background-color: #00bfff;
+          > div {
+            > p {
+              color: #333333;
+            }
+          }
+        }
+        &.ended {
+          background-color: #ffffff;
+        }
+        &.waiting {
+          background-color: #f5f5f5;
+          border: 0;
+        }
         > div {
           position: absolute;
           width: 200px;
@@ -1478,6 +1545,7 @@ span {
           > p {
             margin: 0;
             font-size: 12px;
+            color: #b7b7b7;
             &:last-child {
               position: absolute;
               width: 300px;
@@ -1490,10 +1558,11 @@ span {
           width: 1px;
           height: 32px;
           position: absolute;
-          background-color: #333333;
+          background-color: #b7b7b7;
           left: 9px;
-          top: 20px;
+          top: 19px;
           z-index: 1;
+          cursor: default;
         }
         &__wrapper {
           width: 1120px;
@@ -1505,6 +1574,7 @@ span {
           top: -10px;
         }
       }
+      
     }
     &__button {
       display: block;
@@ -1531,7 +1601,7 @@ span {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      margin: 15px 0;
+      margin: 10px 0;
       &__reward {
         display: flex;
         flex-direction: column;
@@ -1548,7 +1618,7 @@ span {
       }
     }
     &__infomation {
-      width: 100%;
+      width: 1130px;
       margin: 0 auto;
       display: flex;
       flex-direction: row;
@@ -1580,7 +1650,7 @@ span {
           text-align: right;
           font-size: 25px;
           > span {
-            font-size: 35px;
+            font-size: 30px;
           }
           .colored {
             font-size: 35px;
@@ -1712,7 +1782,8 @@ span {
     }
   }
   &__withdraw__value-wrapper,
-  &__deposit__value-wrapper {
+  &__deposit__value-wrapper,
+  &__value-wrapper {
     background-color: #f0f0f1;
     height: 173px;
     display: flex;
@@ -1720,7 +1791,52 @@ span {
     padding: 0px 40px;
     align-items: center;
   }
-
+  &__converter {
+    display: flex;
+    &__column {
+      flex: 1;
+      text-align: center;
+      cursor: pointer;
+      > p {
+        color: #b7b7b7;
+        cursor: pointer;
+      }
+      &--selected {
+        flex: 1;
+        text-align: center;
+        border-bottom: 3px solid #00bfff;
+        cursor: pointer;
+        > p {
+          color: #00bfff;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  &__input {
+    &__maximum {
+      margin: 0;
+      display: flex;
+      font-size: 20px;
+      color: #b7b7b7;
+      cursor: pointer;
+    }
+    &__value {
+      margin: 0 0 0 20px;
+      font-size: 60px;
+      color: #333333;
+      &-converter {
+        margin: 0px;
+        font-size: 15px;
+        color: #b7b7b7;
+        &-wrapper {
+          padding: 15px 26px;
+          text-align: right;
+          border-bottom: 2px solid #f0f0f1;
+        }
+      }
+    }
+  }
   &--deposit {
     .modal {
       &__header {
@@ -1731,28 +1847,7 @@ span {
           gap: 10px;
         }
       }
-      &__converter {
-        display: flex;
-        &__column {
-          flex: 1;
-          text-align: center;
-          cursor: pointer;
-          > p {
-            color: #b7b7b7;
-            cursor: pointer;
-          }
-          &--selected {
-            flex: 1;
-            text-align: center;
-            border-bottom: 3px solid #00bfff;
-            cursor: pointer;
-            > p {
-              color: #00bfff;
-              cursor: pointer;
-            }
-          }
-        }
-      }
+      
       &__withdraw,
       &__deposit {
         &__maximum {
@@ -1911,6 +2006,24 @@ span {
           margin: 0;
           float: right;
           color: #888888;
+        }
+      }
+    }
+  }
+  &__staking {
+    &__container {
+      margin: 36px 26px 31px;
+      > p {
+        margin: 0 0 16px;
+        color: #b7b7b7;
+        font-size: 13px;
+      }
+      > div {
+        display: flex;
+        justify-content: space-between;
+        > p {
+          color: #262626;
+          margin: 20px 0;
         }
       }
     }
