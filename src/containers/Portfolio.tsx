@@ -32,8 +32,11 @@ const Portfolio = () => {
     return calcPortfolioRatio(data?.assetBondTokens || [], 2)
   }, [data])
   const ratioProduct3 = useMemo(() => {
-    return 100 - (ratioProduct1 + ratioProduct2)
-  }, [ratioProduct1, ratioProduct2])
+    return calcPortfolioRatio(data?.assetBondTokens || [], 3)
+  }, [data]);
+  const ratioProduct4 = useMemo(() => {
+    return 100 - (ratioProduct1 + ratioProduct2 + ratioProduct3)
+  }, [ratioProduct1, ratioProduct2, ratioProduct3]);
 
   if (error) return (<ErrorPage />)
 
@@ -58,6 +61,7 @@ const Portfolio = () => {
                 num1={ratioProduct1}
                 num2={ratioProduct2}
                 num3={ratioProduct3}
+                num4={ratioProduct4}
               />
             </div>
             <div className="portfolio__asset-allocation__wrapper">
@@ -73,11 +77,15 @@ const Portfolio = () => {
                 <div />
                 <p className="spoqa">{t("portfolio.charter_returns")}</p>
               </div>
+              <div>
+                <div />
+                <p className="spoqa">{t("words.CommercialRealEstateLoan")}</p>
+              </div>
             </div>
           </div>
         </div>
         <div className="portfolio__asset-list__container">
-            {/* <div className="portfolio__asset-list__title__button">
+          {/* <div className="portfolio__asset-list__title__button">
               <p>Lending</p>
               To do // Repayment Complete
               'Empty',
