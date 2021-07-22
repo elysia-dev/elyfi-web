@@ -3,18 +3,21 @@ import { BigNumber } from 'ethers';
 import { FunctionComponent, useEffect, useMemo, useState } from 'react'
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
+import DaiImage from 'src/assets/images/dai.png';
 import { formatCommaSmall } from 'src/utiles/formatters';
 import StakingPool from 'src/core/contracts/StakingPool';
 import useWatingTx from 'src/hooks/useWatingTx';
+import Token from 'src/enums/Token';
 
 // Create deposit & withdraw
 const ClaimStakingRewardModal: FunctionComponent<{
+  token: Token.ELFI | Token.DAI,
   balance: BigNumber,
   visible: boolean,
   round: number,
   closeHandler: () => void,
   afterTx: () => void,
-}> = ({ visible, balance, round, closeHandler, afterTx }) => {
+}> = ({ visible, token, balance, round, closeHandler, afterTx }) => {
   const { account, library } = useWeb3React()
   const elStakingPool = useMemo(() => {
     return new StakingPool('EL', library)
@@ -34,9 +37,13 @@ const ClaimStakingRewardModal: FunctionComponent<{
       <div className="modal__container">
         <div className="modal__header">
           <div className="modal__header__token-info-wrapper">
-            <img className="modal__header__image" src={ElifyTokenImage} alt="Token" />
+            <img
+              className="modal__header__image"
+              src={token === Token.ELFI ? ElifyTokenImage : DaiImage}
+              alt="Token"
+            />
             <div className="modal__header__name-wrapper">
-              <p className="modal__header__name bold">ELFI</p>
+              <p className="modal__header__name bold">{token}</p>
             </div>
           </div>
           <div className="close-button" onClick={closeHandler}>

@@ -1,4 +1,3 @@
-
 import { BigNumber, utils } from 'ethers';
 import React, { useState } from 'react'
 import ELFI from 'src/assets/images/ELFI.png';
@@ -13,14 +12,16 @@ import useBalance from 'src/hooks/useBalance';
 import { useMemo } from 'react';
 import StakingPool from 'src/core/contracts/StakingPool';
 import { useWeb3React } from '@web3-react/core';
+import Token from 'src/enums/Token';
 
 const StakingModal: React.FunctionComponent<{
   visible: boolean,
   closeHandler: () => void,
   afterTx: () => void,
+  stakedToken: Token.ELFI | Token.EL
   stakedBalance: BigNumber,
   round: number,
-}> = ({ visible, closeHandler, afterTx, stakedBalance, round }) => {
+}> = ({ visible, closeHandler, afterTx, stakedBalance, stakedToken, round }) => {
   const { t } = useTranslation();
   const { account, library } = useWeb3React();
   const [stakingMode, setStakingMode] = useState<boolean>(true)
@@ -30,12 +31,16 @@ const StakingModal: React.FunctionComponent<{
     loading: allowanceLoading,
     increaseAllowance,
     loadAllowance,
-  } = useAllownace(envs.elAddress, envs.elStakingPoolAddress)
+  } = useAllownace(
+    stakedToken === Token.EL ? envs.elAddress : envs.governanceAddress, envs.elStakingPoolAddress
+  );
   const {
     balance,
-  } = useBalance(envs.elAddress);
+  } = useBalance(
+    stakedToken === Token.EL ? envs.elAddress : envs.governanceAddress
+  );
   const elStakingPool = useMemo(() => {
-    return new StakingPool('EL', library)
+    return new StakingPool(stakedToken, library)
   }, [library]);
   const [txInfo, setTxHash] = useState({ hash: "", closeAfterTx: false })
   const { wating } = useWatingTx(txInfo.hash)
@@ -59,7 +64,7 @@ const StakingModal: React.FunctionComponent<{
           <div className="modal__header__token-info-wrapper">
             <img className="modal__header__image" src={ELFI} alt="Token" />
             <div className="modal__header__name-wrapper">
-              <p className="modal__header__name spoqa__bold">EL</p>
+              <p className="modal__header__name spoqa__bold">{stakedToken}</p>
             </div>
           </div>
           <div className="close-button" onClick={() => closeHandler()}>
@@ -127,7 +132,7 @@ const StakingModal: React.FunctionComponent<{
                     }
                   </p>
                   <p className="spoqa__bold">
-                    {`${formatComma(stakingMode ? balance : stakedBalance)} EL`}
+                    {`${formatComma(stakingMode ? balance : stakedBalance)} ${stakedToken}`}
                   </p>
                 </div>
               </div>
@@ -171,7 +176,7 @@ const StakingModal: React.FunctionComponent<{
                       }}
                     >
                       <p>
-                        {t("dashboard.protocol_allow", { tokenName: "EL" })}
+                        {t("dashboard.protocol_allow", { tokenName: stakedToken })}
                       </p>
                     </div>
               }

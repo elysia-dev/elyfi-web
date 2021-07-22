@@ -11,18 +11,32 @@ import { formatCommaSmall, toPercentWithoutSign } from 'src/utiles/formatters';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import PriceContext from 'src/contexts/PriceContext';
 import calcAPR from 'src/core/utils/calcAPR';
-import { ELFIPerDayOnELStakingPool } from 'src/core/data/stakings';
+import { ELFIPerDayOnELStakingPool, DAIPerDayOnELFIStakingPool } from 'src/core/data/stakings';
 import moment from 'moment';
 import ClaimStakingRewardModal from 'src/components/ClaimStakingRewardModal';
 import StakingModal from 'src/containers/StakingModal';
+import Token from 'src/enums/Token';
+import AppColors from 'src/enums/AppColors';
+import { tokenToString } from 'typescript';
 
-const Staking = () => {
+interface IProps {
+  stakedToken: Token.EL | Token.ELFI,
+  rewardToken: Token.ELFI | Token.DAI,
+}
+
+const Staking: React.FunctionComponent<IProps> = ({
+  stakedToken,
+  rewardToken,
+}) => {
   const current = moment();
+  const domainColor = useMemo(() => {
+    return rewardToken === Token.ELFI ? AppColors.elBlue : AppColors.daiYellow;
+  }, [rewardToken])
   const { account, library } = useWeb3React();
   const { elPrice, elfiPrice } = useContext(PriceContext);
 
-  const elStakingPool = useMemo(() => {
-    return new StakingPool('EL', library)
+  const stakingPool = useMemo(() => {
+    return new StakingPool(stakedToken, library)
   }, [library])
 
   const currentPhase = useMemo(() => {
@@ -61,20 +75,20 @@ const Staking = () => {
     setRoundData({ ...roundData, loading: true })
 
     try {
-      const poolData = await elStakingPool.getPoolData(round.toString());
-      const userData = await elStakingPool.getUserData(account, round.toString());
+      const poolData = await stakingPool.getPoolData(round.toString());
+      const userData = await stakingPool.getUserData(account, round.toString());
 
       setRoundData({
         ...roundData,
         loading: false,
-        accountReward: await elStakingPool.getUserReward(account, round.toString()),
+        accountReward: await stakingPool.getUserReward(account, round.toString()),
         totalPrincipal: poolData.totalPrincipal,
         accountPrincipal: userData.userPrincipal,
         apr: calcAPR(
           poolData.totalPrincipal,
-          elPrice,
-          ELFIPerDayOnELStakingPool,
-          elfiPrice,
+          stakedToken === Token.EL ? elPrice : elfiPrice,
+          rewardToken === Token.ELFI ? ELFIPerDayOnELStakingPool : DAIPerDayOnELFIStakingPool,
+          rewardToken === Token.ELFI ? elfiPrice : 1
         ),
       })
     } catch (e) {
@@ -99,6 +113,7 @@ const Staking = () => {
       <section className="staking">
         <ClaimStakingRewardModal
           visible={claimStakingRewardModalVisible}
+          token={rewardToken}
           balance={roundData.accountReward}
           round={state.selectPhase}
           closeHandler={() => setClaimStakingRewardModalVisible(false)}
@@ -107,16 +122,17 @@ const Staking = () => {
         <StakingModal
           visible={stakingModalVisible}
           closeHandler={() => setStakingModalVisible(false)}
+          stakedToken={stakedToken}
           stakedBalance={roundData.accountPrincipal}
           round={state.selectPhase}
           afterTx={() => { account && fetchRoundData(account, state.selectPhase) }}
         />
-        <Title label="EL 토큰 스테이킹" />
+        <Title label={`${stakedToken} 토큰 스테이킹`} />
         <div>
           <p>
-            EL 토큰을 스테이킹하면 ELFI 토큰이 채굴되며, ELYFI V1 기간 동안에는 6차례로 나눠서 진행됩니다.<br />
-            스테이킹한 EL 토큰은 자유롭게 언스테이킹이 가능합니다.<br />
-            또한 각 차시는 별개로 진행되며, 이전 차시에 스테이킹한 EL 토큰과 보상 받은 ELFI 토큰은 다음 차시 스테이킹 풀에 자동으로 전송되지 않습니다.<br />
+            {stakedToken} 토큰을 스테이킹하면 {rewardToken} 토큰이 채굴되며, ELYFI V1 기간 동안에는 6차례로 나눠서 진행됩니다.<br />
+            스테이킹한 {stakedToken} 토큰은 자유롭게 언스테이킹이 가능합니다.<br />
+            또한 각 차시는 별개로 진행되며, 이전 차시에 스테이킹한 {stakedToken} 토큰과 보상 받은 {rewardToken} 토큰은 다음 차시 스테이킹 풀에 자동으로 전송되지 않습니다.<br />
             자세한 채굴 플랜은 여기에서 확인이 가능합니다.
           </p>
         </div>
@@ -136,6 +152,10 @@ const Staking = () => {
                     key={`dot-${index}`}
                     className={`staking__progress-bar__button ${status}`}
                     onClick={() => setState({ selectPhase: index + 1 })}
+                    style={{
+                      backgroundColor: status === "wating" ? "white" : domainColor,
+                      borderColor: domainColor,
+                    }}
                   >
                     <div>
                       <p className="spoqa">
@@ -187,7 +207,7 @@ const Staking = () => {
                       <>
                         <span className="spoqa">
                           {`${current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0 ? formatCommaSmall(roundData.accountPrincipal) : '-'}`}
-                        </span> EL
+                        </span> {` ${stakedToken}`}
                       </>
                   }
                 </h2>
@@ -199,7 +219,7 @@ const Staking = () => {
               </div>
               <div className="staking__content">
                 <p>
-                  * 마이그레이션’은 이전에 스테이킹된 EL 토큰을 현재 진행중인 스테이킹 풀에 전송하여 자동으로 스테이킹 하는 기능입니다.
+                  * 마이그레이션’은 이전에 스테이킹된 {stakedToken} 토큰을 현재 진행중인 스테이킹 풀에 전송하여 자동으로 스테이킹 하는 기능입니다.
                 </p>
               </div>
             </div>
@@ -217,8 +237,13 @@ const Staking = () => {
                   <Skeleton width={100} height={40} />
                   :
                   <h2 className="spoqa__bold">
-                    <span className="colored spoqa__bold">{`${formatCommaSmall(roundData.accountReward)} `}</span>
-                    ELFI
+                    <span
+                      className="colored spoqa__bold"
+                      style={{ color: domainColor }}
+                    >
+                      {`${formatCommaSmall(roundData.accountReward)} `}
+                    </span>
+                    {rewardToken}
                   </h2>
               }
               <a className="staking__button" onClick={(e) => setClaimStakingRewardModalVisible(true)}>
@@ -233,5 +258,24 @@ const Staking = () => {
     </>
   )
 }
+
+export const StakingEL = () => {
+  return (
+    <Staking
+      stakedToken={Token.EL}
+      rewardToken={Token.ELFI}
+    />
+  )
+}
+
+export const StakingELFI = () => {
+  return (
+    <Staking
+      stakedToken={Token.ELFI}
+      rewardToken={Token.DAI}
+    />
+  )
+}
+
 
 export default Staking;

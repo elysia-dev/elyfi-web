@@ -23,7 +23,7 @@ const Navigation: FunctionComponent = () => {
   const CheckLocation = (loc: string, index: number) => {
     if (location.pathname.split('/')[1] === loc) {
       return true;
-    } else if (index === 0 && location.pathname.split('/')[1] === "staking") {
+    } else if (index === 0 && location.pathname.split('/')[1] === "staking/EL") {
       return true;
     } else {
       return false
@@ -125,30 +125,31 @@ const Navigation: FunctionComponent = () => {
         onMouseLeave={() => setHover(0)}
       >
         <div className="navigation__dashboard__wrapper">
-        {
-          [
-            ["/", "DEPOSIT / WITHDRAW"],
-            ["/staking", "STAKING"]
-          ].map((data, index) => {
-            return (
-              <Link to={data[0]} key={index}>
-                <div className={`navigation__dashboard__link${location.pathname.split('/')[1] === data[0].slice(1) ? " bold" : ""}`}
-                  onMouseEnter={() => setInnerHover(index + 1)}
-                  onMouseLeave={() => setInnerHover(0)}
-                >
-                  {data[1]}
-                  <div className={`navigation__link__under-line${innerHover === index + 1 ? " hover" : " blur"}`}
-                    style={{
-                      opacity: location.pathname.split('/')[1] === data[0].slice(1) ? 1 : 0,
-                      width: location.pathname.split('/')[1] === data[0].slice(1) ? "100%" : 0,
-                      left: location.pathname.split('/')[1] === data[0].slice(1) ? 0 : -20
-                    }}
-                  />
-                </div>
-              </Link>
-            )
-          })
-        }
+          {
+            [
+              ["/", "DEPOSIT / WITHDRAW"],
+              ["/staking/EL", "STAKING EL"],
+              ["/staking/ELFI", "STAKING ELFI"]
+            ].map((data, index) => {
+              return (
+                <Link to={data[0]} key={index}>
+                  <div className={`navigation__dashboard__link${location.pathname.split('/')[1] === data[0].slice(1) ? " bold" : ""}`}
+                    onMouseEnter={() => setInnerHover(index + 1)}
+                    onMouseLeave={() => setInnerHover(0)}
+                  >
+                    {data[1]}
+                    <div className={`navigation__link__under-line${innerHover === index + 1 ? " hover" : " blur"}`}
+                      style={{
+                        opacity: location.pathname.split('/')[1] === data[0].slice(1) ? 1 : 0,
+                        width: location.pathname.split('/')[1] === data[0].slice(1) ? "100%" : 0,
+                        left: location.pathname.split('/')[1] === data[0].slice(1) ? 0 : -20
+                      }}
+                    />
+                  </div>
+                </Link>
+              )
+            })
+          }
         </div>
       </div>
     </nav>

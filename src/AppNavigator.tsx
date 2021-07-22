@@ -12,7 +12,7 @@ import PortfolioDetail from './containers/PortfolioDetail';
 import Footer from './components/Footer';
 import Navigation from './components/Navigation';
 import Dashboard from './containers/Dashboard';
-import Staking from './containers/Staking';
+import { StakingEL, StakingELFI } from './containers/Staking';
 import { useWeb3React } from '@web3-react/core';
 import DisableWalletPage from './components/DisableWalletPage';
 import LinkageInstitution from 'src/containers/LinkageInstitution';
@@ -32,8 +32,11 @@ const AppNavigator: React.FC = () => {
         <ScrollToTop />
         <Navigation />
         <Switch>
-          <Route exact path="/staking" component={
-            active && chainId === envs.requiredChainId ? Staking : DisableWalletPage
+          <Route exact path="/staking/EL" component={
+            active && chainId === envs.requiredChainId ? StakingEL : DisableWalletPage
+          } />
+          <Route exact path="/staking/ELFI" component={
+            active && chainId === envs.requiredChainId ? StakingELFI : DisableWalletPage
           } />
           <Route exact path="/linkage_institution" component={LinkageInstitution} />
           <Route exact path="/portfolio" component={Portfolio} />
