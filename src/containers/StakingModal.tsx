@@ -88,7 +88,14 @@ const StakingModal: React.FunctionComponent<{
           <div className="modal__body">
             <div>
               <div className="modal__value-wrapper">
-                <p className="modal__maximum bold" onClick={() => { }}>
+                <p
+                  className="modal__maximum bold"
+                  onClick={() => {
+                    setAmount
+                      ((Math.floor(parseFloat(utils.formatEther(stakingMode ? balance : stakedBalance)) * 100000000) / 100000000).toFixed(8).toString()
+                      )
+                  }}
+                >
                   MAX
                 </p>
                 <p className="modal__value bold">
