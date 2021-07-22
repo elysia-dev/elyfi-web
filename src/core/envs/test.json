@@ -5,6 +5,7 @@
   "testStableAddress": "0x83E1Fa50a151B5f4efeF8f09Fb64c5b86621bb78",
   "elStakingPoolAddress": "0xDF409737E31475Ec46e13335Ad5370c551b97D12",
   "elfyStakingPoolAddress": "0xDF409737E31475Ec46e13335Ad5370c551b97D12",
+  "elAddress": "0xdd469dfc7f64A68E6cd1D8e9B9D09E2Cb39a816c",
   "requiredNetwork": "Ropsten",
   "requiredChainId": 3,
   "subgraphURI": "https://api.thegraph.com/subgraphs/name/modonguk/elyfi"

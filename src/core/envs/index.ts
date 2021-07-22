@@ -8,6 +8,7 @@ interface EnvironmentVariables {
   testStableAddress: string
   elStakingPoolAddress: string
   elfyStakingPoolAddress: string
+  elAddress: string
   requiredNetwork: string
   requiredChainId: number
   subgraphURI: string

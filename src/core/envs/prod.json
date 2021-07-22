@@ -5,6 +5,7 @@
   "testStableAddress": "0x83E1Fa50a151B5f4efeF8f09Fb64c5b86621bb78",
   "elStakingPoolAddress": "0x83E1Fa50a151B5f4efeF8f09Fb64c5b86621bb78",
   "elfyStakingPoolAddress": "0x83E1Fa50a151B5f4efeF8f09Fb64c5b86621bb78",
+  "elAddress": "0x2781246fe707bb15cee3e5ea354e2154a2877b16",
   "requiredNetwork": "Mainnet",
   "requiredChainId": 1,
   "subgraphURI": "https://api.studio.thegraph.com/query/862/elyfi/v0.0.2"
