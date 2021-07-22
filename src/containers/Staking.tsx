@@ -99,7 +99,10 @@ const Staking = () => {
       <section className="staking">
         <ClaimStakingRewardModal
           visible={claimStakingRewardModalVisible}
+          balance={roundData.accountReward}
+          round={state.selectPhase}
           closeHandler={() => setClaimStakingRewardModalVisible(false)}
+          afterTx={() => { account && fetchRoundData(account, state.selectPhase) }}
         />
         <StakingModal
           visible={stakingModalVisible}

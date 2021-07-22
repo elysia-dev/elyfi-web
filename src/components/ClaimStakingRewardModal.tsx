@@ -1,52 +1,83 @@
-import React from 'react'
+import { useWeb3React } from '@web3-react/core';
+import { BigNumber } from 'ethers';
+import { FunctionComponent, useEffect, useMemo, useState } from 'react'
+import LoadingIndicator from 'src/components/LoadingIndicator';
+import ElifyTokenImage from 'src/assets/images/ELFI.png';
+import { formatCommaSmall } from 'src/utiles/formatters';
+import StakingPool from 'src/core/contracts/StakingPool';
+import useWatingTx from 'src/hooks/useWatingTx';
 
-const ClaimStakingRewardModal: React.FunctionComponent<{
+// Create deposit & withdraw
+const ClaimStakingRewardModal: FunctionComponent<{
+  balance: BigNumber,
   visible: boolean,
-  closeHandler: () => void
-}> = ({ visible, closeHandler }) => {
+  round: number,
+  closeHandler: () => void,
+  afterTx: () => void,
+}> = ({ visible, balance, round, closeHandler, afterTx }) => {
+  const { account, library } = useWeb3React()
+  const elStakingPool = useMemo(() => {
+    return new StakingPool('EL', library)
+  }, [library]);
+  const [txHash, setTxHash] = useState("")
+  const { wating } = useWatingTx(txHash)
+
+  useEffect(() => {
+    if (!wating) {
+      afterTx()
+      closeHandler()
+    }
+  }, [wating])
+
   return (
-    <div className="modal" style={{ display: visible ? "block" : "none" }}>
+    <div className="modal modal--deposit" style={{ display: visible ? "block" : "none" }}>
       <div className="modal__container">
-        <div className="modal__staking">
-          <div className="close-button" onClick={() => closeHandler()}>
+        <div className="modal__header">
+          <div className="modal__header__token-info-wrapper">
+            <img className="modal__header__image" src={ElifyTokenImage} alt="Token" />
+            <div className="modal__header__name-wrapper">
+              <p className="modal__header__name bold">ELFI</p>
+            </div>
+          </div>
+          <div className="close-button" onClick={closeHandler}>
             <div className="close-button--1">
               <div className="close-button--2" />
             </div>
           </div>
-          <div className="modal__staking__button">
-            <div>
-              <p className="spoqa">
-                가스비 절감을 위해
-              </p>
-              <h2 className="spoqa__bold">
-                ELFI 토큰도 같이 출금하기
-              </h2>
+        </div>
+        <div className="modal__body">
+          {wating ?
+            <LoadingIndicator />
+            :
+            <div className="modal__withdraw">
+              <div className="modal__withdraw__value-wrapper">
+                <p></p>
+                <p className="modal__withdraw__value bold">
+                  {
+                    formatCommaSmall(balance)
+                  }
+                </p>
+              </div>
+              <div
+                className="modal__button"
+                onClick={() => {
+                  if (!account) return
+
+                  elStakingPool.claim(account, round.toString()).then((hash) => {
+                    if (hash) setTxHash(hash);
+                  })
+                }}
+              >
+                <p>
+                  CLAIM REWARD
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="modal__staking__button__arrow bold">
-                {'>'}
-              </p>
-            </div>
-          </div>
-          <div className="modal__staking__button">
-            <div>
-              <p className="spoqa">
-                ELFI 토큰은 나중에 수취하고
-              </p>
-              <h2 className="spoqa__bold">
-                EL 토큰만 전송하기
-              </h2>
-            </div>
-            <div>
-              <p className="modal__staking__button__arrow bold">
-                {'>'}
-              </p>
-            </div>
-          </div>
+          }
         </div>
       </div>
     </div>
   )
 }
 
-export default ClaimStakingRewardModal
+export default ClaimStakingRewardModal;
