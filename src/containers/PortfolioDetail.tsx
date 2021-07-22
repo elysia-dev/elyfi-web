@@ -48,8 +48,8 @@ const PortfolioDetail: FunctionComponent = () => {
   const { language } = useContext(LanguageContext);
   const abToken = data?.assetBondTokens.find((ab) => ab.id === id);
   const parsedTokenId = useMemo(() => { return parseTokenId(abToken?.id) }, [abToken]);
-  const lat = parsedTokenId.collateralLatitude / 100000 || 37.3674541706433;
-  const lng = parsedTokenId.collateralLongitude / 100000 || 126.64780198475671;
+  const lat = parsedTokenId.collateralLatitude / 100000;
+  const lng = parsedTokenId.collateralLongitude / 100000;
   const [address, setAddress] = useState('-');
   const [mouseHover, setMouseHover] = useState(0);
   const [contractImage, setContractImage] = useState({
@@ -344,16 +344,20 @@ const PortfolioDetail: FunctionComponent = () => {
           </b>
           <div className="portfolio__info__abtoken-info">
             <div className="portfolio__info__google-map__wrapper">
-              <GoogleMapReact
-                bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY! }}
-                defaultCenter={{
-                  lat,
-                  lng
-                }}
-                defaultZoom={15}
-              >
-                <Marker lat={lat} lng={lng} />
-              </GoogleMapReact>
+              {
+                loading ?
+                  <Skeleton height={900} /> :
+                  <GoogleMapReact
+                    bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY! }}
+                    defaultCenter={{
+                      lat,
+                      lng
+                    }}
+                    defaultZoom={15}
+                  >
+                    <Marker lat={lat} lng={lng} />
+                  </GoogleMapReact>
+              }
             </div>
             {
               loading ? <Skeleton height={900} /> :
