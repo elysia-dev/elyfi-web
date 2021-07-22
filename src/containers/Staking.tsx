@@ -113,6 +113,7 @@ const Staking: React.FunctionComponent<IProps> = ({
       <section className="staking">
         <ClaimStakingRewardModal
           visible={claimStakingRewardModalVisible}
+          stakedToken={stakedToken}
           token={rewardToken}
           balance={roundData.accountReward}
           round={state.selectPhase}

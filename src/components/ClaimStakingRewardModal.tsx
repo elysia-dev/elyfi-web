@@ -11,16 +11,17 @@ import Token from 'src/enums/Token';
 
 // Create deposit & withdraw
 const ClaimStakingRewardModal: FunctionComponent<{
+  stakedToken: Token.ELFI | Token.EL,
   token: Token.ELFI | Token.DAI,
   balance: BigNumber,
   visible: boolean,
   round: number,
   closeHandler: () => void,
   afterTx: () => void,
-}> = ({ visible, token, balance, round, closeHandler, afterTx }) => {
+}> = ({ visible, stakedToken, token, balance, round, closeHandler, afterTx }) => {
   const { account, library } = useWeb3React()
   const elStakingPool = useMemo(() => {
-    return new StakingPool('EL', library)
+    return new StakingPool(stakedToken, library)
   }, [library]);
   const [txHash, setTxHash] = useState("")
   const { wating } = useWatingTx(txHash)
