@@ -22,8 +22,8 @@ const DepositBody: React.FunctionComponent<{
   return (
     <div className="modal__deposit">
       <div className="modal__deposit__value-wrapper">
-        <p className="modal__deposit__maximum bold" onClick={() => { 
-          setAmount((Math.floor(parseFloat(utils.formatEther(balance)) * 100000000) / 100000000).toFixed(8).toString()) 
+        <p className="modal__deposit__maximum bold" onClick={() => {
+          setAmount((Math.floor(parseFloat(utils.formatEther(balance)) * 100000000) / 100000000).toFixed(8).toString())
         }}>
           {t("dashboard.max")}
         </p>
@@ -37,12 +37,11 @@ const DepositBody: React.FunctionComponent<{
               amount
             }
             style={{ fontSize: amount.length < 8 ? 60 : amount.length > 12 ? 35 : 45 }}
-            onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => { 
+            onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
               ["-", "+", "e"].includes(e.key) && e.preventDefault();
             }}
             onChange={({ target }) => {
               target.value = target.value.replace(/(\.\d{18})\d+/g, '$1');
-              
               setAmount(target.value);
             }}
           />

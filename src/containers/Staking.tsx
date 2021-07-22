@@ -1,7 +1,6 @@
 import { Title } from 'src/components/Texts';
 import Header from 'src/components/Header';
 import ContainerArrow from 'src/assets/images/container-arrow@2x.png';
-import ELFI from 'src/assets/images/ELFI.png';
 
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
@@ -14,6 +13,8 @@ import PriceContext from 'src/contexts/PriceContext';
 import calcAPR from 'src/core/utils/calcAPR';
 import { ELFIPerDayOnELStakingPool } from 'src/core/data/stakings';
 import moment from 'moment';
+import ClaimStakingRewardModal from 'src/components/ClaimStakingRewardModal';
+import StakingModal from 'src/containers/StakingModal';
 
 const Staking = () => {
   const current = moment();
@@ -23,7 +24,6 @@ const Staking = () => {
   const elStakingPool = useMemo(() => {
     return new StakingPool('EL', library)
   }, [library])
-  // FIXME : calc current phase with current date
 
   const currentPhase = useMemo(() => {
     return stakingRoundTimes.filter((round) =>
@@ -34,10 +34,8 @@ const Staking = () => {
   const [state, setState] = useState({
     selectPhase: 1,
   })
-  const [modal, setModal] = useState<boolean>(false);
-
-  const [elStakingModal, setElStakingModal] = useState<boolean>(false);
-  const [elStakingSelected, elStakingSelect] = useState<boolean>(true)
+  const [stakingModalVisible, setStakingModalVisible] = useState<boolean>(false);
+  const [claimStakingRewardModalVisible, setClaimStakingRewardModalVisible] = useState<boolean>(false);
 
   const [roundData, setRoundData] = useState({
     loading: true,
@@ -49,6 +47,17 @@ const Staking = () => {
   })
 
   const fetchRoundData = async (account: string, round: number) => {
+    if (current.diff(stakingRoundTimes[round - 1].startedAt) < 0) {
+      setRoundData({
+        ...roundData,
+        accountReward: constants.Zero,
+        accountPrincipal: constants.Zero,
+        totalPrincipal: constants.Zero,
+        apr: constants.Zero,
+      })
+      return
+    }
+
     setRoundData({ ...roundData, loading: true })
 
     try {
@@ -84,140 +93,21 @@ const Staking = () => {
     }
   }, [account, state.selectPhase])
 
-  const CallModal = () => {
-    return (
-      <div className="modal" style={{ display: modal ? "block" : "none" }}>
-        <div className="modal__container">
-          <div className="modal__staking">
-            <div className="close-button" onClick={() => setModal(false)}>
-              <div className="close-button--1">
-                <div className="close-button--2" />
-              </div>
-            </div>
-            <div className="modal__staking__button">
-              <div>
-                <p className="spoqa">
-                  가스비 절감을 위해
-                </p>
-                <h2 className="spoqa__bold">
-                  ELFI 토큰도 같이 출금하기
-                </h2>
-              </div>
-              <div>
-                <p className="modal__staking__button__arrow bold">
-                  {'>'}
-                </p>
-              </div>
-            </div>
-            <div className="modal__staking__button">
-              <div>
-                <p className="spoqa">
-                  ELFI 토큰은 나중에 수취하고
-                </p>
-                <h2 className="spoqa__bold">
-                  EL 토큰만 전송하기
-                </h2>
-              </div>
-              <div>
-                <p className="modal__staking__button__arrow bold">
-                  {'>'}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  const [amount, setAmount] = useState<string>('');
-
-  const ElStaking = () => {
-    return (
-      <div className="modal" style={{ display: elStakingModal ? "block" : "none" }}>
-        <div className="modal__container">
-          <div className="modal__header">
-            <div className="modal__header__token-info-wrapper">
-              <img className="modal__header__image" src={ELFI} alt="Token" />
-              <div className="modal__header__name-wrapper">
-                <p className="modal__header__name spoqa__bold">EL</p>
-              </div>
-            </div>
-            <div className="close-button" onClick={() => setElStakingModal(false)}>
-              <div className="close-button--1">
-                <div className="close-button--2" />
-              </div>
-            </div>
-          </div>
-          <div className='modal__converter'>
-            <div
-              className={`modal__converter__column${elStakingSelected ? "--selected" : ""}`}
-              onClick={() => { elStakingSelect(true) }}
-            >
-              <p className="bold">STAKING</p>
-            </div>
-            <div
-              className={`modal__converter__column${!elStakingSelected ? "--selected" : ""}`}
-              onClick={() => { elStakingSelect(false) }}
-            >
-              <p className="bold">UNSTAKING</p>
-            </div>
-          </div>
-          <div className="modal__body">
-            <div>
-              <div className="modal__value-wrapper">
-                <p className="modal__maximum bold" onClick={() => { }}>
-                  MAX
-                </p>
-                <p className="modal__value bold">
-                  <input
-                    type="number"
-                    className="modal__text-input"
-                    placeholder="0"
-                    value={amount}
-                    style={{ fontSize: amount.length < 8 ? 60 : amount.length > 12 ? 35 : 45 }}
-                    onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
-                      ["-", "+", "e"].includes(e.key) && e.preventDefault();
-                    }}
-                    onChange={({ target }) => {
-                      target.value = target.value.replace(/(\.\d{18})\d+/g, '$1');
-
-                      setAmount(target.value);
-                    }}
-                  />
-                </p>
-              </div>
-              <div className="modal__staking__container">
-                <p className="spoqa__bold">
-                  스테이킹 가능한 양
-                </p>
-                <div>
-                  <p className="spoqa__bold">
-                    Wallet balance
-                  </p>
-                  <p className="spoqa__bold">
-                    1000000 EL
-                  </p>
-                </div>
-              </div>
-              <div className={`modal__button${amount === "" ? "--disable" : ""}`} onClick={() => { }}>
-                <p>
-                  STAKING
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <>
       <Header title="STAKING" />
       <section className="staking">
-        {CallModal()}
-        {ElStaking()}
+        <ClaimStakingRewardModal
+          visible={claimStakingRewardModalVisible}
+          closeHandler={() => setClaimStakingRewardModalVisible(false)}
+        />
+        <StakingModal
+          visible={stakingModalVisible}
+          closeHandler={() => setStakingModalVisible(false)}
+          stakedBalance={roundData.accountPrincipal}
+          round={state.selectPhase}
+          afterTx={() => { account && fetchRoundData(account, state.selectPhase) }}
+        />
         <Title label="EL 토큰 스테이킹" />
         <div>
           <p>
@@ -272,7 +162,10 @@ const Staking = () => {
                     roundData.loading ?
                       <Skeleton width={100} height={40} /> :
                       <span>
-                        {roundData.apr.eq(constants.MaxUint256) ? '-' : toPercentWithoutSign(roundData.apr)}
+                        {
+                          current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) <= 0
+                            || roundData.apr.eq(constants.MaxUint256) ? '-' : toPercentWithoutSign(roundData.apr)
+                        }
                       </span>
                   }
                   &nbsp;%
@@ -289,14 +182,15 @@ const Staking = () => {
                     roundData.loading ?
                       <Skeleton width={100} height={40} /> :
                       <>
-                        <span className="spoqa">{`${formatCommaSmall(roundData.accountPrincipal)} `}</span>
-                        EL
+                        <span className="spoqa">
+                          {`${current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0 ? formatCommaSmall(roundData.accountPrincipal) : '-'}`}
+                        </span> EL
                       </>
                   }
                 </h2>
-                <a className="staking__button" onClick={() => setModal(true)}>
+                <a className="staking__button" onClick={() => setStakingModalVisible(true)}>
                   <p>
-                    마이그레이션 | 언스테이킹
+                    스테이킹 | 언스테이킹
                   </p>
                 </a>
               </div>
@@ -324,7 +218,7 @@ const Staking = () => {
                     ELFI
                   </h2>
               }
-              <a className="staking__button" onClick={(e) => setElStakingModal(true)}>
+              <a className="staking__button" onClick={(e) => setClaimStakingRewardModalVisible(true)}>
                 <p>
                   수령하기
                 </p>
