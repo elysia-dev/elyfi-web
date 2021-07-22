@@ -13,8 +13,10 @@ import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import PriceContext from 'src/contexts/PriceContext';
 import calcAPR from 'src/core/utils/calcAPR';
 import { ELFIPerDayOnELStakingPool } from 'src/core/data/stakings';
+import moment from 'moment';
 
 const Staking = () => {
+  const current = moment();
   const { account, library } = useWeb3React();
   const { elPrice, elfiPrice } = useContext(PriceContext);
 
@@ -23,8 +25,11 @@ const Staking = () => {
   }, [library])
   // FIXME : calc current phase with current date
 
-  const TotalPhase = 6;
-  const currentPhase = 2;
+  const currentPhase = useMemo(() => {
+    return stakingRoundTimes.filter((round) =>
+      current.diff(round.startedAt) >= 0
+    ).length
+  }, [current]);
 
   const [state, setState] = useState({
     selectPhase: 1,
@@ -78,8 +83,8 @@ const Staking = () => {
       fetchRoundData(account, state.selectPhase);
     }
   }, [account, state.selectPhase])
-  
-  const CallModal = () => { 
+
+  const CallModal = () => {
     return (
       <div className="modal" style={{ display: modal ? "block" : "none" }}>
         <div className="modal__container">
@@ -171,12 +176,12 @@ const Staking = () => {
                     placeholder="0"
                     value={amount}
                     style={{ fontSize: amount.length < 8 ? 60 : amount.length > 12 ? 35 : 45 }}
-                    onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => { 
+                    onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
                       ["-", "+", "e"].includes(e.key) && e.preventDefault();
                     }}
                     onChange={({ target }) => {
                       target.value = target.value.replace(/(\.\d{18})\d+/g, '$1');
-                      
+
                       setAmount(target.value);
                     }}
                   />
@@ -224,46 +229,35 @@ const Staking = () => {
         </div>
         <div className="staking__progress-bar__wrapper">
           <div className="staking__progress-bar">
-            <div className="staking__progress-bar__value" style={{ width: ((1100 / 5) * (currentPhase - 1)) }}/>
+            <div
+              className="staking__progress-bar__value"
+              style={{ width: ((1100 / 5) * (currentPhase - 1)) }}
+            />
           </div>
           <div className="staking__progress-bar__button__wrapper">
-          {
-            stakingRoundTimes.map((time, index) => {
-              return (
-                <div 
-                  key={`dot-${index}`}
-                  className={`staking__progress-bar__button${
-                    index + 1 === state.selectPhase ? " now" 
-                      :
-                      index + 1 < currentPhase ? " ended"
-                        :
-                        index + 1 > currentPhase ? " waiting" 
-                          : 
-                          
-                          " ended"
-                  }`}
-                  onClick={() => setState({ selectPhase: index + 1 })}
-                >
-                  <div>
-                    <p className="spoqa">
-                    {
-                      index + 1 < currentPhase ? 
-                        `${index + 1}차 완료`
-                        :
-                        index + 1 > currentPhase ? 
-                          `${index + 1}차`
-                          : 
-                          `${index + 1}차 진행중`
-                    }
-                    </p>
-                    <p style={{ display: index + 1 === state.selectPhase ? "block" : "none" }}>
-                      {`${time.startedAt.format('YYYY.MM.DD')} ~ ${time.endedAt.format('YYYY.MM.DD')} (UTC+9:00)`}
-                    </p>
+            {
+              stakingRoundTimes.map((time, index) => {
+                const status = current.diff(time.startedAt) < 0 ? "wating" : current.diff(time.endedAt) > 0 ? "ended" : "now"
+                return (
+                  <div
+                    key={`dot-${index}`}
+                    className={`staking__progress-bar__button ${status}`}
+                    onClick={() => setState({ selectPhase: index + 1 })}
+                  >
+                    <div>
+                      <p className="spoqa">
+                        {
+                          `${index + 1} ${status === 'ended' ? '완료' : status === "now" ? "진행중" : ""}`
+                        }
+                      </p>
+                      <p style={{ display: status === 'now' ? "block" : "none" }}>
+                        {`${time.startedAt.format('YYYY.MM.DD')} ~ ${time.endedAt.format('YYYY.MM.DD')} (UTC+9:00)`}
+                      </p>
+                    </div>
                   </div>
-                </div>
                 )
               })
-            } 
+            }
           </div>
         </div>
         <div className="staking__infomation">
