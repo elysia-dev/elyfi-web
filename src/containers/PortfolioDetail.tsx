@@ -32,7 +32,7 @@ import { Title } from 'src/components/Texts';
 import PortfolioInfoKor from 'src/assets/images/portfolio_info--kor.png';
 import PortfolioInfoEng from 'src/assets/images/portfolio_info--eng.png';
 import PortfolioInfoCha from 'src/assets/images/portfolio_info--cha.png';
-
+import Slate from 'src/clients/Slate';
 
 const PortfolioDetail: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
@@ -52,6 +52,10 @@ const PortfolioDetail: FunctionComponent = () => {
   const lng = parsedTokenId.collateralLongitude / 100000 || 126.64780198475671;
   const [address, setAddress] = useState('-');
   const [mouseHover, setMouseHover] = useState(0);
+  const [contractImage, setContractImage] = useState({
+    hash: "",
+    link: "",
+  })
 
   const loadAddress = async (lat: number, lng: number, language: LanguageType) => {
     setAddress(
@@ -64,6 +68,31 @@ const PortfolioDetail: FunctionComponent = () => {
 
     loadAddress(lat, lng, language);
   }, [lat, lng, language])
+
+  const loadContractImage = async (ipfs: string) => {
+    try {
+      const response = await Slate.fetctABTokenIpfs(ipfs)
+      const contractDoc = response.data.documents.find((doc) => doc.type === 1)
+
+      if (contractDoc) {
+        setContractImage({
+          hash: contractDoc.hash,
+          link: contractDoc.link
+        });
+      }
+    } catch {
+      setContractImage({
+        hash: "",
+        link: ""
+      })
+    }
+  }
+
+  useEffect(() => {
+    if (abToken?.ipfsHash) {
+      loadContractImage(abToken.ipfsHash)
+    }
+  }, [abToken])
 
   if (error) return (<ErrorPage />)
 
@@ -489,9 +518,9 @@ const PortfolioDetail: FunctionComponent = () => {
                       </p>
                     </td>
                     <td colSpan={2}>
-                      <p className="spoqa__bold">
-                        {abToken?.ipfsHash || '-'}
-                      </p>
+                      <a className="spoqa__bold" href={contractImage.link} style={{ "cursor": "pointer" }}>
+                        {contractImage.hash || '-'}
+                      </a>
                     </td>
                   </tr>
                 </table>
