@@ -40,6 +40,10 @@ const StakingModal: React.FunctionComponent<{
   const [txInfo, setTxHash] = useState({ hash: "", closeAfterTx: false })
   const { wating } = useWatingTx(txInfo.hash)
 
+  const amountLteZero = !amount || parseFloat(amount) <= 0;
+  const amountGtBalance = utils.parseEther(amount || '0').gt(balance);
+  const amountGtStakedBalance = utils.parseEther(amount || '0').gt(stakedBalance);
+
   useEffect(() => {
     if (!wating) {
       loadAllowance()
@@ -123,9 +127,9 @@ const StakingModal: React.FunctionComponent<{
               {
                 !stakingMode ?
                   <div
-                    className={`modal__button${amount === "" ? "--disable" : ""}`}
+                    className={`modal__button${amountLteZero || amountGtStakedBalance ? "--disable" : ""}`}
                     onClick={() => {
-                      if (!account) return
+                      if (!account || amountLteZero || amountGtStakedBalance) return
 
                       elStakingPool.withdraw(account, utils.parseEther(amount), round.toString()).then((hash) => {
                         if (hash) setTxHash({ hash, closeAfterTx: true });
@@ -138,9 +142,9 @@ const StakingModal: React.FunctionComponent<{
                   </div> :
                   !allowanceLoading && allowance.gte(balance) ?
                     <div
-                      className={`modal__button${amount === "" ? "--disable" : ""}`}
+                      className={`modal__button${amountLteZero || amountGtBalance ? "--disable" : ""}`}
                       onClick={() => {
-                        if (!account) return
+                        if (!account || amountLteZero || amountGtBalance) return
 
                         elStakingPool.stake(account, utils.parseEther(amount)).then((hash) => {
                           if (hash) setTxHash({ hash, closeAfterTx: true });
