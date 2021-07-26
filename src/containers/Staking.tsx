@@ -18,6 +18,7 @@ import StakingModal from 'src/containers/StakingModal';
 import Token from 'src/enums/Token';
 import AppColors from 'src/enums/AppColors';
 import { tokenToString } from 'typescript';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI,
@@ -28,6 +29,7 @@ const Staking: React.FunctionComponent<IProps> = ({
   stakedToken,
   rewardToken,
 }) => {
+  const { t } = useTranslation();
   const current = moment();
   const domainColor = useMemo(() => {
     return rewardToken === Token.ELFI ? AppColors.elBlue : AppColors.daiYellow;
@@ -106,7 +108,6 @@ const Staking: React.FunctionComponent<IProps> = ({
       fetchRoundData(account, state.selectPhase);
     }
   }, [account, state.selectPhase])
-
   return (
     <>
       <Header title="STAKING" />
@@ -128,13 +129,21 @@ const Staking: React.FunctionComponent<IProps> = ({
           round={state.selectPhase}
           afterTx={() => { account && fetchRoundData(account, state.selectPhase) }}
         />
-        <Title label={`${stakedToken} 토큰 스테이킹`} />
+        <Title label={t("staking.token_staking", { stakedToken: stakedToken })} />
         <div>
           <p>
-            {stakedToken} 토큰을 스테이킹하면 {rewardToken} 토큰이 채굴되며, ELYFI V1 기간 동안에는 6차례로 나눠서 진행됩니다.<br />
-            스테이킹한 {stakedToken} 토큰은 자유롭게 언스테이킹이 가능합니다.<br />
-            또한 각 차시는 별개로 진행되며, 이전 차시에 스테이킹한 {stakedToken} 토큰과 보상 받은 {rewardToken} 토큰은 다음 차시 스테이킹 풀에 자동으로 전송되지 않습니다.<br />
-            자세한 채굴 플랜은 여기에서 확인이 가능합니다.
+            {t("staking.token_staking--content.0", { stakedToken: stakedToken, rewardToken: rewardToken })}<br/>
+            {t("staking.token_staking--content.1", { stakedToken: stakedToken, rewardToken: rewardToken })}<br/>
+            {t("staking.token_staking--content.2", { stakedToken: stakedToken, rewardToken: rewardToken })}<br /><br />
+            {t("staking.token_staking--content.3")}
+            <a 
+              href="https://defi.elysia.land/reward" 
+              target="_blank" 
+              className="link"
+              >
+              {t("staking.token_staking--content.4")}
+            </a>
+            {t("staking.token_staking--content.5")}
           </p>
         </div>
         <div className="staking__progress-bar__wrapper">
@@ -147,25 +156,35 @@ const Staking: React.FunctionComponent<IProps> = ({
           <div className="staking__progress-bar__button__wrapper">
             {
               stakingRoundTimes.map((time, index) => {
-                const status = current.diff(time.startedAt) < 0 ? "wating" : current.diff(time.endedAt) > 0 ? "ended" : "now"
+                const status = current.diff(time.startedAt) < 0 ? "waiting" : current.diff(time.endedAt) > 0 ? "ended" : "now";
+                const onClicked = state.selectPhase - 1 === index ? " selected" : ""
                 return (
                   <div
                     key={`dot-${index}`}
-                    className={`staking__progress-bar__button ${status}`}
+                    className={`staking__progress-bar__button ${status} ${onClicked}`}
                     onClick={() => setState({ selectPhase: index + 1 })}
                     style={{
-                      backgroundColor: status === "wating" ? "white" : domainColor,
+                      backgroundColor: status === "waiting" ? "white" : domainColor,
                       borderColor: domainColor,
                     }}
                   >
                     <div>
                       <p className="spoqa">
                         {
-                          `${index + 1} ${status === 'ended' ? '완료' : status === "now" ? "진행중" : ""}`
+                          status === 'ended' 
+                            ? 
+                            t("staking.nth_ended", {nth: index + 1})
+                            :
+                            status === "now"
+                              ?
+                              t("staking.nth_progress", {nth: index + 1})
+                              :
+                              t("staking.nth", {nth: index + 1})
+                          
                         }
                       </p>
-                      <p style={{ display: status === 'now' ? "block" : "none" }}>
-                        {`${time.startedAt.format('YYYY.MM.DD')} ~ ${time.endedAt.format('YYYY.MM.DD')} (UTC+9:00)`}
+                      <p style={{ display: status === 'now' ? "block" : onClicked === ' selected' ? "block" : "none" }}>
+                        {`${time.startedAt.format('YYYY.MM.DD')} ~ ${time.endedAt.format('YYYY.MM.DD')} (KST)`}
                       </p>
                     </div>
                   </div>
@@ -178,7 +197,9 @@ const Staking: React.FunctionComponent<IProps> = ({
           <div className="staking__container__wrapper">
             <div className="staking__container">
               <div className="staking__container__header">
-                <p className="spoqa__bold">{state.selectPhase}차 스테이킹 APR</p>
+                <p className="spoqa__bold">
+                  {t("staking.nth_staking", {nth: state.selectPhase})}
+                </p>
               </div>
               <div>
                 <h2 className="spoqa__bold">
@@ -198,7 +219,9 @@ const Staking: React.FunctionComponent<IProps> = ({
             </div>
             <div className="staking__container">
               <div className="staking__container__header">
-                <p className="spoqa__bold">{state.selectPhase}차 스테이킹 수량</p>
+                <p className="spoqa__bold">
+                  {t("staking.nth_staking_amount", {nth: state.selectPhase})}
+                </p>
               </div>
               <div className="staking__value">
                 <h2 className="spoqa__bold">
@@ -212,16 +235,19 @@ const Staking: React.FunctionComponent<IProps> = ({
                       </>
                   }
                 </h2>
-                <a className="staking__button" onClick={() => setStakingModalVisible(true)}>
-                  <p>
-                    스테이킹 | 언스테이킹
-                  </p>
-                </a>
               </div>
               <div className="staking__content">
-                <p>
-                  * 마이그레이션’은 이전에 스테이킹된 {stakedToken} 토큰을 현재 진행중인 스테이킹 풀에 전송하여 자동으로 스테이킹 하는 기능입니다.
-                </p>
+                <a 
+                  className={`staking__button ${current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) < 0 ? "disable" : ""}`} 
+                  onClick={(e) => {
+                    current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0 
+                      &&
+                      setStakingModalVisible(true)}}
+                >
+                  <p>
+                    {t("staking.staking_btn")}
+                  </p>
+                </a>
               </div>
             </div>
           </div>
@@ -230,7 +256,9 @@ const Staking: React.FunctionComponent<IProps> = ({
           </div>
           <div className="staking__container">
             <div className="staking__container__header">
-              <p className="spoqa__bold">{state.selectPhase}차 보상 수령</p>
+              <p className="spoqa__bold">
+                {t("staking.nth_reward_amount", {nth: state.selectPhase})}
+              </p>
             </div>
             <div className="staking__value__reward">
               {
@@ -247,9 +275,16 @@ const Staking: React.FunctionComponent<IProps> = ({
                     {rewardToken}
                   </h2>
               }
-              <a className="staking__button" onClick={(e) => setClaimStakingRewardModalVisible(true)}>
+              <a 
+                className={`staking__button ${current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) < 0 ? "disable" : ""}`} 
+                onClick={(e) => {
+                  current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0 
+                    &&
+                    setClaimStakingRewardModalVisible(true)
+                }}
+              >
                 <p>
-                  수령하기
+                  {t("staking.claim_reward")}
                 </p>
               </a>
             </div>

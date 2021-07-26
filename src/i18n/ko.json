@@ -18,7 +18,10 @@
       "partners": "협업기관",
       "connect_wallet": "지갑 연결하기",
       "disconnect": "연결 끊기",
-      "install_metamask": "Install Metamask"
+      "install_metamask": "Install Metamask",
+      "deposit_withdraw": "예치/출금",
+      "el_staking": "EL 스테이킹",
+      "elfi_staking": "ELFI 스테이킹"
     },
     "dashboard": {
       "deposits--header": "예치한 토큰",
@@ -128,6 +131,53 @@
       "limit_used--content": "차입 한도에 대한 차입금 비율",
       "available_borrow_limit": "가용 한도",
       "available_borrow_limit--content": "차입 한도 – 차입금"
+    },
+    "staking": {
+      "token_staking": "{{stakedToken}} 스테이킹",
+      "token_staking--content": [
+        "{{stakedToken}} 스테이킹은 {{rewardToken}} 채굴 플랜에 따라 6차례로 나눠서 진행됩니다.",
+        "{{stakedToken}} 토큰을 스테이킹하면 {{rewardToken}} 토큰을 리워드로 받게 되며, 스테이킹한 EL 토큰은 언제든지 언스테이킹이 가능합니다.",
+        "또한 이전 회차에 스테이킹한 {{stakedToken}} 토큰과 보상 받은 {{rewardToken}} 토큰은 다음 회차의 스테이킹 풀에 자동으로 전송되지 않습니다.",
+        "자세한 채굴 플랜은 ",
+        "여기",
+        "에서 확인이 가능합니다."
+      ],
+      "nth_period": "{{nth}}차 기간",
+      "nth_ended": "{{nth}}차 완료",
+      "nth_progress": "{{nth}}차 진행중",
+      "nth": "{{nth}}차",
+      "nth_staking": "{{nth}}차 스테이킹 APR",
+      "nth_staking_amount": "{{nth}}차 스테이킹 수량",
+      "staking_btn": "스테이킹 | 언스테이킹",
+      "nth_reward_amount": "{{nth}}차 보상 수량",
+      "claim_reward": "수령하기",
+      "staking": "스테이킹",
+      "unstaking": "언스테이킹",
+      "max": "최대",
+      "available_staking_amount": "스테이킹 가능한 수량",
+      "wallet_balance": "지갑 잔액",
+      "insufficient_balance": "잔액이 부족합니다",
+      "nth_staking_round_ended": "{{nth}}차 스테이킹 기간이 종료되었습니다. 스테이킹 페이지로 이동합니다.",
+      "ok": "확인",
+      "available_unstaking_amount": "언스테이킹 가능한 수량",
+      "available_claim_amount": "수령 가능한 수량",
+      "accumulated_reward_amount": "누적 보상 수량",
+      "unstaking_migration": "언스테이킹 | 마이그레이션",
+      "popup_button": [
+        "가스비 절감을 위해",
+        "ELFI 토큰도 같이 출금하기",
+        "ELFI 토큰은 나중에 수취하고",
+        "EL 토큰만 전송하기"
+      ],
+      "migration": "마이그레이션",
+      "migration--content": "마이그레이션은 스테이킹 수량 중 언스테이킹한 수량을 제외한 수량만큼 현재 진행중인 스테이킹 풀에 전송하여 자동으로 스테이킹 하는 기능입니다. 언스테이킹과 마이그레이션을 동시에 진행하기 때문에 이더리움 네트워크 이용 수수료 가스비를 아낄 수 있습니다.",
+      "migration_location": "마이그레이션 위치",
+      "available_amount": "입력 가능한 수량",
+      "reward_token_claim": "수취할 보상 토큰",
+      "elfi_token": "ELFI 토큰 수량",
+      "transfer": "전송하기",
+      "nth_ended_alert": "{{nth}}차 스테이킹 기간이 종료되어, 마이그레이션이 불가능합니다. 계속 진행하시겠습니까?",
+      "all_ended_alert": "현재 모든 회차의 스테이킹 기간이 종료되어 마이그레이션이 불가능합니다."
     }
   }
 }

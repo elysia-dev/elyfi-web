@@ -54,7 +54,11 @@ span {
   -khtml-user-select: none;
   user-select: none;
 }
-
+.link {
+  color: #00a7ff;
+  text-decoration: underline;
+  cursor: pointer;
+}
 .elysia {
   background-color: #fff;
   min-width: 1190px;
@@ -1523,10 +1527,19 @@ span {
           box-shadow: 0px 0px 6px #00bfff;
         }
         &.now {
-          background-color: #00bfff;
+          background-color: #f5f5f5;
+          border: 0;
           > div {
             > p {
-              color: #333333;
+              color: #333333 !important;
+            }
+          }
+        }
+        &.selected {
+          background-color: #00bfff !important;
+          > div {
+            > p {
+              color: #333333 !important;
             }
           }
         }
@@ -1596,6 +1609,14 @@ span {
         margin: 0;
         cursor: pointer;
       }
+      &.disable { 
+        box-shadow: none;
+        background-color: #f8f8f8;
+        cursor: not-allowed;
+        > p {
+          cursor: not-allowed;
+        }
+      }
     }
     &__value {
       height: 100%;
@@ -1612,7 +1633,7 @@ span {
       }
     }
     &__content {
-      border-top: 1px solid #000000;
+      border-top: 1px solid #e6e6e6;
       > p {
         margin: 12px 0 0;
         font-size: 12px;
@@ -1638,9 +1659,10 @@ span {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      background-color: #f8f8f8;
       &__header {
         padding-bottom: 6.5px;
-        border-bottom: 1px solid #000000;
+        border-bottom: 1px solid #e6e6e6;
         > p {
           margin: 0;
         }
