@@ -1,4 +1,4 @@
-import { BigNumber, utils } from 'ethers';
+import { BigNumber, constants, utils } from 'ethers';
 import React, { useState } from 'react'
 import ELFI from 'src/assets/images/ELFI.png';
 import useAllownace from 'src/hooks/useAllowance';
@@ -158,7 +158,7 @@ const StakingModal: React.FunctionComponent<{
                       elStakingPool
                         .withdraw(
                           account,
-                          amount.max ? balance : utils.parseEther(amount.value),
+                          amount.max ? constants.MaxUint256 : utils.parseEther(amount.value),
                           round.toString()
                         ).then((hash) => {
                           if (hash) setTxHash({ hash, closeAfterTx: true });
@@ -176,7 +176,7 @@ const StakingModal: React.FunctionComponent<{
                       onClick={() => {
                         if (!account || amountLteZero || amountGtBalance) return
 
-                        elStakingPool.stake(account, amount.max ? stakedBalance : utils.parseEther(amount.value)).then((hash) => {
+                        elStakingPool.stake(account, amount.max ? balance : utils.parseEther(amount.value)).then((hash) => {
                           if (hash) setTxHash({ hash, closeAfterTx: true });
                         })
                       }}
