@@ -58,6 +58,10 @@ const StakingModal: React.FunctionComponent<{
     }
   }, [wating])
 
+  useEffect(() => {
+    setAmount('');
+  }, [stakingMode])
+
   return (
     <div className="modal" style={{ display: visible ? "block" : "none" }}>
       <div className="modal__container">

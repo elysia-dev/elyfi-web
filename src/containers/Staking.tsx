@@ -150,7 +150,10 @@ const Staking: React.FunctionComponent<IProps> = ({
           <div className="staking__progress-bar">
             <div
               className="staking__progress-bar__value"
-              style={{ width: ((1100 / 5) * (currentPhase - 1)) }}
+              style={{ 
+                width: ((1100 / 5) * (currentPhase - 1)),
+                backgroundColor: domainColor
+              }}
             />
           </div>
           <div className="staking__progress-bar__button__wrapper">
@@ -161,12 +164,12 @@ const Staking: React.FunctionComponent<IProps> = ({
                 return (
                   <div
                     key={`dot-${index}`}
-                    className={`staking__progress-bar__button ${status} ${onClicked}${rewardToken === Token.ELFI ? "--EL" : "--ELFI"}`}
+                    className={`staking__progress-bar__button ${status} ${onClicked} ${rewardToken === Token.ELFI ? "EL" : "ELFI"}`}
                     onClick={() => setState({ selectPhase: index + 1 })}
-                    style={{
-                      backgroundColor: status === "waiting" ? "white" : domainColor,
-                      borderColor: domainColor,
-                    }}
+                    // style={{
+                    //   backgroundColor: status === "waiting" ? "white" : domainColor,
+                    //   borderColor: domainColor,
+                    // }}
                   >
                     <div>
                       <p className="spoqa">
@@ -184,7 +187,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                         }
                       </p>
                       <p style={{ display: status === 'now' ? "block" : onClicked === ' selected' ? "block" : "none" }}>
-                        {`${time.startedAt.format('YYYY.MM.DD')} ~ ${time.endedAt.format('YYYY.MM.DD')} (KST)`}
+                        {`${time.startedAt.format('YYYY.MM.DD')} 19:00:00\n~ ${time.endedAt.format('YYYY.MM.DD')} 19:00:00 (KST)`}
                       </p>
                     </div>
                   </div>

@@ -1507,7 +1507,6 @@ span {
       &__value {
         width: 0%;
         height: 1px;
-        background-color: #00BFFF;
       }
       &__wrapper {
         padding: 70px 30px;
@@ -1526,25 +1525,14 @@ span {
         &:hover {
           box-shadow: 0px 0px 6px #00bfff;
         }
-        &.now {
-          background-color: #f5f5f5;
-          border: 0;
-          > div {
-            > p {
-              color: #333333 !important;
-            }
+        
+        &.selected {
+          &.EL {
+            background-color: #00bfff !important;
           }
-        }
-        &.selected--EL {
-          background-color: #00bfff !important;
-          > div {
-            > p {
-              color: #333333 !important;
-            }
+          &.ELFI {
+            background-color: #f9ae19 !important;
           }
-        }
-        &.selected--ELFI {
-          background-color: #f9ae19 !important;
           > div {
             > p {
               color: #333333 !important;
@@ -1553,6 +1541,28 @@ span {
         }
         &.ended {
           background-color: #ffffff;
+          border: 1px solid #000000;
+          &.EL {
+            border: 1px solid #00bfff !important;
+          }
+          &.ELFI {
+            border: 1px solid #f9ae19 !important;
+          }
+        }
+        &.now {
+          background-color: #ffffff;
+          border: 1px solid #000000;
+          &.EL {
+            border: 1px solid #00bfff !important;
+          }
+          &.ELFI {
+            border: 1px solid #f9ae19 !important;
+          }
+          > div {
+            > p {
+              color: #333333 !important;
+            }
+          }
         }
         &.waiting {
           background-color: #f5f5f5;
