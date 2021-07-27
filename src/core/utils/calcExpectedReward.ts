@@ -1,16 +1,19 @@
-import { BigNumber, constants } from "ethers"
+import { BigNumber } from "ethers"
 import moment from "moment";
 import RoundData from "../types/RoundData";
 
-const calcExpectedRewrad = (
+const calcExpectedReward = (
 	round: RoundData,
 	mintedPerDay: BigNumber,
 ): BigNumber => {
-	if (round.totalPrincipal.isZero()) return constants.Zero;
-
 	const current = moment();
 
-	if (current.diff(round.startedAt) < 0 || current.diff(round.endedAt) > 0) {
+	if (
+		round.totalPrincipal.isZero()
+		|| round.accountPrincipal.isZero()
+		|| current.diff(round.startedAt) < 0
+		|| current.diff(round.endedAt) > 0
+	) {
 		return round.accountReward;
 	}
 
@@ -23,4 +26,4 @@ const calcExpectedRewrad = (
 	)
 }
 
-export default calcExpectedRewrad;
+export default calcExpectedReward;

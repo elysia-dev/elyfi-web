@@ -18,7 +18,7 @@ import StakingModal from 'src/containers/StakingModal';
 import Token from 'src/enums/Token';
 import AppColors from 'src/enums/AppColors';
 import { useTranslation } from 'react-i18next';
-import calcExpectedRewrad from 'src/core/utils/calcExpectedRewrad';
+import calcExpectedReward from 'src/core/utils/calcExpectedReward';
 import RoundData from 'src/core/types/RoundData';
 import CountUp from 'react-countup';
 import { formatEther } from 'ethers/lib/utils';
@@ -130,7 +130,7 @@ const Staking: React.FunctionComponent<IProps> = ({
       () => {
         setExpectedReward({
           before: expectedReward.value.isZero() ? roundData.accountReward : expectedReward.value,
-          value: calcExpectedRewrad(
+          value: calcExpectedReward(
             roundData,
             rewardToken === Token.ELFI ?
               ELFIPerDayOnELStakingPool :
@@ -199,7 +199,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           <div className="staking__progress-bar">
             <div
               className="staking__progress-bar__value"
-              style={{ 
+              style={{
                 width: ((1100 / 5) * (currentPhase - 1)),
                 backgroundColor: domainColor
               }}
@@ -215,10 +215,10 @@ const Staking: React.FunctionComponent<IProps> = ({
                     key={`dot-${index}`}
                     className={`staking__progress-bar__button ${status} ${onClicked} ${rewardToken === Token.ELFI ? "EL" : "ELFI"}`}
                     onClick={() => setState({ selectPhase: index + 1 })}
-                    // style={{
-                    //   backgroundColor: status === "waiting" ? "white" : domainColor,
-                    //   borderColor: domainColor,
-                    // }}
+                  // style={{
+                  //   backgroundColor: status === "waiting" ? "white" : domainColor,
+                  //   borderColor: domainColor,
+                  // }}
                   >
                     <div>
                       <p className="spoqa">
