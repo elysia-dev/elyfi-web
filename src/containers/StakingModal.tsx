@@ -135,7 +135,7 @@ const StakingModal: React.FunctionComponent<{
               </div>
               <div className="modal__staking__container">
                 <p className="spoqa__bold">
-                  {t("staking.available_staking_amount")}
+                  {!stakingMode ? t("staking.available_unstaking_amount") : t("staking.available_staking_amount")}
                 </p>
                 <div>
                   <p className="spoqa__bold">
