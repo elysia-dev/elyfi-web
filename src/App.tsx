@@ -13,6 +13,8 @@ import {
 import ReservesProvider from './providers/ReservesProvider';
 import envs from 'src/core/envs';
 import PriceProvider from './providers/PriceProvider';
+import { isMobile } from 'react-device-detect';
+import MobileDisable from './components/MobileDisable';
 
 const client = new ApolloClient({
   uri: envs.subgraphURI,
@@ -26,7 +28,7 @@ const App: React.FC = () => {
         <LanguageProvider>
           <Web3ReactProvider getLibrary={getLibrary}>
             <ReservesProvider>
-              <AppNavigator />
+              {isMobile ? <MobileDisable /> : <AppNavigator />}
             </ReservesProvider>
           </Web3ReactProvider>
         </LanguageProvider>
