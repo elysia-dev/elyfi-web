@@ -10,7 +10,7 @@ export type PriceContextType = {
 export const initialPriceContext = {
   elfiPrice: 0,
   elPrice: 0,
-  loading: false,
+  loading: true,
   error: false,
 }
 

@@ -7,7 +7,7 @@ import { useWeb3React } from '@web3-react/core';
 import StakingPool from 'src/core/contracts/StakingPool';
 import { constants } from 'ethers';
 import Skeleton from 'react-loading-skeleton';
-import { formatCommaSmall, toPercentWithoutSign } from 'src/utiles/formatters';
+import { formatCommaSmall, formatSixFracionDigit, toPercentWithoutSign } from 'src/utiles/formatters';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import PriceContext from 'src/contexts/PriceContext';
 import calcAPR from 'src/core/utils/calcAPR';
@@ -17,8 +17,11 @@ import ClaimStakingRewardModal from 'src/components/ClaimStakingRewardModal';
 import StakingModal from 'src/containers/StakingModal';
 import Token from 'src/enums/Token';
 import AppColors from 'src/enums/AppColors';
-import { tokenToString } from 'typescript';
 import { useTranslation } from 'react-i18next';
+import calcExpectedRewrad from 'src/core/utils/calcExpectedRewrad';
+import RoundData from 'src/core/types/RoundData';
+import CountUp from 'react-countup';
+import { formatEther } from 'ethers/lib/utils';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI,
@@ -53,14 +56,19 @@ const Staking: React.FunctionComponent<IProps> = ({
   const [stakingModalVisible, setStakingModalVisible] = useState<boolean>(false);
   const [claimStakingRewardModalVisible, setClaimStakingRewardModalVisible] = useState<boolean>(false);
 
-  const [roundData, setRoundData] = useState({
+  const [roundData, setRoundData] = useState<RoundData>({
     loading: true,
     error: '',
     accountReward: constants.Zero,
     accountPrincipal: constants.Zero,
     totalPrincipal: constants.Zero,
     apr: constants.Zero,
+    loadedAt: moment(),
+    startedAt: stakingRoundTimes[0].startedAt,
+    endedAt: stakingRoundTimes[0].endedAt,
   })
+
+  const [expectedReward, setExpectedReward] = useState({ before: constants.Zero, value: constants.Zero });
 
   const fetchRoundData = async (account: string, round: number) => {
     if (current.diff(stakingRoundTimes[round - 1].startedAt) < 0) {
@@ -70,20 +78,22 @@ const Staking: React.FunctionComponent<IProps> = ({
         accountPrincipal: constants.Zero,
         totalPrincipal: constants.Zero,
         apr: constants.Zero,
-      })
+      });
+      setExpectedReward({ before: constants.Zero, value: constants.Zero });
       return
     }
 
-    setRoundData({ ...roundData, loading: true })
+    setRoundData({ ...roundData, loading: true });
 
     try {
       const poolData = await stakingPool.getPoolData(round.toString());
       const userData = await stakingPool.getUserData(account, round.toString());
+      const accountReward = await stakingPool.getUserReward(account, round.toString());
 
       setRoundData({
         ...roundData,
         loading: false,
-        accountReward: await stakingPool.getUserReward(account, round.toString()),
+        accountReward,
         totalPrincipal: poolData.totalPrincipal,
         accountPrincipal: userData.userPrincipal,
         apr: calcAPR(
@@ -92,6 +102,9 @@ const Staking: React.FunctionComponent<IProps> = ({
           rewardToken === Token.ELFI ? ELFIPerDayOnELStakingPool : DAIPerDayOnELFIStakingPool,
           rewardToken === Token.ELFI ? elfiPrice : 1
         ),
+        loadedAt: moment(),
+        startedAt: stakingRoundTimes[round - 1].startedAt,
+        endedAt: stakingRoundTimes[round - 1].endedAt,
       })
     } catch (e) {
       console.log(e)
@@ -108,6 +121,29 @@ const Staking: React.FunctionComponent<IProps> = ({
       fetchRoundData(account, state.selectPhase);
     }
   }, [account, state.selectPhase])
+
+  useEffect(() => {
+    if (roundData.error || roundData.loading) return;
+
+    const interval = setInterval(
+      () => {
+        setExpectedReward({
+          before: expectedReward.value.isZero() ? roundData.accountReward : expectedReward.value,
+          value: calcExpectedRewrad(
+            roundData,
+            rewardToken === Token.ELFI ?
+              ELFIPerDayOnELStakingPool :
+              DAIPerDayOnELFIStakingPool,
+          )
+        })
+      }, 2000
+    )
+
+    return () => {
+      clearInterval(interval);
+    }
+  });
+
   return (
     <>
       <Header title="STAKING" />
@@ -116,7 +152,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           visible={claimStakingRewardModalVisible}
           stakedToken={stakedToken}
           token={rewardToken}
-          balance={roundData.accountReward}
+          balance={expectedReward.value}
           round={state.selectPhase}
           closeHandler={() => setClaimStakingRewardModalVisible(false)}
           afterTx={() => { account && fetchRoundData(account, state.selectPhase) }}
@@ -132,15 +168,15 @@ const Staking: React.FunctionComponent<IProps> = ({
         <Title label={t("staking.token_staking", { stakedToken: stakedToken })} />
         <div>
           <p>
-            {t("staking.token_staking--content.0", { stakedToken: stakedToken, rewardToken: rewardToken })}<br/>
-            {t("staking.token_staking--content.1", { stakedToken: stakedToken, rewardToken: rewardToken })}<br/>
+            {t("staking.token_staking--content.0", { stakedToken: stakedToken, rewardToken: rewardToken })}<br />
+            {t("staking.token_staking--content.1", { stakedToken: stakedToken, rewardToken: rewardToken })}<br />
             {t("staking.token_staking--content.2", { stakedToken: stakedToken, rewardToken: rewardToken })}<br /><br />
             {t("staking.token_staking--content.3")}
-            <a 
-              href="https://defi.elysia.land/reward" 
-              target="_blank" 
+            <a
+              href="https://defi.elysia.land/reward"
+              target="_blank"
               className="link"
-              >
+            >
               {t("staking.token_staking--content.4")}
             </a>
             {t("staking.token_staking--content.5")}
@@ -174,16 +210,16 @@ const Staking: React.FunctionComponent<IProps> = ({
                     <div>
                       <p className="spoqa">
                         {
-                          status === 'ended' 
-                            ? 
-                            t("staking.nth_ended", {nth: index + 1})
+                          status === 'ended'
+                            ?
+                            t("staking.nth_ended", { nth: index + 1 })
                             :
                             status === "now"
                               ?
-                              t("staking.nth_progress", {nth: index + 1})
+                              t("staking.nth_progress", { nth: index + 1 })
                               :
-                              t("staking.nth", {nth: index + 1})
-                          
+                              t("staking.nth", { nth: index + 1 })
+
                         }
                       </p>
                       <p style={{ display: status === 'now' ? "block" : onClicked === ' selected' ? "block" : "none" }}>
@@ -201,7 +237,7 @@ const Staking: React.FunctionComponent<IProps> = ({
             <div className="staking__container">
               <div className="staking__container__header">
                 <p className="spoqa__bold">
-                  {t("staking.nth_staking", {nth: state.selectPhase})}
+                  {t("staking.nth_staking", { nth: state.selectPhase })}
                 </p>
               </div>
               <div>
@@ -223,7 +259,7 @@ const Staking: React.FunctionComponent<IProps> = ({
             <div className="staking__container">
               <div className="staking__container__header">
                 <p className="spoqa__bold">
-                  {t("staking.nth_staking_amount", {nth: state.selectPhase})}
+                  {t("staking.nth_staking_amount", { nth: state.selectPhase })}
                 </p>
               </div>
               <div className="staking__value">
@@ -240,12 +276,13 @@ const Staking: React.FunctionComponent<IProps> = ({
                 </h2>
               </div>
               <div className="staking__content">
-                <a 
-                  className={`staking__button ${current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) < 0 ? "disable" : ""}`} 
+                <a
+                  className={`staking__button ${current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) < 0 ? "disable" : ""}`}
                   onClick={(e) => {
-                    current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0 
+                    current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0
                       &&
-                      setStakingModalVisible(true)}}
+                      setStakingModalVisible(true)
+                  }}
                 >
                   <p>
                     {t("staking.staking_btn")}
@@ -260,7 +297,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           <div className="staking__container">
             <div className="staking__container__header">
               <p className="spoqa__bold">
-                {t("staking.nth_reward_amount", {nth: state.selectPhase})}
+                {t("staking.nth_reward_amount", { nth: state.selectPhase })}
               </p>
             </div>
             <div className="staking__value__reward">
@@ -273,15 +310,34 @@ const Staking: React.FunctionComponent<IProps> = ({
                       className="colored spoqa__bold"
                       style={{ color: domainColor }}
                     >
-                      {`${formatCommaSmall(roundData.accountReward)} `}
+                      <CountUp
+                        className="spoqa__bold"
+                        start={
+                          parseFloat(formatEther(
+                            expectedReward.before
+                          ))
+                        }
+                        end={
+                          parseFloat(formatEther(
+                            expectedReward.before.isZero() ?
+                              roundData.accountReward :
+                              expectedReward.value
+                          ))
+                        }
+                        formattingFn={(number) => {
+                          return formatSixFracionDigit(number)
+                        }}
+                        decimals={4}
+                        duration={1}
+                      />
                     </span>
-                    {rewardToken}
+                    {` ${rewardToken}`}
                   </h2>
               }
-              <a 
-                className={`staking__button ${current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) < 0 ? "disable" : ""}`} 
+              <a
+                className={`staking__button ${current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) < 0 ? "disable" : ""}`}
                 onClick={(e) => {
-                  current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0 
+                  current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0
                     &&
                     setClaimStakingRewardModalVisible(true)
                 }}

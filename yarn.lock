@@ -6525,6 +6525,11 @@ cosmiconfig@^7.0.0:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
+countup.js@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/countup.js/-/countup.js-2.0.7.tgz#56b72a87fc0ee3cadb38356c246ccac88fb0a8cc"
+  integrity sha512-FO0nQdvG1iQwHp28wdvkErxnNUSbdkzztqZ6YNHKLHydngD2tdiKEW8dFrqpahF3tj+Ma70h0vyYrCBzxlVWdg==
+
 cp-file@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/cp-file/-/cp-file-7.0.0.tgz#b9454cfd07fe3b974ab9ea0e5f29655791a9b8cd"
@@ -14187,6 +14192,15 @@ react-colorful@^5.0.1:
   version "5.2.2"
   resolved "https://registry.yarnpkg.com/react-colorful/-/react-colorful-5.2.2.tgz#0a69d0648db47e51359d343854d83d250a742243"
   integrity sha512-Xdb1Rl6lZ5SMdNBH59eE0lGqR1g2LVD8IgPlw0WeMDrOC65lYI8fgMEwj/0dDpVRVMh5qp73ciISDst/t2O2iQ==
+
+react-countup@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/react-countup/-/react-countup-5.0.0.tgz#6c0767375a500a9ec98de5c4a88ef8b8853a8adb"
+  integrity sha512-nfskEVNHELkQ5famxdE13Xl/zODG3g67hNY4y6yhiIInonOo/b0P2yHHi7wYFaEKLixDPIQfcIzssg/jW3pYdg==
+  dependencies:
+    countup.js "^2.0.7"
+    prop-types "^15.7.2"
+    warning "^4.0.3"
 
 react-dev-utils@^11.0.3:
   version "11.0.4"
