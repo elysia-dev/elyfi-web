@@ -161,7 +161,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                 return (
                   <div
                     key={`dot-${index}`}
-                    className={`staking__progress-bar__button ${status} ${onClicked}`}
+                    className={`staking__progress-bar__button ${status} ${onClicked}${rewardToken === Token.ELFI ? "--EL" : "--ELFI"}`}
                     onClick={() => setState({ selectPhase: index + 1 })}
                     style={{
                       backgroundColor: status === "waiting" ? "white" : domainColor,

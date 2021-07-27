@@ -20,7 +20,7 @@ const StakingModal: React.FunctionComponent<{
   afterTx: () => void,
   stakedToken: Token.ELFI | Token.EL
   stakedBalance: BigNumber,
-  round: number,
+  round: number
 }> = ({ visible, closeHandler, afterTx, stakedBalance, stakedToken, round }) => {
   const { t } = useTranslation();
   const { account, library } = useWeb3React();
@@ -49,6 +49,7 @@ const StakingModal: React.FunctionComponent<{
   const amountGtBalance = utils.parseEther(amount || '0').gt(balance);
   const amountGtStakedBalance = utils.parseEther(amount || '0').gt(stakedBalance);
 
+  
   useEffect(() => {
     if (!wating) {
       loadAllowance()
@@ -78,13 +79,13 @@ const StakingModal: React.FunctionComponent<{
             className={`modal__converter__column${stakingMode ? "--selected" : ""}`}
             onClick={() => { setStakingMode(true) }}
           >
-            <p className="bold">STAKING</p>
+            <p className="bold">{t("staking.staking")}</p>
           </div>
           <div
             className={`modal__converter__column${!stakingMode ? "--selected" : ""}`}
             onClick={() => { setStakingMode(false) }}
           >
-            <p className="bold">UNSTAKING</p>
+            <p className="bold">{t("staking.unstaking")}</p>
           </div>
         </div>
         {wating ? (
@@ -101,7 +102,7 @@ const StakingModal: React.FunctionComponent<{
                       )
                   }}
                 >
-                  MAX
+                  {t("staking.max")}
                 </p>
                 <p className="modal__value bold">
                   <input
@@ -123,12 +124,12 @@ const StakingModal: React.FunctionComponent<{
               </div>
               <div className="modal__staking__container">
                 <p className="spoqa__bold">
-                  스테이킹 가능한 양
+                  {t("staking.available_staking_amount")}
                 </p>
                 <div>
                   <p className="spoqa__bold">
                     {
-                      stakingMode ? "지갑 잔고" : `${round}차 스테이킹 수량`
+                      stakingMode ? t("staking.wallet_balance") : t("staking.nth_staking_amount", {nth: round})
                     }
                   </p>
                   <p className="spoqa__bold">
@@ -142,14 +143,16 @@ const StakingModal: React.FunctionComponent<{
                     className={`modal__button${amountLteZero || amountGtStakedBalance ? "--disable" : ""}`}
                     onClick={() => {
                       if (!account || amountLteZero || amountGtStakedBalance) return
-
+                      // to do: 클릭 시점에서 회차가 종료되면, 팝업창을 닫고 오류 alert
+                      var nowTimestamp = Date.now();
                       elStakingPool.withdraw(account, utils.parseEther(amount), round.toString()).then((hash) => {
                         if (hash) setTxHash({ hash, closeAfterTx: true });
                       })
                     }}
                   >
                     <p>
-                      UNSTAKING
+                      {amountGtStakedBalance ? t("staking.insufficient_balance") : t("staking.unstaking")}
+
                     </p>
                   </div> :
                   !allowanceLoading && allowance.gte(balance) ?
@@ -157,14 +160,15 @@ const StakingModal: React.FunctionComponent<{
                       className={`modal__button${amountLteZero || amountGtBalance ? "--disable" : ""}`}
                       onClick={() => {
                         if (!account || amountLteZero || amountGtBalance) return
-
+                        // to do: 클릭 시점에서 회차가 종료되면, 팝업창을 닫고 오류 alert
+                        var nowTimestamp = Date.now();
                         elStakingPool.stake(account, utils.parseEther(amount)).then((hash) => {
                           if (hash) setTxHash({ hash, closeAfterTx: true });
                         })
                       }}
                     >
                       <p>
-                        STAKING
+                        {amountGtBalance ? t("staking.insufficient_balance") : t("staking.staking")}
                       </p>
                     </div> :
                     <div

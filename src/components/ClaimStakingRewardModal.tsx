@@ -8,6 +8,7 @@ import { formatCommaSmall } from 'src/utiles/formatters';
 import StakingPool from 'src/core/contracts/StakingPool';
 import useWatingTx from 'src/hooks/useWatingTx';
 import Token from 'src/enums/Token';
+import { useTranslation } from 'react-i18next';
 
 // Create deposit & withdraw
 const ClaimStakingRewardModal: FunctionComponent<{
@@ -25,7 +26,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
   }, [library]);
   const [txHash, setTxHash] = useState("")
   const { wating } = useWatingTx(txHash)
-
+  const { t } = useTranslation();
   useEffect(() => {
     if (!wating) {
       afterTx()
@@ -77,7 +78,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
                 }}
               >
                 <p>
-                  CLAIM REWARD
+                  {t("staking.claim_reward")}
                 </p>
               </div>
             </div>

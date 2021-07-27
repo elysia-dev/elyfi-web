@@ -127,9 +127,9 @@ const Navigation: FunctionComponent = () => {
         <div className="navigation__dashboard__wrapper">
           {
             [
-              ["/", "DEPOSIT / WITHDRAW"],
-              ["/staking/EL", "STAKING EL"],
-              ["/staking/ELFI", "STAKING ELFI"]
+              ["/", t("navigation.deposit_withdraw")],
+              ["/staking/EL", t("navigation.el_staking")],
+              ["/staking/ELFI", t("navigation.elfi_staking")]
             ].map((data, index) => {
               return (
                 <Link to={data[0]} key={index}>

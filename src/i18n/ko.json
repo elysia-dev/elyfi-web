@@ -136,7 +136,7 @@
       "token_staking": "{{stakedToken}} 스테이킹",
       "token_staking--content": [
         "{{stakedToken}} 스테이킹은 {{rewardToken}} 채굴 플랜에 따라 6차례로 나눠서 진행됩니다.",
-        "{{stakedToken}} 토큰을 스테이킹하면 {{rewardToken}} 토큰을 리워드로 받게 되며, 스테이킹한 EL 토큰은 언제든지 언스테이킹이 가능합니다.",
+        "{{stakedToken}} 토큰을 스테이킹하면 {{rewardToken}} 토큰을 리워드로 받게 되며, 스테이킹한 {{stakedToken}} 토큰은 언제든지 언스테이킹이 가능합니다.",
         "또한 이전 회차에 스테이킹한 {{stakedToken}} 토큰과 보상 받은 {{rewardToken}} 토큰은 다음 회차의 스테이킹 풀에 자동으로 전송되지 않습니다.",
         "자세한 채굴 플랜은 ",
         "여기",

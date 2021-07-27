@@ -18,7 +18,10 @@
       "partners": "PARTNERS",
       "connect_wallet": "Connect Wallet",
       "disconnect": "Disconnect",
-      "install_metamask": "Install Metamask"
+      "install_metamask": "Install Metamask",
+      "deposit_withdraw": "Deposit/Withdraw",
+      "el_staking": "EL Staking",
+      "elfi_staking": "ELFI Staking"
     },
     "dashboard": {
       "deposits--header": "DEPOSITS",
@@ -113,21 +116,68 @@
       ]
     },
     "partners": {
-      "collateral_provider": "Collateral Service Providers",
-      "license_number": "Business License Number",
-      "website": "Website",
+      "collateral_provider": "담보법인",
+      "license_number": "사업자등록번호",
+      "website": "홈페이지",
 
-      "borrow_status": "Borrow Status",
-      "collateral_provider_deposit": "Collateral Service Provider Deposit",
-      "collateral_provider_deposit--content": "Deposits by Collateral Service Providers",
-      "borrow_limit": "Borrow Limit",
-      "borrow_limit--content": "Collateral Service Provider Deposit * 10",
-      "borrowed": "Borrowed",
-      "borrowed--content": "Current Loan Receivable",
-      "limit_used": "Borrow Limit Used",
-      "limit_used--content": "% of Borrowed relative to Borrow Limit",
-      "available_borrow_limit": "Available Borrow Limit",
-      "available_borrow_limit--content": "Borrow Limit minus Borrowed"
+      "borrow_status": "차입 상태",
+      "collateral_provider_deposit": "담보법인 보증금",
+      "collateral_provider_deposit--content": "ELYFI 에서 담보법인으로 활동하기 위해 예치한 금액",
+      "borrow_limit": "차입 한도",
+      "borrow_limit--content": "담보법인 보증금 * 10",
+      "borrowed": "차입금",
+      "borrowed--content": "현재 대출 받은 차입금",
+      "limit_used": "차입 한도 사용률",
+      "limit_used--content": "차입 한도에 대한 차입금 비율",
+      "available_borrow_limit": "가용 한도",
+      "available_borrow_limit--content": "차입 한도 – 차입금"
+    },
+    "staking": {
+      "token_staking": "{{stakedToken}} Staking",
+      "token_staking--content": [
+        "{{stakedToken}} Staking will be carried out in six separate sessions according to the {{rewardToken}} mining plan.",
+        "Staking {{stakedToken}} tokens reward the {{rewardToken}} tokens, and the staked {{stakedToken}} tokens can be unstaken at any time.",
+        "In addition, {{stakedToken}} tokens staked in the previous round and {{rewardToken}} tokens rewarded are not automatically sent to the next staking pool.",
+        "You can check detailed mining plan ",
+        "here",
+        "."
+      ],
+      "nth_period": "{{nth}} round period",
+      "nth_ended": "{{nth}} round Completed",
+      "nth_progress": "{{nth}} round In Progress",
+      "nth": "{{nth}} round",
+      "nth_staking": "Staking APR on the {{nth}} round",
+      "nth_staking_amount": "Staked Amount on the {{nth}} round",
+      "staking_btn": "Staking | Unstaking",
+      "nth_reward_amount": "Reward Amount on the {{nth}} round",
+      "claim_reward": "Claim rewards",
+      "staking": "Staking",
+      "unstaking": "Unstaking",
+      "max": "MAX",
+      "available_staking_amount": "Available amount for staking",
+      "wallet_balance": "Wallet balance",
+      "insufficient_balance": "Insufficient Balance",
+      "nth_staking_round_ended": "{{nth}} round has ended. You will be taken to the staking page.",
+      "ok": "OK",
+      "available_unstaking_amount": "Available amount for unstaking",
+      "available_claim_amount": "Available amount for claiming",
+      "accumulated_reward_amount": "Accumulated reward amount",
+      "unstaking_migration": "Unstaking | Migration",
+      "popup_button": [
+        "For saving gas fees",
+        "Withdraw with ELFI tokens",
+        "Without withdrawing ELFI tokens",
+        "Transfer EL tokens only"
+      ],
+      "migration": "Migration",
+      "migration--content": "Migration' is a function that automatically transfers the staked amount excluding the unstaked amount to the current staking pool for staking. Because unstaking and migration are performed at the same time, you can save gas fees for using the Ethereum network.",
+      "migration_location": "Migration location",
+      "available_amount": "Available amount",
+      "reward_token_claim": "Reward tokens for claiming",
+      "elfi_token": "ELFI tokens",
+      "transfer": "Transfer",
+      "nth_ended_alert": "The {{nth}}th round has ended, and migration is not possible. Do you want to proceed?",
+      "all_ended_alert": "All of the rounds for staking are currently over and migration is not possible."
     }
   }
 }

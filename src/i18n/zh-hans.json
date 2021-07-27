@@ -18,7 +18,10 @@
       "partners": "合作企业",
       "connect_wallet": "绑定钱包",
       "disconnect": "钱包解绑",
-      "install_metamask": "Install Metamask"
+      "install_metamask": "Install Metamask",
+      "deposit_withdraw": "存入/提现",
+      "el_staking": "EL Staking(权益质押）",
+      "elfi_staking": "ELFI Staking(权益质押）"
     },
     "dashboard": {
       "deposits--header": "存入的代币",
@@ -128,6 +131,53 @@
       "limit_used--content": "借款限额中的借款比例",
       "available_borrow_limit": "可用限额",
       "available_borrow_limit--content": "借款限额 – 借款金额"
+    },
+    "staking": {
+      "token_staking": "{{stakedToken}} Staking(权益质押）",
+      "token_staking--content": [
+        "根据{{rewardToken}}挖矿计划，ELYFI的V1期间的{{stakedToken}}代币Staking(权益质押)活动将分为6轮。",
+        "如果您选择Staking(权益质押){{stakedToken}}代币，您将获得{{rewardToken}}代币作为奖励，并且Staking(权益质押)的代币可以随时取出。",
+        "此外，上一轮Staking(权益质押)的{{stakedToken}}代币和奖励的{{rewardToken}}代币不会自动转移到下一轮的Staking(权益质押)资金池中。",
+        "您可以在",
+        "此处",
+        "阅读详细的挖矿奖励计划。"
+      ],
+      "nth_period": "第{{nth}}轮时间",
+      "nth_ended": "第{{nth}}轮结束",
+      "nth_progress": "第{{nth}}轮正在进行中",
+      "nth": "第{{nth}}轮",
+      "nth_staking": "第{{nth}}轮Staking(权益质押）的APR",
+      "nth_staking_amount": "第{{nth}}轮Staking数量",
+      "staking_btn": "Staking(权益质押) | Unstaking(解除权益质押）",
+      "nth_reward_amount": "第{{nth}}轮奖励数量",
+      "claim_reward": "获取",
+      "staking": "Staking(权益质押）",
+      "unstaking": "Unstaking(接除权益质押）",
+      "max": "最大",
+      "available_staking_amount": "能够Staking(权益质押）的数量",
+      "wallet_balance": "钱包余额",
+      "insufficient_balance": "余额不足。",
+      "nth_staking_round_ended": "第{{nth}}轮Staking(权益质押)已经结束。将会为您打开现在正在进行的Staking(权益质押)页面。",
+      "ok": "确定",
+      "available_unstaking_amount": "能够Unstaking(解除权益质押)的数量",
+      "available_claim_amount": "可以获取的数量",
+      "accumulated_reward_amount": "累计奖励数量",
+      "unstaking_migration": "Unstaking(解除权益质押) | 转移",
+      "popup_button": [
+        "为了减少手续费(gas费用)",
+        "和ELFI代币一起提现",
+        "之后获取ELFI代币",
+        "只传送EL代币"
+      ],
+      "migration": "转移",
+      "migration--content": "“转移”是指将Unstaking(解除权益质押)的代币转移到当前的资金池中，自动进行新一轮Staking(权益质押)的功能。因为Unstaking(解除权益质押)和转移同时进行，使用者可以节省手续费（gas费）。",
+      "migration_location": "转移地址",
+      "available_amount": "输入数量",
+      "reward_token_claim": "将要获得的奖励代币",
+      "elfi_token": "ELFI代币数量",
+      "transfer": "传送",
+      "nth_ended_alert": "第{{nth}}轮Staking(权益质押)已经结束，将不能进行代币转移。 您要继续参与吗？",
+      "all_ended_alert": "由于本期Staking(权益质押)活动已全部结束，因此无法直接进行代币转移。"
     }
   }
 }
