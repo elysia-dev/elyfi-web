@@ -178,6 +178,13 @@
       "transfer": "传送",
       "nth_ended_alert": "第{{nth}}轮Staking(权益质押)已经结束，将不能进行代币转移。 您要继续参与吗？",
       "all_ended_alert": "由于本期Staking(权益质押)活动已全部结束，因此无法直接进行代币转移。"
+    },
+    "mobile": {
+      "title": "COMING SOON!",
+      "content": [
+        "手机App版本即将推出。",
+        "您可以先用电脑网页版本来体验ElYFI。"
+      ]
     }
   }
 }

@@ -178,6 +178,13 @@
       "transfer": "Transfer",
       "nth_ended_alert": "The {{nth}}th round has ended, and migration is not possible. Do you want to proceed?",
       "all_ended_alert": "All of the rounds for staking are currently over and migration is not possible."
+    },
+    "mobile": {
+      "title": "COMING SOON!",
+      "content": [
+        "The mobile version will be released soon!",
+        "If you want to experience ELYFI,\nplease use the PC version!"
+      ]
     }
   }
 }

@@ -1,20 +1,29 @@
+import { useTranslation } from 'react-i18next';
 import MainBackground from 'src/assets/images/main-background.png';
+import LanguageConverter from './LanguageConverter';
 
 const MobileDisable = () => {
+  const { t } = useTranslation();
   return (
-    <section className="mobile" style={{ backgroundImage: `url(${MainBackground})` }}>
-      <div>
-        <h2>
-          COMMING SOON!
-        </h2>
-        <p>
-          모바일 웹 페이지가 곧 오픈됩니다!
-        </p>
-        <p>
-          ELYFI를 경험하고 싶으시다면<br/>PC버전을 이용해주세요.
-        </p>
+    <div className="elysia" style={{ minWidth: 0, minHeight: 0 }}>
+      <section className="mobile" style={{ backgroundImage: `url(${MainBackground})` }}>
+        <div>
+          <h2>
+            {t("mobile.title")}
+          </h2>
+          <p>
+            {t("mobile.content.0")}
+          </p>
+          <p>
+            {t("mobile.content.1")}
+          </p>
+        </div>
+      </section>
+      <div className="footer--dashboard" style={{ display: 'flex', alignItems: "center", justifyContent: "center"}}>
+        <LanguageConverter />
       </div>
-    </section>
+    </div>
+   
   )
 }
 
