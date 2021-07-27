@@ -33,7 +33,8 @@ const StakingModal: React.FunctionComponent<{
     increaseAllowance,
     loadAllowance,
   } = useAllownace(
-    stakedToken === Token.EL ? envs.elAddress : envs.governanceAddress, envs.elStakingPoolAddress
+    stakedToken === Token.EL ? envs.elAddress : envs.governanceAddress,
+    stakedToken === Token.EL ? envs.elStakingPoolAddress : envs.elfyStakingPoolAddress,
   );
   const {
     balance,
@@ -67,7 +68,7 @@ const StakingModal: React.FunctionComponent<{
   }, [stakingMode, visible])
 
   const OrdinalNumberConverter = (value: number) => {
-    switch(value){
+    switch (value) {
       case 1: return i18n.language === LanguageType.EN ? "1st" : i18n.language === LanguageType.ZHHANS ? "一" : "1"
       case 2: return i18n.language === LanguageType.EN ? "2nd" : i18n.language === LanguageType.ZHHANS ? "二" : "2"
       case 3: return i18n.language === LanguageType.EN ? "3rd" : i18n.language === LanguageType.ZHHANS ? "三" : "3"
