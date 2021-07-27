@@ -13,6 +13,7 @@ import { useMemo } from 'react';
 import StakingPool from 'src/core/contracts/StakingPool';
 import { useWeb3React } from '@web3-react/core';
 import Token from 'src/enums/Token';
+import LanguageType from 'src/enums/LanguageType';
 
 const StakingModal: React.FunctionComponent<{
   visible: boolean,
@@ -22,7 +23,7 @@ const StakingModal: React.FunctionComponent<{
   stakedBalance: BigNumber,
   round: number
 }> = ({ visible, closeHandler, afterTx, stakedBalance, stakedToken, round }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { account, library } = useWeb3React();
   const [stakingMode, setStakingMode] = useState<boolean>(true)
   const [amount, setAmount] = useState({ value: "", max: false });
@@ -64,6 +65,18 @@ const StakingModal: React.FunctionComponent<{
       value: ''
     });
   }, [stakingMode, visible])
+
+  const OrdinalNumberConverter = (value: number) => {
+    switch(value){
+      case 1: return i18n.language === LanguageType.EN ? "1st" : i18n.language === LanguageType.ZHHANS ? "一" : "1"
+      case 2: return i18n.language === LanguageType.EN ? "2nd" : i18n.language === LanguageType.ZHHANS ? "二" : "2"
+      case 3: return i18n.language === LanguageType.EN ? "3rd" : i18n.language === LanguageType.ZHHANS ? "三" : "3"
+      case 4: return i18n.language === LanguageType.EN ? "4th" : i18n.language === LanguageType.ZHHANS ? "四" : "4"
+      case 5: return i18n.language === LanguageType.EN ? "5th" : i18n.language === LanguageType.ZHHANS ? "五" : "5"
+      case 6: return i18n.language === LanguageType.EN ? "6th" : i18n.language === LanguageType.ZHHANS ? "六" : "6"
+      default: return ""
+    }
+  }
 
   return (
     <div className="modal" style={{ display: visible ? "block" : "none" }}>
@@ -140,7 +153,7 @@ const StakingModal: React.FunctionComponent<{
                 <div>
                   <p className="spoqa__bold">
                     {
-                      stakingMode ? t("staking.wallet_balance") : t("staking.nth_staking_amount", { nth: round })
+                      stakingMode ? t("staking.wallet_balance") : t("staking.nth_staking_amount", { nth: OrdinalNumberConverter(round) })
                     }
                   </p>
                   <p className="spoqa__bold">
