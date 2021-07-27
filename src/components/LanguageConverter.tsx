@@ -8,15 +8,15 @@ import en from "src/assets/images/america@2x.png";
 const languageData = {
   [LanguageType.KO]: {
     image: ko,
-    title: "KOR"
+    title: "한국어"
   },
   [LanguageType.EN]: {
     image: en,
-    title: "ENG"
+    title: "English"
   },
   [LanguageType.ZHHANS]: {
     image: cn,
-    title: "CHA"
+    title: "中文"
   },
 }
 
@@ -57,16 +57,22 @@ export const LanguageConverter = () => {
             .filter((languageType) => languageType !== language)
             .map((languageType, index) => {
               return (
-                <img
-                  key={index}
-                  className="lang__select-image"
-                  src={languageData[languageType].image}
-                  alt={languageData[languageType].title}
+                <div className="lang__select-image__wrapper"
                   onClick={() => {
                     setLanguage(languageType)
                     handleHover()
                   }}
-                />
+                >
+                  <img
+                    key={index}
+                    className="lang__select-image"
+                    src={languageData[languageType].image}
+                    alt={languageData[languageType].title}
+                  />
+                  <p>
+                    {languageData[languageType].title}
+                  </p>
+                </div>
               )
             })
         }
