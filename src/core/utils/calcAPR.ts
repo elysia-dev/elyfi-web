@@ -14,11 +14,10 @@ const calcAPR = (
 		return constants.MaxUint256;
 	}
 
-
 	return mintedPerDay
 		.mul(365)
 		.mul(utils.parseEther(mintedPrice.toFixed(4)))
-		.mul(utils.parseUnits('1', 25))
+		.mul(utils.parseUnits('1', 27))
 		.div(
 			staked.mul(utils.parseEther(stakedPrice.toFixed(4)))
 		);
