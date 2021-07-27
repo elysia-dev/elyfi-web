@@ -25,7 +25,7 @@ const StakingModal: React.FunctionComponent<{
   const { t } = useTranslation();
   const { account, library } = useWeb3React();
   const [stakingMode, setStakingMode] = useState<boolean>(true)
-  const [amount, setAmount] = useState<string>('');
+  const [amount, setAmount] = useState({ value: "", max: false });
   const {
     allowance,
     loading: allowanceLoading,
@@ -45,11 +45,11 @@ const StakingModal: React.FunctionComponent<{
   const [txInfo, setTxHash] = useState({ hash: "", closeAfterTx: false })
   const { wating } = useWatingTx(txInfo.hash)
 
-  const amountLteZero = !amount || parseFloat(amount) <= 0;
-  const amountGtBalance = utils.parseEther(amount || '0').gt(balance);
-  const amountGtStakedBalance = utils.parseEther(amount || '0').gt(stakedBalance);
+  const amountLteZero = !amount || utils.parseEther(amount.value || '0').isZero();
+  const amountGtBalance = utils.parseEther(amount.value || '0').gt(balance);
+  const amountGtStakedBalance = utils.parseEther(amount.value || '0').gt(stakedBalance);
 
-  
+
   useEffect(() => {
     if (!wating) {
       loadAllowance()
@@ -59,7 +59,10 @@ const StakingModal: React.FunctionComponent<{
   }, [wating])
 
   useEffect(() => {
-    setAmount('');
+    setAmount({
+      max: false,
+      value: ''
+    });
   }, [stakingMode])
 
   return (
@@ -101,9 +104,10 @@ const StakingModal: React.FunctionComponent<{
                 <p
                   className="modal__maximum bold"
                   onClick={() => {
-                    setAmount
-                      ((Math.floor(parseFloat(utils.formatEther(stakingMode ? balance : stakedBalance)) * 100000000) / 100000000).toFixed(8).toString()
-                      )
+                    setAmount({
+                      value: (Math.floor(parseFloat(utils.formatEther(stakingMode ? balance : stakedBalance)) * 100000000) / 100000000).toFixed(8).toString(),
+                      max: true
+                    })
                   }}
                 >
                   {t("staking.max")}
@@ -113,15 +117,18 @@ const StakingModal: React.FunctionComponent<{
                     type="number"
                     className="modal__text-input"
                     placeholder="0"
-                    value={amount}
-                    style={{ fontSize: amount.length < 8 ? 60 : amount.length > 12 ? 35 : 45 }}
+                    value={amount.value}
+                    style={{ fontSize: amount.value.length < 8 ? 60 : amount.value.length > 12 ? 35 : 45 }}
                     onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
                       ["-", "+", "e"].includes(e.key) && e.preventDefault();
                     }}
                     onChange={({ target }) => {
                       target.value = target.value.replace(/(\.\d{18})\d+/g, '$1');
 
-                      setAmount(target.value);
+                      setAmount({
+                        value: target.value,
+                        max: false
+                      })
                     }}
                   />
                 </p>
@@ -133,7 +140,7 @@ const StakingModal: React.FunctionComponent<{
                 <div>
                   <p className="spoqa__bold">
                     {
-                      stakingMode ? t("staking.wallet_balance") : t("staking.nth_staking_amount", {nth: round})
+                      stakingMode ? t("staking.wallet_balance") : t("staking.nth_staking_amount", { nth: round })
                     }
                   </p>
                   <p className="spoqa__bold">
@@ -147,11 +154,15 @@ const StakingModal: React.FunctionComponent<{
                     className={`modal__button${amountLteZero || amountGtStakedBalance ? "--disable" : ""}`}
                     onClick={() => {
                       if (!account || amountLteZero || amountGtStakedBalance) return
-                      // to do: 클릭 시점에서 회차가 종료되면, 팝업창을 닫고 오류 alert
-                      var nowTimestamp = Date.now();
-                      elStakingPool.withdraw(account, utils.parseEther(amount), round.toString()).then((hash) => {
-                        if (hash) setTxHash({ hash, closeAfterTx: true });
-                      })
+
+                      elStakingPool
+                        .withdraw(
+                          account,
+                          amount.max ? balance : utils.parseEther(amount.value),
+                          round.toString()
+                        ).then((hash) => {
+                          if (hash) setTxHash({ hash, closeAfterTx: true });
+                        })
                     }}
                   >
                     <p>
@@ -164,9 +175,8 @@ const StakingModal: React.FunctionComponent<{
                       className={`modal__button${amountLteZero || amountGtBalance ? "--disable" : ""}`}
                       onClick={() => {
                         if (!account || amountLteZero || amountGtBalance) return
-                        // to do: 클릭 시점에서 회차가 종료되면, 팝업창을 닫고 오류 alert
-                        var nowTimestamp = Date.now();
-                        elStakingPool.stake(account, utils.parseEther(amount)).then((hash) => {
+
+                        elStakingPool.stake(account, amount.max ? stakedBalance : utils.parseEther(amount.value)).then((hash) => {
                           if (hash) setTxHash({ hash, closeAfterTx: true });
                         })
                       }}
