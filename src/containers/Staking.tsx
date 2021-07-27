@@ -236,7 +236,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                         }
                       </p>
                       <p style={{ display: status === 'now' ? "block" : onClicked === ' selected' ? "block" : "none" }}>
-                        {`${time.startedAt.format('YYYY.MM.DD')} 19:00:00\n~ ${time.endedAt.format('YYYY.MM.DD')} 19:00:00 (KST)`}
+                        {`${time.startedAt.format('YYYY.MM.DD HH:mm:ss')}\n~ ${time.endedAt.format('YYYY.MM.DD HH:mm:ss')} (KST)`}
                       </p>
                     </div>
                   </div>
@@ -321,28 +321,29 @@ const Staking: React.FunctionComponent<IProps> = ({
                   <h2 className="spoqa__bold">
                     <span
                       className="colored spoqa__bold"
-                      style={{ color: domainColor }}
                     >
-                      <CountUp
-                        className="spoqa__bold"
-                        start={
-                          parseFloat(formatEther(
-                            expectedReward.before
-                          ))
-                        }
-                        end={
-                          parseFloat(formatEther(
-                            expectedReward.before.isZero() ?
-                              roundData.accountReward :
-                              expectedReward.value
-                          ))
-                        }
-                        formattingFn={(number) => {
-                          return formatSixFracionDigit(number)
-                        }}
-                        decimals={4}
-                        duration={1}
-                      />
+                      {expectedReward.before.isZero() ? "-" : 
+                        <CountUp
+                          className={`spoqa__bold colored ${rewardToken === Token.ELFI ? "EL" : "ELFI"}`}
+                          start={
+                            parseFloat(formatEther(
+                              expectedReward.before
+                            ))
+                          }
+                          end={
+                            parseFloat(formatEther(
+                              expectedReward.before.isZero() ?
+                                roundData.accountReward :
+                                expectedReward.value
+                            ))
+                          }
+                          formattingFn={(number) => {
+                            return formatSixFracionDigit(number)
+                          }}
+                          decimals={4}
+                          duration={1}
+                        />
+                      }
                     </span>
                     {` ${rewardToken}`}
                   </h2>

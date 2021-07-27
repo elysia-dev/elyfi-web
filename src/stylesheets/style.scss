@@ -1697,7 +1697,12 @@ span {
           }
           .colored {
             font-size: 35px;
-            color: #00BFFF;
+            &.EL {
+              color: #00BFFF;
+            }
+            &.ELFI {
+              color: #f9ae19;
+            }
           }
         }
       }
