@@ -1450,6 +1450,10 @@ span {
   .staking {
     width: 1190px;
     margin: 100px auto;
+    &__sign {
+      font-size: 24px !important;
+      color: #646464;
+    }
     .modal {
       &__staking {
         padding: 29px 26px;

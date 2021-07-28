@@ -265,7 +265,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                         }
                       </span>
                   }
-                  &nbsp;%
+                  <span className="spoqa staking__sign">&nbsp;%</span>
                 </h2>
               </div>
             </div>
@@ -283,7 +283,8 @@ const Staking: React.FunctionComponent<IProps> = ({
                       <>
                         <span className="spoqa">
                           {`${current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0 ? formatCommaSmall(roundData.accountPrincipal) : '-'}`}
-                        </span> {` ${stakedToken}`}
+                        </span>
+                        <span className="spoqa staking__sign">{` ${stakedToken}`}</span>
                       </>
                   }
                 </h2>
@@ -345,7 +346,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                         />
                       }
                     </span>
-                    {` ${rewardToken}`}
+                    <span className="spoqa staking__sign">{` ${rewardToken}`}</span>
                   </h2>
               }
               <a
