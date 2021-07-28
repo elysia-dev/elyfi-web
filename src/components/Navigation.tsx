@@ -20,10 +20,15 @@ const Navigation: FunctionComponent = () => {
   const { t, i18n } = useTranslation();
   // const { library, account, chainId } = useWeb3React();
 
-  const CheckLocation = (loc: string, index: number) => {
+  const CheckLocation = (loc: string, index: number, isSubNavi: boolean) => {
     if (location.pathname.split('/')[1] === loc) {
+      // console.log(1)
       return true;
-    } else if (index === 0 && location.pathname.split('/')[1] === "staking/EL") {
+    } else if (index === 0 && location.pathname.split('/')[1] === "staking" && !isSubNavi) {
+      // console.log(2)
+      return true;
+    } else if (index !== 0 && location.pathname.split('/')[1] === "staking" && location.pathname.split('/')[2] === loc.split('/')[1] && isSubNavi) { 
+      // console.log(3)
       return true;
     } else {
       return false
@@ -98,16 +103,16 @@ const Navigation: FunctionComponent = () => {
               return (
                 <Link to={data[0]} key={index}>
                   <div className="navigation__link__wrapper">
-                    <div className={`navigation__link${CheckLocation(data[0].slice(1), index) ? " bold" : ""}`}
+                    <div className={`navigation__link${CheckLocation(data[0].slice(1), index, false) ? " bold" : ""}`}
                       onMouseEnter={() => setHover(index + 1)}
                       onMouseLeave={() => setHover(0)}
                     >
                       {data[1]}
                       <div className={`navigation__link__under-line${hover === index + 1 ? " hover" : " blur"}`}
                         style={{
-                          opacity: CheckLocation(data[0].slice(1), index) ? 1 : 0,
-                          width: CheckLocation(data[0].slice(1), index) ? "100%" : 0,
-                          left: CheckLocation(data[0].slice(1), index) ? 0 : -20
+                          opacity: CheckLocation(data[0].slice(1), index, false) ? 1 : 0,
+                          width: CheckLocation(data[0].slice(1), index, false) ? "100%" : 0,
+                          left: CheckLocation(data[0].slice(1), index, false) ? 0 : -20
                         }}
                       />
                     </div>
@@ -131,18 +136,19 @@ const Navigation: FunctionComponent = () => {
               ["/staking/EL", t("navigation.el_staking")],
               ["/staking/ELFI", t("navigation.elfi_staking")]
             ].map((data, index) => {
+              // console.log(data[0].slice(1).split('/')[1])
               return (
                 <Link to={data[0]} key={index}>
-                  <div className={`navigation__dashboard__link${location.pathname.split('/')[1] === data[0].slice(1) ? " bold" : ""}`}
+                  <div className={`navigation__dashboard__link${CheckLocation(data[0].slice(1), index, true) ? " bold" : ""}`}
                     onMouseEnter={() => setInnerHover(index + 1)}
                     onMouseLeave={() => setInnerHover(0)}
                   >
                     {data[1]}
                     <div className={`navigation__link__under-line${innerHover === index + 1 ? " hover" : " blur"}`}
                       style={{
-                        opacity: location.pathname.split('/')[1] === data[0].slice(1) ? 1 : 0,
-                        width: location.pathname.split('/')[1] === data[0].slice(1) ? "100%" : 0,
-                        left: location.pathname.split('/')[1] === data[0].slice(1) ? 0 : -20
+                        opacity: CheckLocation(data[0].slice(1), index, true) ? 1 : 0,
+                        width: CheckLocation(data[0].slice(1), index, true) ? "100%" : 0,
+                        left: CheckLocation(data[0].slice(1), index, true) ? 0 : -20
                       }}
                     />
                   </div>
