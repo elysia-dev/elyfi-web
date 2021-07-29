@@ -1,12 +1,12 @@
 {
-  "moneyPoolAddress": "0x94eb54a3941d9af1fe52afb3a63b82118a670a39",
-  "incentivePoolAddress": "0x59E441cD935A1dC875d31e6c9FA2C118039BF45D",
-  "governanceAddress": "0x2cbdb1cb36a0e9f19cffd345ce43fde3b0f29ed9",
-  "testStableAddress": "0x83E1Fa50a151B5f4efeF8f09Fb64c5b86621bb78",
+  "moneyPoolAddress": "0x6c41Cba0198Eb638aD4C305fD083fe17f16166c7",
+  "incentivePoolAddress": "0x8e2803205f7116dE30005412FbFA64005df038f0",
+  "governanceAddress": "0x13a902bf1d18daaea3dc6c401e5171f4ab2a4833",
+  "testStableAddress": "0x73e839d53FB65eb954B04Ea0cC0e2e11aAB936F7",
   "elStakingPoolAddress": "0xDF409737E31475Ec46e13335Ad5370c551b97D12",
   "elfyStakingPoolAddress": "0xDF409737E31475Ec46e13335Ad5370c551b97D12",
-  "elAddress": "0xdd469dfc7f64A68E6cd1D8e9B9D09E2Cb39a816c",
+  "elAddress": "0xdd469dc7f64A68E6cd1D8e9B9D09E2Cb39a816c",
   "requiredNetwork": "Ropsten",
   "requiredChainId": 3,
-  "subgraphURI": "https://api.thegraph.com/subgraphs/name/modonguk/elyfi"
+  "subgraphURI": "https://api.studio.thegraph.com/query/862/elyfi-ropsten/v0.0.2"
 }
