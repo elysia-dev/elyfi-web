@@ -6,9 +6,9 @@ import InstallMetamask from './InstallMetamask';
 import Wallet from './Wallet';
 import { useEagerConnect } from 'src/hooks/connectHoots';
 import { useTranslation } from 'react-i18next';
-// import { useWeb3React } from '@web3-react/core';
-// import { faucetTestERC20 } from 'src/utiles/contractHelpers';
-// import envs from 'src/core/envs';
+import { useWeb3React } from '@web3-react/core';
+import { faucetTestERC20 } from 'src/utiles/contractHelpers';
+import envs from 'src/core/envs';
 
 // TODO
 // Use NavLink for ActiveClass
@@ -18,6 +18,7 @@ const Navigation: FunctionComponent = () => {
   const [innerHover, setInnerHover] = useState(0);
   const location = useLocation();
   const { t, i18n } = useTranslation();
+  const { account, chainId, library } = useWeb3React();
   // const { library, account, chainId } = useWeb3React();
 
   const CheckLocation = (loc: string, index: number, isSubNavi: boolean) => {
@@ -27,7 +28,7 @@ const Navigation: FunctionComponent = () => {
     } else if (index === 0 && location.pathname.split('/')[1] === "staking" && !isSubNavi) {
       // console.log(2)
       return true;
-    } else if (index !== 0 && location.pathname.split('/')[1] === "staking" && location.pathname.split('/')[2] === loc.split('/')[1] && isSubNavi) { 
+    } else if (index !== 0 && location.pathname.split('/')[1] === "staking" && location.pathname.split('/')[2] === loc.split('/')[1] && isSubNavi) {
       // console.log(3)
       return true;
     } else {
@@ -54,39 +55,42 @@ const Navigation: FunctionComponent = () => {
 
   return (
     <nav className="navigation" style={{ opacity: scrollTop > 125 ? 0.7 : 1 }}>
-      {/* <div className="navigation__alert" style={{ height: scrollTop > 125 ? 0 : 40, top: scrollTop > 125 ? -40 : 0 }}>
-        <div className="navigation__alert__container" style={{ height: scrollTop > 125 ? 0 : 40 }}>
-          <p className="spoqa">
-            This website is for <span className="spoqa__bold" style={{ color: "#00A7FF" }}>ELYFI beta version only. </span>
-            Please connect to the {envs.requiredNetwork} network! You may get some test tokens&nbsp;
-            <span
-              className="spoqa__bold"
-              style={{
-                color: "#00A7FF",
-                textDecoration: "underline",
-                cursor: "pointer"
-              }}
-              onClick={() => {
-                if (account && chainId === envs.requiredChainId) {
-                  faucetTestERC20(account, library)
-                } else {
-                  alert(`Please connet to the ${envs.requiredNetwork} network`)
-                }
-              }}
-            >
-              here!
-            </span>
-          </p>
-          <div className="navigation__alert__wrapper">
-            <Link to="/bounty">
-              <p className="bold">Bounty</p>
-            </Link>
-            <Link to="/guide">
-              <p className="bold">Guide</p>
-            </Link>
+      {
+        process.env.REACT_APP_TEST_MODE &&
+        <div className="navigation__alert" style={{ height: scrollTop > 125 ? 0 : 40, top: scrollTop > 125 ? -40 : 0 }}>
+          <div className="navigation__alert__container" style={{ height: scrollTop > 125 ? 0 : 40 }}>
+            <p className="spoqa">
+              This website is for <span className="spoqa__bold" style={{ color: "#00A7FF" }}>ELYFI test version only. </span>
+              Please connect to the {envs.requiredNetwork} network! You may get some test tokens&nbsp;
+              <span
+                className="spoqa__bold"
+                style={{
+                  color: "#00A7FF",
+                  textDecoration: "underline",
+                  cursor: "pointer"
+                }}
+                onClick={() => {
+                  if (account && chainId === envs.requiredChainId) {
+                    faucetTestERC20(account, library)
+                  } else {
+                    alert(`Please connet to the ${envs.requiredNetwork} network`)
+                  }
+                }}
+              >
+                here!
+              </span>
+            </p>
+            <div className="navigation__alert__wrapper">
+              <Link to="/bounty">
+                <p className="bold">Bounty</p>
+              </Link>
+              <Link to="/guide">
+                <p className="bold">Guide</p>
+              </Link>
+            </div>
           </div>
         </div>
-      </div> */}
+      }
       <div className="navigation__container">
         <a href="https://defi.elysia.land/" rel="noopener noreferrer">
           <div className="logo-wrapper" style={{ cursor: "pointer" }}>
