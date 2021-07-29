@@ -44,21 +44,26 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const { t } = useTranslation();
   const accumulatedYield = useMemo(() => {
     return calcAccumulatedYield(
+      balance,
       currentIndex,
       userData?.lTokenMint.filter((mint) => mint.lToken.id === reserve.lToken.id) || [],
       userData?.lTokenBurn.filter((burn) => burn.lToken.id === reserve.lToken.id) || []
     )
-  }, [reserve, userData, currentIndex])
+  }, [reserve, userData, currentIndex, balance])
 
   const yieldProduced = useMemo(() => {
     return accumulatedYield.sub(
       calcAccumulatedYield(
+        // FIXME
+        // Tricky constant.One
+        // yieldProduced should be calculated with last burn index
+        constants.One,
         BigNumber.from(userData?.lTokenBurn[userData.lTokenBurn.length - 1]?.index || reserve.lTokenInterestIndex),
         userData?.lTokenMint.filter((mint) => mint.lToken.id === reserve.lToken.id) || [],
         userData?.lTokenBurn.filter((burn) => burn.lToken.id === reserve.lToken.id) || []
       )
     );
-  }, [accumulatedYield, reserve, userData])
+  }, [accumulatedYield, reserve, userData, balance])
 
   const loadAllowance = useCallback(async () => {
     if (!account) return;
@@ -149,11 +154,11 @@ const DepositOrWithdrawModal: FunctionComponent<{
           {/* {txWating ? (
             <></>
           ) : ( */}
-            <div className="close-button" onClick={onClose}>
-              <div className="close-button--1">
-                <div className="close-button--2" />
-              </div>
+          <div className="close-button" onClick={onClose}>
+            <div className="close-button--1">
+              <div className="close-button--2" />
             </div>
+          </div>
           {/* )} */}
 
         </div>
