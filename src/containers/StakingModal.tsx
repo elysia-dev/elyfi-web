@@ -51,7 +51,6 @@ const StakingModal: React.FunctionComponent<{
   const amountGtBalance = utils.parseEther(amount.value || '0').gt(balance);
   const amountGtStakedBalance = utils.parseEther(amount.value || '0').gt(stakedBalance);
 
-
   useEffect(() => {
     if (!wating) {
       loadAllowance()
@@ -119,7 +118,9 @@ const StakingModal: React.FunctionComponent<{
                   className="modal__maximum bold"
                   onClick={() => {
                     setAmount({
-                      value: (Math.floor(parseFloat(utils.formatEther(stakingMode ? balance : stakedBalance)) * 100000000) / 100000000).toFixed(8).toString(),
+                      value: (
+                        Math.floor(parseFloat(utils.formatEther(stakingMode ? balance : stakedBalance)))
+                      ).toFixed(8),
                       max: true
                     })
                   }}
