@@ -15,7 +15,6 @@ import Dashboard from './containers/Dashboard';
 import { StakingEL, StakingELFI } from './containers/Staking';
 import { useWeb3React } from '@web3-react/core';
 import DisableWalletPage from './components/DisableWalletPage';
-import LinkageInstitution from 'src/containers/LinkageInstitution';
 import ScrollToTop from './hooks/ScrollToTop';
 import envs from 'src/core/envs';
 
@@ -38,7 +37,6 @@ const AppNavigator: React.FC = () => {
           <Route exact path="/staking/ELFI" component={
             active && chainId === envs.requiredChainId ? StakingELFI : DisableWalletPage
           } />
-          <Route exact path="/linkage_institution" component={LinkageInstitution} />
           <Route exact path="/portfolio" component={Portfolio} />
           <Route exact path="/portfolio/:id" component={PortfolioDetail} />
           <Route

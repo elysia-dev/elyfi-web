@@ -44,7 +44,7 @@ const Portfolio = () => {
     <div className="elysia--pc">
       <section className="main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
         <div className="main__title-wrapper">
-          <h1 className="main__title-text">{t("navigation.portfolio")}</h1>
+          <h1 className="main__title-text">{t("navigation.real_assets")}</h1>
         </div>
       </section>
       <div className="portfolio">

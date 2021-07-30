@@ -5,8 +5,6 @@ import InjectedConnector from 'src/core/connectors/injectedConnector';
 import MainBackground from 'src/assets/images/main-background.png';
 import { useTranslation } from 'react-i18next';
 import envs from 'src/core/envs';
-import WhiteLogo from 'src/assets/images/White-logo.png';
-import LanguageConverter from './LanguageConverter';
 
 const DisableWalletPage = () => {
   const { activate, active, chainId } = useWeb3React();
@@ -40,11 +38,8 @@ const DisableWalletPage = () => {
     <section className="dashboard--disable" style={{ backgroundImage: `url(${MainBackground})` }}>
       <div className="dashboard__content-container">
         <h1 className="dashboard__content--bold">
-          {t("navigation.dashboard")}
-        </h1>
-        <p className="dashboard__content">
           {t("dashboard.disable_content--1")}
-        </p>
+        </h1>
         <div style={{ margin: "30px auto 0px", display: "inline-block" }}>
           {CopiedWallet()}
         </div>

@@ -14,14 +14,14 @@
     },
     "navigation": {
       "dashboard": "我的页面",
-      "portfolio": "投资组合",
+      "real_assets": "现实资产",
       "partners": "合作企业",
       "connect_wallet": "绑定钱包",
       "disconnect": "钱包解绑",
       "install_metamask": "Install Metamask",
       "deposit_withdraw": "存入/提现",
-      "el_staking": "EL Staking(权益质押）",
-      "elfi_staking": "ELFI Staking(权益质押）"
+      "el_staking": "EL 权益质押",
+      "elfi_staking": "ELFI 权益质押"
     },
     "dashboard": {
       "deposits--header": "存入的代币",
