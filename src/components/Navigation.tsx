@@ -102,7 +102,6 @@ const Navigation: FunctionComponent = () => {
             [
               ["/", t("navigation.dashboard")],
               ["/portfolio", t("navigation.portfolio")],
-              ["/linkage_institution", t("navigation.partners")]
             ].map((data, index) => {
               return (
                 <Link to={data[0]} key={index}>

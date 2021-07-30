@@ -38,7 +38,6 @@ const AppNavigator: React.FC = () => {
           <Route exact path="/staking/ELFI" component={
             active && chainId === envs.requiredChainId ? StakingELFI : DisableWalletPage
           } />
-          <Route exact path="/linkage_institution" component={LinkageInstitution} />
           <Route exact path="/portfolio" component={Portfolio} />
           <Route exact path="/portfolio/:id" component={PortfolioDetail} />
           <Route
