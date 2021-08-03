@@ -79,7 +79,7 @@ const Navigation: FunctionComponent = () => {
             <img src={ElysiaLogo} className="elysia-logo" alt="Elysia_Logo" />
           </div>
         </a>
-        <div className="navigation__link-wrapper" style={{ width: 970 }}>
+        <div className="navigation__link-wrapper" style={{ width: 870 }}>
           {
             [
               ["/", t("navigation.deposit_withdraw")],
