@@ -146,7 +146,7 @@ const Staking: React.FunctionComponent<IProps> = ({
   });
 
   const OrdinalNumberConverter = (value: number) => {
-    switch(value){
+    switch (value) {
       case 1: return i18n.language === LanguageType.EN ? "1st" : i18n.language === LanguageType.ZHHANS ? "一" : "1"
       case 2: return i18n.language === LanguageType.EN ? "2nd" : i18n.language === LanguageType.ZHHANS ? "二" : "2"
       case 3: return i18n.language === LanguageType.EN ? "3rd" : i18n.language === LanguageType.ZHHANS ? "三" : "3"
@@ -159,7 +159,7 @@ const Staking: React.FunctionComponent<IProps> = ({
 
   return (
     <>
-      <Header title="STAKING" />
+      <Header title={t("staking.token_staking", { stakedToken: stakedToken }).toUpperCase()} />
       <section className="staking">
         <ClaimStakingRewardModal
           visible={claimStakingRewardModalVisible}
@@ -323,7 +323,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                     <span
                       className="colored spoqa__bold"
                     >
-                      {expectedReward.before.isZero() ? "-" : 
+                      {expectedReward.before.isZero() ? "-" :
                         <CountUp
                           className={`spoqa__bold colored ${rewardToken === Token.ELFI ? "EL" : "ELFI"}`}
                           start={
