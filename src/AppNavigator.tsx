@@ -5,10 +5,6 @@ import {
   Route,
 } from "react-router-dom";
 
-import Portfolio from './containers/Portfolio';
-
-import PortfolioDetail from './containers/PortfolioDetail';
-
 import Footer from './components/Footer';
 import Navigation from './components/Navigation';
 import Dashboard from './containers/Dashboard';
@@ -37,8 +33,6 @@ const AppNavigator: React.FC = () => {
           <Route exact path="/staking/ELFI" component={
             active && chainId === envs.requiredChainId ? StakingELFI : DisableWalletPage
           } />
-          <Route exact path="/portfolio" component={Portfolio} />
-          <Route exact path="/portfolio/:id" component={PortfolioDetail} />
           <Route
             exact
             path="/"

@@ -85,7 +85,6 @@ const Navigation: FunctionComponent = () => {
               ["/", t("navigation.deposit_withdraw")],
               ["/staking/EL", t("navigation.el_staking")],
               ["/staking/ELFI", t("navigation.elfi_staking")],
-              ["/portfolio", t("navigation.real_assets")],
             ].map((data, index) => {
               return (
                 <NavLink to={data[0]} key={index} activeClassName="bold" exact>
