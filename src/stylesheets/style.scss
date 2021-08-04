@@ -2137,6 +2137,12 @@ span {
   padding-top: 25px;
   padding-bottom: 25px;
   min-width: 1190px;
+  &__content {
+    color: #ffffff;
+    font-size: 15px;
+    position: relative;
+    top: 14px;
+  }
   &--dashboard {
     position: absolute;
     bottom: 0;
