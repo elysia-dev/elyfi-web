@@ -8,7 +8,6 @@ const Footer = () => {
     <footer className="footer" style={{ backgroundImage: `url(${FooterBackgroundImg})` }}>
       <div className="footer__container">
         <img className="footer__white-logo" src={WhiteLogo} alt="Elysia" />
-        <p className="footer__content">Audited by Haetchi Labs</p>
         <div className="footer__wrapper">
           <LanguageConverter />
         </div>
