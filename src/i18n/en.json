@@ -14,7 +14,7 @@
     },
     "navigation": {
       "dashboard": "DASHBOARD",
-      "portfolio": "PORTFOLIO",
+      "real_assets": "Real Assets",
       "partners": "PARTNERS",
       "connect_wallet": "Connect Wallet",
       "disconnect": "Disconnect",
@@ -60,7 +60,7 @@
       "accumulated_repayment": "Accumulated Repayments",
       "accumulated_yield": "Accumulated Yield",
 
-      "portfolio_asset": "Portfolio Asset Components",
+      "portfolio_asset": "Real Asset Components",
       "mortgage": "Mortgage Loans",
       "auction_balance": "Auction Balance Loans",
       "charter_returns": "Short-term loans with charter returns",

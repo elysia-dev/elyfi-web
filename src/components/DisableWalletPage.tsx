@@ -5,12 +5,13 @@ import InjectedConnector from 'src/core/connectors/injectedConnector';
 import MainBackground from 'src/assets/images/main-background.png';
 import { useTranslation } from 'react-i18next';
 import envs from 'src/core/envs';
-import WhiteLogo from 'src/assets/images/White-logo.png';
-import LanguageConverter from './LanguageConverter';
+import { useRouteMatch } from 'react-router-dom';
 
 const DisableWalletPage = () => {
   const { activate, active, chainId } = useWeb3React();
   const { t } = useTranslation();
+  const route = useRouteMatch();
+
   const CopiedWallet = () => {
     return (
       active && chainId === envs.requiredChainId ?
@@ -40,7 +41,11 @@ const DisableWalletPage = () => {
     <section className="dashboard--disable" style={{ backgroundImage: `url(${MainBackground})` }}>
       <div className="dashboard__content-container">
         <h1 className="dashboard__content--bold">
-          {t("navigation.dashboard")}
+          {
+            route.path.includes("ELFI") ? t("navigation.elfi_staking").toUpperCase() :
+              route.path.includes("EL") ? t("navigation.el_staking").toUpperCase() :
+                t("navigation.dashboard")
+          }
         </h1>
         <p className="dashboard__content">
           {t("dashboard.disable_content--1")}

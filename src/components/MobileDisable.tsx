@@ -19,11 +19,10 @@ const MobileDisable = () => {
           </p>
         </div>
       </section>
-      <div className="footer--dashboard" style={{ display: 'flex', alignItems: "center", justifyContent: "center"}}>
+      <div className="footer--dashboard" style={{ display: 'flex', alignItems: "center", justifyContent: "center" }}>
         <LanguageConverter />
       </div>
     </div>
-   
   )
 }
 

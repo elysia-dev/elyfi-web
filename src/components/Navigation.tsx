@@ -1,7 +1,6 @@
 import { FunctionComponent, useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
-import ElysiaLogoBeta from 'src/assets/images/Elysia_Logo_Beta.png';
 import InstallMetamask from './InstallMetamask';
 import Wallet from './Wallet';
 import { useEagerConnect } from 'src/hooks/connectHoots';
@@ -10,31 +9,11 @@ import { useWeb3React } from '@web3-react/core';
 import { faucetTestERC20 } from 'src/utiles/contractHelpers';
 import envs from 'src/core/envs';
 
-// TODO
-// Use NavLink for ActiveClass
 const Navigation: FunctionComponent = () => {
   const triedEager = useEagerConnect()
   const [hover, setHover] = useState(0);
-  const [innerHover, setInnerHover] = useState(0);
-  const location = useLocation();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { account, chainId, library } = useWeb3React();
-  // const { library, account, chainId } = useWeb3React();
-
-  const CheckLocation = (loc: string, index: number, isSubNavi: boolean) => {
-    if (location.pathname.split('/')[1] === loc) {
-      // console.log(1)
-      return true;
-    } else if (index === 0 && location.pathname.split('/')[1] === "staking" && !isSubNavi) {
-      // console.log(2)
-      return true;
-    } else if (index !== 0 && location.pathname.split('/')[1] === "staking" && location.pathname.split('/')[2] === loc.split('/')[1] && isSubNavi) {
-      // console.log(3)
-      return true;
-    } else {
-      return false
-    }
-  }
 
   const [scrolling, setScrolling] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
@@ -97,68 +76,43 @@ const Navigation: FunctionComponent = () => {
             <img src={ElysiaLogo} className="elysia-logo" alt="Elysia_Logo" />
           </div>
         </a>
-        <div className="navigation__link-wrapper">
-          {
-            [
-              ["/", t("navigation.dashboard")],
-              ["/portfolio", t("navigation.portfolio")],
-            ].map((data, index) => {
-              return (
-                <Link to={data[0]} key={index}>
-                  <div className="navigation__link__wrapper">
-                    <div className={`navigation__link${CheckLocation(data[0].slice(1), index, false) ? " bold" : ""}`}
-                      onMouseEnter={() => setHover(index + 1)}
-                      onMouseLeave={() => setHover(0)}
-                    >
-                      {data[1]}
-                      <div className={`navigation__link__under-line${hover === index + 1 ? " hover" : " blur"}`}
-                        style={{
-                          opacity: CheckLocation(data[0].slice(1), index, false) ? 1 : 0,
-                          width: CheckLocation(data[0].slice(1), index, false) ? "100%" : 0,
-                          left: CheckLocation(data[0].slice(1), index, false) ? 0 : -20
-                        }}
-                      />
-                    </div>
-                  </div>
-                </Link>
-              )
-            })
-          }
-          {window.ethereum?.isMetaMask ? <Wallet triedEager={triedEager} /> : <InstallMetamask />}
-        </div>
-      </div>
-      <div className="navigation__dashboard__container"
-        style={{ display: hover === 1 ? "block" : "none" }}
-        onMouseEnter={() => setHover(1)}
-        onMouseLeave={() => setHover(0)}
-      >
-        <div className="navigation__dashboard__wrapper">
+        <div className="navigation__link-wrapper" style={{ width: 870 }}>
           {
             [
               ["/", t("navigation.deposit_withdraw")],
               ["/staking/EL", t("navigation.el_staking")],
-              ["/staking/ELFI", t("navigation.elfi_staking")]
+              ["/staking/ELFI", t("navigation.elfi_staking")],
             ].map((data, index) => {
-              // console.log(data[0].slice(1).split('/')[1])
               return (
-                <Link to={data[0]} key={index}>
-                  <div className={`navigation__dashboard__link${CheckLocation(data[0].slice(1), index, true) ? " bold" : ""}`}
-                    onMouseEnter={() => setInnerHover(index + 1)}
-                    onMouseLeave={() => setInnerHover(0)}
-                  >
-                    {data[1]}
-                    <div className={`navigation__link__under-line${innerHover === index + 1 ? " hover" : " blur"}`}
-                      style={{
-                        opacity: CheckLocation(data[0].slice(1), index, true) ? 1 : 0,
-                        width: CheckLocation(data[0].slice(1), index, true) ? "100%" : 0,
-                        left: CheckLocation(data[0].slice(1), index, true) ? 0 : -20
-                      }}
-                    />
+                <NavLink to={data[0]} key={index} activeClassName="bold" exact>
+                  <div className="navigation__link__wrapper">
+                    <div className="navigation__link"
+                      onMouseEnter={() => setHover(index + 1)}
+                      onMouseLeave={() => setHover(0)}
+                    >
+                      {data[1].toUpperCase()}
+                      <NavLink
+                        to={data[0]}
+                        className={`navigation__link__under-line${hover === index + 1 ? " hover" : " blur"}`}
+                        style={{
+                          opacity: 0,
+                          width: 0,
+                          left: -20
+                        }}
+                        activeStyle={{
+                          opacity: 1,
+                          width: "100%",
+                          left: 0
+                        }}
+                        exact
+                      />
+                    </div>
                   </div>
-                </Link>
+                </NavLink>
               )
             })
           }
+          {window.ethereum?.isMetaMask ? <Wallet triedEager={triedEager} /> : <InstallMetamask />}
         </div>
       </div>
     </nav>

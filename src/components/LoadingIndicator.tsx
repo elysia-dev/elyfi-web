@@ -19,7 +19,6 @@ const LoadingIndicator: React.FunctionComponent = () => {
           this pop-up window will close in about 15-30 seconds.
         </p>
       </div>
-      
     </div>
   )
 }

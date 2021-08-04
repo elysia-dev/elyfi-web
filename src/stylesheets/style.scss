@@ -114,6 +114,7 @@ span {
     }
     &__link-wrapper {
       display: flex;
+      justify-content: space-between;
       align-items: center;
     }
     &__link {
@@ -132,7 +133,7 @@ span {
         height: 30px;
       }
       &__wrapper {
-        margin: 0 50px;
+        margin: 0 30px;
       }
       &__under-line {
         position: absolute;
@@ -215,7 +216,7 @@ span {
         align-items: center;
         justify-content: flex-end;
         text-align: right;
-        margin-left: 50px;
+        margin-left: 30px;
         position: relative;
         cursor: pointer;
       }
@@ -1506,7 +1507,7 @@ span {
       margin: 0 auto;
       width: 1100px;
       height: 1px;
-      background-color: #F5f5f5;
+      background-color: #f5f5f5;
       position: relative;
       &__value {
         width: 0%;
@@ -1529,7 +1530,7 @@ span {
         &:hover {
           box-shadow: 0px 0px 6px #00bfff;
         }
-        
+
         &.selected {
           &.EL {
             background-color: #00bfff !important;
@@ -1610,7 +1611,6 @@ span {
           top: -10px;
         }
       }
-      
     }
     &__button {
       display: block;
@@ -1631,7 +1631,7 @@ span {
         margin: 0;
         cursor: pointer;
       }
-      &.disable { 
+      &.disable {
         box-shadow: none;
         background-color: #b7b7b7;
         border: none;
@@ -1702,7 +1702,7 @@ span {
           .colored {
             font-size: 35px;
             &.EL {
-              color: #00BFFF;
+              color: #00bfff;
             }
             &.ELFI {
               color: #f9ae19;
@@ -1736,13 +1736,13 @@ span {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-     > div {
-       width: 300px;
-       margin: 0 auto;
-       text-align: center;
+    > div {
+      width: 300px;
+      margin: 0 auto;
+      text-align: center;
       > h2 {
         font-size: 30px;
-        color: #00BFFF;
+        color: #00bfff;
         margin: 40px 0;
       }
       > p {
@@ -1750,10 +1750,9 @@ span {
         color: #ffffff;
         margin: 10px 0;
       }
-     }
+    }
   }
 }
-
 
 .pie-chart {
   display: inline-block;
@@ -1928,7 +1927,7 @@ span {
           gap: 10px;
         }
       }
-      
+
       &__withdraw,
       &__deposit {
         &__maximum {
@@ -2138,6 +2137,12 @@ span {
   padding-top: 25px;
   padding-bottom: 25px;
   min-width: 1190px;
+  &__content {
+    color: #ffffff;
+    font-size: 15px;
+    position: relative;
+    top: 14px;
+  }
   &--dashboard {
     position: absolute;
     bottom: 0;
@@ -2215,7 +2220,6 @@ span {
     cursor: pointer;
   }
 }
-
 
 .google-visualization-tooltip {
   border: 0 !important;

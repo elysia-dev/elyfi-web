@@ -199,7 +199,7 @@ const Dashboard: React.FunctionComponent = () => {
       />
       <section className="dashboard main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
         <div className="main__title-wrapper">
-          <h2 className="main__title-text">{t("navigation.dashboard")}</h2>
+          <h2 className="main__title-text">{t("navigation.deposit_withdraw").toUpperCase()}</h2>
         </div>
       </section>
       <section className="tokens">
