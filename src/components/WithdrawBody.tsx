@@ -1,7 +1,7 @@
 import { BigNumber, utils } from 'ethers';
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next';
-import { formatCommaWithDigits, formatCommaSmall, formatCommaFillZero } from 'src/utiles/formatters';
+import { formatCommaWithDigits, formatCommaFillZero } from 'src/utiles/formatters';
 
 const WithdrawBody: React.FunctionComponent<{
   tokenName: string
@@ -15,7 +15,7 @@ const WithdrawBody: React.FunctionComponent<{
 
   const amountGtBalance = utils.parseEther(amount.value || '0').gt(depositBalance);
   const amountLteZero = !amount.value || parseFloat(amount.value) <= 0;
-  
+
   const { t } = useTranslation();
 
   return (

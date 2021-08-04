@@ -9,14 +9,11 @@ import { useWeb3React } from '@web3-react/core';
 import { faucetTestERC20 } from 'src/utiles/contractHelpers';
 import envs from 'src/core/envs';
 
-// TODO
-// Use NavLink for ActiveClass
 const Navigation: FunctionComponent = () => {
   const triedEager = useEagerConnect()
   const [hover, setHover] = useState(0);
   const { t } = useTranslation();
   const { account, chainId, library } = useWeb3React();
-  // const { library, account, chainId } = useWeb3React();
 
   const [scrolling, setScrolling] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);

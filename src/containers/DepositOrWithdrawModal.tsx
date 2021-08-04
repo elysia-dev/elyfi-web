@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber, constants, providers, utils } from 'ethers';
+import { BigNumber, constants, providers } from 'ethers';
 import { useContext, useEffect } from 'react';
 import { useMemo } from 'react';
 import { FunctionComponent, useState } from 'react'

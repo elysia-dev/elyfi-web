@@ -4,7 +4,7 @@ import LanguageType from "src/enums/LanguageType";
 
 const Bounty = () => {
   const { i18n } = useTranslation();
-  
+
   return (
     <>
       <Header title={"BUG BOUNTY"} />
@@ -173,7 +173,7 @@ const KorNotice = () => {
             <td colSpan={5} style={{ textAlign: "center" }}>
               <p>
                 버그의 심각성
-              </p>  
+              </p>
             </td>
           </tr>
         </table>
@@ -426,7 +426,7 @@ const EngNotice = () => {
             <td colSpan={5} style={{ textAlign: "center" }}>
               <p>
                 Severity
-              </p>  
+              </p>
             </td>
           </tr>
         </table>
@@ -436,7 +436,7 @@ const EngNotice = () => {
           We will use the OWASP risk assessment methodology to determine the bug’s level of threat to the protocol.
         </p>
         <p>
-          Columns indicate the likelihood of the bug, while rows show the severity of the damage. 
+          Columns indicate the likelihood of the bug, while rows show the severity of the damage.
         </p>
       </div>
       <div>
@@ -475,7 +475,7 @@ const EngNotice = () => {
         <ul>
           <li>
             <p>
-              Compensation will be paid in EL tokens 
+              Compensation will be paid in EL tokens
             </p>
           </li>
           <li>
@@ -502,7 +502,7 @@ const EngNotice = () => {
       </div>
       <div>
         <p>
-          Please submit all feedback and reports to support@elysia.land, or contact us directly through https://elysia.land 
+          Please submit all feedback and reports to support@elysia.land, or contact us directly through https://elysia.land
         </p>
       </div>
     </section>

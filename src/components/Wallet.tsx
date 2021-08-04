@@ -36,42 +36,6 @@ const Wallet = (props: any) => {
 
   HandleClickOutside(WalletRef);
 
-  const LNB = () => {
-    return (
-      <div className="navigation__wallet__sub-menu"
-        style={{ display: visible ? "block" : "none" }}
-      >
-        <p className="navigation__wallet__sub-menu__item">
-          {account}
-        </p>
-        <hr />
-        <p className="navigation__wallet__sub-menu__item"
-          onClick={() => {
-            deactivate();
-            window.sessionStorage.setItem("@connect", "false");
-          }}>
-          {t("navigation.disconnect")}
-        </p>
-      </div>
-      // <ul className="navigation__wallet__sub-menu"
-      //   style={{ display: visible ? "block" : "none" }}
-      // >
-      //   <li className="navigation__wallet__sub-menu__item">
-      //     <p>
-      //       {account}
-      //     </p>
-      //   </li>
-      //   <li className="navigation__wallet__sub-menu__item"
-      //     onClick={() => {
-      //       deactivate();
-      //       window.sessionStorage.setItem("@connect", "false");
-      //     }}>
-      //     {t("navigation.disconnect")}
-      //   </li>
-      // </ul>
-    )
-  }
-
   useEffect(() => {
     setConnected(!!account && chainId === envs.requiredChainId)
   }, [account, chainId])
@@ -83,7 +47,7 @@ const Wallet = (props: any) => {
         ref={WalletRef}
         onClick={() => {
           if (!active) {
-            activate(InjectedConnector).then(()=> {
+            activate(InjectedConnector).then(() => {
               window.sessionStorage.setItem("@connect", "ture");
             })
           }
@@ -98,7 +62,21 @@ const Wallet = (props: any) => {
           <p className={`navigation__wallet__status${connected ? "--connected" : ""}`}>
             {connected ? `${account?.slice(0, 6)}....${account?.slice(-4)}` : t("navigation.connect_wallet")}</p>
         </div>
-        <LNB />
+        <div className="navigation__wallet__sub-menu"
+          style={{ display: visible ? "block" : "none" }}
+        >
+          <p className="navigation__wallet__sub-menu__item">
+            {account}
+          </p>
+          <hr />
+          <p className="navigation__wallet__sub-menu__item"
+            onClick={() => {
+              deactivate();
+              window.sessionStorage.setItem("@connect", "false");
+            }}>
+            {t("navigation.disconnect")}
+          </p>
+        </div>
       </div>
     </>
   );

@@ -8,23 +8,3 @@ export const Title: FunctionComponent<{ label: string, style?: CSSProperties }> 
     </div>
   )
 }
-
-// export const MontText: FunctionComponent<{ 
-//     label: string, 
-//     style?: HTMLAttributes<HTMLDivElement>
-//     bold?: boolean
-//   }> = ({ label, style, bold = false }) => {
-//   return (
-//     <p className={`text__montserrat ${bold ? "bold" : ""}`} style={style}>{label}</p>
-//   )
-// }
-
-// export const SpoqaText: FunctionComponent<{ 
-//     label: string, 
-//     style?: HTMLAttributes<HTMLDivElement>
-//     bold?: boolean
-//   }> = ({ label, style, bold = false }) => {
-//   return (
-//     <p className={`text__spoqa ${bold ? "bold" : ""}`} style={style}>{label}</p>
-//   )
-// }
