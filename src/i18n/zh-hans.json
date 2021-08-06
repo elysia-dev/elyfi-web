@@ -43,11 +43,11 @@
       "yield_produced": "之前出金后的利息",
       "accumulated": "累计利息",
       "loading": "Transaction is now loading",
-      "enter_amount": "Enter an amount",
+      "enter_amount": "输入金额",
       "insufficient_balance": "没有足够的余额可以出金",
       "deposit--button": "存款",
       "withdral--button": "出金",
-      "protocol_allow": "Allow the ELYFI Protocol to use your {{tokenName}}",
+      "protocol_allow": "允许ELYFI协议使用您的{{tokenName}}",
       "disable_content--1": "请绑定您的钱包以访问该页面."
     },
     "portfolio": {
