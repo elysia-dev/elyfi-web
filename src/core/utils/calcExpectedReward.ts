@@ -4,7 +4,7 @@ import RoundData from "../types/RoundData";
 
 const calcExpectedReward = (
 	round: RoundData,
-	mintedPerDay: BigNumber,
+	minedPerDay: BigNumber,
 ): BigNumber => {
 	const current = moment();
 
@@ -18,7 +18,7 @@ const calcExpectedReward = (
 	}
 
 	return round.accountReward.add(
-		mintedPerDay
+		minedPerDay
 			.div(24 * 3600)
 			.mul(round.accountPrincipal)
 			.div(round.totalPrincipal)
