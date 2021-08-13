@@ -23,6 +23,11 @@ import RoundData from 'src/core/types/RoundData';
 import CountUp from 'react-countup';
 import { formatEther } from 'ethers/lib/utils';
 import LanguageType from 'src/enums/LanguageType';
+import MigrationNavigationModal from './MigrationNavigationModal';
+import MigrationModal from 'src/components/MigrationModal';
+import MigrationWithElfiModal from 'src/components/MigrationWithElfiModal';
+import StakingEnded from 'src/components/StakingEnded';
+import MigrationEnded from 'src/components/MigrationEnded';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI,
@@ -52,10 +57,15 @@ const Staking: React.FunctionComponent<IProps> = ({
   }, [current]);
 
   const [state, setState] = useState({
-    selectPhase: 1,
+    selectPhase: currentPhase,
   })
   const [stakingModalVisible, setStakingModalVisible] = useState<boolean>(false);
   const [claimStakingRewardModalVisible, setClaimStakingRewardModalVisible] = useState<boolean>(false);
+  const [migrationNavigationModalVisible, setMigrationNavigationModalVisible] = useState<boolean>(false);
+  const [migrationModalVisible, setMigrationModalVisible] = useState<boolean>(false);
+  const [migrationWithElfiModalVisible, setMigrationWithElfiModalVisible] = useState<boolean>(false);
+  const [stakingEndedVisible, setStakingEndedVisible] = useState<boolean>(false);
+  const [migrationEndedVisible, setMigrationEndedVisible] = useState<boolean>(false);
 
   const [roundData, setRoundData] = useState<RoundData>({
     loading: true,
@@ -171,12 +181,65 @@ const Staking: React.FunctionComponent<IProps> = ({
           afterTx={() => { account && fetchRoundData(account, state.selectPhase) }}
         />
         <StakingModal
-          visible={stakingModalVisible}
+          visible={
+            stakingModalVisible
+          }
           closeHandler={() => setStakingModalVisible(false)}
           stakedToken={stakedToken}
           stakedBalance={roundData.accountPrincipal}
           round={state.selectPhase}
           afterTx={() => { account && fetchRoundData(account, state.selectPhase) }}
+          endedModal={() => {
+            setStakingEndedVisible(true)
+          }}
+        />
+        <MigrationNavigationModal
+          visible={migrationNavigationModalVisible}
+          SelectELFIModal={() => {
+            setMigrationWithElfiModalVisible(true)
+            setMigrationNavigationModalVisible(false)
+          }}
+          SelectELModal={() => {
+            setMigrationModalVisible(true)
+            setMigrationNavigationModalVisible(false)
+          }}
+          closeHandler={() => setMigrationNavigationModalVisible(false)}
+        />
+        <MigrationModal
+          visible={migrationModalVisible}
+          closeHandler={() => setMigrationModalVisible(false)}
+          stakedToken={stakedToken}
+          stakedBalance={roundData.accountPrincipal}
+          round={state.selectPhase}
+          afterTx={() => { account && fetchRoundData(account, state.selectPhase) }}
+        />
+        <MigrationWithElfiModal
+          visible={migrationWithElfiModalVisible}
+          closeHandler={() => setMigrationWithElfiModalVisible(false)}
+          stakedToken={stakedToken}
+          stakedBalance={roundData.accountPrincipal}
+          round={state.selectPhase}
+          afterTx={() => { account && fetchRoundData(account, state.selectPhase) }}
+        />
+        <StakingEnded 
+          visible={
+            stakingEndedVisible
+          } 
+          onClose={() => {
+            setStakingEndedVisible(false)          
+            setState({ ...state, selectPhase: currentPhase })
+          }} 
+          round={state.selectPhase} 
+        />
+        <MigrationEnded 
+          visible={
+            migrationEndedVisible
+          } 
+          onClose={() => {
+            setMigrationEndedVisible(false)          
+            setState({ ...state, selectPhase: currentPhase })
+          }} 
+          round={state.selectPhase} 
         />
         <Title label={t("staking.token_staking", { stakedToken: stakedToken })} />
         <div>
@@ -293,13 +356,21 @@ const Staking: React.FunctionComponent<IProps> = ({
                 <a
                   className={`staking__button ${current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) < 0 ? "disable" : ""}`}
                   onClick={(e) => {
-                    current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0
-                      &&
+                    current.diff(stakingRoundTimes[state.selectPhase - 1].endedAt) > 0
+                      ?
+                      setMigrationNavigationModalVisible(true)
+                      :
+                      current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0 &&
                       setStakingModalVisible(true)
                   }}
                 >
                   <p>
-                    {t("staking.staking_btn")}
+                    {
+                      current.diff(stakingRoundTimes[state.selectPhase - 1].endedAt) > 0 ?
+                        t("staking.unstaking_migration")
+                        : 
+                        t("staking.staking_btn")
+                      }
                   </p>
                 </a>
               </div>

@@ -157,7 +157,7 @@
       "available_staking_amount": "能够Staking(权益质押）的数量",
       "wallet_balance": "钱包余额",
       "insufficient_balance": "余额不足。",
-      "nth_staking_round_ended": "第{{nth}}轮Staking(权益质押)已经结束。将会为您打开现在正在进行的Staking(权益质押)页面。",
+      "nth_staking_round_ended": "第{{nth}}轮Staking(权益质押)已经结束。\n将会为您打开现在正在进行的Staking(权益质押)页面。",
       "ok": "确定",
       "available_unstaking_amount": "能够Unstaking(解除权益质押)的数量",
       "available_claim_amount": "可以获取的数量",

@@ -157,7 +157,7 @@
       "available_staking_amount": "스테이킹 가능한 수량",
       "wallet_balance": "지갑 잔액",
       "insufficient_balance": "잔액이 부족합니다",
-      "nth_staking_round_ended": "{{nth}}차 스테이킹 기간이 종료되었습니다. 스테이킹 페이지로 이동합니다.",
+      "nth_staking_round_ended": "{{nth}}차 스테이킹 기간이 종료되었습니다.\n스테이킹 페이지로 이동합니다.",
       "ok": "확인",
       "available_unstaking_amount": "언스테이킹 가능한 수량",
       "available_claim_amount": "수령 가능한 수량",

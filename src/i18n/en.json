@@ -157,7 +157,7 @@
       "available_staking_amount": "Available amount for staking",
       "wallet_balance": "Wallet balance",
       "insufficient_balance": "Insufficient Balance",
-      "nth_staking_round_ended": "{{nth}} round has ended. You will be taken to the staking page.",
+      "nth_staking_round_ended": "{{nth}} round has ended.\nYou will be taken to the staking page.",
       "ok": "OK",
       "available_unstaking_amount": "Available amount for unstaking",
       "available_claim_amount": "Available amount for claiming",
