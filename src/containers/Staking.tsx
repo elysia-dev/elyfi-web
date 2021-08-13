@@ -356,19 +356,19 @@ const Staking: React.FunctionComponent<IProps> = ({
                 <a
                   className={`staking__button ${current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) < 0 ? "disable" : ""}`}
                   onClick={(e) => {
-                    current.diff(stakingRoundTimes[state.selectPhase - 1].endedAt) > 0
-                      ?
-                      setMigrationNavigationModalVisible(true)
-                      :
+                    // current.diff(stakingRoundTimes[state.selectPhase - 1].endedAt) > 0
+                    //   ?
+                    //   setMigrationNavigationModalVisible(true)
+                    //   :
                       current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0 &&
                       setStakingModalVisible(true)
                   }}
                 >
                   <p>
                     {
-                      current.diff(stakingRoundTimes[state.selectPhase - 1].endedAt) > 0 ?
-                        t("staking.unstaking_migration")
-                        : 
+                      // current.diff(stakingRoundTimes[state.selectPhase - 1].endedAt) > 0 ?
+                      //   t("staking.unstaking_migration")
+                      //   : 
                         t("staking.staking_btn")
                       }
                   </p>
@@ -412,7 +412,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                           formattingFn={(number) => {
                             return formatSixFracionDigit(number)
                           }}
-                          decimals={4}
+                          decimals={6}
                           duration={1}
                         />
                       }
