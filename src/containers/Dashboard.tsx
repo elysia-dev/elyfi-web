@@ -17,7 +17,7 @@ import { GetUser } from 'src/queries/__generated__/GetUser';
 import { GET_USER } from 'src/queries/userQueries';
 import ELFI from 'src/assets/images/ELFI.png'
 import { useTranslation } from 'react-i18next';
-import { getErc20Balance, getUserIncentiveReward } from 'src/utiles/contractHelpers';
+import { getErc20Balance } from 'src/utiles/contractHelpers';
 import envs from 'src/core/envs';
 import IncentiveModal from './IncentiveModal';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
@@ -27,6 +27,7 @@ import calcExpectedIncentive from 'src/utiles/calcExpectedIncentive';
 import moment from 'moment';
 import ELFIIcon from 'src/assets/images/ELFI.png';
 import PriceContext from 'src/contexts/PriceContext';
+import useIncentivePool from 'src/hooks/useIncentivePool';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -64,6 +65,7 @@ const Dashboard: React.FunctionComponent = () => {
     { variables: { id: account?.toLocaleLowerCase() } }
   )
   const [expectedIncentive, setExpectedIncentive] = useState<BigNumber>(balances.incentive)
+  const incentivePool = useIncentivePool();
 
   const refrechBalancesAfterTx = async (index: number) => {
     if (!account) return;
@@ -97,7 +99,7 @@ const Dashboard: React.FunctionComponent = () => {
     try {
       setBalances({
         ...balances,
-        incentive: await getUserIncentiveReward(account || '', library),
+        incentive: await incentivePool.getUserIncentive(account),
         updatedAt: moment().unix(),
       })
     } catch {
@@ -118,7 +120,7 @@ const Dashboard: React.FunctionComponent = () => {
       setBalances({
         loading: false,
         dai: await getErc20Balance(reserves[0].id, account, library),
-        incentive: await getUserIncentiveReward(account || '', library),
+        incentive: await incentivePool.getUserIncentive(account),
         governance: await getErc20Balance(envs.governanceAddress, account, library),
         lTokens: await Promise.all(reserves.map((reserve) => {
           return getErc20Balance(reserve.lToken.id, account, library)

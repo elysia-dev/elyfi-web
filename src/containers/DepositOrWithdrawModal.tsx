@@ -9,13 +9,14 @@ import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserve
 import { GetUser_user } from 'src/queries/__generated__/GetUser';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcAccumulatedYield from 'src/utiles/calcAccumulatedYield';
-import { deposit, getAllowance, getErc20Balance, increaseAllownace, withdraw } from 'src/utiles/contractHelpers';
+import { getAllowance, getErc20Balance, increaseAllownace } from 'src/utiles/contractHelpers';
 import { toPercent } from 'src/utiles/formatters';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
 import { useCallback } from 'react';
 import calcCurrentIndex from 'src/utiles/calcCurrentIndex';
 import PriceContext from 'src/contexts/PriceContext';
+import useMoneyPool from 'src/hooks/useMoneyPool';
 
 const DepositOrWithdrawModal: FunctionComponent<{
   tokenName: string,
@@ -42,6 +43,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
     )
   )
   const { t } = useTranslation();
+  const moneyPool = useMoneyPool();
+
   const accumulatedYield = useMemo(() => {
     return calcAccumulatedYield(
       balance,
@@ -85,7 +88,9 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const requestDeposit = async (amount: BigNumber) => {
     if (!account) return;
 
-    waitTx(await deposit(account, reserve.id, amount, library)).then(() => {
+    const tx = await moneyPool.deposit(reserve.id, account, amount)
+
+    waitTx(tx.hash).then(() => {
       afterTx();
       onClose();
     })
@@ -94,7 +99,9 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const reqeustWithdraw = async (amount: BigNumber, max: boolean) => {
     if (!account) return;
 
-    waitTx(await withdraw(account, reserve.id, max ? constants.MaxUint256 : amount, library)).then(() => {
+    const tx = await moneyPool.withdraw(reserve.id, account, max ? constants.MaxUint256 : amount)
+
+    waitTx(tx.hash).then(() => {
       afterTx();
       onClose()
     })

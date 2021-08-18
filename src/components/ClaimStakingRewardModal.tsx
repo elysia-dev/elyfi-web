@@ -1,14 +1,14 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber } from 'ethers';
-import { FunctionComponent, useEffect, useMemo, useState } from 'react'
+import { FunctionComponent, useEffect, useState } from 'react'
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
 import DaiImage from 'src/assets/images/dai.png';
 import { formatCommaSmall } from 'src/utiles/formatters';
-import StakingPool from 'src/core/contracts/StakingPool';
 import useWatingTx from 'src/hooks/useWatingTx';
 import Token from 'src/enums/Token';
 import { useTranslation } from 'react-i18next';
+import useStakingPool from 'src/hooks/useStakingPool';
 
 // Create deposit & withdraw
 const ClaimStakingRewardModal: FunctionComponent<{
@@ -20,10 +20,8 @@ const ClaimStakingRewardModal: FunctionComponent<{
   closeHandler: () => void,
   afterTx: () => void,
 }> = ({ visible, stakedToken, token, balance, round, closeHandler, afterTx }) => {
-  const { account, library } = useWeb3React()
-  const elStakingPool = useMemo(() => {
-    return new StakingPool(stakedToken, library)
-  }, [library]);
+  const { account } = useWeb3React()
+  const stakingPool = useStakingPool(stakedToken);
   const [txHash, setTxHash] = useState("")
   const { wating } = useWatingTx(txHash)
   const { t } = useTranslation();
@@ -72,8 +70,8 @@ const ClaimStakingRewardModal: FunctionComponent<{
                 onClick={() => {
                   if (!account) return
 
-                  elStakingPool.claim(account, round.toString()).then((hash) => {
-                    if (hash) setTxHash(hash);
+                  stakingPool.claim(round.toString()).then((tx) => {
+                    setTxHash(tx.hash);
                   })
                 }}
               >

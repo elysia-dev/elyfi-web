@@ -1,10 +1,7 @@
 import ERC20Abi from 'src/core/abis/ERC20.json';
 import ERC20TestAbi from 'src/core/abis/ERC20Test.json';
-import MoneyPoolAbi from 'src/core/abis/MoneyPool.json';
-import IncentivePoolAbi from 'src/core/abis/IncentivePool.json';
 import getProviderOrSigner from './getSignerOrProvider';
 import { Contract, constants, utils, providers } from 'ethers';
-import envs from 'src/core/envs';
 
 export function isAddress(value: any): string | false {
   try {
@@ -37,22 +34,5 @@ export function getERC20Test(address: string, library: providers.Web3Provider): 
     library
   )
 }
-
-export function getMoneyPool(library: providers.Web3Provider): Contract | null {
-  return getContract(
-    envs.moneyPoolAddress,
-    MoneyPoolAbi,
-    library
-  )
-}
-
-export function getIncentivePool(library: providers.Web3Provider): Contract | null {
-  return getContract(
-    envs.incentivePoolAddress,
-    IncentivePoolAbi,
-    library
-  )
-}
-
 
 export default getContract;

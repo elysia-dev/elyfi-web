@@ -4,7 +4,6 @@ import ContainerArrow from 'src/assets/images/container-arrow@2x.png';
 
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
-import StakingPool from 'src/core/contracts/StakingPool';
 import { constants } from 'ethers';
 import Skeleton from 'react-loading-skeleton';
 import { formatCommaSmall, formatSixFracionDigit, toPercentWithoutSign } from 'src/utiles/formatters';
@@ -28,6 +27,7 @@ import MigrationModal from 'src/components/MigrationModal';
 import MigrationWithElfiModal from 'src/components/MigrationWithElfiModal';
 import StakingEnded from 'src/components/StakingEnded';
 import MigrationEnded from 'src/components/MigrationEnded';
+import useStakingPool from 'src/hooks/useStakingPool';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI,
@@ -46,10 +46,7 @@ const Staking: React.FunctionComponent<IProps> = ({
   const { account, library } = useWeb3React();
   const { elPrice, elfiPrice } = useContext(PriceContext);
 
-  const stakingPool = useMemo(() => {
-    return new StakingPool(stakedToken, library)
-  }, [library])
-
+  const stakingPool = useStakingPool(stakedToken);
   const currentPhase = useMemo(() => {
     return stakingRoundTimes.filter((round) =>
       current.diff(round.startedAt) >= 0
@@ -98,7 +95,7 @@ const Staking: React.FunctionComponent<IProps> = ({
 
     try {
       const poolData = await stakingPool.getPoolData(round.toString());
-      const userData = await stakingPool.getUserData(account, round.toString());
+      const userData = await stakingPool.getUserData(round.toString(), account);
       const accountReward = await stakingPool.getUserReward(account, round.toString());
 
       setRoundData({
@@ -221,25 +218,25 @@ const Staking: React.FunctionComponent<IProps> = ({
           round={state.selectPhase}
           afterTx={() => { account && fetchRoundData(account, state.selectPhase) }}
         />
-        <StakingEnded 
+        <StakingEnded
           visible={
             stakingEndedVisible
-          } 
+          }
           onClose={() => {
-            setStakingEndedVisible(false)          
+            setStakingEndedVisible(false)
             setState({ ...state, selectPhase: currentPhase })
-          }} 
-          round={state.selectPhase} 
+          }}
+          round={state.selectPhase}
         />
-        <MigrationEnded 
+        <MigrationEnded
           visible={
             migrationEndedVisible
-          } 
+          }
           onClose={() => {
-            setMigrationEndedVisible(false)          
+            setMigrationEndedVisible(false)
             setState({ ...state, selectPhase: currentPhase })
-          }} 
-          round={state.selectPhase} 
+          }}
+          round={state.selectPhase}
         />
         <Title label={t("staking.token_staking", { stakedToken: stakedToken })} />
         <div>
@@ -360,7 +357,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                     //   ?
                     //   setMigrationNavigationModalVisible(true)
                     //   :
-                      current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0 &&
+                    current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0 &&
                       setStakingModalVisible(true)
                   }}
                 >
@@ -369,8 +366,8 @@ const Staking: React.FunctionComponent<IProps> = ({
                       // current.diff(stakingRoundTimes[state.selectPhase - 1].endedAt) > 0 ?
                       //   t("staking.unstaking_migration")
                       //   : 
-                        t("staking.staking_btn")
-                      }
+                      t("staking.staking_btn")
+                    }
                   </p>
                 </a>
               </div>

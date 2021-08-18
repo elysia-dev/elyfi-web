@@ -10,7 +10,6 @@ import LoadingIndicator from 'src/components/LoadingIndicator';
 import { useEffect } from 'react';
 import useBalance from 'src/hooks/useBalance';
 import { useMemo } from 'react';
-import StakingPool from 'src/core/contracts/StakingPool';
 import { useWeb3React } from '@web3-react/core';
 import Token from 'src/enums/Token';
 import LanguageType from 'src/enums/LanguageType';
@@ -19,6 +18,7 @@ import ArrowDown from 'src/assets/images/arrow-down.png';
 import ArrowLeft from 'src/assets/images/arrow-left.png';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import moment from 'moment';
+import useStakingPool from 'src/hooks/useStakingPool';
 
 const MigrationModal: React.FunctionComponent<{
   visible: boolean,
@@ -48,9 +48,7 @@ const MigrationModal: React.FunctionComponent<{
   } = useBalance(
     stakedToken === Token.EL ? envs.elAddress : envs.governanceAddress
   );
-  const elStakingPool = useMemo(() => {
-    return new StakingPool(stakedToken, library)
-  }, [library]);
+  const stakingPool = useStakingPool(stakedToken)
   const [txInfo, setTxHash] = useState({ hash: "", closeAfterTx: false })
   const { wating } = useWatingTx(txInfo.hash)
 
@@ -62,7 +60,7 @@ const MigrationModal: React.FunctionComponent<{
   const migrationAmountGtBalance = utils.parseEther(migrationAmount.value || '0').gt(balance);
   const migrationAmountGtStakedBalance = utils.parseEther(migrationAmount.value || '0').gt(stakedBalance);
   const current = moment();
-  
+
   const currentPhase = useMemo(() => {
     return stakingRoundTimes.filter((round) =>
       current.diff(round.startedAt) >= 0
@@ -159,7 +157,7 @@ const MigrationModal: React.FunctionComponent<{
             <div>
               <div className="modal__migration__popup__info">
                 <p>{t("staking.migration")}</p>
-                <p 
+                <p
                   className="modal__migration__popup__hover"
                   onMouseEnter={() => { setMouseHover(true) }}
                   onMouseLeave={() => { setMouseHover(false) }}
@@ -207,7 +205,7 @@ const MigrationModal: React.FunctionComponent<{
               </div>
               <div className="modal__migration__content">
                 <p>
-                  {t("staking.migration_location")} : 
+                  {t("staking.migration_location")} :
                 </p>
                 <p>{t("staking.nth", { nth: OrdinalNumberConverter(round) })}</p>
                 <img src={ArrowLeft} />
@@ -234,12 +232,12 @@ const MigrationModal: React.FunctionComponent<{
             onClick={() => {
               if (!account || amountLteZero || amountGtStakedBalance) return
 
-              elStakingPool
+              stakingPool
                 .migrate(
-                  account,
+                  utils.parseEther(amount.value),
                   round.toString()
-                ).then((hash) => {
-                  if (hash) setTxHash({ hash, closeAfterTx: true });
+                ).then((tx) => {
+                  setTxHash({ hash: tx.hash, closeAfterTx: true });
                 })
             }}
           >

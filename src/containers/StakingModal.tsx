@@ -10,12 +10,12 @@ import LoadingIndicator from 'src/components/LoadingIndicator';
 import { useEffect } from 'react';
 import useBalance from 'src/hooks/useBalance';
 import { useMemo } from 'react';
-import StakingPool from 'src/core/contracts/StakingPool';
 import { useWeb3React } from '@web3-react/core';
 import Token from 'src/enums/Token';
 import LanguageType from 'src/enums/LanguageType';
 import moment from 'moment';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
+import useStakingPool from 'src/hooks/useStakingPool';
 
 const StakingModal: React.FunctionComponent<{
   visible: boolean,
@@ -45,9 +45,7 @@ const StakingModal: React.FunctionComponent<{
   } = useBalance(
     stakedToken === Token.EL ? envs.elAddress : envs.governanceAddress
   );
-  const elStakingPool = useMemo(() => {
-    return new StakingPool(stakedToken, library)
-  }, [library]);
+  const stakingPool = useStakingPool(stakedToken);
   const [txInfo, setTxHash] = useState({ hash: "", closeAfterTx: false })
   const { wating } = useWatingTx(txInfo.hash)
 
@@ -173,14 +171,13 @@ const StakingModal: React.FunctionComponent<{
                     className={`modal__button${amountLteZero || amountGtStakedBalance ? "--disable" : ""}`}
                     onClick={() => {
                       if (!account || amountLteZero || amountGtStakedBalance) return
-                                            
-                      elStakingPool
+
+                      stakingPool
                         .withdraw(
-                          account,
                           amount.max ? constants.MaxUint256 : utils.parseEther(amount.value),
                           round.toString()
-                        ).then((hash) => {
-                          if (hash) setTxHash({ hash, closeAfterTx: true });
+                        ).then((tx) => {
+                          setTxHash({ hash: tx.hash, closeAfterTx: true });
                         })
                     }}
                   >
@@ -198,10 +195,10 @@ const StakingModal: React.FunctionComponent<{
                           endedModal();
                           closeHandler();
                           return;
-                        } 
+                        }
 
-                        elStakingPool.stake(account, amount.max ? balance : utils.parseEther(amount.value)).then((hash) => {
-                          if (hash) setTxHash({ hash, closeAfterTx: true });
+                        stakingPool.stake(amount.max ? balance : utils.parseEther(amount.value)).then((tx) => {
+                          setTxHash({ hash: tx.hash, closeAfterTx: true });
                         })
                       }}
                     >

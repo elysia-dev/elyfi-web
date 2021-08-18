@@ -4,7 +4,7 @@ import { FunctionComponent, useState } from 'react'
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
 import { formatCommaSmall } from 'src/utiles/formatters';
-import { claimIncentive } from 'src/utiles/contractHelpers';
+import useIncentivePool from 'src/hooks/useIncentivePool';
 
 // Create deposit & withdraw
 const IncentiveModal: FunctionComponent<{
@@ -15,18 +15,19 @@ const IncentiveModal: FunctionComponent<{
 }> = ({ visible, balance, onClose, afterTx }) => {
   const { account, library } = useWeb3React()
   const [txWating, setWating] = useState<boolean>(false);
+  const incentivePool = useIncentivePool();
 
   const reqeustClaimIncentive = async () => {
     if (!account) return;
 
-    const txHash = await claimIncentive(account, library);
+    const tx = await incentivePool.claimIncentive();
 
-    if (!txHash) return;
+    if (!tx.hash) return;
 
     setWating(true);
 
     try {
-      await (library as providers.Web3Provider).waitForTransaction(txHash);
+      await (library as providers.Web3Provider).waitForTransaction(tx.hash);
       afterTx();
       onClose();
     } finally {
