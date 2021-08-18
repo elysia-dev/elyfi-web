@@ -21,13 +21,13 @@ import calcExpectedReward from 'src/core/utils/calcExpectedReward';
 import RoundData from 'src/core/types/RoundData';
 import CountUp from 'react-countup';
 import { formatEther } from 'ethers/lib/utils';
-import LanguageType from 'src/enums/LanguageType';
 import MigrationNavigationModal from './MigrationNavigationModal';
 import MigrationModal from 'src/components/MigrationModal';
 import MigrationWithElfiModal from 'src/components/MigrationWithElfiModal';
 import StakingEnded from 'src/components/StakingEnded';
 import MigrationEnded from 'src/components/MigrationEnded';
 import useStakingPool from 'src/hooks/useStakingPool';
+import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI,
@@ -152,18 +152,6 @@ const Staking: React.FunctionComponent<IProps> = ({
     }
   });
 
-  const OrdinalNumberConverter = (value: number) => {
-    switch (value) {
-      case 1: return i18n.language === LanguageType.EN ? "1st" : i18n.language === LanguageType.ZHHANS ? "一" : "1"
-      case 2: return i18n.language === LanguageType.EN ? "2nd" : i18n.language === LanguageType.ZHHANS ? "二" : "2"
-      case 3: return i18n.language === LanguageType.EN ? "3rd" : i18n.language === LanguageType.ZHHANS ? "三" : "3"
-      case 4: return i18n.language === LanguageType.EN ? "4th" : i18n.language === LanguageType.ZHHANS ? "四" : "4"
-      case 5: return i18n.language === LanguageType.EN ? "5th" : i18n.language === LanguageType.ZHHANS ? "五" : "5"
-      case 6: return i18n.language === LanguageType.EN ? "6th" : i18n.language === LanguageType.ZHHANS ? "六" : "6"
-      default: return ""
-    }
-  }
-
   return (
     <>
       <Header title={t("staking.token_staking", { stakedToken: stakedToken }).toUpperCase()} />
@@ -285,13 +273,13 @@ const Staking: React.FunctionComponent<IProps> = ({
                         {
                           status === 'ended'
                             ?
-                            t("staking.nth_ended", { nth: OrdinalNumberConverter(index + 1) })
+                            t("staking.nth_ended", { nth: toOrdinalNumber(i18n.language, index + 1) })
                             :
                             status === "now"
                               ?
-                              t("staking.nth_progress", { nth: OrdinalNumberConverter(index + 1) })
+                              t("staking.nth_progress", { nth: toOrdinalNumber(i18n.language, index + 1) })
                               :
-                              t("staking.nth", { nth: OrdinalNumberConverter(index + 1) })
+                              t("staking.nth", { nth: toOrdinalNumber(i18n.language, index + 1) })
 
                         }
                       </p>
@@ -310,7 +298,7 @@ const Staking: React.FunctionComponent<IProps> = ({
             <div className="staking__container">
               <div className="staking__container__header">
                 <p className="spoqa__bold">
-                  {t("staking.nth_staking", { nth: OrdinalNumberConverter(state.selectPhase) })}
+                  {t("staking.nth_staking", { nth: toOrdinalNumber(i18n.language, state.selectPhase) })}
                 </p>
               </div>
               <div>
@@ -332,7 +320,7 @@ const Staking: React.FunctionComponent<IProps> = ({
             <div className="staking__container">
               <div className="staking__container__header">
                 <p className="spoqa__bold">
-                  {t("staking.nth_staking_amount", { nth: OrdinalNumberConverter(state.selectPhase) })}
+                  {t("staking.nth_staking_amount", { nth: toOrdinalNumber(i18n.language, state.selectPhase) })}
                 </p>
               </div>
               <div className="staking__value">
@@ -379,7 +367,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           <div className="staking__container">
             <div className="staking__container__header">
               <p className="spoqa__bold">
-                {t("staking.nth_reward_amount", { nth: OrdinalNumberConverter(state.selectPhase) })}
+                {t("staking.nth_reward_amount", { nth: toOrdinalNumber(i18n.language, state.selectPhase) })}
               </p>
             </div>
             <div className="staking__value__reward">

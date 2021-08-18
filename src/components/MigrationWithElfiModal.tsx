@@ -7,7 +7,6 @@ import { useEffect } from 'react';
 import { useMemo } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import Token from 'src/enums/Token';
-import LanguageType from 'src/enums/LanguageType';
 import ArrowUp from 'src/assets/images/arrow-up.png';
 import ArrowDown from 'src/assets/images/arrow-down.png';
 import ArrowLeft from 'src/assets/images/arrow-left.png';
@@ -16,6 +15,7 @@ import moment from 'moment';
 import useStakingPool from 'src/hooks/useStakingPool';
 import useERC20Info from 'src/hooks/useERC20Info';
 import { formatComma } from 'src/utiles/formatters';
+import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 
 const MigrationWithElfiModal: React.FunctionComponent<{
   visible: boolean,
@@ -62,18 +62,6 @@ const MigrationWithElfiModal: React.FunctionComponent<{
       value: ''
     });
   }, [stakingMode, visible])
-
-  const OrdinalNumberConverter = (value: number) => {
-    switch (value) {
-      case 1: return i18n.language === LanguageType.EN ? "1st" : i18n.language === LanguageType.ZHHANS ? "一" : "1"
-      case 2: return i18n.language === LanguageType.EN ? "2nd" : i18n.language === LanguageType.ZHHANS ? "二" : "2"
-      case 3: return i18n.language === LanguageType.EN ? "3rd" : i18n.language === LanguageType.ZHHANS ? "三" : "3"
-      case 4: return i18n.language === LanguageType.EN ? "4th" : i18n.language === LanguageType.ZHHANS ? "四" : "4"
-      case 5: return i18n.language === LanguageType.EN ? "5th" : i18n.language === LanguageType.ZHHANS ? "五" : "5"
-      case 6: return i18n.language === LanguageType.EN ? "6th" : i18n.language === LanguageType.ZHHANS ? "六" : "6"
-      default: return ""
-    }
-  }
 
   return (
     <div className="modal" style={{ display: visible ? "block" : "none" }}>
@@ -188,9 +176,9 @@ const MigrationWithElfiModal: React.FunctionComponent<{
                 <p>
                   {t("staking.migration_location")} :
                 </p>
-                <p>{t("staking.nth", { nth: OrdinalNumberConverter(round) })}</p>
+                <p>{t("staking.nth", { nth: toOrdinalNumber(i18n.language, round) })}</p>
                 <img src={ArrowLeft} />
-                <p>{t("staking.nth", { nth: OrdinalNumberConverter(currentPhase) })}</p>
+                <p>{t("staking.nth", { nth: toOrdinalNumber(i18n.language, currentPhase) })}</p>
               </div>
             </div>
           </div>
@@ -201,7 +189,7 @@ const MigrationWithElfiModal: React.FunctionComponent<{
             </p>
             <div>
               <p className="spoqa__bold">
-                {t("staking.nth_staking_amount", { nth: OrdinalNumberConverter(round) })}
+                {t("staking.nth_staking_amount", { nth: toOrdinalNumber(i18n.language, round) })}
               </p>
               <p className="spoqa__bold">
                 {`${formatComma(stakedBalance)} ${stakedToken}`}

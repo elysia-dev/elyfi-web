@@ -16,6 +16,7 @@ import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import moment from 'moment';
 import useStakingPool from 'src/hooks/useStakingPool';
 import useERC20Info from 'src/hooks/useERC20Info';
+import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 
 const MigrationModal: React.FunctionComponent<{
   visible: boolean,
@@ -62,18 +63,6 @@ const MigrationModal: React.FunctionComponent<{
       value: ''
     });
   }, [stakingMode, visible])
-
-  const OrdinalNumberConverter = (value: number) => {
-    switch (value) {
-      case 1: return i18n.language === LanguageType.EN ? "1st" : i18n.language === LanguageType.ZHHANS ? "一" : "1"
-      case 2: return i18n.language === LanguageType.EN ? "2nd" : i18n.language === LanguageType.ZHHANS ? "二" : "2"
-      case 3: return i18n.language === LanguageType.EN ? "3rd" : i18n.language === LanguageType.ZHHANS ? "三" : "3"
-      case 4: return i18n.language === LanguageType.EN ? "4th" : i18n.language === LanguageType.ZHHANS ? "四" : "4"
-      case 5: return i18n.language === LanguageType.EN ? "5th" : i18n.language === LanguageType.ZHHANS ? "五" : "5"
-      case 6: return i18n.language === LanguageType.EN ? "6th" : i18n.language === LanguageType.ZHHANS ? "六" : "6"
-      default: return ""
-    }
-  }
 
   return (
     <div className="modal" style={{ display: visible ? "block" : "none" }}>
@@ -188,9 +177,9 @@ const MigrationModal: React.FunctionComponent<{
                 <p>
                   {t("staking.migration_location")} :
                 </p>
-                <p>{t("staking.nth", { nth: OrdinalNumberConverter(round) })}</p>
+                <p>{t("staking.nth", { nth: toOrdinalNumber(i18n.language, round) })}</p>
                 <img src={ArrowLeft} />
-                <p>{t("staking.nth", { nth: OrdinalNumberConverter(currentPhase) })}</p>
+                <p>{t("staking.nth", { nth: toOrdinalNumber(i18n.language, currentPhase) })}</p>
               </div>
             </div>
           </div>
@@ -201,7 +190,7 @@ const MigrationModal: React.FunctionComponent<{
             </p>
             <div>
               <p className="spoqa__bold">
-                {t("staking.nth_staking_amount", { nth: OrdinalNumberConverter(round) })}
+                {t("staking.nth_staking_amount", { nth: toOrdinalNumber(i18n.language, round) })}
               </p>
               <p className="spoqa__bold">
                 {`${formatComma(stakedBalance)} ${stakedToken}`}

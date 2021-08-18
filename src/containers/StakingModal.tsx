@@ -9,11 +9,11 @@ import LoadingIndicator from 'src/components/LoadingIndicator';
 import { useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import Token from 'src/enums/Token';
-import LanguageType from 'src/enums/LanguageType';
 import moment from 'moment';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import useStakingPool from 'src/hooks/useStakingPool';
 import useERC20Info from 'src/hooks/useERC20Info';
+import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 
 const StakingModal: React.FunctionComponent<{
   visible: boolean,
@@ -51,18 +51,6 @@ const StakingModal: React.FunctionComponent<{
       value: ''
     });
   }, [stakingMode, visible])
-
-  const OrdinalNumberConverter = (value: number) => {
-    switch (value) {
-      case 1: return i18n.language === LanguageType.EN ? "1st" : i18n.language === LanguageType.ZHHANS ? "一" : "1"
-      case 2: return i18n.language === LanguageType.EN ? "2nd" : i18n.language === LanguageType.ZHHANS ? "二" : "2"
-      case 3: return i18n.language === LanguageType.EN ? "3rd" : i18n.language === LanguageType.ZHHANS ? "三" : "3"
-      case 4: return i18n.language === LanguageType.EN ? "4th" : i18n.language === LanguageType.ZHHANS ? "四" : "4"
-      case 5: return i18n.language === LanguageType.EN ? "5th" : i18n.language === LanguageType.ZHHANS ? "五" : "5"
-      case 6: return i18n.language === LanguageType.EN ? "6th" : i18n.language === LanguageType.ZHHANS ? "六" : "6"
-      default: return ""
-    }
-  }
 
   return (
     <div className="modal" style={{ display: visible ? "block" : "none" }}>
@@ -141,7 +129,7 @@ const StakingModal: React.FunctionComponent<{
                 <div>
                   <p className="spoqa__bold">
                     {
-                      stakingMode ? t("staking.wallet_balance") : t("staking.nth_staking_amount", { nth: OrdinalNumberConverter(round) })
+                      stakingMode ? t("staking.wallet_balance") : t("staking.nth_staking_amount", { nth: toOrdinalNumber(i18n.language, round) })
                     }
                   </p>
                   <p className="spoqa__bold">
