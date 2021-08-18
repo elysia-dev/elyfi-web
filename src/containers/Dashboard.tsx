@@ -17,7 +17,6 @@ import { GetUser } from 'src/queries/__generated__/GetUser';
 import { GET_USER } from 'src/queries/userQueries';
 import ELFI from 'src/assets/images/ELFI.png'
 import { useTranslation } from 'react-i18next';
-import { getErc20Balance } from 'src/utiles/contractHelpers';
 import envs from 'src/core/envs';
 import IncentiveModal from './IncentiveModal';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
@@ -28,6 +27,7 @@ import moment from 'moment';
 import ELFIIcon from 'src/assets/images/ELFI.png';
 import PriceContext from 'src/contexts/PriceContext';
 import useIncentivePool from 'src/hooks/useIncentivePool';
+import { ERC20__factory } from "@elysia-dev/contract-typechain";
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -76,12 +76,16 @@ const Dashboard: React.FunctionComponent = () => {
       const updatedLTokens = balances.lTokens;
 
       if (balances.lTokens.length >= index + 1) {
-        updatedLTokens[index] = await getErc20Balance(reserves[index].lToken.id, account, library);
+        updatedLTokens[index] = await ERC20__factory
+          .connect(reserves[index].lToken.id, library)
+          .balanceOf(account)
       }
 
       setBalances({
         ...balances,
-        dai: await getErc20Balance(reserves[index].id, account, library),
+        dai: await await ERC20__factory
+          .connect(reserves[index].lToken.id, library)
+          .balanceOf(account),
         lTokens: updatedLTokens,
         updatedAt: moment().unix(),
       })
@@ -119,11 +123,11 @@ const Dashboard: React.FunctionComponent = () => {
     try {
       setBalances({
         loading: false,
-        dai: await getErc20Balance(reserves[0].id, account, library),
+        dai: await ERC20__factory.connect(reserves[0].id, library).balanceOf(account),
         incentive: await incentivePool.getUserIncentive(account),
-        governance: await getErc20Balance(envs.governanceAddress, account, library),
+        governance: await ERC20__factory.connect(envs.governanceAddress, library).balanceOf(account),
         lTokens: await Promise.all(reserves.map((reserve) => {
-          return getErc20Balance(reserve.lToken.id, account, library)
+          return ERC20__factory.connect(reserve.lToken.id, library).balanceOf(account)
         })),
         updatedAt: moment().unix()
       })

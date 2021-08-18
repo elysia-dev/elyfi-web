@@ -1,14 +1,11 @@
-import { BigNumber, constants, utils } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import React, { useState } from 'react'
 import ELFI from 'src/assets/images/ELFI.png';
-import useAllownace from 'src/hooks/useAllowance';
 import { formatComma } from 'src/utiles/formatters';
 import envs from 'src/core/envs';
 import { useTranslation } from 'react-i18next';
 import useWatingTx from 'src/hooks/useWatingTx';
-import LoadingIndicator from 'src/components/LoadingIndicator';
 import { useEffect } from 'react';
-import useBalance from 'src/hooks/useBalance';
 import { useMemo } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import Token from 'src/enums/Token';
@@ -19,6 +16,7 @@ import ArrowLeft from 'src/assets/images/arrow-left.png';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import moment from 'moment';
 import useStakingPool from 'src/hooks/useStakingPool';
+import useERC20Info from 'src/hooks/useERC20Info';
 
 const MigrationModal: React.FunctionComponent<{
   visible: boolean,
@@ -29,24 +27,17 @@ const MigrationModal: React.FunctionComponent<{
   round: number
 }> = ({ visible, closeHandler, afterTx, stakedBalance, stakedToken, round }) => {
   const { t, i18n } = useTranslation();
-  const { account, library } = useWeb3React();
+  const { account } = useWeb3React();
   const [stakingMode, setStakingMode] = useState<boolean>(true)
   const [amount, setAmount] = useState({ value: "", max: false });
   const [migrationAmount, setMigrationAmount] = useState({ value: "", max: false });
   const [mouseHover, setMouseHover] = useState(false);
   const {
-    allowance,
-    loading: allowanceLoading,
-    increaseAllowance,
-    loadAllowance,
-  } = useAllownace(
+    balance,
+    refetch,
+  } = useERC20Info(
     stakedToken === Token.EL ? envs.elAddress : envs.governanceAddress,
     stakedToken === Token.EL ? envs.elStakingPoolAddress : envs.elfyStakingPoolAddress,
-  );
-  const {
-    balance,
-  } = useBalance(
-    stakedToken === Token.EL ? envs.elAddress : envs.governanceAddress
   );
   const stakingPool = useStakingPool(stakedToken)
   const [txInfo, setTxHash] = useState({ hash: "", closeAfterTx: false })
@@ -69,7 +60,7 @@ const MigrationModal: React.FunctionComponent<{
 
   useEffect(() => {
     if (!wating) {
-      loadAllowance()
+      refetch()
       afterTx()
       if (txInfo.closeAfterTx) closeHandler()
     }

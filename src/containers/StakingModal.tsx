@@ -1,21 +1,19 @@
 import { BigNumber, constants, utils } from 'ethers';
 import React, { useState } from 'react'
 import ELFI from 'src/assets/images/ELFI.png';
-import useAllownace from 'src/hooks/useAllowance';
 import { formatComma } from 'src/utiles/formatters';
 import envs from 'src/core/envs';
 import { useTranslation } from 'react-i18next';
 import useWatingTx from 'src/hooks/useWatingTx';
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import { useEffect } from 'react';
-import useBalance from 'src/hooks/useBalance';
-import { useMemo } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import Token from 'src/enums/Token';
 import LanguageType from 'src/enums/LanguageType';
 import moment from 'moment';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import useStakingPool from 'src/hooks/useStakingPool';
+import useERC20Info from 'src/hooks/useERC20Info';
 
 const StakingModal: React.FunctionComponent<{
   visible: boolean,
@@ -27,23 +25,19 @@ const StakingModal: React.FunctionComponent<{
   endedModal: () => void
 }> = ({ visible, closeHandler, afterTx, stakedBalance, stakedToken, round, endedModal }) => {
   const { t, i18n } = useTranslation();
-  const { account, library } = useWeb3React();
+  const { account } = useWeb3React();
   const [stakingMode, setStakingMode] = useState<boolean>(true)
   const [amount, setAmount] = useState({ value: "", max: false });
   const current = moment();
   const {
     allowance,
+    balance,
     loading: allowanceLoading,
-    increaseAllowance,
-    loadAllowance,
-  } = useAllownace(
+    refetch,
+    contract,
+  } = useERC20Info(
     stakedToken === Token.EL ? envs.elAddress : envs.governanceAddress,
     stakedToken === Token.EL ? envs.elStakingPoolAddress : envs.elfyStakingPoolAddress,
-  );
-  const {
-    balance,
-  } = useBalance(
-    stakedToken === Token.EL ? envs.elAddress : envs.governanceAddress
   );
   const stakingPool = useStakingPool(stakedToken);
   const [txInfo, setTxHash] = useState({ hash: "", closeAfterTx: false })
@@ -55,7 +49,7 @@ const StakingModal: React.FunctionComponent<{
 
   useEffect(() => {
     if (!wating) {
-      loadAllowance()
+      refetch()
       afterTx()
       if (txInfo.closeAfterTx) closeHandler()
     }
@@ -209,8 +203,11 @@ const StakingModal: React.FunctionComponent<{
                     <div
                       className={"modal__button"}
                       onClick={() => {
-                        increaseAllowance().then((hash) => {
-                          if (hash) setTxHash({ hash, closeAfterTx: false });
+                        contract.increaseAllowance(
+                          stakedToken === Token.EL ? envs.elStakingPoolAddress : envs.elfyStakingPoolAddress,
+                          constants.MaxUint256,
+                        ).then((tx) => {
+                          setTxHash({ hash: tx.hash, closeAfterTx: false });
                         })
                       }}
                     >

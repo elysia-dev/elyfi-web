@@ -5,12 +5,12 @@ import Guide03 from "src/assets/images/guide/03.png";
 import Guide04 from "src/assets/images/guide/04.png";
 import Guide05 from "src/assets/images/guide/05.png";
 import { useState } from "react";
-import { faucetTestERC20 } from 'src/utiles/contractHelpers';
 import { useWeb3React } from '@web3-react/core';
 import envs from 'src/core/envs';
 import { useTranslation } from "react-i18next";
 import LanguageType from "src/enums/LanguageType";
 import { Title } from "src/components/Texts";
+import { ERC20Test__factory } from "@elysia-dev/contract-typechain";
 
 const InvestmentGuide = () => {
   const [onClick, setClick] = useState(0);
@@ -72,14 +72,16 @@ const InvestmentGuide = () => {
                     }}
                     onClick={() => {
                       if (account && chainId === envs.requiredChainId) {
-                        faucetTestERC20(account, library)
+                        ERC20Test__factory
+                          .connect(envs.testStableAddress, library.getSigner() as any)
+                          .faucet()
                       } else {
                         alert(`Please connet to the ${envs.requiredNetwork} network`)
                       }
                     }}
                   >
                     here
-                  </span> to use Metamask Faucet so you can review free test tokens. Keep in mind that you must be connected to the {envs.requiredNetwork} network.<br/>
+                  </span> to use Metamask Faucet so you can review free test tokens. Keep in mind that you must be connected to the {envs.requiredNetwork} network.<br />
                   Also, to receive {envs.requiredNetwork} ETH for the test, click <a className="guide__link" href={"https://faucet.ropsten.be/"} target="_blank">here</a> and enter the wallet address you created above.
                 </p>
               </li>
@@ -112,7 +114,7 @@ const InvestmentGuide = () => {
               </li>
               <li>
                 <p>
-                You will be able to find the deposit token list on your dashboard By clicking on the token received from Faucet, you may use the tokens to make deposits on the money pool or make withdrawals
+                  You will be able to find the deposit token list on your dashboard By clicking on the token received from Faucet, you may use the tokens to make deposits on the money pool or make withdrawals
                 </p>
               </li>
             </ol>
@@ -249,7 +251,9 @@ const InvestmentGuide = () => {
                     }}
                     onClick={() => {
                       if (account && chainId === envs.requiredChainId) {
-                        faucetTestERC20(account, library)
+                        ERC20Test__factory
+                          .connect(envs.testStableAddress, library.getSigner() as any)
+                          .faucet()
                       } else {
                         alert(`Please connet to the ${envs.requiredNetwork} network`)
                       }
@@ -257,7 +261,7 @@ const InvestmentGuide = () => {
                   >
                     이 곳
                   </span>
-                  을 클릭해 Faucet 과정을 진행해주세요. 무료로 지갑주소에 테스트 토큰을 발급 받으실 수 있습니다. 단, 반드시 {envs.requiredNetwork} network에 연결되어 있어야 합니다.<br/>
+                  을 클릭해 Faucet 과정을 진행해주세요. 무료로 지갑주소에 테스트 토큰을 발급 받으실 수 있습니다. 단, 반드시 {envs.requiredNetwork} network에 연결되어 있어야 합니다.<br />
                   또한, 테스트 진행을 위한 {envs.requiredNetwork} ETH를 지급받기 위해서 <a className="guide__link" href={"https://faucet.ropsten.be/"} target="_blank">이 곳</a>을 클릭 후 발급 받으신 지갑주소를 입력해주세요.
                 </p>
               </li>
@@ -388,7 +392,7 @@ const InvestmentGuide = () => {
       </section>
     )
   }
-  
+
   return (
     <>
       <Header title={"INVESTMENT GUIDE"} />

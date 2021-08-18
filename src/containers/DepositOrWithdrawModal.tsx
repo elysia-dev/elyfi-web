@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber, constants, providers } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 import { useContext, useEffect } from 'react';
 import { useMemo } from 'react';
 import { FunctionComponent, useState } from 'react'
@@ -9,14 +9,14 @@ import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserve
 import { GetUser_user } from 'src/queries/__generated__/GetUser';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcAccumulatedYield from 'src/utiles/calcAccumulatedYield';
-import { getAllowance, getErc20Balance, increaseAllownace } from 'src/utiles/contractHelpers';
+import envs from 'src/core/envs';
 import { toPercent } from 'src/utiles/formatters';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
-import { useCallback } from 'react';
 import calcCurrentIndex from 'src/utiles/calcCurrentIndex';
 import PriceContext from 'src/contexts/PriceContext';
 import useMoneyPool from 'src/hooks/useMoneyPool';
+import useERC20Info from 'src/hooks/useERC20Info';
 
 const DepositOrWithdrawModal: FunctionComponent<{
   tokenName: string,
@@ -29,10 +29,18 @@ const DepositOrWithdrawModal: FunctionComponent<{
   onClose: () => void,
   afterTx: () => Promise<void>,
 }> = ({ tokenName, visible, tokenImage, balance, depositBalance, reserve, userData, onClose, afterTx }) => {
-  const { account, library } = useWeb3React()
+  const { account } = useWeb3React()
   const { elfiPrice } = useContext(PriceContext);
   const [selected, select] = useState<boolean>(true)
-  const [allowance, setAllowance] = useState<{ value: BigNumber, loaded: boolean }>({ value: constants.Zero, loaded: false });
+  const {
+    allowance,
+    loading,
+    contract: reserveERC20,
+    refetch,
+  } = useERC20Info(
+    reserve.id,
+    envs.moneyPoolAddress
+  )
   const [liquidity, setLiquidity] = useState<{ value: BigNumber, loaded: boolean }>({ value: constants.Zero, loaded: false });
   const [txWating, setWating] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<BigNumber>(
@@ -66,72 +74,58 @@ const DepositOrWithdrawModal: FunctionComponent<{
         userData?.lTokenBurn.filter((burn) => burn.lToken.id === reserve.lToken.id) || []
       )
     );
-  }, [accumulatedYield, reserve, userData, balance])
+  }, [accumulatedYield, reserve, userData])
 
-  const loadAllowance = useCallback(async () => {
+  const increateAllowance = async () => {
     if (!account) return;
 
-    setAllowance({
-      value: await getAllowance(account, reserve.id, library),
-      loaded: true
+    reserveERC20.increaseAllowance(envs.moneyPoolAddress, constants.MaxUint256).then((tx) => {
+      setWating(true);
+      tx.wait().then(() => {
+        refetch();
+        setWating(false);
+      })
     })
-  }, [account, library, reserve]);
-
-  const requestAllowance = async () => {
-    if (!account) return;
-
-    waitTx(await increaseAllownace(account, reserve.id, library)).then(() => {
-      loadAllowance();
-    });
   }
 
   const requestDeposit = async (amount: BigNumber) => {
     if (!account) return;
 
-    const tx = await moneyPool.deposit(reserve.id, account, amount)
-
-    waitTx(tx.hash).then(() => {
-      afterTx();
-      onClose();
-    })
+    moneyPool
+      .deposit(reserve.id, account, amount)
+      .then((tx) => {
+        setWating(true);
+        tx.wait().then(() => {
+          afterTx();
+          onClose();
+        })
+      })
   }
 
-  const reqeustWithdraw = async (amount: BigNumber, max: boolean) => {
+  const reqeustWithdraw = (amount: BigNumber, max: boolean) => {
     if (!account) return;
 
-    const tx = await moneyPool.withdraw(reserve.id, account, max ? constants.MaxUint256 : amount)
-
-    waitTx(tx.hash).then(() => {
-      afterTx();
-      onClose()
-    })
+    moneyPool
+      .withdraw(reserve.id, account, max ? constants.MaxUint256 : amount)
+      .then((tx) => {
+        setWating(true);
+        tx.wait().then(() => {
+          afterTx();
+          onClose();
+        })
+      })
   }
-
-  const waitTx = async (txHash: string | undefined) => {
-    if (!txHash) return;
-
-    setWating(true);
-    try {
-      await (library as providers.Web3Provider).waitForTransaction(txHash);
-    } finally {
-      setWating(false);
-    }
-  }
-
-  useEffect(() => {
-    loadAllowance();
-  }, [account, loadAllowance])
 
   useEffect(() => {
     if (!reserve) return
 
-    getErc20Balance(reserve.id, reserve.lToken.id, library).then((value) => {
+    reserveERC20.balanceOf(reserve.lToken.id).then((value) => {
       setLiquidity({
         value,
         loaded: true
       })
     })
-  }, [reserve, library])
+  }, [reserve, reserveERC20])
 
   useEffect(() => {
     const interval = setInterval(() => setCurrentIndex(
@@ -158,16 +152,11 @@ const DepositOrWithdrawModal: FunctionComponent<{
               <p className="modal__header__name spoqa__bold">{tokenName}</p>
             </div>
           </div>
-          {/* {txWating ? (
-            <></>
-          ) : ( */}
           <div className="close-button" onClick={onClose}>
             <div className="close-button--1">
               <div className="close-button--2" />
             </div>
           </div>
-          {/* )} */}
-
         </div>
         <div className='modal__converter'>
           <div
@@ -193,8 +182,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
                 depositAPY={toPercent(reserve.depositAPY || '0')}
                 miningAPR={toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserve.totalDeposit)))}
                 balance={balance}
-                isApproved={!allowance.loaded || allowance.value.gt(balance)}
-                increaseAllownace={requestAllowance}
+                isApproved={!loading && allowance.gt(balance)}
+                increaseAllownace={increateAllowance}
                 deposit={requestDeposit}
               />
             ) : (

@@ -6,8 +6,8 @@ import Wallet from './Wallet';
 import { useEagerConnect } from 'src/hooks/connectHooks';
 import { useTranslation } from 'react-i18next';
 import { useWeb3React } from '@web3-react/core';
-import { faucetTestERC20 } from 'src/utiles/contractHelpers';
 import envs from 'src/core/envs';
+import { ERC20Test__factory } from '@elysia-dev/contract-typechain';
 
 const Navigation: FunctionComponent = () => {
   const triedEager = useEagerConnect()
@@ -50,7 +50,9 @@ const Navigation: FunctionComponent = () => {
                 }}
                 onClick={() => {
                   if (account && chainId === envs.requiredChainId) {
-                    faucetTestERC20(account, library)
+                    ERC20Test__factory
+                      .connect(envs.testStableAddress, library.getSigner() as any)
+                      .faucet()
                   } else {
                     alert(`Please connet to the ${envs.requiredNetwork} network`)
                   }

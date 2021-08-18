@@ -19,14 +19,6 @@ function getContract(address: string, ABI: any, library: providers.Web3Provider)
   return new Contract(address, ABI, getProviderOrSigner(library) as any);
 }
 
-export function getERC20(address: string, library: providers.Web3Provider): Contract | null {
-  return getContract(
-    address,
-    ERC20Abi,
-    library
-  )
-}
-
 export function getERC20Test(address: string, library: providers.Web3Provider): Contract | null {
   return getContract(
     address,
