@@ -17,6 +17,7 @@ import calcCurrentIndex from 'src/utiles/calcCurrentIndex';
 import PriceContext from 'src/contexts/PriceContext';
 import useMoneyPool from 'src/hooks/useMoneyPool';
 import useERC20Info from 'src/hooks/useERC20Info';
+import useWaitingTx from 'src/hooks/useWaitingTx';
 
 const DepositOrWithdrawModal: FunctionComponent<{
   tokenName: string,
@@ -42,7 +43,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     envs.moneyPoolAddress
   )
   const [liquidity, setLiquidity] = useState<{ value: BigNumber, loaded: boolean }>({ value: constants.Zero, loaded: false });
-  const [txWating, setWating] = useState<boolean>(false);
+  const { waiting, wait } = useWaitingTx()
   const [currentIndex, setCurrentIndex] = useState<BigNumber>(
     calcCurrentIndex(
       BigNumber.from(reserve.lTokenInterestIndex),
@@ -80,11 +81,12 @@ const DepositOrWithdrawModal: FunctionComponent<{
     if (!account) return;
 
     reserveERC20.increaseAllowance(envs.moneyPoolAddress, constants.MaxUint256).then((tx) => {
-      setWating(true);
-      tx.wait().then(() => {
-        refetch();
-        setWating(false);
-      })
+      wait(
+        tx as any,
+        () => {
+          refetch();
+        }
+      )
     })
   }
 
@@ -94,11 +96,13 @@ const DepositOrWithdrawModal: FunctionComponent<{
     moneyPool
       .deposit(reserve.id, account, amount)
       .then((tx) => {
-        setWating(true);
-        tx.wait().then(() => {
-          afterTx();
-          onClose();
-        })
+        wait(
+          tx as any,
+          () => {
+            afterTx();
+            onClose();
+          }
+        )
       })
   }
 
@@ -108,11 +112,13 @@ const DepositOrWithdrawModal: FunctionComponent<{
     moneyPool
       .withdraw(reserve.id, account, max ? constants.MaxUint256 : amount)
       .then((tx) => {
-        setWating(true);
-        tx.wait().then(() => {
-          afterTx();
-          onClose();
-        })
+        wait(
+          tx as any,
+          () => {
+            afterTx();
+            onClose();
+          }
+        )
       })
   }
 
@@ -173,7 +179,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
           </div>
         </div>
         <div className="modal__body">
-          {txWating ? (
+          {waiting ? (
             <LoadingIndicator />
           ) : (
             selected ? (

@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import ELFI from 'src/assets/images/ELFI.png';
 import envs from 'src/core/envs';
 import { useTranslation } from 'react-i18next';
-import useWatingTx from 'src/hooks/useWatingTx';
 import { useEffect } from 'react';
 import { useMemo } from 'react';
 import { useWeb3React } from '@web3-react/core';
@@ -41,7 +40,6 @@ const MigrationWithElfiModal: React.FunctionComponent<{
   );
   const stakingPool = useStakingPool(stakedToken);
   const [txInfo, setTxHash] = useState({ hash: "", closeAfterTx: false })
-  const { wating } = useWatingTx(txInfo.hash)
 
   const amountLteZero = !amount || utils.parseEther(amount.value || '0').isZero();
   const amountGtBalance = utils.parseEther(amount.value || '0').gt(balance);
@@ -57,14 +55,6 @@ const MigrationWithElfiModal: React.FunctionComponent<{
       current.diff(round.startedAt) >= 0
     ).length
   }, [current]);
-
-  useEffect(() => {
-    if (!wating) {
-      refetch()
-      afterTx()
-      if (txInfo.closeAfterTx) closeHandler()
-    }
-  }, [wating])
 
   useEffect(() => {
     setAmount({

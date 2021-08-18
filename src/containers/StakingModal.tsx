@@ -4,7 +4,7 @@ import ELFI from 'src/assets/images/ELFI.png';
 import { formatComma } from 'src/utiles/formatters';
 import envs from 'src/core/envs';
 import { useTranslation } from 'react-i18next';
-import useWatingTx from 'src/hooks/useWatingTx';
+import useWatingTx from 'src/hooks/useWaitingTx';
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import { useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
@@ -40,20 +40,10 @@ const StakingModal: React.FunctionComponent<{
     stakedToken === Token.EL ? envs.elStakingPoolAddress : envs.elfyStakingPoolAddress,
   );
   const stakingPool = useStakingPool(stakedToken);
-  const [txInfo, setTxHash] = useState({ hash: "", closeAfterTx: false })
-  const { wating } = useWatingTx(txInfo.hash)
-
+  const { waiting, wait } = useWatingTx();
   const amountLteZero = !amount || utils.parseEther(amount.value || '0').isZero();
   const amountGtBalance = utils.parseEther(amount.value || '0').gt(balance);
   const amountGtStakedBalance = utils.parseEther(amount.value || '0').gt(stakedBalance);
-
-  useEffect(() => {
-    if (!wating) {
-      refetch()
-      afterTx()
-      if (txInfo.closeAfterTx) closeHandler()
-    }
-  }, [wating])
 
   useEffect(() => {
     setAmount({
@@ -104,7 +94,7 @@ const StakingModal: React.FunctionComponent<{
             <p className="bold">{t("staking.unstaking")}</p>
           </div>
         </div>
-        {wating ? (
+        {waiting ? (
           <LoadingIndicator />
         ) : (
           <div className="modal__body">
@@ -171,7 +161,14 @@ const StakingModal: React.FunctionComponent<{
                           amount.max ? constants.MaxUint256 : utils.parseEther(amount.value),
                           round.toString()
                         ).then((tx) => {
-                          setTxHash({ hash: tx.hash, closeAfterTx: true });
+                          wait(
+                            tx as any,
+                            () => {
+                              refetch()
+                              afterTx()
+                              closeHandler()
+                            }
+                          )
                         })
                     }}
                   >
@@ -192,7 +189,14 @@ const StakingModal: React.FunctionComponent<{
                         }
 
                         stakingPool.stake(amount.max ? balance : utils.parseEther(amount.value)).then((tx) => {
-                          setTxHash({ hash: tx.hash, closeAfterTx: true });
+                          wait(
+                            tx as any,
+                            () => {
+                              refetch()
+                              afterTx()
+                              closeHandler()
+                            }
+                          )
                         })
                       }}
                     >
@@ -207,7 +211,13 @@ const StakingModal: React.FunctionComponent<{
                           stakedToken === Token.EL ? envs.elStakingPoolAddress : envs.elfyStakingPoolAddress,
                           constants.MaxUint256,
                         ).then((tx) => {
-                          setTxHash({ hash: tx.hash, closeAfterTx: false });
+                          wait(
+                            tx as any,
+                            () => {
+                              refetch()
+                              afterTx()
+                            }
+                          )
                         })
                       }}
                     >

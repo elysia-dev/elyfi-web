@@ -1,16 +1,15 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber } from 'ethers';
-import { FunctionComponent, useEffect, useState } from 'react'
+import { FunctionComponent } from 'react'
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
 import DaiImage from 'src/assets/images/dai.png';
 import { formatCommaSmall } from 'src/utiles/formatters';
-import useWatingTx from 'src/hooks/useWatingTx';
 import Token from 'src/enums/Token';
 import { useTranslation } from 'react-i18next';
 import useStakingPool from 'src/hooks/useStakingPool';
+import useWatingTx from 'src/hooks/useWaitingTx';
 
-// Create deposit & withdraw
 const ClaimStakingRewardModal: FunctionComponent<{
   stakedToken: Token.ELFI | Token.EL,
   token: Token.ELFI | Token.DAI,
@@ -22,15 +21,8 @@ const ClaimStakingRewardModal: FunctionComponent<{
 }> = ({ visible, stakedToken, token, balance, round, closeHandler, afterTx }) => {
   const { account } = useWeb3React()
   const stakingPool = useStakingPool(stakedToken);
-  const [txHash, setTxHash] = useState("")
-  const { wating } = useWatingTx(txHash)
+  const { waiting, wait } = useWatingTx();
   const { t } = useTranslation();
-  useEffect(() => {
-    if (!wating) {
-      afterTx()
-      closeHandler()
-    }
-  }, [wating])
 
   return (
     <div className="modal modal--deposit" style={{ display: visible ? "block" : "none" }}>
@@ -53,7 +45,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
           </div>
         </div>
         <div className="modal__body">
-          {wating ?
+          {waiting ?
             <LoadingIndicator />
             :
             <div className="modal__withdraw">
@@ -71,7 +63,13 @@ const ClaimStakingRewardModal: FunctionComponent<{
                   if (!account) return
 
                   stakingPool.claim(round.toString()).then((tx) => {
-                    setTxHash(tx.hash);
+                    wait(
+                      tx as any,
+                      () => {
+                        afterTx();
+                        closeHandler();
+                      }
+                    )
                   })
                 }}
               >
