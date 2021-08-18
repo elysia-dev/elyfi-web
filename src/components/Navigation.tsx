@@ -3,7 +3,7 @@ import { NavLink, Link } from 'react-router-dom'
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
 import InstallMetamask from './InstallMetamask';
 import Wallet from './Wallet';
-import { useEagerConnect } from 'src/hooks/connectHoots';
+import { useEagerConnect } from 'src/hooks/connectHooks';
 import { useTranslation } from 'react-i18next';
 import { useWeb3React } from '@web3-react/core';
 import { faucetTestERC20 } from 'src/utiles/contractHelpers';
