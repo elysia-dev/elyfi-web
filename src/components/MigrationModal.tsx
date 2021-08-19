@@ -230,7 +230,6 @@ const MigrationModal: React.FunctionComponent<{
               onClick={() => {
                 if (stakedBalance.isZero() || !account || amountGtStakedBalance || migrationAmountGtStakedBalance) return
 
-                // max
                 stakingPool
                   .migrate(
                     state.migrationMax ? stakedBalance :
@@ -248,7 +247,7 @@ const MigrationModal: React.FunctionComponent<{
               }}
             >
               <p>
-                {amountGtStakedBalance ? t("staking.insufficient_balance") : t("staking.unstaking")}
+                {amountGtStakedBalance ? t("staking.insufficient_balance") : t("staking.transfer")}
               </p>
             </div>
           </div>
