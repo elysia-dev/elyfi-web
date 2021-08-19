@@ -21,9 +21,7 @@ import calcExpectedReward from 'src/core/utils/calcExpectedReward';
 import RoundData from 'src/core/types/RoundData';
 import CountUp from 'react-countup';
 import { formatEther } from 'ethers/lib/utils';
-import MigrationNavigationModal from './MigrationNavigationModal';
 import MigrationModal from 'src/components/MigrationModal';
-import MigrationWithElfiModal from 'src/components/MigrationWithElfiModal';
 import StakingEnded from 'src/components/StakingEnded';
 import MigrationEnded from 'src/components/MigrationEnded';
 import useStakingPool from 'src/hooks/useStakingPool';
@@ -43,7 +41,7 @@ const Staking: React.FunctionComponent<IProps> = ({
   const domainColor = useMemo(() => {
     return rewardToken === Token.ELFI ? AppColors.elBlue : AppColors.daiYellow;
   }, [rewardToken])
-  const { account, library } = useWeb3React();
+  const { account } = useWeb3React();
   const { elPrice, elfiPrice } = useContext(PriceContext);
 
   const stakingPool = useStakingPool(stakedToken);
@@ -58,9 +56,7 @@ const Staking: React.FunctionComponent<IProps> = ({
   })
   const [stakingModalVisible, setStakingModalVisible] = useState<boolean>(false);
   const [claimStakingRewardModalVisible, setClaimStakingRewardModalVisible] = useState<boolean>(false);
-  const [migrationNavigationModalVisible, setMigrationNavigationModalVisible] = useState<boolean>(false);
   const [migrationModalVisible, setMigrationModalVisible] = useState<boolean>(false);
-  const [migrationWithElfiModalVisible, setMigrationWithElfiModalVisible] = useState<boolean>(false);
   const [stakingEndedVisible, setStakingEndedVisible] = useState<boolean>(false);
   const [migrationEndedVisible, setMigrationEndedVisible] = useState<boolean>(false);
 
@@ -178,31 +174,13 @@ const Staking: React.FunctionComponent<IProps> = ({
             setStakingEndedVisible(true)
           }}
         />
-        <MigrationNavigationModal
-          visible={migrationNavigationModalVisible}
-          SelectELFIModal={() => {
-            setMigrationWithElfiModalVisible(true)
-            setMigrationNavigationModalVisible(false)
-          }}
-          SelectELModal={() => {
-            setMigrationModalVisible(true)
-            setMigrationNavigationModalVisible(false)
-          }}
-          closeHandler={() => setMigrationNavigationModalVisible(false)}
-        />
         <MigrationModal
           visible={migrationModalVisible}
           closeHandler={() => setMigrationModalVisible(false)}
           stakedToken={stakedToken}
+          rewardToken={rewardToken}
           stakedBalance={roundData.accountPrincipal}
-          round={state.selectPhase}
-          afterTx={() => { account && fetchRoundData(account, state.selectPhase) }}
-        />
-        <MigrationWithElfiModal
-          visible={migrationWithElfiModalVisible}
-          closeHandler={() => setMigrationWithElfiModalVisible(false)}
-          stakedToken={stakedToken}
-          stakedBalance={roundData.accountPrincipal}
+          rewardBalance={expectedReward.value}
           round={state.selectPhase}
           afterTx={() => { account && fetchRoundData(account, state.selectPhase) }}
         />
@@ -338,26 +316,27 @@ const Staking: React.FunctionComponent<IProps> = ({
                 </h2>
               </div>
               <div className="staking__content">
-                <a
+                <div
                   className={`staking__button ${current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) < 0 ? "disable" : ""}`}
                   onClick={(e) => {
-                    // current.diff(stakingRoundTimes[state.selectPhase - 1].endedAt) > 0
-                    //   ?
-                    //   setMigrationNavigationModalVisible(true)
-                    //   :
-                    current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0 &&
+                    if (state.selectPhase < 6 && current.diff(stakingRoundTimes[state.selectPhase].startedAt) > 0) {
+                      return setMigrationModalVisible(true)
+                    }
+
+                    if (current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0) {
                       setStakingModalVisible(true)
+                    }
                   }}
                 >
                   <p>
                     {
-                      // current.diff(stakingRoundTimes[state.selectPhase - 1].endedAt) > 0 ?
-                      //   t("staking.unstaking_migration")
-                      //   : 
-                      t("staking.staking_btn")
+                      state.selectPhase < 6 && current.diff(stakingRoundTimes[state.selectPhase].startedAt) > 0 ?
+                        t("staking.unstaking_migration")
+                        :
+                        t("staking.staking_btn")
                     }
                   </p>
-                </a>
+                </div>
               </div>
             </div>
           </div>
