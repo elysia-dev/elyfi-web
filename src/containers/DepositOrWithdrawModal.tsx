@@ -90,7 +90,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
 
     tracker.clicked();
 
-    reserveERC20.increaseAllowance(envs.moneyPoolAddress, constants.MaxUint256).then((tx) => {
+    reserveERC20.approve(envs.moneyPoolAddress, constants.MaxUint256).then((tx) => {
       tracker.created();
       wait(
         tx as any,

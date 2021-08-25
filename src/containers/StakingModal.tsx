@@ -229,7 +229,7 @@ const StakingModal: React.FunctionComponent<{
 
                         tracker.clicked();
 
-                        contract.increaseAllowance(
+                        contract.approve(
                           stakedToken === Token.EL ? envs.elStakingPoolAddress : envs.elfyStakingPoolAddress,
                           constants.MaxUint256,
                         ).then((tx) => {
