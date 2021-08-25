@@ -14,6 +14,9 @@ import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import useStakingPool from 'src/hooks/useStakingPool';
 import useERC20Info from 'src/hooks/useERC20Info';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
+import ReactGA from "react-ga";
+import useTxTracking from 'src/hooks/useTxTracking';
+import { textSpanOverlapsWith } from 'typescript';
 
 const StakingModal: React.FunctionComponent<{
   visible: boolean,
@@ -44,6 +47,7 @@ const StakingModal: React.FunctionComponent<{
   const amountLteZero = !amount || utils.parseEther(amount.value || '0').isZero();
   const amountGtBalance = utils.parseEther(amount.value || '0').gt(balance);
   const amountGtStakedBalance = utils.parseEther(amount.value || '0').gt(stakedBalance);
+  const initTxTracker = useTxTracking();
 
   useEffect(() => {
     setAmount({
@@ -144,11 +148,20 @@ const StakingModal: React.FunctionComponent<{
                     onClick={() => {
                       if (!account || amountLteZero || amountGtStakedBalance) return
 
+                      const tracker = initTxTracker(
+                        'StakingModal',
+                        'Withdraw',
+                        `${amount.value} ${amount.max} ${stakedToken} ${round}round`
+                      )
+
+                      tracker.clicked();
+
                       stakingPool
                         .withdraw(
                           amount.max ? constants.MaxUint256 : utils.parseEther(amount.value),
                           round.toString()
                         ).then((tx) => {
+                          tracker.created();
                           wait(
                             tx as any,
                             () => {
@@ -157,6 +170,8 @@ const StakingModal: React.FunctionComponent<{
                               closeHandler()
                             }
                           )
+                        }).catch(() => {
+                          tracker.canceled();
                         })
                     }}
                   >
@@ -176,7 +191,16 @@ const StakingModal: React.FunctionComponent<{
                           return;
                         }
 
+                        const tracker = initTxTracker(
+                          'StakingModal',
+                          `Stake`,
+                          `${amount.value} ${amount.max} ${stakedToken} ${round}round`,
+                        )
+
+                        tracker.clicked();
+
                         stakingPool.stake(amount.max ? balance : utils.parseEther(amount.value)).then((tx) => {
+                          tracker.created();
                           wait(
                             tx as any,
                             () => {
@@ -185,6 +209,8 @@ const StakingModal: React.FunctionComponent<{
                               closeHandler()
                             }
                           )
+                        }).catch(() => {
+                          tracker.canceled();
                         })
                       }}
                     >
@@ -195,10 +221,20 @@ const StakingModal: React.FunctionComponent<{
                     <div
                       className={"modal__button"}
                       onClick={() => {
+                        const tracker = initTxTracker(
+                          'StakingModal',
+                          `Approve`,
+                          `${stakedToken} ${round}round`,
+                        )
+
+                        tracker.clicked();
+
                         contract.increaseAllowance(
                           stakedToken === Token.EL ? envs.elStakingPoolAddress : envs.elfyStakingPoolAddress,
                           constants.MaxUint256,
                         ).then((tx) => {
+                          tracker.created();
+
                           wait(
                             tx as any,
                             () => {
@@ -206,6 +242,8 @@ const StakingModal: React.FunctionComponent<{
                               afterTx()
                             }
                           )
+                        }).catch(() => {
+                          tracker.canceled();
                         })
                       }}
                     >

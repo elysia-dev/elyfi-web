@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber, constants } from 'ethers';
+import { BigNumber, constants, utils } from 'ethers';
 import { useContext, useEffect } from 'react';
 import { useMemo } from 'react';
 import { FunctionComponent, useState } from 'react'
@@ -18,6 +18,8 @@ import PriceContext from 'src/contexts/PriceContext';
 import useMoneyPool from 'src/hooks/useMoneyPool';
 import useERC20Info from 'src/hooks/useERC20Info';
 import useWaitingTx from 'src/hooks/useWaitingTx';
+import ReactGA from "react-ga";
+import useTxTracking from 'src/hooks/useTxTracking';
 
 const DepositOrWithdrawModal: FunctionComponent<{
   tokenName: string,
@@ -53,6 +55,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   )
   const { t } = useTranslation();
   const moneyPool = useMoneyPool();
+  const initTxTracker = useTxTracking();
 
   const accumulatedYield = useMemo(() => {
     return calcAccumulatedYield(
@@ -79,23 +82,43 @@ const DepositOrWithdrawModal: FunctionComponent<{
 
   const increateAllowance = async () => {
     if (!account) return;
+    const tracker = initTxTracker(
+      'DepositOrWithdrawalModal',
+      'Approve',
+      `${reserve.id}`
+    );
+
+    tracker.clicked();
 
     reserveERC20.increaseAllowance(envs.moneyPoolAddress, constants.MaxUint256).then((tx) => {
+      tracker.created();
       wait(
         tx as any,
         () => {
           refetch();
         }
       )
+    }).catch(() => {
+      tracker.canceled();
     })
   }
 
   const requestDeposit = async (amount: BigNumber) => {
     if (!account) return;
 
+    const tracker = initTxTracker(
+      'DepositOrWithdrawalModal',
+      'Deposit',
+      `${utils.formatEther(amount)} ${reserve.id}`
+    );
+
+    tracker.clicked();
+
     moneyPool
       .deposit(reserve.id, account, amount)
       .then((tx) => {
+        tracker.created();
+
         wait(
           tx as any,
           () => {
@@ -103,15 +126,27 @@ const DepositOrWithdrawModal: FunctionComponent<{
             onClose();
           }
         )
+      }).catch(() => {
+        tracker.canceled();
       })
   }
 
   const reqeustWithdraw = (amount: BigNumber, max: boolean) => {
     if (!account) return;
 
+    const tracker = initTxTracker(
+      'DepositOrWithdrawalModal',
+      'Withdraw',
+      `${amount.toString()} ${max} ${reserve.id}`
+    );
+
+    tracker.clicked();
+
     moneyPool
       .withdraw(reserve.id, account, max ? constants.MaxUint256 : amount)
       .then((tx) => {
+        tracker.created();
+
         wait(
           tx as any,
           () => {
@@ -119,6 +154,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
             onClose();
           }
         )
+      }).catch(() => {
+        tracker.canceled();
       })
   }
 

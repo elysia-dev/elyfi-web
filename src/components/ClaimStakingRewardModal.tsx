@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import { FunctionComponent } from 'react'
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
@@ -9,6 +9,7 @@ import Token from 'src/enums/Token';
 import { useTranslation } from 'react-i18next';
 import useStakingPool from 'src/hooks/useStakingPool';
 import useWatingTx from 'src/hooks/useWaitingTx';
+import useTxTracking from 'src/hooks/useTxTracking';
 
 const ClaimStakingRewardModal: FunctionComponent<{
   stakedToken: Token.ELFI | Token.EL,
@@ -23,6 +24,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
   const stakingPool = useStakingPool(stakedToken);
   const { waiting, wait } = useWatingTx();
   const { t } = useTranslation();
+  const initTxTracker = useTxTracking();
 
   return (
     <div className="modal modal--deposit" style={{ display: visible ? "block" : "none" }}>
@@ -62,7 +64,16 @@ const ClaimStakingRewardModal: FunctionComponent<{
                 onClick={() => {
                   if (!account) return
 
+                  const tracker = initTxTracker(
+                    'ClaimStakingRewardModal',
+                    'Claim',
+                    `${utils.formatEther(balance)} ${stakedToken} ${round}round`
+                  );
+
+                  tracker.clicked();
+
                   stakingPool.claim(round.toString()).then((tx) => {
+                    tracker.created();
                     wait(
                       tx as any,
                       () => {
@@ -70,6 +81,8 @@ const ClaimStakingRewardModal: FunctionComponent<{
                         closeHandler();
                       }
                     )
+                  }).catch(() => {
+                    tracker.canceled();
                   })
                 }}
               >

@@ -28,6 +28,7 @@ import ELFIIcon from 'src/assets/images/ELFI.png';
 import PriceContext from 'src/contexts/PriceContext';
 import useIncentivePool from 'src/hooks/useIncentivePool';
 import { ERC20__factory } from "@elysia-dev/contract-typechain";
+import ReactGA from "react-ga";
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -237,6 +238,7 @@ const Dashboard: React.FunctionComponent = () => {
                       onClick={(e) => {
                         e.preventDefault();
                         setReserve(reserves[0])
+                        ReactGA.modalview('DepositOrWithdraw')
                       }}
                     >
                       <th>
@@ -336,6 +338,7 @@ const Dashboard: React.FunctionComponent = () => {
               onClick={(e) => {
                 e.preventDefault();
                 setIncentiveModalVisible(true);
+                ReactGA.modalview('Incentive')
               }}
             >
               <th>

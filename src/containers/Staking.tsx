@@ -26,6 +26,7 @@ import StakingEnded from 'src/components/StakingEnded';
 import MigrationEnded from 'src/components/MigrationEnded';
 import useStakingPool from 'src/hooks/useStakingPool';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
+import ReactGA from "react-ga";
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI,
@@ -320,10 +321,12 @@ const Staking: React.FunctionComponent<IProps> = ({
                   className={`staking__button ${current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) < 0 ? "disable" : ""}`}
                   onClick={(e) => {
                     if (state.selectPhase < 6 && current.diff(stakingRoundTimes[state.selectPhase].startedAt) > 0) {
+                      ReactGA.modalview(`${stakedToken}Migration`)
                       return setMigrationModalVisible(true)
                     }
 
                     if (current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0) {
+                      ReactGA.modalview(`${stakedToken}Staking`)
                       setStakingModalVisible(true)
                     }
                   }}
@@ -384,9 +387,11 @@ const Staking: React.FunctionComponent<IProps> = ({
                     <span className="spoqa staking__sign">{` ${rewardToken}`}</span>
                   </h2>
               }
-              <a
+              <div
                 className={`staking__button ${current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) < 0 ? "disable" : ""}`}
                 onClick={(e) => {
+                  ReactGA.modalview(`${stakedToken}StakingReward`)
+
                   current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0
                     &&
                     setClaimStakingRewardModalVisible(true)
@@ -395,7 +400,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                 <p>
                   {t("staking.claim_reward")}
                 </p>
-              </a>
+              </div>
             </div>
           </div>
         </div>
