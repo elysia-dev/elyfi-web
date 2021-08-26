@@ -137,7 +137,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     const tracker = initTxTracker(
       'DepositOrWithdrawalModal',
       'Withdraw',
-      `${amount.toString()} ${max} ${reserve.id}`
+      `${utils.formatEther(amount)} ${max} ${reserve.id}`
     );
 
     tracker.clicked();
