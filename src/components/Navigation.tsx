@@ -9,7 +9,11 @@ import { useWeb3React } from '@web3-react/core';
 import envs from 'src/core/envs';
 import { ERC20Test__factory } from '@elysia-dev/contract-typechain';
 
-const Navigation: FunctionComponent = () => {
+interface Props {
+  txStatus?: string;
+  txWaiting?: boolean;
+}
+const Navigation: FunctionComponent<Props> = ({ txStatus, txWaiting }) => {
   const triedEager = useEagerConnect()
   const [hover, setHover] = useState(0);
   const { t } = useTranslation();
@@ -114,7 +118,7 @@ const Navigation: FunctionComponent = () => {
               )
             })
           }
-          {window.ethereum?.isMetaMask ? <Wallet triedEager={triedEager} /> : <InstallMetamask />}
+          {window.ethereum?.isMetaMask ? <Wallet triedEager={triedEager} txWaiting={txWaiting} txStatus={txStatus} /> : <InstallMetamask />}
         </div>
       </div>
     </nav>

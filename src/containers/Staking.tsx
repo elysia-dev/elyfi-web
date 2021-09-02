@@ -27,6 +27,8 @@ import MigrationEnded from 'src/components/MigrationEnded';
 import useStakingPool from 'src/hooks/useStakingPool';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import ReactGA from "react-ga";
+import Navigation from 'src/components/Navigation';
+import txStatus from 'src/enums/txStatus';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI,
@@ -54,7 +56,10 @@ const Staking: React.FunctionComponent<IProps> = ({
 
   const [state, setState] = useState({
     selectPhase: currentPhase,
+    txWaiting: false,
+    txStatus: txStatus.IDLE
   })
+
   const [stakingModalVisible, setStakingModalVisible] = useState<boolean>(false);
   const [claimStakingRewardModalVisible, setClaimStakingRewardModalVisible] = useState<boolean>(false);
   const [migrationModalVisible, setMigrationModalVisible] = useState<boolean>(false);
@@ -149,8 +154,15 @@ const Staking: React.FunctionComponent<IProps> = ({
     }
   });
 
+  const getStatus = (status: txStatus) => {
+    setState({ ...state, txStatus: status })
+  }
+  const getWaiting = (isWaiting: boolean) => {
+    setState({ ...state, txWaiting: isWaiting })
+  }
   return (
     <>
+      <Navigation txStatus={state.txStatus} txWaiting={state.txWaiting} />
       <Header title={t("staking.token_staking", { stakedToken: stakedToken }).toUpperCase()} />
       <section className="staking">
         <ClaimStakingRewardModal
@@ -174,6 +186,8 @@ const Staking: React.FunctionComponent<IProps> = ({
           endedModal={() => {
             setStakingEndedVisible(true)
           }}
+          setTxStatus={getStatus}
+          setTxWaiting={getWaiting}
         />
         <MigrationModal
           visible={migrationModalVisible}
@@ -241,7 +255,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                   <div
                     key={`dot-${index}`}
                     className={`staking__progress-bar__button ${status} ${onClicked} ${rewardToken === Token.ELFI ? "EL" : "ELFI"}`}
-                    onClick={() => setState({ selectPhase: index + 1 })}
+                    onClick={() => setState({ ...state, selectPhase: index + 1 })}
                   // style={{
                   //   backgroundColor: status === "waiting" ? "white" : domainColor,
                   //   borderColor: domainColor,

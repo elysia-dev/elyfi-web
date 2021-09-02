@@ -13,12 +13,14 @@ import {
 import ReservesProvider from './providers/ReservesProvider';
 import envs from 'src/core/envs';
 import PriceProvider from './providers/PriceProvider';
-import { isMobile } from 'react-device-detect';
-import MobileDisable from './components/MobileDisable';
 import {
   BrowserRouter as Router,
 } from "react-router-dom";
 
+import 'src/stylesheet/public.scss';
+import 'src/stylesheet/pc.scss';
+import 'src/stylesheet/tablet.scss';
+import 'src/stylesheet/mobile.scss';
 
 const client = new ApolloClient({
   uri: envs.subgraphURI,
@@ -31,9 +33,9 @@ const App: React.FC = () => {
       <PriceProvider>
         <LanguageProvider>
           <Web3ReactProvider getLibrary={getLibrary}>
-            <ReservesProvider>
+            <ReservesProvider> 
               <Router>
-                {isMobile ? <MobileDisable /> : <AppNavigator />}
+                <AppNavigator />
               </Router>
             </ReservesProvider>
           </Web3ReactProvider>

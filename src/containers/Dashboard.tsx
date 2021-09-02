@@ -1,4 +1,4 @@
-import 'src/stylesheets/style.scss';
+
 import ServiceBackground from 'src/assets/images/service-background.png';
 import { useWeb3React } from '@web3-react/core';
 import ReserveData from 'src/core/data/reserves';
@@ -29,6 +29,7 @@ import PriceContext from 'src/contexts/PriceContext';
 import useIncentivePool from 'src/hooks/useIncentivePool';
 import { ERC20__factory } from "@elysia-dev/contract-typechain";
 import ReactGA from "react-ga";
+import Navigation from 'src/components/Navigation';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -204,6 +205,7 @@ const Dashboard: React.FunctionComponent = () => {
         balance={expectedIncentive}
         afterTx={() => refrechBalancesAfterClaimTx()}
       />
+      <Navigation />
       <section className="dashboard main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
         <div className="main__title-wrapper">
           <h2 className="main__title-text">{t("navigation.deposit_withdraw").toUpperCase()}</h2>

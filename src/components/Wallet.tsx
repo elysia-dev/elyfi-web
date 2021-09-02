@@ -3,14 +3,21 @@ import { useWeb3React } from '@web3-react/core';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
 import mainnetConverter from 'src/utiles/mainnetConverter';
 import { useTranslation } from 'react-i18next';
+import Idle from "src/assets/images/status__idle.png";
+import Confirm from "src/assets/images/status__confirm.png";
+import Fail from "src/assets/images/status__fail.png";
+import Pending from "src/assets/images/status__pending.png";
+import useWatingTx from 'src/hooks/useWaitingTx';
 
 import envs from 'src/core/envs';
+import txStatus from 'src/enums/txStatus';
 
 const Wallet = (props: any) => {
+  // console.log(props)
   const { account, activate, deactivate, active, chainId } = useWeb3React();
   const [connected, setConnected] = useState<boolean>(false);
   const { t } = useTranslation();
-
+  
   const WalletRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const handleHover = () => {
@@ -43,7 +50,7 @@ const Wallet = (props: any) => {
 
   return (
     <>
-      <div className={`navigation__wallet${connected ? "--connected" : ""}`}
+      <div className={`navigation__wallet${connected ? "--connected" : ""} ${props?.txStatus}`}
         ref={WalletRef}
         onClick={() => {
           if (!active) {
@@ -56,11 +63,39 @@ const Wallet = (props: any) => {
           }
         }}>
         <div className="navigation__wallet__wrapper">
-          {connected && (
-            <p className="navigation__wallet__mainnet">{mainnetConverter(chainId)}</p>
-          )}
-          <p className={`navigation__wallet__status${connected ? "--connected" : ""}`}>
-            {connected ? `${account?.slice(0, 6)}....${account?.slice(-4)}` : t("navigation.connect_wallet")}</p>
+          <img 
+            style={{ display: props?.txStatus !== txStatus.PENDING ? "block" : "none"}}
+            src={
+              props?.txWaiting === undefined ? 
+                Idle
+                : props?.txStatus === txStatus.FAIL ?
+                  Fail
+                  : props?.txStatus === txStatus.CONFIRM ?
+                    Confirm
+                    :
+                    Idle // 크아악
+            } 
+            alt="status" 
+            className="navigation__status" />
+          <div className="loader" style={{ display: props?.txStatus === txStatus.PENDING ? "block" : "none"}} />
+          <div>
+            {connected && (
+              <p className="navigation__wallet__mainnet">
+                {props?.txWaiting !== undefined ? "Transaction" : mainnetConverter(chainId)}
+              </p>
+            )}
+            <p className={`navigation__wallet__status${connected ? "--connected" : ""}`}>
+              {!connected ? t("navigation.connect_wallet") : 
+                props?.txStatus === txStatus.PENDING ?
+                  "Pending..."
+                  : props?.txStatus === txStatus.FAIL ? 
+                    "FAILED!"
+                    : props?.txStatus === txStatus.CONFIRM ? 
+                      "Confirmed!!"
+                      :
+                      `${account?.slice(0, 6)}....${account?.slice(-4)}`
+              }</p>
+          </div>
         </div>
         <div className="navigation__wallet__sub-menu"
           style={{ display: visible ? "block" : "none" }}

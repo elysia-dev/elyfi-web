@@ -1,11 +1,11 @@
 
-import 'src/stylesheets/style.scss';
 import { useWeb3React } from '@web3-react/core';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
 import MainBackground from 'src/assets/images/main-background.png';
 import { useTranslation } from 'react-i18next';
 import envs from 'src/core/envs';
 import { useRouteMatch } from 'react-router-dom';
+import Navigation from 'src/components/Navigation';
 
 const DisableWalletPage = () => {
   const { activate, active, chainId } = useWeb3React();
@@ -38,23 +38,25 @@ const DisableWalletPage = () => {
   }
 
   return (
-    <section className="dashboard--disable" style={{ backgroundImage: `url(${MainBackground})` }}>
-      <div className="dashboard__content-container">
-        <h1 className="dashboard__content--bold">
-          {
-            route.path.includes("ELFI") ? t("navigation.elfi_staking").toUpperCase() :
-              route.path.includes("EL") ? t("navigation.el_staking").toUpperCase() :
-                t("navigation.dashboard")
-          }
-        </h1>
-        <p className="dashboard__content">
-          {t("dashboard.disable_content--1")}
-        </p>
-        <div style={{ margin: "30px auto 0px", display: "inline-block" }}>
-          {CopiedWallet()}
+    <>
+      <section className="dashboard--disable" style={{ backgroundImage: `url(${MainBackground})` }}>
+        <div className="dashboard__content-container">
+          <h1 className="dashboard__content--bold">
+            {
+              route.path.includes("ELFI") ? t("navigation.elfi_staking").toUpperCase() :
+                route.path.includes("EL") ? t("navigation.el_staking").toUpperCase() :
+                  t("navigation.dashboard")
+            }
+          </h1>
+          <p className="dashboard__content">
+            {t("dashboard.disable_content--1")}
+          </p>
+          <div style={{ margin: "30px auto 0px", display: "inline-block" }}>
+            {CopiedWallet()}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   )
 }
 

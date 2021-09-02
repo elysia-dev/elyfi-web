@@ -17,6 +17,7 @@ import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import ReactGA from "react-ga";
 import useTxTracking from 'src/hooks/useTxTracking';
 import { textSpanOverlapsWith } from 'typescript';
+import txStatus from 'src/enums/txStatus';
 
 const StakingModal: React.FunctionComponent<{
   visible: boolean,
@@ -25,8 +26,10 @@ const StakingModal: React.FunctionComponent<{
   stakedToken: Token.ELFI | Token.EL
   stakedBalance: BigNumber,
   round: number,
-  endedModal: () => void
-}> = ({ visible, closeHandler, afterTx, stakedBalance, stakedToken, round, endedModal }) => {
+  endedModal: () => void,
+  setTxStatus: (status: txStatus) => void,
+  setTxWaiting: (status: boolean) => void,
+}> = ({ visible, closeHandler, afterTx, stakedBalance, stakedToken, round, endedModal, setTxStatus, setTxWaiting }) => {
   const { t, i18n } = useTranslation();
   const { account } = useWeb3React();
   const [stakingMode, setStakingMode] = useState<boolean>(true)
@@ -162,6 +165,7 @@ const StakingModal: React.FunctionComponent<{
                           round.toString()
                         ).then((tx) => {
                           tracker.created();
+                          
                           wait(
                             tx as any,
                             () => {
@@ -199,17 +203,25 @@ const StakingModal: React.FunctionComponent<{
 
                         tracker.clicked();
 
+                        setTxWaiting(true)
+
                         stakingPool.stake(amount.max ? balance : utils.parseEther(amount.value)).then((tx) => {
                           tracker.created();
+                          setTxStatus(txStatus.PENDING)
+                          closeHandler()
                           wait(
                             tx as any,
                             () => {
                               refetch()
                               afterTx()
-                              closeHandler()
+                              setTxStatus(txStatus.CONFIRM)
+                              // setTxWaiting(false)
                             }
                           )
                         }).catch(() => {
+                          setTxStatus(txStatus.FAIL)
+                          closeHandler()
+                          // setTxWaiting(false)
                           tracker.canceled();
                         })
                       }}
