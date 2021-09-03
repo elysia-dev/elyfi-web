@@ -59,7 +59,6 @@ const Dashboard: React.FunctionComponent = () => {
   const [incentiveModalVisible, setIncentiveModalVisible] = useState<boolean>(false);
   const {
     data: userConnection,
-    error,
     refetch: refetchUserData,
   } = useQuery<GetUser>(
     GET_USER,
@@ -166,8 +165,6 @@ const Dashboard: React.FunctionComponent = () => {
       clearInterval(interval);
     }
   })
-
-  if (error) return (<ErrorPage />)
 
   return (
     <>

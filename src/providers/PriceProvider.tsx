@@ -14,7 +14,7 @@ const PriceProvider: React.FC = (props) => {
       setState({
         ...state,
         elfiPrice: parseFloat((
-          await UniswapV3.getELFIPRice()).data.data.token.tokenDayData[0].priceUSD
+          await UniswapV3.getELFIPRice())
         ),
         elPrice: (await Coingecko.getElPrice()).data.elysia.usd,
         loading: false,
