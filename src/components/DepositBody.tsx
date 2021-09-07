@@ -20,62 +20,65 @@ const DepositBody: React.FunctionComponent<{
   const { t } = useTranslation();
 
   return (
-    <div className="modal__deposit">
-      <div className="modal__deposit__value-wrapper">
-        <p className="modal__deposit__maximum bold" onClick={() => {
-          setAmount((Math.floor(parseFloat(utils.formatEther(balance)) * 100000000) / 100000000).toFixed(8).toString())
-        }}>
-          {t("dashboard.max")}
-        </p>
-        <p className="modal__deposit__value bold">
-          <input
-            type="number"
-            className="modal__text-input"
-            placeholder="0"
-            value={
-              // Intl.NumberFormat('en').format(parseFloat(amount))
-              amount
-            }
-            style={{ fontSize: amount.length < 8 ? 60 : amount.length > 12 ? 35 : 45 }}
-            onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
-              ["-", "+", "e"].includes(e.key) && e.preventDefault();
-            }}
-            onChange={({ target }) => {
-              target.value = target.value.replace(/(\.\d{18})\d+/g, '$1');
-              setAmount(target.value);
-            }}
-          />
-        </p>
-      </div>
-      <div className="modal__deposit__container">
-        <div className="modal__deposit__despositable-amount-container">
-          <p className="spoqa__bold">
-            {t("dashboard.deposit_available")}
+    <>
+        <div className="modal__deposit">
+        <div className="modal__deposit__value-wrapper">
+          <p className="modal__deposit__maximum bold" onClick={() => {
+            setAmount((Math.floor(parseFloat(utils.formatEther(balance)) * 100000000) / 100000000).toFixed(8).toString())
+          }}>
+            {t("dashboard.max")}
           </p>
-          <div className="modal__deposit__despositable-amount-wrapper">
+          <p className="modal__deposit__value bold">
+            <input
+              type="number"
+              className="modal__text-input"
+              placeholder="0"
+              value={
+                // Intl.NumberFormat('en').format(parseFloat(amount))
+                amount
+              }
+              style={{ fontSize: amount.length < 8 ? 60 : amount.length > 12 ? 35 : 45 }}
+              onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+                ["-", "+", "e"].includes(e.key) && e.preventDefault();
+              }}
+              onChange={({ target }) => {
+                target.value = target.value.replace(/(\.\d{18})\d+/g, '$1');
+                setAmount(target.value);
+              }}
+            />
+          </p>
+        </div>
+        <div className="modal__deposit__container">
+          <div className="modal__deposit__despositable-amount-container">
             <p className="spoqa__bold">
-              {t("dashboard.wallet_balance")}
+              {t("dashboard.deposit_available")}
             </p>
-            <div className="modal__deposit__despositable-wallet-balance-wrapper">
+            <div className="modal__deposit__despositable-amount-wrapper">
               <p className="spoqa__bold">
-                {`${formatCommaWithDigits(balance, 4)} ${tokenName}`}
+                {t("dashboard.wallet_balance")}
               </p>
+              <div className="modal__deposit__despositable-wallet-balance-wrapper">
+                <p className="spoqa__bold">
+                  {`${formatCommaWithDigits(balance, 4)} ${tokenName}`}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="modal__deposit__despositable-value-wrapper">
+            <p className="spoqa__bold">
+              {t("dashboard.total_deposit_yield")}
+            </p>
+            <div>
+              <p className="spoqa__bold">{t("dashboard.deposit_apy")}</p>
+              <p className="spoqa__bold">{depositAPY}</p>
+            </div>
+            <div>
+              <p className="spoqa__bold">{t("dashboard.mining_apr")}</p>
+              <p className="spoqa__bold">{miningAPR}</p>
             </div>
           </div>
         </div>
-        <div className="modal__deposit__despositable-value-wrapper">
-          <p className="spoqa__bold">
-            {t("dashboard.total_deposit_yield")}
-          </p>
-          <div>
-            <p className="spoqa__bold">{t("dashboard.deposit_apy")}</p>
-            <p className="spoqa__bold">{depositAPY}</p>
-          </div>
-          <div>
-            <p className="spoqa__bold">{t("dashboard.mining_apr")}</p>
-            <p className="spoqa__bold">{miningAPR}</p>
-          </div>
-        </div>
+        
       </div>
       {
         isApproved ?
@@ -97,8 +100,7 @@ const DepositBody: React.FunctionComponent<{
             </p>
           </div>
       }
-    </div>
-
+    </>
   )
 }
 

@@ -163,7 +163,7 @@ const MigrationModal: React.FunctionComponent<{
                       className="modal__text-input"
                       placeholder="0"
                       value={state.migrationAmount}
-                      style={{ fontSize: state.migrationAmount.length < 8 ? 60 : state.migrationAmount.length > 12 ? 35 : 45 }}
+                      style={{ fontSize: state.migrationAmount.length < 8 ? 50 : state.migrationAmount.length > 12 ? 30 : 40 }}
                       onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
                         ["-", "+", "e"].includes(e.key) && e.preventDefault();
                       }}
@@ -227,7 +227,10 @@ const MigrationModal: React.FunctionComponent<{
                 </p>
               </div>
             </div>
-            <div
+            
+          </div>
+        }
+        <div
               className={`modal__button${stakedBalance.isZero() || amountGtStakedBalance || migrationAmountGtStakedBalance ? "--disable" : ""}`}
               onClick={() => {
                 if (stakedBalance.isZero() || !account || amountGtStakedBalance || migrationAmountGtStakedBalance) return
@@ -263,8 +266,6 @@ const MigrationModal: React.FunctionComponent<{
                 {amountGtStakedBalance ? t("staking.insufficient_balance") : t("staking.transfer")}
               </p>
             </div>
-          </div>
-        }
       </div>
     </div>
   )

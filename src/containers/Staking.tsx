@@ -160,11 +160,13 @@ const Staking: React.FunctionComponent<IProps> = ({
   const getWaiting = (isWaiting: boolean) => {
     setState({ ...state, txWaiting: isWaiting })
   }
+
+  
   return (
     <>
       <Navigation txStatus={state.txStatus} txWaiting={state.txWaiting} />
       <Header title={t("staking.token_staking", { stakedToken: stakedToken }).toUpperCase()} />
-      <section className="staking">
+      <section className="staking" >
         <ClaimStakingRewardModal
           visible={claimStakingRewardModalVisible}
           stakedToken={stakedToken}
@@ -236,12 +238,31 @@ const Staking: React.FunctionComponent<IProps> = ({
             {t("staking.token_staking--content.5")}
           </p>
         </div>
+        <div className="staking__progress-bar__content mobile-only">
+          <p>
+            {t("staking.nth", { nth: toOrdinalNumber(i18n.language, state.selectPhase) })} :
+          </p>
+          <div>
+            <p>
+              {stakingRoundTimes[state.selectPhase -1].startedAt.format('YYYY.MM.DD HH:mm:ss')}
+              &nbsp;~&nbsp;
+              {stakingRoundTimes[state.selectPhase -1].endedAt.format('YYYY.MM.DD HH:mm:ss')} (KST)
+            </p>
+          </div>
+        </div>
         <div className="staking__progress-bar__wrapper">
           <div className="staking__progress-bar">
             <div
-              className="staking__progress-bar__value"
+              className="staking__progress-bar__value pc-only"
               style={{
                 width: ((1100 / 5) * (currentPhase - 1)),
+                backgroundColor: domainColor
+              }}
+            />
+            <div
+              className="staking__progress-bar__value mobile-only"
+              style={{
+                width: ((300 / 5) * (currentPhase - 1)),
                 backgroundColor: domainColor
               }}
             />
@@ -262,7 +283,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                   // }}
                   >
                     <div>
-                      <p className="spoqa">
+                      <p className={`spoqa ${status === "now" ? "" : "pc-only"}`}>
                         {
                           status === 'ended'
                             ?
@@ -276,7 +297,8 @@ const Staking: React.FunctionComponent<IProps> = ({
 
                         }
                       </p>
-                      <p style={{ display: status === 'now' ? "block" : onClicked === ' selected' ? "block" : "none" }}>
+                      {/* : onClicked === ' selected' ? "block" :  */}
+                      <p className="pc-only" style={{ display: status === 'now' ? "block" : "none" }}>
                         {`${time.startedAt.format('YYYY.MM.DD HH:mm:ss')}\n~ ${time.endedAt.format('YYYY.MM.DD HH:mm:ss')} (KST)`}
                       </p>
                     </div>
@@ -401,7 +423,8 @@ const Staking: React.FunctionComponent<IProps> = ({
                     <span className="spoqa staking__sign">{` ${rewardToken}`}</span>
                   </h2>
               }
-              <div
+            </div>
+            <div
                 className={`staking__button ${current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) < 0 ? "disable" : ""}`}
                 onClick={(e) => {
                   ReactGA.modalview(`${stakedToken}StakingReward`)
@@ -415,7 +438,6 @@ const Staking: React.FunctionComponent<IProps> = ({
                   {t("staking.claim_reward")}
                 </p>
               </div>
-            </div>
           </div>
         </div>
       </section>

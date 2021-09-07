@@ -30,7 +30,7 @@ const DisableWalletPage = () => {
           }}
           style={{ margin: 0 }}
         >
-          <div className="navigation__wallet__wrapper">
+          <div className="navigation__wallet__wrapper" style={{ justifyContent: 'center' }}>
             <p className={`navigation__wallet__status`}>{t("navigation.connect_wallet")}</p>
           </div>
         </div>

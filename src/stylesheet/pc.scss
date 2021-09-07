@@ -1,7 +1,14 @@
+$device-width: 1190px;
+$footer-height: 100px;
+
 
 .view-w {
-  min-width: 1190px;
-  min-height: calc(100vh - 100px);
+  $footer-height: 100px;
+  min-width: $device-width;
+  min-height: calc(100vh - #{$footer-height});
+  .mobile-only {
+    display: none;
+  }
   .navigation {
     &__status {
       width: 24px;
@@ -10,27 +17,31 @@
     &__alert {
       height: 40px;
       > p {
-        width: 1190px;
+        width: $device-width;
         font-size: 13px;
       }
       &__container {
-        width: 1190px;
+        width: $device-width;
       }
       &__wrapper {
         width: 160px;
       }
     }
     &__container {
-      max-width: 1190px;
+      max-width: $device-width;
       padding: 15px;
       height: 50px;
     }
     &__link {
+      font-size: 17px;
       &::after {
         left: -45px;
         right: -45px;
         margin-top: -1px;
         height: 30px;
+      }
+      &__container {
+        width: 600px;
       }
       &__wrapper {
         margin: 0 30px;
@@ -56,9 +67,6 @@
       height: 37px;
       border-radius: 5px;
       margin-left: 50px;
-      &__wrapper {
-        margin-left: 8px;
-      }
       &__status {
         &--connected {
           margin: 0;
@@ -90,22 +98,6 @@
         }
       }
     }
-    &__dashboard {
-      &__wrapper {
-        max-width: 1190px;
-        height: 80px;
-      }
-      &__link {
-        margin: 60px;
-        &__wrapper {
-          margin: 0 50px;
-        }
-        &__under-line {
-          height: 3px;
-          bottom: -5px;
-        }
-      }
-    }
   }
   .logo-wrapper {
     width: 205px;
@@ -114,107 +106,7 @@
     width: 151px;
     height: 38px;
   }
-  .elysia-logo-beta {
-    width: 40px;
-    height: 17px;
-    position: relative;
-    top: 2px;
-    display: none;
-  }
 
-  .service {
-    min-width: 1190px;
-    .main {
-      width: 100%;
-      height: 570px;
-      &__title-wrapper {
-        width: 1190px;
-        bottom: 67px;
-      }
-      &__title-text {
-        font-size: 30px;
-        margin: 0 auto 20px;
-        &--blue {
-          font-size: 60px;
-          margin: 0 auto 26px;
-        }
-      }
-      &__subtitle-text {
-        font-size: 20px;
-        line-height: 30px;
-      }
-    }
-  }
-
-  .button {
-    width: 254px;
-    height: 45px;
-    box-shadow: 1px 3px 8px #00000052;
-    border-radius: 5px;
-    padding: 14px 14px 14px 22px;
-    &__arrow-wrapper {
-      width: 44px;
-      height: 45px;
-      position: relative;
-      background-color: #21598b;
-      border-radius: 0px 5px 5px 0px;
-      top: -14px;
-      left: 13px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: all 0.25s ease-in-out;
-    }
-    &__arrow-image {
-      width: 18px;
-      height: 12px;
-      margin: 0;
-      background-size: 18px 12px;
-      background-repeat: no-repeat;
-      display: inline-block;
-    }
-  }
-  .button--disable {
-    width: 254px;
-    height: 45px;
-    box-shadow: 1px 3px 8px #00000052;
-    padding: 14px 14px 14px 22px;
-    &__arrow-wrapper {
-      width: 44px;
-      height: 45px;
-      border-radius: 0px 5px 5px 0px;
-      top: -14px;
-      left: 13px;
-    }
-  }
-  .main {
-    min-width: 1190px;
-    height: 360px;
-    &__title {
-      &-wrapper {
-        width: 1190px;
-        bottom: 42px;
-      }
-      &-subtext {
-        font-size: 30px;
-      }
-      &-text {
-        font-size: 40px;
-        &--market {
-          margin: 20px;
-          font-size: 30px;
-        }
-        &--blue {
-          font-size: 60px;
-          margin: 0 0 63px;
-        }
-      }
-      &-highlight-text {
-        font-size: 60px;
-        margin-top: 10px;
-      }
-    }
-  }
   .header {
     min-width: 1190px;
     height: 360px;
@@ -226,6 +118,7 @@
       }
     }
   }
+
   .dashboard {
     background-color: #fff;
     position: relative;
@@ -244,7 +137,7 @@
 
     &--disable {
       width: 100%;
-      height: 100vh;
+      height: calc(100vh - #{$footer-height});
       .dashboard {
         &__content {
           font-size: 25px;
@@ -267,6 +160,26 @@
       margin-top: 85px;
     }
     &__table {
+      &__image {
+        padding: 10px 5px;
+        cursor: pointer;
+        margin-left: 10px;
+        &--disable {
+          width: 40px;
+          height: 40px;
+          border-radius: 40px;
+        }
+        > div {
+          > img {
+            width: 40px;
+            height: 40px;
+          }
+          > p {
+            font-size: 17px;
+            margin: 0 0 0 10px;
+          }
+        }
+      }
       &__minted-header {
         width: 684px;
         &:first-child {
@@ -279,6 +192,11 @@
       &__apr {
         width: 99px;
         height: 21px;
+        margin-bottom: 5px;
+        > img {
+          width: 14px;
+          height: 14px;
+        }
         > p {
           font-size: 13px !important;
           &::after {
@@ -303,57 +221,66 @@
       }
       &__header {
         margin: 20px;
+        &__column {
+          position: relative;
+          &--selected {
+            position: relative;
+          }
+        }
         > tr > th {
           padding-bottom: 0 !important;
           &:first-child {
             > p {
-              margin-left: 70px;
+              margin: 0;
+              text-align: left;
+              margin-left: 60px;
             }
           }
         }
       }
-      &-body {
-        &-button {
-          > p {
-            margin: 10px 5px;
+      &__row {
+        border-radius: 5px;
+        margin: 20px;
+        > th {
+          width: 205px;
+          box-sizing: border-box;
+          position: relative;
+          &:first-child {
+            width: 160px;
+            box-sizing: border-box;
           }
-        }
-        > tr {
-          margin: 20px;
-          > :first-child {
-            width: 150px;
-            > div {
-              > img,
-              .tokens__table__image--disable {
-                margin-left: 10px;
-              }
-            }
-          }
-          > :last-child {
+          &:last-child {
             width: 220px;
+            box-sizing: border-box;
           }
-          > th {
-            width: 205px;
-            padding: 10px;
-            > p {
-              font-size: 17px;
-            }
-            &:first-child {
-              > div {
-                gap: 10px;
-              }
-            }
-            &:nth-child(3) > p {
-              margin: 5px;
-              &:nth-child(2) {
-                font-size: 13px;
-                margin: 5px;
-              }
-            }
+          > p {
+            cursor: pointer;
+            font-size: 17px;
+            margin: 0;
+          }
+          &:first-child {
             > div {
-              > p {
-                font-size: 17px;
-              }
+              display: flex;
+              justify-content: left;
+              align-items: center;
+            }
+          }
+          &:nth-child(3) > p {
+            margin: 5px;
+            &:nth-child(2) {
+              font-size: 13px;
+              margin: 5px;
+              color: #888888;
+            }
+          }
+          > div {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            cursor: pointer;
+            > p {
+              cursor: pointer;
+              font-size: 17px;
             }
           }
         }
@@ -363,6 +290,7 @@
   
   .text {
     &__title {
+      margin-top: 100px;
       margin-bottom: 35px;
       > p {
         margin: 0 20px 0 0;

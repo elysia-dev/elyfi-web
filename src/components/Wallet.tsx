@@ -64,7 +64,7 @@ const Wallet = (props: any) => {
         }}>
         <div className="navigation__wallet__wrapper">
           <img 
-            style={{ display: props?.txStatus !== txStatus.PENDING ? "block" : "none"}}
+            style={{ display: !connected ? "none" : props?.txStatus !== txStatus.PENDING ? "block" : "none"}}
             src={
               props?.txWaiting === undefined ? 
                 Idle
@@ -73,7 +73,7 @@ const Wallet = (props: any) => {
                   : props?.txStatus === txStatus.CONFIRM ?
                     Confirm
                     :
-                    Idle // 크아악
+                    Idle
             } 
             alt="status" 
             className="navigation__status" />

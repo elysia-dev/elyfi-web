@@ -30,6 +30,8 @@ import useIncentivePool from 'src/hooks/useIncentivePool';
 import { ERC20__factory } from "@elysia-dev/contract-typechain";
 import ReactGA from "react-ga";
 import Navigation from 'src/components/Navigation';
+import Header from 'src/components/Header';
+import TokenTable from 'src/components/TokenTable';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -206,15 +208,11 @@ const Dashboard: React.FunctionComponent = () => {
         afterTx={() => refrechBalancesAfterClaimTx()}
       />
       <Navigation />
-      <section className="dashboard main" style={{ backgroundImage: `url(${ServiceBackground})` }}>
-        <div className="main__title-wrapper">
-          <h2 className="main__title-text">{t("navigation.deposit_withdraw").toUpperCase()}</h2>
-        </div>
-      </section>
+      <Header title={t("navigation.deposit_withdraw").toUpperCase()} />
       <section className="tokens">
-        <Title style={{ marginTop: 100 }} label={t("dashboard.deposits--header")} />
+        <Title label={t("dashboard.deposits--header")} />
         <table className="tokens__table">
-          <thead className="tokens__table__header">
+          <thead className="tokens__table__header pc-only">
             <tr>
               {
                 [t("dashboard.asset"), t("dashboard.deposit_balance"), t("dashboard.deposit_apy"), t("dashboard.wallet_balance")].map((key, index) => {
@@ -232,92 +230,35 @@ const Dashboard: React.FunctionComponent = () => {
           <tbody className="tokens__table-body">
             {
               ReserveData.map((reserve, index) => {
-                if (index === 0) {
-                  return (
-                    <tr
-                      key={index}
-                      className="tokens__table__row"
+                return (
+                  <>
+                    <TokenTable
+                      index={index}
                       onClick={(e) => {
                         e.preventDefault();
                         setReserve(reserves[0])
                         ReactGA.modalview('DepositOrWithdraw')
                       }}
-                    >
-                      <th>
-                        <div>
-                          <img src={reserve.image} style={{ width: 40 }} alt="Token" />
-                          <p className="spoqa">{reserve.name}</p>
-                        </div>
-                      </th>
-                      <th>
-                        {
-                          balances.loading ?
-                            <Skeleton width={50} />
-                            :
-                            <p className="spoqa">$ {toCompactForBignumber(balances.lTokens[index])}</p>
-                        }
-                      </th>
-                      <th>
-                        {
-                          balances.loading ?
-                            <Skeleton width={50} />
-                            :
-                            <>
-                              <p className="spoqa">
-                                {toPercent(reserves[index].depositAPY || '0')}
-                              </p>
-                              <div className="tokens__table__apr">
-                                <img src={ELFIIcon} style={{ width: 14, height: 14 }} />
-                                <p className="spoqa__bold">{toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserves[index].totalDeposit)))}</p>
-                              </div>
-                            </>
-                        }
-                      </th>
-                      <th>
-                        {
-                          balances.loading ?
-                            <Skeleton width={50} />
-                            :
-                            <p className="spoqa">$ {toCompactForBignumber(balances.dai)}</p>
-                        }
-                      </th>
-                    </tr>
-                  )
-                }
-                return (
-                  <tr
-                    className="tokens__table__row--disable"
-                    key={index}
-                  >
-                    <th>
-                      <div>
-                        <div
-                          className="tokens__table__image--disable"
-                          style={{
-                            backgroundColor: "#1C1C1CA2",
-                            width: 40,
-                            height: 40,
-                            borderRadius: 40,
-                            position: "absolute"
-                          }}
-                        />
-                        <img src={reserve.image} style={{ width: 40 }} alt="Token" />
-                        <p className="spoqa">{reserve.name}</p>
-                      </div>
-                    </th>
-                    <th><p>-</p></th>
-                    <th><p>-</p></th>
-                    <th><p>-</p></th>
-                  </tr>
+                      tokenName={reserve.name}
+                      tokenImage={reserve.image}
+                      depositBalance={balances.loading ? undefined : `$ ${toCompactForBignumber(balances.lTokens[index] || 0)}`}
+                      depositAPY={toPercent(balances.loading ? 0 : reserves[0].depositAPY)} // 원래 index였음.... ㅠㅠ
+                      miningAPR={balances.loading ? undefined : toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserves[0].totalDeposit)) || '0')} // 원래 index였음.... ㅠㅠ
+                      walletBalance={`$ ${balances.loading ? undefined : toCompactForBignumber(balances.dai || 0)}`}
+                      isDisable={index === 0 ? false : true}
+                      skeletonLoading={balances.loading}
+                    />
+                  </>
                 )
               })
             }
+            
           </tbody>
         </table>
       </section>
       <section className="tokens">
         <Title label={t("dashboard.minted")} />
-        <table className="tokens__table">
+        <table className="tokens__table pc-only">
           <thead className="tokens__table__header">
             <tr>
               {
@@ -343,10 +284,10 @@ const Dashboard: React.FunctionComponent = () => {
                 ReactGA.modalview('Incentive')
               }}
             >
-              <th>
+              <th className={`tokens__table__image`}>
                 <div>
-                  <img src={ELFI} style={{ width: 40.2, height: 40.2, padding: 0.1 }} alt="Token" />
-                  <p className="spoqa">ELFI</p>
+                  <img src={ELFI} alt="Token" />
+                  <p className="spoqa__bold">ELFI</p>
                 </div>
               </th>
               <th>
@@ -368,6 +309,47 @@ const Dashboard: React.FunctionComponent = () => {
             </tr>
           </tbody>
         </table>
+        <div className="tokens__elfi mobile-only">
+          <div
+            className="tokens__table__row"
+            onClick={(e) => {
+              e.preventDefault();
+              setIncentiveModalVisible(true);
+              ReactGA.modalview('Incentive')
+            }}
+          >
+            <div className="tokens__table__image">
+              <div>
+                <img src={ELFI} alt='token' />
+                <p className="spoqa__bold">ELFI</p>
+              </div>
+            </div>
+            <div className="tokens__table__content">
+              <div className="tokens__table__content__data">
+                <p className="spoqa__bold">
+                  {t("dashboard.minted_balance")}
+                </p>
+                {
+                  balances.loading ?
+                    <Skeleton width={50} />
+                    :
+                    <p className="spoqa">{`${formatCommaSmall(expectedIncentive.isZero() ? balances.incentive : expectedIncentive)} ELFI`}</p>
+                }
+              </div>
+              <div className="tokens__table__content__data">
+                <p className="spoqa__bold">
+                  {t("dashboard.wallet_balance")}
+                </p>
+                {
+                  balances.loading ?
+                    <Skeleton width={50} />
+                    :
+                    <p className="spoqa">{`${formatCommaSmall(balances.governance)} ELFI`}</p>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </>
   );
