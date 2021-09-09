@@ -185,6 +185,25 @@
         "手机网页版本即将推出。",
         "您可以先用电脑网页版本来体验ElYFI。"
       ]
+    },
+    "transaction": {
+      "confirm": "您可以在右上角查看交易进度。",
+      "nth_close": "弹窗将在{{nth}}秒后关闭",
+      "nth_connect": "Connect with {{nth}}",
+      "copy_address": "复制地址",
+      "on_etherscan": "在Etherscan上查看",
+      "activity__title": "近期交易记录",
+      "activity": "这里可以查看近期交易记录。",
+      "el_staking": "EL 스테이킹",
+      "el_unstaking": "EL 언스테이킹",
+      "elfi_claim_reward": "ELFI 수령",
+      "el_elfi_transmission": "EL 및 ELFI 전송",
+      "elfi_dai_transmission": "ELFI 및 DAI 전송",
+      "elfi_staking": "ELFI 스테이킹",
+      "elfi_unstaking": "ELFI 언스테이킹",
+      "dai_claim_reward": "DAI 수령",
+      "dai_deposit": "DAI 예치",
+      "dai_withdraw": "DAI 출금"
     }
   }
 }

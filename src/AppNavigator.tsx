@@ -40,6 +40,7 @@ const AppNavigator: React.FC = () => {
 
   return (
     <div className={`elysia ${isPc ? "view-w" : isTablet ? "view-t" : "view-m"}`}>
+      <Navigation />
       <ScrollToTop />
       <Switch>
         <Route exact path="/staking/EL" component={

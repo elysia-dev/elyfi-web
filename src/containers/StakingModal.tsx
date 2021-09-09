@@ -1,5 +1,5 @@
 import { BigNumber, constants, utils } from 'ethers';
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import ELFI from 'src/assets/images/ELFI.png';
 import { formatComma } from 'src/utiles/formatters';
 import envs from 'src/core/envs';
@@ -18,6 +18,7 @@ import ReactGA from "react-ga";
 import useTxTracking from 'src/hooks/useTxTracking';
 import { textSpanOverlapsWith } from 'typescript';
 import txStatus from 'src/enums/txStatus';
+import TxContext from 'src/contexts/TxContext';
 
 const StakingModal: React.FunctionComponent<{
   visible: boolean,
@@ -29,12 +30,14 @@ const StakingModal: React.FunctionComponent<{
   endedModal: () => void,
   setTxStatus: (status: txStatus) => void,
   setTxWaiting: (status: boolean) => void,
-}> = ({ visible, closeHandler, afterTx, stakedBalance, stakedToken, round, endedModal, setTxStatus, setTxWaiting }) => {
+  transactionModal: () => void
+}> = ({ visible, closeHandler, afterTx, stakedBalance, stakedToken, round, endedModal, setTxStatus, setTxWaiting, transactionModal }) => {
   const { t, i18n } = useTranslation();
   const { account } = useWeb3React();
   const [stakingMode, setStakingMode] = useState<boolean>(true)
   const [amount, setAmount] = useState({ value: "", max: false });
   const current = moment();
+  const { setTransaction } = useContext(TxContext);
   const {
     allowance,
     balance,
@@ -156,7 +159,6 @@ const StakingModal: React.FunctionComponent<{
                         'Withdraw',
                         `${amount.value} ${amount.max} ${stakedToken} ${round}round`
                       )
-
                       tracker.clicked();
 
                       stakingPool
@@ -164,18 +166,24 @@ const StakingModal: React.FunctionComponent<{
                           amount.max ? constants.MaxUint256 : utils.parseEther(amount.value),
                           round.toString()
                         ).then((tx) => {
+                          console.log("dd?");
                           tracker.created();
-                          
+                          setTxStatus(txStatus.PENDING)
+                          closeHandler()
+                          transactionModal()
                           wait(
                             tx as any,
                             () => {
                               refetch()
                               afterTx()
-                              closeHandler()
+                              setTxStatus(txStatus.CONFIRM)
                             }
                           )
                         }).catch(() => {
+                          window.localStorage.setItem("@txLoad", "false");
+                          setTxStatus(txStatus.FAIL)
                           tracker.canceled();
+                          closeHandler()
                         })
                     }}
                   >
@@ -203,22 +211,28 @@ const StakingModal: React.FunctionComponent<{
 
                         tracker.clicked();
 
-                        setTxWaiting(true)
+                        // setTxWaiting(true)
 
                         stakingPool.stake(amount.max ? balance : utils.parseEther(amount.value)).then((tx) => {
+                          // setTransaction(tx, tracker, closeHandler, () => {
+                          //   refetch()
+                          //   afterTx()
+                          //   transactionModal()
+                          // })
                           tracker.created();
                           setTxStatus(txStatus.PENDING)
                           closeHandler()
+                          transactionModal()
                           wait(
                             tx as any,
                             () => {
                               refetch()
                               afterTx()
                               setTxStatus(txStatus.CONFIRM)
-                              // setTxWaiting(false)
                             }
                           )
                         }).catch(() => {
+                          // window.localStorage.setItem("@txLoad", "false");
                           setTxStatus(txStatus.FAIL)
                           closeHandler()
                           // setTxWaiting(false)
@@ -246,7 +260,8 @@ const StakingModal: React.FunctionComponent<{
                           constants.MaxUint256,
                         ).then((tx) => {
                           tracker.created();
-
+                          closeHandler()
+                          transactionModal()
                           wait(
                             tx as any,
                             () => {
@@ -255,6 +270,7 @@ const StakingModal: React.FunctionComponent<{
                             }
                           )
                         }).catch(() => {
+                          closeHandler()
                           tracker.canceled();
                         })
                       }}
@@ -272,4 +288,4 @@ const StakingModal: React.FunctionComponent<{
   )
 }
 
-export default StakingModal
+export default StakingModal;

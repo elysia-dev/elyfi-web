@@ -32,6 +32,7 @@ import ReactGA from "react-ga";
 import Navigation from 'src/components/Navigation';
 import Header from 'src/components/Header';
 import TokenTable from 'src/components/TokenTable';
+import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -70,6 +71,7 @@ const Dashboard: React.FunctionComponent = () => {
   )
   const [expectedIncentive, setExpectedIncentive] = useState<BigNumber>(balances.incentive)
   const incentivePool = useIncentivePool();
+  const [transactionModal, setTransactionModal] = useState(false);
 
   const refrechBalancesAfterTx = async (index: number) => {
     if (!account) return;
@@ -172,6 +174,7 @@ const Dashboard: React.FunctionComponent = () => {
 
   if (error) return (<ErrorPage />)
 
+
   return (
     <>
       {
@@ -197,6 +200,7 @@ const Dashboard: React.FunctionComponent = () => {
           balance={balances.dai}
           depositBalance={BigNumber.from(balances.lTokens[0])}
           afterTx={() => refrechBalancesAfterTx(0)}
+          transactionModal={() => setTransactionModal(true)}
         />
       }
       <IncentiveModal
@@ -206,8 +210,15 @@ const Dashboard: React.FunctionComponent = () => {
         }}
         balance={expectedIncentive}
         afterTx={() => refrechBalancesAfterClaimTx()}
+        transactionModal={() => setTransactionModal(true)}
       />
-      <Navigation />
+      <TransactionConfirmModal 
+        visible={transactionModal}
+        closeHandler={() => {
+          setTransactionModal(false)
+        }}
+      />
+      {/* <Navigation /> */}
       <Header title={t("navigation.deposit_withdraw").toUpperCase()} />
       <section className="tokens">
         <Title label={t("dashboard.deposits--header")} />

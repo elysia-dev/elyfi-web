@@ -31,7 +31,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
   userData: GetUser_user | undefined | null,
   onClose: () => void,
   afterTx: () => Promise<void>,
-}> = ({ tokenName, visible, tokenImage, balance, depositBalance, reserve, userData, onClose, afterTx }) => {
+  transactionModal: () => void
+}> = ({ tokenName, visible, tokenImage, balance, depositBalance, reserve, userData, onClose, afterTx, transactionModal }) => {
   const { account } = useWeb3React()
   const { elfiPrice } = useContext(PriceContext);
   const [selected, select] = useState<boolean>(true)
@@ -123,6 +124,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
           tx as any,
           () => {
             afterTx();
+            transactionModal();
             onClose();
           }
         )
@@ -151,6 +153,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
           tx as any,
           () => {
             afterTx();
+            transactionModal();
             onClose();
           }
         )

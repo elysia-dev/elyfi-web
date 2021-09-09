@@ -20,7 +20,8 @@ const ClaimStakingRewardModal: FunctionComponent<{
   round: number,
   closeHandler: () => void,
   afterTx: () => void,
-}> = ({ visible, stakedToken, token, balance, round, closeHandler, afterTx }) => {
+  transactionModal: () => void
+}> = ({ visible, stakedToken, token, balance, round, closeHandler, afterTx, transactionModal }) => {
   const { account } = useWeb3React()
   const stakingPool = useStakingPool(stakedToken);
   const { waiting, wait } = useWatingTx();
@@ -83,6 +84,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
                       tx as any,
                       () => {
                         afterTx();
+                        transactionModal();
                         closeHandler();
                       }
                     )

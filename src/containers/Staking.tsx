@@ -29,6 +29,7 @@ import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import ReactGA from "react-ga";
 import Navigation from 'src/components/Navigation';
 import txStatus from 'src/enums/txStatus';
+import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI,
@@ -65,6 +66,7 @@ const Staking: React.FunctionComponent<IProps> = ({
   const [migrationModalVisible, setMigrationModalVisible] = useState<boolean>(false);
   const [stakingEndedVisible, setStakingEndedVisible] = useState<boolean>(false);
   const [migrationEndedVisible, setMigrationEndedVisible] = useState<boolean>(false);
+  const [transactionModal, setTransactionModal] = useState(false);
 
   const [roundData, setRoundData] = useState<RoundData>({
     loading: true,
@@ -164,8 +166,15 @@ const Staking: React.FunctionComponent<IProps> = ({
   
   return (
     <>
-      <Navigation txStatus={state.txStatus} txWaiting={state.txWaiting} />
+      {/* <Navigation txStatus={state.txStatus} txWaiting={state.txWaiting} /> */}
       <Header title={t("staking.token_staking", { stakedToken: stakedToken }).toUpperCase()} />
+
+      <TransactionConfirmModal 
+        visible={transactionModal}
+        closeHandler={() => {
+          setTransactionModal(false)
+        }}
+      />
       <section className="staking" >
         <ClaimStakingRewardModal
           visible={claimStakingRewardModalVisible}
@@ -175,6 +184,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           round={state.selectPhase}
           closeHandler={() => setClaimStakingRewardModalVisible(false)}
           afterTx={() => { account && fetchRoundData(account, state.selectPhase) }}
+          transactionModal={() => setTransactionModal(true)}
         />
         <StakingModal
           visible={
@@ -190,6 +200,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           }}
           setTxStatus={getStatus}
           setTxWaiting={getWaiting}
+          transactionModal={() => setTransactionModal(true)}
         />
         <MigrationModal
           visible={migrationModalVisible}
@@ -200,6 +211,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           rewardBalance={expectedReward.value}
           round={state.selectPhase}
           afterTx={() => { account && fetchRoundData(account, state.selectPhase) }}
+          transactionModal={() => setTransactionModal(true)}
         />
         <StakingEnded
           visible={

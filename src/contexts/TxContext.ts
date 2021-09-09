@@ -12,15 +12,7 @@ export type TxContextType = {
 }
 
 export interface ITxContext extends TxContextType { 
-  setTransaction: (
-    status: StakingPoolStatus,
-    stakedToken: "EL" | "ELFI",
-    round: number,
-    value: string,
-    isMax: boolean,
-    stakedBalance: BigNumber,
-    trackModal: string
-    ) => void;
+  setTransaction: (tx: any, tracker: any, pending: () => void, callback: () => void) => void;
 }
 
 export const initialTxState = {
@@ -32,15 +24,7 @@ export const initialTxState = {
 
 export const initialTxContext = {
   ...initialTxState,
-  setTransaction: (
-    status: StakingPoolStatus,
-    stakedToken: string,
-    round: number,
-    value: string,
-    isMax: boolean,
-    stakedBalance: BigNumber,
-    trackModal: string
-    ) => { }
+  setTransaction: (tx: any, tracker: any, pending: () => void, callback: () => void) => { }
 }
 
 const TxContext = createContext<ITxContext>(initialTxContext);

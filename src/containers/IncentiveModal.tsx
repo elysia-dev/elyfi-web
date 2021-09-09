@@ -16,7 +16,8 @@ const IncentiveModal: FunctionComponent<{
   visible: boolean,
   onClose: () => void,
   afterTx: () => Promise<void>,
-}> = ({ visible, balance, onClose, afterTx }) => {
+  transactionModal: () => void
+}> = ({ visible, balance, onClose, afterTx, transactionModal }) => {
   const { account } = useWeb3React()
   const { waiting, wait } = useWaitingTx()
   const incentivePool = useIncentivePool();
@@ -37,6 +38,7 @@ const IncentiveModal: FunctionComponent<{
       tracker.created();
       wait(tx as any, () => {
         afterTx()
+        transactionModal()
         onClose()
       })
     }).catch(() => {

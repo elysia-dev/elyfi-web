@@ -26,8 +26,9 @@ const MigrationModal: React.FunctionComponent<{
   rewardToken: Token.ELFI | Token.DAI,
   stakedBalance: BigNumber,
   rewardBalance: BigNumber,
-  round: number
-}> = ({ visible, closeHandler, afterTx, stakedBalance, rewardBalance, stakedToken, rewardToken, round }) => {
+  round: number,
+  transactionModal: () => void
+}> = ({ visible, closeHandler, afterTx, stakedBalance, rewardBalance, stakedToken, rewardToken, round, transactionModal }) => {
   const current = moment();
   const { t, i18n } = useTranslation();
   const { account } = useWeb3React();
@@ -255,6 +256,7 @@ const MigrationModal: React.FunctionComponent<{
                       tx as any,
                       () => {
                         afterTx();
+                        transactionModal();
                       }
                     )
                   }).catch(() => {

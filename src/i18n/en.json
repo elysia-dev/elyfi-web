@@ -185,6 +185,25 @@
         "The mobile version will be released soon!",
         "If you want to experience ELYFI,\nplease use the PC version!"
       ]
+    },
+    "transaction": {
+      "confirm": "You can check the progress of the transaction in the upper right corner.",
+      "nth_close": "Closes in {{nth}} seconds",
+      "nth_connect": "Connect with {{nth}}",
+      "copy_address": "Copy address",
+      "on_etherscan": "View on Etherscan",
+      "activity__title": "Recent Activity",
+      "activity": "Recent activity is displayed here",
+      "el_staking": "EL Staking",
+      "el_unstaking": "EL Unstaking",
+      "elfi_claim_reward": "Claim reward",
+      "el_elfi_transmission": "EL & ELFI transmission",
+      "elfi_dai_transmission": "ELFI & DAI transmission",
+      "elfi_staking": "ELFI Staking",
+      "elfi_unstaking": "ELFI Unstaking",
+      "dai_claim_reward": "Claim reward",
+      "dai_deposit": "Deposit DAI",
+      "dai_withdraw": "Withdraw DAI"
     }
   }
 }

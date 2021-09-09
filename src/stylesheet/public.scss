@@ -837,6 +837,26 @@ span {
     background: rgba(0, 0, 0, 0.7);
     z-index: 999;
     overflow: hidden;
+    &__confirm {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 30px;
+      align-items: center;
+      > img { 
+        width: 50%;
+        margin: 20px;
+      }
+      > div {
+        > p:first-child {
+          margin-bottom: 50px;
+        }
+        > p:last-child {
+          color: #646464;
+        }
+      }
+      text-align: center;
+    }
     &__text-input {
       text-align: right;
       padding: 0;

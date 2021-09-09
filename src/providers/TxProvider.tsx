@@ -29,14 +29,18 @@ const TxProvider: React.FunctionComponent = (props) => {
   const initTxTracker = useTxTracking();
 
 
-  const setTransaction = (tx: any, tracker: any) => {
+  const setTransaction = (tx: any, tracker: any, pending: () => void, callback: () => void) => {
     tracker.created();
+    console.log(tx);
     setState({ ...state, txStatus: txStatus.PENDING, txWaiting: true })
+    window.localStorage.setItem("@txLoad", "true");
+    pending();
     wait(
       tx as any,
       () => {
-        // refetch()
+        callback();
         setState({ ...state, txStatus: txStatus.CONFIRM, txWaiting: false })
+        window.localStorage.setItem("@txLoad", "false");
       }
     )
     
