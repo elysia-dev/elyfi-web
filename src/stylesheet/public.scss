@@ -159,6 +159,9 @@ span {
       justify-content: center;
       align-items: center;
       cursor: pointer;
+      > div {
+        justify-content: center;
+      }
       // animation: glow 1.5s linear infinite alternate;
       &__wrapper {
         display: flex;

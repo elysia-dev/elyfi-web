@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { useWeb3React } from '@web3-react/core';
 import envs from 'src/core/envs';
 import { ERC20Test__factory } from '@elysia-dev/contract-typechain';
-
 interface Props {
   txStatus?: string;
   txWaiting?: boolean;
@@ -164,7 +163,7 @@ const Navigation: FunctionComponent<Props> = ({ txStatus, txWaiting }) => {
           </div>
         </div>
         <div className="navigation__wallet__container pc-only">
-          {window.ethereum?.isMetaMask ? <Wallet triedEager={triedEager} txWaiting={txWaiting} txStatus={txStatus} /> : <InstallMetamask />}
+          {window.ethereum?.isMetaMask ? <Wallet triedEager={triedEager} /> : <InstallMetamask />}
         </div>
       </div>
     </nav>

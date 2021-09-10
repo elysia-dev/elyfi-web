@@ -1,5 +1,5 @@
 import { BigNumber, constants, utils } from 'ethers';
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import ELFI from 'src/assets/images/ELFI.png';
 import { formatComma } from 'src/utiles/formatters';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +17,7 @@ import { formatEther, parseEther } from 'ethers/lib/utils';
 import useWaitingTx from 'src/hooks/useWaitingTx';
 import LoadingIndicator from './LoadingIndicator';
 import useTxTracking from 'src/hooks/useTxTracking';
+import TxContext from 'src/contexts/TxContext';
 
 const MigrationModal: React.FunctionComponent<{
   visible: boolean,
@@ -42,6 +43,7 @@ const MigrationModal: React.FunctionComponent<{
   const stakingPool = useStakingPool(stakedToken)
   const { waiting, wait } = useWaitingTx();
   const initTxTracker = useTxTracking();
+  const { setTransaction, FailTransaction } = useContext(TxContext);
 
   const amountGtStakedBalance = !state.withdrawMax && utils.parseEther(state.withdrawAmount || '0').gt(stakedBalance);
   const migrationAmountGtStakedBalance = !state.migrationMax && utils.parseEther(state.migrationAmount || '0').gt(stakedBalance);
@@ -251,16 +253,15 @@ const MigrationModal: React.FunctionComponent<{
                         utils.parseEther(state.migrationAmount),
                     round.toString()
                   ).then((tx) => {
-                    tracker.created();
-                    wait(
-                      tx as any,
-                      () => {
-                        afterTx();
-                        transactionModal();
-                      }
-                    )
+                    setTransaction(tx, tracker, () => {
+                      transactionModal();
+                      closeHandler();
+                    }, 
+                    () => {
+                      afterTx();
+                    })
                   }).catch(() => {
-                    tracker.canceled();
+                    FailTransaction(tracker, closeHandler)
                   })
               }}
             >

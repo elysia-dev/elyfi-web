@@ -20,6 +20,7 @@ import useERC20Info from 'src/hooks/useERC20Info';
 import useWaitingTx from 'src/hooks/useWaitingTx';
 import ReactGA from "react-ga";
 import useTxTracking from 'src/hooks/useTxTracking';
+import TxContext from 'src/contexts/TxContext';
 
 const DepositOrWithdrawModal: FunctionComponent<{
   tokenName: string,
@@ -57,6 +58,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const { t } = useTranslation();
   const moneyPool = useMoneyPool();
   const initTxTracker = useTxTracking();
+  const { setTransaction, FailTransaction } = useContext(TxContext);
 
   const accumulatedYield = useMemo(() => {
     return calcAccumulatedYield(
@@ -118,18 +120,15 @@ const DepositOrWithdrawModal: FunctionComponent<{
     moneyPool
       .deposit(reserve.id, account, amount)
       .then((tx) => {
-        tracker.created();
-
-        wait(
-          tx as any,
-          () => {
-            afterTx();
-            transactionModal();
-            onClose();
-          }
-        )
+        setTransaction(tx, tracker, () => {
+          transactionModal();
+          onClose();
+        }, 
+        () => {
+          afterTx();
+        })
       }).catch(() => {
-        tracker.canceled();
+        FailTransaction(tracker, onClose)
       })
   }
 
@@ -147,18 +146,15 @@ const DepositOrWithdrawModal: FunctionComponent<{
     moneyPool
       .withdraw(reserve.id, account, max ? constants.MaxUint256 : amount)
       .then((tx) => {
-        tracker.created();
-
-        wait(
-          tx as any,
-          () => {
-            afterTx();
-            transactionModal();
-            onClose();
-          }
-        )
+        setTransaction(tx, tracker, () => {
+          transactionModal();
+          onClose();
+        }, 
+        () => {
+          afterTx();
+        })
       }).catch(() => {
-        tracker.canceled();
+        FailTransaction(tracker, onClose)
       })
   }
 

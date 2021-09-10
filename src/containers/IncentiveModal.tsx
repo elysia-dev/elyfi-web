@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber } from 'ethers';
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useContext } from 'react'
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
 import { formatCommaSmall } from 'src/utiles/formatters';
@@ -9,6 +9,7 @@ import useWaitingTx from 'src/hooks/useWaitingTx';
 import { formatEther } from 'ethers/lib/utils';
 import useTxTracking from 'src/hooks/useTxTracking';
 import { useMediaQuery } from 'react-responsive';
+import TxContext from 'src/contexts/TxContext';
 
 // Create deposit & withdraw
 const IncentiveModal: FunctionComponent<{
@@ -22,6 +23,7 @@ const IncentiveModal: FunctionComponent<{
   const { waiting, wait } = useWaitingTx()
   const incentivePool = useIncentivePool();
   const initTxTracker = useTxTracking();
+  const { setTransaction, FailTransaction } = useContext(TxContext);
 
   const reqeustClaimIncentive = async () => {
     if (!account) return;
@@ -36,13 +38,15 @@ const IncentiveModal: FunctionComponent<{
 
     incentivePool.claimIncentive().then((tx) => {
       tracker.created();
-      wait(tx as any, () => {
-        afterTx()
+      setTransaction(tx, tracker, () => {
         transactionModal()
         onClose()
+      }, 
+      () => {
+        afterTx()
       })
     }).catch(() => {
-      tracker.canceled();
+      FailTransaction(tracker, onClose)
     })
   }
 

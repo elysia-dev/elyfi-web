@@ -37,7 +37,7 @@ const StakingModal: React.FunctionComponent<{
   const [stakingMode, setStakingMode] = useState<boolean>(true)
   const [amount, setAmount] = useState({ value: "", max: false });
   const current = moment();
-  const { setTransaction } = useContext(TxContext);
+  const { setTransaction, FailTransaction } = useContext(TxContext);
   const {
     allowance,
     balance,
@@ -166,24 +166,16 @@ const StakingModal: React.FunctionComponent<{
                           amount.max ? constants.MaxUint256 : utils.parseEther(amount.value),
                           round.toString()
                         ).then((tx) => {
-                          console.log("dd?");
-                          tracker.created();
-                          setTxStatus(txStatus.PENDING)
-                          closeHandler()
-                          transactionModal()
-                          wait(
-                            tx as any,
-                            () => {
-                              refetch()
-                              afterTx()
-                              setTxStatus(txStatus.CONFIRM)
-                            }
-                          )
+                          setTransaction(tx, tracker, () => {
+                            closeHandler()
+                            transactionModal()
+                          }, 
+                          () => {
+                            refetch()
+                            afterTx()
+                          })
                         }).catch(() => {
-                          window.localStorage.setItem("@txLoad", "false");
-                          setTxStatus(txStatus.FAIL)
-                          tracker.canceled();
-                          closeHandler()
+                          FailTransaction(tracker, closeHandler);
                         })
                     }}
                   >
@@ -214,29 +206,16 @@ const StakingModal: React.FunctionComponent<{
                         // setTxWaiting(true)
 
                         stakingPool.stake(amount.max ? balance : utils.parseEther(amount.value)).then((tx) => {
-                          // setTransaction(tx, tracker, closeHandler, () => {
-                          //   refetch()
-                          //   afterTx()
-                          //   transactionModal()
-                          // })
-                          tracker.created();
-                          setTxStatus(txStatus.PENDING)
-                          closeHandler()
-                          transactionModal()
-                          wait(
-                            tx as any,
-                            () => {
-                              refetch()
-                              afterTx()
-                              setTxStatus(txStatus.CONFIRM)
-                            }
-                          )
+                          setTransaction(tx, tracker, () => {
+                            closeHandler()
+                            transactionModal()
+                          }, 
+                          () => {
+                            refetch()
+                            afterTx()
+                          })
                         }).catch(() => {
-                          // window.localStorage.setItem("@txLoad", "false");
-                          setTxStatus(txStatus.FAIL)
-                          closeHandler()
-                          // setTxWaiting(false)
-                          tracker.canceled();
+                          FailTransaction(tracker, closeHandler);
                         })
                       }}
                     >
@@ -259,19 +238,16 @@ const StakingModal: React.FunctionComponent<{
                           stakedToken === Token.EL ? envs.elStakingPoolAddress : envs.elfyStakingPoolAddress,
                           constants.MaxUint256,
                         ).then((tx) => {
-                          tracker.created();
-                          closeHandler()
-                          transactionModal()
-                          wait(
-                            tx as any,
-                            () => {
-                              refetch()
-                              afterTx()
-                            }
-                          )
+                          setTransaction(tx, tracker, () => {
+                            closeHandler()
+                            transactionModal()
+                          }, 
+                          () => {
+                            refetch()
+                            afterTx()
+                          })
                         }).catch(() => {
-                          closeHandler()
-                          tracker.canceled();
+                          FailTransaction(tracker, closeHandler);
                         })
                       }}
                     >

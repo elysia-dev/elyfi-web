@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import TransactinConfirm from 'src/assets/images/transaction_confirm.png';
 
@@ -8,6 +8,19 @@ const TransactionConfirmModal: React.FunctionComponent<{
   closeHandler: () => void
 }> = ({ visible, closeHandler }) => {
   const { t, i18n } = useTranslation();
+  
+  const [Time, setTime] = useState(0)
+
+  useEffect(() => {
+    setTime(3000);
+  }, [visible])
+
+  useEffect(() => {
+    setTimeout(function() {
+      closeHandler();
+    }, Time);
+  }, [visible])
+
 
   return (
     <div className="modal" style={{ display: visible ? "block" : "none" }}>
@@ -31,7 +44,7 @@ const TransactionConfirmModal: React.FunctionComponent<{
               {t("transaction.confirm")}
             </p>
             <p>
-              {t("transaction.nth_close", { nth : 3 })}
+              {t("transaction.nth_close", { nth : Math.floor(Time / 1000) })}
             </p>
           </div>
         </div>

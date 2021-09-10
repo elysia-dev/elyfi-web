@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, utils } from 'ethers';
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useContext } from 'react'
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
 import DaiImage from 'src/assets/images/dai.png';
@@ -11,6 +11,7 @@ import useStakingPool from 'src/hooks/useStakingPool';
 import useWatingTx from 'src/hooks/useWaitingTx';
 import useTxTracking from 'src/hooks/useTxTracking';
 import { useMediaQuery } from 'react-responsive';
+import TxContext from 'src/contexts/TxContext';
 
 const ClaimStakingRewardModal: FunctionComponent<{
   stakedToken: Token.ELFI | Token.EL,
@@ -27,6 +28,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
   const { waiting, wait } = useWatingTx();
   const { t } = useTranslation();
   const initTxTracker = useTxTracking();
+  const { setTransaction, FailTransaction } = useContext(TxContext);
 
   const isPc = useMediaQuery({
     query: "(min-width: 1190px)"
@@ -79,17 +81,15 @@ const ClaimStakingRewardModal: FunctionComponent<{
                   tracker.clicked();
 
                   stakingPool.claim(round.toString()).then((tx) => {
-                    tracker.created();
-                    wait(
-                      tx as any,
-                      () => {
-                        afterTx();
-                        transactionModal();
-                        closeHandler();
-                      }
-                    )
+                    setTransaction(tx, tracker, () => {
+                      transactionModal();
+                      closeHandler();
+                    }, 
+                    () => {
+                      afterTx();
+                    })
                   }).catch(() => {
-                    tracker.canceled();
+                    FailTransaction(tracker, closeHandler)
                   })
                 }}
               >

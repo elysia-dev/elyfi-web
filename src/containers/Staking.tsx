@@ -166,7 +166,6 @@ const Staking: React.FunctionComponent<IProps> = ({
   
   return (
     <>
-      {/* <Navigation txStatus={state.txStatus} txWaiting={state.txWaiting} /> */}
       <Header title={t("staking.token_staking", { stakedToken: stakedToken }).toUpperCase()} />
 
       <TransactionConfirmModal 
