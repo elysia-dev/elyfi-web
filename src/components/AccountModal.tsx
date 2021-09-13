@@ -126,9 +126,9 @@ const AccountModal: React.FunctionComponent<{
             </p>
 
             <a
-              href={`https://etherscan.io/tx/${window.localStorage.getItem("@txHash")}`}
+              href={window.localStorage.getItem("@txHash") === null ? undefined : `https://etherscan.io/tx/${window.localStorage.getItem("@txHash")}`}
               target="_blank"
-              className="link"
+              className={window.localStorage.getItem("@txHash") === null ? "disable" : ""}
             >
               <div>
                 <p className="spoqa__bold">
