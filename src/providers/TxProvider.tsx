@@ -17,11 +17,16 @@ const TxProvider: React.FunctionComponent = (props) => {
 
   const ResetAllState = () => {
     setState(initialTxContext);
+    window.sessionStorage.setItem("@connect", "false");
+    window.localStorage.removeItem("@txHash")
+    window.localStorage.removeItem("@txNonce");
+    window.localStorage.removeItem("@txStatus");
+    window.localStorage.removeItem("@txTracking");
   }
   const initialTransaction =  (txState: txStatus, txWaiting: boolean) => {
     setState({ ...state, txState: txState, txWaiting: txWaiting })
   }
-  const FailTransaction = (tracker: any, onEvent: () => void) => {
+  const FailTransaction = (tracker: any, onEvent: () => void, e: any) => {
     onEvent();
     tracker.canceled();
     setState({ ...state, txState: txStatus.FAIL, txWaiting: false })
@@ -29,6 +34,7 @@ const TxProvider: React.FunctionComponent = (props) => {
     window.localStorage.removeItem("@txHash")
     window.localStorage.removeItem("@txNonce");
     window.localStorage.setItem("@txStatus", "FAIL");
+    console.log(e)
   }
 
   const setTransaction = (tx: ContractTransaction, tracker: any, pending: () => void, callback: () => void) => {
@@ -56,7 +62,8 @@ const TxProvider: React.FunctionComponent = (props) => {
       ...state,
       setTransaction,
       initialTransaction,
-      FailTransaction
+      FailTransaction,
+      ResetAllState
     }}>
       {props.children}
     </TxContext.Provider>

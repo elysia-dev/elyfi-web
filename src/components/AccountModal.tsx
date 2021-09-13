@@ -91,11 +91,6 @@ const AccountModal: React.FunctionComponent<{
             </div>
             <div onClick={() => {
               deactivate();
-              window.sessionStorage.setItem("@connect", "false");
-              window.localStorage.removeItem("@txHash")
-              window.localStorage.removeItem("@txNonce");
-              window.localStorage.removeItem("@txStatus");
-              window.localStorage.removeItem("@txTracking");
               ResetAllState();
               closeHandler();
             }}>

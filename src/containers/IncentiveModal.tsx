@@ -46,8 +46,8 @@ const IncentiveModal: FunctionComponent<{
       () => {
         afterTx()
       })
-    }).catch(() => {
-      FailTransaction(tracker, onClose)
+    }).catch((e) => {
+      FailTransaction(tracker, onClose, e)
     })
   }
 

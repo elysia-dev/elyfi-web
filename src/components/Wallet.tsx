@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext, useCallback } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
 import mainnetConverter from 'src/utiles/mainnetConverter';
@@ -6,10 +6,8 @@ import { useTranslation } from 'react-i18next';
 import Idle from "src/assets/images/status__idle.png";
 import Confirm from "src/assets/images/status__confirm.png";
 import Fail from "src/assets/images/status__fail.png";
-import Pending from "src/assets/images/status__pending.png";
 import useWatingTx from 'src/hooks/useWaitingTx';
 import TxContext from 'src/contexts/TxContext';
-import { ContractTransaction,  } from "ethers";
 
 import envs from 'src/core/envs';
 import txStatus from 'src/enums/txStatus';
@@ -20,7 +18,6 @@ const Wallet = (props: any) => {
   const [connected, setConnected] = useState<boolean>(false);
   const { t } = useTranslation();
   const { library } = useWeb3React();
-  const { waiting, wait } = useWatingTx();
   const [modal, setModal] = useState(false);
 
   const [count, setCount] = useState(0);
@@ -35,38 +32,8 @@ const Wallet = (props: any) => {
     if (window.localStorage.getItem("@txLoad") === "true") {
       initialTransaction(txStatus.PENDING, true)
     }
-    let timer = setTimeout(function getTx() {
-      library?.getTransactionReceipt(window.localStorage.getItem("@txHash")).then((res: any) => {
-        if (res && res.status === 1) {
-          initialTransaction(txStatus.CONFIRM, false)
-          window.localStorage.setItem("@txLoad", "false");
-          window.localStorage.setItem("@txStatus", "CONFIRM");
-        } else if (res && res.status !== 1) {
-          initialTransaction(txStatus.FAIL, false)
-          window.localStorage.setItem("@txLoad", "false");
-          window.localStorage.setItem("@txStatus", "FAIL");
-        } else {
-          setCount(count + 1)
-          timer = setTimeout(getTx, 5000);
-        }
-      }).catch((e: any) => {
-        initialTransaction(txStatus.FAIL, false)
-        window.localStorage.setItem("@txLoad", "false");
-        window.localStorage.setItem("@txStatus", "FAIL");
-        console.log(e)
-      })
-    }, 5000)
-
-    console.log(count)
-
-    return () => {
-      clearTimeout(timer);
-    }
-  }, [count])
-
-  useEffect(() => {
-    if (window.localStorage.getItem("@txStatus") === "PENDING") {
-      library?.getTransactionReceipt(window.localStorage.getItem("@txHash")).then((res: any) => {
+    if (library) {
+      library.getTransactionReceipt(window.localStorage.getItem("@txHash")).then((res: any) => {
         if (res && res.status === 1) {
           initialTransaction(txStatus.CONFIRM, false)
           window.localStorage.setItem("@txLoad", "false");
@@ -83,90 +50,9 @@ const Wallet = (props: any) => {
         console.log(e)
       })
     }
-  })
-  
-  //   try {
-  //     let code = await library?.getTransactionReceipt(window.localStorage.getItem("@txHash"))
-
-  //     if (code && code.status === 1) {
-  //       initialTransaction(txStatus.CONFIRM, false)
-  //       window.localStorage.setItem("@txLoad", "false");
-  //       window.localStorage.setItem("@txHash", "")
-  //       window.localStorage.setItem("@txNonce", "");
-  //       library?.getTransaction(window.localStorage.getItem("@txHash")).then((res: ContractTransaction) => 
-  //       {
-  //         wait(
-  //           res as any, 
-  //           () => {
-
-  //           }
-  //         )
-  //       })
-  //     }
-  //     else if (code && code.status !== 1) {
-  //       initialTransaction(txStatus.FAIL, false);
-  //       window.localStorage.setItem("@txLoad", "false")
-  //       window.localStorage.setItem("@txHash", "")
-  //       window.localStorage.setItem("@txNonce", "")
-  //     }
-  //   } catch (e) { 
-  //     console.log(e)
-  //   }
-  // }
-  // useEffect(() => {
-  //   if ((window.localStorage.getItem("@txHash") === "" || null)) {
-  //     return;
-  //   }
-  //   console.log(window.localStorage.getItem("@txLoad"))
-  //   console.log(window.localStorage.getItem("@txHash"))
-  //   if (window.localStorage.getItem("@txLoad") === "true") {
-  //     initialTransaction(txStatus.PENDING, true)
-  //   }
-  //   CatchRefresh();
-
-
-  //   // library?.getTransaction(window.localStorage.getItem("@txHash")).then((res: ContractTransaction) => 
-  //   //   {
-  //   //     if (window.localStorage.getItem("@txLoad") === "true") {
-  //   //       initialTransaction(txStatus.PENDING, true)
-  //   //     }
-  //   //     wait(
-  //   //       res as any,
-  //   //       () => {
-  //   //         initialTransaction(txStatus.CONFIRM, false)
-  //   //         window.localStorage.setItem("@txLoad", "false");
-  //   //         window.localStorage.setItem("@txHash", "")
-  //   //         window.localStorage.setItem("@txNonce", "");
-  //   //       }
-  //   //     )
-  //   //   }
-  //   // )
-  // }, [])
+  }, [library])
   
   const WalletRef = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  const handleHover = () => {
-    setVisible(!visible);
-  };
-  const handleOut = () => {
-    setVisible(false);
-  };
-
-  const HandleClickOutside = (ref: any) => {
-    useEffect(() => {
-      function HandleClickOutside(e: any): void {
-        if (ref.current && !ref.current.contains(e.target as Node)) {
-          handleOut();
-        }
-      }
-      document.addEventListener('mousedown', HandleClickOutside);
-      return () => {
-        document.removeEventListener('mousedown', HandleClickOutside);
-      };
-    }, [ref]);
-  };
-
-  HandleClickOutside(WalletRef);
 
   useEffect(() => {
     setConnected(!!account && chainId === envs.requiredChainId)
@@ -185,7 +71,6 @@ const Wallet = (props: any) => {
             })
           }
           if (connected) {
-            // handleHover();
             setModal(true);
           }
         }}>
@@ -224,26 +109,6 @@ const Wallet = (props: any) => {
               }
             </p>
           </div>
-        </div>
-        <div className="navigation__wallet__sub-menu"
-          style={{ display: visible ? "block" : "none" }}
-        >
-          <p className="navigation__wallet__sub-menu__item">
-            {account}
-          </p>
-          <hr />
-          <p className="navigation__wallet__sub-menu__item"
-            onClick={() => {
-              deactivate();
-              window.sessionStorage.setItem("@connect", "false");
-              window.localStorage.removeItem("@txHash")
-              window.localStorage.removeItem("@txNonce");
-              window.localStorage.removeItem("@txStatus");
-              window.localStorage.removeItem("@txTracking");
-              ResetAllState();
-            }}>
-            {t("navigation.disconnect")}
-          </p>
         </div>
       </div>
     </>

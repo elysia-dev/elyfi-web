@@ -175,8 +175,8 @@ const StakingModal: React.FunctionComponent<{
                             refetch()
                             afterTx()
                           })
-                        }).catch(() => {
-                          FailTransaction(tracker, closeHandler);
+                        }).catch((e) => {
+                          FailTransaction(tracker, closeHandler, e);
                         })
                     }}
                   >
@@ -216,8 +216,8 @@ const StakingModal: React.FunctionComponent<{
                             refetch()
                             afterTx()
                           })
-                        }).catch(() => {
-                          FailTransaction(tracker, closeHandler);
+                        }).catch((e) => {
+                          FailTransaction(tracker, closeHandler, e);
                         })
                       }}
                     >
@@ -248,8 +248,8 @@ const StakingModal: React.FunctionComponent<{
                             refetch()
                             afterTx()
                           })
-                        }).catch(() => {
-                          FailTransaction(tracker, closeHandler);
+                        }).catch((e) => {
+                          FailTransaction(tracker, closeHandler, e);
                         })
                       }}
                     >

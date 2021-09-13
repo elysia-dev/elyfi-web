@@ -128,8 +128,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
         () => {
           afterTx();
         })
-      }).catch(() => {
-        FailTransaction(tracker, onClose)
+      }).catch((e) => {
+        FailTransaction(tracker, onClose, e)
       })
   }
 
@@ -150,13 +150,13 @@ const DepositOrWithdrawModal: FunctionComponent<{
         setTransaction(tx, tracker, () => {
           transactionModal();
           onClose();
-          window.localStorage.setItem("@txTracking", "Withdraw");
+          window.localStorage.setItem("@txTracking", reserve.id + "Withdraw");
         }, 
         () => {
           afterTx();
         })
-      }).catch(() => {
-        FailTransaction(tracker, onClose)
+      }).catch((e) => {
+        FailTransaction(tracker, onClose, e)
       })
   }
 

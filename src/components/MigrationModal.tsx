@@ -261,8 +261,8 @@ const MigrationModal: React.FunctionComponent<{
                     () => {
                       afterTx();
                     })
-                  }).catch(() => {
-                    FailTransaction(tracker, closeHandler)
+                  }).catch((e) => {
+                    FailTransaction(tracker, closeHandler, e)
                   })
               }}
             >
