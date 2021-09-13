@@ -10,12 +10,14 @@ export type TxContextType = {
   txWaiting: boolean,
   txState: txStatus,
   transaction: ContractTransaction | undefined;
+  txHash: string;
 }
 
 export interface ITxContext extends TxContextType { 
   setTransaction: (tx: any, tracker: any, pending: () => void, callback: () => void) => void;
   initialTransaction: (txState: txStatus, txWaiting: boolean) => void;
   FailTransaction: (tracker: any, onEvent: () => void) => void;
+  ResetAllState: () => void
 }
 
 export const initialTxState = {
@@ -23,14 +25,16 @@ export const initialTxState = {
   round: 0,
   txWaiting: false,
   txState: txStatus.IDLE,
-  transaction: undefined
+  transaction: undefined,
+  txHash: ""
 }
 
 export const initialTxContext = {
   ...initialTxState,
   setTransaction: (tx: any, tracker: any, pending: () => void, callback: () => void) => { },
   initialTransaction: (txState: txStatus, txWaiting: boolean) => { },
-  FailTransaction: (tracker: any, onEvent: () => void) => { }
+  FailTransaction: (tracker: any, onEvent: () => void) => { },
+  ResetAllState: () => { }
 }
 
 const TxContext = createContext<ITxContext>(initialTxContext);

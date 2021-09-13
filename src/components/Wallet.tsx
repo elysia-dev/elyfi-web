@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext } from 'react';
+import { useState, useEffect, useRef, useContext, useCallback } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
 import mainnetConverter from 'src/utiles/mainnetConverter';
@@ -13,6 +13,7 @@ import { ContractTransaction,  } from "ethers";
 
 import envs from 'src/core/envs';
 import txStatus from 'src/enums/txStatus';
+import AccountModal from './AccountModal';
 
 const Wallet = (props: any) => {
   const { account, activate, deactivate, active, chainId } = useWeb3React();
@@ -20,51 +21,127 @@ const Wallet = (props: any) => {
   const { t } = useTranslation();
   const { library } = useWeb3React();
   const { waiting, wait } = useWatingTx();
+  const [modal, setModal] = useState(false);
 
-  const { initialTransaction, txState, txWaiting } = useContext(TxContext);
+  const [count, setCount] = useState(0);
+
+  const { initialTransaction, txState, txWaiting, ResetAllState } = useContext(TxContext);
 
   useEffect(() => {
-    async function CatchRefresh() {
-      if ((window.localStorage.getItem("@txHash") === "" || null)) {
-        return;
-      }
-      const res = await library?.getTransaction(window.localStorage.getItem("@txHash")).then(
-        (res: ContractTransaction) => {
-          wait(
-            res as any, 
-            () => {
-              initialTransaction(txStatus.CONFIRM, false)
-              window.localStorage.setItem("@txLoad", "false");
-              window.localStorage.setItem("@txHash", "")
-              window.localStorage.setItem("@txNonce", "");
-            }
-          )
-        }
-      )
-      if (window.localStorage.getItem("@txLoad") === "true") {
-        initialTransaction(txStatus.PENDING, true)
-      }
-      
-
-      // library?.getTransaction(window.localStorage.getItem("@txHash")).then((res: ContractTransaction) => 
-      //   {
-      //     if (window.localStorage.getItem("@txLoad") === "true") {
-      //       initialTransaction(txStatus.PENDING, true)
-      //     }
-      //     wait(
-      //       res as any,
-      //       () => {
-      //         initialTransaction(txStatus.CONFIRM, false)
-      //         window.localStorage.setItem("@txLoad", "false");
-      //         window.localStorage.setItem("@txHash", "")
-      //         window.localStorage.setItem("@txNonce", "");
-      //       }
-      //     )
-      //   }
-      // )
+    if ((window.localStorage.getItem("@txHash") === null)) {
+      initialTransaction(txStatus.IDLE, false)
+      return;
     }
-    CatchRefresh();
-  }, [])
+    if (window.localStorage.getItem("@txLoad") === "true") {
+      initialTransaction(txStatus.PENDING, true)
+    }
+    let timer = setTimeout(function getTx() {
+      library?.getTransactionReceipt(window.localStorage.getItem("@txHash")).then((res: any) => {
+        if (res && res.status === 1) {
+          initialTransaction(txStatus.CONFIRM, false)
+          window.localStorage.setItem("@txLoad", "false");
+          window.localStorage.setItem("@txStatus", "CONFIRM");
+        } else if (res && res.status !== 1) {
+          initialTransaction(txStatus.FAIL, false)
+          window.localStorage.setItem("@txLoad", "false");
+          window.localStorage.setItem("@txStatus", "FAIL");
+        } else {
+          setCount(count + 1)
+          timer = setTimeout(getTx, 5000);
+        }
+      }).catch((e: any) => {
+        initialTransaction(txStatus.FAIL, false)
+        window.localStorage.setItem("@txLoad", "false");
+        window.localStorage.setItem("@txStatus", "FAIL");
+        console.log(e)
+      })
+    }, 5000)
+
+    console.log(count)
+
+    return () => {
+      clearTimeout(timer);
+    }
+  }, [count])
+
+  useEffect(() => {
+    if (window.localStorage.getItem("@txStatus") === "PENDING") {
+      library?.getTransactionReceipt(window.localStorage.getItem("@txHash")).then((res: any) => {
+        if (res && res.status === 1) {
+          initialTransaction(txStatus.CONFIRM, false)
+          window.localStorage.setItem("@txLoad", "false");
+          window.localStorage.setItem("@txStatus", "CONFIRM");
+        } else if (res && res.status !== 1) {
+          initialTransaction(txStatus.FAIL, false)
+          window.localStorage.setItem("@txLoad", "false");
+          window.localStorage.setItem("@txStatus", "FAIL");
+        }
+      }).catch((e: any) => {
+        initialTransaction(txStatus.FAIL, false)
+        window.localStorage.setItem("@txLoad", "false");
+        window.localStorage.setItem("@txStatus", "FAIL");
+        console.log(e)
+      })
+    }
+  })
+  
+  //   try {
+  //     let code = await library?.getTransactionReceipt(window.localStorage.getItem("@txHash"))
+
+  //     if (code && code.status === 1) {
+  //       initialTransaction(txStatus.CONFIRM, false)
+  //       window.localStorage.setItem("@txLoad", "false");
+  //       window.localStorage.setItem("@txHash", "")
+  //       window.localStorage.setItem("@txNonce", "");
+  //       library?.getTransaction(window.localStorage.getItem("@txHash")).then((res: ContractTransaction) => 
+  //       {
+  //         wait(
+  //           res as any, 
+  //           () => {
+
+  //           }
+  //         )
+  //       })
+  //     }
+  //     else if (code && code.status !== 1) {
+  //       initialTransaction(txStatus.FAIL, false);
+  //       window.localStorage.setItem("@txLoad", "false")
+  //       window.localStorage.setItem("@txHash", "")
+  //       window.localStorage.setItem("@txNonce", "")
+  //     }
+  //   } catch (e) { 
+  //     console.log(e)
+  //   }
+  // }
+  // useEffect(() => {
+  //   if ((window.localStorage.getItem("@txHash") === "" || null)) {
+  //     return;
+  //   }
+  //   console.log(window.localStorage.getItem("@txLoad"))
+  //   console.log(window.localStorage.getItem("@txHash"))
+  //   if (window.localStorage.getItem("@txLoad") === "true") {
+  //     initialTransaction(txStatus.PENDING, true)
+  //   }
+  //   CatchRefresh();
+
+
+  //   // library?.getTransaction(window.localStorage.getItem("@txHash")).then((res: ContractTransaction) => 
+  //   //   {
+  //   //     if (window.localStorage.getItem("@txLoad") === "true") {
+  //   //       initialTransaction(txStatus.PENDING, true)
+  //   //     }
+  //   //     wait(
+  //   //       res as any,
+  //   //       () => {
+  //   //         initialTransaction(txStatus.CONFIRM, false)
+  //   //         window.localStorage.setItem("@txLoad", "false");
+  //   //         window.localStorage.setItem("@txHash", "")
+  //   //         window.localStorage.setItem("@txNonce", "");
+  //   //       }
+  //   //     )
+  //   //   }
+  //   // )
+  // }, [])
   
   const WalletRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -98,6 +175,7 @@ const Wallet = (props: any) => {
 
   return (
     <>
+      <AccountModal visible={modal} closeHandler={() => setModal(false)} />
       <div className={`navigation__wallet${connected ? "--connected" : ""} ${txState}`}
         ref={WalletRef}
         onClick={() => {
@@ -107,7 +185,8 @@ const Wallet = (props: any) => {
             })
           }
           if (connected) {
-            handleHover();
+            // handleHover();
+            setModal(true);
           }
         }}>
         <div className="navigation__wallet__wrapper">
@@ -142,7 +221,8 @@ const Wallet = (props: any) => {
                       "Confirmed!!"
                       :
                       `${account?.slice(0, 6)}....${account?.slice(-4)}`
-              }</p>
+              }
+            </p>
           </div>
         </div>
         <div className="navigation__wallet__sub-menu"
@@ -156,6 +236,11 @@ const Wallet = (props: any) => {
             onClick={() => {
               deactivate();
               window.sessionStorage.setItem("@connect", "false");
+              window.localStorage.removeItem("@txHash")
+              window.localStorage.removeItem("@txNonce");
+              window.localStorage.removeItem("@txStatus");
+              window.localStorage.removeItem("@txTracking");
+              ResetAllState();
             }}>
             {t("navigation.disconnect")}
           </p>

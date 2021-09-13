@@ -256,6 +256,7 @@ const MigrationModal: React.FunctionComponent<{
                     setTransaction(tx, tracker, () => {
                       transactionModal();
                       closeHandler();
+                      window.localStorage.setItem("@txTracking", stakedToken + "Migration");
                     }, 
                     () => {
                       afterTx();

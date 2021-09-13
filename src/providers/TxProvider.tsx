@@ -15,6 +15,9 @@ const TxProvider: React.FunctionComponent = (props) => {
   const { waiting, wait } = useWatingTx();
   const initTxTracker = useTxTracking();
 
+  const ResetAllState = () => {
+    setState(initialTxContext);
+  }
   const initialTransaction =  (txState: txStatus, txWaiting: boolean) => {
     setState({ ...state, txState: txState, txWaiting: txWaiting })
   }
@@ -23,16 +26,18 @@ const TxProvider: React.FunctionComponent = (props) => {
     tracker.canceled();
     setState({ ...state, txState: txStatus.FAIL, txWaiting: false })
     window.localStorage.setItem("@txLoad", "false");
-    window.localStorage.setItem("@txHash", "")
-    window.localStorage.setItem("@txNonce", "");
+    window.localStorage.removeItem("@txHash")
+    window.localStorage.removeItem("@txNonce");
+    window.localStorage.setItem("@txStatus", "FAIL");
   }
 
   const setTransaction = (tx: ContractTransaction, tracker: any, pending: () => void, callback: () => void) => {
     tracker.created();
-    setState({ ...state, txState: txStatus.PENDING, txWaiting: true })
+    setState({ ...state, txState: txStatus.PENDING, txWaiting: true, txHash: tx.hash })
     window.localStorage.setItem("@txLoad", "true");
     window.localStorage.setItem("@txHash", tx.hash);
     window.localStorage.setItem("@txNonce", tx.nonce.toString());
+    window.localStorage.setItem("@txStatus", "PENDING");
     pending();
     wait(
       tx as any,
@@ -40,8 +45,7 @@ const TxProvider: React.FunctionComponent = (props) => {
         callback();
         setState({ ...state, txState: txStatus.CONFIRM, txWaiting: false })
         window.localStorage.setItem("@txLoad", "false");
-        window.localStorage.setItem("@txHash", "")
-        window.localStorage.setItem("@txNonce", "");
+        window.localStorage.setItem("@txStatus", "CONFIRM");
       }
     )
   }

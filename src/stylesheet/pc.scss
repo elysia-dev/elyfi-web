@@ -419,6 +419,66 @@ $footer-height: 100px;
       height: 55px;
       margin: 15px 15px 0px;
     }
+    &__account {
+      margin: 30px;
+      &__mainnet-info {
+        border-radius: 10px 10px 0 0;
+        padding: 14px 20px;
+        > div:first-child {
+          > p {
+            font-size: 15px;
+          }
+          > div {
+            > p {
+              font-size: 15px;
+            }
+            > div {
+              width: 14px;
+              height: 14px;
+              border-radius: 14px;
+              margin-right: 6px;
+            }
+          }
+        }
+        > div:last-child {
+          > p {
+            margin: 7px 29px;
+            font-size: 15px;
+          }
+        }
+        &__button {
+          > div {
+            > p {
+              font-size: 15px;
+            }
+          }
+          > a {
+            > div {
+              > p {
+                font-size: 15px;
+              }
+            }
+          }
+        }
+      }
+      &__status {
+        margin-top: 25px;
+        margin-bottom: 10px;
+        > a {
+          > div {
+            margin-top: 10px;
+            padding: 10px 20px;
+            > div {
+              display: flex;
+              align-items: center;
+              > p {
+                font-size: 15px;
+              }
+            }
+          }
+        }
+      }
+    }
     &__migration {
       &__alert {
         > p {
@@ -518,7 +578,7 @@ $footer-height: 100px;
     &__deposit__value-wrapper,
     &__value-wrapper {
       height: 173px;
-      padding: 0px 40px;
+      padding: 0px 20px;
     }
     &__input {
       &__maximum {
@@ -628,7 +688,7 @@ $footer-height: 100px;
       .modal {
         &__body {
           height: 173px;
-          padding: 0px 40px;
+          padding: 0px 20px;
           &__maximum {
             font-size: 20px;
           }

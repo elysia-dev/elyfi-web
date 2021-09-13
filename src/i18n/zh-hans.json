@@ -187,6 +187,7 @@
       ]
     },
     "transaction": {
+      "account": "账号",
       "confirm": "您可以在右上角查看交易进度。",
       "nth_close": "弹窗将在{{nth}}秒后关闭",
       "nth_connect": "Connect with {{nth}}",
@@ -194,16 +195,16 @@
       "on_etherscan": "在Etherscan上查看",
       "activity__title": "近期交易记录",
       "activity": "这里可以查看近期交易记录。",
-      "el_staking": "EL 스테이킹",
-      "el_unstaking": "EL 언스테이킹",
-      "elfi_claim_reward": "ELFI 수령",
-      "el_elfi_transmission": "EL 및 ELFI 전송",
-      "elfi_dai_transmission": "ELFI 및 DAI 전송",
-      "elfi_staking": "ELFI 스테이킹",
-      "elfi_unstaking": "ELFI 언스테이킹",
-      "dai_claim_reward": "DAI 수령",
-      "dai_deposit": "DAI 예치",
-      "dai_withdraw": "DAI 출금"
+      "el_staking": "EL代币Staking(权益质押)",
+      "el_unstaking": "EL代币Unstaking(解除权益质押)",
+      "elfi_claim_reward": "获取ELFI代币",
+      "el_elfi_transmission": "传送EL代币和ELFI代币",
+      "elfi_dai_transmission": "传送ELFI代币和DAI",
+      "elfi_staking": "ELFI代币Staking(权益质押)",
+      "elfi_unstaking": "ELFI代币Unstaking(解除权益质押)",
+      "dai_claim_reward": "获取DAI",
+      "dai_deposit": "存入DAI",
+      "dai_withdraw": "提现DAI"
     }
   }
 }

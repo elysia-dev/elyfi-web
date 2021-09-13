@@ -187,6 +187,7 @@
       ]
     },
     "transaction": {
+      "account": "계정",
       "confirm": "트랜잭션의 진행상황은 오른쪽 상단에서 확인하실 수 있습니다.",
       "nth_close": "{{nth}}초 후에 닫힙니다.",
       "nth_connect": "{{nth}}에 연결됨",

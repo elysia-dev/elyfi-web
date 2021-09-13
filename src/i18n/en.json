@@ -187,6 +187,7 @@
       ]
     },
     "transaction": {
+      "account": "Account",
       "confirm": "You can check the progress of the transaction in the upper right corner.",
       "nth_close": "Closes in {{nth}} seconds",
       "nth_connect": "Connect with {{nth}}",

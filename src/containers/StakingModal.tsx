@@ -169,6 +169,7 @@ const StakingModal: React.FunctionComponent<{
                           setTransaction(tx, tracker, () => {
                             closeHandler()
                             transactionModal()
+                            window.localStorage.setItem("@txTracking", stakedToken + "StakingWithdraw");
                           }, 
                           () => {
                             refetch()
@@ -209,6 +210,7 @@ const StakingModal: React.FunctionComponent<{
                           setTransaction(tx, tracker, () => {
                             closeHandler()
                             transactionModal()
+                            window.localStorage.setItem("@txTracking", stakedToken + "Stake");
                           }, 
                           () => {
                             refetch()

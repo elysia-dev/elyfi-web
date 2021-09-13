@@ -84,6 +84,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
                     setTransaction(tx, tracker, () => {
                       transactionModal();
                       closeHandler();
+                      window.localStorage.setItem("@txTracking", stakedToken + "Claim");
                     }, 
                     () => {
                       afterTx();

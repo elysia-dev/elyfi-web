@@ -840,6 +840,131 @@ span {
     background: rgba(0, 0, 0, 0.7);
     z-index: 999;
     overflow: hidden;
+    &__account {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 30px;
+      align-items: center;
+      &__mainnet-info {
+        width: 100%;
+        border: 1px solid #e6e6e6;
+        border-radius: 10px 10px 0 0;
+        padding: 14px 20px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        > div:first-child {
+          > p {
+            color: #b7b7b7;
+            margin: 0 0 5px 0;
+          }
+          > div {
+            display: flex;
+            align-items: center;
+            > p {
+              margin: 0;
+            }
+            > div {
+              background-color: #00BFFF;
+              width: 14px;
+              height: 14px;
+              border-radius: 14px;
+              margin-right: 6px;
+            }
+          }
+        }
+        > div:last-child {
+          border-radius: 3px;
+          border: 1px solid #646464;
+          cursor: pointer;
+          > p {
+            margin: 7px 29px;
+            cursor: pointer;
+          }
+        }
+        &__button {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          border: 1px solid #e6e6e6;
+          border-radius: 0 0 10px 10px;
+          border-top: 0px;
+          box-sizing: border-box;
+          color: #333333;
+          cursor: pointer;
+          > div {
+            width: 50%;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            > p {
+              margin: 10px;
+              color: #636363;
+              cursor: pointer;
+            }
+            &:first-child {
+              background-color: #e6e6e6;
+              border-radius: 0 0 0 10px;
+            }
+          }
+          > a {
+            width: 50%;
+            text-decoration: none;
+            user-select: none;
+            > div {
+              text-align: center;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              > p {
+                margin: 10px;
+                color: #636363;
+                cursor: pointer;
+              }
+            }
+          }
+        }
+      }
+      &__status {
+        width: 100%;
+        margin-top: 25px;
+        margin-bottom: 10px;
+        > p {
+          cursor: pointer;
+        }
+        > a {
+          text-decoration: none;
+          user-select: none;
+          > div {
+            border: 1px solid #e6e6e6;
+            margin-top: 10px;
+            justify-content: space-between;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            > p {
+              cursor: pointer;
+            }
+            > div {
+              display: flex;
+              align-items: center;
+              > p {
+                cursor: pointer;
+              }
+              > img {
+                width: 24px;
+                height: 24px;
+                margin-right: 5px;
+              }
+            }
+          }
+        }
+      }
+    }
     &__confirm {
       display: flex;
       flex-direction: column;

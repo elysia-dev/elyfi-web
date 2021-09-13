@@ -41,6 +41,7 @@ const IncentiveModal: FunctionComponent<{
       setTransaction(tx, tracker, () => {
         transactionModal()
         onClose()
+        window.localStorage.setItem("@txTracking", "Claim");
       }, 
       () => {
         afterTx()

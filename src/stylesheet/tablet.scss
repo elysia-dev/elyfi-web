@@ -465,6 +465,66 @@ $footer-height: 100px;
   .modal {
     padding: 2.5vh 2.5vw;
     // display: block !important;
+    &__account {
+      margin: 10px;
+      &__mainnet-info {
+        border-radius: 10px 10px 0 0;
+        padding: 14px 20px;
+        > div:first-child {
+          > p {
+            font-size: 15px;
+          }
+          > div {
+            > p {
+              font-size: 15px;
+            }
+            > div {
+              width: 14px;
+              height: 14px;
+              border-radius: 14px;
+              margin-right: 6px;
+            }
+          }
+        }
+        > div:last-child {
+          > p {
+            margin: 7px 29px;
+            font-size: 15px;
+          }
+        }
+        &__button {
+          > div {
+            > p {
+              font-size: 15px;
+            }
+          }
+          > a {
+            > div {
+              > p {
+                font-size: 15px;
+              }
+            }
+          }
+        }
+      }
+      &__status {
+        margin-top: 25px;
+        margin-bottom: 10px;
+        > a {
+          > div {
+            margin-top: 10px;
+            padding: 10px 20px;
+            > div {
+              display: flex;
+              align-items: center;
+              > p {
+                font-size: 15px;
+              }
+            }
+          }
+        }
+      }
+    }
     &__text-input {
       font-size: 50px !important;
     }
