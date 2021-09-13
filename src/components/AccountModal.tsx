@@ -32,16 +32,15 @@ const AccountModal: React.FunctionComponent<{
   }
 
   const RecentActivityContent = (localStorage: string) => {
-    console.log(localStorage)
     switch (localStorage) {
       case "ELClaim" : 
         return t("transaction.elfi_claim_reward");
       case "ELFIClaim" : 
         return t("transaction.dai_claim_reward");
       case "ELMigration" : 
-        return t("transaction.Migration");
+        return t("transaction.el_elfi_transmission");
       case "ELFIMigration" : 
-        return t("transaction.Migration");
+        return t("transaction.elfi_dai_transmission");
       case "Deposit" : 
         return t("transaction.dai_deposit");
       case "Withdraw" : 
