@@ -49,7 +49,7 @@ export const toPercentWithoutSign = (value: any) => `${toCompact(parseFloat(util
 
 export const toCompact = (value: number) => new Intl.NumberFormat('en-US', { maximumFractionDigits: 2, notation: "compact", compactDisplay: "short" }).format(value);
 
-export const toCompactForBignumber = (value: BigNumber) => new Intl.NumberFormat('en-US', { maximumFractionDigits: 2, notation: "compact", compactDisplay: "short" }).format(
+export const toCompactForBignumber = (value: BigNumber | number) => new Intl.NumberFormat('en-US', { maximumFractionDigits: 2, notation: "compact", compactDisplay: "short" }).format(
   parseFloat(
     utils.formatEther(
       value

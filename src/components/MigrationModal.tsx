@@ -1,5 +1,5 @@
 import { BigNumber, constants, utils } from 'ethers';
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import ELFI from 'src/assets/images/ELFI.png';
 import { formatComma } from 'src/utiles/formatters';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +17,7 @@ import { formatEther, parseEther } from 'ethers/lib/utils';
 import useWaitingTx from 'src/hooks/useWaitingTx';
 import LoadingIndicator from './LoadingIndicator';
 import useTxTracking from 'src/hooks/useTxTracking';
+import TxContext from 'src/contexts/TxContext';
 
 const MigrationModal: React.FunctionComponent<{
   visible: boolean,
@@ -26,8 +27,9 @@ const MigrationModal: React.FunctionComponent<{
   rewardToken: Token.ELFI | Token.DAI,
   stakedBalance: BigNumber,
   rewardBalance: BigNumber,
-  round: number
-}> = ({ visible, closeHandler, afterTx, stakedBalance, rewardBalance, stakedToken, rewardToken, round }) => {
+  round: number,
+  transactionModal: () => void
+}> = ({ visible, closeHandler, afterTx, stakedBalance, rewardBalance, stakedToken, rewardToken, round, transactionModal }) => {
   const current = moment();
   const { t, i18n } = useTranslation();
   const { account } = useWeb3React();
@@ -41,6 +43,7 @@ const MigrationModal: React.FunctionComponent<{
   const stakingPool = useStakingPool(stakedToken)
   const { waiting, wait } = useWaitingTx();
   const initTxTracker = useTxTracking();
+  const { setTransaction, failTransaction } = useContext(TxContext);
 
   const amountGtStakedBalance = !state.withdrawMax && utils.parseEther(state.withdrawAmount || '0').gt(stakedBalance);
   const migrationAmountGtStakedBalance = !state.migrationMax && utils.parseEther(state.migrationAmount || '0').gt(stakedBalance);
@@ -163,7 +166,7 @@ const MigrationModal: React.FunctionComponent<{
                       className="modal__text-input"
                       placeholder="0"
                       value={state.migrationAmount}
-                      style={{ fontSize: state.migrationAmount.length < 8 ? 60 : state.migrationAmount.length > 12 ? 35 : 45 }}
+                      style={{ fontSize: state.migrationAmount.length < 8 ? 50 : state.migrationAmount.length > 12 ? 30 : 40 }}
                       onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
                         ["-", "+", "e"].includes(e.key) && e.preventDefault();
                       }}
@@ -227,7 +230,10 @@ const MigrationModal: React.FunctionComponent<{
                 </p>
               </div>
             </div>
-            <div
+            
+          </div>
+        }
+        <div
               className={`modal__button${stakedBalance.isZero() || amountGtStakedBalance || migrationAmountGtStakedBalance ? "--disable" : ""}`}
               onClick={() => {
                 if (stakedBalance.isZero() || !account || amountGtStakedBalance || migrationAmountGtStakedBalance) return
@@ -247,15 +253,16 @@ const MigrationModal: React.FunctionComponent<{
                         utils.parseEther(state.migrationAmount),
                     round.toString()
                   ).then((tx) => {
-                    tracker.created();
-                    wait(
-                      tx as any,
-                      () => {
-                        afterTx();
-                      }
-                    )
-                  }).catch(() => {
-                    tracker.canceled();
+                    setTransaction(tx, tracker, () => {
+                      transactionModal();
+                      closeHandler();
+                      window.localStorage.setItem("@txTracking", stakedToken + "Migration");
+                    }, 
+                    () => {
+                      afterTx();
+                    })
+                  }).catch((e) => {
+                    failTransaction(tracker, closeHandler, e)
                   })
               }}
             >
@@ -263,8 +270,6 @@ const MigrationModal: React.FunctionComponent<{
                 {amountGtStakedBalance ? t("staking.insufficient_balance") : t("staking.transfer")}
               </p>
             </div>
-          </div>
-        }
       </div>
     </div>
   )

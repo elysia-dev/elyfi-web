@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, utils } from 'ethers';
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useContext } from 'react'
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
 import DaiImage from 'src/assets/images/dai.png';
@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import useStakingPool from 'src/hooks/useStakingPool';
 import useWatingTx from 'src/hooks/useWaitingTx';
 import useTxTracking from 'src/hooks/useTxTracking';
+import TxContext from 'src/contexts/TxContext';
 
 const ClaimStakingRewardModal: FunctionComponent<{
   stakedToken: Token.ELFI | Token.EL,
@@ -19,12 +20,15 @@ const ClaimStakingRewardModal: FunctionComponent<{
   round: number,
   closeHandler: () => void,
   afterTx: () => void,
-}> = ({ visible, stakedToken, token, balance, round, closeHandler, afterTx }) => {
+  transactionModal: () => void
+}> = ({ visible, stakedToken, token, balance, round, closeHandler, afterTx, transactionModal }) => {
   const { account } = useWeb3React()
   const stakingPool = useStakingPool(stakedToken);
   const { waiting, wait } = useWatingTx();
   const { t } = useTranslation();
   const initTxTracker = useTxTracking();
+  const { setTransaction, failTransaction } = useContext(TxContext);
+
 
   return (
     <div className="modal modal--deposit" style={{ display: visible ? "block" : "none" }}>
@@ -53,7 +57,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
             <div className="modal__withdraw">
               <div className="modal__withdraw__value-wrapper">
                 <p></p>
-                <p className="modal__withdraw__value bold">
+                <p className="modal__withdraw__value bold" style={{ fontSize: window.sessionStorage.getItem("@MediaQuery") !== "PC" ? 30 : 60 }}>
                   {
                     formatCommaSmall(balance)
                   }
@@ -73,16 +77,16 @@ const ClaimStakingRewardModal: FunctionComponent<{
                   tracker.clicked();
 
                   stakingPool.claim(round.toString()).then((tx) => {
-                    tracker.created();
-                    wait(
-                      tx as any,
-                      () => {
-                        afterTx();
-                        closeHandler();
-                      }
-                    )
-                  }).catch(() => {
-                    tracker.canceled();
+                    setTransaction(tx, tracker, () => {
+                      transactionModal();
+                      closeHandler();
+                      window.localStorage.setItem("@txTracking", stakedToken + "Claim");
+                    }, 
+                    () => {
+                      afterTx();
+                    })
+                  }).catch((e) => {
+                    failTransaction(tracker, closeHandler, e)
                   })
                 }}
               >

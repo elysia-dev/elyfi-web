@@ -20,6 +20,7 @@ import useERC20Info from 'src/hooks/useERC20Info';
 import useWaitingTx from 'src/hooks/useWaitingTx';
 import ReactGA from "react-ga";
 import useTxTracking from 'src/hooks/useTxTracking';
+import TxContext from 'src/contexts/TxContext';
 
 const DepositOrWithdrawModal: FunctionComponent<{
   tokenName: string,
@@ -31,7 +32,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
   userData: GetUser_user | undefined | null,
   onClose: () => void,
   afterTx: () => Promise<void>,
-}> = ({ tokenName, visible, tokenImage, balance, depositBalance, reserve, userData, onClose, afterTx }) => {
+  transactionModal: () => void
+}> = ({ tokenName, visible, tokenImage, balance, depositBalance, reserve, userData, onClose, afterTx, transactionModal }) => {
   const { account } = useWeb3React()
   const { elfiPrice } = useContext(PriceContext);
   const [selected, select] = useState<boolean>(true)
@@ -56,6 +58,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const { t } = useTranslation();
   const moneyPool = useMoneyPool();
   const initTxTracker = useTxTracking();
+  const { setTransaction, failTransaction } = useContext(TxContext);
 
   const accumulatedYield = useMemo(() => {
     return calcAccumulatedYield(
@@ -117,17 +120,16 @@ const DepositOrWithdrawModal: FunctionComponent<{
     moneyPool
       .deposit(reserve.id, account, amount)
       .then((tx) => {
-        tracker.created();
-
-        wait(
-          tx as any,
-          () => {
-            afterTx();
-            onClose();
-          }
-        )
-      }).catch(() => {
-        tracker.canceled();
+        setTransaction(tx, tracker, () => {
+          transactionModal();
+          onClose();
+          window.localStorage.setItem("@txTracking", "Deposit");
+        }, 
+        () => {
+          afterTx();
+        })
+      }).catch((e) => {
+        failTransaction(tracker, onClose, e)
       })
   }
 
@@ -145,17 +147,16 @@ const DepositOrWithdrawModal: FunctionComponent<{
     moneyPool
       .withdraw(reserve.id, account, max ? constants.MaxUint256 : amount)
       .then((tx) => {
-        tracker.created();
-
-        wait(
-          tx as any,
-          () => {
-            afterTx();
-            onClose();
-          }
-        )
-      }).catch(() => {
-        tracker.canceled();
+        setTransaction(tx, tracker, () => {
+          transactionModal();
+          onClose();
+          window.localStorage.setItem("@txTracking", "Withdraw");
+        }, 
+        () => {
+          afterTx();
+        })
+      }).catch((e) => {
+        failTransaction(tracker, onClose, e)
       })
   }
 
