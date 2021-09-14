@@ -7,5 +7,6 @@
   "elAddress": "0x2781246fe707bb15cee3e5ea354e2154a2877b16",
   "requiredNetwork": "Mainnet",
   "requiredChainId": 1,
-  "subgraphURI": "https://api.studio.thegraph.com/query/862/elyfi/v0.0.2"
+  "subgraphURI": "https://api.studio.thegraph.com/query/862/elyfi/v0.0.2",
+  "etherscanURI": "https://etherscan.io"
 }

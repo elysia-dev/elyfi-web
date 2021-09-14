@@ -9,6 +9,7 @@ import Confirm from "src/assets/images/status__confirm.png";
 import txStatus from 'src/enums/txStatus';
 import NewTab from "src/assets/images/new_tab.png";
 import Copy from "src/assets/images/copy.png";
+import envs from 'src/core/envs';
 
 const AccountModal: React.FunctionComponent<{
   visible: boolean,
@@ -17,6 +18,7 @@ const AccountModal: React.FunctionComponent<{
   const { account, activate, deactivate, active, chainId } = useWeb3React();
   const { t, i18n } = useTranslation();
   const { txState, txHash, ResetAllState } = useContext(TxContext);
+  console.log(txState)
 
   const AddressCopy = (add: string) => {
     if (!document.queryCommandSupported("copy")) {
@@ -107,7 +109,7 @@ const AccountModal: React.FunctionComponent<{
               </p>
             </div>
             <a
-              href={`https://etherscan.io/address/${account}`}
+              href={`${envs.etherscanURI}/address/${account}`}
               target="_blank"
               className="link"
             >
@@ -126,7 +128,7 @@ const AccountModal: React.FunctionComponent<{
             </p>
 
             <a
-              href={window.localStorage.getItem("@txHash") === null ? undefined : `https://etherscan.io/tx/${window.localStorage.getItem("@txHash")}`}
+              href={window.localStorage.getItem("@txHash") === null ? undefined : `${envs.etherscanURI}/tx/${window.localStorage.getItem("@txHash")}`}
               target="_blank"
               className={window.localStorage.getItem("@txHash") === null ? "disable" : ""}
             >
@@ -137,24 +139,23 @@ const AccountModal: React.FunctionComponent<{
                 
                 <div>
                 <img 
-                  style={{ display: txState === txStatus.IDLE ? "none" : "block"}}
+                  style={{ display: window.localStorage.getItem("@txStatus") === null || window.localStorage.getItem("@txStatus") === "PENDING" ? "none" : "block"}}
                   src={
-                    txState === txStatus.FAIL ?
+                    window.localStorage.getItem("@txStatus") === "FAIL" ?
                       Fail
-                      : txState === txStatus.CONFIRM ?
+                      : window.localStorage.getItem("@txStatus") === "CONFIRM" ?
                         Confirm
-                          : txState === txStatus.PENDING ?
-                          Pending
-                          :
+                          : 
                           Fail
                   } 
                   alt="status" />
-                  <p className="spoqa__bold" style={{ display: txState === txStatus.IDLE ? "none" : "block"}}>
-                    {txState === txStatus.FAIL ?
+                  <div className="lds-spinner" style={{ display: window.localStorage.getItem("@txStatus") === "PENDING" ? "block" : "none"}}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                  <p className="spoqa__bold" style={{ display: window.localStorage.getItem("@txStatus") === null ? "none" : "block"}}>
+                    {window.localStorage.getItem("@txStatus") === "FAIL" ?
                       "FAILED!"
-                      : txState === txStatus.CONFIRM ?
+                      : window.localStorage.getItem("@txStatus") === "CONFIRM" ?
                         "Confirmed!"
-                          : txState === txStatus.PENDING ?
+                          : window.localStorage.getItem("@txStatus") === "PENDING" ?
                           "Pending.."
                           :
                           ""}

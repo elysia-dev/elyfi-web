@@ -150,7 +150,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
         setTransaction(tx, tracker, () => {
           transactionModal();
           onClose();
-          window.localStorage.setItem("@txTracking", reserve.id + "Withdraw");
+          window.localStorage.setItem("@txTracking", "Withdraw");
         }, 
         () => {
           afterTx();

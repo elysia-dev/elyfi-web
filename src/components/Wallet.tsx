@@ -32,7 +32,9 @@ const Wallet = (props: any) => {
     if (window.localStorage.getItem("@txLoad") === "true") {
       initialTransaction(txStatus.PENDING, true)
     }
-    if (library) {
+    if (window.localStorage.getItem("@txStatus") === "CONFIRM" || window.localStorage.getItem("@txStatus") === "FAIL") {
+      initialTransaction(txStatus.IDLE, false)
+    } else if (library && (window.localStorage.getItem("@txStatus") === "PENDING" || window.localStorage.getItem("@txStatus") === null)) {
       library.getTransactionReceipt(window.localStorage.getItem("@txHash")).then((res: any) => {
         if (res && res.status === 1) {
           initialTransaction(txStatus.CONFIRM, false)

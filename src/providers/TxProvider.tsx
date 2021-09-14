@@ -23,17 +23,17 @@ const TxProvider: React.FunctionComponent = (props) => {
     window.localStorage.removeItem("@txStatus");
     window.localStorage.removeItem("@txTracking");
   }
-  const initialTransaction =  (txState: txStatus, txWaiting: boolean) => {
+  const initialTransaction = (txState: txStatus, txWaiting: boolean) => {
     setState({ ...state, txState: txState, txWaiting: txWaiting })
   }
   const FailTransaction = (tracker: any, onEvent: () => void, e: any) => {
     onEvent();
     tracker.canceled();
-    setState({ ...state, txState: txStatus.FAIL, txWaiting: false })
+    setState({ ...state, txState: txStatus.IDLE, txWaiting: false })
     window.localStorage.setItem("@txLoad", "false");
     window.localStorage.removeItem("@txHash")
     window.localStorage.removeItem("@txNonce");
-    window.localStorage.setItem("@txStatus", "FAIL");
+    window.localStorage.removeItem("@txStatus");
     console.log(e)
   }
 
@@ -44,6 +44,7 @@ const TxProvider: React.FunctionComponent = (props) => {
     window.localStorage.setItem("@txHash", tx.hash);
     window.localStorage.setItem("@txNonce", tx.nonce.toString());
     window.localStorage.setItem("@txStatus", "PENDING");
+    window.localStorage.removeItem("@alreadyLoaded");
     pending();
     wait(
       tx as any,
