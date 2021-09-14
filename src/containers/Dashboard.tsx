@@ -72,8 +72,8 @@ const Dashboard: React.FunctionComponent = () => {
   const [expectedIncentive, setExpectedIncentive] = useState<BigNumber>(balances.incentive)
   const incentivePool = useIncentivePool();
   const [transactionModal, setTransactionModal] = useState(false);
-  console.log(toCompactForBignumber(balances.lTokens[0]))
-  console.log(toCompactForBignumber(balances.dai))
+  // console.log(toCompactForBignumber(balances.lTokens[0]))
+  // console.log(toCompactForBignumber(balances.dai))
   const refrechBalancesAfterTx = async (index: number) => {
     if (!account) return;
 
@@ -90,7 +90,7 @@ const Dashboard: React.FunctionComponent = () => {
 
       setBalances({
         ...balances,
-        dai: await await ERC20__factory
+        dai: await ERC20__factory
           .connect(reserves[index].lToken.id, library)
           .balanceOf(account),
         lTokens: updatedLTokens,
