@@ -18,8 +18,6 @@ const AccountModal: React.FunctionComponent<{
   const { account, activate, deactivate, active, chainId } = useWeb3React();
   const { t, i18n } = useTranslation();
   const { txState, txHash, ResetAllState } = useContext(TxContext);
-  console.log(txState)
-
   const AddressCopy = (add: string) => {
     if (!document.queryCommandSupported("copy")) {
       return alert("This browser does not support the copy function.");
