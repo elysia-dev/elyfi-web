@@ -19,12 +19,12 @@ const InvestmentGuide = () => {
     setClick(onClick === no ? 0 : no);
   }
   const { i18n } = useTranslation();
-  const AddressCopy = (add: string) => {
+  const AddressCopy = (data: string) => {
     if (!document.queryCommandSupported("copy")) {
       return alert("This browser does not support the copy function.");
     }
     const area = document.createElement('textarea');
-    area.value = add;
+    area.value = data;
     document.body.appendChild(area);
     area.select();
     document.execCommand('copy');

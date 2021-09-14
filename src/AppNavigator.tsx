@@ -30,7 +30,10 @@ const AppNavigator: React.FC = () => {
     query: "(max-width: 767px)"
   })
 
-
+  useEffect(() => {
+    isPc ? window.sessionStorage.setItem("@MediaQuery", "PC") : isTablet ? window.sessionStorage.setItem("@MediaQuery", "Tablet") : window.sessionStorage.setItem("@MediaQuery", "Mobile")
+  }, [isPc, isTablet, isMobile])
+  
   const { active, chainId, deactivate } = useWeb3React();
   usePageTracking();
 

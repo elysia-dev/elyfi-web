@@ -22,31 +22,31 @@ const Wallet = (props: any) => {
 
   const [count, setCount] = useState(0);
 
-  const { initialTransaction, txState, txWaiting, ResetAllState } = useContext(TxContext);
+  const { initTransaction, txState, txWaiting, reset } = useContext(TxContext);
 
   useEffect(() => {
     if ((window.localStorage.getItem("@txHash") === null)) {
-      initialTransaction(txStatus.IDLE, false)
+      initTransaction(txStatus.IDLE, false)
       return;
     }
     if (window.localStorage.getItem("@txLoad") === "true") {
-      initialTransaction(txStatus.PENDING, true)
+      initTransaction(txStatus.PENDING, true)
     }
     if (window.localStorage.getItem("@txStatus") === "CONFIRM" || window.localStorage.getItem("@txStatus") === "FAIL") {
-      initialTransaction(txStatus.IDLE, false)
+      initTransaction(txStatus.IDLE, false)
     } else if (library && (window.localStorage.getItem("@txStatus") === "PENDING" || window.localStorage.getItem("@txStatus") === null)) {
       library.getTransactionReceipt(window.localStorage.getItem("@txHash")).then((res: any) => {
         if (res && res.status === 1) {
-          initialTransaction(txStatus.CONFIRM, false)
+          initTransaction(txStatus.CONFIRM, false)
           window.localStorage.setItem("@txLoad", "false");
           window.localStorage.setItem("@txStatus", "CONFIRM");
         } else if (res && res.status !== 1) {
-          initialTransaction(txStatus.FAIL, false)
+          initTransaction(txStatus.FAIL, false)
           window.localStorage.setItem("@txLoad", "false");
           window.localStorage.setItem("@txStatus", "FAIL");
         }
       }).catch((e: any) => {
-        initialTransaction(txStatus.FAIL, false)
+        initTransaction(txStatus.FAIL, false)
         window.localStorage.setItem("@txLoad", "false");
         window.localStorage.setItem("@txStatus", "FAIL");
         console.log(e)

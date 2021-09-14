@@ -43,7 +43,7 @@ const MigrationModal: React.FunctionComponent<{
   const stakingPool = useStakingPool(stakedToken)
   const { waiting, wait } = useWaitingTx();
   const initTxTracker = useTxTracking();
-  const { setTransaction, FailTransaction } = useContext(TxContext);
+  const { setTransaction, failTransaction } = useContext(TxContext);
 
   const amountGtStakedBalance = !state.withdrawMax && utils.parseEther(state.withdrawAmount || '0').gt(stakedBalance);
   const migrationAmountGtStakedBalance = !state.migrationMax && utils.parseEther(state.migrationAmount || '0').gt(stakedBalance);
@@ -262,7 +262,7 @@ const MigrationModal: React.FunctionComponent<{
                       afterTx();
                     })
                   }).catch((e) => {
-                    FailTransaction(tracker, closeHandler, e)
+                    failTransaction(tracker, closeHandler, e)
                   })
               }}
             >

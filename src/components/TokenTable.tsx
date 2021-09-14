@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { useMediaQuery } from "react-responsive";
 import ELFIIcon from 'src/assets/images/elfi--icon.png';
 import Skeleton from 'react-loading-skeleton';
 
@@ -29,12 +28,10 @@ const TokenTable: React.FC<Props> = ({
   skeletonLoading
 }) => {
   const { t } = useTranslation();
-  const isPc = useMediaQuery({
-    query: "(min-width: 1190px)"
-  })
+
   return (
     <>
-    {isPc ? (
+    {window.sessionStorage.getItem("@MediaQuery") === "PC" ? (
       <tr
         className={`tokens__table__row${!isDisable ? "" : "--disable"}`}
         key={index}

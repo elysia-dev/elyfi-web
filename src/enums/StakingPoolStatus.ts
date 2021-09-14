@@ -1,7 +1,7 @@
 enum StakingPoolStatus {
-  Claim = "claim",
-  Migrate = "migrate",
-  Stake = `Stake`,
+  Claim = "Claim",
+  Migrate = "Migrate",
+  Stake = "Stake",
   Withdraw = 'Withdraw'
 
 }

@@ -21,7 +21,6 @@ const TransactionConfirmModal: React.FunctionComponent<{
     }, Time);
   }, [visible])
 
-
   return (
     <div className="modal" style={{ display: visible ? "block" : "none" }}>
       <div className="modal__container">

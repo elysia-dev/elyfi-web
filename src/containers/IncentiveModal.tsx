@@ -8,7 +8,6 @@ import useIncentivePool from 'src/hooks/useIncentivePool';
 import useWaitingTx from 'src/hooks/useWaitingTx';
 import { formatEther } from 'ethers/lib/utils';
 import useTxTracking from 'src/hooks/useTxTracking';
-import { useMediaQuery } from 'react-responsive';
 import TxContext from 'src/contexts/TxContext';
 
 // Create deposit & withdraw
@@ -23,7 +22,7 @@ const IncentiveModal: FunctionComponent<{
   const { waiting, wait } = useWaitingTx()
   const incentivePool = useIncentivePool();
   const initTxTracker = useTxTracking();
-  const { setTransaction, FailTransaction } = useContext(TxContext);
+  const { setTransaction, failTransaction } = useContext(TxContext);
 
   const reqeustClaimIncentive = async () => {
     if (!account) return;
@@ -47,17 +46,14 @@ const IncentiveModal: FunctionComponent<{
         afterTx()
       })
     }).catch((e) => {
-      FailTransaction(tracker, onClose, e)
+      failTransaction(tracker, onClose, e)
     })
   }
 
-  const isPc = useMediaQuery({
-    query: "(min-width: 1190px)"
-  })
 
   return (
     <div className="modal modal--deposit" style={{ display: visible ? "block" : "none" }}>
-      <div className="modal__container" style={{ height: !isPc ? 260 : 360 }}>
+      <div className="modal__container" style={{ height: window.sessionStorage.getItem("@MediaQuery") !== "PC" ? 260 : 360 }}>
         <div className="modal__header">
           <div className="modal__header__token-info-wrapper">
             <img className="modal__header__image" src={ElifyTokenImage} alt="Token" />
@@ -75,10 +71,10 @@ const IncentiveModal: FunctionComponent<{
           {waiting ?
             <LoadingIndicator />
             :
-            <div className="modal__withdraw" style={{ height: !isPc ? 130 : 170, minHeight: 0, overflowY: "clip" }}>
+            <div className="modal__withdraw" style={{ height: window.sessionStorage.getItem("@MediaQuery") !== "PC" ? 130 : 170, minHeight: 0, overflowY: "clip" }}>
               <div className="modal__withdraw__value-wrapper">
                 <p></p>
-                <p className="modal__withdraw__value bold" style={{ fontSize: !isPc ? 30 : 60 }}>
+                <p className="modal__withdraw__value bold" style={{ fontSize: window.sessionStorage.getItem("@MediaQuery") !== "PC" ? 30 : 60 }}>
                   {
                     formatCommaSmall(balance)
                   }

@@ -37,7 +37,7 @@ const StakingModal: React.FunctionComponent<{
   const [stakingMode, setStakingMode] = useState<boolean>(true)
   const [amount, setAmount] = useState({ value: "", max: false });
   const current = moment();
-  const { setTransaction, FailTransaction } = useContext(TxContext);
+  const { setTransaction, failTransaction } = useContext(TxContext);
   const {
     allowance,
     balance,
@@ -176,7 +176,7 @@ const StakingModal: React.FunctionComponent<{
                             afterTx()
                           })
                         }).catch((e) => {
-                          FailTransaction(tracker, closeHandler, e);
+                          failTransaction(tracker, closeHandler, e);
                         })
                     }}
                   >
@@ -217,7 +217,7 @@ const StakingModal: React.FunctionComponent<{
                             afterTx()
                           })
                         }).catch((e) => {
-                          FailTransaction(tracker, closeHandler, e);
+                          failTransaction(tracker, closeHandler, e);
                         })
                       }}
                     >
@@ -249,7 +249,7 @@ const StakingModal: React.FunctionComponent<{
                             afterTx()
                           })
                         }).catch((e) => {
-                          FailTransaction(tracker, closeHandler, e);
+                          failTransaction(tracker, closeHandler, e);
                         })
                       }}
                     >

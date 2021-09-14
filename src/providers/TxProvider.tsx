@@ -15,7 +15,7 @@ const TxProvider: React.FunctionComponent = (props) => {
   const { waiting, wait } = useWatingTx();
   const initTxTracker = useTxTracking();
 
-  const ResetAllState = () => {
+  const reset = () => {
     setState(initialTxContext);
     window.sessionStorage.setItem("@connect", "false");
     window.localStorage.removeItem("@txHash")
@@ -23,10 +23,10 @@ const TxProvider: React.FunctionComponent = (props) => {
     window.localStorage.removeItem("@txStatus");
     window.localStorage.removeItem("@txTracking");
   }
-  const initialTransaction = (txState: txStatus, txWaiting: boolean) => {
+  const initTransaction = (txState: txStatus, txWaiting: boolean) => {
     setState({ ...state, txState: txState, txWaiting: txWaiting })
   }
-  const FailTransaction = (tracker: any, onEvent: () => void, e: any) => {
+  const failTransaction = (tracker: any, onEvent: () => void, e: any) => {
     onEvent();
     tracker.canceled();
     setState({ ...state, txState: txStatus.IDLE, txWaiting: false })
@@ -62,9 +62,9 @@ const TxProvider: React.FunctionComponent = (props) => {
     <TxContext.Provider value={{
       ...state,
       setTransaction,
-      initialTransaction,
-      FailTransaction,
-      ResetAllState
+      initTransaction,
+      failTransaction,
+      reset
     }}>
       {props.children}
     </TxContext.Provider>

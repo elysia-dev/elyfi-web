@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next';
 import useStakingPool from 'src/hooks/useStakingPool';
 import useWatingTx from 'src/hooks/useWaitingTx';
 import useTxTracking from 'src/hooks/useTxTracking';
-import { useMediaQuery } from 'react-responsive';
 import TxContext from 'src/contexts/TxContext';
 
 const ClaimStakingRewardModal: FunctionComponent<{
@@ -28,11 +27,8 @@ const ClaimStakingRewardModal: FunctionComponent<{
   const { waiting, wait } = useWatingTx();
   const { t } = useTranslation();
   const initTxTracker = useTxTracking();
-  const { setTransaction, FailTransaction } = useContext(TxContext);
+  const { setTransaction, failTransaction } = useContext(TxContext);
 
-  const isPc = useMediaQuery({
-    query: "(min-width: 1190px)"
-  })
 
   return (
     <div className="modal modal--deposit" style={{ display: visible ? "block" : "none" }}>
@@ -61,7 +57,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
             <div className="modal__withdraw">
               <div className="modal__withdraw__value-wrapper">
                 <p></p>
-                <p className="modal__withdraw__value bold" style={{ fontSize: !isPc ? 30 : 60 }}>
+                <p className="modal__withdraw__value bold" style={{ fontSize: window.sessionStorage.getItem("@MediaQuery") !== "PC" ? 30 : 60 }}>
                   {
                     formatCommaSmall(balance)
                   }
@@ -90,7 +86,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
                       afterTx();
                     })
                   }).catch((e) => {
-                    FailTransaction(tracker, closeHandler, e)
+                    failTransaction(tracker, closeHandler, e)
                   })
                 }}
               >

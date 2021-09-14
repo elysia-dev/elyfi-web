@@ -10,6 +10,7 @@ import txStatus from 'src/enums/txStatus';
 import NewTab from "src/assets/images/new_tab.png";
 import Copy from "src/assets/images/copy.png";
 import envs from 'src/core/envs';
+import RecentActivityType from 'src/enums/RecentActivityType';
 
 const AccountModal: React.FunctionComponent<{
   visible: boolean,
@@ -17,13 +18,14 @@ const AccountModal: React.FunctionComponent<{
 }> = ({ visible, closeHandler }) => {
   const { account, activate, deactivate, active, chainId } = useWeb3React();
   const { t, i18n } = useTranslation();
-  const { txState, txHash, ResetAllState } = useContext(TxContext);
-  const AddressCopy = (add: string) => {
+  const { txState, txHash, reset } = useContext(TxContext);
+
+  const AddressCopy = (data: string) => {
     if (!document.queryCommandSupported("copy")) {
       return alert("This browser does not support the copy function.");
     }
     const area = document.createElement('textarea');
-    area.value = add;
+    area.value = data;
     document.body.appendChild(area);
     area.select();
     document.execCommand('copy');
@@ -31,35 +33,6 @@ const AccountModal: React.FunctionComponent<{
     alert("Copied!!");
   }
 
-  const RecentActivityContent = (localStorage: string) => {
-    switch (localStorage) {
-      case "ELClaim" : 
-        return t("transaction.elfi_claim_reward");
-      case "ELFIClaim" : 
-        return t("transaction.dai_claim_reward");
-      case "ELMigration" : 
-        return t("transaction.el_elfi_transmission");
-      case "ELFIMigration" : 
-        return t("transaction.elfi_dai_transmission");
-      case "Deposit" : 
-        return t("transaction.dai_deposit");
-      case "Withdraw" : 
-        return t("transaction.dai_withdraw");
-      case "Claim" : 
-        return t("transaction.elfi_claim_reward");
-      case "ELStakingWithdraw" : 
-        return t("transaction.el_unstaking");
-      case "ELFIStakingWithdraw" : 
-        return t("transaction.elfi_unstaking");
-      case "ELStake" : 
-        return t("transaction.el_staking");
-      case "ELFIStake" : 
-        return t("transaction.elfi_staking");
-      default: 
-        return t("transaction.activity");
-
-    }
-  }
 
   return (
     <div className="modal" style={{ display: visible ? "block" : "none", opacity: 1 }}>
@@ -91,7 +64,7 @@ const AccountModal: React.FunctionComponent<{
             </div>
             <div onClick={() => {
               deactivate();
-              ResetAllState();
+              reset();
               closeHandler();
             }}>
               <p>
@@ -132,7 +105,8 @@ const AccountModal: React.FunctionComponent<{
             >
               <div>
                 <p className="spoqa__bold">
-                  {RecentActivityContent(window.localStorage.getItem("@txTracking") || "")}
+                {/* window.localStorage.getItem("@txTracking") */}
+                  {t(`transaction.${window.localStorage.getItem("@txTracking") === null ? RecentActivityType.Idle : RecentActivityType[window.localStorage.getItem("@txTracking") as keyof typeof RecentActivityType]}` || t("transaction.activity"))}
                 </p>
                 
                 <div>

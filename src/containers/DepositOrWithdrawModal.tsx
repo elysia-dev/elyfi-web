@@ -58,7 +58,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const { t } = useTranslation();
   const moneyPool = useMoneyPool();
   const initTxTracker = useTxTracking();
-  const { setTransaction, FailTransaction } = useContext(TxContext);
+  const { setTransaction, failTransaction } = useContext(TxContext);
 
   const accumulatedYield = useMemo(() => {
     return calcAccumulatedYield(
@@ -129,7 +129,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
           afterTx();
         })
       }).catch((e) => {
-        FailTransaction(tracker, onClose, e)
+        failTransaction(tracker, onClose, e)
       })
   }
 
@@ -156,7 +156,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
           afterTx();
         })
       }).catch((e) => {
-        FailTransaction(tracker, onClose, e)
+        failTransaction(tracker, onClose, e)
       })
   }
 
