@@ -72,7 +72,8 @@ const Dashboard: React.FunctionComponent = () => {
   const [expectedIncentive, setExpectedIncentive] = useState<BigNumber>(balances.incentive)
   const incentivePool = useIncentivePool();
   const [transactionModal, setTransactionModal] = useState(false);
-
+  console.log(toCompactForBignumber(balances.lTokens[0]))
+  console.log(toCompactForBignumber(balances.dai))
   const refrechBalancesAfterTx = async (index: number) => {
     if (!account) return;
 
@@ -252,8 +253,8 @@ const Dashboard: React.FunctionComponent = () => {
                       tokenName={reserve.name}
                       tokenImage={reserve.image}
                       depositBalance={balances.loading ? undefined : `$ ${toCompactForBignumber(balances.lTokens[index] || 0)}`}
-                      depositAPY={toPercent(balances.loading ? 0 : reserves[0].depositAPY)} // 원래 index였음.... ㅠㅠ
-                      miningAPR={balances.loading ? undefined : toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserves[0].totalDeposit)) || '0')} // 원래 index였음.... ㅠㅠ
+                      depositAPY={toPercent(balances.loading ? 0 : reserves[0].depositAPY)}
+                      miningAPR={balances.loading ? undefined : toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserves[0].totalDeposit)) || '0')}
                       walletBalance={`$ ${balances.loading ? undefined : toCompactForBignumber(balances.dai || 0)}`}
                       isDisable={index === 0 ? false : true}
                       skeletonLoading={balances.loading}
