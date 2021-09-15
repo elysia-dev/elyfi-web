@@ -2,18 +2,15 @@
 import React, { useEffect, useState } from 'react'
 import useWatingTx from 'src/hooks/useWaitingTx';
 import useTxTracking from 'src/hooks/useTxTracking';
-import { ContractTransaction,  } from "ethers";
+import { ContractTransaction, } from "ethers";
 import txStatus from 'src/enums/txStatus';
-import TxContext, { initialTxContext, ITxContext} from 'src/contexts/TxContext';
-import detectEthereumProvider from '@metamask/detect-provider';
+import TxContext, { initialTxContext, ITxContext } from 'src/contexts/TxContext';
 import { useWeb3React } from '@web3-react/core';
 
 const TxProvider: React.FunctionComponent = (props) => {
-  const { library } = useWeb3React();
   const [state, setState] = useState<ITxContext>(initialTxContext);
-  
+
   const { waiting, wait } = useWatingTx();
-  const initTxTracker = useTxTracking();
 
   const reset = () => {
     setState(initialTxContext);
