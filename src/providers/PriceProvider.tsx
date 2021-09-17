@@ -12,15 +12,10 @@ const PriceProvider: React.FC = (props) => {
   const fetchPrices = async () => {
     try {
       const poolData = await UniswapV3.getPoolData();
-      const nonZeroData = poolData.data.data.pool.token0.tokenDayData.filter((item) => parseFloat(item.priceUSD));
-
-      console.log(nonZeroData)
 
       setState({
         ...state,
-        elfiPrice: parseFloat(
-          poolData.data.data.pool.token0.tokenDayData[poolData.data.data.pool.token0.tokenDayData.length - 1]?.priceUSD
-        ) || nonZeroData.reduce((sum, item) => sum + parseFloat(item.priceUSD), 0) / nonZeroData.length,
+        elfiPrice: parseFloat(poolData.data.data.pool.poolDayData[poolData.data.data.pool.poolDayData.length - 1].token1Price),
         elPrice: (await Coingecko.getElPrice()).data.elysia.usd,
         loading: false,
       })
