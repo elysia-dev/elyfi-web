@@ -27,7 +27,6 @@ import MigrationEnded from 'src/components/MigrationEnded';
 import useStakingPool from 'src/hooks/useStakingPool';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import ReactGA from "react-ga";
-import Navigation from 'src/components/Navigation';
 import txStatus from 'src/enums/txStatus';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
 
@@ -163,12 +162,11 @@ const Staking: React.FunctionComponent<IProps> = ({
     setState({ ...state, txWaiting: isWaiting })
   }
 
-  
   return (
     <>
       <Header title={t("staking.token_staking", { stakedToken: stakedToken }).toUpperCase()} />
 
-      <TransactionConfirmModal 
+      <TransactionConfirmModal
         visible={transactionModal}
         closeHandler={() => {
           setTransactionModal(false)
@@ -255,9 +253,9 @@ const Staking: React.FunctionComponent<IProps> = ({
           </p>
           <div>
             <p>
-              {stakingRoundTimes[state.selectPhase -1].startedAt.format('YYYY.MM.DD HH:mm:ss')}
+              {stakingRoundTimes[state.selectPhase - 1].startedAt.format('YYYY.MM.DD HH:mm:ss')}
               &nbsp;~&nbsp;
-              {stakingRoundTimes[state.selectPhase -1].endedAt.format('YYYY.MM.DD HH:mm:ss')} (KST)
+              {stakingRoundTimes[state.selectPhase - 1].endedAt.format('YYYY.MM.DD HH:mm:ss')} (KST)
             </p>
           </div>
         </div>
@@ -335,7 +333,8 @@ const Staking: React.FunctionComponent<IProps> = ({
                       <span>
                         {
                           current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) <= 0
-                            || roundData.apr.eq(constants.MaxUint256) ? '-' : toPercentWithoutSign(roundData.apr)
+                            || roundData.apr.eq(constants.MaxUint256)
+                            || current.diff(stakingRoundTimes[state.selectPhase - 1].endedAt) >= 0 ? '-' : toPercentWithoutSign(roundData.apr)
                         }
                       </span>
                   }
@@ -436,19 +435,19 @@ const Staking: React.FunctionComponent<IProps> = ({
               }
             </div>
             <div
-                className={`staking__button ${current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) < 0 ? "disable" : ""}`}
-                onClick={(e) => {
-                  ReactGA.modalview(`${stakedToken}StakingReward`)
+              className={`staking__button ${current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) < 0 ? "disable" : ""}`}
+              onClick={(e) => {
+                ReactGA.modalview(`${stakedToken}StakingReward`)
 
-                  current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0
-                    &&
-                    setClaimStakingRewardModalVisible(true)
-                }}
-              >
-                <p>
-                  {t("staking.claim_reward")}
-                </p>
-              </div>
+                current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0
+                  &&
+                  setClaimStakingRewardModalVisible(true)
+              }}
+            >
+              <p>
+                {t("staking.claim_reward")}
+              </p>
+            </div>
           </div>
         </div>
       </section>
