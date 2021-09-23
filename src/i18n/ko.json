@@ -135,7 +135,7 @@
     "staking": {
       "token_staking": "{{stakedToken}} 스테이킹",
       "token_staking--content": [
-        "{{stakedToken}} 스테이킹은 {{rewardToken}} 채굴 플랜에 따라 6차례로 나눠서 진행됩니다.",
+        "{{stakedToken}} 스테이킹은 {{rewardToken}} 채굴 플랜에 따라 4차례로 나눠서 진행됩니다.",
         "{{stakedToken}} 토큰을 스테이킹하면 {{rewardToken}} 토큰을 리워드로 받게 되며, 스테이킹한 {{stakedToken}} 토큰은 언제든지 언스테이킹이 가능합니다.",
         "또한 이전 회차에 스테이킹한 {{stakedToken}} 토큰과 보상 받은 {{rewardToken}} 토큰은 다음 회차의 스테이킹 풀에 자동으로 전송되지 않습니다.",
         "자세한 채굴 플랜은 ",
@@ -177,7 +177,10 @@
       "elfi_token": "ELFI 토큰 수량",
       "transfer": "전송하기",
       "nth_ended_alert": "{{nth}}차 스테이킹 기간이 종료되어, 마이그레이션이 불가능합니다. 계속 진행하시겠습니까?",
-      "all_ended_alert": "현재 모든 회차의 스테이킹 기간이 종료되어 마이그레이션이 불가능합니다."
+      "all_ended_alert": "현재 모든 회차의 스테이킹 기간이 종료되어 마이그레이션이 불가능합니다.",
+      "current_round": "현재 진행중인 회차",
+      "staking_amount": "스테이킹 수량",
+      "reward_amount": "보상 수량"
     },
     "mobile": {
       "title": "COMING SOON!",

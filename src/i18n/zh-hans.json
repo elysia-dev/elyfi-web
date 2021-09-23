@@ -135,7 +135,7 @@
     "staking": {
       "token_staking": "{{stakedToken}} Staking(权益质押）",
       "token_staking--content": [
-        "根据{{rewardToken}}挖矿计划，ELYFI的V1期间的{{stakedToken}}代币Staking(权益质押)活动将分为6轮。",
+        "根据{{rewardToken}}挖矿计划，ELYFI的V1期间的{{stakedToken}}代币Staking(权益质押)活动将分为4轮。",
         "如果您选择Staking(权益质押){{stakedToken}}代币，您将获得{{rewardToken}}代币作为奖励，并且Staking(权益质押)的代币可以随时取出。",
         "此外，上一轮Staking(权益质押)的{{stakedToken}}代币和奖励的{{rewardToken}}代币不会自动转移到下一轮的Staking(权益质押)资金池中。",
         "您可以在",
@@ -177,7 +177,10 @@
       "elfi_token": "ELFI代币数量",
       "transfer": "传送",
       "nth_ended_alert": "第{{nth}}轮Staking(权益质押)已经结束，将不能进行代币转移。 您要继续参与吗？",
-      "all_ended_alert": "由于本期Staking(权益质押)活动已全部结束，因此无法直接进行代币转移。"
+      "all_ended_alert": "由于本期Staking(权益质押)活动已全部结束，因此无法直接进行代币转移。",
+      "current_round": "当前轮次",
+      "staking_amount": "质押数量",
+      "reward_amount": "累计奖励数量"
     },
     "mobile": {
       "title": "COMING SOON!",

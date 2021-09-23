@@ -57,6 +57,7 @@
     "i18next": "^20.2.1",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
+    "ngrok": "^4.2.2",
     "node-sass": "4.14.1",
     "react": "^17.0.2",
     "react-countup": "^5.0.0",

@@ -304,6 +304,152 @@ $footer-height: 100px;
     &__sign {
       font-size: 24px !important;
     }
+    &__round {
+      margin-top: 50px;
+      &__border {
+        width: 27px;
+        margin-top: 61px;
+      }
+      &__container {
+        flex: 1;
+      }
+      &__remaining-data {
+        margin: 45px 0;
+        &__title {
+          padding: 25px 13px;
+          > div:first-child {
+            > p:first-child {
+              font-size: 17px;
+              margin: 0px 15px 15px;
+            }
+            > p:last-child {
+              font-size: 12px;
+              margin: 7px;
+            }
+          }
+          > div:last-child {
+            > p:first-child {
+              font-size: 12px;
+              margin: 0px;
+            }
+            > p:last-child {
+              font-size: 17px;
+              .staking__sign {
+                font-size: 17px !important;
+              }
+            }
+          }
+        }
+        &__body {
+          > div {
+            > p {
+              font-size: 17px;
+              margin: 17px 10px 7px;
+            }
+            > div {
+              > h2 {
+                font-size: 30px;
+                margin-right: 22px;
+                .colored {
+                  font-size: 30px;
+                }
+                > span {
+                  font-size: 25px;
+                }
+              }
+              .disable {
+                width: 200px;
+                height: 30px;
+                margin: 0 auto 30px;
+                > p {
+                  font-size: 15px;
+                  line-height: 30px;
+                }
+              }
+              > div {
+                width: 200px;
+                height: 30px;
+                margin: 0 auto 30px;
+                > p {
+                  font-size: 15px;
+                  line-height: 30px;
+                }
+              }
+            }
+            &:first-child {
+              margin-left: 20px;
+            }
+            &:last-child {
+              margin-right: 20px;
+            }
+          }
+        }
+      }
+      &__previous {
+        &__wrapper {
+          width: 95%;
+          margin: 45px 0 45px auto;
+          padding: 4px 45px 0px 16px;
+        }
+        height: 130px;
+        padding: 22px 0;
+        > div:first-child {
+          .staking__round__previous__title {
+            > p {
+              &:first-child {
+                font-size: 17px;
+                margin: 8px;
+              }
+              &:last-child {
+                font-size: 12px;
+                margin: 7px;
+              }
+            }
+          }
+          .staking__round__previous__body {
+            margin: 0 20px;
+            > div {
+              > p {
+                margin: 0;
+                &:first-child {
+                  font-size: 17px;
+                }
+                &:last-child {
+                  font-size: 20px;
+                }
+              }
+            }
+          }
+        }
+        &__button {
+          height: 100%;
+          > div {
+            height: 30px;
+            line-height: 30px;
+            padding: 0px 20px;
+            cursor: pointer;
+            > p {
+              font-size: 15px;
+            }
+          }
+        }
+      }
+      &__current-data {
+        padding: 18px 36px;
+        > div {
+          > div {
+            > p {
+              font-size: 17px;
+            }
+          }
+          &:last-child {
+            > p:last-child {
+              font-size: 30px;
+            }
+          }
+        }
+      }
+    }
     .modal {
       &__staking {
         padding: 29px 26px;

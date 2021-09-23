@@ -135,7 +135,7 @@
     "staking": {
       "token_staking": "{{stakedToken}} Staking",
       "token_staking--content": [
-        "{{stakedToken}} Staking will be carried out in six separate sessions according to the {{rewardToken}} mining plan.",
+        "{{stakedToken}} Staking will be carried out in four separate sessions according to the {{rewardToken}} mining plan.",
         "Staking {{stakedToken}} tokens reward the {{rewardToken}} tokens, and the staked {{stakedToken}} tokens can be unstaken at any time.",
         "In addition, {{stakedToken}} tokens staked in the previous round and the rewarded {{rewardToken}} tokens are not automatically sent to the next staking pool.",
         "You can check detailed mining plan ",
@@ -177,7 +177,10 @@
       "elfi_token": "ELFI tokens",
       "transfer": "Transfer",
       "nth_ended_alert": "The {{nth}}th round has ended, and migration is not possible. Do you want to proceed?",
-      "all_ended_alert": "All of the rounds for staking are currently over and migration is not possible."
+      "all_ended_alert": "All of the rounds for staking are currently over and migration is not possible.",
+      "current_round": "Current round",
+      "staking_amount": "Staked Amount",
+      "reward_amount": "Accumulated reward amount"
     },
     "mobile": {
       "title": "COMING SOON!",

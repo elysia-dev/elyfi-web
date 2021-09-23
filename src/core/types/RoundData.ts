@@ -2,6 +2,7 @@ import { BigNumber } from "ethers"
 import moment from "moment"
 
 type RoundData = {
+	id?: number,
 	loading: boolean,
 	error: string,
 	accountReward: BigNumber,
