@@ -178,7 +178,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           visible={claimStakingRewardModalVisible}
           stakedToken={stakedToken}
           token={rewardToken}
-          balance={currentPhase === selectModalRound + 1 ? expectedReward.value : modalValue}
+          balance={selectModalRound === 2 ? expectedReward.value : roundData[selectModalRound]?.accountReward || constants.Zero}
           round={selectModalRound + 1}
           closeHandler={() => setClaimStakingRewardModalVisible(false)}
           afterTx={() => { account && fetchroundData(account) }}
@@ -190,7 +190,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           }
           closeHandler={() => setStakingModalVisible(false)}
           stakedToken={stakedToken}
-          stakedBalance={loading ? constants.Zero : modalValue}
+          stakedBalance={loading ? constants.Zero : roundData[selectModalRound].accountPrincipal}
           round={selectModalRound + 1}
           afterTx={() => { account && fetchroundData(account) }}
           endedModal={() => {
