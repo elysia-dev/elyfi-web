@@ -134,12 +134,15 @@ const Staking: React.FunctionComponent<IProps> = ({
 
     const interval = setInterval(
       () => {
-        if (!currentRound) return;
+        // FIXME
+        // currentRound is not return 3 when there is no round
+        // For temp usage, use round 3 data
+        if (!roundData[2]) return;
 
         setExpectedReward({
-          before: expectedReward.value.isZero() ? currentRound.accountReward : expectedReward.value,
+          before: expectedReward.value.isZero() ? roundData[2].accountReward : expectedReward.value,
           value: calcExpectedReward(
-            currentRound,
+            roundData[2],
             rewardToken === Token.ELFI ?
               ELFIPerDayOnELStakingPool :
               DAIPerDayOnELFIStakingPool,
@@ -325,11 +328,21 @@ const Staking: React.FunctionComponent<IProps> = ({
                                     {t("staking.reward_amount")}
                                   </p>
                                   <p className="spoqa__bold">
-                                    {expectedReward.before.isZero() ? "-" :
-                                      !(current.diff(stakingRoundTimes[currentPhase - 1].startedAt) < 0 && current.diff(stakingRoundTimes[currentPhase - 1].endedAt) > 0) ? "-" :
-                                        <span className="spoqa__bold">
-                                          {item.accountReward}
-                                        </span>
+                                    {
+                                      item.accountReward.isZero() ?
+                                        "-" :
+                                        <CountUp
+                                          className={`spoqa__bold colored ${rewardToken === Token.ELFI ? "EL" : "ELFI"}`}
+                                          start={0}
+                                          end={
+                                            parseFloat(formatEther(item.accountReward))
+                                          }
+                                          formattingFn={(number) => {
+                                            return formatSixFracionDigit(number)
+                                          }}
+                                          decimals={6}
+                                          duration={1}
+                                        />
                                     }
                                     <span className="spoqa__bold">
                                       &nbsp;{rewardToken}
@@ -350,6 +363,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   // ELFI X && 3 라운드 시작 => 마이그레이션
                                   if (
                                     stakedToken !== Token.ELFI &&
+
                                     (
                                       current.diff(stakingRoundTimes[2].startedAt) > 0
                                       && current.diff(stakingRoundTimes[2].endedAt) < 0
