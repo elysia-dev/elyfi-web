@@ -3,7 +3,6 @@ enum StakingPoolStatus {
   Migrate = "Migrate",
   Stake = "Stake",
   Withdraw = 'Withdraw'
-
 }
 
 export default StakingPoolStatus

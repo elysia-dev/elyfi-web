@@ -1,16 +1,13 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import useWatingTx from 'src/hooks/useWaitingTx';
-import useTxTracking from 'src/hooks/useTxTracking';
 import { ContractTransaction, } from "ethers";
 import txStatus from 'src/enums/txStatus';
 import TxContext, { initialTxContext, ITxContext } from 'src/contexts/TxContext';
-import { useWeb3React } from '@web3-react/core';
 
 const TxProvider: React.FunctionComponent = (props) => {
   const [state, setState] = useState<ITxContext>(initialTxContext);
-
-  const { waiting, wait } = useWatingTx();
+  const { wait } = useWatingTx();
 
   const reset = () => {
     setState(initialTxContext);

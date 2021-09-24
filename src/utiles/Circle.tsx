@@ -7,7 +7,7 @@ interface CircleProps {
   style?: CSSProperties;
 }
 
-export const Circle:FunctionComponent<CircleProps> = (props: CircleProps) => {
+export const Circle: FunctionComponent<CircleProps> = (props: CircleProps) => {
   const [state, setState] = useState<CircleProps>({
     progress: 0,
   })
@@ -26,40 +26,29 @@ export const Circle:FunctionComponent<CircleProps> = (props: CircleProps) => {
       })
     }
   }, [props])
-  
+
   const radius = 175;
   const diameter = Math.round(Math.PI * radius * 2);
   const getOffset = (val = 0) => Math.round((100 - Math.min(val, 100)) / 100 * diameter);
   const strokeDashoffset = getOffset(state.progress);
 
-        {/* 
-              0 %  25%   50  75
-          x = 175  350  175   0 
-          y =  0   175  350  175 
-          
-        */}
-  // console.log("x: " + (Math.round((175 + 175 * Math.cos((Math.PI / 180) * ((state.progress-50) / 2 * 3.6))) * 100) / 100))
-  // console.log("y: " + (Math.round((175 + 175 * Math.sin((Math.PI / 180) * ((state.progress-50) / 2 * 3.6))) * 100) / 100))
-
-  // console.log("another x: " + (Math.round((175 + 175 * Math.cos((Math.PI / 180) * ((100 + state.progress) / 2 * 3.6))) * 100) / 100))
-  // console.log("another y: " + (Math.round((175 + 175 * Math.sin((Math.PI / 180) * ((100 + state.progress) / 2 * 3.6))) * 100) / 100))
   return (
     <>
       <svg style={props.style} viewBox="-25 -25 400 400">
         {state.progress !== 0 && (
           <>
-            <circle 
-              stroke={"#1C5E9A"} 
+            <circle
+              stroke={"#1C5E9A"}
               transform={`rotate(${state.progress === 100 ? -90 : -85} 175 175)`}
-              cx="175" 
-              cy="175" 
-              r="175" 
-              strokeDasharray="1100" 
+              cx="175"
+              cy="175"
+              r="175"
+              strokeDasharray="1100"
               strokeWidth={18}
-              strokeDashoffset="1100" 
-              strokeLinecap={'round'} 
-              fill="none" 
-              style={{ 
+              strokeDashoffset="1100"
+              strokeLinecap={'round'}
+              fill="none"
+              style={{
                 strokeDashoffset: state.progress !== 100 ? strokeDashoffset + 30 : strokeDashoffset,
                 transition: `stroke-dashoffset ${props.progress < 50 ? "1.5s" : "2s"} ease-out`,
                 position: "relative"
@@ -73,18 +62,18 @@ export const Circle:FunctionComponent<CircleProps> = (props: CircleProps) => {
               </>
             ) : (
               <>
-                <circle 
-                  cx={(Math.round((175 + 175 * Math.cos((Math.PI / 180) * ((state.progress-50) / 2 * 3.6))) * 100) / 100)} 
-                  cy={(Math.round((175 + 175 * Math.sin((Math.PI / 180) * ((state.progress-50) / 2 * 3.6))) * 100) / 100)} 
-                  r="25" 
-                  fill={"#FFF"}  
+                <circle
+                  cx={(Math.round((175 + 175 * Math.cos((Math.PI / 180) * ((state.progress - 50) / 2 * 3.6))) * 100) / 100)}
+                  cy={(Math.round((175 + 175 * Math.sin((Math.PI / 180) * ((state.progress - 50) / 2 * 3.6))) * 100) / 100)}
+                  r="25"
+                  fill={"#FFF"}
                   style={{
                     filter: "drop-shadow(0px 0px 6px #00000029)"
                   }}
                 />
                 <text
-                  x={(Math.round((175 + 175 * Math.cos((Math.PI / 180) * ((state.progress-50) / 2 * 3.6))) * 100) / 100)} 
-                  y={(Math.round((175 + 175 * Math.sin((Math.PI / 180) * ((state.progress-50) / 2 * 3.6))) * 100) / 100) + 5} 
+                  x={(Math.round((175 + 175 * Math.cos((Math.PI / 180) * ((state.progress - 50) / 2 * 3.6))) * 100) / 100)}
+                  y={(Math.round((175 + 175 * Math.sin((Math.PI / 180) * ((state.progress - 50) / 2 * 3.6))) * 100) / 100) + 5}
                 >
                   <tspan dx={-20} dy={3} fontSize="20">{props.progress}%</tspan>
                 </text>
@@ -94,18 +83,18 @@ export const Circle:FunctionComponent<CircleProps> = (props: CircleProps) => {
         )}
         {state.progress !== 100 && (
           <>
-            <circle 
-              stroke={"#00A7FF"} 
+            <circle
+              stroke={"#00A7FF"}
               transform={`rotate(${state.progress === 0 ? -90 : -95} 175 175)`}
-              cx="175" 
-              cy="175" 
-              r="175" 
-              strokeDasharray="1100" 
-              strokeDashoffset="1100" 
+              cx="175"
+              cy="175"
+              r="175"
+              strokeDasharray="1100"
+              strokeDashoffset="1100"
               strokeWidth={18}
-              strokeLinecap={'round'} 
-              fill="none" 
-              style={{ 
+              strokeLinecap={'round'}
+              fill="none"
+              style={{
                 strokeDashoffset: state.progress !== 0 ? (1100 - strokeDashoffset + 30) * -1 : 0,
                 transition: `stroke-dashoffset ${props.progress > 50 ? "1.5s" : "2s"} ease-out`
               }}
@@ -118,24 +107,24 @@ export const Circle:FunctionComponent<CircleProps> = (props: CircleProps) => {
               </>
             ) : (
               <>
-                <circle 
-                  cx={(Math.round((175 + 175 * Math.cos((Math.PI / 180) * (((100 + state.progress) - 50) / 2 * 3.6))) * 100) / 100)} 
-                  cy={(Math.round((175 + 175 * Math.sin((Math.PI / 180) * (((100 + state.progress) - 50) / 2 * 3.6))) * 100) / 100)} 
-                  r="25" 
-                  fill={"#FFF"}  
+                <circle
+                  cx={(Math.round((175 + 175 * Math.cos((Math.PI / 180) * (((100 + state.progress) - 50) / 2 * 3.6))) * 100) / 100)}
+                  cy={(Math.round((175 + 175 * Math.sin((Math.PI / 180) * (((100 + state.progress) - 50) / 2 * 3.6))) * 100) / 100)}
+                  r="25"
+                  fill={"#FFF"}
                   style={{
                     filter: "drop-shadow(0px 0px 6px #00000029)"
                   }}
                 />
-                <text 
-                  x={(Math.round((175 + 175 * Math.cos((Math.PI / 180) * (((100 + state.progress) - 50) / 2 * 3.6))) * 100) / 100)} 
-                  y={(Math.round((175 + 175 * Math.sin((Math.PI / 180) * (((100 + state.progress) - 50) / 2 * 3.6))) * 100) / 100) + 5} 
+                <text
+                  x={(Math.round((175 + 175 * Math.cos((Math.PI / 180) * (((100 + state.progress) - 50) / 2 * 3.6))) * 100) / 100)}
+                  y={(Math.round((175 + 175 * Math.sin((Math.PI / 180) * (((100 + state.progress) - 50) / 2 * 3.6))) * 100) / 100) + 5}
                 >
                   <tspan dx={-20} dy={3} fontSize="20">{100 - props.progress}%</tspan>
                 </text>
               </>
             )}
-            
+
           </>
         )}
       </svg>

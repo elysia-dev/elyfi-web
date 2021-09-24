@@ -5,7 +5,6 @@ import MainBackground from 'src/assets/images/main-background.png';
 import { useTranslation } from 'react-i18next';
 import envs from 'src/core/envs';
 import { useRouteMatch } from 'react-router-dom';
-import Navigation from 'src/components/Navigation';
 
 const DisableWalletPage = () => {
   const { activate, active, chainId } = useWeb3React();

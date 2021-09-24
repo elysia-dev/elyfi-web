@@ -18,7 +18,6 @@ import PriceContext from 'src/contexts/PriceContext';
 import useMoneyPool from 'src/hooks/useMoneyPool';
 import useERC20Info from 'src/hooks/useERC20Info';
 import useWaitingTx from 'src/hooks/useWaitingTx';
-import ReactGA from "react-ga";
 import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
 
@@ -124,10 +123,10 @@ const DepositOrWithdrawModal: FunctionComponent<{
           transactionModal();
           onClose();
           window.localStorage.setItem("@txTracking", "Deposit");
-        }, 
-        () => {
-          afterTx();
-        })
+        },
+          () => {
+            afterTx();
+          })
       }).catch((e) => {
         failTransaction(tracker, onClose, e)
       })
@@ -151,10 +150,10 @@ const DepositOrWithdrawModal: FunctionComponent<{
           transactionModal();
           onClose();
           window.localStorage.setItem("@txTracking", "Withdraw");
-        }, 
-        () => {
-          afterTx();
-        })
+        },
+          () => {
+            afterTx();
+          })
       }).catch((e) => {
         failTransaction(tracker, onClose, e)
       })

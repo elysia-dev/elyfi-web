@@ -1,12 +1,10 @@
 import { useWeb3React } from '@web3-react/core';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { useTranslation } from 'react-i18next';
 import mainnetConverter from 'src/utiles/mainnetConverter';
 import TxContext from 'src/contexts/TxContext';
 import Fail from "src/assets/images/status__fail.png";
-import Pending from "src/assets/images/pending.png";
 import Confirm from "src/assets/images/status__confirm.png";
-import txStatus from 'src/enums/txStatus';
 import NewTab from "src/assets/images/new_tab.png";
 import Copy from "src/assets/images/copy.png";
 import envs from 'src/core/envs';
@@ -16,9 +14,9 @@ const AccountModal: React.FunctionComponent<{
   visible: boolean,
   closeHandler: () => void
 }> = ({ visible, closeHandler }) => {
-  const { account, activate, deactivate, active, chainId } = useWeb3React();
-  const { t, i18n } = useTranslation();
-  const { txState, txHash, reset } = useContext(TxContext);
+  const { account, deactivate, chainId } = useWeb3React();
+  const { t } = useTranslation();
+  const { reset } = useContext(TxContext);
 
   const AddressCopy = (data: string) => {
     if (!document.queryCommandSupported("copy")) {
@@ -32,7 +30,6 @@ const AccountModal: React.FunctionComponent<{
     document.body.removeChild(area);
     alert("Copied!!");
   }
-
 
   return (
     <div className="modal" style={{ display: visible ? "block" : "none", opacity: 1 }}>
@@ -74,7 +71,7 @@ const AccountModal: React.FunctionComponent<{
           </div>
           <div className="modal__account__mainnet-info__button">
             <div onClick={() => AddressCopy(account!)} >
-              <img src={Copy} alt="Copy Address"  />
+              <img src={Copy} alt="Copy Address" />
               <p>
                 {t("transaction.copy_address")}
               </p>
@@ -105,29 +102,29 @@ const AccountModal: React.FunctionComponent<{
             >
               <div>
                 <p className="spoqa__bold">
-                {/* window.localStorage.getItem("@txTracking") */}
+                  {/* window.localStorage.getItem("@txTracking") */}
                   {t(`transaction.${window.localStorage.getItem("@txTracking") === null ? RecentActivityType.Idle : RecentActivityType[window.localStorage.getItem("@txTracking") as keyof typeof RecentActivityType]}` || t("transaction.activity"))}
                 </p>
-                
+
                 <div>
-                <img 
-                  style={{ display: window.localStorage.getItem("@txStatus") === null || window.localStorage.getItem("@txStatus") === "PENDING" ? "none" : "block"}}
-                  src={
-                    window.localStorage.getItem("@txStatus") === "FAIL" ?
-                      Fail
-                      : window.localStorage.getItem("@txStatus") === "CONFIRM" ?
-                        Confirm
-                          : 
+                  <img
+                    style={{ display: window.localStorage.getItem("@txStatus") === null || window.localStorage.getItem("@txStatus") === "PENDING" ? "none" : "block" }}
+                    src={
+                      window.localStorage.getItem("@txStatus") === "FAIL" ?
+                        Fail
+                        : window.localStorage.getItem("@txStatus") === "CONFIRM" ?
+                          Confirm
+                          :
                           Fail
-                  } 
-                  alt="status" />
-                  <div className="lds-spinner" style={{ display: window.localStorage.getItem("@txStatus") === "PENDING" ? "block" : "none"}}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-                  <p className="spoqa__bold" style={{ display: window.localStorage.getItem("@txStatus") === null ? "none" : "block"}}>
+                    }
+                    alt="status" />
+                  <div className="lds-spinner" style={{ display: window.localStorage.getItem("@txStatus") === "PENDING" ? "block" : "none" }}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                  <p className="spoqa__bold" style={{ display: window.localStorage.getItem("@txStatus") === null ? "none" : "block" }}>
                     {window.localStorage.getItem("@txStatus") === "FAIL" ?
                       "FAILED!"
                       : window.localStorage.getItem("@txStatus") === "CONFIRM" ?
                         "Confirmed!"
-                          : window.localStorage.getItem("@txStatus") === "PENDING" ?
+                        : window.localStorage.getItem("@txStatus") === "PENDING" ?
                           "Pending.."
                           :
                           ""}

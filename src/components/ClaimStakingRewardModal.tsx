@@ -24,7 +24,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
 }> = ({ visible, stakedToken, token, balance, round, closeHandler, afterTx, transactionModal }) => {
   const { account } = useWeb3React()
   const stakingPool = useStakingPool(stakedToken, round);
-  const { waiting, wait } = useWatingTx();
+  const { waiting } = useWatingTx();
   const { t } = useTranslation();
   const initTxTracker = useTxTracking();
   const { setTransaction, failTransaction } = useContext(TxContext);
@@ -83,10 +83,10 @@ const ClaimStakingRewardModal: FunctionComponent<{
                       transactionModal();
                       closeHandler();
                       window.localStorage.setItem("@txTracking", stakedToken + "Claim");
-                    }, 
-                    () => {
-                      afterTx();
-                    })
+                    },
+                      () => {
+                        afterTx();
+                      })
                   }).catch((e) => {
                     failTransaction(tracker, closeHandler, e)
                   })

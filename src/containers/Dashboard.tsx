@@ -1,5 +1,4 @@
 
-import ServiceBackground from 'src/assets/images/service-background.png';
 import { useWeb3React } from '@web3-react/core';
 import ReserveData from 'src/core/data/reserves';
 import { useEffect } from 'react';
@@ -20,16 +19,13 @@ import { useTranslation } from 'react-i18next';
 import envs from 'src/core/envs';
 import IncentiveModal from './IncentiveModal';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
-import ErrorPage from 'src/components/ErrorPage';
 import { Title } from 'src/components/Texts';
 import calcExpectedIncentive from 'src/utiles/calcExpectedIncentive';
 import moment from 'moment';
-import ELFIIcon from 'src/assets/images/ELFI.png';
 import PriceContext from 'src/contexts/PriceContext';
 import useIncentivePool from 'src/hooks/useIncentivePool';
 import { ERC20__factory } from "@elysia-dev/contract-typechain";
 import ReactGA from "react-ga";
-import Navigation from 'src/components/Navigation';
 import Header from 'src/components/Header';
 import TokenTable from 'src/components/TokenTable';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
@@ -211,7 +207,7 @@ const Dashboard: React.FunctionComponent = () => {
         afterTx={() => refrechBalancesAfterClaimTx()}
         transactionModal={() => setTransactionModal(true)}
       />
-      <TransactionConfirmModal 
+      <TransactionConfirmModal
         visible={transactionModal}
         closeHandler={() => {
           setTransactionModal(false)
@@ -261,7 +257,7 @@ const Dashboard: React.FunctionComponent = () => {
                 )
               })
             }
-            
+
           </tbody>
         </table>
       </section>

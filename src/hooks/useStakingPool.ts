@@ -8,7 +8,7 @@ const useStakingPool = (staked: 'EL' | 'ELFI', round: number) => {
 	const contract = useMemo(() => {
 		return StakingPool__factory.connect(
 			staked === 'EL' ?
-				envs.elStakingPoolAddress : 
+				envs.elStakingPoolAddress :
 				round >= 3 ? envs.elfyV2StakingPoolAddress : envs.elfyStakingPoolAddress,
 			library.getSigner()
 		)

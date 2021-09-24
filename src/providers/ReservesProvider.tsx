@@ -3,7 +3,6 @@ import ReserveContext from 'src/contexts/ReservesContext';
 import { GET_ALL_RESERVES } from 'src/queries/reserveQueries';
 import { GetAllReserves, GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import Loading from 'src/components/Loading';
-import ErrorPage from 'src/components/ErrorPage';
 import moment from 'moment';
 import { useState } from 'react';
 import { useEffect } from 'react';

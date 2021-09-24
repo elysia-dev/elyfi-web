@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import Idle from "src/assets/images/status__idle.png";
 import Confirm from "src/assets/images/status__confirm.png";
 import Fail from "src/assets/images/status__fail.png";
-import useWatingTx from 'src/hooks/useWaitingTx';
 import TxContext from 'src/contexts/TxContext';
 
 import envs from 'src/core/envs';
@@ -14,15 +13,13 @@ import txStatus from 'src/enums/txStatus';
 import AccountModal from './AccountModal';
 
 const Wallet = (props: any) => {
-  const { account, activate, deactivate, active, chainId } = useWeb3React();
+  const { account, activate, active, chainId } = useWeb3React();
   const [connected, setConnected] = useState<boolean>(false);
   const { t } = useTranslation();
   const { library } = useWeb3React();
   const [modal, setModal] = useState(false);
 
-  const [count, setCount] = useState(0);
-
-  const { initTransaction, txState, txWaiting, reset } = useContext(TxContext);
+  const { initTransaction, txState, txWaiting } = useContext(TxContext);
 
   useEffect(() => {
     if ((window.localStorage.getItem("@txHash") === null)) {
@@ -53,7 +50,7 @@ const Wallet = (props: any) => {
       })
     }
   }, [library])
-  
+
   const WalletRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -77,10 +74,10 @@ const Wallet = (props: any) => {
           }
         }}>
         <div className="navigation__wallet__wrapper">
-          <img 
-            style={{ display: !connected ? "none" : txState !== txStatus.PENDING ? "block" : "none"}}
+          <img
+            style={{ display: !connected ? "none" : txState !== txStatus.PENDING ? "block" : "none" }}
             src={
-              txWaiting === undefined ? 
+              txWaiting === undefined ?
                 Idle
                 : txState === txStatus.FAIL ?
                   Fail
@@ -88,10 +85,10 @@ const Wallet = (props: any) => {
                     Confirm
                     :
                     Idle
-            } 
-            alt="status" 
+            }
+            alt="status"
             className="navigation__status" />
-          <div className="loader" style={{ display: txState === txStatus.PENDING ? "block" : "none"}} />
+          <div className="loader" style={{ display: txState === txStatus.PENDING ? "block" : "none" }} />
           <div>
             {connected && (
               <p className="navigation__wallet__mainnet">
@@ -99,12 +96,12 @@ const Wallet = (props: any) => {
               </p>
             )}
             <p className={`navigation__wallet__status${connected ? "--connected" : ""}`}>
-              {!connected ? t("navigation.connect_wallet") : 
+              {!connected ? t("navigation.connect_wallet") :
                 txState === txStatus.PENDING ?
                   "Pending..."
-                  : txState === txStatus.FAIL ? 
+                  : txState === txStatus.FAIL ?
                     "FAILED!"
-                    : txState === txStatus.CONFIRM ? 
+                    : txState === txStatus.CONFIRM ?
                       "Confirmed!!"
                       :
                       `${account?.slice(0, 6)}....${account?.slice(-4)}`

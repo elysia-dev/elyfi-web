@@ -19,7 +19,7 @@ const WithdrawBody: React.FunctionComponent<{
   const { t } = useTranslation();
 
   return (
-      <>
+    <>
       <div className="modal__withdraw">
         <div className="modal__withdraw__value-wrapper">
           <p className="modal__withdraw__maximum bold" onClick={() => {
@@ -78,7 +78,6 @@ const WithdrawBody: React.FunctionComponent<{
             </div>
           </div>
         </div>
-        
       </div>
       <div
         className={`modal__button${amountGtBalance || amountLteZero ? "--disable" : ""}`}

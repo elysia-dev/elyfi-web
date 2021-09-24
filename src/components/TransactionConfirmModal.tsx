@@ -7,8 +7,8 @@ const TransactionConfirmModal: React.FunctionComponent<{
   visible: boolean,
   closeHandler: () => void
 }> = ({ visible, closeHandler }) => {
-  const { t, i18n } = useTranslation();
-  
+  const { t } = useTranslation();
+
   const [Time, setTime] = useState(0)
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const TransactionConfirmModal: React.FunctionComponent<{
   }, [visible])
 
   useEffect(() => {
-    setTimeout(function() {
+    setTimeout(function () {
       closeHandler();
     }, Time);
   }, [visible])
@@ -43,7 +43,7 @@ const TransactionConfirmModal: React.FunctionComponent<{
               {t("transaction.confirm")}
             </p>
             <p>
-              {t("transaction.nth_close", { nth : Math.floor(Time / 1000) })}
+              {t("transaction.nth_close", { nth: Math.floor(Time / 1000) })}
             </p>
           </div>
         </div>

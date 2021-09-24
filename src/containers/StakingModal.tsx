@@ -14,9 +14,7 @@ import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import useStakingPool from 'src/hooks/useStakingPool';
 import useERC20Info from 'src/hooks/useERC20Info';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
-import ReactGA from "react-ga";
 import useTxTracking from 'src/hooks/useTxTracking';
-import { textSpanOverlapsWith } from 'typescript';
 import txStatus from 'src/enums/txStatus';
 import TxContext from 'src/contexts/TxContext';
 
@@ -165,17 +163,17 @@ const StakingModal: React.FunctionComponent<{
                       stakingPool
                         .withdraw(
                           amount.max ? constants.MaxUint256 : utils.parseEther(amount.value),
-                          ((round >= 3 && stakedToken === Token.ELFI) ? round-2 : round).toString()
+                          ((round >= 3 && stakedToken === Token.ELFI) ? round - 2 : round).toString()
                         ).then((tx) => {
                           setTransaction(tx, tracker, () => {
                             closeHandler()
                             transactionModal()
                             window.localStorage.setItem("@txTracking", stakedToken + "StakingWithdraw");
-                          }, 
-                          () => {
-                            refetch()
-                            afterTx()
-                          })
+                          },
+                            () => {
+                              refetch()
+                              afterTx()
+                            })
                         }).catch((e) => {
                           failTransaction(tracker, closeHandler, e);
                         })
@@ -212,11 +210,11 @@ const StakingModal: React.FunctionComponent<{
                             closeHandler()
                             transactionModal()
                             window.localStorage.setItem("@txTracking", stakedToken + "Stake");
-                          }, 
-                          () => {
-                            refetch()
-                            afterTx()
-                          })
+                          },
+                            () => {
+                              refetch()
+                              afterTx()
+                            })
                         }).catch((e) => {
                           failTransaction(tracker, closeHandler, e);
                         })
@@ -244,11 +242,11 @@ const StakingModal: React.FunctionComponent<{
                           setTransaction(tx, tracker, () => {
                             closeHandler()
                             transactionModal()
-                          }, 
-                          () => {
-                            refetch()
-                            afterTx()
-                          })
+                          },
+                            () => {
+                              refetch()
+                              afterTx()
+                            })
                         }).catch((e) => {
                           failTransaction(tracker, closeHandler, e);
                         })

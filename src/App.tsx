@@ -34,7 +34,7 @@ const App: React.FC = () => {
       <PriceProvider>
         <LanguageProvider>
           <Web3ReactProvider getLibrary={getLibrary}>
-            <ReservesProvider> 
+            <ReservesProvider>
               <TxProvider>
                 <Router>
                   <AppNavigator />

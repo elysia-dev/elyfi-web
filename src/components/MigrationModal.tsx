@@ -230,46 +230,45 @@ const MigrationModal: React.FunctionComponent<{
                 </p>
               </div>
             </div>
-            
           </div>
         }
         <div
-              className={`modal__button${stakedBalance.isZero() || amountGtStakedBalance || migrationAmountGtStakedBalance ? "--disable" : ""}`}
-              onClick={() => {
-                if (stakedBalance.isZero() || !account || amountGtStakedBalance || migrationAmountGtStakedBalance) return
+          className={`modal__button${stakedBalance.isZero() || amountGtStakedBalance || migrationAmountGtStakedBalance ? "--disable" : ""}`}
+          onClick={() => {
+            if (stakedBalance.isZero() || !account || amountGtStakedBalance || migrationAmountGtStakedBalance) return
 
-                const tracker = initTxTracker(
-                  'MigrationModal',
-                  'Migrate',
-                  `${state.migrationAmount} ${formatEther(stakedBalance)} ${stakedToken} ${round}round`
-                );
+            const tracker = initTxTracker(
+              'MigrationModal',
+              'Migrate',
+              `${state.migrationAmount} ${formatEther(stakedBalance)} ${stakedToken} ${round}round`
+            );
 
-                tracker.clicked();
+            tracker.clicked();
 
-                stakingPool
-                  .migrate(
-                    state.migrationMax ? stakedBalance :
-                      state.withdrawMax ? constants.Zero :
-                        utils.parseEther(state.migrationAmount),
-                  ((round >= 3 && stakedToken === Token.ELFI) ? round-2 : round).toString()
-                  ).then((tx) => {
-                    setTransaction(tx, tracker, () => {
-                      transactionModal();
-                      closeHandler();
-                      window.localStorage.setItem("@txTracking", stakedToken + "Migration");
-                    }, 
-                    () => {
-                      afterTx();
-                    })
-                  }).catch((e) => {
-                    failTransaction(tracker, closeHandler, e)
+            stakingPool
+              .migrate(
+                state.migrationMax ? stakedBalance :
+                  state.withdrawMax ? constants.Zero :
+                    utils.parseEther(state.migrationAmount),
+                ((round >= 3 && stakedToken === Token.ELFI) ? round - 2 : round).toString()
+              ).then((tx) => {
+                setTransaction(tx, tracker, () => {
+                  transactionModal();
+                  closeHandler();
+                  window.localStorage.setItem("@txTracking", stakedToken + "Migration");
+                },
+                  () => {
+                    afterTx();
                   })
-              }}
-            >
-              <p>
-                {amountGtStakedBalance ? t("staking.insufficient_balance") : t("staking.transfer")}
-              </p>
-            </div>
+              }).catch((e) => {
+                failTransaction(tracker, closeHandler, e)
+              })
+          }}
+        >
+          <p>
+            {amountGtStakedBalance ? t("staking.insufficient_balance") : t("staking.transfer")}
+          </p>
+        </div>
       </div>
     </div>
   )

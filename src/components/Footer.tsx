@@ -1,4 +1,3 @@
-
 import WhiteLogo from 'src/assets/images/White-logo.png';
 import LanguageConverter from './LanguageConverter';
 import FooterBackgroundImg from 'src/assets/images/footer.png';

@@ -1,4 +1,3 @@
-
 import ServiceBackground from 'src/assets/images/service-background.png'
 import { FunctionComponent } from 'react';
 

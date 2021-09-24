@@ -21,7 +21,7 @@ const DepositBody: React.FunctionComponent<{
 
   return (
     <>
-        <div className="modal__deposit">
+      <div className="modal__deposit">
         <div className="modal__deposit__value-wrapper">
           <p className="modal__deposit__maximum bold" onClick={() => {
             setAmount((Math.floor(parseFloat(utils.formatEther(balance)) * 100000000) / 100000000).toFixed(8).toString())
@@ -78,7 +78,7 @@ const DepositBody: React.FunctionComponent<{
             </div>
           </div>
         </div>
-        
+
       </div>
       {
         isApproved ?
