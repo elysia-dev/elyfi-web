@@ -15,7 +15,6 @@ import ClaimStakingRewardModal from 'src/components/ClaimStakingRewardModal';
 import StakingModal from 'src/containers/StakingModal';
 import Token from 'src/enums/Token';
 import { useTranslation } from 'react-i18next';
-import calcExpectedReward from 'src/core/utils/calcExpectedReward';
 import RoundData from 'src/core/types/RoundData';
 import CountUp from 'react-countup';
 import { formatEther } from 'ethers/lib/utils';
@@ -26,11 +25,14 @@ import useStakingPool from 'src/hooks/useStakingPool';
 import ReactGA from "react-ga";
 import txStatus from 'src/enums/txStatus';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
+import calcExpectedReward from 'src/core/utils/calcExpectedReward';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI,
   rewardToken: Token.ELFI | Token.DAI,
 }
+
+const v2Threshold = 2;
 
 const Staking: React.FunctionComponent<IProps> = ({
   stakedToken,
@@ -41,11 +43,8 @@ const Staking: React.FunctionComponent<IProps> = ({
   const { account } = useWeb3React();
   const { elPrice, elfiPrice } = useContext(PriceContext);
 
-  const V2ChangeRound = 2;
-
-  const stakingPool = useStakingPool(stakedToken, 0);
-
-  const V2StakingPool = useStakingPool(Token.ELFI, V2ChangeRound + 1)
+  const stakingPool = useStakingPool(stakedToken);
+  const stakingPoolV2 = useStakingPool(Token.ELFI, true)
 
   const currentPhase = useMemo(() => {
     return stakingRoundTimes.filter((round) =>
@@ -70,47 +69,35 @@ const Staking: React.FunctionComponent<IProps> = ({
   const [modalValue, setModalValue] = useState(constants.Zero);
   const [migrationRewardValue, setMigrationRewardValue] = useState(constants.Zero);
 
-  const initialRound: RoundData = {
-    loading: true,
-    error: '',
-    accountReward: constants.Zero,
-    accountPrincipal: constants.Zero,
-    totalPrincipal: constants.Zero,
-    apr: constants.Zero,
-    loadedAt: moment(),
-    startedAt: stakingRoundTimes[0].startedAt,
-    endedAt: stakingRoundTimes[0].endedAt,
-  }
-
-  const [roundDatas, setRoundDatas] = useState<RoundData[]>([
-    {
-      id: 1,
-      ...initialRound
-    }, {
-      id: 2,
-      ...initialRound
-    }, {
-      id: 3,
-      ...initialRound
-    }, {
-      id: 4,
-      ...initialRound
-    },
-  ])
+  const [roundData, setroundData] = useState<RoundData[]>([]);
+  const currentRound = useMemo(() => {
+    return roundData[currentPhase - 1]
+  }, [currentPhase, roundData]);
 
   const [loading, setLoading] = useState(true);
-  const [getError, setError] = useState(false)
-
+  const [error, setError] = useState(false)
 
   const [expectedReward, setExpectedReward] = useState({ before: constants.Zero, value: constants.Zero });
 
-  const getRoundDataPromise = (round: number, poolData: any, userData: any, accountReward: any) => {
-    return new Promise<RoundData>((resolve, reject) => {
-      setTimeout(() => {
-        resolve(
-          {
-            ...roundDatas[round],
-            loading: false,
+  const fetchroundData = async (account: string) => {
+    try {
+      const data = await Promise.all(
+        stakingRoundTimes.map(async (_item, round) => {
+          let poolData, userData, accountReward;
+
+          if (round >= v2Threshold && stakedToken === Token.ELFI) {
+            const modifiedRound = (round + 1 - v2Threshold).toString();
+            poolData = await stakingPoolV2.getPoolData(modifiedRound);
+            userData = await stakingPoolV2.getUserData(modifiedRound, account);
+            accountReward = await stakingPoolV2.getUserReward(account, modifiedRound);
+          } else {
+            const modifiedRound = (round + 1).toString()
+            poolData = await stakingPool.getPoolData(modifiedRound);
+            userData = await stakingPool.getUserData(modifiedRound, account);
+            accountReward = await stakingPool.getUserReward(account, modifiedRound);
+          }
+
+          return {
             accountReward: accountReward,
             totalPrincipal: poolData.totalPrincipal,
             accountPrincipal: userData.userPrincipal,
@@ -123,37 +110,12 @@ const Staking: React.FunctionComponent<IProps> = ({
             loadedAt: moment(),
             startedAt: stakingRoundTimes[round].startedAt,
             endedAt: stakingRoundTimes[round].endedAt,
-          }
-        );
-      }, 1000);
-    });
-  };
+          } as RoundData
+        })
+      )
 
-  const fetchRoundDatas = async (account: string, round: number) => {
-    try {
-      let poolData, userData, accountReward;
-
-      if (round >= V2ChangeRound && stakedToken === Token.ELFI) {
-        poolData = await V2StakingPool.getPoolData((round + 1 - V2ChangeRound).toString());
-        userData = await V2StakingPool.getUserData((round + 1 - V2ChangeRound).toString(), account);
-        accountReward = await V2StakingPool.getUserReward(account, (round + 1).toString());
-      } else {
-        poolData = await stakingPool.getPoolData((round + 1).toString());
-        userData = await stakingPool.getUserData((round + 1).toString(), account);
-        accountReward = await stakingPool.getUserReward(account, (round + 1).toString());
-      }
-
-      const datas = await getRoundDataPromise(round, poolData, userData, accountReward)
-
-      let items = roundDatas;
-      let item = { ...roundDatas[round] };
-      item = { id: round + 1, ...datas };
-      items[round] = item;
-
-      setRoundDatas(items);
-
-      round + 1 === stakingRoundTimes.length && (setLoading(false))
-
+      setroundData(data);
+      setLoading(false);
     } catch (e) {
       console.log(e)
       setLoading(true)
@@ -163,21 +125,21 @@ const Staking: React.FunctionComponent<IProps> = ({
 
   useEffect(() => {
     if (account) {
-      Array(stakingRoundTimes.length).fill(0).map((_x, index) => {
-        fetchRoundDatas(account, index);
-      })
+      fetchroundData(account);
     }
-  }, [account, stakingPool, V2StakingPool])
+  }, [account])
 
   useEffect(() => {
-    if (getError || loading) return;
+    if (error || loading) return;
 
     const interval = setInterval(
       () => {
+        if (!currentRound) return;
+
         setExpectedReward({
-          before: expectedReward.value.isZero() ? roundDatas[currentPhase - 1].accountReward : expectedReward.value,
+          before: expectedReward.value.isZero() ? currentRound.accountReward : expectedReward.value,
           value: calcExpectedReward(
-            roundDatas[currentPhase - 1],
+            currentRound,
             rewardToken === Token.ELFI ?
               ELFIPerDayOnELStakingPool :
               DAIPerDayOnELFIStakingPool,
@@ -216,7 +178,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           balance={currentPhase === selectModalRound + 1 ? expectedReward.value : modalValue}
           round={selectModalRound + 1}
           closeHandler={() => setClaimStakingRewardModalVisible(false)}
-          afterTx={() => { account && fetchRoundDatas(account, selectModalRound) }}
+          afterTx={() => { account && fetchroundData(account) }}
           transactionModal={() => setTransactionModal(true)}
         />
         <StakingModal
@@ -227,7 +189,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           stakedToken={stakedToken}
           stakedBalance={loading ? constants.Zero : modalValue}
           round={selectModalRound + 1}
-          afterTx={() => { account && fetchRoundDatas(account, selectModalRound) }}
+          afterTx={() => { account && fetchroundData(account) }}
           endedModal={() => {
             setStakingEndedVisible(true)
           }}
@@ -243,7 +205,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           stakedBalance={loading ? constants.Zero : modalValue}
           rewardBalance={migrationRewardValue}
           round={selectModalRound + 1}
-          afterTx={() => { account && fetchRoundDatas(account, selectModalRound) }}
+          afterTx={() => { account && fetchroundData(account) }}
           transactionModal={() => setTransactionModal(true)}
         />
         <StakingEnded
@@ -317,17 +279,13 @@ const Staking: React.FunctionComponent<IProps> = ({
                             APR
                           </p>
                           <p className="spoqa__bold">
-                            {
-                              loading ?
-                                <Skeleton width={100} height={40} /> :
-                                <span className="spoqa__bold">
-                                  {
-                                    current.diff(stakingRoundTimes[currentPhase - 1].startedAt) <= 0
-                                      || roundDatas[currentPhase - 1].apr.eq(constants.MaxUint256)
-                                      || current.diff(stakingRoundTimes[currentPhase - 1].endedAt) >= 0 ? '-' : toPercentWithoutSign(roundDatas[currentPhase - 1].apr)
-                                  }
-                                </span>
-                            }
+                            <span className="spoqa__bold">
+                              {
+                                current.diff(stakingRoundTimes[currentPhase - 1].startedAt) <= 0
+                                  || currentRound?.apr.eq(constants.MaxUint256)
+                                  || current.diff(stakingRoundTimes[currentPhase - 1].endedAt) >= 0 ? '-' : toPercentWithoutSign(currentRound?.apr || '0')
+                              }
+                            </span>
                             <span className="spoqa__bold staking__sign">&nbsp;%</span>
                           </p>
                         </div>
@@ -338,8 +296,8 @@ const Staking: React.FunctionComponent<IProps> = ({
 
                 <div className="staking__round__previous__wrapper">
                   {
-                    roundDatas.map((data, index) => {
-                      if (current.diff(data.endedAt) > 0) {
+                    roundData.map((item, index) => {
+                      if (current.diff(item.endedAt) > 0) {
                         return (
                           <div className="staking__round__previous">
                             <div>
@@ -357,75 +315,76 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   <p className="spoqa__bold">
                                     {t("staking.staking_amount")}
                                   </p>
-                                  {
-                                    loading ?
-                                      <Skeleton width={100} height={40} /> :
-                                      <p className="spoqa__bold">
-                                        {`${formatCommaSmall(roundDatas[index].accountPrincipal) || '-'}`}
-                                        <span className="spoqa__bold">&nbsp;{stakedToken}</span>
-                                      </p>
-                                  }
+                                  <p className="spoqa__bold">
+                                    {`${formatCommaSmall(item.accountPrincipal) || '-'}`}
+                                    <span className="spoqa__bold">&nbsp;{stakedToken}</span>
+                                  </p>
                                 </div>
                                 <div>
                                   <p className="spoqa__bold">
                                     {t("staking.reward_amount")}
                                   </p>
-                                  {
-                                    loading ? <Skeleton width={100} height={40} /> :
-                                      <p className="spoqa__bold">
-                                        {expectedReward.before.isZero() ? "-" :
-                                          !(current.diff(stakingRoundTimes[currentPhase - 1].startedAt) < 0 && current.diff(stakingRoundTimes[currentPhase - 1].endedAt) > 0) ? "-" :
-                                            <span className="spoqa__bold">
-                                              {roundDatas[index].accountReward}
-                                            </span>
-                                        }
+                                  <p className="spoqa__bold">
+                                    {expectedReward.before.isZero() ? "-" :
+                                      !(current.diff(stakingRoundTimes[currentPhase - 1].startedAt) < 0 && current.diff(stakingRoundTimes[currentPhase - 1].endedAt) > 0) ? "-" :
                                         <span className="spoqa__bold">
-                                          &nbsp;{rewardToken}
+                                          {item.accountReward}
                                         </span>
-                                      </p>
-                                  }
+                                    }
+                                    <span className="spoqa__bold">
+                                      &nbsp;{rewardToken}
+                                    </span>
+                                  </p>
                                 </div>
                               </div>
                             </div>
 
                             <div className="staking__round__previous__button">
-                              {
-                                loading ? <Skeleton width={100} height={40} /> :
-                                  <div
-                                    className={roundDatas[index].accountPrincipal.isZero() ? "button--disable" : ``}
-                                    onClick={(e) => {
-                                      if (roundDatas[index].accountPrincipal.isZero()) {
-                                        return;
-                                      }
-                                      if (stakedToken !== Token.ELFI && !roundDatas[index].accountPrincipal.isZero() && current.diff(stakingRoundTimes[currentPhase - 1].startedAt) > 0) {
-                                        ReactGA.modalview(`${stakedToken}Migration`)
-                                        setRoundModal(currentPhase - 1);
-                                        setModalValue(roundDatas[index].accountPrincipal)
-                                        setMigrationRewardValue(expectedReward.value)
-                                        return setMigrationModalVisible(true)
-                                      }
-                                      if (current.diff(stakingRoundTimes[index].startedAt) > 0) {
-                                        ReactGA.modalview(`${stakedToken}Staking`)
-                                        setRoundModal(index);
-                                        setModalValue(roundDatas[index].accountPrincipal)
-                                        setStakingModalVisible(true)
-                                      }
-                                    }}
-                                  >
-                                    <p>
-                                      {
-                                        stakedToken !== Token.ELFI && !roundDatas[index].accountPrincipal.isZero() && current.diff(stakingRoundTimes[currentPhase - 1].startedAt) > 0 ?
-                                          t("staking.unstaking_migration")
-                                          :
-                                          t("staking.staking_btn")
-                                      }
-                                    </p>
-                                  </div>
-                              }
                               <div
-                                className={roundDatas[index].accountReward.isZero() ? "button--disable" : ""}
+                                className={item.accountPrincipal.isZero() ? "button--disable" : ``}
                                 onClick={(e) => {
-                                  if (roundDatas[index].accountReward.isZero()) {
+                                  if (item.accountPrincipal.isZero()) {
+                                    return;
+                                  }
+
+                                  // ELFI X && 3 라운드 시작 => 마이그레이션
+                                  if (
+                                    stakedToken !== Token.ELFI &&
+                                    (
+                                      current.diff(stakingRoundTimes[2].startedAt) > 0
+                                      && current.diff(stakingRoundTimes[2].endedAt) < 0
+                                    )
+                                  ) {
+                                    ReactGA.modalview(`${stakedToken}Migration`)
+                                    setRoundModal(index);
+                                    setModalValue(item.accountPrincipal)
+                                    setMigrationRewardValue(expectedReward.value)
+                                    return setMigrationModalVisible(true)
+                                  }
+                                  if (current.diff(stakingRoundTimes[index].startedAt) > 0) {
+                                    ReactGA.modalview(`${stakedToken}Staking`)
+                                    setRoundModal(index);
+                                    setModalValue(item.accountPrincipal)
+                                    setStakingModalVisible(true)
+                                  }
+                                }}
+                              >
+                                <p>
+                                  {
+                                    stakedToken !== Token.ELFI &&
+                                      (
+                                        current.diff(stakingRoundTimes[2].startedAt) > 0
+                                        && current.diff(stakingRoundTimes[2].endedAt) < 0
+                                      ) ?
+                                      t("staking.unstaking_migration") :
+                                      t("staking.staking_btn")
+                                  }
+                                </p>
+                              </div>
+                              <div
+                                className={item.accountReward.isZero() ? "button--disable" : ""}
+                                onClick={(e) => {
+                                  if (item.accountReward.isZero()) {
                                     return;
                                   }
                                   ReactGA.modalview(`${stakedToken}StakingReward`)
@@ -433,7 +392,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   current.diff(stakingRoundTimes[index].startedAt) > 0
                                     &&
                                     setRoundModal(index);
-                                  setModalValue(roundDatas[index].accountReward)
+                                  setModalValue(item.accountReward)
                                   setClaimStakingRewardModalVisible(true)
                                 }}
                               >
@@ -467,9 +426,9 @@ const Staking: React.FunctionComponent<IProps> = ({
                       </p>
                       <p className="spoqa__bold">
                         {
-                          current.diff(stakingRoundTimes[currentPhase - 1].startedAt) <= 0
-                            || roundDatas[currentPhase - 1].apr.eq(constants.MaxUint256)
-                            || current.diff(stakingRoundTimes[currentPhase - 1].endedAt) >= 0 ? '-' : toPercentWithoutSign(roundDatas[currentPhase - 1].apr)
+                          current.diff(stakingRoundTimes[2].startedAt) <= 0
+                            || roundData[2]?.apr.eq(constants.MaxUint256)
+                            || current.diff(stakingRoundTimes[2].endedAt) >= 0 ? '-' : toPercentWithoutSign(roundData[2].apr || 0)
                         }<span className="spoqa__bold staking__sign">&nbsp;%</span>
                       </p>
                     </div>
@@ -481,34 +440,46 @@ const Staking: React.FunctionComponent<IProps> = ({
                       </p>
                       <div>
                         <h2>
-                          {`${current.diff(stakingRoundTimes[currentPhase - 1].startedAt) > 0 ? formatCommaSmall(roundDatas[currentPhase - 1].accountPrincipal) : '-'}`}
+                          {`${current.diff(stakingRoundTimes[2].startedAt) > 0 ? formatCommaSmall(roundData[2]?.accountPrincipal || '0') : '-'}`}
                           <span className="spoqa__bold">
                             {stakedToken}
                           </span>
                         </h2>
                         <div
-                          className={`staking__button ${current.diff(stakingRoundTimes[currentPhase - 1].endedAt) > 0 ? "disable" : ""}`}
+                          className={`staking__button ${current.diff(stakingRoundTimes[2].startedAt) <= 0 ? "disable" : ""}`}
                           onClick={(e) => {
-                            if (current.diff(stakingRoundTimes[currentPhase - 1].startedAt) < 0 || current.diff(stakingRoundTimes[currentPhase - 1].endedAt) > 0) {
+                            if (current.diff(stakingRoundTimes[2].startedAt) < 0 || current.diff(stakingRoundTimes[2].endedAt) > 0) {
                               return;
                             }
-                            if (stakedToken !== Token.ELFI && current.diff(stakingRoundTimes[currentPhase > 3 ? 3 : currentPhase].startedAt) > 0) {
+                            // 3차 버튼
+                            // ELFI가 아니면서 && 4차 -> 마이그레이션
+                            if (
+                              stakedToken !== Token.ELFI &&
+                              (
+                                current.diff(stakingRoundTimes[3].startedAt) > 0
+                                && current.diff(stakingRoundTimes[3].endedAt) < 0
+                              )
+                            ) {
                               ReactGA.modalview(`${stakedToken}Migration`)
-                              setRoundModal(currentPhase - 1);
-                              setModalValue(roundDatas[currentPhase - 1].accountPrincipal)
+                              setRoundModal(2);
+                              setModalValue(currentRound?.accountPrincipal)
                               setMigrationRewardValue(expectedReward.value)
                               return setMigrationModalVisible(true)
                             } else {
                               ReactGA.modalview(`${stakedToken}Staking`)
-                              setRoundModal(currentPhase - 1);
-                              setModalValue(roundDatas[currentPhase - 1].accountPrincipal)
+                              setRoundModal(2);
+                              setModalValue(currentRound.accountPrincipal)
                               setStakingModalVisible(true)
                             }
                           }}
                         >
                           <p>
                             {
-                              stakedToken !== Token.ELFI && current.diff(stakingRoundTimes[currentPhase > 3 ? 3 : currentPhase].startedAt) > 0 ?
+                              stakedToken !== Token.ELFI &&
+                                (
+                                  current.diff(stakingRoundTimes[3].startedAt) > 0
+                                  && current.diff(stakingRoundTimes[3].endedAt) < 0
+                                ) ?
                                 t("staking.unstaking_migration")
                                 :
                                 t("staking.staking_btn")
@@ -534,7 +505,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                               end={
                                 parseFloat(formatEther(
                                   expectedReward.before.isZero() ?
-                                    roundDatas[currentPhase - 1].accountReward :
+                                    currentRound.accountReward :
                                     expectedReward.value
                                 ))
                               }
@@ -557,9 +528,9 @@ const Staking: React.FunctionComponent<IProps> = ({
                             }
                             ReactGA.modalview(`${stakedToken}StakingReward`)
 
-                            current.diff(stakingRoundTimes[currentPhase - 1].startedAt) > 0
+                            current.diff(stakingRoundTimes[2].startedAt) > 0
                               &&
-                              setRoundModal(currentPhase - 1);
+                              setRoundModal(2);
                             setModalValue(expectedReward.value)
                             setClaimStakingRewardModalVisible(true)
                           }}

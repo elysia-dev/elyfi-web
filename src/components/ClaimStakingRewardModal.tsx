@@ -23,14 +23,11 @@ const ClaimStakingRewardModal: FunctionComponent<{
   transactionModal: () => void
 }> = ({ visible, stakedToken, token, balance, round, closeHandler, afterTx, transactionModal }) => {
   const { account } = useWeb3React()
-  const stakingPool = useStakingPool(stakedToken, round);
+  const stakingPool = useStakingPool(stakedToken, round >= 3);
   const { waiting } = useWatingTx();
   const { t } = useTranslation();
   const initTxTracker = useTxTracking();
   const { setTransaction, failTransaction } = useContext(TxContext);
-
-
-  if (round >= 3 && stakedToken === Token.ELFI) round = round - 2;
 
   return (
     <div className="modal modal--deposit" style={{ display: visible ? "block" : "none" }}>
@@ -78,7 +75,9 @@ const ClaimStakingRewardModal: FunctionComponent<{
 
                   tracker.clicked();
 
-                  stakingPool.claim(round.toString()).then((tx) => {
+                  // TRICKY
+                  // ELFI V2 StakingPool need round - 2 value
+                  stakingPool.claim((round >= 3 && stakedToken === Token.ELFI ? round - 2 : round).toString()).then((tx) => {
                     setTransaction(tx, tracker, () => {
                       transactionModal();
                       closeHandler();

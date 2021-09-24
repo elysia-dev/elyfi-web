@@ -36,6 +36,7 @@ const StakingModal: React.FunctionComponent<{
   const [amount, setAmount] = useState({ value: "", max: false });
   const current = moment();
   const { setTransaction, failTransaction } = useContext(TxContext);
+  const stakingPool = useStakingPool(stakedToken, round >= 3);
   const {
     allowance,
     balance,
@@ -44,15 +45,13 @@ const StakingModal: React.FunctionComponent<{
     contract,
   } = useERC20Info(
     stakedToken === Token.EL ? envs.elAddress : envs.governanceAddress,
-    stakedToken === Token.EL ? envs.elStakingPoolAddress : envs.elfyStakingPoolAddress,
+    stakingPool.address,
   );
-  const stakingPool = useStakingPool(stakedToken, round);
   const { waiting, wait } = useWatingTx();
   const amountLteZero = !amount || utils.parseEther(amount.value || '0').isZero();
   const amountGtBalance = utils.parseEther(amount.value || '0').gt(balance);
   const amountGtStakedBalance = utils.parseEther(amount.value || '0').gt(stakedBalance);
   const initTxTracker = useTxTracking();
-
 
   useEffect(() => {
     setAmount({
@@ -236,7 +235,7 @@ const StakingModal: React.FunctionComponent<{
                         tracker.clicked();
 
                         contract.approve(
-                          stakedToken === Token.EL ? envs.elStakingPoolAddress : envs.elfyStakingPoolAddress,
+                          stakingPool.address,
                           constants.MaxUint256,
                         ).then((tx) => {
                           setTransaction(tx, tracker, () => {

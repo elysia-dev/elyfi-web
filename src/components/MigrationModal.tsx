@@ -40,7 +40,7 @@ const MigrationModal: React.FunctionComponent<{
     migrationMax: false
   });
   const [mouseHover, setMouseHover] = useState(false);
-  const stakingPool = useStakingPool(stakedToken, round);
+  const stakingPool = useStakingPool(stakedToken, round >= 3);
   const { waiting, wait } = useWaitingTx();
   const initTxTracker = useTxTracking();
   const { setTransaction, failTransaction } = useContext(TxContext);
@@ -245,6 +245,8 @@ const MigrationModal: React.FunctionComponent<{
 
             tracker.clicked();
 
+            // TRICKY
+            // ELFI V2 StakingPool need round - 2 value
             stakingPool
               .migrate(
                 state.migrationMax ? stakedBalance :

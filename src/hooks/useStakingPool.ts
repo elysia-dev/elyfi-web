@@ -3,16 +3,16 @@ import { useMemo } from "react";
 import { StakingPool__factory } from "@elysia-dev/contract-typechain";
 import envs from "src/core/envs";
 
-const useStakingPool = (staked: 'EL' | 'ELFI', round: number) => {
+const useStakingPool = (staked: 'EL' | 'ELFI', v2?: boolean) => {
 	const { library } = useWeb3React();
 	const contract = useMemo(() => {
 		return StakingPool__factory.connect(
 			staked === 'EL' ?
 				envs.elStakingPoolAddress :
-				round >= 3 ? envs.elfyV2StakingPoolAddress : envs.elfyStakingPoolAddress,
+				v2 ? envs.elfyV2StakingPoolAddress : envs.elfyStakingPoolAddress,
 			library.getSigner()
 		)
-	}, [library, staked])
+	}, [library, staked, v2])
 
 	return contract;
 }
