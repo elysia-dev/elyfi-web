@@ -180,7 +180,8 @@
       "all_ended_alert": "현재 모든 회차의 스테이킹 기간이 종료되어 마이그레이션이 불가능합니다.",
       "current_round": "현재 진행중인 회차",
       "staking_amount": "스테이킹 수량",
-      "reward_amount": "보상 수량"
+      "reward_amount": "보상 수량",
+      "current_round_null": "현재 진행중인 회차가 없습니다."
     },
     "mobile": {
       "title": "COMING SOON!",

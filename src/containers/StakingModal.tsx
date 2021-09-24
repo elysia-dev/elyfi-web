@@ -48,12 +48,13 @@ const StakingModal: React.FunctionComponent<{
     stakedToken === Token.EL ? envs.elAddress : envs.governanceAddress,
     stakedToken === Token.EL ? envs.elStakingPoolAddress : envs.elfyStakingPoolAddress,
   );
-  const stakingPool = useStakingPool(stakedToken);
+  const stakingPool = useStakingPool(stakedToken, round);
   const { waiting, wait } = useWatingTx();
   const amountLteZero = !amount || utils.parseEther(amount.value || '0').isZero();
   const amountGtBalance = utils.parseEther(amount.value || '0').gt(balance);
   const amountGtStakedBalance = utils.parseEther(amount.value || '0').gt(stakedBalance);
   const initTxTracker = useTxTracking();
+
 
   useEffect(() => {
     setAmount({
@@ -164,7 +165,7 @@ const StakingModal: React.FunctionComponent<{
                       stakingPool
                         .withdraw(
                           amount.max ? constants.MaxUint256 : utils.parseEther(amount.value),
-                          round.toString()
+                          ((round >= 3 && stakedToken === Token.ELFI) ? round-2 : round).toString()
                         ).then((tx) => {
                           setTransaction(tx, tracker, () => {
                             closeHandler()

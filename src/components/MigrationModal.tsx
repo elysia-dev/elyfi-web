@@ -40,7 +40,7 @@ const MigrationModal: React.FunctionComponent<{
     migrationMax: false
   });
   const [mouseHover, setMouseHover] = useState(false);
-  const stakingPool = useStakingPool(stakedToken)
+  const stakingPool = useStakingPool(stakedToken, round);
   const { waiting, wait } = useWaitingTx();
   const initTxTracker = useTxTracking();
   const { setTransaction, failTransaction } = useContext(TxContext);
@@ -251,7 +251,7 @@ const MigrationModal: React.FunctionComponent<{
                     state.migrationMax ? stakedBalance :
                       state.withdrawMax ? constants.Zero :
                         utils.parseEther(state.migrationAmount),
-                    round.toString()
+                  ((round >= 3 && stakedToken === Token.ELFI) ? round-2 : round).toString()
                   ).then((tx) => {
                     setTransaction(tx, tracker, () => {
                       transactionModal();

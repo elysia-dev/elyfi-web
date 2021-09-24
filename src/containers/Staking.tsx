@@ -29,6 +29,7 @@ import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import ReactGA from "react-ga";
 import txStatus from 'src/enums/txStatus';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
+import { StakingPool } from '@elysia-dev/contract-typechain';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI,
@@ -47,7 +48,11 @@ const Staking: React.FunctionComponent<IProps> = ({
   const { account } = useWeb3React();
   const { elPrice, elfiPrice } = useContext(PriceContext);
 
-  const stakingPool = useStakingPool(stakedToken);
+  const V2ChangeRound = 2;
+
+  const stakingPool = useStakingPool(stakedToken, 0);
+
+  const V2StakingPool = useStakingPool(Token.ELFI, V2ChangeRound + 1)
 
   const currentPhase = useMemo(() => {
     return stakingRoundTimes.filter((round) =>
@@ -133,16 +138,25 @@ const Staking: React.FunctionComponent<IProps> = ({
 
   const fetchRoundDatas = async (account: string, round: number) => {
     try {
-      const poolData = await stakingPool.getPoolData((round + 1).toString());
-      const userData = await stakingPool.getUserData((round + 1).toString(), account);
-      const accountReward = await stakingPool.getUserReward(account, (round + 1).toString());
+      let poolData, userData, accountReward;
 
+      if (round >= V2ChangeRound && stakedToken === Token.ELFI) {
+        poolData = await V2StakingPool.getPoolData((round + 1 - V2ChangeRound).toString());
+        userData = await V2StakingPool.getUserData((round + 1 - V2ChangeRound).toString(), account);
+        accountReward = await V2StakingPool.getUserReward(account, (round + 1).toString());
+      } else {
+        poolData = await stakingPool.getPoolData((round + 1).toString());
+        userData = await stakingPool.getUserData((round + 1).toString(), account);
+        accountReward = await stakingPool.getUserReward(account, (round + 1).toString());
+      }
+      
       const datas = await getRoundDataPromise(round, poolData, userData, accountReward)
       
       let items = roundDatas;
       let item = {...roundDatas[round]};
       item = {id: round + 1, ...datas};
       items[round] = item;
+      
       setRoundDatas(items);
 
       round + 1 === stakingRoundTimes.length && (setLoading(false))
@@ -160,7 +174,7 @@ const Staking: React.FunctionComponent<IProps> = ({
         fetchRoundDatas(account, index);
       })
     }
-  }, [account, stakingPool])
+  }, [account, stakingPool, V2StakingPool])
 
   useEffect(() => {
     if (getError || loading) return;
@@ -207,8 +221,8 @@ const Staking: React.FunctionComponent<IProps> = ({
           visible={claimStakingRewardModalVisible}
           stakedToken={stakedToken}
           token={rewardToken}
-          balance={currentPhase === selectModalRound ? expectedReward.value : modalValue}
-          round={selectModalRound}
+          balance={currentPhase === selectModalRound + 1 ? expectedReward.value : modalValue}
+          round={selectModalRound + 1}
           closeHandler={() => setClaimStakingRewardModalVisible(false)}
           afterTx={() => { account && fetchRoundDatas(account, selectModalRound) }}
           transactionModal={() => setTransactionModal(true)}
@@ -220,7 +234,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           closeHandler={() => setStakingModalVisible(false)}
           stakedToken={stakedToken}
           stakedBalance={loading ? constants.Zero : modalValue}
-          round={selectModalRound}
+          round={selectModalRound + 1}
           afterTx={() => { account && fetchRoundDatas(account, selectModalRound) }}
           endedModal={() => {
             setStakingEndedVisible(true)
@@ -236,7 +250,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           rewardToken={rewardToken}
           stakedBalance={loading ? constants.Zero : modalValue}
           rewardBalance={migrationRewardValue}
-          round={selectModalRound}
+          round={selectModalRound + 1}
           afterTx={() => { account && fetchRoundDatas(account, selectModalRound) }}
           transactionModal={() => setTransactionModal(true)}
         />
@@ -248,7 +262,7 @@ const Staking: React.FunctionComponent<IProps> = ({
             setStakingEndedVisible(false)
             setState({ ...state, selectPhase: currentPhase })
           }}
-          round={state.selectPhase}
+          round={selectModalRound + 1}
         />
         <MigrationEnded
           visible={
@@ -258,7 +272,7 @@ const Staking: React.FunctionComponent<IProps> = ({
             setMigrationEndedVisible(false)
             setState({ ...state, selectPhase: currentPhase })
           }}
-          round={state.selectPhase}
+          round={selectModalRound + 1}
         />
         <Title label={t("staking.token_staking", { stakedToken: stakedToken })} />
         <div>
@@ -284,40 +298,50 @@ const Staking: React.FunctionComponent<IProps> = ({
           <div className="staking__round__container">
             <div>
               <div className="staking__round__current-data">
-                <div>
-                  <div>
-                    <p className="spoqa">
-                      {t("staking.current_round")} :
+                {
+                  current.diff(stakingRoundTimes[currentPhase - 1].endedAt) >= 0 ? (
+                    <p>
+                      {t("staking.current_round_null")}
                     </p>
-                    <p className="spoqa__bold">
-                      {t("staking.nth", { nth: currentPhase })}
-                    </p>
-                  </div>
-                  <p className="spoqa__bold">
-                    {stakingRoundTimes[currentPhase - 1].startedAt.format('YYYY.MM.DD HH:mm:ss')}
-                    &nbsp;~&nbsp;<br className="mobile-only" />
-                    {stakingRoundTimes[currentPhase - 1].endedAt.format('YYYY.MM.DD HH:mm:ss')} (KST)
-                  </p>
-                </div>
-                <div>
-                  <p className="spoqa">
-                    APR
-                  </p>
-                  <p className="spoqa__bold">
-                  {
-                    loading ?
-                      <Skeleton width={100} height={40} /> :
-                      <span className="spoqa__bold">
+                  ) : (
+                    <>
+                      <div>
+                        <div>
+                          <p className="spoqa">
+                            {t("staking.current_round")} :
+                          </p>
+                          <p className="spoqa__bold">
+                            {t("staking.nth", { nth: currentPhase })}
+                          </p>
+                        </div>
+                        <p className="spoqa__bold">
+                          {stakingRoundTimes[currentPhase - 1].startedAt.format('YYYY.MM.DD HH:mm:ss')}
+                          &nbsp;~&nbsp;<br className="mobile-only" />
+                          {stakingRoundTimes[currentPhase - 1].endedAt.format('YYYY.MM.DD HH:mm:ss')} (KST)
+                        </p>
+                      </div>
+                      <div>
+                        <p className="spoqa">
+                          APR
+                        </p>
+                        <p className="spoqa__bold">
                         {
-                          current.diff(stakingRoundTimes[currentPhase - 1].startedAt) <= 0
-                            || roundDatas[currentPhase -1].apr.eq(constants.MaxUint256)
-                            || current.diff(stakingRoundTimes[currentPhase - 1].endedAt) >= 0 ? '-' : toPercentWithoutSign(roundDatas[currentPhase -1].apr)
+                          loading ?
+                            <Skeleton width={100} height={40} /> :
+                            <span className="spoqa__bold">
+                              {
+                                current.diff(stakingRoundTimes[currentPhase - 1].startedAt) <= 0
+                                  || roundDatas[currentPhase -1].apr.eq(constants.MaxUint256)
+                                  || current.diff(stakingRoundTimes[currentPhase - 1].endedAt) >= 0 ? '-' : toPercentWithoutSign(roundDatas[currentPhase -1].apr)
+                              }
+                            </span>
                         }
-                      </span>
-                  }
-                    <span className="spoqa__bold staking__sign">&nbsp;%</span>
-                  </p>
-                </div>
+                          <span className="spoqa__bold staking__sign">&nbsp;%</span>
+                        </p>
+                      </div>
+                    </>
+                  )
+                }
               </div>
 
               <div className="staking__round__previous__wrapper">
@@ -345,7 +369,6 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   loading ?
                                     <Skeleton width={100} height={40} /> :
                                     <p className="spoqa__bold">
-                                      {/* {console.log(roundDatas[index].accountPrincipal)} */}
                                       {`${formatCommaSmall(roundDatas[index].accountPrincipal) || '-'}`}
                                       <span className="spoqa__bold">&nbsp;{stakedToken}</span>
                                     </p>
@@ -382,6 +405,13 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   if (roundDatas[index].accountPrincipal.isZero()) {
                                     return;
                                   }
+                                  if (stakedToken !== Token.ELFI && !roundDatas[index].accountPrincipal.isZero() && current.diff(stakingRoundTimes[currentPhase - 1].startedAt) > 0) {
+                                    ReactGA.modalview(`${stakedToken}Migration`)
+                                    setRoundModal(currentPhase - 1);
+                                    setModalValue(roundDatas[index].accountPrincipal)
+                                    setMigrationRewardValue(expectedReward.value)
+                                    return setMigrationModalVisible(true)
+                                  }
                                   if (current.diff(stakingRoundTimes[index].startedAt) > 0) {
                                     ReactGA.modalview(`${stakedToken}Staking`)
                                     setRoundModal(index);
@@ -392,7 +422,10 @@ const Staking: React.FunctionComponent<IProps> = ({
                               >
                                 <p>
                                   {
-                                    t("staking.staking_btn")
+                                    stakedToken !== Token.ELFI && !roundDatas[index].accountPrincipal.isZero() && current.diff(stakingRoundTimes[currentPhase - 1].startedAt) > 0 ?
+                                      t("staking.unstaking_migration")
+                                      :
+                                      t("staking.staking_btn")
                                   }
                                 </p>
                               </div>
@@ -405,7 +438,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                 }
                                 ReactGA.modalview(`${stakedToken}StakingReward`)
 
-                                current.diff(stakingRoundTimes[state.selectPhase - 1].startedAt) > 0
+                                current.diff(stakingRoundTimes[index].startedAt) > 0
                                 &&
                                 setRoundModal(index);
                                 setModalValue(roundDatas[index].accountReward)
@@ -456,36 +489,34 @@ const Staking: React.FunctionComponent<IProps> = ({
                     </p>
                     <div>
                       <h2>
-                        {`${current.diff(stakingRoundTimes[currentPhase-1].startedAt) > 0 ? formatCommaSmall(roundDatas[currentPhase].accountPrincipal) : '-'}`}
+                        {`${current.diff(stakingRoundTimes[currentPhase-1].startedAt) > 0 ? formatCommaSmall(roundDatas[currentPhase-1].accountPrincipal) : '-'}`}
                         <span className="spoqa__bold">
                           {stakedToken}
                         </span>
                       </h2>
                       <div
-                        className={`staking__button ${current.diff(stakingRoundTimes[currentPhase-1].startedAt) < 0 ? "disable" : ""}`}
+                        className={`staking__button ${current.diff(stakingRoundTimes[currentPhase - 1].endedAt) > 0 ? "disable" : ""}`}
                         onClick={(e) => {
-                          if(current.diff(stakingRoundTimes[currentPhase-1].startedAt) < 0) {
+                          if (current.diff(stakingRoundTimes[currentPhase - 1].startedAt) < 0 || current.diff(stakingRoundTimes[currentPhase - 1].endedAt) > 0) {
                             return;
                           }
-                          if (currentPhase < 4 && current.diff(stakingRoundTimes[currentPhase].startedAt) > 0) {
+                          if (stakedToken !== Token.ELFI && current.diff(stakingRoundTimes[currentPhase > 3 ? 3 : currentPhase].startedAt) > 0) {
                             ReactGA.modalview(`${stakedToken}Migration`)
-                            setRoundModal(currentPhase);
-                            setModalValue(roundDatas[currentPhase].accountPrincipal)
+                            setRoundModal(currentPhase - 1);
+                            setModalValue(roundDatas[currentPhase - 1].accountPrincipal)
                             setMigrationRewardValue(expectedReward.value)
                             return setMigrationModalVisible(true)
-                          }
-
-                          if (current.diff(stakingRoundTimes[currentPhase -1].startedAt) > 0) {
+                          } else {
                             ReactGA.modalview(`${stakedToken}Staking`)
-                            setRoundModal(currentPhase);
-                            setModalValue(roundDatas[currentPhase].accountPrincipal)
+                            setRoundModal(currentPhase - 1);
+                            setModalValue(roundDatas[currentPhase - 1].accountPrincipal)
                             setStakingModalVisible(true)
                           }
                         }}
                       >
                         <p>
                           {
-                            currentPhase < 4 && current.diff(stakingRoundTimes[currentPhase].startedAt) > 0 ?
+                            stakedToken !== Token.ELFI && current.diff(stakingRoundTimes[currentPhase > 3 ? 3 : currentPhase].startedAt) > 0 ?
                               t("staking.unstaking_migration")
                               :
                               t("staking.staking_btn")
@@ -536,7 +567,7 @@ const Staking: React.FunctionComponent<IProps> = ({
 
                           current.diff(stakingRoundTimes[currentPhase-1].startedAt) > 0
                           &&
-                          setRoundModal(currentPhase);
+                          setRoundModal(currentPhase - 1);
                           setModalValue(expectedReward.value)
                           setClaimStakingRewardModalVisible(true)
                         }}
@@ -549,6 +580,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                   </div>
                 </div>
               </div>
+              
               
               <div className="staking__round__remaining-data waiting">
                 <div className="staking__round__remaining-data__title">

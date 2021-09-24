@@ -180,7 +180,8 @@
       "all_ended_alert": "All of the rounds for staking are currently over and migration is not possible.",
       "current_round": "Current round",
       "staking_amount": "Staked Amount",
-      "reward_amount": "Accumulated reward amount"
+      "reward_amount": "Accumulated reward amount",
+      "current_round_null": "There is no current rounds in progress."
     },
     "mobile": {
       "title": "COMING SOON!",

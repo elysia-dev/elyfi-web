@@ -180,7 +180,8 @@
       "all_ended_alert": "由于本期Staking(权益质押)活动已全部结束，因此无法直接进行代币转移。",
       "current_round": "当前轮次",
       "staking_amount": "质押数量",
-      "reward_amount": "累计奖励数量"
+      "reward_amount": "累计奖励数量",
+      "current_round_null": "您还没有参与本轮质押。"
     },
     "mobile": {
       "title": "COMING SOON!",
