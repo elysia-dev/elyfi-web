@@ -333,7 +333,9 @@ const Staking: React.FunctionComponent<IProps> = ({
                                         "-" :
                                         <CountUp
                                           className={`spoqa__bold colored ${rewardToken === Token.ELFI ? "EL" : "ELFI"}`}
-                                          start={0}
+                                          start={
+                                            parseFloat(formatEther(item.accountReward))
+                                          }
                                           end={
                                             parseFloat(formatEther(item.accountReward))
                                           }
