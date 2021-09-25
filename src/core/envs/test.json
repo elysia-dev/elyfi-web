@@ -5,7 +5,7 @@
   "testStableAddress": "0x73e839d53FB65eb954B04Ea0cC0e2e11aAB936F7",
   "elStakingPoolAddress": "0xDF409737E31475Ec46e13335Ad5370c551b97D12",
   "elfyStakingPoolAddress": "0xDF409737E31475Ec46e13335Ad5370c551b97D12",
-  "elfyV2StakingPoolAddress": "0x79e061c4ed30c131ce31664027e3339ac9045622",
+  "elfyV2StakingPoolAddress": "0x50B91e6aB4dF05866844e4297D4d3865e4dB1157",
   "elAddress": "0xdd469dfc7f64A68E6cd1D8e9B9D09E2Cb39a816c",
   "requiredNetwork": "Ropsten",
   "requiredChainId": 3,
