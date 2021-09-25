@@ -206,7 +206,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           stakedToken={stakedToken}
           rewardToken={rewardToken}
           stakedBalance={loading ? constants.Zero : modalValue}
-          rewardBalance={migrationRewardValue}
+          rewardBalance={roundData[selectModalRound]?.accountReward || constants.Zero}
           round={selectModalRound + 1}
           afterTx={() => { account && fetchRoundData(account) }}
           transactionModal={() => setTransactionModal(true)}
