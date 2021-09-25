@@ -11,6 +11,7 @@ import useStakingPool from 'src/hooks/useStakingPool';
 import useWatingTx from 'src/hooks/useWaitingTx';
 import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
+import RecentActivityType from 'src/enums/RecentActivityType';
 
 const ClaimStakingRewardModal: FunctionComponent<{
   stakedToken: Token.ELFI | Token.EL,
@@ -78,14 +79,18 @@ const ClaimStakingRewardModal: FunctionComponent<{
                   // TRICKY
                   // ELFI V2 StakingPool need round - 2 value
                   stakingPool.claim((round >= 3 && stakedToken === Token.ELFI ? round - 2 : round).toString()).then((tx) => {
-                    setTransaction(tx, tracker, () => {
-                      transactionModal();
-                      closeHandler();
-                      window.localStorage.setItem("@txTracking", stakedToken + "Claim");
-                    },
+                    setTransaction(
+                      tx,
+                      tracker,
+                      stakedToken + "Claim" as RecentActivityType,
+                      () => {
+                        transactionModal();
+                        closeHandler();
+                      },
                       () => {
                         afterTx();
-                      })
+                      }
+                    )
                   }).catch((e) => {
                     failTransaction(tracker, closeHandler, e)
                   })

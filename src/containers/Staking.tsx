@@ -23,7 +23,7 @@ import StakingEnded from 'src/components/StakingEnded';
 import MigrationEnded from 'src/components/MigrationEnded';
 import useStakingPool from 'src/hooks/useStakingPool';
 import ReactGA from "react-ga";
-import txStatus from 'src/enums/txStatus';
+import txStatus from 'src/enums/TxStatus';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
 import calcExpectedReward from 'src/core/utils/calcExpectedReward';
 

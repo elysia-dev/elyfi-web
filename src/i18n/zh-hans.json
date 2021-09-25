@@ -20,8 +20,8 @@
       "disconnect": "钱包解绑",
       "install_metamask": "Install Metamask",
       "deposit_withdraw": "存入/提现",
-      "el_staking": "EL 权益质押",
-      "elfi_staking": "ELFI 权益质押"
+      "ELStake": "EL 权益质押",
+      "ELFIStake": "ELFI 权益质押"
     },
     "dashboard": {
       "deposits--header": "存入的代币",
@@ -198,18 +198,18 @@
       "copy_address": "复制地址",
       "on_etherscan": "在Etherscan上查看",
       "activity__title": "近期交易记录",
-      "activity": "这里可以查看近期交易记录。",
-      "approve": "Approve",
-      "el_staking": "EL代币Staking(权益质押)",
-      "el_unstaking": "EL代币Unstaking(解除权益质押)",
-      "elfi_claim_reward": "获取ELFI代币",
-      "el_elfi_transmission": "传送EL代币和ELFI代币",
-      "elfi_dai_transmission": "传送ELFI代币和DAI",
-      "elfi_staking": "ELFI代币Staking(权益质押)",
-      "elfi_unstaking": "ELFI代币Unstaking(解除权益质押)",
-      "dai_claim_reward": "获取DAI",
-      "dai_deposit": "存入DAI",
-      "dai_withdraw": "提现DAI"
+      "Idle": "这里可以查看近期交易记录。",
+      "Approve": "Approve",
+      "ELStake": "EL代币Staking(权益质押)",
+      "ELStakingWithdraw": "EL代币Unstaking(解除权益质押)",
+      "Claim": "获取ELFI代币",
+      "ELMigration": "传送EL代币和ELFI代币",
+      "ELFIMigration": "传送ELFI代币和DAI",
+      "ELFIStake": "ELFI代币Staking(权益质押)",
+      "ELFIStakingWithdraw": "ELFI代币Unstaking(解除权益质押)",
+      "ELFIClaim": "获取DAI",
+      "Deposit": "存入DAI",
+      "Withdraw": "提现DAI"
     }
   }
 }

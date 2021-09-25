@@ -18,6 +18,7 @@ import useWaitingTx from 'src/hooks/useWaitingTx';
 import LoadingIndicator from './LoadingIndicator';
 import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
+import RecentActivityType from 'src/enums/RecentActivityType';
 
 const MigrationModal: React.FunctionComponent<{
   visible: boolean,
@@ -254,14 +255,18 @@ const MigrationModal: React.FunctionComponent<{
                     utils.parseEther(state.migrationAmount),
                 ((round >= 3 && stakedToken === Token.ELFI) ? round - 2 : round).toString()
               ).then((tx) => {
-                setTransaction(tx, tracker, () => {
-                  transactionModal();
-                  closeHandler();
-                  window.localStorage.setItem("@txTracking", stakedToken + "Migration");
-                },
+                setTransaction(
+                  tx,
+                  tracker,
+                  stakedToken + "Migration" as RecentActivityType,
+                  () => {
+                    transactionModal();
+                    closeHandler();
+                  },
                   () => {
                     afterTx();
-                  })
+                  }
+                )
               }).catch((e) => {
                 failTransaction(tracker, closeHandler, e)
               })

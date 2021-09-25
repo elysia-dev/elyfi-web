@@ -1,56 +1,121 @@
 
-import React, { useState } from 'react'
-import useWatingTx from 'src/hooks/useWaitingTx';
+import React, { useEffect, useState } from 'react'
 import { ContractTransaction, } from "ethers";
-import txStatus from 'src/enums/txStatus';
+import TxStatus from 'src/enums/TxStatus';
 import TxContext, { initialTxContext, ITxContext } from 'src/contexts/TxContext';
+import RecentActivityType from 'src/enums/RecentActivityType';
+import { useWeb3React } from '@web3-react/core';
+
+const clearLocalStorage = () => {
+  window.localStorage.removeItem("@txHash");
+  window.localStorage.removeItem("@txNonce");
+  window.localStorage.removeItem("@txType");
+  window.localStorage.removeItem("@txStatus");
+}
 
 const TxProvider: React.FunctionComponent = (props) => {
+  const { library } = useWeb3React();
   const [state, setState] = useState<ITxContext>(initialTxContext);
-  const { wait } = useWatingTx();
 
   const reset = () => {
     setState(initialTxContext);
     window.sessionStorage.setItem("@connect", "false");
-    window.localStorage.removeItem("@txHash")
-    window.localStorage.removeItem("@txNonce");
-    window.localStorage.removeItem("@txStatus");
-    window.localStorage.removeItem("@txTracking");
+    clearLocalStorage();
   }
-  const initTransaction = (txState: txStatus, txWaiting: boolean) => {
-    setState({ ...state, txState: txState, txWaiting: txWaiting })
+
+  const initTransaction = (txStatus: TxStatus, txWaiting: boolean) => {
+    setState({ ...state, txStatus: txStatus, txWaiting: txWaiting })
   }
+
   const failTransaction = (tracker: any, onEvent: () => void, e: any) => {
     onEvent();
     tracker.canceled();
-    setState({ ...state, txState: txStatus.IDLE, txWaiting: false })
-    window.localStorage.setItem("@txLoad", "false");
-    window.localStorage.removeItem("@txHash")
-    window.localStorage.removeItem("@txNonce");
-    window.localStorage.removeItem("@txStatus");
+    setState({
+      ...state,
+      txStatus: TxStatus.FAIL,
+      txWaiting: false
+    })
+    clearLocalStorage();
     console.log(e)
   }
 
-  const setTransaction = (tx: ContractTransaction, tracker: any, pending: () => void, callback: () => void) => {
+  const setTransaction = (
+    tx: ContractTransaction,
+    tracker: any,
+    type: RecentActivityType,
+    pending: () => void,
+    callback: () => void
+  ) => {
     tracker.created();
-    setState({ ...state, txState: txStatus.PENDING, txWaiting: true, txHash: tx.hash })
-    window.localStorage.setItem("@txLoad", "true");
     window.localStorage.setItem("@txHash", tx.hash);
     window.localStorage.setItem("@txNonce", tx.nonce.toString());
-    window.localStorage.setItem("@txStatus", "PENDING");
-    window.localStorage.removeItem("@alreadyLoaded");
+    window.localStorage.setItem("@txType", type);
+    window.localStorage.setItem("@txStatus", TxStatus.PENDING);
+
+    setState({
+      ...state,
+      txStatus: TxStatus.PENDING,
+      txWaiting: true,
+      txType: type,
+      txHash: tx.hash,
+      txNonce: tx.nonce,
+    })
+
     pending();
-    wait(
-      tx as any,
-      () => {
-        callback();
-        setState({ ...state, txState: txStatus.CONFIRM, txWaiting: false })
-        window.localStorage.setItem("@txLoad", "false");
-        window.localStorage.setItem("@txStatus", "CONFIRM");
-      }
-    )
+
+    tx.wait().then(() => {
+      callback();
+      setState({ ...state, txStatus: TxStatus.CONFIRM, txWaiting: false, txType: type })
+    }).catch(() => {
+      setState({
+        ...state, txStatus: TxStatus.FAIL, txWaiting: false, txType: type
+      })
+    }).finally(() => {
+      clearLocalStorage();
+      setTimeout(() => {
+        setState({
+          ...state, txStatus: TxStatus.IDLE, txHash: null, txWaiting: false
+        })
+      }, 5000)
+    })
   }
 
+  useEffect(() => {
+    const connected = window.sessionStorage.getItem("@connect");
+    const txHash = window.localStorage.getItem("@txHash")
+    const txNonce = parseInt(window.localStorage.getItem('@txNonce') || '0')
+    const txType = window.localStorage.getItem('@txType') as RecentActivityType
+
+    if (library && connected !== 'false' && txHash) {
+      setState({
+        ...state,
+        txHash,
+        txWaiting: true,
+        txStatus: TxStatus.PENDING,
+        txNonce,
+        txType,
+      })
+
+      library.waitForTransaction(txHash).then((res: any) => {
+        if (res && res.status === 1) {
+          setState({ ...state, txStatus: TxStatus.CONFIRM, txWaiting: false, txType })
+          initTransaction(TxStatus.CONFIRM, false)
+        } else if (res && res.status !== 1) {
+          setState({ ...state, txStatus: TxStatus.FAIL, txWaiting: false, txType })
+        }
+      }).catch((e: any) => {
+        initTransaction(TxStatus.FAIL, false)
+        console.log(e)
+      }).finally(() => {
+        clearLocalStorage();
+        setTimeout(() => {
+          setState({
+            ...state, txStatus: TxStatus.IDLE, txHash: null, txWaiting: false
+          })
+        }, 5000)
+      })
+    }
+  }, [library])
 
   return (
     <TxContext.Provider value={{

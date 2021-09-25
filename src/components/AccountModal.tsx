@@ -8,7 +8,7 @@ import Confirm from "src/assets/images/status__confirm.png";
 import NewTab from "src/assets/images/new_tab.png";
 import Copy from "src/assets/images/copy.png";
 import envs from 'src/core/envs';
-import RecentActivityType from 'src/enums/RecentActivityType';
+import TxStatus from 'src/enums/TxStatus';
 
 const AccountModal: React.FunctionComponent<{
   visible: boolean,
@@ -16,7 +16,7 @@ const AccountModal: React.FunctionComponent<{
 }> = ({ visible, closeHandler }) => {
   const { account, deactivate, chainId } = useWeb3React();
   const { t } = useTranslation();
-  const { reset } = useContext(TxContext);
+  const { reset, txHash, txStatus, txType } = useContext(TxContext);
 
   const AddressCopy = (data: string) => {
     if (!document.queryCommandSupported("copy")) {
@@ -96,38 +96,44 @@ const AccountModal: React.FunctionComponent<{
             </p>
 
             <a
-              href={window.localStorage.getItem("@txHash") === null ? undefined : `${envs.etherscanURI}/tx/${window.localStorage.getItem("@txHash")}`}
+              href={txHash ? `${envs.etherscanURI}/tx/${txHash}` : undefined}
               target="_blank"
-              className={window.localStorage.getItem("@txHash") === null ? "disable" : ""}
+              className={txHash ? "" : "disable"}
             >
               <div>
                 <p className="spoqa__bold">
-                  {/* window.localStorage.getItem("@txTracking") */}
-                  {t(`transaction.${window.localStorage.getItem("@txTracking") === null ? RecentActivityType.Idle : RecentActivityType[window.localStorage.getItem("@txTracking") as keyof typeof RecentActivityType]}` || t("transaction.activity"))}
+                  {
+                    t(`transaction.${txStatus !== TxStatus.IDLE ? txType : "Idle"}`)
+                  }
                 </p>
-
                 <div>
                   <img
-                    style={{ display: window.localStorage.getItem("@txStatus") === null || window.localStorage.getItem("@txStatus") === "PENDING" ? "none" : "block" }}
+                    style={{ display: txStatus === TxStatus.IDLE || txStatus === TxStatus.PENDING ? "none" : "block" }}
                     src={
-                      window.localStorage.getItem("@txStatus") === "FAIL" ?
+                      txStatus === TxStatus.FAIL ?
                         Fail
-                        : window.localStorage.getItem("@txStatus") === "CONFIRM" ?
+                        : txStatus === TxStatus.CONFIRM ?
                           Confirm
                           :
                           Fail
                     }
                     alt="status" />
-                  <div className="lds-spinner" style={{ display: window.localStorage.getItem("@txStatus") === "PENDING" ? "block" : "none" }}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-                  <p className="spoqa__bold" style={{ display: window.localStorage.getItem("@txStatus") === null ? "none" : "block" }}>
-                    {window.localStorage.getItem("@txStatus") === "FAIL" ?
-                      "FAILED!"
-                      : window.localStorage.getItem("@txStatus") === "CONFIRM" ?
-                        "Confirmed!"
-                        : window.localStorage.getItem("@txStatus") === "PENDING" ?
-                          "Pending.."
-                          :
-                          ""}
+                  <div
+                    className="lds-spinner"
+                    style={{ display: txStatus === TxStatus.PENDING ? "block" : "none" }}>
+                    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                  </div>
+                  <p className="spoqa__bold" style={{ display: txStatus === TxStatus.IDLE ? "none" : "block" }}>
+                    {
+                      txStatus === TxStatus.FAIL ?
+                        "FAILED!"
+                        : txStatus === TxStatus.CONFIRM ?
+                          "Confirmed!"
+                          : txStatus === TxStatus.PENDING ?
+                            "Pending.."
+                            :
+                            ""
+                    }
                   </p>
                 </div>
               </div>

@@ -24,7 +24,7 @@ const DisableWalletPage = () => {
         <div className={`navigation__wallet`}
           onClick={() => {
             activate(InjectedConnector).then(() => {
-              window.sessionStorage.setItem("@connect", "ture");
+              window.sessionStorage.setItem("@connect", "true");
             })
           }}
           style={{ margin: 0 }}
@@ -42,8 +42,8 @@ const DisableWalletPage = () => {
         <div className="dashboard__content-container">
           <h1 className="dashboard__content--bold">
             {
-              route.path.includes("ELFI") ? t("navigation.elfi_staking").toUpperCase() :
-                route.path.includes("EL") ? t("navigation.el_staking").toUpperCase() :
+              route.path.includes("ELFI") ? t("navigation.ELFIStake").toUpperCase() :
+                route.path.includes("EL") ? t("navigation.ELStake").toUpperCase() :
                   t("navigation.dashboard")
             }
           </h1>

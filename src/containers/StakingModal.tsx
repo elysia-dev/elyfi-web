@@ -15,8 +15,9 @@ import useStakingPool from 'src/hooks/useStakingPool';
 import useERC20Info from 'src/hooks/useERC20Info';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import useTxTracking from 'src/hooks/useTxTracking';
-import txStatus from 'src/enums/txStatus';
+import txStatus from 'src/enums/TxStatus';
 import TxContext from 'src/contexts/TxContext';
+import RecentActivityType from 'src/enums/RecentActivityType';
 
 const StakingModal: React.FunctionComponent<{
   visible: boolean,
@@ -164,11 +165,14 @@ const StakingModal: React.FunctionComponent<{
                           amount.max ? constants.MaxUint256 : utils.parseEther(amount.value),
                           ((round >= 3 && stakedToken === Token.ELFI) ? round - 2 : round).toString()
                         ).then((tx) => {
-                          setTransaction(tx, tracker, () => {
-                            closeHandler()
-                            transactionModal()
-                            window.localStorage.setItem("@txTracking", stakedToken + "StakingWithdraw");
-                          },
+                          setTransaction(
+                            tx,
+                            tracker,
+                            stakedToken + "StakingWithdraw" as RecentActivityType,
+                            () => {
+                              closeHandler()
+                              transactionModal()
+                            },
                             () => {
                               refetch()
                               afterTx()
@@ -205,15 +209,18 @@ const StakingModal: React.FunctionComponent<{
                         // setTxWaiting(true)
 
                         stakingPool.stake(amount.max ? balance : utils.parseEther(amount.value)).then((tx) => {
-                          setTransaction(tx, tracker, () => {
-                            closeHandler()
-                            transactionModal()
-                            window.localStorage.setItem("@txTracking", stakedToken + "Stake");
-                          },
+                          setTransaction(tx,
+                            tracker,
+                            stakedToken + "Stake" as RecentActivityType,
+                            () => {
+                              closeHandler()
+                              transactionModal()
+                            },
                             () => {
                               refetch()
                               afterTx()
-                            })
+                            }
+                          )
                         }).catch((e) => {
                           failTransaction(tracker, closeHandler, e);
                         })
@@ -238,15 +245,19 @@ const StakingModal: React.FunctionComponent<{
                           stakingPool.address,
                           constants.MaxUint256,
                         ).then((tx) => {
-                          setTransaction(tx, tracker, () => {
-                            closeHandler()
-                            transactionModal()
-                            window.localStorage.setItem("@txTracking", "Approve");
-                          },
+                          setTransaction(
+                            tx,
+                            tracker,
+                            RecentActivityType.Approve,
+                            () => {
+                              closeHandler()
+                              transactionModal()
+                            },
                             () => {
                               refetch()
                               afterTx()
-                            })
+                            }
+                          )
                         }).catch((e) => {
                           failTransaction(tracker, closeHandler, e);
                         })
@@ -261,7 +272,7 @@ const StakingModal: React.FunctionComponent<{
           </div>
         )}
       </div>
-    </div>
+    </div >
   )
 }
 

@@ -20,8 +20,8 @@
       "disconnect": "Disconnect",
       "install_metamask": "Install Metamask",
       "deposit_withdraw": "Deposit/Withdraw",
-      "el_staking": "EL Staking",
-      "elfi_staking": "ELFI Staking"
+      "ELStake": "EL Staking",
+      "ELFIStake": "ELFI Staking"
     },
     "dashboard": {
       "deposits--header": "DEPOSITS",
@@ -198,18 +198,18 @@
       "copy_address": "Copy address",
       "on_etherscan": "View on Etherscan",
       "activity__title": "Recent Activity",
-      "activity": "Recent activity is displayed here",
-      "approve": "Approve",
-      "el_staking": "EL Staking",
-      "el_unstaking": "EL Unstaking",
-      "elfi_claim_reward": "Claim reward",
-      "el_elfi_transmission": "EL & ELFI transmission",
-      "elfi_dai_transmission": "ELFI & DAI transmission",
-      "elfi_staking": "ELFI Staking",
-      "elfi_unstaking": "ELFI Unstaking",
-      "dai_claim_reward": "Claim reward",
-      "dai_deposit": "Deposit DAI",
-      "dai_withdraw": "Withdraw DAI"
+      "Idle": "Recent activity is displayed here",
+      "Approve": "Approve",
+      "ELStake": "EL Staking",
+      "ELStakingWithdraw": "EL Unstaking",
+      "Claim": "Claim reward",
+      "ELMigration": "EL & ELFI transmission",
+      "ELFIMigration": "ELFI & DAI transmission",
+      "ELFIStake": "ELFI Staking",
+      "ELFIStakingWithdraw": "ELFI Unstaking",
+      "ELFIClaim": "Claim reward",
+      "Deposit": "Deposit DAI",
+      "Withdraw": "Withdraw DAI"
     }
   }
 }

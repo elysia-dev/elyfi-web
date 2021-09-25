@@ -9,47 +9,15 @@ import Fail from "src/assets/images/status__fail.png";
 import TxContext from 'src/contexts/TxContext';
 
 import envs from 'src/core/envs';
-import txStatus from 'src/enums/txStatus';
+import TxStatus from 'src/enums/TxStatus';
 import AccountModal from './AccountModal';
 
 const Wallet = (props: any) => {
   const { account, activate, active, chainId } = useWeb3React();
   const [connected, setConnected] = useState<boolean>(false);
   const { t } = useTranslation();
-  const { library } = useWeb3React();
   const [modal, setModal] = useState(false);
-
-  const { initTransaction, txState, txWaiting } = useContext(TxContext);
-
-  useEffect(() => {
-    if ((window.localStorage.getItem("@txHash") === null)) {
-      initTransaction(txStatus.IDLE, false)
-      return;
-    }
-    if (window.localStorage.getItem("@txLoad") === "true") {
-      initTransaction(txStatus.PENDING, true)
-    }
-    if (window.localStorage.getItem("@txStatus") === "CONFIRM" || window.localStorage.getItem("@txStatus") === "FAIL") {
-      initTransaction(txStatus.IDLE, false)
-    } else if (library && (window.localStorage.getItem("@txStatus") === "PENDING" || window.localStorage.getItem("@txStatus") === null)) {
-      library.getTransactionReceipt(window.localStorage.getItem("@txHash")).then((res: any) => {
-        if (res && res.status === 1) {
-          initTransaction(txStatus.CONFIRM, false)
-          window.localStorage.setItem("@txLoad", "false");
-          window.localStorage.setItem("@txStatus", "CONFIRM");
-        } else if (res && res.status !== 1) {
-          initTransaction(txStatus.FAIL, false)
-          window.localStorage.setItem("@txLoad", "false");
-          window.localStorage.setItem("@txStatus", "FAIL");
-        }
-      }).catch((e: any) => {
-        initTransaction(txStatus.FAIL, false)
-        window.localStorage.setItem("@txLoad", "false");
-        window.localStorage.setItem("@txStatus", "FAIL");
-        console.log(e)
-      })
-    }
-  }, [library])
+  const { txStatus, txWaiting, txNonce } = useContext(TxContext);
 
   const WalletRef = useRef<HTMLDivElement>(null);
 
@@ -61,12 +29,12 @@ const Wallet = (props: any) => {
   return (
     <>
       <AccountModal visible={modal} closeHandler={() => setModal(false)} />
-      <div className={`navigation__wallet${connected ? "--connected" : ""} ${txState}`}
+      <div className={`navigation__wallet${connected ? "--connected" : ""} ${txStatus}`}
         ref={WalletRef}
         onClick={() => {
           if (!active) {
             activate(InjectedConnector).then(() => {
-              window.sessionStorage.setItem("@connect", "ture");
+              window.sessionStorage.setItem("@connect", "true");
             })
           }
           if (connected) {
@@ -75,33 +43,33 @@ const Wallet = (props: any) => {
         }}>
         <div className="navigation__wallet__wrapper">
           <img
-            style={{ display: !connected ? "none" : txState !== txStatus.PENDING ? "block" : "none" }}
+            style={{ display: !connected ? "none" : txStatus !== TxStatus.PENDING ? "block" : "none" }}
             src={
               txWaiting === undefined ?
                 Idle
-                : txState === txStatus.FAIL ?
+                : txStatus === TxStatus.FAIL ?
                   Fail
-                  : txState === txStatus.CONFIRM ?
+                  : txStatus === TxStatus.CONFIRM ?
                     Confirm
                     :
                     Idle
             }
             alt="status"
             className="navigation__status" />
-          <div className="loader" style={{ display: txState === txStatus.PENDING ? "block" : "none" }} />
+          <div className="loader" style={{ display: txStatus === TxStatus.PENDING ? "block" : "none" }} />
           <div>
             {connected && (
               <p className="navigation__wallet__mainnet">
-                {txState === (txStatus.PENDING || txStatus.CONFIRM) ? `Transaction ${window.localStorage.getItem("@txNonce")}` : mainnetConverter(chainId)}
+                {txStatus === (TxStatus.PENDING || TxStatus.CONFIRM) ? `Transaction ${txNonce}` : mainnetConverter(chainId)}
               </p>
             )}
             <p className={`navigation__wallet__status${connected ? "--connected" : ""}`}>
               {!connected ? t("navigation.connect_wallet") :
-                txState === txStatus.PENDING ?
+                txStatus === TxStatus.PENDING ?
                   "Pending..."
-                  : txState === txStatus.FAIL ?
+                  : txStatus === TxStatus.FAIL ?
                     "FAILED!"
-                    : txState === txStatus.CONFIRM ?
+                    : txStatus === TxStatus.CONFIRM ?
                       "Confirmed!!"
                       :
                       `${account?.slice(0, 6)}....${account?.slice(-4)}`

@@ -9,6 +9,7 @@ import useWaitingTx from 'src/hooks/useWaitingTx';
 import { formatEther } from 'ethers/lib/utils';
 import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
+import RecentActivityType from 'src/enums/RecentActivityType';
 
 // Create deposit & withdraw
 const IncentiveModal: FunctionComponent<{
@@ -37,14 +38,18 @@ const IncentiveModal: FunctionComponent<{
 
     incentivePool.claimIncentive().then((tx) => {
       tracker.created();
-      setTransaction(tx, tracker, () => {
-        transactionModal()
-        onClose()
-        window.localStorage.setItem("@txTracking", "Claim");
-      }, 
-      () => {
-        afterTx()
-      })
+      setTransaction(
+        tx,
+        tracker,
+        RecentActivityType.Claim,
+        () => {
+          transactionModal()
+          onClose()
+        },
+        () => {
+          afterTx()
+        }
+      )
     }).catch((e) => {
       failTransaction(tracker, onClose, e)
     })
@@ -80,7 +85,7 @@ const IncentiveModal: FunctionComponent<{
                   }
                 </p>
               </div>
-              
+
             </div>
           }
           <div

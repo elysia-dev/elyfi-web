@@ -20,6 +20,7 @@ import useERC20Info from 'src/hooks/useERC20Info';
 import useWaitingTx from 'src/hooks/useWaitingTx';
 import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
+import RecentActivityType from 'src/enums/RecentActivityType';
 
 const DepositOrWithdrawModal: FunctionComponent<{
   tokenName: string,
@@ -119,11 +120,14 @@ const DepositOrWithdrawModal: FunctionComponent<{
     moneyPool
       .deposit(reserve.id, account, amount)
       .then((tx) => {
-        setTransaction(tx, tracker, () => {
-          transactionModal();
-          onClose();
-          window.localStorage.setItem("@txTracking", "Deposit");
-        },
+        setTransaction(
+          tx,
+          tracker,
+          RecentActivityType.Deposit,
+          () => {
+            transactionModal();
+            onClose();
+          },
           () => {
             afterTx();
           })
@@ -146,11 +150,14 @@ const DepositOrWithdrawModal: FunctionComponent<{
     moneyPool
       .withdraw(reserve.id, account, max ? constants.MaxUint256 : amount)
       .then((tx) => {
-        setTransaction(tx, tracker, () => {
-          transactionModal();
-          onClose();
-          window.localStorage.setItem("@txTracking", "Withdraw");
-        },
+        setTransaction(
+          tx,
+          tracker,
+          RecentActivityType.Withdraw,
+          () => {
+            transactionModal();
+            onClose();
+          },
           () => {
             afterTx();
           })

@@ -20,8 +20,8 @@
       "disconnect": "연결 끊기",
       "install_metamask": "Install Metamask",
       "deposit_withdraw": "예치/출금",
-      "el_staking": "EL 스테이킹",
-      "elfi_staking": "ELFI 스테이킹"
+      "ELStake": "EL 스테이킹",
+      "ELFIStake": "ELFI 스테이킹"
     },
     "dashboard": {
       "deposits--header": "예치한 토큰",
@@ -198,18 +198,18 @@
       "copy_address": "주소 복사",
       "on_etherscan": "Etherscan에서 보기",
       "activity__title": "최근 활동",
-      "activity": "최근 활동이 여기에 표시됩니다.",
-      "approve": "승인",
-      "el_staking": "EL 스테이킹",
-      "el_unstaking": "EL 언스테이킹",
-      "elfi_claim_reward": "ELFI 수령",
-      "el_elfi_transmission": "EL 및 ELFI 전송",
-      "elfi_dai_transmission": "ELFI 및 DAI 전송",
-      "elfi_staking": "ELFI 스테이킹",
-      "elfi_unstaking": "ELFI 언스테이킹",
-      "dai_claim_reward": "DAI 수령",
-      "dai_deposit": "DAI 예치",
-      "dai_withdraw": "DAI 출금"
+      "Idle": "최근 활동이 여기에 표시됩니다.",
+      "Approve": "승인",
+      "ELStake": "EL 스테이킹",
+      "ELStakingWithdraw": "EL 언스테이킹",
+      "ELClaim": "ELFI 수령",
+      "ELMigration": "EL 및 ELFI 전송",
+      "ELFIMigration": "ELFI 및 DAI 전송",
+      "ELFIStake": "ELFI 스테이킹",
+      "ELFIStakingWithdraw": "ELFI 언스테이킹",
+      "ELFIClaim": "DAI 수령",
+      "Deposit": "DAI 예치",
+      "Withdraw": "DAI 출금"
     }
   }
 }

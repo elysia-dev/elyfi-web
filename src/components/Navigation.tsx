@@ -38,7 +38,7 @@ const Navigation: FunctionComponent<Props> = ({ txStatus, txWaiting }) => {
 
   return (
     <>
-      <nav className="navigation"  style={{ backgroundColor: scrollTop > 125 ? "#10101077" : "#101010" }}>
+      <nav className="navigation" style={{ backgroundColor: scrollTop > 125 ? "#10101077" : "#101010" }}>
         {
           process.env.REACT_APP_TEST_MODE &&
           <>
@@ -80,8 +80,8 @@ const Navigation: FunctionComponent<Props> = ({ txStatus, txWaiting }) => {
             <div className="navigation__alert mobile-only" style={{ height: scrollTop > 125 ? 0 : 60, top: scrollTop > 125 ? -60 : 0 }}>
               <div className="navigation__alert__container" style={{ height: scrollTop > 125 ? 0 : 60 }}>
                 <p className="spoqa">
-                  This website is for <span className="spoqa__bold" style={{ color: "#00A7FF" }}>ELYFI test version only.<br/></span>
-                  Please connect to the {envs.requiredNetwork} network!<br/>You may get some test tokens&nbsp;
+                  This website is for <span className="spoqa__bold" style={{ color: "#00A7FF" }}>ELYFI test version only.<br /></span>
+                  Please connect to the {envs.requiredNetwork} network!<br />You may get some test tokens&nbsp;
                   <span
                     className="spoqa__bold"
                     style={{
@@ -130,8 +130,8 @@ const Navigation: FunctionComponent<Props> = ({ txStatus, txWaiting }) => {
               {
                 [
                   ["/", t("navigation.deposit_withdraw")],
-                  ["/staking/EL", t("navigation.el_staking")],
-                  ["/staking/ELFI", t("navigation.elfi_staking")],
+                  ["/staking/EL", t("navigation.ELStake")],
+                  ["/staking/ELFI", t("navigation.ELFIStake")],
                 ].map((data, index) => {
                   return (
                     <NavLink to={data[0]} key={index} activeClassName="bold" exact>
