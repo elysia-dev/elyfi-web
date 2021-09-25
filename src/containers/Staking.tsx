@@ -79,7 +79,7 @@ const Staking: React.FunctionComponent<IProps> = ({
 
   const [expectedReward, setExpectedReward] = useState({ before: constants.Zero, value: constants.Zero });
 
-  const fetchroundData = async (account: string) => {
+  const fetchRoundData = async (account: string) => {
     try {
       const data = await Promise.all(
         stakingRoundTimes.map(async (_item, round) => {
@@ -125,7 +125,7 @@ const Staking: React.FunctionComponent<IProps> = ({
 
   useEffect(() => {
     if (account) {
-      fetchroundData(account);
+      fetchRoundData(account);
     }
   }, [account])
 
@@ -181,7 +181,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           balance={selectModalRound === 2 ? expectedReward.value : roundData[selectModalRound]?.accountReward || constants.Zero}
           round={selectModalRound + 1}
           closeHandler={() => setClaimStakingRewardModalVisible(false)}
-          afterTx={() => { account && fetchroundData(account) }}
+          afterTx={() => { account && fetchRoundData(account) }}
           transactionModal={() => setTransactionModal(true)}
         />
         <StakingModal
@@ -192,7 +192,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           stakedToken={stakedToken}
           stakedBalance={loading ? constants.Zero : roundData[selectModalRound].accountPrincipal}
           round={selectModalRound + 1}
-          afterTx={() => { account && fetchroundData(account) }}
+          afterTx={() => { account && fetchRoundData(account) }}
           endedModal={() => {
             setStakingEndedVisible(true)
           }}
@@ -208,7 +208,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           stakedBalance={loading ? constants.Zero : modalValue}
           rewardBalance={migrationRewardValue}
           round={selectModalRound + 1}
-          afterTx={() => { account && fetchroundData(account) }}
+          afterTx={() => { account && fetchRoundData(account) }}
           transactionModal={() => setTransactionModal(true)}
         />
         <StakingEnded
