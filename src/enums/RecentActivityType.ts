@@ -1,6 +1,6 @@
 enum RecentActivityType {
-	ELClaim = "elfi_claim_reward",
-	ELFIClaim = 'dai_claim_reward',
+  ELClaim = "elfi_claim_reward",
+  ELFIClaim = 'dai_claim_reward',
   ELMigration = "el_elfi_transmission",
   ELFIMigration = "elfi_dai_transmission",
   Deposit = "dai_deposit",
@@ -10,6 +10,7 @@ enum RecentActivityType {
   ELFIStakingWithdraw = "elfi_unstaking",
   ELStake = "el_staking",
   ELFIStake = "elfi_staking",
+  Approve = "approve",
   Idle = "activity"
 }
 

@@ -241,6 +241,7 @@ const StakingModal: React.FunctionComponent<{
                           setTransaction(tx, tracker, () => {
                             closeHandler()
                             transactionModal()
+                            window.localStorage.setItem("@txTracking", "Approve");
                           },
                             () => {
                               refetch()

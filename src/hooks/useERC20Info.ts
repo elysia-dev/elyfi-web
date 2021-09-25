@@ -44,7 +44,7 @@ const useERC20Info = (contractAddress: string, targetAddress: string): IERC20Inf
 		if (account) {
 			load(account)
 		}
-	}, [account])
+	}, [account, targetAddress])
 
 	return {
 		...state,
