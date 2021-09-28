@@ -117,7 +117,7 @@ const Navigation: FunctionComponent<Props> = ({ txStatus, txWaiting }) => {
         <div className="navigation__container">
           <div className="navigation__wrapper">
             <div>
-              <a href="https://defi.elysia.land/" rel="noopener noreferrer">
+              <a href="https://elyfi.world/" rel="noopener noreferrer">
                 <div className="logo-wrapper" style={{ cursor: "pointer" }}>
                   <img src={ElysiaLogo} className="elysia-logo" alt="Elysia_Logo" />
                 </div>

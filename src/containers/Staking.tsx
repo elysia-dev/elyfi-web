@@ -239,7 +239,7 @@ const Staking: React.FunctionComponent<IProps> = ({
             {t("staking.token_staking--content.2", { stakedToken: stakedToken, rewardToken: rewardToken })}<br /><br />
             {t("staking.token_staking--content.3")}
             <a
-              href="https://defi.elysia.land/reward"
+              href="https://elyfi.world/reward"
               target="_blank"
               className="link"
             >
