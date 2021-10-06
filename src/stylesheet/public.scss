@@ -352,6 +352,9 @@ span {
   }
 
   .tokens {
+    .token-name, .div-balance {
+      color: #888888;
+    }
     margin: 0 auto;
     &__header-wrapper {
       display: flex;

@@ -154,6 +154,11 @@ $footer-height: 100px;
   }
 
   .tokens {
+    .div-balance {
+      font-size: 13px;
+      font-weight: 400;
+      margin-top: 5px;
+    }
     width: 1190px;
     padding-bottom: 100px;
     &__container {
@@ -221,9 +226,19 @@ $footer-height: 100px;
                 width: 40px;
                 height: 40px;
               }
-              > p {
-                font-weight: bold;
-                cursor: pointer;
+              > div {
+                display: flex;
+                flex-direction: column;
+                text-align: right;
+                > p {
+                  margin: 0;
+                  font-weight: bold;
+                  cursor: pointer;
+                  &:last-child { 
+                    margin-top: 5px;
+                    font-weight: 400;
+                  }
+                }
               }
             }
           }

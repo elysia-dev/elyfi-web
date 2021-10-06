@@ -1,3 +1,4 @@
+
 import { useTranslation } from "react-i18next";
 import ELFIIcon from 'src/assets/images/elfi--icon.png';
 import Skeleton from 'react-loading-skeleton';
@@ -8,9 +9,11 @@ interface Props {
   index: number;
   onClick?: (e: any) => void;
   depositBalance?: string;
+  depositBalanceDivValue?: string;
   depositAPY?: string;
   miningAPR?: string;
   walletBalance?: string;
+  walletBalanceDivValue?: string;
   isDisable: boolean;
   skeletonLoading: boolean;
 }
@@ -25,7 +28,9 @@ const TokenTable: React.FC<Props> = ({
   miningAPR,
   walletBalance,
   isDisable,
-  skeletonLoading
+  skeletonLoading,
+  depositBalanceDivValue,
+  walletBalanceDivValue
 }) => {
   const { t } = useTranslation();
 
@@ -51,7 +56,15 @@ const TokenTable: React.FC<Props> = ({
               skeletonLoading ?
                 <Skeleton width={120} />
                 :
-                <p className="spoqa">{!isDisable ? depositBalance : "-"}</p>
+                <>
+                  <p className="spoqa__bold">
+                    {/* {!isDisable ? toCompactForBignumber(depositBalance[index] || constants.Zero) : "-"} <span className="token-name spoqa__bold">{tokenName}</span> */}
+                    {!isDisable ? (<>{depositBalance} <span className="token-name spoqa__bold">{tokenName}</span></>) : "-"}
+                  </p>
+                  <p className="spoqa div-balance">
+                    {!isDisable ? ("$ " + depositBalanceDivValue) : "-"}
+                  </p>
+                </>
             }
           </th>
           <th>
@@ -75,9 +88,14 @@ const TokenTable: React.FC<Props> = ({
               skeletonLoading ?
                 <Skeleton width={120} />
                 :
-                <p className="spoqa__bold">
-                  {!isDisable ? walletBalance : "-"}
-                </p>
+                <>
+                  <p className="spoqa__bold">
+                    {!isDisable ? (<>{walletBalance} <span className="token-name spoqa__bold">{tokenName}</span></>) : "-"}
+                  </p>
+                  <p className="spoqa div-balance">
+                    {!isDisable ? ("$ " + walletBalanceDivValue) : "-"}
+                  </p>
+                </>
             }
           </th>
         </tr>
