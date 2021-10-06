@@ -2,7 +2,7 @@
 import { useWeb3React } from '@web3-react/core';
 import ReserveData from 'src/core/data/reserves';
 import { useEffect } from 'react';
-import { toPercent, toCompactForBignumber, formatCommaSmall } from 'src/utiles/formatters';
+import { toPercent, toCompactForBignumber, formatCommaSmall, toCompactForOnlyNumber, formatSixFracionDigit, returnNumber } from 'src/utiles/formatters';
 import { useContext } from 'react';
 import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
 import { useState } from 'react';
@@ -35,7 +35,7 @@ const Dashboard: React.FunctionComponent = () => {
   const location = useLocation();
   const history = useHistory();
   const { reserves, refetch: refetchReserve } = useContext(ReservesContext);
-  const { elfiPrice, daiPrice, tetherPrice } = useContext(PriceContext);
+  const { elfiPrice } = useContext(PriceContext);
   const reserveId = new URLSearchParams(location.search).get("reserveId")
   
   const [reserve, setReserve] = useState<GetAllReserves_reserves | undefined>(
@@ -314,12 +314,10 @@ const Dashboard: React.FunctionComponent = () => {
                         }}
                         tokenName={reserve.name}
                         tokenImage={reserve.image}
-                        depositBalance={balances[index].loading || !!!reserves[index] ? undefined : toCompactForBignumber(balances[index].lTokens[index] || constants.Zero)}
-                        depositBalanceDivValue={balances[index].loading || !!!reserves[index] ? undefined : toCompactForBignumber(balances[index].lTokens[index].mul(Math.round((index === 0 ? daiPrice : tetherPrice))) || constants.Zero)}
+                        depositBalance={balances[index].loading || !!!reserves[index] ? undefined : returnNumber(balances[index].lTokens[index] || constants.Zero)}
                         depositAPY={toPercent((balances[index].loading || !!!reserves[index]) ? 0 : reserves[index].depositAPY)}
                         miningAPR={(balances[index].loading || !!!reserves[index]) ? undefined : toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserves[index].totalDeposit)) || '0')}
-                        walletBalance={balances[index].loading || !!!reserves[index] ? undefined : toCompactForBignumber(balances[index].value || constants.Zero)}
-                        walletBalanceDivValue={balances[index].loading || !!!reserves[index] ? undefined : toCompactForBignumber(balances[index].value.mul(Math.round((index === 0 ? daiPrice : tetherPrice))) || constants.Zero)}
+                        walletBalance={balances[index].loading || !!!reserves[index] ? undefined : returnNumber(balances[index].value || constants.Zero)}
                         isDisable={!!!reserves[index] ? true : false}
                         skeletonLoading={balances[index].loading}
                       />
@@ -353,13 +351,11 @@ const Dashboard: React.FunctionComponent = () => {
                                 </p>
                                 <p className="spoqa div-balance">
                                   {"$ " + 
-                                    Intl.NumberFormat('en', { maximumFractionDigits: 6, minimumFractionDigits: 6 }).format(
-                                      (parseFloat(utils.formatEther(
-                                        expectedIncentive.isZero() ? 
-                                          balances[index].incentive : 
-                                          expectedIncentive)
-                                        ) * Math.round(elfiPrice * 1000000) / 1000000)
-                                    )
+                                    formatSixFracionDigit((parseFloat(utils.formatEther(
+                                      expectedIncentive.isZero() ? 
+                                        balances[index].incentive : 
+                                        expectedIncentive)
+                                      ) * Math.round(elfiPrice * 1000000) / 1000000))
                                   }
                                 </p>
                               </div>
@@ -402,13 +398,11 @@ const Dashboard: React.FunctionComponent = () => {
                             </p>
                             <p className="spoqa div-balance">
                               {"$ " + 
-                                Intl.NumberFormat('en', { maximumFractionDigits: 6, minimumFractionDigits: 6 }).format(
-                                  (parseFloat(utils.formatEther(
-                                    expectedIncentive.isZero() ? 
-                                      balances[index].incentive : 
-                                      expectedIncentive)
-                                    ) * Math.round(elfiPrice * 1000000) / 1000000)
-                                )
+                                formatSixFracionDigit((parseFloat(utils.formatEther(
+                                  expectedIncentive.isZero() ? 
+                                    balances[index].incentive : 
+                                    expectedIncentive)
+                                  ) * Math.round(elfiPrice * 1000000) / 1000000))
                               }
                             </p>
                           </div>

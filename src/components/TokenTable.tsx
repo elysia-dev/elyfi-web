@@ -2,18 +2,20 @@
 import { useTranslation } from "react-i18next";
 import ELFIIcon from 'src/assets/images/elfi--icon.png';
 import Skeleton from 'react-loading-skeleton';
+import { toCompact, toCompactForOnlyNumber } from "src/utiles/formatters";
+import { utils } from "ethers";
+import { useContext } from "react";
+import PriceContext from 'src/contexts/PriceContext';
 
 interface Props {
   tokenImage: string;
   tokenName: string;
   index: number;
   onClick?: (e: any) => void;
-  depositBalance?: string;
-  depositBalanceDivValue?: string;
+  depositBalance?: number;
   depositAPY?: string;
   miningAPR?: string;
-  walletBalance?: string;
-  walletBalanceDivValue?: string;
+  walletBalance?: number;
   isDisable: boolean;
   skeletonLoading: boolean;
 }
@@ -28,11 +30,10 @@ const TokenTable: React.FC<Props> = ({
   miningAPR,
   walletBalance,
   isDisable,
-  skeletonLoading,
-  depositBalanceDivValue,
-  walletBalanceDivValue
+  skeletonLoading
 }) => {
   const { t } = useTranslation();
+  const { daiPrice, tetherPrice } = useContext(PriceContext);
 
   return (
     <>
@@ -59,10 +60,10 @@ const TokenTable: React.FC<Props> = ({
                 <>
                   <p className="spoqa__bold">
                     {/* {!isDisable ? toCompactForBignumber(depositBalance[index] || constants.Zero) : "-"} <span className="token-name spoqa__bold">{tokenName}</span> */}
-                    {!isDisable ? (<>{depositBalance} <span className="token-name spoqa__bold">{tokenName}</span></>) : "-"}
+                    {!isDisable ? (<>{toCompact(depositBalance || 0)} <span className="token-name spoqa__bold">{tokenName}</span></>) : "-"}
                   </p>
                   <p className="spoqa div-balance">
-                    {!isDisable ? ("$ " + depositBalanceDivValue) : "-"}
+                    {!isDisable ? ("$ " + toCompactForOnlyNumber(((depositBalance || 0) * Math.round((index === 0 ? daiPrice : tetherPrice) * 1000000) / 1000000))) : "-"}
                   </p>
                 </>
             }
@@ -90,10 +91,10 @@ const TokenTable: React.FC<Props> = ({
                 :
                 <>
                   <p className="spoqa__bold">
-                    {!isDisable ? (<>{walletBalance} <span className="token-name spoqa__bold">{tokenName}</span></>) : "-"}
+                    {!isDisable ? (<>{toCompact(walletBalance || 0)} <span className="token-name spoqa__bold">{tokenName}</span></>) : "-"}
                   </p>
                   <p className="spoqa div-balance">
-                    {!isDisable ? ("$ " + walletBalanceDivValue) : "-"}
+                    {!isDisable ? ("$ " + toCompactForOnlyNumber(((walletBalance || 0) * Math.round((index === 0 ? daiPrice : tetherPrice) * 1000000) / 1000000))) : "-"}
                   </p>
                 </>
             }
@@ -125,10 +126,10 @@ const TokenTable: React.FC<Props> = ({
                   :
                   <>
                     <p className="spoqa__bold">
-                      {!isDisable ? (<>{depositBalance} <span className="token-name spoqa__bold">{tokenName}</span></>) : "-"}
+                      {!isDisable ? (<>{toCompact(depositBalance || 0)} <span className="token-name spoqa__bold">{tokenName}</span></>) : "-"}
                     </p>
                     <p className="spoqa div-balance">
-                      {!isDisable ? ("$ " + depositBalanceDivValue) : "-"}
+                      {!isDisable ? ("$ " + toCompactForOnlyNumber(((depositBalance || 0) * Math.round((index === 0 ? daiPrice : tetherPrice) * 1000000) / 1000000))) : "-"}
                     </p>
                   </>
               }
@@ -166,10 +167,10 @@ const TokenTable: React.FC<Props> = ({
                   :
                   <>
                     <p className="spoqa__bold">
-                      {!isDisable ? (<>{walletBalance} <span className="token-name spoqa__bold">{tokenName}</span></>) : "-"}
+                      {!isDisable ? (<>{toCompact(walletBalance || 0)} <span className="token-name spoqa__bold">{tokenName}</span></>) : "-"}
                     </p>
                     <p className="spoqa div-balance">
-                      {!isDisable ? ("$ " + walletBalanceDivValue) : "-"}
+                      {!isDisable ? ("$ " + toCompactForOnlyNumber(((walletBalance || 0) * Math.round((index === 0 ? daiPrice : tetherPrice) * 1000000) / 1000000))) : "-"}
                     </p>
                   </>
               }

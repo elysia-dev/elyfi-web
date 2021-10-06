@@ -56,3 +56,7 @@ export const toCompactForBignumber = (value: BigNumber | number) => new Intl.Num
     )
   )
 );
+
+export const toCompactForOnlyNumber = (value: number) => Intl.NumberFormat('en-US', { maximumFractionDigits: 2, notation: "compact", compactDisplay: "short" }).format(value);
+
+export const returnNumber = (value: BigNumber) => parseFloat(utils.formatEther(value));
