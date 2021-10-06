@@ -1,9 +1,0 @@
-{
-  "search.exclude": {
-    "**/.node_modules": true,
-    "**/build": true
-  },
-  "[typescript]": {
-    "editor.tabSize":2
-  }
-}
