@@ -1,6 +1,5 @@
 {
   "moneyPoolAddress": "0xa93008fD32EB24E488DDAA6C0aA152559fDa9E8c",
-  "incentivePoolAddress": "0xD1e55Bff66da2Dc0290269B8e4b843531EBa7628",
   "governanceAddress": "0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4",
   "elStakingPoolAddress": "0xd804e198d25a1920522ca0094a670184a9c972d7",
   "elfyStakingPoolAddress": "0xb41bcd480fbd986331eeed516c52e447b50dacb4",

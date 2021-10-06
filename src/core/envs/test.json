@@ -1,6 +1,5 @@
 {
-  "moneyPoolAddress": "0x6c41Cba0198Eb638aD4C305fD083fe17f16166c7",
-  "incentivePoolAddress": "0x8e2803205f7116dE30005412FbFA64005df038f0",
+  "moneyPoolAddress": "0xc08C66518B7B710f7d8f64Ded056323ef3dFB0f0",
   "governanceAddress": "0x13a902bf1d18daaea3dc6c401e5171f4ab2a4833",
   "testStableAddress": "0x73e839d53FB65eb954B04Ea0cC0e2e11aAB936F7",
   "elStakingPoolAddress": "0xDF409737E31475Ec46e13335Ad5370c551b97D12",
@@ -9,6 +8,6 @@
   "elAddress": "0xdd469dfc7f64A68E6cd1D8e9B9D09E2Cb39a816c",
   "requiredNetwork": "Ropsten",
   "requiredChainId": 3,
-  "subgraphURI": "https://api.studio.thegraph.com/query/862/elyfi-ropsten/v0.0.2",
+  "subgraphURI": "https://api.studio.thegraph.com/query/862/elyfi-ropsten/v0.0.6",
   "etherscanURI": "https://ropsten.etherscan.io"
 }

@@ -4,12 +4,13 @@ import { FunctionComponent, useContext } from 'react'
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
 import { formatCommaSmall } from 'src/utiles/formatters';
-import useIncentivePool from 'src/hooks/useIncentivePool';
 import useWaitingTx from 'src/hooks/useWaitingTx';
 import { formatEther } from 'ethers/lib/utils';
 import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
+import ReservesContext from 'src/contexts/ReservesContext';
+import { IncentivePool__factory } from '@elysia-dev/contract-typechain';
 
 // Create deposit & withdraw
 const IncentiveModal: FunctionComponent<{
@@ -19,10 +20,10 @@ const IncentiveModal: FunctionComponent<{
   afterTx: () => Promise<void>,
   transactionModal: () => void
 }> = ({ visible, balance, onClose, afterTx, transactionModal }) => {
-  const { account } = useWeb3React()
+  const { account, library } = useWeb3React()
   const { waiting, wait } = useWaitingTx()
-  const incentivePool = useIncentivePool();
   const initTxTracker = useTxTracking();
+  const { reserves } = useContext(ReservesContext);
   const { setTransaction, failTransaction } = useContext(TxContext);
 
   const reqeustClaimIncentive = async () => {
@@ -31,12 +32,15 @@ const IncentiveModal: FunctionComponent<{
     const tracker = initTxTracker(
       'IncentiveModal',
       'Claim',
-      `${formatEther(balance)} ${incentivePool.address}`
+      `${formatEther(balance)} ${reserves[0].incentivePool.id}`
     );
 
     tracker.clicked();
 
-    incentivePool.claimIncentive().then((tx) => {
+    IncentivePool__factory.connect(
+      reserves[0].incentivePool.id,
+      library.getSigner()
+    ).claimIncentive().then((tx) => {
       tracker.created();
       setTransaction(
         tx,
