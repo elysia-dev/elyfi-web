@@ -211,106 +211,91 @@ const Dashboard: React.FunctionComponent = () => {
         }}
       />
       <Header title={t("navigation.deposit_withdraw").toUpperCase()} />
+
       <section className="tokens">
         <Title label={t("dashboard.deposits--header")} />
-        <table className="tokens__table">
-          <thead className="tokens__table__header pc-only">
-            <tr>
+        <div className="tokens__table__wrapper">
+          <table className="tokens__table">
+            <thead className="tokens__table__header pc-only">
+              <tr>
+                {
+                  [t("dashboard.asset"), t("dashboard.deposit_balance"), t("dashboard.deposit_apy"), t("dashboard.wallet_balance")].map((key, index) => {
+                    return (
+                      <th key={index} style={{ width: index === 0 ? 150 : 228 }}>
+                        <p className="tokens__table__header__column">
+                          {key}
+                        </p>
+                      </th>
+                    )
+                  })
+                }
+              </tr>
+            </thead>
+            <tbody className="tokens__table-body">
               {
-                [t("dashboard.asset"), t("dashboard.deposit_balance"), t("dashboard.deposit_apy"), t("dashboard.wallet_balance")].map((key, index) => {
+                ReserveData.map((reserve, index) => {
                   return (
-                    <th key={index} style={{ width: index === 0 ? 150 : 342 }}>
-                      <p className="tokens__table__header__column">
-                        {key}
-                      </p>
-                    </th>
+                    <>
+                      <TokenTable
+                        index={index}
+                        onClick={(e: any) => {
+                          e.preventDefault();
+                          setReserve(reserves[index])
+                          console.log(reserves)
+                          ReactGA.modalview('DepositOrWithdraw')
+                        }}
+                        tokenName={reserve.name}
+                        tokenImage={reserve.image}
+                        depositBalance={balances.loading ? undefined : `$ ${toCompactForBignumber(balances.lTokens[index] || 0)}`}
+                        depositAPY={toPercent(balances.loading ? 0 : reserves[0].depositAPY)}
+                        miningAPR={balances.loading ? undefined : toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserves[0].totalDeposit)) || '0')}
+                        walletBalance={`$ ${balances.loading ? undefined : toCompactForBignumber(balances.dai || 0)}`}
+                        isDisable={index === 0 ? false : false}
+                        skeletonLoading={balances.loading}
+                      />
+                    </>
                   )
                 })
               }
-            </tr>
-          </thead>
-          <tbody className="tokens__table-body">
-            {
-              ReserveData.map((reserve, index) => {
-                return (
-                  <>
-                    <TokenTable
-                      index={index}
-                      onClick={(e: any) => {
-                        e.preventDefault();
-                        setReserve(reserves[0])
-                        ReactGA.modalview('DepositOrWithdraw')
-                      }}
-                      tokenName={reserve.name}
-                      tokenImage={reserve.image}
-                      depositBalance={balances.loading ? undefined : `$ ${toCompactForBignumber(balances.lTokens[index] || 0)}`}
-                      depositAPY={toPercent(balances.loading ? 0 : reserves[0].depositAPY)}
-                      miningAPR={balances.loading ? undefined : toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserves[0].totalDeposit)) || '0')}
-                      walletBalance={`$ ${balances.loading ? undefined : toCompactForBignumber(balances.dai || 0)}`}
-                      isDisable={index === 0 ? false : true}
-                      skeletonLoading={balances.loading}
-                    />
-                  </>
-                )
-              })
-            }
 
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+          <div className="tokens__table__minted">
+            <p>
+              {t("dashboard.minted_balance")}
+            </p>
+            <div>
+              {ReserveData.map((data, index) => {
+                return (
+                  <div>
+                    <p>
+                      ▶
+                    </p>
+                    <div
+                      className="content"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIncentiveModalVisible(true);
+                        ReactGA.modalview('Incentive')
+                      }}
+                    >
+                      <img src={ELFI} alt="Token" />
+                      {
+                        balances.loading ?
+                        <Skeleton width={50} />
+                        : <p className="spoqa">{`${formatCommaSmall(expectedIncentive.isZero() ? balances.incentive : expectedIncentive)} ELFI`}</p>
+                      }
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </div>
       </section>
       <section className="tokens">
         <Title label={t("dashboard.minted")} />
-        <table className="tokens__table pc-only">
-          <thead className="tokens__table__header">
-            <tr>
-              {
-                [t("dashboard.asset"), t("dashboard.minted_balance"), t("dashboard.wallet_balance")].map((key, index) => {
-                  return (
-                    <th key={index} className="tokens__table__minted-header">
-                      <p className="tokens__table__header__column">
-                        {key}
-                      </p>
-                    </th>
-                  )
-                })
-              }
-            </tr>
-          </thead>
-          <tbody className="tokens__table-body">
-            <tr
-              className="tokens__table__row"
-              key={0}
-              onClick={(e) => {
-                e.preventDefault();
-                setIncentiveModalVisible(true);
-                ReactGA.modalview('Incentive')
-              }}
-            >
-              <th className={`tokens__table__image`}>
-                <div>
-                  <img src={ELFI} alt="Token" />
-                  <p className="spoqa__bold">ELFI</p>
-                </div>
-              </th>
-              <th>
-                {
-                  balances.loading ?
-                    <Skeleton width={50} />
-                    :
-                    <p className="spoqa">{`${formatCommaSmall(expectedIncentive.isZero() ? balances.incentive : expectedIncentive)} ELFI`}</p>
-                }
-              </th>
-              <th>
-                {
-                  balances.loading ?
-                    <Skeleton width={50} />
-                    :
-                    <p className="spoqa">{`${formatCommaSmall(balances.governance)} ELFI`}</p>
-                }
-              </th>
-            </tr>
-          </tbody>
-        </table>
+
         <div className="tokens__elfi mobile-only">
           <div
             className="tokens__table__row"

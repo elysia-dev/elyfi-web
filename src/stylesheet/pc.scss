@@ -160,8 +160,12 @@ $footer-height: 100px;
       margin-top: 85px;
     }
     &__table {
+      &__wrapper {
+        display: flex;
+        
+      }
       &__image {
-        padding: 10px 5px;
+        padding: 10px 0px 10px 30px;
         cursor: pointer;
         margin-left: 10px;
         &--disable {
@@ -180,13 +184,49 @@ $footer-height: 100px;
           }
         }
       }
-      &__minted-header {
-        width: 684px;
-        &:first-child {
-          width: 150px;
+      &__minted {
+        > p {
+          font-weight: bold;
+          margin: 18px 0 0 36px;
+          line-height: 54px;
+          text-align: center;
         }
-        &:last-child {
-          width: 342px;
+        > div {
+          display: flex;
+          flex-direction: column;
+          > div {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-top: 15px;
+            > p {
+              margin: 0 10px;
+              color: #646464;
+            }
+            > .content {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              justify-content: space-around;
+              box-shadow: 0px 0px 6px #00000029;
+
+              width: 320px;
+              height: 80px;
+              cursor: pointer;
+              &:hover {
+                box-shadow: 0px 0px 16px #00000029;
+                transition: all 0.5 ease-in-out;
+              }
+              > img {
+                width: 40px;
+                height: 40px;
+              }
+              > p {
+                font-weight: bold;
+                cursor: pointer;
+              }
+            }
+          }
         }
       }
       &__apr {
@@ -220,20 +260,21 @@ $footer-height: 100px;
         }
       }
       &__header {
-        margin: 20px;
         &__column {
           position: relative;
           &--selected {
             position: relative;
           }
         }
-        > tr > th {
-          padding-bottom: 0 !important;
-          &:first-child {
-            > p {
-              margin: 0;
-              text-align: left;
-              margin-left: 60px;
+        > tr {
+          > th {
+            padding-bottom: 0 !important;
+            &:first-child {
+              > p {
+                margin: 0;
+                text-align: left;
+                margin-left: 80px;
+              }
             }
           }
         }
@@ -241,6 +282,12 @@ $footer-height: 100px;
       &__row {
         border-radius: 5px;
         margin: 20px;
+        height: 80px;
+        &--disable {
+          border-radius: 5px;
+          margin: 20px;
+          height: 80px;
+        }
         > th {
           width: 205px;
           box-sizing: border-box;

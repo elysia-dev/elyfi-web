@@ -48,7 +48,8 @@
       "deposit--button": "存款",
       "withdral--button": "出金",
       "protocol_allow": "允许ELYFI协议使用您的{{tokenName}}",
-      "disable_content--1": "请绑定您的钱包以访问该页面."
+      "disable_content--1": "请绑定您的钱包以访问该页面.",
+      "elfi_reward": "ELFI 奖励"
     },
     "portfolio": {
       "investment_status": "贷款现状",
