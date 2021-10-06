@@ -323,7 +323,7 @@ const Dashboard: React.FunctionComponent = () => {
                         isDisable={!!!reserves[index] ? true : false}
                         skeletonLoading={balances[index].loading}
                       />
-                      
+
                       {/* mobile only */}
                       <div className="tokens__table__minted mobile-only">
                         <p>
@@ -422,51 +422,6 @@ const Dashboard: React.FunctionComponent = () => {
         </div>
         <div style={{ height: 100 }} />
       </section>
-      {/* <section className="tokens  mobile-only">
-        <Title label={t("dashboard.minted")} />
-        
-        <div className="tokens__elfi">
-          <div
-            className="tokens__table__row"
-            onClick={(e) => {
-              e.preventDefault();
-              setIncentiveModalVisible(true);
-              ReactGA.modalview('Incentive')
-            }}
-          >
-            <div className="tokens__table__image">
-              <div>
-                <img src={ELFI} alt='token' />
-                <p className="spoqa__bold">ELFI</p>
-              </div>
-            </div>
-            <div className="tokens__table__content">
-              <div className="tokens__table__content__data">
-                <p className="spoqa__bold">
-                  {t("dashboard.minted_balance")}
-                </p>
-                {
-                  balances[0].loading ?
-                    <Skeleton width={50} />
-                    :
-                    <p className="spoqa">{`${formatCommaSmall(expectedIncentive.isZero() ? balances[0].incentive : expectedIncentive)} ELFI`}</p>
-                }
-              </div>
-              <div className="tokens__table__content__data">
-                <p className="spoqa__bold">
-                  {t("dashboard.wallet_balance")}
-                </p>
-                {
-                  balances[0].loading ?
-                    <Skeleton width={50} />
-                    :
-                    <p className="spoqa">{`${formatCommaSmall(balances[0].governance)} ELFI`}</p>
-                }
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
     </>
   );
 }
