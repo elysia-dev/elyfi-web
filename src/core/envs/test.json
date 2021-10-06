@@ -8,6 +8,6 @@
   "elAddress": "0xdd469dfc7f64A68E6cd1D8e9B9D09E2Cb39a816c",
   "requiredNetwork": "Ropsten",
   "requiredChainId": 3,
-  "subgraphURI": "https://api.studio.thegraph.com/query/862/elyfi-ropsten/v0.0.6",
+  "subgraphURI": "https://api.studio.thegraph.com/query/862/elyfi-ropsten/v0.0.8",
   "etherscanURI": "https://ropsten.etherscan.io"
 }
