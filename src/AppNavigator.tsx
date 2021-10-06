@@ -12,6 +12,7 @@ import ScrollToTop from 'src/hooks/ScrollToTop';
 import envs from 'src/core/envs';
 import usePageTracking from 'src/hooks/usePageTracking';
 import { useMediaQuery } from 'react-responsive';
+import InjectedConnector from 'src/core/connectors/injectedConnector';
 
 import 'src/stylesheet/public.scss';
 import 'src/stylesheet/pc.scss';
@@ -34,12 +35,16 @@ const AppNavigator: React.FC = () => {
     isPc ? window.sessionStorage.setItem("@MediaQuery", "PC") : isTablet ? window.sessionStorage.setItem("@MediaQuery", "Tablet") : window.sessionStorage.setItem("@MediaQuery", "Mobile")
   }, [isPc, isTablet, isMobile])
 
-  const { active, chainId, deactivate } = useWeb3React();
+  const { active, chainId, deactivate, activate } = useWeb3React();
   usePageTracking();
 
   useEffect(() => {
-    window.sessionStorage.getItem("@connect") === "false" && deactivate();
-  }, [active])
+    if (window.sessionStorage.getItem("@connect") === "true") {
+      activate(InjectedConnector)
+    } else {
+      deactivate();
+    }
+  }, [])
 
   return (
     <div className={`elysia ${isPc ? "view-w" : isTablet ? "view-t" : "view-m"}`}>
