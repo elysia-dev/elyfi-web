@@ -17,6 +17,8 @@ const PriceProvider: React.FC = (props) => {
         ...state,
         elfiPrice: parseFloat(poolData.data.data.pool.poolDayData[poolData.data.data.pool.poolDayData.length - 1].token1Price),
         elPrice: (await Coingecko.getElPrice()).data.elysia.usd,
+        daiPrice: (await Coingecko.getDaiPrice()).data.dai.usd,
+        tetherPrice: (await Coingecko.getTetherPrice()).data.tether.usd,
         loading: false,
       })
     } catch (e) {
