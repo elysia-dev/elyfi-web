@@ -1,10 +1,8 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber } from 'ethers';
 import { FunctionComponent, useContext } from 'react'
-import LoadingIndicator from 'src/components/LoadingIndicator';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
 import { formatCommaSmall } from 'src/utiles/formatters';
-import useWaitingTx from 'src/hooks/useWaitingTx';
 import { formatEther } from 'ethers/lib/utils';
 import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
@@ -16,12 +14,12 @@ import { IncentivePool__factory } from '@elysia-dev/contract-typechain';
 const IncentiveModal: FunctionComponent<{
   balance: BigNumber,
   visible: boolean,
+  incentivePoolAddress: string,
   onClose: () => void,
   afterTx: () => Promise<void>,
   transactionModal: () => void
-}> = ({ visible, balance, onClose, afterTx, transactionModal }) => {
+}> = ({ visible, balance, incentivePoolAddress, onClose, afterTx, transactionModal }) => {
   const { account, library } = useWeb3React()
-  const { waiting, wait } = useWaitingTx()
   const initTxTracker = useTxTracking();
   const { reserves } = useContext(ReservesContext);
   const { setTransaction, failTransaction } = useContext(TxContext);
@@ -38,7 +36,7 @@ const IncentiveModal: FunctionComponent<{
     tracker.clicked();
 
     IncentivePool__factory.connect(
-      reserves[0].incentivePool.id,
+      incentivePoolAddress,
       library.getSigner()
     ).claimIncentive().then((tx) => {
       tracker.created();
@@ -77,21 +75,17 @@ const IncentiveModal: FunctionComponent<{
           </div>
         </div>
         <div className="modal__body">
-          {waiting ?
-            <LoadingIndicator />
-            :
-            <div className="modal__withdraw" style={{ height: window.sessionStorage.getItem("@MediaQuery") !== "PC" ? 130 : 170, minHeight: 0, overflowY: "clip" }}>
-              <div className="modal__withdraw__value-wrapper">
-                <p></p>
-                <p className="modal__withdraw__value bold" style={{ fontSize: window.sessionStorage.getItem("@MediaQuery") !== "PC" ? 30 : 60 }}>
-                  {
-                    formatCommaSmall(balance)
-                  }
-                </p>
-              </div>
-
+          <div className="modal__withdraw" style={{ height: window.sessionStorage.getItem("@MediaQuery") !== "PC" ? 130 : 170, minHeight: 0, overflowY: "clip" }}>
+            <div className="modal__withdraw__value-wrapper">
+              <p></p>
+              <p className="modal__withdraw__value bold" style={{ fontSize: window.sessionStorage.getItem("@MediaQuery") !== "PC" ? 30 : 60 }}>
+                {
+                  formatCommaSmall(balance)
+                }
+              </p>
             </div>
-          }
+
+          </div>
           <div
             className="modal__button"
             onClick={() => { reqeustClaimIncentive() }}

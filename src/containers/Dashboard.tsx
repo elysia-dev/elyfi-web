@@ -1,13 +1,12 @@
-
 import { useWeb3React } from '@web3-react/core';
 import ReserveData from 'src/core/data/reserves';
 import { useEffect } from 'react';
-import { toPercent, toCompactForBignumber, formatCommaSmall } from 'src/utiles/formatters';
+import { toPercent, toCompactForBignumber, formatCommaSmall, formatSixFracionDigit } from 'src/utiles/formatters';
 import { useContext } from 'react';
 import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
 import { useState } from 'react';
 import ReservesContext from 'src/contexts/ReservesContext';
-import { BigNumber, constants, utils } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { useHistory, useLocation } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
@@ -23,12 +22,21 @@ import { Title } from 'src/components/Texts';
 import calcExpectedIncentive from 'src/utiles/calcExpectedIncentive';
 import moment from 'moment';
 import PriceContext from 'src/contexts/PriceContext';
-import useIncentivePool from 'src/hooks/useIncentivePool';
-import { ERC20__factory } from "@elysia-dev/contract-typechain";
+import { ERC20__factory, IncentivePool__factory } from "@elysia-dev/contract-typechain";
 import ReactGA from "react-ga";
 import Header from 'src/components/Header';
 import TokenTable from 'src/components/TokenTable';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
+import { formatEther } from '@ethersproject/units';
+
+const initialBalanceState = {
+  loading: true,
+  value: constants.Zero,
+  incentive: constants.Zero,
+  expectedIncentive: constants.Zero,
+  deposit: constants.Zero,
+  updatedAt: moment().unix(),
+}
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -37,7 +45,7 @@ const Dashboard: React.FunctionComponent = () => {
   const { reserves, refetch: refetchReserve } = useContext(ReservesContext);
   const { elfiPrice, daiPrice, tetherPrice } = useContext(PriceContext);
   const reserveId = new URLSearchParams(location.search).get("reserveId")
-  
+
   const [reserve, setReserve] = useState<GetAllReserves_reserves | undefined>(
     reserves.find((reserve) => reserveId === reserve.id)
   );
@@ -47,29 +55,15 @@ const Dashboard: React.FunctionComponent = () => {
     tokenName: string,
     value: BigNumber,
     incentive: BigNumber,
-    governance: BigNumber
-    lTokens: BigNumber[],
+    expectedIncentive: BigNumber,
+    deposit: BigNumber,
     updatedAt: number,
-  }[]>([
-    {
-      loading: true,
-      tokenName: ReserveData[0].name,
-      value: constants.Zero,
-      incentive: constants.Zero,
-      governance: constants.Zero,
-      lTokens: Array.from(Array(reserves.length), () => constants.Zero),
-      updatedAt: moment().unix(),
-    },
-    {
-      loading: true,
-      tokenName: ReserveData[1].name,
-      value: constants.Zero,
-      incentive: constants.Zero,
-      governance: constants.Zero,
-      lTokens: Array.from(Array(reserves.length), () => constants.Zero),
-      updatedAt: moment().unix(),
+  }[]>(ReserveData.map((reserve) => {
+    return {
+      ...initialBalanceState,
+      tokenName: reserve.name,
     }
-  ]);
+  }));
   const [incentiveModalVisible, setIncentiveModalVisible] = useState<boolean>(false);
   const {
     data: userConnection,
@@ -78,88 +72,37 @@ const Dashboard: React.FunctionComponent = () => {
     GET_USER,
     { variables: { id: account?.toLocaleLowerCase() } }
   )
-  // const [expectedIncentive, setExpectedIncentive] = useState<BigNumber[]>(
-  //   balances.map(data =>
-  //     { return data.incentive }
-  //   )
-  // )
-  const [expectedIncentive, setExpectedIncentive] = useState<BigNumber>(balances[0].incentive)
-
-  const incentivePool = useIncentivePool();
   const [transactionModal, setTransactionModal] = useState(false);
   const [selectedModalNumber, setModalNumber] = useState(0);
 
-  const refrechBalancesAfterTx = async (index: number) => {
-    if (!account) return;
-    try {
-      const data = await Promise.all(
-        balances.map(async (_data, _index) => {
-          if (_index !== index) return _data;
-
-          refetchReserve();
-          refetchUserData();
-          const updatedLTokens = balances[index].lTokens;
-
-          if (balances[index].lTokens.length >= index + 1) {
-            updatedLTokens[index] = await ERC20__factory
-              .connect(reserves[index].lToken.id, library)
-              .balanceOf(account)
-          }
-
-          return {
-            ..._data,
-            value: await ERC20__factory.connect(reserves[index].id, library).balanceOf(account),
-            lTokens: updatedLTokens,
-            updatedAt: moment().unix(),
-          }          
-
-        })
-      )
-      setBalances(data)
-    } catch {
-      let datas = balances;
-      let data = {...datas[index]};
-      data.loading = false;
-      datas[index] = data;
-      setBalances(datas);
+  const fetchBalanceFrom = async (reserve: GetAllReserves_reserves, account: string) => {
+    return {
+      value: await ERC20__factory.connect(reserve.id, library).balanceOf(account),
+      incentive: await await IncentivePool__factory.connect(
+        reserve.incentivePool.id,
+        library.getSigner()
+      ).getUserIncentive(account),
+      governance: await ERC20__factory.connect(envs.governanceAddress, library).balanceOf(account),
+      deposit: await ERC20__factory.connect(reserve.lToken.id, library).balanceOf(account),
     }
   }
 
-  const refrechBalancesAfterClaimTx = async (index: number) => {
+  const loadBalance = async (index: number) => {
     if (!account) return;
 
-    try {
-      const data = await Promise.all(
-        balances.map(async (_data, _index) => {
-          if (_index !== index) return _data;
+    refetchReserve();
+    refetchUserData();
 
-          refetchReserve();
-          refetchUserData();
-          const updatedLTokens = balances[index].lTokens;
-
-          if (balances[index].lTokens.length >= index + 1) {
-            updatedLTokens[index] = await ERC20__factory
-              .connect(reserves[index].lToken.id, library)
-              .balanceOf(account)
-          }
-
-          return {
-            ..._data,
-            incentive: await incentivePool.getUserIncentive(account),
-            updatedAt: moment().unix(),
-          }          
-
-        })
-      )
-      setBalances(data)
-    } catch {
-      let datas = balances;
-      let data = {...datas[index]};
-      data.loading = false;
-      datas[index] = data;
-      setBalances(datas);
-    }
-
+    setBalances(await Promise.all(
+      balances.map(async (data, _index) => {
+        if (_index !== index) return data;
+        return {
+          ...data,
+          ...(await fetchBalanceFrom(reserves[index], account)),
+          updatedAt: moment().unix(),
+        }
+      })
+    ))
   }
 
   const loadBalances = async () => {
@@ -168,35 +111,19 @@ const Dashboard: React.FunctionComponent = () => {
     }
 
     try {
-      const data = await Promise.all(
-        balances.map(async (_data, index) => {
-          if (!!!reserves[index]) return { ..._data, loading: false };
+      refetchReserve();
+      refetchUserData();
 
-          refetchReserve();
-          refetchUserData();
-          const updatedLTokens = balances[index].lTokens;
-
-          if (balances[index].lTokens.length >= index + 1) {
-            updatedLTokens[index] = await ERC20__factory
-              .connect(reserves[index].lToken.id, library)
-              .balanceOf(account)
-          }
-
+      setBalances(await Promise.all(
+        reserves.map(async (reserve, index) => {
           return {
-            ..._data,
+            ...balances[index],
             loading: false,
-            value: await ERC20__factory.connect(reserves[index].id, library).balanceOf(account),
-            incentive: await incentivePool.getUserIncentive(account),
-            governance: await ERC20__factory.connect(envs.governanceAddress, library).balanceOf(account),
-            lTokens: await Promise.all(reserves.map((reserve) => {
-              return ERC20__factory.connect(reserve.lToken.id, library).balanceOf(account)
-            })),
+            ...(await fetchBalanceFrom(reserve, account)),
             updatedAt: moment().unix()
-          }          
-
+          }
         })
-      )
-      setBalances(data)
+      ))
     } catch (e) {
       console.log(e)
       setBalances(balances.map(data => {
@@ -212,6 +139,7 @@ const Dashboard: React.FunctionComponent = () => {
     loadBalances();
   }, [account])
 
+  /*
   useEffect(() => {
     const interval = setInterval(
       () => {
@@ -234,6 +162,7 @@ const Dashboard: React.FunctionComponent = () => {
       clearInterval(interval);
     }
   })
+  */
 
   return (
     <>
@@ -258,8 +187,8 @@ const Dashboard: React.FunctionComponent = () => {
             setReserve(undefined)
           }}
           balance={balances[selectedModalNumber].value}
-          depositBalance={BigNumber.from(balances[selectedModalNumber].lTokens[0])}
-          afterTx={() => refrechBalancesAfterTx(selectedModalNumber)}
+          depositBalance={BigNumber.from(balances[selectedModalNumber].deposit)}
+          afterTx={() => loadBalance(selectedModalNumber)}
           transactionModal={() => setTransactionModal(true)}
         />
       }
@@ -268,8 +197,9 @@ const Dashboard: React.FunctionComponent = () => {
         onClose={() => {
           setIncentiveModalVisible(false)
         }}
-        balance={expectedIncentive}
-        afterTx={() => refrechBalancesAfterClaimTx(selectedModalNumber)}
+        balance={balances[selectedModalNumber].expectedIncentive}
+        incentivePoolAddress={reserves[selectedModalNumber].incentivePool.id}
+        afterTx={() => loadBalance(selectedModalNumber)}
         transactionModal={() => setTransactionModal(true)}
       />
       <TransactionConfirmModal
@@ -301,10 +231,11 @@ const Dashboard: React.FunctionComponent = () => {
             </thead>
             <tbody className="tokens__table-body">
               {
-                ReserveData.map((reserve, index) => {
+                balances.map((balance, index) => {
                   return (
                     <>
                       <TokenTable
+                        key={index}
                         index={index}
                         onClick={(e: any) => {
                           e.preventDefault();
@@ -312,16 +243,16 @@ const Dashboard: React.FunctionComponent = () => {
                           setModalNumber(index)
                           ReactGA.modalview('DepositOrWithdraw')
                         }}
-                        tokenName={reserve.name}
-                        tokenImage={reserve.image}
-                        depositBalance={balances[index].loading || !!!reserves[index] ? undefined : toCompactForBignumber(balances[index].lTokens[index] || constants.Zero)}
-                        depositBalanceDivValue={balances[index].loading || !!!reserves[index] ? undefined : toCompactForBignumber(balances[index].lTokens[index].mul(Math.round((index === 0 ? daiPrice : tetherPrice))) || constants.Zero)}
-                        depositAPY={toPercent((balances[index].loading || !!!reserves[index]) ? 0 : reserves[index].depositAPY)}
-                        miningAPR={(balances[index].loading || !!!reserves[index]) ? undefined : toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserves[index].totalDeposit)) || '0')}
-                        walletBalance={balances[index].loading || !!!reserves[index] ? undefined : toCompactForBignumber(balances[index].value || constants.Zero)}
-                        walletBalanceDivValue={balances[index].loading || !!!reserves[index] ? undefined : toCompactForBignumber(balances[index].value.mul(Math.round((index === 0 ? daiPrice : tetherPrice))) || constants.Zero)}
-                        isDisable={!!!reserves[index] ? true : false}
-                        skeletonLoading={balances[index].loading}
+                        tokenName={ReserveData[index].name}
+                        tokenImage={ReserveData[index].image}
+                        depositBalance={toCompactForBignumber(balance.deposit || constants.Zero)}
+                        depositBalanceDivValue={toCompactForBignumber(balance.deposit.mul(Math.round((index === 0 ? daiPrice : tetherPrice))) || constants.Zero)}
+                        depositAPY={toPercent(reserves[index].depositAPY)}
+                        miningAPR={toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserves[index].totalDeposit)) || '0')}
+                        walletBalance={toCompactForBignumber(balance.value || constants.Zero)}
+                        walletBalanceDivValue={toCompactForBignumber(balance.value.mul(Math.round((index === 0 ? daiPrice : tetherPrice))) || constants.Zero)}
+                        isDisable={!!!reserves[index]}
+                        skeletonLoading={balance.loading}
                       />
 
                       {/* mobile only */}
@@ -343,23 +274,24 @@ const Dashboard: React.FunctionComponent = () => {
                               {t("dashboard.minted_balance")}
                             </p>
                           </div>
-                          
+
                           {
-                            balances[index].loading ?
-                            <Skeleton width={50} /> :
+                            balance.loading ?
+                              <Skeleton width={50} /> :
                               <div>
                                 <p className="spoqa__bold">
-                                  {formatCommaSmall(expectedIncentive.isZero() ? balances[index].incentive : expectedIncentive)}<span className="token-name spoqa__bold"> ELFI</span>
+                                  {formatCommaSmall(balance.expectedIncentive.isZero() ? balance.incentive : balance.expectedIncentive)}<span className="token-name spoqa__bold"> ELFI</span>
                                 </p>
                                 <p className="spoqa div-balance">
-                                  {"$ " + 
-                                    Intl.NumberFormat('en', { maximumFractionDigits: 6, minimumFractionDigits: 6 }).format(
-                                      (parseFloat(utils.formatEther(
-                                        expectedIncentive.isZero() ? 
-                                          balances[index].incentive : 
-                                          expectedIncentive)
-                                        ) * Math.round(elfiPrice * 1000000) / 1000000)
-                                    )
+                                  {"$ " + formatSixFracionDigit(
+                                    parseFloat(
+                                      formatEther(
+                                        balance.expectedIncentive.isZero() ?
+                                          balance.incentive :
+                                          balance.expectedIncentive
+                                      )
+                                    ) * elfiPrice
+                                  )
                                   }
                                 </p>
                               </div>
@@ -370,7 +302,6 @@ const Dashboard: React.FunctionComponent = () => {
                   )
                 })
               }
-
             </tbody>
           </table>
           <div className="tokens__table__minted pc-only">
@@ -378,7 +309,7 @@ const Dashboard: React.FunctionComponent = () => {
               {t("dashboard.minted_balance")}
             </p>
             <div>
-              {ReserveData.map((_x, index) => {
+              {balances.map((balance, index) => {
                 return (
                   <div>
                     <p>
@@ -389,26 +320,28 @@ const Dashboard: React.FunctionComponent = () => {
                       onClick={(e) => {
                         e.preventDefault();
                         setIncentiveModalVisible(true);
+                        setModalNumber(index)
                         ReactGA.modalview('Incentive')
                       }}
                     >
                       <img src={ELFI} alt="Token" />
                       {
-                        balances[index].loading ?
-                        <Skeleton width={50} /> :
+                        balance.loading ?
+                          <Skeleton width={50} /> :
                           <div>
                             <p className="spoqa__bold">
-                              {formatCommaSmall(expectedIncentive.isZero() ? balances[index].incentive : expectedIncentive)}<span className="token-name spoqa__bold"> ELFI</span>
+                              {formatCommaSmall(balance.expectedIncentive.isZero() ? balance.incentive : balance.expectedIncentive)}<span className="token-name spoqa__bold"> ELFI</span>
                             </p>
                             <p className="spoqa div-balance">
-                              {"$ " + 
-                                Intl.NumberFormat('en', { maximumFractionDigits: 6, minimumFractionDigits: 6 }).format(
-                                  (parseFloat(utils.formatEther(
-                                    expectedIncentive.isZero() ? 
-                                      balances[index].incentive : 
-                                      expectedIncentive)
-                                    ) * Math.round(elfiPrice * 1000000) / 1000000)
-                                )
+                              {"$ " + formatSixFracionDigit(
+                                parseFloat(
+                                  formatEther(
+                                    balance.expectedIncentive.isZero() ?
+                                      balance.incentive :
+                                      balance.expectedIncentive
+                                  )
+                                ) * elfiPrice
+                              )
                               }
                             </p>
                           </div>
@@ -421,7 +354,7 @@ const Dashboard: React.FunctionComponent = () => {
           </div>
         </div>
         <div style={{ height: 100 }} />
-      </section>
+      </section >
     </>
   );
 }
