@@ -22,27 +22,43 @@ export const formatCommaWithDigits = (value: BigNumber, digits: number) => new I
     )
   )
 );
-export const formatCommaFillZero = (value: BigNumber) => new Intl.NumberFormat('en', { minimumFractionDigits: 8, maximumFractionDigits: 8 }).format(
-  parseFloat(
-    utils.formatEther(
-      value
+export const formatCommaFillZero = (value: BigNumber) => {
+  if (value.isZero()) {
+    return "0"
+  }
+  return new Intl.NumberFormat('en', { minimumFractionDigits: 8, maximumFractionDigits: 8 }).format(
+    parseFloat(
+      utils.formatEther(
+        value
+      )
     )
   )
-)
+}
 
-export const formatCommaSmall = (value: BigNumber) => formatSixFracionDigit(
-  parseFloat(
-    utils.formatEther(
-      value
+export const formatCommaSmall = (value: BigNumber) => {
+  if (value.isZero()) {
+    return "0"
+  }
+
+  return formatSixFracionDigit(
+    parseFloat(
+      utils.formatEther(
+        value
+      )
     )
   )
-);
+}
 
-export const formatSixFracionDigit = (value: number) => new Intl.NumberFormat(
-  'en', { maximumFractionDigits: 6, minimumFractionDigits: 6 }
-).format(
-  value
-);
+export const formatSixFracionDigit = (value: number) => {
+  if (value <= 0.0000001) {
+    return "0";
+  }
+  return new Intl.NumberFormat(
+    'en', { maximumFractionDigits: 6, minimumFractionDigits: 6 }
+  ).format(
+    value
+  );
+}
 
 export const toPercent = (value: any) => `${toCompact(parseFloat(utils.formatUnits(value, 25)))}%`
 export const toPercentWithoutSign = (value: any) => `${toCompact(parseFloat(utils.formatUnits(value, 25)))}`
