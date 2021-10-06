@@ -123,9 +123,14 @@ const TokenTable: React.FC<Props> = ({
                 skeletonLoading ?
                   <Skeleton width={120} />
                   :
-                  <p className="spoqa__bold">
-                    {!isDisable ? depositBalance || 0 : "-"}
-                  </p>
+                  <>
+                    <p className="spoqa__bold">
+                      {!isDisable ? (<>{depositBalance} <span className="token-name spoqa__bold">{tokenName}</span></>) : "-"}
+                    </p>
+                    <p className="spoqa div-balance">
+                      {!isDisable ? ("$ " + depositBalanceDivValue) : "-"}
+                    </p>
+                  </>
               }
             </div>
             <div className="tokens__table__content__data">
@@ -159,9 +164,14 @@ const TokenTable: React.FC<Props> = ({
                 skeletonLoading ?
                   <Skeleton width={120} />
                   :
-                  <p className="spoqa__bold">
-                    {!isDisable ? walletBalance || 0 : "-"}
-                  </p>
+                  <>
+                    <p className="spoqa__bold">
+                      {!isDisable ? (<>{walletBalance} <span className="token-name spoqa__bold">{tokenName}</span></>) : "-"}
+                    </p>
+                    <p className="spoqa div-balance">
+                      {!isDisable ? ("$ " + walletBalanceDivValue) : "-"}
+                    </p>
+                  </>
               }
             </div>
           </div>

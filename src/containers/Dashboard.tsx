@@ -323,6 +323,49 @@ const Dashboard: React.FunctionComponent = () => {
                         isDisable={!!!reserves[index] ? true : false}
                         skeletonLoading={balances[index].loading}
                       />
+                      
+                      {/* mobile only */}
+                      <div className="tokens__table__minted mobile-only">
+                        <p>
+                          ▼
+                        </p>
+                        <div
+                          className="content"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setIncentiveModalVisible(true);
+                            ReactGA.modalview('Incentive')
+                          }}
+                        >
+                          <div>
+                            <img src={ELFI} alt="Token" />
+                            <p className="spoqa__bold">
+                              {t("dashboard.minted_balance")}
+                            </p>
+                          </div>
+                          
+                          {
+                            balances[index].loading ?
+                            <Skeleton width={50} /> :
+                              <div>
+                                <p className="spoqa__bold">
+                                  {formatCommaSmall(expectedIncentive.isZero() ? balances[index].incentive : expectedIncentive)}<span className="token-name spoqa__bold"> ELFI</span>
+                                </p>
+                                <p className="spoqa div-balance">
+                                  {"$ " + 
+                                    Intl.NumberFormat('en', { maximumFractionDigits: 6, minimumFractionDigits: 6 }).format(
+                                      (parseFloat(utils.formatEther(
+                                        expectedIncentive.isZero() ? 
+                                          balances[index].incentive : 
+                                          expectedIncentive)
+                                        ) * Math.round(elfiPrice * 1000000) / 1000000)
+                                    )
+                                  }
+                                </p>
+                              </div>
+                          }
+                        </div>
+                      </div>
                     </>
                   )
                 })
@@ -330,7 +373,7 @@ const Dashboard: React.FunctionComponent = () => {
 
             </tbody>
           </table>
-          <div className="tokens__table__minted">
+          <div className="tokens__table__minted pc-only">
             <p>
               {t("dashboard.minted_balance")}
             </p>
@@ -377,9 +420,9 @@ const Dashboard: React.FunctionComponent = () => {
             </div>
           </div>
         </div>
-        <div style={{ height: 100 }} className="pc-only" />
+        <div style={{ height: 100 }} />
       </section>
-      <section className="tokens  mobile-only">
+      {/* <section className="tokens  mobile-only">
         <Title label={t("dashboard.minted")} />
         
         <div className="tokens__elfi">
@@ -423,7 +466,7 @@ const Dashboard: React.FunctionComponent = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
     </>
   );
 }
