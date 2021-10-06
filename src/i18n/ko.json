@@ -48,7 +48,8 @@
       "deposit--button": "예치하기",
       "withdral--button": "출금하기",
       "protocol_allow": "ELYFI에서 {{tokenName}}에 접근할 수 있게 허용해주세요",
-      "disable_content--1": "해당 페이지에 접근하기 위해 지갑을 연결해주세요."
+      "disable_content--1": "해당 페이지에 접근하기 위해 지갑을 연결해주세요.",
+      "elfi_reward": "ELFI 보상"
     },
     "portfolio": {
       "investment_status": "대출 현황",

@@ -7,7 +7,7 @@ import { useContext } from 'react';
 import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
 import { useState } from 'react';
 import ReservesContext from 'src/contexts/ReservesContext';
-import { BigNumber, constants } from 'ethers';
+import { BigNumber, constants, utils } from 'ethers';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { useHistory, useLocation } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
@@ -35,27 +35,41 @@ const Dashboard: React.FunctionComponent = () => {
   const location = useLocation();
   const history = useHistory();
   const { reserves, refetch: refetchReserve } = useContext(ReservesContext);
-  const { elfiPrice } = useContext(PriceContext);
+  const { elfiPrice, daiPrice, tetherPrice } = useContext(PriceContext);
   const reserveId = new URLSearchParams(location.search).get("reserveId")
+  
   const [reserve, setReserve] = useState<GetAllReserves_reserves | undefined>(
     reserves.find((reserve) => reserveId === reserve.id)
   );
   const { t } = useTranslation();
   const [balances, setBalances] = useState<{
     loading: boolean,
-    dai: BigNumber,
+    tokenName: string,
+    value: BigNumber,
     incentive: BigNumber,
     governance: BigNumber
     lTokens: BigNumber[],
     updatedAt: number,
-  }>({
-    loading: true,
-    dai: constants.Zero,
-    incentive: constants.Zero,
-    governance: constants.Zero,
-    lTokens: Array.from(Array(reserves.length), () => constants.Zero),
-    updatedAt: moment().unix(),
-  });
+  }[]>([
+    {
+      loading: true,
+      tokenName: ReserveData[0].name,
+      value: constants.Zero,
+      incentive: constants.Zero,
+      governance: constants.Zero,
+      lTokens: Array.from(Array(reserves.length), () => constants.Zero),
+      updatedAt: moment().unix(),
+    },
+    {
+      loading: true,
+      tokenName: ReserveData[1].name,
+      value: constants.Zero,
+      incentive: constants.Zero,
+      governance: constants.Zero,
+      lTokens: Array.from(Array(reserves.length), () => constants.Zero),
+      updatedAt: moment().unix(),
+    }
+  ]);
   const [incentiveModalVisible, setIncentiveModalVisible] = useState<boolean>(false);
   const {
     data: userConnection,
@@ -64,52 +78,86 @@ const Dashboard: React.FunctionComponent = () => {
     GET_USER,
     { variables: { id: account?.toLocaleLowerCase() } }
   )
-  const [expectedIncentive, setExpectedIncentive] = useState<BigNumber>(balances.incentive)
+  // const [expectedIncentive, setExpectedIncentive] = useState<BigNumber[]>(
+  //   balances.map(data =>
+  //     { return data.incentive }
+  //   )
+  // )
+  const [expectedIncentive, setExpectedIncentive] = useState<BigNumber>(balances[0].incentive)
+
   const incentivePool = useIncentivePool();
   const [transactionModal, setTransactionModal] = useState(false);
+  const [selectedModalNumber, setModalNumber] = useState(0);
 
   const refrechBalancesAfterTx = async (index: number) => {
     if (!account) return;
-
     try {
-      refetchReserve();
-      refetchUserData();
-      const updatedLTokens = balances.lTokens;
+      const data = await Promise.all(
+        balances.map(async (_data, _index) => {
+          if (_index !== index) return _data;
 
-      if (balances.lTokens.length >= index + 1) {
-        updatedLTokens[index] = await ERC20__factory
-          .connect(reserves[index].lToken.id, library)
-          .balanceOf(account)
-      }
+          refetchReserve();
+          refetchUserData();
+          const updatedLTokens = balances[index].lTokens;
 
-      setBalances({
-        ...balances,
-        dai: await ERC20__factory.connect(reserves[index].id, library).balanceOf(account),
-        lTokens: updatedLTokens,
-        updatedAt: moment().unix(),
-      })
+          if (balances[index].lTokens.length >= index + 1) {
+            updatedLTokens[index] = await ERC20__factory
+              .connect(reserves[index].lToken.id, library)
+              .balanceOf(account)
+          }
+
+          return {
+            ..._data,
+            value: await ERC20__factory.connect(reserves[index].id, library).balanceOf(account),
+            lTokens: updatedLTokens,
+            updatedAt: moment().unix(),
+          }          
+
+        })
+      )
+      setBalances(data)
     } catch {
-      setBalances({
-        ...balances,
-        loading: false,
-      })
+      let datas = balances;
+      let data = {...datas[index]};
+      data.loading = false;
+      datas[index] = data;
+      setBalances(datas);
     }
   }
 
-  const refrechBalancesAfterClaimTx = async () => {
+  const refrechBalancesAfterClaimTx = async (index: number) => {
     if (!account) return;
 
     try {
-      setBalances({
-        ...balances,
-        incentive: await incentivePool.getUserIncentive(account),
-        updatedAt: moment().unix(),
-      })
+      const data = await Promise.all(
+        balances.map(async (_data, _index) => {
+          if (_index !== index) return _data;
+
+          refetchReserve();
+          refetchUserData();
+          const updatedLTokens = balances[index].lTokens;
+
+          if (balances[index].lTokens.length >= index + 1) {
+            updatedLTokens[index] = await ERC20__factory
+              .connect(reserves[index].lToken.id, library)
+              .balanceOf(account)
+          }
+
+          return {
+            ..._data,
+            incentive: await incentivePool.getUserIncentive(account),
+            updatedAt: moment().unix(),
+          }          
+
+        })
+      )
+      setBalances(data)
     } catch {
-      setBalances({
-        ...balances,
-        loading: false,
-      })
+      let datas = balances;
+      let data = {...datas[index]};
+      data.loading = false;
+      datas[index] = data;
+      setBalances(datas);
     }
 
   }
@@ -120,21 +168,43 @@ const Dashboard: React.FunctionComponent = () => {
     }
 
     try {
-      setBalances({
-        loading: false,
-        dai: await ERC20__factory.connect(reserves[0].id, library).balanceOf(account),
-        incentive: await incentivePool.getUserIncentive(account),
-        governance: await ERC20__factory.connect(envs.governanceAddress, library).balanceOf(account),
-        lTokens: await Promise.all(reserves.map((reserve) => {
-          return ERC20__factory.connect(reserve.lToken.id, library).balanceOf(account)
-        })),
-        updatedAt: moment().unix()
-      })
+      const data = await Promise.all(
+        balances.map(async (_data, index) => {
+          if (!!!reserves[index]) return { ..._data, loading: false };
+
+          refetchReserve();
+          refetchUserData();
+          const updatedLTokens = balances[index].lTokens;
+
+          if (balances[index].lTokens.length >= index + 1) {
+            updatedLTokens[index] = await ERC20__factory
+              .connect(reserves[index].lToken.id, library)
+              .balanceOf(account)
+          }
+
+          return {
+            ..._data,
+            loading: false,
+            value: await ERC20__factory.connect(reserves[index].id, library).balanceOf(account),
+            incentive: await incentivePool.getUserIncentive(account),
+            governance: await ERC20__factory.connect(envs.governanceAddress, library).balanceOf(account),
+            lTokens: await Promise.all(reserves.map((reserve) => {
+              return ERC20__factory.connect(reserve.lToken.id, library).balanceOf(account)
+            })),
+            updatedAt: moment().unix()
+          }          
+
+        })
+      )
+      setBalances(data)
     } catch (e) {
-      setBalances({
-        ...balances,
-        loading: false,
-      })
+      console.log(e)
+      setBalances(balances.map(data => {
+        return {
+          ...data,
+          loading: false
+        }
+      }))
     }
   }
 
@@ -146,13 +216,13 @@ const Dashboard: React.FunctionComponent = () => {
     const interval = setInterval(
       () => {
         setExpectedIncentive(
-          balances.incentive.add(
-            balances.lTokens?.reduce((res, balance, index) => res.add(
+          balances[0].incentive.add(
+            balances[0].lTokens?.reduce((res, balance, index) => res.add(
               calcExpectedIncentive(
                 elfiPrice,
                 balance,
                 calcMiningAPR(elfiPrice, BigNumber.from(reserves[index].totalDeposit)),
-                balances.updatedAt
+                balances[0].updatedAt
               )
             ), constants.Zero)
           )
@@ -165,8 +235,6 @@ const Dashboard: React.FunctionComponent = () => {
     }
   })
 
-
-
   return (
     <>
       {
@@ -174,8 +242,8 @@ const Dashboard: React.FunctionComponent = () => {
         <DepositOrWithdrawModal
           reserve={reserve}
           userData={userConnection?.user}
-          tokenName={ReserveData[0].name}
-          tokenImage={ReserveData[0].image}
+          tokenName={ReserveData[selectedModalNumber].name}
+          tokenImage={ReserveData[selectedModalNumber].image}
           visible={!!reserve}
           onClose={() => {
             const queryParams = new URLSearchParams(location.search)
@@ -189,9 +257,9 @@ const Dashboard: React.FunctionComponent = () => {
 
             setReserve(undefined)
           }}
-          balance={balances.dai}
-          depositBalance={BigNumber.from(balances.lTokens[0])}
-          afterTx={() => refrechBalancesAfterTx(0)}
+          balance={balances[selectedModalNumber].value}
+          depositBalance={BigNumber.from(balances[selectedModalNumber].lTokens[0])}
+          afterTx={() => refrechBalancesAfterTx(selectedModalNumber)}
           transactionModal={() => setTransactionModal(true)}
         />
       }
@@ -201,7 +269,7 @@ const Dashboard: React.FunctionComponent = () => {
           setIncentiveModalVisible(false)
         }}
         balance={expectedIncentive}
-        afterTx={() => refrechBalancesAfterClaimTx()}
+        afterTx={() => refrechBalancesAfterClaimTx(selectedModalNumber)}
         transactionModal={() => setTransactionModal(true)}
       />
       <TransactionConfirmModal
@@ -211,146 +279,148 @@ const Dashboard: React.FunctionComponent = () => {
         }}
       />
       <Header title={t("navigation.deposit_withdraw").toUpperCase()} />
+
       <section className="tokens">
         <Title label={t("dashboard.deposits--header")} />
-        <table className="tokens__table">
-          <thead className="tokens__table__header pc-only">
-            <tr>
+        <div className="tokens__table__wrapper">
+          <table className="tokens__table">
+            <thead className="tokens__table__header pc-only">
+              <tr>
+                {
+                  [t("dashboard.asset"), t("dashboard.deposit_balance"), t("dashboard.deposit_apy"), t("dashboard.wallet_balance")].map((key, index) => {
+                    return (
+                      <th key={index} style={{ width: index === 0 ? 150 : 228 }}>
+                        <p className="tokens__table__header__column">
+                          {key}
+                        </p>
+                      </th>
+                    )
+                  })
+                }
+              </tr>
+            </thead>
+            <tbody className="tokens__table-body">
               {
-                [t("dashboard.asset"), t("dashboard.deposit_balance"), t("dashboard.deposit_apy"), t("dashboard.wallet_balance")].map((key, index) => {
+                ReserveData.map((reserve, index) => {
                   return (
-                    <th key={index} style={{ width: index === 0 ? 150 : 342 }}>
-                      <p className="tokens__table__header__column">
-                        {key}
-                      </p>
-                    </th>
-                  )
-                })
-              }
-            </tr>
-          </thead>
-          <tbody className="tokens__table-body">
-            {
-              ReserveData.map((reserve, index) => {
-                return (
-                  <TokenTable
-                    key={index}
-                    index={index}
-                    onClick={(e: any) => {
-                      e.preventDefault();
-                      setReserve(reserves[0])
-                      ReactGA.modalview('DepositOrWithdraw')
-                    }}
-                    tokenName={reserve.name}
-                    tokenImage={reserve.image}
-                    depositBalance={balances.loading ? undefined : `$ ${toCompactForBignumber(balances.lTokens[index] || 0)}`}
-                    depositAPY={toPercent(balances.loading ? 0 : reserves[0].depositAPY)}
-                    miningAPR={balances.loading ? undefined : toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserves[0].totalDeposit)) || '0')}
-                    walletBalance={`$ ${balances.loading ? undefined : toCompactForBignumber(balances.dai || 0)}`}
-                    isDisable={index === 0 ? false : true}
-                    skeletonLoading={balances.loading}
-                  />
-                )
-              })
-            }
+                    <>
+                      <TokenTable
+                        index={index}
+                        onClick={(e: any) => {
+                          e.preventDefault();
+                          setReserve(reserves[index])
+                          setModalNumber(index)
+                          ReactGA.modalview('DepositOrWithdraw')
+                        }}
+                        tokenName={reserve.name}
+                        tokenImage={reserve.image}
+                        depositBalance={balances[index].loading || !!!reserves[index] ? undefined : toCompactForBignumber(balances[index].lTokens[index] || constants.Zero)}
+                        depositBalanceDivValue={balances[index].loading || !!!reserves[index] ? undefined : toCompactForBignumber(balances[index].lTokens[index].mul(Math.round((index === 0 ? daiPrice : tetherPrice))) || constants.Zero)}
+                        depositAPY={toPercent((balances[index].loading || !!!reserves[index]) ? 0 : reserves[index].depositAPY)}
+                        miningAPR={(balances[index].loading || !!!reserves[index]) ? undefined : toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserves[index].totalDeposit)) || '0')}
+                        walletBalance={balances[index].loading || !!!reserves[index] ? undefined : toCompactForBignumber(balances[index].value || constants.Zero)}
+                        walletBalanceDivValue={balances[index].loading || !!!reserves[index] ? undefined : toCompactForBignumber(balances[index].value.mul(Math.round((index === 0 ? daiPrice : tetherPrice))) || constants.Zero)}
+                        isDisable={!!!reserves[index] ? true : false}
+                        skeletonLoading={balances[index].loading}
+                      />
 
-          </tbody>
-        </table>
-      </section>
-      <section className="tokens">
-        <Title label={t("dashboard.minted")} />
-        <table className="tokens__table pc-only">
-          <thead className="tokens__table__header">
-            <tr>
-              {
-                [t("dashboard.asset"), t("dashboard.minted_balance"), t("dashboard.wallet_balance")].map((key, index) => {
-                  return (
-                    <th key={index} className="tokens__table__minted-header">
-                      <p className="tokens__table__header__column">
-                        {key}
-                      </p>
-                    </th>
+                      {/* mobile only */}
+                      <div className="tokens__table__minted mobile-only">
+                        <p>
+                          ▼
+                        </p>
+                        <div
+                          className="content"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setIncentiveModalVisible(true);
+                            ReactGA.modalview('Incentive')
+                          }}
+                        >
+                          <div>
+                            <img src={ELFI} alt="Token" />
+                            <p className="spoqa__bold">
+                              {t("dashboard.minted_balance")}
+                            </p>
+                          </div>
+                          
+                          {
+                            balances[index].loading ?
+                            <Skeleton width={50} /> :
+                              <div>
+                                <p className="spoqa__bold">
+                                  {formatCommaSmall(expectedIncentive.isZero() ? balances[index].incentive : expectedIncentive)}<span className="token-name spoqa__bold"> ELFI</span>
+                                </p>
+                                <p className="spoqa div-balance">
+                                  {"$ " + 
+                                    Intl.NumberFormat('en', { maximumFractionDigits: 6, minimumFractionDigits: 6 }).format(
+                                      (parseFloat(utils.formatEther(
+                                        expectedIncentive.isZero() ? 
+                                          balances[index].incentive : 
+                                          expectedIncentive)
+                                        ) * Math.round(elfiPrice * 1000000) / 1000000)
+                                    )
+                                  }
+                                </p>
+                              </div>
+                          }
+                        </div>
+                      </div>
+                    </>
                   )
                 })
               }
-            </tr>
-          </thead>
-          <tbody className="tokens__table-body">
-            <tr
-              className="tokens__table__row"
-              key={0}
-              onClick={(e) => {
-                e.preventDefault();
-                setIncentiveModalVisible(true);
-                ReactGA.modalview('Incentive')
-              }}
-            >
-              <th className={`tokens__table__image`}>
-                <div>
-                  <img src={ELFI} alt="Token" />
-                  <p className="spoqa__bold">ELFI</p>
-                </div>
-              </th>
-              <th>
-                {
-                  balances.loading ?
-                    <Skeleton width={50} />
-                    :
-                    <p className="spoqa">{`${formatCommaSmall(expectedIncentive.isZero() ? balances.incentive : expectedIncentive)} ELFI`}</p>
-                }
-              </th>
-              <th>
-                {
-                  balances.loading ?
-                    <Skeleton width={50} />
-                    :
-                    <p className="spoqa">{`${formatCommaSmall(balances.governance)} ELFI`}</p>
-                }
-              </th>
-            </tr>
-          </tbody>
-        </table>
-        <div className="tokens__elfi mobile-only">
-          <div
-            className="tokens__table__row"
-            onClick={(e) => {
-              e.preventDefault();
-              setIncentiveModalVisible(true);
-              ReactGA.modalview('Incentive')
-            }}
-          >
-            <div className="tokens__table__image">
-              <div>
-                <img src={ELFI} alt='token' />
-                <p className="spoqa__bold">ELFI</p>
-              </div>
-            </div>
-            <div className="tokens__table__content">
-              <div className="tokens__table__content__data">
-                <p className="spoqa__bold">
-                  {t("dashboard.minted_balance")}
-                </p>
-                {
-                  balances.loading ?
-                    <Skeleton width={50} />
-                    :
-                    <p className="spoqa">{`${formatCommaSmall(expectedIncentive.isZero() ? balances.incentive : expectedIncentive)} ELFI`}</p>
-                }
-              </div>
-              <div className="tokens__table__content__data">
-                <p className="spoqa__bold">
-                  {t("dashboard.wallet_balance")}
-                </p>
-                {
-                  balances.loading ?
-                    <Skeleton width={50} />
-                    :
-                    <p className="spoqa">{`${formatCommaSmall(balances.governance)} ELFI`}</p>
-                }
-              </div>
+
+            </tbody>
+          </table>
+          <div className="tokens__table__minted pc-only">
+            <p>
+              {t("dashboard.minted_balance")}
+            </p>
+            <div>
+              {ReserveData.map((_x, index) => {
+                return (
+                  <div>
+                    <p>
+                      ▶
+                    </p>
+                    <div
+                      className="content"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIncentiveModalVisible(true);
+                        ReactGA.modalview('Incentive')
+                      }}
+                    >
+                      <img src={ELFI} alt="Token" />
+                      {
+                        balances[index].loading ?
+                        <Skeleton width={50} /> :
+                          <div>
+                            <p className="spoqa__bold">
+                              {formatCommaSmall(expectedIncentive.isZero() ? balances[index].incentive : expectedIncentive)}<span className="token-name spoqa__bold"> ELFI</span>
+                            </p>
+                            <p className="spoqa div-balance">
+                              {"$ " + 
+                                Intl.NumberFormat('en', { maximumFractionDigits: 6, minimumFractionDigits: 6 }).format(
+                                  (parseFloat(utils.formatEther(
+                                    expectedIncentive.isZero() ? 
+                                      balances[index].incentive : 
+                                      expectedIncentive)
+                                    ) * Math.round(elfiPrice * 1000000) / 1000000)
+                                )
+                              }
+                            </p>
+                          </div>
+                      }
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </div>
+        <div style={{ height: 100 }} />
       </section>
     </>
   );

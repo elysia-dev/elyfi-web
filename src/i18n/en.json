@@ -48,7 +48,8 @@
       "deposit--button": "DEPOSIT",
       "withdral--button": "WITHDRAW",
       "protocol_allow": "Allow the ELYFI Protocol to use your {{tokenName}}",
-      "disable_content--1": "Connect your wallet to continue"
+      "disable_content--1": "Connect your wallet to continue",
+      "elfi_reward": "ELFI Reward"
     },
     "portfolio": {
       "investment_status": "Loan Status",
