@@ -3,7 +3,6 @@ import { NavLink, Link } from 'react-router-dom'
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
 import InstallMetamask from './InstallMetamask';
 import Wallet from './Wallet';
-import { useEagerConnect } from 'src/hooks/connectHooks';
 import { useTranslation } from 'react-i18next';
 import { useWeb3React } from '@web3-react/core';
 import envs from 'src/core/envs';
@@ -14,7 +13,6 @@ interface Props {
   txWaiting?: boolean;
 }
 const Navigation: FunctionComponent<Props> = ({ txStatus, txWaiting }) => {
-  const triedEager = useEagerConnect()
   const [hover, setHover] = useState(0);
   const { t } = useTranslation();
   const { account, chainId, library } = useWeb3React();
@@ -123,7 +121,7 @@ const Navigation: FunctionComponent<Props> = ({ txStatus, txWaiting }) => {
                 </div>
               </a>
               <div className="navigation__wallet__container mobile-only">
-                {window.ethereum?.isMetaMask ? <Wallet triedEager={triedEager} txWaiting={txWaiting} txStatus={txStatus} /> : <InstallMetamask />}
+                {window.ethereum?.isMetaMask ? <Wallet txWaiting={txWaiting} txStatus={txStatus} /> : <InstallMetamask />}
               </div>
             </div>
             <div className="navigation__link__container">
@@ -165,7 +163,7 @@ const Navigation: FunctionComponent<Props> = ({ txStatus, txWaiting }) => {
             </div>
           </div>
           <div className="navigation__wallet__container pc-only">
-            {window.ethereum?.isMetaMask ? <Wallet triedEager={triedEager} /> : <InstallMetamask />}
+            {window.ethereum?.isMetaMask ? <Wallet /> : <InstallMetamask />}
           </div>
         </div>
       </nav>
