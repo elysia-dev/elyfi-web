@@ -233,24 +233,23 @@ const Dashboard: React.FunctionComponent = () => {
             {
               ReserveData.map((reserve, index) => {
                 return (
-                  <>
-                    <TokenTable
-                      index={index}
-                      onClick={(e: any) => {
-                        e.preventDefault();
-                        setReserve(reserves[0])
-                        ReactGA.modalview('DepositOrWithdraw')
-                      }}
-                      tokenName={reserve.name}
-                      tokenImage={reserve.image}
-                      depositBalance={balances.loading ? undefined : `$ ${toCompactForBignumber(balances.lTokens[index] || 0)}`}
-                      depositAPY={toPercent(balances.loading ? 0 : reserves[0].depositAPY)}
-                      miningAPR={balances.loading ? undefined : toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserves[0].totalDeposit)) || '0')}
-                      walletBalance={`$ ${balances.loading ? undefined : toCompactForBignumber(balances.dai || 0)}`}
-                      isDisable={index === 0 ? false : true}
-                      skeletonLoading={balances.loading}
-                    />
-                  </>
+                  <TokenTable
+                    key={index}
+                    index={index}
+                    onClick={(e: any) => {
+                      e.preventDefault();
+                      setReserve(reserves[0])
+                      ReactGA.modalview('DepositOrWithdraw')
+                    }}
+                    tokenName={reserve.name}
+                    tokenImage={reserve.image}
+                    depositBalance={balances.loading ? undefined : `$ ${toCompactForBignumber(balances.lTokens[index] || 0)}`}
+                    depositAPY={toPercent(balances.loading ? 0 : reserves[0].depositAPY)}
+                    miningAPR={balances.loading ? undefined : toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserves[0].totalDeposit)) || '0')}
+                    walletBalance={`$ ${balances.loading ? undefined : toCompactForBignumber(balances.dai || 0)}`}
+                    isDisable={index === 0 ? false : true}
+                    skeletonLoading={balances.loading}
+                  />
                 )
               })
             }

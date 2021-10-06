@@ -302,7 +302,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                     roundData.map((item, index) => {
                       if (current.diff(item.endedAt) > 0) {
                         return (
-                          <div className="staking__round__previous">
+                          <div className="staking__round__previous" key={index}>
                             <div>
                               <div className="staking__round__previous__title">
                                 <p className="spoqa__bold">

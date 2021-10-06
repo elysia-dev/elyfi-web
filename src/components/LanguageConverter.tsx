@@ -58,13 +58,13 @@ export const LanguageConverter = () => {
             .map((languageType, index) => {
               return (
                 <div className="lang__select-image__wrapper"
+                  key={index}
                   onClick={() => {
                     setLanguage(languageType)
                     handleHover()
                   }}
                 >
                   <img
-                    key={index}
                     className="lang__select-image"
                     src={languageData[languageType].image}
                     alt={languageData[languageType].title}
