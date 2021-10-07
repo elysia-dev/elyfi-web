@@ -212,8 +212,10 @@ $footer-height: 100px;
               display: flex;
               flex-direction: row;
               align-items: center;
-              justify-content: space-around;
+              justify-content: space-between;
               box-shadow: 0px 0px 6px #00000029;
+              box-sizing: border-box;
+              padding: 10px 30px;
 
               width: 320px;
               height: 80px;
@@ -245,7 +247,7 @@ $footer-height: 100px;
         }
       }
       &__apr {
-        width: 99px;
+        width: 105px;
         height: 21px;
         margin-bottom: 5px;
         > img {
