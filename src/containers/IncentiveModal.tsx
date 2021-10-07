@@ -2,23 +2,25 @@ import { useWeb3React } from '@web3-react/core';
 import { BigNumber } from 'ethers';
 import { FunctionComponent, useContext } from 'react'
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
-import { formatCommaSmall } from 'src/utiles/formatters';
+import { formatCommaSmall, formatSixFracionDigit } from 'src/utiles/formatters';
 import { formatEther } from 'ethers/lib/utils';
 import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ReservesContext from 'src/contexts/ReservesContext';
 import { IncentivePool__factory } from '@elysia-dev/contract-typechain';
+import CountUp from 'react-countup';
 
 // Create deposit & withdraw
 const IncentiveModal: FunctionComponent<{
-  balance: BigNumber,
+  balanceBefore: BigNumber,
+  balanceAfter: BigNumber,
   visible: boolean,
   incentivePoolAddress: string,
   onClose: () => void,
   afterTx: () => Promise<void>,
   transactionModal: () => void
-}> = ({ visible, balance, incentivePoolAddress, onClose, afterTx, transactionModal }) => {
+}> = ({ visible, balanceBefore, balanceAfter, incentivePoolAddress, onClose, afterTx, transactionModal }) => {
   const { account, library } = useWeb3React()
   const initTxTracker = useTxTracking();
   const { reserves } = useContext(ReservesContext);
@@ -30,7 +32,7 @@ const IncentiveModal: FunctionComponent<{
     const tracker = initTxTracker(
       'IncentiveModal',
       'Claim',
-      `${formatEther(balance)} ${reserves[0].incentivePool.id}`
+      `${formatEther(balanceAfter)} ${reserves[0].incentivePool.id}`
     );
 
     tracker.clicked();
@@ -79,12 +81,22 @@ const IncentiveModal: FunctionComponent<{
             <div className="modal__withdraw__value-wrapper">
               <p></p>
               <p className="modal__withdraw__value bold" style={{ fontSize: window.sessionStorage.getItem("@MediaQuery") !== "PC" ? 30 : 60 }}>
-                {
-                  formatCommaSmall(balance)
-                }
+                <CountUp
+                  className="modal__withdraw__value bold"
+                  start={
+                    parseFloat(formatEther(balanceBefore))
+                  }
+                  end={
+                    parseFloat(formatEther(balanceAfter))
+                  }
+                  formattingFn={(number) => {
+                    return formatSixFracionDigit(number)
+                  }}
+                  decimals={6}
+                  duration={1}
+                />
               </p>
             </div>
-
           </div>
           <div
             className="modal__button"

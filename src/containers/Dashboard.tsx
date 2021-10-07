@@ -1,7 +1,7 @@
 import { useWeb3React } from '@web3-react/core';
 import ReserveData from 'src/core/data/reserves';
 import { useEffect } from 'react';
-import { toPercent, toCompactForBignumber, formatCommaSmall, formatSixFracionDigit } from 'src/utiles/formatters';
+import { toPercent, toCompactForBignumber, formatSixFracionDigit } from 'src/utiles/formatters';
 import { useContext } from 'react';
 import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
 import { useState } from 'react';
@@ -28,12 +28,14 @@ import Header from 'src/components/Header';
 import TokenTable from 'src/components/TokenTable';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
 import { formatEther } from '@ethersproject/units';
+import CountUp from 'react-countup';
 
 const initialBalanceState = {
   loading: true,
   value: constants.Zero,
   incentive: constants.Zero,
-  expectedIncentive: constants.Zero,
+  expectedIncentiveBefore: constants.Zero,
+  expectedIncentiveAfter: constants.Zero,
   deposit: constants.Zero,
   updatedAt: moment().unix(),
 }
@@ -55,7 +57,8 @@ const Dashboard: React.FunctionComponent = () => {
     tokenName: string,
     value: BigNumber,
     incentive: BigNumber,
-    expectedIncentive: BigNumber,
+    expectedIncentiveBefore: BigNumber,
+    expectedIncentiveAfter: BigNumber,
     deposit: BigNumber,
     updatedAt: number,
   }[]>(ReserveData.map((reserve) => {
@@ -76,12 +79,16 @@ const Dashboard: React.FunctionComponent = () => {
   const [selectedModalNumber, setModalNumber] = useState(0);
 
   const fetchBalanceFrom = async (reserve: GetAllReserves_reserves, account: string) => {
+    const incentive = await IncentivePool__factory.connect(
+      reserve.incentivePool.id,
+      library.getSigner()
+    ).getUserIncentive(account)
+
     return {
       value: await ERC20__factory.connect(reserve.id, library).balanceOf(account),
-      incentive: await await IncentivePool__factory.connect(
-        reserve.incentivePool.id,
-        library.getSigner()
-      ).getUserIncentive(account),
+      incentive,
+      expectedIncentiveBefore: incentive,
+      expectedIncentiveAfter: incentive,
       governance: await ERC20__factory.connect(envs.governanceAddress, library).balanceOf(account),
       deposit: await ERC20__factory.connect(reserve.lToken.id, library).balanceOf(account),
     }
@@ -139,30 +146,30 @@ const Dashboard: React.FunctionComponent = () => {
     loadBalances();
   }, [account])
 
-  /*
   useEffect(() => {
     const interval = setInterval(
       () => {
-        setExpectedIncentive(
-          balances[0].incentive.add(
-            balances[0].lTokens?.reduce((res, balance, index) => res.add(
+        setBalances(balances.map((balance, index) => {
+          return {
+            ...balance,
+            expectedIncentiveBefore: balance.expectedIncentiveAfter,
+            expectedIncentiveAfter: balance.incentive.add(
               calcExpectedIncentive(
                 elfiPrice,
-                balance,
+                balance.deposit,
                 calcMiningAPR(elfiPrice, BigNumber.from(reserves[index].totalDeposit)),
-                balances[0].updatedAt
+                balance.updatedAt
               )
-            ), constants.Zero)
-          )
-        )
-      }, 500
+            )
+          }
+        }))
+      }, 3000
     );
 
     return () => {
       clearInterval(interval);
     }
   })
-  */
 
   return (
     <>
@@ -197,7 +204,8 @@ const Dashboard: React.FunctionComponent = () => {
         onClose={() => {
           setIncentiveModalVisible(false)
         }}
-        balance={balances[selectedModalNumber].expectedIncentive}
+        balanceBefore={balances[selectedModalNumber].expectedIncentiveBefore}
+        balanceAfter={balances[selectedModalNumber].expectedIncentiveAfter}
         incentivePoolAddress={reserves[selectedModalNumber].incentivePool.id}
         afterTx={() => loadBalance(selectedModalNumber)}
         transactionModal={() => setTransactionModal(true)}
@@ -280,19 +288,44 @@ const Dashboard: React.FunctionComponent = () => {
                               <Skeleton width={50} /> :
                               <div>
                                 <p className="spoqa__bold">
-                                  {formatCommaSmall(balance.expectedIncentive.isZero() ? balance.incentive : balance.expectedIncentive)}<span className="token-name spoqa__bold"> ELFI</span>
+                                  <CountUp
+                                    className="spoqa__bold"
+                                    start={
+                                      parseFloat(formatEther(balance.expectedIncentiveBefore))
+                                    }
+                                    end={
+                                      parseFloat(formatEther(balance.expectedIncentiveAfter))
+                                    }
+                                    formattingFn={(number) => {
+                                      return formatSixFracionDigit(number)
+                                    }}
+                                    decimals={6}
+                                    duration={1}
+                                  />
                                 </p>
                                 <p className="spoqa div-balance">
-                                  {"$ " + formatSixFracionDigit(
-                                    parseFloat(
-                                      formatEther(
-                                        balance.expectedIncentive.isZero() ?
-                                          balance.incentive :
-                                          balance.expectedIncentive
-                                      )
-                                    ) * elfiPrice
-                                  )
-                                  }
+                                  <CountUp
+                                    className="spoqa div-balance"
+                                    start={
+                                      parseFloat(
+                                        formatEther(
+                                          balance.expectedIncentiveBefore
+                                        )
+                                      ) * elfiPrice
+                                    }
+                                    end={
+                                      parseFloat(
+                                        formatEther(
+                                          balance.expectedIncentiveAfter
+                                        )
+                                      ) * elfiPrice
+                                    }
+                                    formattingFn={(number) => {
+                                      return "$ " + formatSixFracionDigit(number)
+                                    }}
+                                    decimals={6}
+                                    duration={1}
+                                  />
                                 </p>
                               </div>
                           }
@@ -330,19 +363,44 @@ const Dashboard: React.FunctionComponent = () => {
                           <Skeleton width={50} /> :
                           <div>
                             <p className="spoqa__bold">
-                              {formatCommaSmall(balance.expectedIncentive.isZero() ? balance.incentive : balance.expectedIncentive)}<span className="token-name spoqa__bold"> ELFI</span>
+                              <CountUp
+                                className="spoqa__bold"
+                                start={
+                                  parseFloat(formatEther(balance.expectedIncentiveBefore))
+                                }
+                                end={
+                                  parseFloat(formatEther(balance.expectedIncentiveAfter))
+                                }
+                                formattingFn={(number) => {
+                                  return formatSixFracionDigit(number)
+                                }}
+                                decimals={6}
+                                duration={1}
+                              />
                             </p>
                             <p className="spoqa div-balance">
-                              {"$ " + formatSixFracionDigit(
-                                parseFloat(
-                                  formatEther(
-                                    balance.expectedIncentive.isZero() ?
-                                      balance.incentive :
-                                      balance.expectedIncentive
-                                  )
-                                ) * elfiPrice
-                              )
-                              }
+                              <CountUp
+                                className="spoqa div-balance"
+                                start={
+                                  parseFloat(
+                                    formatEther(
+                                      balance.expectedIncentiveBefore
+                                    )
+                                  ) * elfiPrice
+                                }
+                                end={
+                                  parseFloat(
+                                    formatEther(
+                                      balance.expectedIncentiveAfter
+                                    )
+                                  ) * elfiPrice
+                                }
+                                formattingFn={(number) => {
+                                  return "$ " + formatSixFracionDigit(number)
+                                }}
+                                decimals={6}
+                                duration={1}
+                              />
                             </p>
                           </div>
                       }

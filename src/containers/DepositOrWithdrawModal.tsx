@@ -94,9 +94,14 @@ const DepositOrWithdrawModal: FunctionComponent<{
     tracker.clicked();
 
     reserveERC20.approve(envs.moneyPoolAddress, constants.MaxUint256).then((tx) => {
-      tracker.created();
-      wait(
-        tx as any,
+      setTransaction(
+        tx,
+        tracker,
+        RecentActivityType.Approve,
+        () => {
+          transactionModal();
+          onClose();
+        },
         () => {
           refetch();
         }
