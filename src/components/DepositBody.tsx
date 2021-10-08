@@ -5,17 +5,17 @@ import { formatCommaWithDigits } from 'src/utiles/formatters';
 import { IReserve } from 'src/core/data/reserves';
 
 const DepositBody: React.FunctionComponent<{
-  tokenId: IReserve,
+  tokenInfo: IReserve,
   depositAPY: string,
   miningAPR: string,
   balance: BigNumber,
   isApproved: boolean,
   increaseAllownace: () => void,
   deposit: (amount: BigNumber) => void,
-}> = ({ tokenId, depositAPY, miningAPR, balance, isApproved, increaseAllownace, deposit }) => {
+}> = ({ tokenInfo, depositAPY, miningAPR, balance, isApproved, increaseAllownace, deposit }) => {
   const [amount, setAmount] = useState<string>('');
 
-  const amountGtBalance = utils.parseUnits((amount || '0'), tokenId.decimals).gt(balance);
+  const amountGtBalance = utils.parseUnits((amount || '0'), tokenInfo.decimals).gt(balance);
   const amountLteZero = !amount || parseFloat(amount) <= 0;
 
   const { t } = useTranslation();
@@ -25,7 +25,7 @@ const DepositBody: React.FunctionComponent<{
       <div className="modal__deposit">
         <div className="modal__deposit__value-wrapper">
           <p className="modal__deposit__maximum bold" onClick={() => {
-            setAmount((Math.floor(parseFloat(utils.formatUnits(balance, tokenId.decimals)) * 100000000) / 100000000).toFixed(8).toString())
+            setAmount((Math.floor(parseFloat(utils.formatUnits(balance, tokenInfo.decimals)) * 100000000) / 100000000).toFixed(8).toString())
           }}>
             {t("dashboard.max")}
           </p>
@@ -60,7 +60,7 @@ const DepositBody: React.FunctionComponent<{
               </p>
               <div className="modal__deposit__despositable-wallet-balance-wrapper">
                 <p className="spoqa__bold">
-                  {`${formatCommaWithDigits(balance, 4, tokenId.decimals)} ${tokenId.name}`}
+                  {`${formatCommaWithDigits(balance, 4, tokenInfo.decimals)} ${tokenInfo.name}`}
                 </p>
               </div>
             </div>
@@ -85,19 +85,19 @@ const DepositBody: React.FunctionComponent<{
         isApproved ?
           <div
             className={`modal__button${amountLteZero || amountGtBalance ? "--disable" : ""}`}
-            onClick={() => !amountLteZero && !amountGtBalance && deposit(utils.parseUnits(amount, tokenId.decimals))}
+            onClick={() => !amountLteZero && !amountGtBalance && deposit(utils.parseUnits(amount, tokenInfo.decimals))}
           >
             <p>
               {
                 amountLteZero ? t("dashboard.enter_amount") :
-                  amountGtBalance ? t("dashboard.insufficient_balance", { tokenName: tokenId.name }) : t("dashboard.deposit--button")
+                  amountGtBalance ? t("dashboard.insufficient_balance", { tokenName: tokenInfo.name }) : t("dashboard.deposit--button")
               }
             </p>
           </div>
           :
           <div className="modal__button" onClick={() => increaseAllownace()}>
             <p>
-              {t("dashboard.protocol_allow", { tokenName: tokenId.name })}
+              {t("dashboard.protocol_allow", { tokenName: tokenInfo.name })}
             </p>
           </div>
       }

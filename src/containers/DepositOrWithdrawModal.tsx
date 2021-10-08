@@ -236,7 +236,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
           ) : (
             selected ? (
               <DepositBody
-                tokenId={tokenInfo!}
+                tokenInfo={tokenInfo!}
                 depositAPY={toPercent(reserve.depositAPY || '0')}
                 miningAPR={toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserve.totalDeposit), tokenInfo?.decimals))}
                 balance={balance}
@@ -246,7 +246,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
               />
             ) : (
               <WithdrawBody
-                tokenId={tokenInfo!}
+                tokenInfo={tokenInfo!}
                 depositBalance={depositBalance}
                 accumulatedYield={accumulatedYield}
                 yieldProduced={yieldProduced}

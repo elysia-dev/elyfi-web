@@ -5,16 +5,16 @@ import { formatCommaWithDigits, formatCommaFillZero } from 'src/utiles/formatter
 import { IReserve } from 'src/core/data/reserves';
 
 const WithdrawBody: React.FunctionComponent<{
-  tokenId: IReserve,
+  tokenInfo: IReserve,
   depositBalance: BigNumber
   liquidity: BigNumber,
   yieldProduced: BigNumber,
   accumulatedYield: BigNumber,
   withdraw: (amount: BigNumber, max: boolean) => void
-}> = ({ tokenId, depositBalance, liquidity, yieldProduced, accumulatedYield, withdraw }) => {
+}> = ({ tokenInfo, depositBalance, liquidity, yieldProduced, accumulatedYield, withdraw }) => {
   const [amount, setAmount] = useState<{ value: string, max: boolean }>({ value: '', max: false });
 
-  const amountGtBalance = utils.parseUnits((amount.value || '0'), tokenId.decimals).gt(depositBalance);
+  const amountGtBalance = utils.parseUnits((amount.value || '0'), tokenInfo.decimals).gt(depositBalance);
   const amountLteZero = !amount.value || parseFloat(amount.value) <= 0;
 
   const { t } = useTranslation();
@@ -25,7 +25,7 @@ const WithdrawBody: React.FunctionComponent<{
         <div className="modal__withdraw__value-wrapper">
           <p className="modal__withdraw__maximum bold" onClick={() => {
             setAmount({
-              value: (Math.floor(parseFloat(utils.formatUnits((depositBalance.lte(liquidity) ? depositBalance : liquidity), tokenId.decimals)) * 100000000) / 100000000).toFixed(8).toString(),
+              value: (Math.floor(parseFloat(utils.formatUnits((depositBalance.lte(liquidity) ? depositBalance : liquidity), tokenInfo.decimals)) * 100000000) / 100000000).toFixed(8).toString(),
               max: depositBalance.lte(liquidity)
             })
           }}
@@ -54,15 +54,15 @@ const WithdrawBody: React.FunctionComponent<{
           <div className="modal__withdraw__withdrawalable-amount-wrapper">
             <div className="modal__withdraw__withdrawalable__title">
               <p className="spoqa__bold">{t("dashboard.withdraw_availble")}</p>
-              <p className="spoqa__bold">{`${formatCommaWithDigits(depositBalance.lte(liquidity) ? depositBalance : liquidity, 4, tokenId.decimals)} ${tokenId.name}`}</p>
+              <p className="spoqa__bold">{`${formatCommaWithDigits(depositBalance.lte(liquidity) ? depositBalance : liquidity, 4, tokenInfo.decimals)} ${tokenInfo.name}`}</p>
             </div>
             <div>
               <p className="spoqa__bold">{t("dashboard.deposit_balance")}</p>
-              <p className="spoqa__bold">{`${formatCommaWithDigits(depositBalance, 4, tokenId.decimals)} ${tokenId.name}`}</p>
+              <p className="spoqa__bold">{`${formatCommaWithDigits(depositBalance, 4, tokenInfo.decimals)} ${tokenInfo.name}`}</p>
             </div>
             <div>
-              <p className="spoqa__bold">{t("dashboard.reserves_elyfi", { tokenName: tokenId.name })}</p>
-              <p className="spoqa__bold">{`${formatCommaWithDigits(liquidity, 4, tokenId.decimals)} ${tokenId.name}`}</p>
+              <p className="spoqa__bold">{t("dashboard.reserves_elyfi", { tokenName: tokenInfo.name })}</p>
+              <p className="spoqa__bold">{`${formatCommaWithDigits(liquidity, 4, tokenInfo.decimals)} ${tokenInfo.name}`}</p>
             </div>
           </div>
           <div className="modal__withdraw__withdrawalable-value-wrapper">
@@ -71,11 +71,11 @@ const WithdrawBody: React.FunctionComponent<{
             </div>
             <div>
               <p className="spoqa__bold">{t("dashboard.yield_produced")}</p>
-              <p className="spoqa__bold">{`${formatCommaFillZero(yieldProduced, tokenId.decimals)} ${tokenId.name}`}</p>
+              <p className="spoqa__bold">{`${formatCommaFillZero(yieldProduced, tokenInfo.decimals)} ${tokenInfo.name}`}</p>
             </div>
             <div>
               <p className="spoqa__bold">{t("dashboard.accumulated")}</p>
-              <p className="spoqa__bold">{`${formatCommaFillZero(accumulatedYield, tokenId.decimals)} ${tokenId.name}`}</p>
+              <p className="spoqa__bold">{`${formatCommaFillZero(accumulatedYield, tokenInfo.decimals)} ${tokenInfo.name}`}</p>
             </div>
           </div>
         </div>
@@ -84,14 +84,14 @@ const WithdrawBody: React.FunctionComponent<{
         className={`modal__button${amountGtBalance || amountLteZero ? "--disable" : ""}`}
         onClick={() => {
           if (!(amountLteZero || amountGtBalance)) {
-            withdraw(utils.parseUnits(amount.value, tokenId.decimals), amount.max)
+            withdraw(utils.parseUnits(amount.value, tokenInfo.decimals), amount.max)
           }
         }}
       >
         <p>
           {
             amountLteZero ? t("dashboard.enter_amount") :
-              amountGtBalance ? t("dashboard.insufficient_balance", { tokenName: tokenId.name }) : t("dashboard.withdraw")
+              amountGtBalance ? t("dashboard.insufficient_balance", { tokenName: tokenInfo.name }) : t("dashboard.withdraw")
           }
         </p>
       </div>
