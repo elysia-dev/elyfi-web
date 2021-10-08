@@ -120,7 +120,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     const tracker = initTxTracker(
       'DepositOrWithdrawalModal',
       'Deposit',
-      `${utils.formatUnits(amount)} ${reserve.id}`
+      `${utils.formatUnits(amount, tokenInfo?.decimals)} ${reserve.id}`
     );
 
     tracker.clicked();
@@ -150,7 +150,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     const tracker = initTxTracker(
       'DepositOrWithdrawalModal',
       'Withdraw',
-      `${utils.formatEther(amount)} ${max} ${reserve.id}`
+      `${utils.formatUnits(amount, tokenInfo?.decimals)} ${max} ${reserve.id}`
     );
 
     tracker.clicked();
