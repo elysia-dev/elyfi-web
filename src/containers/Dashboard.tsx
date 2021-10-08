@@ -78,6 +78,14 @@ const Dashboard: React.FunctionComponent = () => {
   const [transactionModal, setTransactionModal] = useState(false);
   const [selectedModalNumber, setModalNumber] = useState(0);
 
+
+  useEffect(() => {
+    const paramsData = reserves.find((_reserve) => reserveId === _reserve.id)
+    const tokenInfo = !!paramsData ? ReserveData.findIndex((_reserve) => _reserve.address === paramsData.id) : undefined;
+
+    setModalNumber(!!tokenInfo ? tokenInfo : 0)
+  }, [reserveId])
+
   const fetchBalanceFrom = async (reserve: GetAllReserves_reserves, account: string) => {
     const incentive = await IncentivePool__factory.connect(
       reserve.incentivePool.id,
