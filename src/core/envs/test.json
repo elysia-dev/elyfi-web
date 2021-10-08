@@ -6,6 +6,8 @@
   "elfyStakingPoolAddress": "0xDF409737E31475Ec46e13335Ad5370c551b97D12",
   "elfyV2StakingPoolAddress": "0x50B91e6aB4dF05866844e4297D4d3865e4dB1157",
   "elAddress": "0xdd469dfc7f64A68E6cd1D8e9B9D09E2Cb39a816c",
+  "daiAddress": "0x13a902bf1d18daaea3dc6c401e5171f4ab2a4833",
+  "usdtAddress": "0x73e839d53fb65eb954b04ea0cc0e2e11aab936f7",
   "requiredNetwork": "Ropsten",
   "requiredChainId": 3,
   "subgraphURI": "https://api.studio.thegraph.com/query/862/elyfi-ropsten/v0.0.8",

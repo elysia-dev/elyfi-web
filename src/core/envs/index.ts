@@ -13,6 +13,8 @@ interface EnvironmentVariables {
   requiredChainId: number
   subgraphURI: string
   etherscanURI: string
+  daiAddress: string
+  usdtAddress: string
 }
 
 const vars = (
