@@ -21,6 +21,7 @@ import useWaitingTx from 'src/hooks/useWaitingTx';
 import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
+import ReserveData from 'src/core/data/reserves';
 
 const DepositOrWithdrawModal: FunctionComponent<{
   tokenName: string,
@@ -59,6 +60,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const moneyPool = useMoneyPool();
   const initTxTracker = useTxTracking();
   const { setTransaction, failTransaction } = useContext(TxContext);
+
+  const tokenInfo = ReserveData.find((_reserve) => _reserve.address === reserve.id)
 
   const accumulatedYield = useMemo(() => {
     return calcAccumulatedYield(
@@ -117,7 +120,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     const tracker = initTxTracker(
       'DepositOrWithdrawalModal',
       'Deposit',
-      `${utils.formatEther(amount)} ${reserve.id}`
+      `${utils.formatUnits(amount)} ${reserve.id}`
     );
 
     tracker.clicked();
@@ -233,9 +236,9 @@ const DepositOrWithdrawModal: FunctionComponent<{
           ) : (
             selected ? (
               <DepositBody
-                tokenName={tokenName}
+                tokenId={tokenInfo!}
                 depositAPY={toPercent(reserve.depositAPY || '0')}
-                miningAPR={toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserve.totalDeposit)))}
+                miningAPR={toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserve.totalDeposit), tokenInfo?.decimals))}
                 balance={balance}
                 isApproved={!loading && allowance.gt(balance)}
                 increaseAllownace={increateAllowance}
@@ -243,7 +246,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
               />
             ) : (
               <WithdrawBody
-                tokenName={tokenName}
+                tokenId={tokenInfo!}
                 depositBalance={depositBalance}
                 accumulatedYield={accumulatedYield}
                 yieldProduced={yieldProduced}

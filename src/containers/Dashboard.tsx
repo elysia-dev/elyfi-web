@@ -253,12 +253,12 @@ const Dashboard: React.FunctionComponent = () => {
                         }}
                         tokenName={ReserveData[index].name}
                         tokenImage={ReserveData[index].image}
-                        depositBalance={toCompactForBignumber(balance.deposit || constants.Zero)}
-                        depositBalanceDivValue={toCompactForBignumber(balance.deposit.mul(Math.round((index === 0 ? daiPrice : tetherPrice))) || constants.Zero)}
+                        depositBalance={toCompactForBignumber(balance.deposit || constants.Zero, ReserveData[index].decimals)}
+                        depositBalanceDivValue={toCompactForBignumber(balance.deposit.mul(Math.round((index === 0 ? daiPrice : tetherPrice))) || constants.Zero, ReserveData[index].decimals)}
                         depositAPY={toPercent(reserves[index].depositAPY)}
-                        miningAPR={toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserves[index].totalDeposit)) || '0')}
-                        walletBalance={toCompactForBignumber(balance.value || constants.Zero)}
-                        walletBalanceDivValue={toCompactForBignumber(balance.value.mul(Math.round((index === 0 ? daiPrice : tetherPrice))) || constants.Zero)}
+                        miningAPR={toPercent(calcMiningAPR(elfiPrice, BigNumber.from(reserves[index].totalDeposit), ReserveData[index].decimals) || '0')}
+                        walletBalance={toCompactForBignumber(balance.value || constants.Zero, ReserveData[index].decimals)}
+                        walletBalanceDivValue={toCompactForBignumber(balance.value.mul(Math.round((index === 0 ? daiPrice : tetherPrice))) || constants.Zero, ReserveData[index].decimals)}
                         isDisable={!!!reserves[index]}
                         skeletonLoading={balance.loading}
                       />

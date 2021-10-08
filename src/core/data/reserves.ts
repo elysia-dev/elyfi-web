@@ -2,7 +2,7 @@ import dai from 'src/assets/images/dai.png';
 import usdt from 'src/assets/images/usdt.png';
 import envs from 'src/core/envs';
 
-interface IReserve {
+export interface IReserve {
   name: string
   image: string
   decimals: number
