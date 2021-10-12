@@ -12,6 +12,9 @@ export const GET_ALL_RESERVES = gql`
     totalDeposit,
     lTokenUserBalanceCount,
     dTokenUserBalanceCount,
+    deposit {
+      id
+    },
     incentivePool {
       id
     },
