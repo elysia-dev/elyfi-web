@@ -26,6 +26,7 @@ import ReactGA from "react-ga";
 import txStatus from 'src/enums/TxStatus';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
 import calcExpectedReward from 'src/core/utils/calcExpectedReward';
+import LanguageType from 'src/enums/LanguageType';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI,
@@ -239,7 +240,7 @@ const Staking: React.FunctionComponent<IProps> = ({
             {t("staking.token_staking--content.2", { stakedToken: stakedToken, rewardToken: rewardToken })}<br /><br />
             {t("staking.token_staking--content.3")}
             <a
-              href="https://elyfi.world/reward"
+              href={`https://elyfi.world/${window.localStorage.getItem("@language") as LanguageType || 'en'}/rewards`}
               target="_blank"
               className="link"
             >
