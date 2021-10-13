@@ -250,7 +250,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           </p>
         </div>
 
-        {!loading ? <Skeleton width={"100%"} height={600} /> : <>
+        {loading ? <Skeleton width={"100%"} height={600} /> : <>
           <div className="staking__round">
             <div className="staking__round__border pc-only" style={{ height: 610 }} />
             <div className="staking__round__container">
