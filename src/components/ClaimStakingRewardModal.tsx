@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, utils } from 'ethers';
-import { FunctionComponent, useContext } from 'react'
+import { FunctionComponent, useContext } from 'react';
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
 import DaiImage from 'src/assets/images/dai.png';
@@ -14,16 +14,25 @@ import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 
 const ClaimStakingRewardModal: FunctionComponent<{
-  stakedToken: Token.ELFI | Token.EL,
-  token: Token.ELFI | Token.DAI,
-  balance: BigNumber,
-  visible: boolean,
-  round: number,
-  closeHandler: () => void,
-  afterTx: () => void,
-  transactionModal: () => void
-}> = ({ visible, stakedToken, token, balance, round, closeHandler, afterTx, transactionModal }) => {
-  const { account } = useWeb3React()
+  stakedToken: Token.ELFI | Token.EL;
+  token: Token.ELFI | Token.DAI;
+  balance: BigNumber;
+  visible: boolean;
+  round: number;
+  closeHandler: () => void;
+  afterTx: () => void;
+  transactionModal: () => void;
+}> = ({
+  visible,
+  stakedToken,
+  token,
+  balance,
+  round,
+  closeHandler,
+  afterTx,
+  transactionModal,
+}) => {
+  const { account } = useWeb3React();
   const stakingPool = useStakingPool(stakedToken, round >= 3);
   const { waiting } = useWatingTx();
   const { t } = useTranslation();
@@ -31,7 +40,10 @@ const ClaimStakingRewardModal: FunctionComponent<{
   const { setTransaction, failTransaction } = useContext(TxContext);
 
   return (
-    <div className="modal modal--deposit" style={{ display: visible ? "block" : "none" }}>
+    <div
+      className="modal modal--deposit"
+      style={{ display: visible ? 'block' : 'none' }}
+    >
       <div className="modal__container">
         <div className="modal__header">
           <div className="modal__header__token-info-wrapper">
@@ -51,61 +63,75 @@ const ClaimStakingRewardModal: FunctionComponent<{
           </div>
         </div>
         <div className="modal__body">
-          {waiting ?
+          {waiting ? (
             <LoadingIndicator />
-            :
+          ) : (
             <div className="modal__withdraw">
               <div className="modal__withdraw__value-wrapper">
                 <p></p>
-                <p className="modal__withdraw__value bold" style={{ fontSize: window.sessionStorage.getItem("@MediaQuery") !== "PC" ? 30 : 60 }}>
-                  {
-                    formatCommaSmall(balance)
-                  }
+                <p
+                  className="modal__withdraw__value bold"
+                  style={{
+                    fontSize:
+                      window.sessionStorage.getItem('@MediaQuery') !== 'PC'
+                        ? 30
+                        : 60,
+                  }}
+                >
+                  {formatCommaSmall(balance)}
                 </p>
               </div>
               <div
                 className="modal__button"
                 onClick={() => {
-                  if (!account) return
+                  if (!account) return;
 
                   const tracker = initTxTracker(
                     'ClaimStakingRewardModal',
                     'Claim',
-                    `${utils.formatEther(balance)} ${stakedToken} ${round}round`
+                    `${utils.formatEther(
+                      balance,
+                    )} ${stakedToken} ${round}round`,
                   );
 
                   tracker.clicked();
 
                   // TRICKY
                   // ELFI V2 StakingPool need round - 2 value
-                  stakingPool.claim((round >= 3 && stakedToken === Token.ELFI ? round - 2 : round).toString()).then((tx) => {
-                    setTransaction(
-                      tx,
-                      tracker,
-                      stakedToken + "Claim" as RecentActivityType,
-                      () => {
-                        transactionModal();
-                        closeHandler();
-                      },
-                      () => {
-                        afterTx();
-                      }
+                  stakingPool
+                    .claim(
+                      (round >= 3 && stakedToken === Token.ELFI
+                        ? round - 2
+                        : round
+                      ).toString(),
                     )
-                  }).catch((e) => {
-                    failTransaction(tracker, closeHandler, e)
-                  })
+                    .then((tx) => {
+                      setTransaction(
+                        tx,
+                        tracker,
+                        (stakedToken + 'Claim') as RecentActivityType,
+                        () => {
+                          transactionModal();
+                          closeHandler();
+                        },
+                        () => {
+                          afterTx();
+                        },
+                      );
+                    })
+                    .catch((e) => {
+                      failTransaction(tracker, closeHandler, e);
+                    });
                 }}
               >
-                <p>
-                  {t("staking.claim_reward")}
-                </p>
+                <p>{t('staking.claim_reward')}</p>
               </div>
             </div>
-          }
+          )}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default ClaimStakingRewardModal;

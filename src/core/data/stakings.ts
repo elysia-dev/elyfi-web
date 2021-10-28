@@ -1,4 +1,4 @@
-import { utils } from "ethers";
+import { utils } from 'ethers';
 
 export const ELFIPerDayOnELStakingPool = utils.parseEther('25000');
 

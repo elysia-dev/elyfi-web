@@ -1,9 +1,8 @@
 import { BigNumber, constants, utils } from 'ethers';
-import React, { useState, useContext } from 'react'
+import { useState, useContext, useMemo } from 'react';
 import ELFI from 'src/assets/images/ELFI.png';
 import { formatComma } from 'src/utiles/formatters';
 import { useTranslation } from 'react-i18next';
-import { useMemo } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import Token from 'src/enums/Token';
 import ArrowUp from 'src/assets/images/arrow-up.png';
@@ -15,30 +14,40 @@ import useStakingPool from 'src/hooks/useStakingPool';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import { formatEther, parseEther } from 'ethers/lib/utils';
 import useWaitingTx from 'src/hooks/useWaitingTx';
-import LoadingIndicator from './LoadingIndicator';
 import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
+import LoadingIndicator from './LoadingIndicator';
 
 const MigrationModal: React.FunctionComponent<{
-  visible: boolean,
-  closeHandler: () => void,
-  afterTx: () => void,
-  stakedToken: Token.ELFI | Token.EL
-  rewardToken: Token.ELFI | Token.DAI,
-  stakedBalance: BigNumber,
-  rewardBalance: BigNumber,
-  round: number,
-  transactionModal: () => void
-}> = ({ visible, closeHandler, afterTx, stakedBalance, rewardBalance, stakedToken, rewardToken, round, transactionModal }) => {
+  visible: boolean;
+  closeHandler: () => void;
+  afterTx: () => void;
+  stakedToken: Token.ELFI | Token.EL;
+  rewardToken: Token.ELFI | Token.DAI;
+  stakedBalance: BigNumber;
+  rewardBalance: BigNumber;
+  round: number;
+  transactionModal: () => void;
+}> = ({
+  visible,
+  closeHandler,
+  afterTx,
+  stakedBalance,
+  rewardBalance,
+  stakedToken,
+  rewardToken,
+  round,
+  transactionModal,
+}) => {
   const current = moment();
   const { t, i18n } = useTranslation();
   const { account } = useWeb3React();
   const [state, setState] = useState({
-    withdrawAmount: "",
-    migrationAmount: "",
+    withdrawAmount: '',
+    migrationAmount: '',
     withdrawMax: false,
-    migrationMax: false
+    migrationMax: false,
   });
   const [mouseHover, setMouseHover] = useState(false);
   const stakingPool = useStakingPool(stakedToken, round >= 3);
@@ -46,17 +55,21 @@ const MigrationModal: React.FunctionComponent<{
   const initTxTracker = useTxTracking();
   const { setTransaction, failTransaction } = useContext(TxContext);
 
-  const amountGtStakedBalance = !state.withdrawMax && utils.parseEther(state.withdrawAmount || '0').gt(stakedBalance);
-  const migrationAmountGtStakedBalance = !state.migrationMax && utils.parseEther(state.migrationAmount || '0').gt(stakedBalance);
+  const amountGtStakedBalance =
+    !state.withdrawMax &&
+    utils.parseEther(state.withdrawAmount || '0').gt(stakedBalance);
+  const migrationAmountGtStakedBalance =
+    !state.migrationMax &&
+    utils.parseEther(state.migrationAmount || '0').gt(stakedBalance);
 
   const currentRound = useMemo(() => {
-    return stakingRoundTimes.filter((round) =>
-      current.diff(round.startedAt) >= 0
-    ).length
+    return stakingRoundTimes.filter(
+      (round) => current.diff(round.startedAt) >= 0,
+    ).length;
   }, [current]);
 
   return (
-    <div className="modal" style={{ display: visible ? "block" : "none" }}>
+    <div className="modal" style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
         <div className="modal__header">
           <div className="modal__header__token-info-wrapper">
@@ -73,11 +86,11 @@ const MigrationModal: React.FunctionComponent<{
         </div>
         {waiting ? (
           <LoadingIndicator />
-        ) :
+        ) : (
           <div className="modal__migration">
             <div className="modal__migration__wrapper">
               <div>
-                <p>{t("staking.unstaking")}</p>
+                <p>{t('staking.unstaking')}</p>
                 <div className="modal__migration__input">
                   <p
                     className="modal__input__maximum bold"
@@ -85,14 +98,13 @@ const MigrationModal: React.FunctionComponent<{
                       setState({
                         migrationAmount: '0',
                         migrationMax: false,
-                        withdrawAmount: (
-                          Math.floor(parseFloat(utils.formatEther(stakedBalance)))
+                        withdrawAmount: Math.floor(
+                          parseFloat(utils.formatEther(stakedBalance)),
                         ).toFixed(8),
                         withdrawMax: true,
-                      })
-                    }}
-                  >
-                    {t("staking.max")}
+                      });
+                    }}>
+                    {t('staking.max')}
                   </p>
                   <p className="modal__value bold">
                     <input
@@ -100,27 +112,39 @@ const MigrationModal: React.FunctionComponent<{
                       className="modal__text-input"
                       placeholder="0"
                       value={state.withdrawAmount}
-                      style={{ fontSize: state.withdrawAmount.length < 8 ? 60 : state.withdrawAmount.length > 12 ? 35 : 45 }}
+                      style={{
+                        fontSize:
+                          state.withdrawAmount.length < 8
+                            ? 60
+                            : state.withdrawAmount.length > 12
+                            ? 35
+                            : 45,
+                      }}
                       onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
-                        ["-", "+", "e"].includes(e.key) && e.preventDefault();
+                        ['-', '+', 'e'].includes(e.key) && e.preventDefault();
                       }}
                       onChange={({ target }) => {
-                        target.value = target.value.replace(/(\.\d{18})\d+/g, '$1');
+                        target.value = target.value.replace(
+                          /(\.\d{18})\d+/g,
+                          '$1',
+                        );
 
                         if (target.value) {
                           setState({
                             withdrawAmount: target.value,
-                            migrationAmount: formatEther((stakedBalance.sub(parseEther(target.value)))),
+                            migrationAmount: formatEther(
+                              stakedBalance.sub(parseEther(target.value)),
+                            ),
                             withdrawMax: false,
                             migrationMax: false,
-                          })
+                          });
                         } else {
                           setState({
                             migrationAmount: '',
                             withdrawAmount: '',
                             withdrawMax: false,
                             migrationMax: false,
-                          })
+                          });
                         }
                       }}
                     />
@@ -133,16 +157,21 @@ const MigrationModal: React.FunctionComponent<{
               </div>
               <div>
                 <div className="modal__migration__popup__info">
-                  <p>{t("staking.migration")}</p>
+                  <p>{t('staking.migration')}</p>
                   <p
                     className="modal__migration__popup__hover"
-                    onMouseEnter={() => { setMouseHover(true) }}
-                    onMouseLeave={() => { setMouseHover(false) }}
-                  >
+                    onMouseEnter={() => {
+                      setMouseHover(true);
+                    }}
+                    onMouseLeave={() => {
+                      setMouseHover(false);
+                    }}>
                     ?
                   </p>
-                  <div className="modal__migration__popup" style={{ display: mouseHover ? "block" : "none" }}>
-                    {t("staking.migration--content")}
+                  <div
+                    className="modal__migration__popup"
+                    style={{ display: mouseHover ? 'block' : 'none' }}>
+                    {t('staking.migration--content')}
                   </div>
                 </div>
                 <div className="modal__migration__input">
@@ -152,14 +181,13 @@ const MigrationModal: React.FunctionComponent<{
                       setState({
                         withdrawAmount: '0',
                         withdrawMax: false,
-                        migrationAmount: (
-                          Math.floor(parseFloat(utils.formatEther(stakedBalance)))
+                        migrationAmount: Math.floor(
+                          parseFloat(utils.formatEther(stakedBalance)),
                         ).toFixed(8),
                         migrationMax: true,
-                      })
-                    }}
-                  >
-                    {t("staking.max")}
+                      });
+                    }}>
+                    {t('staking.max')}
                   </p>
                   <p className="modal__value bold">
                     <input
@@ -167,50 +195,68 @@ const MigrationModal: React.FunctionComponent<{
                       className="modal__text-input"
                       placeholder="0"
                       value={state.migrationAmount}
-                      style={{ fontSize: state.migrationAmount.length < 8 ? 50 : state.migrationAmount.length > 12 ? 30 : 40 }}
+                      style={{
+                        fontSize:
+                          state.migrationAmount.length < 8
+                            ? 50
+                            : state.migrationAmount.length > 12
+                            ? 30
+                            : 40,
+                      }}
                       onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
-                        ["-", "+", "e"].includes(e.key) && e.preventDefault();
+                        ['-', '+', 'e'].includes(e.key) && e.preventDefault();
                       }}
                       onChange={({ target }) => {
-                        target.value = target.value.replace(/(\.\d{18})\d+/g, '$1');
+                        target.value = target.value.replace(
+                          /(\.\d{18})\d+/g,
+                          '$1',
+                        );
 
                         if (target.value) {
                           setState({
                             migrationAmount: target.value,
-                            withdrawAmount: formatEther((stakedBalance.sub(parseEther(target.value)))),
+                            withdrawAmount: formatEther(
+                              stakedBalance.sub(parseEther(target.value)),
+                            ),
                             withdrawMax: false,
                             migrationMax: false,
-                          })
+                          });
                         } else {
                           setState({
                             migrationAmount: '',
                             withdrawAmount: '',
                             withdrawMax: false,
                             migrationMax: false,
-                          })
+                          });
                         }
                       }}
                     />
                   </p>
                 </div>
                 <div className="modal__migration__content">
+                  <p>{t('staking.migration_location')} :</p>
                   <p>
-                    {t("staking.migration_location")} :
+                    {t('staking.nth', {
+                      nth: toOrdinalNumber(i18n.language, round),
+                    })}
                   </p>
-                  <p>{t("staking.nth", { nth: toOrdinalNumber(i18n.language, round) })}</p>
                   <img src={ArrowLeft} />
-                  <p>{t("staking.nth", { nth: toOrdinalNumber(i18n.language, currentRound) })}</p>
+                  <p>
+                    {t('staking.nth', {
+                      nth: toOrdinalNumber(i18n.language, currentRound),
+                    })}
+                  </p>
                 </div>
               </div>
             </div>
 
             <div className="modal__staking__container">
-              <p className="spoqa__bold">
-                {t("staking.available_amount")}
-              </p>
+              <p className="spoqa__bold">{t('staking.available_amount')}</p>
               <div>
                 <p className="spoqa__bold">
-                  {t("staking.nth_staking_amount", { nth: toOrdinalNumber(i18n.language, round) })}
+                  {t('staking.nth_staking_amount', {
+                    nth: toOrdinalNumber(i18n.language, round),
+                  })}
                 </p>
                 <p className="spoqa__bold">
                   {`${formatComma(stakedBalance)} ${stakedToken}`}
@@ -219,12 +265,12 @@ const MigrationModal: React.FunctionComponent<{
             </div>
 
             <div className="modal__staking__container">
-              <p className="spoqa__bold">
-                {t("staking.reward_token_claim")}
-              </p>
+              <p className="spoqa__bold">{t('staking.reward_token_claim')}</p>
               <div>
                 <p className="spoqa__bold">
-                  {t("staking.nth_reward_amount", { nth: toOrdinalNumber(i18n.language, round) })}
+                  {t('staking.nth_reward_amount', {
+                    nth: toOrdinalNumber(i18n.language, round),
+                  })}
                 </p>
                 <p className="spoqa__bold">
                   {`${formatComma(rewardBalance)} ${rewardToken}`}
@@ -232,16 +278,30 @@ const MigrationModal: React.FunctionComponent<{
               </div>
             </div>
           </div>
-        }
+        )}
         <div
-          className={`modal__button${stakedBalance.isZero() || amountGtStakedBalance || migrationAmountGtStakedBalance ? "--disable" : ""}`}
+          className={`modal__button${
+            stakedBalance.isZero() ||
+            amountGtStakedBalance ||
+            migrationAmountGtStakedBalance
+              ? '--disable'
+              : ''
+          }`}
           onClick={() => {
-            if (stakedBalance.isZero() || !account || amountGtStakedBalance || migrationAmountGtStakedBalance) return
+            if (
+              stakedBalance.isZero() ||
+              !account ||
+              amountGtStakedBalance ||
+              migrationAmountGtStakedBalance
+            )
+              return;
 
             const tracker = initTxTracker(
               'MigrationModal',
               'Migrate',
-              `${state.migrationAmount} ${formatEther(stakedBalance)} ${stakedToken} ${round}round`
+              `${state.migrationAmount} ${formatEther(
+                stakedBalance,
+              )} ${stakedToken} ${round}round`,
             );
 
             tracker.clicked();
@@ -250,35 +310,43 @@ const MigrationModal: React.FunctionComponent<{
             // ELFI V2 StakingPool need round - 2 value
             stakingPool
               .migrate(
-                state.migrationMax ? stakedBalance :
-                  state.withdrawMax ? constants.Zero :
-                    utils.parseEther(state.migrationAmount),
-                ((round >= 3 && stakedToken === Token.ELFI) ? round - 2 : round).toString()
-              ).then((tx) => {
+                state.migrationMax
+                  ? stakedBalance
+                  : state.withdrawMax
+                  ? constants.Zero
+                  : utils.parseEther(state.migrationAmount),
+                (round >= 3 && stakedToken === Token.ELFI
+                  ? round - 2
+                  : round
+                ).toString(),
+              )
+              .then((tx) => {
                 setTransaction(
                   tx,
                   tracker,
-                  stakedToken + "Migration" as RecentActivityType,
+                  (stakedToken + 'Migration') as RecentActivityType,
                   () => {
                     transactionModal();
                     closeHandler();
                   },
                   () => {
                     afterTx();
-                  }
-                )
-              }).catch((e) => {
-                failTransaction(tracker, closeHandler, e)
+                  },
+                );
               })
-          }}
-        >
+              .catch((e) => {
+                failTransaction(tracker, closeHandler, e);
+              });
+          }}>
           <p>
-            {amountGtStakedBalance ? t("staking.insufficient_balance") : t("staking.transfer")}
+            {amountGtStakedBalance
+              ? t('staking.insufficient_balance')
+              : t('staking.transfer')}
           </p>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default MigrationModal;

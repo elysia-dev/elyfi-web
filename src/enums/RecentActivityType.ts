@@ -1,17 +1,17 @@
 enum RecentActivityType {
-  ELClaim = "Claim",
+  ELClaim = 'Claim',
   ELFIClaim = 'ELFIClaim',
-  ELMigration = "ELMigration",
-  ELFIMigration = "ELFIMigration",
-  Deposit = "Deposit",
-  Withdraw = "Withdraw",
-  Claim = "Claim",
-  ELStakingWithdraw = "ELStakingWithdraw",
-  ELFIStakingWithdraw = "ELFIStakingWithdraw",
-  ELStake = "ELStake",
-  ELFIStake = "ELFIStake",
-  Approve = "Approve",
-  Idle = "Idle"
+  ELMigration = 'ELMigration',
+  ELFIMigration = 'ELFIMigration',
+  Deposit = 'Deposit',
+  Withdraw = 'Withdraw',
+  Claim = 'Claim',
+  ELStakingWithdraw = 'ELStakingWithdraw',
+  ELFIStakingWithdraw = 'ELFIStakingWithdraw',
+  ELStake = 'ELStake',
+  ELFIStake = 'ELFIStake',
+  Approve = 'Approve',
+  Idle = 'Idle',
 }
 
 export default RecentActivityType;

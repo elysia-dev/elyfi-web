@@ -1,8 +1,8 @@
 enum StakingPoolStatus {
-  Claim = "Claim",
-  Migrate = "Migrate",
-  Stake = "Stake",
-  Withdraw = 'Withdraw'
+  Claim = 'Claim',
+  Migrate = 'Migrate',
+  Stake = 'Stake',
+  Withdraw = 'Withdraw',
 }
 
-export default StakingPoolStatus
+export default StakingPoolStatus;

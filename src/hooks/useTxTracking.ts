@@ -1,31 +1,31 @@
-import ReactGA from "react-ga";
+import ReactGA from 'react-ga';
 
 const useTxTracking = () => {
   const initTracker = (category: string, action: string, label: string) => {
     return {
       clicked: () => {
         ReactGA.event({
-          category: category,
+          category,
           action: `Click ${action}`,
-          label: label,
-        })
+          label,
+        });
       },
       created: () => {
         ReactGA.event({
-          category: category,
+          category,
           action: `${action} tx is created`,
-          label: label,
-        })
+          label,
+        });
       },
       canceled: () => {
         ReactGA.event({
-          category: category,
+          category,
           action: `${action} tx is canceled`,
-          label: label,
-        })
-      }
-    }
-  }
+          label,
+        });
+      },
+    };
+  };
 
   return initTracker;
 };

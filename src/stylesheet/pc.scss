@@ -1,7 +1,6 @@
 $device-width: 1190px;
 $footer-height: 100px;
 
-
 .view-w {
   $footer-height: 100px;
   min-width: $device-width;
@@ -167,7 +166,6 @@ $footer-height: 100px;
     &__table {
       &__wrapper {
         display: flex;
-        
       }
       &__image {
         padding: 10px 0px 10px 30px;
@@ -236,7 +234,7 @@ $footer-height: 100px;
                   margin: 0;
                   font-weight: bold;
                   cursor: pointer;
-                  &:last-child { 
+                  &:last-child {
                     margin-top: 5px;
                     font-weight: 400;
                   }
@@ -351,7 +349,7 @@ $footer-height: 100px;
       }
     }
   }
-  
+
   .text {
     &__title {
       margin-top: 100px;
@@ -620,7 +618,6 @@ $footer-height: 100px;
     }
   }
 
-
   .modal {
     &__text-input {
       font-size: 60px;
@@ -812,7 +809,7 @@ $footer-height: 100px;
             gap: 10px;
           }
         }
-  
+
         &__withdraw,
         &__deposit {
           &__maximum {
@@ -1006,7 +1003,4 @@ $footer-height: 100px;
       top: 88px;
     }
   }
-
-
 }
-

@@ -1,6 +1,8 @@
-import { useEffect } from 'react';
-import { useState } from 'react';
-import PriceContext, { initialPriceContext, PriceContextType } from 'src/contexts/PriceContext';
+import { useEffect, useState } from 'react';
+import PriceContext, {
+  initialPriceContext,
+  PriceContextType,
+} from 'src/contexts/PriceContext';
 import UniswapV3 from 'src/clients/UniswapV3';
 import Loading from 'src/components/Loading';
 import ErrorPage from 'src/components/ErrorPage';
@@ -15,35 +17,41 @@ const PriceProvider: React.FC = (props) => {
 
       setState({
         ...state,
-        elfiPrice: parseFloat(poolData.data.data.pool.poolDayData[poolData.data.data.pool.poolDayData.length - 1].token1Price),
+        elfiPrice: parseFloat(
+          poolData.data.data.pool.poolDayData[
+            poolData.data.data.pool.poolDayData.length - 1
+          ].token1Price,
+        ),
         elPrice: (await Coingecko.getElPrice()).data.elysia.usd,
         daiPrice: (await Coingecko.getDaiPrice()).data.dai.usd,
         tetherPrice: (await Coingecko.getTetherPrice()).data.tether.usd,
+        ethPrice: (await Coingecko.getEthPrice()).data.ethereum.usd,
         loading: false,
-      })
+      });
     } catch (e) {
       setState({
         ...state,
         loading: false,
         error: true,
-      })
+      });
     }
-  }
+  };
 
   useEffect(() => {
     fetchPrices();
-  }, [])
+  }, []);
 
-  if (state.loading) return (<Loading />)
-  if (state.error) return (<ErrorPage />)
+  if (state.loading) return <Loading />;
+  if (state.error) return <ErrorPage />;
 
   return (
-    <PriceContext.Provider value={{
-      ...state,
-    }}>
+    <PriceContext.Provider
+      value={{
+        ...state,
+      }}>
       {props.children}
     </PriceContext.Provider>
   );
-}
+};
 
 export default PriceProvider;

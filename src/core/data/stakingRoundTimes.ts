@@ -2,8 +2,8 @@ import moment from 'moment';
 import 'moment-timezone';
 
 interface IStakingPoolRound {
-  startedAt: moment.Moment
-  endedAt: moment.Moment
+  startedAt: moment.Moment;
+  endedAt: moment.Moment;
 }
 
 const format = 'YYYY.MM.DD hh:mm:ss Z';
@@ -28,8 +28,8 @@ const stakingRoundTimes: IStakingPoolRound[] = [
 ].map((item) => {
   return {
     startedAt: moment(item.startedAt, format).tz('Asia/Seoul', true),
-    endedAt: moment(item.endedAt, format).tz('Asia/Seoul', true)
-  }
-})
+    endedAt: moment(item.endedAt, format).tz('Asia/Seoul', true),
+  };
+});
 
-export default stakingRoundTimes
+export default stakingRoundTimes;

@@ -1,49 +1,49 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 // id is lower address
 export const GET_USER = gql`
   query GetUser($id: String!) {
-	  user (id: $id) {
-      id,
+    user(id: $id) {
+      id
       lTokenBalance {
         lToken {
           reserve {
-            id,
-            depositAPY,
+            id
+            depositAPY
           }
-        },
+        }
         balance
-      },
-      isCouncil,
-      isCollateralServiceProvider,
+      }
+      isCouncil
+      isCollateralServiceProvider
       deposit {
-        id,
-        amount,
+        id
+        amount
         reserve {
           id
         }
-      },
+      }
       withdraw {
-        id,
-        amount,
+        id
+        amount
         reserve {
           id
         }
-      },
+      }
       lTokenMint(orderBy: timestamp) {
         lToken {
-          id,
-        },
-        amount,
-        index,
+          id
+        }
+        amount
+        index
         timestamp
       }
       lTokenBurn(orderBy: timestamp) {
         lToken {
-          id,
-        },
-        amount,
-        index,
+          id
+        }
+        amount
+        index
         timestamp
       }
     }

@@ -1,27 +1,32 @@
 @font-face {
-  font-family: "Montserrat";
-  src: url("../assets/fonts/Montserrat-Regular.ttf") format("truetype");
+  font-family: 'Montserrat';
+  src: url('../assets/fonts/Montserrat-Regular.ttf') format('truetype');
   unicode-range: U+0041-005A, U+0061-007A;
 }
 @font-face {
-  font-family: "Montserrat-bold";
-  src: url("../assets/fonts/Montserrat-Bold.ttf") format("truetype");
+  font-family: 'Montserrat-bold';
+  src: url('../assets/fonts/Montserrat-Bold.ttf') format('truetype');
   unicode-range: U+0041-005A, U+0061-007A;
 }
 @font-face {
-  font-family: "SpoqaHanSansNeo";
-  src: url("../assets/fonts/SpoqaHanSansNeo-Regular.ttf") format("truetype");
+  font-family: 'SpoqaHanSansNeo';
+  src: url('../assets/fonts/SpoqaHanSansNeo-Regular.ttf') format('truetype');
   unicode-range: U+0030-0039 U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
 }
 @font-face {
-  font-family: "SpoqaHanSansNeo-Bold";
-  src: url("../assets/fonts/SpoqaHanSansNeo-Bold.ttf") format("truetype");
+  font-family: 'SpoqaHanSansNeo-Bold';
+  src: url('../assets/fonts/SpoqaHanSansNeo-Bold.ttf') format('truetype');
+  unicode-range: U+0030-0039 U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
+}
+@font-face {
+  font-family: 'SpoqaHanSansNeo-Medium';
+  src: url('../assets/fonts/SpoqaHanSansNeo-Medium.ttf') format('truetype');
   unicode-range: U+0030-0039 U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
 }
 
 h1,
 h2 {
-  font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
+  font-family: 'Montserrat-bold', 'SpoqaHanSansNeo-Bold';
   color: #000;
   opacity: 0.88;
   font-weight: bold;
@@ -32,19 +37,22 @@ h2 {
   -khtml-user-select: none;
   user-select: none;
 }
+.medium {
+  font-family: 'SpoqaHanSansNeo-Medium';
+}
 .bold {
-  font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
+  font-family: 'Montserrat-bold', 'SpoqaHanSansNeo-Bold';
 }
 .spoqa {
-  font-family: "SpoqaHanSansNeo" !important;
+  font-family: 'SpoqaHanSansNeo' !important;
   &__bold {
-    font-family: "SpoqaHanSansNeo-Bold" !important;
+    font-family: 'SpoqaHanSansNeo-Bold' !important;
   }
 }
 p,
 a,
 span {
-  font-family: "Montserrat", "SpoqaHanSansNeo";
+  font-family: 'Montserrat', 'SpoqaHanSansNeo';
   color: #333333;
   text-decoration: none;
   cursor: default;
@@ -114,7 +122,7 @@ span {
       cursor: pointer !important;
       position: relative;
       &::after {
-        content: "";
+        content: '';
         position: absolute;
         top: 100%;
       }
@@ -147,7 +155,7 @@ span {
       padding: 0px;
       z-index: 99;
       &__item {
-        font-family: "Montserrat", "SpoqaHanSansNeo";
+        font-family: 'Montserrat', 'SpoqaHanSansNeo';
       }
       :hover {
         background-color: #f0f0f1;
@@ -171,11 +179,11 @@ span {
       }
       &__status {
         color: #fff;
-        font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
+        font-family: 'Montserrat-bold', 'SpoqaHanSansNeo-Bold';
         cursor: pointer;
         &--connected {
           color: #fff;
-          font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
+          font-family: 'Montserrat-bold', 'SpoqaHanSansNeo-Bold';
           text-align: right;
           margin: 0;
           cursor: pointer;
@@ -199,19 +207,19 @@ span {
         text-align: right;
         position: relative;
         cursor: pointer;
-        
+
         box-shadow: 0px 0px 6px #00bfff81;
         border: 2px solid #00bfff;
 
         &.FAIL {
-          box-shadow: 0px 0px 6px #FF1D1D81;
-          border: 2px solid #FF1D1D;
+          box-shadow: 0px 0px 6px #ff1d1d81;
+          border: 2px solid #ff1d1d;
         }
         &.PENDING {
-          box-shadow: 0px 0px 6px #F5F5F581;
-          border: 2px solid #F5F5F5;
+          box-shadow: 0px 0px 6px #f5f5f581;
+          border: 2px solid #f5f5f5;
           color: #00bfff;
-          box-shadow: inset 0 0 0 1px rgba(#00bfff, .5);
+          box-shadow: inset 0 0 0 1px rgba(#00bfff, 0.5);
 
           &::before,
           &::after {
@@ -223,18 +231,27 @@ span {
             content: '';
             z-index: -1;
             margin: -1 * 0.05 * 100%;
-            box-shadow: inset 0 0 0 2px; 
+            box-shadow: inset 0 0 0 2px;
             animation: clipMe 4s linear infinite;
           }
           &::before {
-            animation-delay: 4s * -.5;
+            animation-delay: 4s * -0.5;
           }
           @keyframes clipMe {
-            0%, 100% {clip: rect(0px, 205px * 1.1, 2px, 0px); }
-            25% {clip: rect(0px, 2px, 67px * 1.1, 0px); }
-            50% {clip: rect(67px * 1.1 - 2px, 205px * 1.1, 67px * 1.1, 0px); }
-            75% {clip: rect(0px, 205px * 1.1, 67px * 1.1, 205px * 1.1); }
-          }   
+            0%,
+            100% {
+              clip: rect(0px, 205px * 1.1, 2px, 0px);
+            }
+            25% {
+              clip: rect(0px, 2px, 67px * 1.1, 0px);
+            }
+            50% {
+              clip: rect(67px * 1.1 - 2px, 205px * 1.1, 67px * 1.1, 0px);
+            }
+            75% {
+              clip: rect(0px, 205px * 1.1, 67px * 1.1, 205px * 1.1);
+            }
+          }
           .loader {
             left: 15px;
             width: 6px;
@@ -249,8 +266,8 @@ span {
           }
         }
         &.CONFIRM {
-          box-shadow: 0px 0px 6px #23Eb1B81;
-          border: 2px solid #23Eb1B;
+          box-shadow: 0px 0px 6px #23eb1b81;
+          border: 2px solid #23eb1b;
         }
       }
       &__sub-menu {
@@ -267,7 +284,7 @@ span {
           cursor: default;
         }
         &__item {
-          font-family: "Montserrat", "SpoqaHanSansNeo";
+          font-family: 'Montserrat', 'SpoqaHanSansNeo';
           white-space: normal;
           margin: 0;
         }
@@ -288,7 +305,7 @@ span {
     justify-content: space-between;
     align-items: center;
   }
-  
+
   .header {
     background-color: #fff;
     position: relative;
@@ -352,7 +369,8 @@ span {
   }
 
   .tokens {
-    .token-name, .div-balance {
+    .token-name,
+    .div-balance {
       color: #888888;
     }
     margin: 0 auto;
@@ -375,7 +393,7 @@ span {
       &__image {
         padding: 10px 5px;
         &--disable {
-          background-color: #1C1C1CA2;
+          background-color: #1c1c1ca2;
           position: absolute;
         }
         > div {
@@ -395,15 +413,15 @@ span {
         display: flex;
         align-items: center;
         justify-content: space-evenly;
-        margin:  0 auto;
+        margin: 0 auto;
         > img {
           margin: 0px 1px 0px 2px;
         }
         > p {
           margin: 0;
           &::after {
-            content: "APR";
-            font-family: "SpoqaHanSansNeo";
+            content: 'APR';
+            font-family: 'SpoqaHanSansNeo';
             color: #888888;
             font-weight: 200;
           }
@@ -599,7 +617,7 @@ span {
       opacity: 1;
     }
   }
-  
+
   .text {
     &__title {
       display: flex;
@@ -702,7 +720,7 @@ span {
                 border: 0px;
                 cursor: not-allowed;
                 background-color: #b7b7b7;
-                 > p {
+                > p {
                   cursor: not-allowed;
                   color: #ffffff;
                 }
@@ -727,7 +745,7 @@ span {
             }
             &:last-child {
               margin-right: 20px;
-              > div { 
+              > div {
                 > h2 {
                   color: #00a7ff;
                 }
@@ -749,7 +767,6 @@ span {
           }
         }
       }
-
 
       &__previous {
         &__wrapper {
@@ -818,7 +835,7 @@ span {
         &:last-child {
           border-bottom: 0px;
         }
-        
+
         &__button {
           display: flex;
           flex-direction: column;
@@ -828,7 +845,7 @@ span {
             border: 0px;
             cursor: not-allowed;
             background-color: #b7b7b7;
-             > p {
+            > p {
               cursor: not-allowed;
               color: #ffffff;
             }
@@ -984,7 +1001,7 @@ span {
           }
         }
         &::after {
-          content: "";
+          content: '';
           width: 1px;
           position: absolute;
           background-color: #b7b7b7;
@@ -1123,7 +1140,7 @@ span {
               margin: 0;
             }
             > div {
-              background-color: #00BFFF;
+              background-color: #00bfff;
               width: 14px;
               height: 14px;
               border-radius: 14px;
@@ -1232,7 +1249,7 @@ span {
       justify-content: center;
       margin: 30px;
       align-items: center;
-      > img { 
+      > img {
         width: 50%;
         margin: 20px;
       }
@@ -1254,7 +1271,7 @@ span {
       color: #1c1c1c;
       width: 100%;
       float: right;
-      font-family: "SpoqaHanSansNeo-Bold";
+      font-family: 'SpoqaHanSansNeo-Bold';
       outline: 0;
       transition: all 0.7s linear;
     }
@@ -1327,7 +1344,7 @@ span {
             background: none;
             color: #1c1c1c;
             float: right;
-            font-family: "SpoqaHanSansNeo-Bold";
+            font-family: 'SpoqaHanSansNeo-Bold';
             outline: 0;
             transition: all 0.3s linear;
           }
@@ -1689,7 +1706,6 @@ span {
   }
 }
 
-
 .google-visualization-tooltip {
   border: 0 !important;
   -webkit-box-shadow: none !important;
@@ -1704,10 +1720,10 @@ span {
     padding: 0px 10px;
     > span {
       color: #888888 !important;
-      font-family: "SpoqaHanSansNeo-Bold" !important;
+      font-family: 'SpoqaHanSansNeo-Bold' !important;
       &:nth-child(2) {
         flex: 1;
-        font-family: "SpoqaHanSansNeo-Bold" !important;
+        font-family: 'SpoqaHanSansNeo-Bold' !important;
       }
       &:last-child {
         color: #00bfff !important;
@@ -1721,9 +1737,9 @@ span {
     }
     &:last-child {
       &::after {
-        content: "%";
+        content: '%';
         color: #00bfff;
-        font-family: "Montserrat-bold", "SpoqaHanSansNeo-Bold";
+        font-family: 'Montserrat-bold', 'SpoqaHanSansNeo-Bold';
       }
     }
   }
@@ -1738,7 +1754,7 @@ span {
       display: inline;
     }
     &::after {
-      content: "....";
+      content: '....';
       position: absolute;
       animation: changeContent 3s linear infinite alternate;
       text-align: left;
@@ -1928,36 +1944,36 @@ span {
 
   @-webkit-keyframes changeContent {
     0% {
-      content: ".";
+      content: '.';
     }
     25% {
-      content: "..";
+      content: '..';
     }
     50% {
-      content: "...";
+      content: '...';
     }
     75% {
-      content: "....";
+      content: '....';
     }
     100% {
-      content: ".....";
+      content: '.....';
     }
   }
   @keyframes changeContent {
     0% {
-      content: ".";
+      content: '.';
     }
     25% {
-      content: "..";
+      content: '..';
     }
     50% {
-      content: "...";
+      content: '...';
     }
     75% {
-      content: "....";
+      content: '....';
     }
     100% {
-      content: ".....";
+      content: '.....';
     }
   }
 }
@@ -1985,7 +2001,7 @@ span {
 
 .pin::after {
   position: absolute;
-  content: "";
+  content: '';
   width: 0px;
   height: 0px;
   bottom: -30px;
@@ -1996,28 +2012,77 @@ span {
 @keyframes load5 {
   0%,
   100% {
-    box-shadow: 0em -10px 0em 0em #ffffff, 10px -10px 0 0em rgba(255, 255, 255, 0.2), 10px 0em 0 0em rgba(255, 255, 255, 0.2), 10px 10px 0 0em rgba(255, 255, 255, 0.2), 0em 10px 0 0em rgba(255, 255, 255, 0.2), -10px 10px 0 0em rgba(255, 255, 255, 0.2), -10px 0em 0 0em rgba(255, 255, 255, 0.5), -10px -10px 0 0em rgba(255, 255, 255, 0.7);
+    box-shadow: 0em -10px 0em 0em #ffffff,
+      10px -10px 0 0em rgba(255, 255, 255, 0.2),
+      10px 0em 0 0em rgba(255, 255, 255, 0.2),
+      10px 10px 0 0em rgba(255, 255, 255, 0.2),
+      0em 10px 0 0em rgba(255, 255, 255, 0.2),
+      -10px 10px 0 0em rgba(255, 255, 255, 0.2),
+      -10px 0em 0 0em rgba(255, 255, 255, 0.5),
+      -10px -10px 0 0em rgba(255, 255, 255, 0.7);
   }
   12.5% {
-    box-shadow: 0em -10px 0em 0em rgba(255, 255, 255, 0.7), 10px -10px 0 0em #ffffff, 10px 0em 0 0em rgba(255, 255, 255, 0.2), 10px 10px 0 0em rgba(255, 255, 255, 0.2), 0em 10px 0 0em rgba(255, 255, 255, 0.2), -10px 10px 0 0em rgba(255, 255, 255, 0.2), -10px 0em 0 0em rgba(255, 255, 255, 0.2), -10px -10px 0 0em rgba(255, 255, 255, 0.5);
+    box-shadow: 0em -10px 0em 0em rgba(255, 255, 255, 0.7),
+      10px -10px 0 0em #ffffff, 10px 0em 0 0em rgba(255, 255, 255, 0.2),
+      10px 10px 0 0em rgba(255, 255, 255, 0.2),
+      0em 10px 0 0em rgba(255, 255, 255, 0.2),
+      -10px 10px 0 0em rgba(255, 255, 255, 0.2),
+      -10px 0em 0 0em rgba(255, 255, 255, 0.2),
+      -10px -10px 0 0em rgba(255, 255, 255, 0.5);
   }
   25% {
-    box-shadow: 0em -10px 0em 0em rgba(255, 255, 255, 0.5), 10px -10px 0 0em rgba(255, 255, 255, 0.7), 10px 0em 0 0em #ffffff, 10px 10px 0 0em rgba(255, 255, 255, 0.2), 0em 10px 0 0em rgba(255, 255, 255, 0.2), -10px 10px 0 0em rgba(255, 255, 255, 0.2), -10px 0em 0 0em rgba(255, 255, 255, 0.2), -10px -10px 0 0em rgba(255, 255, 255, 0.2);
+    box-shadow: 0em -10px 0em 0em rgba(255, 255, 255, 0.5),
+      10px -10px 0 0em rgba(255, 255, 255, 0.7), 10px 0em 0 0em #ffffff,
+      10px 10px 0 0em rgba(255, 255, 255, 0.2),
+      0em 10px 0 0em rgba(255, 255, 255, 0.2),
+      -10px 10px 0 0em rgba(255, 255, 255, 0.2),
+      -10px 0em 0 0em rgba(255, 255, 255, 0.2),
+      -10px -10px 0 0em rgba(255, 255, 255, 0.2);
   }
   37.5% {
-    box-shadow: 0em -10px 0em 0em rgba(255, 255, 255, 0.2), 10px -10px 0 0em rgba(255, 255, 255, 0.5), 10px 0em 0 0em rgba(255, 255, 255, 0.7), 10px 10px 0 0em #ffffff, 0em 10px 0 0em rgba(255, 255, 255, 0.2), -10px 10px 0 0em rgba(255, 255, 255, 0.2), -10px 0em 0 0em rgba(255, 255, 255, 0.2), -10px -10px 0 0em rgba(255, 255, 255, 0.2);
+    box-shadow: 0em -10px 0em 0em rgba(255, 255, 255, 0.2),
+      10px -10px 0 0em rgba(255, 255, 255, 0.5),
+      10px 0em 0 0em rgba(255, 255, 255, 0.7), 10px 10px 0 0em #ffffff,
+      0em 10px 0 0em rgba(255, 255, 255, 0.2),
+      -10px 10px 0 0em rgba(255, 255, 255, 0.2),
+      -10px 0em 0 0em rgba(255, 255, 255, 0.2),
+      -10px -10px 0 0em rgba(255, 255, 255, 0.2);
   }
   50% {
-    box-shadow: 0em -10px 0em 0em rgba(255, 255, 255, 0.2), 10px -10px 0 0em rgba(255, 255, 255, 0.2), 10px 0em 0 0em rgba(255, 255, 255, 0.5), 10px 10px 0 0em rgba(255, 255, 255, 0.7), 0em 10px 0 0em #ffffff, -10px 10px 0 0em rgba(255, 255, 255, 0.2), -10px 0em 0 0em rgba(255, 255, 255, 0.2), -10px -10px 0 0em rgba(255, 255, 255, 0.2);
+    box-shadow: 0em -10px 0em 0em rgba(255, 255, 255, 0.2),
+      10px -10px 0 0em rgba(255, 255, 255, 0.2),
+      10px 0em 0 0em rgba(255, 255, 255, 0.5),
+      10px 10px 0 0em rgba(255, 255, 255, 0.7), 0em 10px 0 0em #ffffff,
+      -10px 10px 0 0em rgba(255, 255, 255, 0.2),
+      -10px 0em 0 0em rgba(255, 255, 255, 0.2),
+      -10px -10px 0 0em rgba(255, 255, 255, 0.2);
   }
   62.5% {
-    box-shadow: 0em -10px 0em 0em rgba(255, 255, 255, 0.2), 10px -10px 0 0em rgba(255, 255, 255, 0.2), 10px 0em 0 0em rgba(255, 255, 255, 0.2), 10px 10px 0 0em rgba(255, 255, 255, 0.5), 0em 10px 0 0em rgba(255, 255, 255, 0.7), -10px 10px 0 0em #ffffff, -10px 0em 0 0em rgba(255, 255, 255, 0.2), -10px -10px 0 0em rgba(255, 255, 255, 0.2);
+    box-shadow: 0em -10px 0em 0em rgba(255, 255, 255, 0.2),
+      10px -10px 0 0em rgba(255, 255, 255, 0.2),
+      10px 0em 0 0em rgba(255, 255, 255, 0.2),
+      10px 10px 0 0em rgba(255, 255, 255, 0.5),
+      0em 10px 0 0em rgba(255, 255, 255, 0.7), -10px 10px 0 0em #ffffff,
+      -10px 0em 0 0em rgba(255, 255, 255, 0.2),
+      -10px -10px 0 0em rgba(255, 255, 255, 0.2);
   }
   75% {
-    box-shadow: 0em -10px 0em 0em rgba(255, 255, 255, 0.2), 10px -10px 0 0em rgba(255, 255, 255, 0.2), 10px 0em 0 0em rgba(255, 255, 255, 0.2), 10px 10px 0 0em rgba(255, 255, 255, 0.2), 0em 10px 0 0em rgba(255, 255, 255, 0.5), -10px 10px 0 0em rgba(255, 255, 255, 0.7), -10px 0em 0 0em #ffffff, -10px -10px 0 0em rgba(255, 255, 255, 0.2);
+    box-shadow: 0em -10px 0em 0em rgba(255, 255, 255, 0.2),
+      10px -10px 0 0em rgba(255, 255, 255, 0.2),
+      10px 0em 0 0em rgba(255, 255, 255, 0.2),
+      10px 10px 0 0em rgba(255, 255, 255, 0.2),
+      0em 10px 0 0em rgba(255, 255, 255, 0.5),
+      -10px 10px 0 0em rgba(255, 255, 255, 0.7), -10px 0em 0 0em #ffffff,
+      -10px -10px 0 0em rgba(255, 255, 255, 0.2);
   }
   87.5% {
-    box-shadow: 0em -10px 0em 0em rgba(255, 255, 255, 0.2), 10px -10px 0 0em rgba(255, 255, 255, 0.2), 10px 0em 0 0em rgba(255, 255, 255, 0.2), 10px 10px 0 0em rgba(255, 255, 255, 0.2), 0em 10px 0 0em rgba(255, 255, 255, 0.2), -10px 10px 0 0em rgba(255, 255, 255, 0.5), -10px 0em 0 0em rgba(255, 255, 255, 0.7), -10px -10px 0 0em #ffffff;
+    box-shadow: 0em -10px 0em 0em rgba(255, 255, 255, 0.2),
+      10px -10px 0 0em rgba(255, 255, 255, 0.2),
+      10px 0em 0 0em rgba(255, 255, 255, 0.2),
+      10px 10px 0 0em rgba(255, 255, 255, 0.2),
+      0em 10px 0 0em rgba(255, 255, 255, 0.2),
+      -10px 10px 0 0em rgba(255, 255, 255, 0.5),
+      -10px 0em 0 0em rgba(255, 255, 255, 0.7), -10px -10px 0 0em #ffffff;
   }
 }
 
@@ -2036,7 +2101,7 @@ span {
   animation: lds-spinner 1.2s linear infinite;
 }
 .lds-spinner div:after {
-  content: " ";
+  content: ' ';
   display: block;
   position: absolute;
   top: 0px;

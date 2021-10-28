@@ -1,8 +1,8 @@
 enum LoanStatus {
-	ToBeRepayed,
-	RepaymentComplete,
-	LiquidationProgress,
-	Default,
+  ToBeRepayed,
+  RepaymentComplete,
+  LiquidationProgress,
+  Default,
 }
 
-export default LoanStatus
+export default LoanStatus;

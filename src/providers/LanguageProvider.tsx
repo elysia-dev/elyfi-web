@@ -1,7 +1,9 @@
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import LanguageContext, { initialLanguageContext, ILanguageContext } from '../contexts/LanguageContext';
+import LanguageContext, {
+  initialLanguageContext,
+  ILanguageContext,
+} from '../contexts/LanguageContext';
 import LanguageType from '../enums/LanguageType';
 
 const LanguageProvider: React.FC = (props) => {
@@ -9,52 +11,53 @@ const LanguageProvider: React.FC = (props) => {
   const { i18n } = useTranslation();
 
   const setLanguage = (language: LanguageType) => {
-    window.localStorage.setItem("@language", language);
-    i18n.changeLanguage(language)
+    window.localStorage.setItem('@language', language);
+    i18n.changeLanguage(language);
     setState({
       ...state,
-      language: language,
-    })
-  }
+      language,
+    });
+  };
 
   useEffect(() => {
-    const language = window.localStorage.getItem("@language") as LanguageType
+    const language = window.localStorage.getItem('@language') as LanguageType;
 
     if (language) {
-      i18n.changeLanguage(language)
+      i18n.changeLanguage(language);
       setState({
         ...state,
         language,
-      })
+      });
     } else {
       let localLanguage = LanguageType.EN;
 
       const userLang = navigator.language;
 
       if (userLang?.includes('ko')) {
-        localLanguage = LanguageType.KO
+        localLanguage = LanguageType.KO;
       }
 
       if (userLang?.includes('zh')) {
-        localLanguage = LanguageType.ZHHANS
+        localLanguage = LanguageType.ZHHANS;
       }
 
-      i18n.changeLanguage(localLanguage)
+      i18n.changeLanguage(localLanguage);
       setState({
         ...state,
         language: localLanguage,
-      })
+      });
     }
-  }, [])
+  }, []);
 
   return (
-    <LanguageContext.Provider value={{
-      ...state,
-      setLanguage
-    }}>
+    <LanguageContext.Provider
+      value={{
+        ...state,
+        setLanguage,
+      }}>
       {props.children}
     </LanguageContext.Provider>
   );
-}
+};
 
 export default LanguageProvider;

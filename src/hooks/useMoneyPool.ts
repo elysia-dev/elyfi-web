@@ -1,18 +1,18 @@
-import { useWeb3React } from "@web3-react/core";
-import { useMemo } from "react";
-import { MoneyPool__factory } from "@elysia-dev/contract-typechain";
-import envs from "src/core/envs";
+import { useWeb3React } from '@web3-react/core';
+import { useMemo } from 'react';
+import { MoneyPool__factory } from '@elysia-dev/contract-typechain';
+import envs from 'src/core/envs';
 
 const useMoneyPool = () => {
-	const { library } = useWeb3React();
-	const contract = useMemo(() => {
-		return MoneyPool__factory.connect(
-			envs.moneyPoolAddress,
-			library.getSigner()
-		)
-	}, [library])
+  const { library } = useWeb3React();
+  const contract = useMemo(() => {
+    return MoneyPool__factory.connect(
+      envs.moneyPoolAddress,
+      library.getSigner(),
+    );
+  }, [library]);
 
-	return contract;
-}
+  return contract;
+};
 
-export default useMoneyPool
+export default useMoneyPool;

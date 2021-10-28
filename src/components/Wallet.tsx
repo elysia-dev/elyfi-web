@@ -3,9 +3,9 @@ import { useWeb3React } from '@web3-react/core';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
 import mainnetConverter from 'src/utiles/mainnetConverter';
 import { useTranslation } from 'react-i18next';
-import Idle from "src/assets/images/status__idle.png";
-import Confirm from "src/assets/images/status__confirm.png";
-import Fail from "src/assets/images/status__fail.png";
+import Idle from 'src/assets/images/status__idle.png';
+import Confirm from 'src/assets/images/status__confirm.png';
+import Fail from 'src/assets/images/status__fail.png';
 import TxContext from 'src/contexts/TxContext';
 
 import envs from 'src/core/envs';
@@ -22,64 +22,83 @@ const Wallet = (props: any) => {
   const WalletRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setConnected(!!account && chainId === envs.requiredChainId)
-  }, [account, chainId])
-
+    setConnected(!!account && chainId === envs.requiredChainId);
+  }, [account, chainId]);
 
   return (
     <>
       <AccountModal visible={modal} closeHandler={() => setModal(false)} />
-      <div className={`navigation__wallet${connected ? "--connected" : ""} ${txStatus}`}
+      <div
+        className={`navigation__wallet${
+          connected ? '--connected' : ''
+        } ${txStatus}`}
         ref={WalletRef}
         onClick={() => {
           if (!active) {
             activate(InjectedConnector).then(() => {
-              window.sessionStorage.setItem("@connect", "true");
-            })
+              window.sessionStorage.setItem('@connect', 'true');
+            });
           }
           if (connected) {
             setModal(true);
           }
-        }}>
+        }}
+      >
         <div className="navigation__wallet__wrapper">
           <img
-            style={{ display: !connected ? "none" : txStatus !== TxStatus.PENDING ? "block" : "none" }}
+            style={{
+              display: !connected
+                ? 'none'
+                : txStatus !== TxStatus.PENDING
+                ? 'block'
+                : 'none',
+            }}
             src={
-              txWaiting === undefined ?
-                Idle
-                : txStatus === TxStatus.FAIL ?
-                  Fail
-                  : txStatus === TxStatus.CONFIRM ?
-                    Confirm
-                    :
-                    Idle
+              txWaiting === undefined
+                ? Idle
+                : txStatus === TxStatus.FAIL
+                ? Fail
+                : txStatus === TxStatus.CONFIRM
+                ? Confirm
+                : Idle
             }
             alt="status"
-            className="navigation__status" />
-          <div className="loader" style={{ display: txStatus === TxStatus.PENDING ? "block" : "none" }} />
+            className="navigation__status"
+          />
+          <div
+            className="loader"
+            style={{
+              display: txStatus === TxStatus.PENDING ? 'block' : 'none',
+            }}
+          />
           <div>
             {connected && (
               <p className="navigation__wallet__mainnet">
-                {txStatus === (TxStatus.PENDING || TxStatus.CONFIRM) ? `Transaction ${txNonce}` : mainnetConverter(chainId)}
+                {txStatus === (TxStatus.PENDING || TxStatus.CONFIRM)
+                  ? `Transaction ${txNonce}`
+                  : mainnetConverter(chainId)}
               </p>
             )}
-            <p className={`navigation__wallet__status${connected ? "--connected" : ""}`}>
-              {!connected ? t("navigation.connect_wallet") :
-                txStatus === TxStatus.PENDING ?
-                  "Pending..."
-                  : txStatus === TxStatus.FAIL ?
-                    "FAILED!"
-                    : txStatus === TxStatus.CONFIRM ?
-                      "Confirmed!!"
-                      :
-                      `${account?.slice(0, 6)}....${account?.slice(-4)}`
-              }
+            <p
+              className={`navigation__wallet__status${
+                connected ? '--connected' : ''
+              }`}
+            >
+              {!connected
+                ? t('navigation.connect_wallet')
+                : txStatus === TxStatus.PENDING
+                ? 'Pending...'
+                : txStatus === TxStatus.FAIL
+                ? 'FAILED!'
+                : txStatus === TxStatus.CONFIRM
+                ? 'Confirmed!!'
+                : `${account?.slice(0, 6)}....${account?.slice(-4)}`}
             </p>
           </div>
         </div>
       </div>
     </>
   );
-}
+};
 
 export default Wallet;

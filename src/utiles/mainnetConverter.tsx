@@ -1,23 +1,22 @@
-
 const mainnetConverter = (mainnetChainId: number | undefined) => {
   switch (mainnetChainId) {
     case 1:
-      return "Ethereum Mainnet"
+      return 'Ethereum Mainnet';
     case 3:
-      return "Ropsten Testnet"
+      return 'Ropsten Testnet';
     case 4:
-      return "Rinkeby Testnet"
+      return 'Rinkeby Testnet';
     case 5:
-      return "Goerli Testnet"
+      return 'Goerli Testnet';
     case 42:
-      return "Kovan Testnet"
+      return 'Kovan Testnet';
     case 56:
-      return "Binance Mainnet"
+      return 'Binance Mainnet';
     case 97:
-      return "Binance Testnet"
+      return 'Binance Testnet';
     default:
-      return "Binance Mainnet"
+      return 'Binance Mainnet';
   }
-}
+};
 
 export default mainnetConverter;
