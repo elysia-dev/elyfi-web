@@ -66,7 +66,7 @@ const RewardModal: React.FunctionComponent<{
       callTwo,
       callThree,
     ]);
-    const tracker = initTxTracker('LpStakingModal', 'ClaimReward', `1 2round`);
+    const tracker = initTxTracker('LpStakingModal', 'ClaimReward', ``);
     setTransaction(
       res,
       tracker,
