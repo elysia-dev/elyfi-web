@@ -14,7 +14,7 @@ const WithdrawBody: React.FunctionComponent<{
 }> = ({ tokenInfo, depositBalance, liquidity, yieldProduced, accumulatedYield, withdraw }) => {
   const [amount, setAmount] = useState<{ value: string, max: boolean }>({ value: '', max: false });
 
-  const amountGtBalance = utils.parseUnits((amount.value || '0'), tokenInfo.decimals).gt(depositBalance);
+  const amountGtBalance = !amount.max && utils.parseUnits((amount.value || '0'), tokenInfo.decimals).gt(depositBalance);
   const amountLteZero = !amount.value || parseFloat(amount.value) <= 0;
 
   const { t } = useTranslation();
@@ -24,6 +24,9 @@ const WithdrawBody: React.FunctionComponent<{
       <div className="modal__withdraw">
         <div className="modal__withdraw__value-wrapper">
           <p className="modal__withdraw__maximum bold" onClick={() => {
+            if (depositBalance.isZero()) {
+              return
+            }
             setAmount({
               value: (Math.floor(parseFloat(utils.formatUnits((depositBalance.lte(liquidity) ? depositBalance : liquidity), tokenInfo.decimals)) * 100000000) / 100000000).toFixed(8).toString(),
               max: depositBalance.lte(liquidity)

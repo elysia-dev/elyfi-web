@@ -114,7 +114,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     })
   }
 
-  const requestDeposit = async (amount: BigNumber) => {
+  const requestDeposit = async (amount: BigNumber, max: boolean) => {
     if (!account) return;
 
     const tracker = initTxTracker(
@@ -126,7 +126,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     tracker.clicked();
 
     moneyPool
-      .deposit(reserve.id, account, amount)
+      .deposit(reserve.id, account, max ? balance : amount)
       .then((tx) => {
         setTransaction(
           tx,

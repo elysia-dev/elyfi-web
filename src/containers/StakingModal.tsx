@@ -49,9 +49,9 @@ const StakingModal: React.FunctionComponent<{
     stakingPool.address,
   );
   const { waiting, wait } = useWatingTx();
-  const amountLteZero = !amount || utils.parseEther(amount.value || '0').isZero();
-  const amountGtBalance = utils.parseEther(amount.value || '0').gt(balance);
-  const amountGtStakedBalance = utils.parseEther(amount.value || '0').gt(stakedBalance);
+  const amountLteZero = !amount.value || utils.parseEther(amount.value || '0').isZero();
+  const amountGtBalance = !amount.max && utils.parseEther(amount.value || '0').gt(balance);
+  const amountGtStakedBalance = !amount.max && utils.parseEther(amount.value || '0').gt(stakedBalance);
   const initTxTracker = useTxTracking();
 
   useEffect(() => {
@@ -100,6 +100,9 @@ const StakingModal: React.FunctionComponent<{
                 <p
                   className="modal__maximum bold"
                   onClick={() => {
+                    if (stakingMode ? balance.isZero() : stakedBalance.isZero()) {
+                      return
+                    }
                     setAmount({
                       value: (
                         Math.floor(parseFloat(utils.formatEther(stakingMode ? balance : stakedBalance)))
