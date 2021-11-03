@@ -35,6 +35,15 @@ interface IProps {
 
 const v2Threshold = 2;
 
+const migratable = (staked: Token, round: number): boolean => {
+  if (round >= 3) return false;
+  if (staked === Token.ELFI) {
+    return round >= 2 && moment().diff(stakingRoundTimes[round + 1].startedAt) > 0;
+  } else {
+    return moment().diff(stakingRoundTimes[round + 1].startedAt) > 0
+  }
+}
+
 const Staking: React.FunctionComponent<IProps> = ({
   stakedToken,
   rewardToken,
@@ -250,7 +259,7 @@ const Staking: React.FunctionComponent<IProps> = ({
 
         {loading ? <Skeleton width={"100%"} height={600} /> : <>
           <div className="staking__round">
-            <div className="staking__round__border pc-only" style={{ height: 610 }} />
+            <div className="staking__round__border pc-only" style={{ height: 760 }} />
             <div className="staking__round__container">
               <div>
                 <div className="staking__round__current-data">
@@ -361,13 +370,8 @@ const Staking: React.FunctionComponent<IProps> = ({
                                     return;
                                   }
 
-                                  // ELFI X && 3 라운드 시작 => 마이그레이션
                                   if (
-                                    stakedToken !== Token.ELFI &&
-                                    (
-                                      current.diff(stakingRoundTimes[3].startedAt) > 0
-                                      && current.diff(stakingRoundTimes[3].endedAt) < 0
-                                    )
+                                    migratable(stakedToken, index)
                                   ) {
                                     ReactGA.modalview(`${stakedToken}Migration`)
                                     setRoundModal(index);
@@ -384,11 +388,8 @@ const Staking: React.FunctionComponent<IProps> = ({
                               >
                                 <p>
                                   {
-                                    stakedToken !== Token.ELFI &&
-                                      (
-                                        current.diff(stakingRoundTimes[2].startedAt) > 0
-                                        && current.diff(stakingRoundTimes[2].endedAt) < 0
-                                      ) ?
+                                    migratable(stakedToken, index)
+                                      ?
                                       t("staking.unstaking_migration") :
                                       t("staking.staking_btn")
                                   }
@@ -425,12 +426,12 @@ const Staking: React.FunctionComponent<IProps> = ({
                   <div className="staking__round__remaining-data__title">
                     <div>
                       <p className="spoqa__bold">
-                        {t("staking.nth", { nth: 3 })}
+                        {t("staking.nth", { nth: 4 })}
                       </p>
                       <p>
-                        {stakingRoundTimes[2].startedAt.format('YYYY.MM.DD HH:mm:ss')}
+                        {stakingRoundTimes[3].startedAt.format('YYYY.MM.DD HH:mm:ss')}
                         <br />~&nbsp;
-                        {stakingRoundTimes[2].endedAt.format('YYYY.MM.DD HH:mm:ss')} (KST)
+                        {stakingRoundTimes[3].endedAt.format('YYYY.MM.DD HH:mm:ss')} (KST)
                       </p>
                     </div>
                     <div>
@@ -439,9 +440,9 @@ const Staking: React.FunctionComponent<IProps> = ({
                       </p>
                       <p className="spoqa__bold">
                         {
-                          current.diff(stakingRoundTimes[2].startedAt) <= 0
-                            || roundData[2]?.apr.eq(constants.MaxUint256)
-                            || current.diff(stakingRoundTimes[2].endedAt) >= 0 ? '-' : toPercentWithoutSign(roundData[2].apr || 0)
+                          current.diff(stakingRoundTimes[3].startedAt) <= 0
+                            || roundData[3]?.apr.eq(constants.MaxUint256)
+                            || current.diff(stakingRoundTimes[3].endedAt) >= 0 ? '-' : toPercentWithoutSign(roundData[3].apr || 0)
                         }<span className="spoqa__bold staking__sign">&nbsp;%</span>
                       </p>
                     </div>
@@ -453,49 +454,25 @@ const Staking: React.FunctionComponent<IProps> = ({
                       </p>
                       <div>
                         <h2>
-                          {`${current.diff(stakingRoundTimes[2].startedAt) > 0 ? formatCommaSmall(roundData[2]?.accountPrincipal || '0') : '-'}`}
+                          {`${current.diff(stakingRoundTimes[3].startedAt) > 0 ? formatCommaSmall(roundData[3]?.accountPrincipal || '0') : '-'}`}
                           <span className="spoqa__bold">
                             {stakedToken}
                           </span>
                         </h2>
                         <div
-                          className={`staking__button ${current.diff(stakingRoundTimes[2].startedAt) <= 0 ? "disable" : ""}`}
+                          className={`staking__button ${current.diff(stakingRoundTimes[3].startedAt) <= 0 ? "disable" : ""}`}
                           onClick={(e) => {
-                            if (current.diff(stakingRoundTimes[2].startedAt) < 0 || current.diff(stakingRoundTimes[2].endedAt) > 0) {
+                            if (current.diff(stakingRoundTimes[3].startedAt) < 0 || current.diff(stakingRoundTimes[3].endedAt) > 0) {
                               return;
                             }
-                            // 3차 버튼
-                            // ELFI가 아니면서 && 4차 -> 마이그레이션
-                            if (
-                              stakedToken !== Token.ELFI &&
-                              (
-                                current.diff(stakingRoundTimes[3].startedAt) > 0
-                                && current.diff(stakingRoundTimes[3].endedAt) < 0
-                              )
-                            ) {
-                              ReactGA.modalview(`${stakedToken}Migration`)
-                              setRoundModal(2);
-                              setModalValue(currentRound?.accountPrincipal)
-                              return setMigrationModalVisible(true)
-                            } else {
-                              ReactGA.modalview(`${stakedToken}Staking`)
-                              setRoundModal(2);
-                              setModalValue(currentRound.accountPrincipal)
-                              setStakingModalVisible(true)
-                            }
+                            ReactGA.modalview(`${stakedToken}Staking`)
+                            setRoundModal(3);
+                            setModalValue(currentRound.accountPrincipal)
+                            setStakingModalVisible(true)
                           }}
                         >
                           <p>
-                            {
-                              stakedToken !== Token.ELFI &&
-                                (
-                                  current.diff(stakingRoundTimes[3].startedAt) > 0
-                                  && current.diff(stakingRoundTimes[3].endedAt) < 0
-                                ) ?
-                                t("staking.unstaking_migration")
-                                :
-                                t("staking.staking_btn")
-                            }
+                            {t("staking.staking_btn")}
                           </p>
                         </div>
                       </div>
@@ -540,73 +517,13 @@ const Staking: React.FunctionComponent<IProps> = ({
                             }
                             ReactGA.modalview(`${stakedToken}StakingReward`)
 
-                            current.diff(stakingRoundTimes[2].startedAt) > 0
+                            current.diff(stakingRoundTimes[3].startedAt) > 0
                               &&
-                              setRoundModal(2);
+                              setRoundModal(3);
                             setModalValue(expectedReward.value)
                             setClaimStakingRewardModalVisible(true)
                           }}
                         >
-                          <p>
-                            {t("staking.claim_reward")}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-
-                <div className="staking__round__remaining-data waiting">
-                  <div className="staking__round__remaining-data__title">
-                    <div>
-                      <p className="spoqa__bold">
-                        {t("staking.nth", { nth: 4 })}
-                      </p>
-                      <p>
-                        {stakingRoundTimes[3].startedAt.format('YYYY.MM.DD HH:mm:ss')}
-                        <br />~&nbsp;
-                        {stakingRoundTimes[3].endedAt.format('YYYY.MM.DD HH:mm:ss')} (KST)
-                      </p>
-                    </div>
-                    <div>
-                      <p />
-                      <p className="spoqa__bold">
-                        -<span className="spoqa__bold staking__sign">&nbsp;%</span>
-                      </p>
-                    </div>
-                  </div>
-                  <div className="staking__round__remaining-data__body">
-                    <div>
-                      <p className="spoqa__bold">
-                        {t("staking.staking_amount")}
-                      </p>
-                      <div>
-                        <h2>
-                          -
-                          <span>
-                            {stakedToken}
-                          </span>
-                        </h2>
-                        <div className="disable">
-                          <p>
-                            {t("staking.staking_btn")}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <p className="spoqa__bold">
-                        {t("staking.reward_amount")}
-                      </p>
-                      <div>
-                        <h2>
-                          -
-                          <span>
-                            {rewardToken}
-                          </span>
-                        </h2>
-                        <div className="disable">
                           <p>
                             {t("staking.claim_reward")}
                           </p>
