@@ -68,7 +68,6 @@ const Staking: React.FunctionComponent<IProps> = ({
 
   const [selectModalRound, setRoundModal] = useState(0);
   const [modalValue, setModalValue] = useState(constants.Zero);
-  const [migrationRewardValue, setMigrationRewardValue] = useState(constants.Zero);
 
   const [roundData, setroundData] = useState<RoundData[]>([]);
   const currentRound = useMemo(() => {
@@ -167,7 +166,6 @@ const Staking: React.FunctionComponent<IProps> = ({
   return (
     <>
       <Header title={t("staking.token_staking", { stakedToken: stakedToken }).toUpperCase()} />
-
       <TransactionConfirmModal
         visible={transactionModal}
         closeHandler={() => {
@@ -366,16 +364,14 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   // ELFI X && 3 라운드 시작 => 마이그레이션
                                   if (
                                     stakedToken !== Token.ELFI &&
-
                                     (
-                                      current.diff(stakingRoundTimes[2].startedAt) > 0
-                                      && current.diff(stakingRoundTimes[2].endedAt) < 0
+                                      current.diff(stakingRoundTimes[3].startedAt) > 0
+                                      && current.diff(stakingRoundTimes[3].endedAt) < 0
                                     )
                                   ) {
                                     ReactGA.modalview(`${stakedToken}Migration`)
                                     setRoundModal(index);
                                     setModalValue(item.accountPrincipal)
-                                    setMigrationRewardValue(expectedReward.value)
                                     return setMigrationModalVisible(true)
                                   }
                                   if (current.diff(stakingRoundTimes[index].startedAt) > 0) {
@@ -480,7 +476,6 @@ const Staking: React.FunctionComponent<IProps> = ({
                               ReactGA.modalview(`${stakedToken}Migration`)
                               setRoundModal(2);
                               setModalValue(currentRound?.accountPrincipal)
-                              setMigrationRewardValue(expectedReward.value)
                               return setMigrationModalVisible(true)
                             } else {
                               ReactGA.modalview(`${stakedToken}Staking`)
