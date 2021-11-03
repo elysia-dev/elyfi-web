@@ -42,8 +42,7 @@ const Wallet = (props: any) => {
           if (connected) {
             setModal(true);
           }
-        }}
-      >
+        }}>
         <div className="navigation__wallet__wrapper">
           <img
             style={{
@@ -82,8 +81,7 @@ const Wallet = (props: any) => {
             <p
               className={`navigation__wallet__status${
                 connected ? '--connected' : ''
-              }`}
-            >
+              }`}>
               {!connected
                 ? t('navigation.connect_wallet')
                 : txStatus === TxStatus.PENDING
