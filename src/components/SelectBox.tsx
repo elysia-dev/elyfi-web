@@ -1,11 +1,10 @@
+import { BigNumber } from 'ethers';
 import { useState } from 'react';
+import Position, { TokenInfo } from 'src/core/types/Position';
 import SelectBoxItems from './SelectBoxItems';
 
 type Props = {
-  lpTokens: {
-    id: string;
-    liquidity: string;
-  }[];
+  positions: Position[];
   selectedToken: {
     id: string;
     liquidity: string;
@@ -18,10 +17,11 @@ type Props = {
       selectBoxTitle: string;
     }>
   >;
+  lpTokens: TokenInfo[];
 };
 
 function SelectBox(props: Props) {
-  const { lpTokens, selectedToken, setSelectedToken } = props;
+  const { selectedToken, setSelectedToken, positions, lpTokens } = props;
   const [isItemsVisible, setIsItemsVisible] = useState(false);
 
   const selectBoxHandler = () => {
@@ -122,17 +122,15 @@ function SelectBox(props: Props) {
                 width: '100%',
                 left: -1,
                 height: 95,
-                overflow: 'scroll',
-                bottom: '-215%',
-                border: '1px solid black',
-                background: '#FFFFFF',
+                overflowX: 'visible',
+                bottom: '-214%',
                 position: 'absolute',
               }}>
-              {lpTokens.map((lpToken, idx) => {
+              {lpTokens.map((position, idx) => {
                 return (
                   <SelectBoxItems
                     key={idx}
-                    lpToken={lpToken}
+                    position={position}
                     index={idx}
                     setSelectedToken={setSelectedToken}
                     selectBoxHandler={selectBoxHandler}
