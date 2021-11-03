@@ -18,6 +18,8 @@ interface EnvironmentVariables {
   daiElfiPoolAddress: string;
   ethElfiPoolAddress: string;
   wEth: string;
+  nonFungiblePositionAddress: string;
+  stakerAddress: string;
 }
 
 const vars =
