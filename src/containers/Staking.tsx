@@ -144,14 +144,14 @@ const Staking: React.FunctionComponent<IProps> = ({
     const interval = setInterval(
       () => {
         // FIXME
-        // currentRound is not return 3 when there is no round
-        // For temp usage, use round 3 data
+        // currentRound is not return 4 when there is no round
+        // For temp usage, use round 4 data
         if (!roundData[2]) return;
 
         setExpectedReward({
-          before: expectedReward.value.isZero() ? roundData[2].accountReward : expectedReward.value,
+          before: expectedReward.value.isZero() ? roundData[3].accountReward : expectedReward.value,
           value: calcExpectedReward(
-            roundData[2],
+            roundData[3],
             rewardToken === Token.ELFI ?
               ELFIPerDayOnELStakingPool :
               DAIPerDayOnELFIStakingPool,
