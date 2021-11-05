@@ -14,10 +14,18 @@ import elfi from 'src/assets/images/ELFI.png';
 import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
 import useExpectedReward from 'src/hooks/useExpectedReward';
-import { formatSixFracionDigit, toCompact } from 'src/utiles/formatters';
+import {
+  formatDecimalFracionDigit,
+  formatSixFracionDigit,
+  toCompact,
+} from 'src/utiles/formatters';
 import calcCurrencyValueFromLiquidity from 'src/utiles/calcCurrencyValueFromLiquidity';
 import PriceContext from 'src/contexts/PriceContext';
 import Token from 'src/enums/Token';
+import { useTranslation } from 'react-i18next';
+import TxContext from 'src/contexts/TxContext';
+import useTxTracking from 'src/hooks/useTxTracking';
+import RecentActivityType from 'src/enums/RecentActivityType';
 import LpButton from './LpButton';
 
 type Props = {
@@ -27,15 +35,9 @@ type Props = {
 function StakedLpItem(props: Props) {
   const { position } = props;
   const { account, library } = useWeb3React();
-  const { daiPrice, elfiPrice, ethPrice } = useContext(PriceContext);
+  const { elfiDaiPool, elfiEthPool } = useContext(PriceContext);
   const { expectedReward, getExpectedReward } = useExpectedReward();
-  const [reward, setReward] = useState<{
-    elfiReward: string;
-    ethOrDaiReward: string;
-  }>({
-    elfiReward: '0',
-    ethOrDaiReward: '0',
-  });
+  const { t } = useTranslation();
   const isEthToken =
     position.incentivePotisions[0].incentive.pool.toLowerCase() ===
     envs.ethElfiPoolAddress.toLowerCase();
@@ -45,6 +47,10 @@ function StakedLpItem(props: Props) {
   const rewardTokenAddress = isEthToken ? envs.wEth : envs.daiAddress;
   const tokenImg = isEthToken ? eth : dai;
   const rewardToken = isEthToken ? Token.ETH : Token.DAI;
+  const { setTransaction } = useContext(TxContext);
+  const initTxTracker = useTxTracking();
+  const { txType } = useContext(TxContext);
+  const [count, setCount] = useState(1);
 
   const unstakingHandler = async (position: {
     id: string;
@@ -86,15 +92,32 @@ function StakedLpItem(props: Props) {
       '0x',
     ]);
     const res = await staker.multicall([callOne, callTwo, callThree]);
+    const tracker = initTxTracker('LpUnstaking', 'unstaking', ``);
+    setTransaction(
+      res,
+      tracker,
+      'Withdraw' as RecentActivityType,
+      () => {},
+      () => {},
+    );
   };
 
   useEffect(() => {
-    getExpectedReward(rewardTokenAddress, poolAddress, position.tokenId);
-    const interval = setInterval(() => {
+    if (count === 1) {
       getExpectedReward(rewardTokenAddress, poolAddress, position.tokenId);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+    }
+
+    let getReward: NodeJS.Timeout;
+
+    if (txType !== RecentActivityType.Withdraw) {
+      getReward = setTimeout(() => {
+        getExpectedReward(rewardTokenAddress, poolAddress, position.tokenId);
+        setCount((prev) => prev + 1);
+      }, 5000);
+    }
+
+    return () => clearTimeout(getReward);
+  }, [count]);
 
   return (
     <div className="staked_lp_item staked_lp_item_mobile ">
@@ -104,26 +127,27 @@ function StakedLpItem(props: Props) {
           <div>{position.tokenId}</div>
         </div>
         <div className="spoqa__bold">
-          <div className="staked_lp_item_content_mobile">LP Type</div>
+          <div className="staked_lp_item_content_mobile">
+            {t('lpstaking.staked_lp_token_type')}
+          </div>
           <div>{isEthToken ? 'ELFI-ETH LP' : 'ELFI-DAI LP'}</div>
         </div>
         <div className="spoqa__bold">
-          <div className="staked_lp_item_content_mobile">유동성</div>
+          <div className="staked_lp_item_content_mobile">
+            {t('lpstaking.liquidity')}
+          </div>
           <div>
             ${' '}
-            {formatSixFracionDigit(
-              calcCurrencyValueFromLiquidity(
-                elfiPrice,
-                isEthToken ? ethPrice : daiPrice,
-                position.liquidity,
-              ),
+            {toCompact(
+              (isEthToken ? elfiEthPool.price : elfiDaiPool.price) *
+                parseFloat(utils.formatEther(position.liquidity)),
             )}
           </div>
         </div>
         <div>
           <LpButton
             onHandler={() => unstakingHandler(position)}
-            btnTitle={'언스테이킹'}
+            btnTitle={t('staking.unstaking')}
           />
         </div>
       </div>
@@ -137,9 +161,12 @@ function StakedLpItem(props: Props) {
             {rewardToken}
           </div>
           <div className="staked_lp_item_reward">
-            {`${formatSixFracionDigit(
-              parseFloat(expectedReward.ethOrDaiReward),
-            )} `}
+            {parseFloat(expectedReward.ethOrDaiReward) > 0.0001
+              ? `${formatDecimalFracionDigit(
+                  parseFloat(expectedReward.ethOrDaiReward),
+                  4,
+                )} `
+              : '0.0000...'}
             <div className="staked_lp_item_tokenType">{rewardToken}</div>
           </div>
         </div>
@@ -149,7 +176,10 @@ function StakedLpItem(props: Props) {
             {Token.ELFI}
           </div>
           <div className="staked_lp_item_reward">
-            {`${formatSixFracionDigit(parseFloat(expectedReward.elfiReward))} `}
+            {`${formatDecimalFracionDigit(
+              parseFloat(expectedReward.elfiReward),
+              4,
+            )} `}
             <div className="staked_lp_item_tokenType">{Token.ELFI}</div>
           </div>
         </div>
