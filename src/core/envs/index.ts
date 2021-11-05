@@ -17,9 +17,14 @@ interface EnvironmentVariables {
   usdtAddress: string;
   daiElfiPoolAddress: string;
   ethElfiPoolAddress: string;
-  wEth: string;
+  wEthAddress: string;
   nonFungiblePositionAddress: string;
   stakerAddress: string;
+  lpTokenStakingStartTime: number;
+  lpTokenStakingEndTime: number;
+  stakerSubgraphURL: string;
+  lpTokenPoolSubgraphURL: string;
+  refundedAddress: string;
 }
 
 const vars =
