@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import PriceContext from 'src/contexts/PriceContext';
 import envs from 'src/core/envs';
 import { TokenInfo } from 'src/core/types/Position';
+import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 
 type Props = {
@@ -20,13 +21,13 @@ type Props = {
 };
 
 function SelectBoxItems(props: Props) {
-  const { index, setSelectedToken, selectBoxHandler, position } = props;
-  const { elfiEthPool, elfiDaiPool } = useContext(PriceContext);
+  const { setSelectedToken, selectBoxHandler, position } = props;
+  const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const { t } = useTranslation();
   const poolPrice =
     position.pool.id.toLowerCase() === envs.ethElfiPoolAddress.toLowerCase()
-      ? elfiEthPool.price
-      : elfiDaiPool.price;
+      ? pricePerEthLiquidity
+      : pricePerDaiLiquidity;
 
   return (
     <div

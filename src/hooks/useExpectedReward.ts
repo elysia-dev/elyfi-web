@@ -4,11 +4,11 @@ import envs from 'src/core/envs';
 import stakerABI from 'src/core/abi/StakerABI.json';
 import { useWeb3React } from '@web3-react/core';
 import Position from 'src/core/types/Position';
-import PriceContext from 'src/contexts/PriceContext';
+import usePricePerLiquidity from './usePricePerLiquidity';
 
 function useExpectedReward() {
   const { account, library } = useWeb3React();
-  const { elfiDaiPool, elfiEthPool } = useContext(PriceContext);
+  const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const [expectedReward, setExpectedReward] = useState<{
     elfiReward: string;
     ethOrDaiReward: string;
@@ -58,7 +58,7 @@ function useExpectedReward() {
     }
   };
 
-  const a = () => {};
+  const a = () => { };
   const addTotalExpectedReward = useCallback(async (positions: Position[]) => {
     try {
       let ethTotal = 0;
@@ -111,7 +111,7 @@ function useExpectedReward() {
           .then((res) => {
             liquidityTotal +=
               parseFloat(utils.formatEther(position.liquidity)) *
-              (isEthToken ? elfiEthPool.price : elfiDaiPool.price);
+              (isEthToken ? pricePerEthLiquidity : pricePerDaiLiquidity);
             elfiTotal += parseFloat(utils.formatEther(res[1].reward));
             if (isEthToken) {
               ethTotal += parseFloat(utils.formatEther(res[0].reward));

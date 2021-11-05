@@ -2,21 +2,19 @@ import { BigNumber } from 'ethers';
 import { useTranslation } from 'react-i18next';
 import Skeleton from 'react-loading-skeleton';
 import Token from 'src/enums/Token';
-import useLpApr from 'src/hooks/useLpApr';
 import Guide from '../Guide';
 
 type Props = {
   TotalLiquidity: string;
   secondToken: string;
-  liquidityForApr: BigNumber;
+  apr: string;
 };
 
 function LpStakingHeader(props: Props) {
-  const { TotalLiquidity, secondToken, liquidityForApr } = props;
+  const { TotalLiquidity, secondToken, apr } = props;
   const { t } = useTranslation();
   const token =
     secondToken === Token.ETH ? Token.ELFI_ETH_LP : Token.ELFI_DAI_LP;
-  const apr = useLpApr(token, liquidityForApr);
 
   return (
     <>

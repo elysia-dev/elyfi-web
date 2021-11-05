@@ -4,7 +4,6 @@ import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 import Position, { TokenInfo } from 'src/core/types/Position';
 import Skeleton from 'react-loading-skeleton';
 import Token from 'src/enums/Token';
-import useLpApr from 'src/hooks/useLpApr';
 import lpStakingTime from 'src/core/data/lpStakingTime';
 import moment from 'moment';
 import LpReceiveToken from './LpReceiveToken';
@@ -19,7 +18,7 @@ type Props = {
   positions: Position[];
   totalStakedLiquidity: BigNumber;
   lpTokens: TokenInfo[];
-  liquidityForApr: BigNumber;
+  apr: string;
   isLoading: boolean;
 };
 function LpStakingItem(props: Props) {
@@ -30,7 +29,7 @@ function LpStakingItem(props: Props) {
     positions,
     totalStakedLiquidity,
     lpTokens,
-    liquidityForApr,
+    apr,
     isLoading,
   } = props;
   const [stakingModalVisible, setStakingModalVisible] = useState(false);
@@ -44,11 +43,11 @@ function LpStakingItem(props: Props) {
           stakedToken={Token.ELFI}
           stakedBalance={constants.Zero}
           round={1}
-          afterTx={() => {}}
-          endedModal={() => {}}
-          setTxStatus={() => {}}
-          setTxWaiting={() => {}}
-          transactionModal={() => {}}
+          afterTx={() => { }}
+          endedModal={() => { }}
+          setTxStatus={() => { }}
+          setTxWaiting={() => { }}
+          transactionModal={() => { }}
           firstToken={firstToken}
           secondToken={secondToken}
           positions={positions}
@@ -61,7 +60,7 @@ function LpStakingItem(props: Props) {
               <LpStakingHeader
                 TotalLiquidity={formatDecimalFracionDigit(totalLiquidity, 2)}
                 secondToken={secondToken}
-                liquidityForApr={liquidityForApr}
+                apr={apr}
               />
               <LpReceiveToken
                 firstToken={firstToken}

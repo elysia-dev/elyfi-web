@@ -2,8 +2,6 @@ import {
   useEffect,
   useContext,
   useState,
-  Dispatch,
-  SetStateAction,
 } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, ethers, utils } from 'ethers';
@@ -16,16 +14,14 @@ import dai from 'src/assets/images/dai.png';
 import useExpectedReward from 'src/hooks/useExpectedReward';
 import {
   formatDecimalFracionDigit,
-  formatSixFracionDigit,
   toCompact,
 } from 'src/utiles/formatters';
-import calcCurrencyValueFromLiquidity from 'src/utiles/calcCurrencyValueFromLiquidity';
-import PriceContext from 'src/contexts/PriceContext';
 import Token from 'src/enums/Token';
 import { useTranslation } from 'react-i18next';
 import TxContext from 'src/contexts/TxContext';
 import useTxTracking from 'src/hooks/useTxTracking';
 import RecentActivityType from 'src/enums/RecentActivityType';
+import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import LpButton from './LpButton';
 
 type Props = {
@@ -35,7 +31,7 @@ type Props = {
 function StakedLpItem(props: Props) {
   const { position } = props;
   const { account, library } = useWeb3React();
-  const { elfiDaiPool, elfiEthPool } = useContext(PriceContext);
+  const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const { expectedReward, getExpectedReward } = useExpectedReward();
   const { t } = useTranslation();
   const isEthToken =
@@ -97,8 +93,8 @@ function StakedLpItem(props: Props) {
       res,
       tracker,
       'Withdraw' as RecentActivityType,
-      () => {},
-      () => {},
+      () => { },
+      () => { },
     );
   };
 
@@ -139,8 +135,8 @@ function StakedLpItem(props: Props) {
           <div>
             ${' '}
             {toCompact(
-              (isEthToken ? elfiEthPool.price : elfiDaiPool.price) *
-                parseFloat(utils.formatEther(position.liquidity)),
+              (isEthToken ? pricePerEthLiquidity : pricePerDaiLiquidity) *
+              parseFloat(utils.formatEther(position.liquidity)),
             )}
           </div>
         </div>
@@ -163,9 +159,9 @@ function StakedLpItem(props: Props) {
           <div className="staked_lp_item_reward">
             {parseFloat(expectedReward.ethOrDaiReward) > 0.0001
               ? `${formatDecimalFracionDigit(
-                  parseFloat(expectedReward.ethOrDaiReward),
-                  4,
-                )} `
+                parseFloat(expectedReward.ethOrDaiReward),
+                4,
+              )} `
               : '0.0000...'}
             <div className="staked_lp_item_tokenType">{rewardToken}</div>
           </div>

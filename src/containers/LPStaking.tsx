@@ -15,15 +15,21 @@ import Position, { TokenInfo } from 'src/core/types/Position';
 import LpTokenPoolSubgraph from 'src/clients/LpTokenPoolSubgraph';
 import Token from 'src/enums/Token';
 import TxContext from 'src/contexts/TxContext';
+import { useDaiPositionLpApr, useEthPositionLpApr } from 'src/hooks/useLpApy';
+import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 
 function LPStaking() {
-  const { account, library } = useWeb3React();
+  const { account } = useWeb3React();
   const { t } = useTranslation();
-  const { elfiEthPool, elfiDaiPool } = useContext(PriceContext);
+  const { elfiPrice } = useContext(PriceContext);
+  const { ethPool, daiPool } = useContext(UniswapPoolContext);
+  const { ethPrice } = useContext(PriceContext);
   const { txWaiting } = useContext(TxContext);
   const [isLoading, setIsLoading] = useState(false);
   const [positions, setPositions] = useState<Position[]>([]);
   const [lpTokens, setLpTokens] = useState<TokenInfo[]>([]);
+  const ethPoolApr = useEthPositionLpApr();
+  const daiPoolApr = useDaiPositionLpApr();
   const [totalLiquidity, setTotalLiquidity] = useState<{
     daiElfiPoolTotalLiquidity: number;
     ethElfiPoolTotalLiquidity: number;
@@ -112,7 +118,7 @@ function LPStaking() {
               firstToken={Token.ELFI}
               secondToken={Token.ETH}
               totalLiquidity={
-                totalLiquidity.ethElfiPoolTotalLiquidity * elfiEthPool.price
+                ethPool.stakedToken0 * elfiPrice + ethPool.stakedToken1 * ethPrice
               }
               positions={positions.filter(
                 (position) =>
@@ -143,7 +149,7 @@ function LPStaking() {
                   envs.ethElfiPoolAddress.toLowerCase()
                 );
               })}
-              liquidityForApr={totalLiquidity.ethElfiliquidityForApr}
+              apr={ethPoolApr}
               isLoading={isLoading}
             />
           </div>
@@ -154,7 +160,7 @@ function LPStaking() {
               firstToken={Token.ELFI}
               secondToken={Token.DAI}
               totalLiquidity={
-                totalLiquidity.daiElfiPoolTotalLiquidity * elfiDaiPool.price
+                daiPool.stakedToken0 * elfiPrice + daiPool.stakedToken1
               }
               positions={positions.filter(
                 (position) =>
@@ -185,7 +191,7 @@ function LPStaking() {
                   envs.daiElfiPoolAddress.toLowerCase()
                 );
               })}
-              liquidityForApr={totalLiquidity.daiElfiliquidityForApr}
+              apr={daiPoolApr}
               isLoading={isLoading}
             />
           </div>

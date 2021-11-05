@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import PriceContext from 'src/contexts/PriceContext';
 import lpStakingTime from 'src/core/data/lpStakingTime';
 import Token from 'src/enums/Token';
-import calcCurrencyValueFromLiquidity from 'src/utiles/calcCurrencyValueFromLiquidity';
+import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 import Guide from '../Guide';
 import LpButton from './LpButton';
@@ -24,7 +24,7 @@ function LpStakeAndUnStake(props: Props) {
     setStakingModalVisible,
     totalStakedLiquidity,
   } = props;
-  const { elfiDaiPool, elfiEthPool } = useContext(PriceContext);
+  const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const { t } = useTranslation();
   return (
     <div
@@ -63,8 +63,8 @@ function LpStakeAndUnStake(props: Props) {
           {`$ `}
         </span>
         {formatDecimalFracionDigit(
-          (secondToken === Token.ETH ? elfiEthPool.price : elfiDaiPool.price) *
-            parseFloat(utils.formatEther(totalStakedLiquidity)),
+          (secondToken === Token.ETH ? pricePerEthLiquidity : pricePerDaiLiquidity) *
+          parseFloat(utils.formatEther(totalStakedLiquidity)),
           2,
         )}
       </div>
