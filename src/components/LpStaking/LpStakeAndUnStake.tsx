@@ -1,8 +1,12 @@
-import { BigNumber } from 'ethers';
+import { BigNumber, utils } from 'ethers';
+import moment from 'moment';
 import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import PriceContext from 'src/contexts/PriceContext';
+import lpStakingTime from 'src/core/data/lpStakingTime';
+import Token from 'src/enums/Token';
 import calcCurrencyValueFromLiquidity from 'src/utiles/calcCurrencyValueFromLiquidity';
-import { formatSixFracionDigit, toCompact } from 'src/utiles/formatters';
+import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 import Guide from '../Guide';
 import LpButton from './LpButton';
 
@@ -20,7 +24,8 @@ function LpStakeAndUnStake(props: Props) {
     setStakingModalVisible,
     totalStakedLiquidity,
   } = props;
-  const { elfiPrice, daiPrice } = useContext(PriceContext);
+  const { elfiDaiPool, elfiEthPool } = useContext(PriceContext);
+  const { t } = useTranslation();
   return (
     <div
       style={{
@@ -32,8 +37,11 @@ function LpStakeAndUnStake(props: Props) {
           paddingBottom: 7,
           fontSize: 17,
         }}>
-        ELFI-DAI LP 스테이킹
-        <Guide />
+        {t('lpstaking.lp_token_staked', {
+          firstToken,
+          secondToken,
+        })}
+        <Guide content={t('guide.staked_total_amount')} />
       </div>
       <div
         className="spoqa__bold"
@@ -46,18 +54,18 @@ function LpStakeAndUnStake(props: Props) {
           alignItems: 'center',
         }}>
         <span
+          className="spoqa__bold"
           style={{
             fontSize: 25,
             marginLeft: 'auto',
+            marginRight: 3,
           }}>
           {`$ `}
         </span>
-        {formatSixFracionDigit(
-          calcCurrencyValueFromLiquidity(
-            elfiPrice,
-            daiPrice,
-            totalStakedLiquidity,
-          ),
+        {formatDecimalFracionDigit(
+          (secondToken === Token.ETH ? elfiEthPool.price : elfiDaiPool.price) *
+            parseFloat(utils.formatEther(totalStakedLiquidity)),
+          2,
         )}
       </div>
       <div
@@ -65,7 +73,7 @@ function LpStakeAndUnStake(props: Props) {
           textAlign: 'center',
         }}>
         <LpButton
-          btnTitle={'스테이킹'}
+          btnTitle={t('staking.staking')}
           onHandler={() => setStakingModalVisible(true)}
         />
       </div>
