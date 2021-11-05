@@ -1,12 +1,23 @@
+import { BigNumber } from 'ethers';
+import { useTranslation } from 'react-i18next';
+import Skeleton from 'react-loading-skeleton';
+import Token from 'src/enums/Token';
+import useLpApr from 'src/hooks/useLpApr';
 import Guide from '../Guide';
 
 type Props = {
   TotalLiquidity: string;
-  apr: number;
+  secondToken: string;
+  liquidityForApr: BigNumber;
 };
 
 function LpStakingHeader(props: Props) {
-  const { TotalLiquidity, apr } = props;
+  const { TotalLiquidity, secondToken, liquidityForApr } = props;
+  const { t } = useTranslation();
+  const token =
+    secondToken === Token.ETH ? Token.ELFI_ETH_LP : Token.ELFI_DAI_LP;
+  const apr = useLpApr(token, liquidityForApr);
+
   return (
     <>
       <div
@@ -27,7 +38,7 @@ function LpStakingHeader(props: Props) {
               fontSize: 17,
             }}>
             APR
-            <Guide />
+            <Guide content={t('guide.apr')} />
           </div>
           <div
             className="spoqa__bold"
@@ -58,8 +69,8 @@ function LpStakingHeader(props: Props) {
             style={{
               fontSize: 17,
             }}>
-            총 유동성
-            <Guide />
+            {t('lpstaking.lp_token_total_liquidity')}
+            <Guide content={t('guide.total_liquidity')} />
           </div>
           <div
             className="spoqa__bold"
