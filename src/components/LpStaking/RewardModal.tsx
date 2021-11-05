@@ -57,7 +57,7 @@ const RewardModal: React.FunctionComponent<{
       0,
     ]);
     const callThree = iFace.encodeFunctionData('claimReward', [
-      envs.wEth,
+      envs.wEthAddress,
       account,
       0,
     ]);
