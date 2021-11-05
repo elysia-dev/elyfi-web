@@ -35,11 +35,10 @@ export class UniswapV3 {
   };
 
   static getElfiEthPoolData = async (): Promise<AxiosResponse<IPoolData>> => {
-    // FIXME pool id
     return axios.post(baseUrl, {
       query: `
           {
-            pool(id: "0xbde484db131bd2ae80e44a57f865c1dfebb7e31f"){
+            pool(id: "0xc311faebe8802f9cfc91284016d1de9537ec66b7"){
 							poolDayData(orderBy: date) {
 								date,
 								token1Price
