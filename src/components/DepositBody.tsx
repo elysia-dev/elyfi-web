@@ -5,28 +5,18 @@ import { formatCommaWithDigits } from 'src/utiles/formatters';
 import { IReserve } from 'src/core/data/reserves';
 
 const DepositBody: React.FunctionComponent<{
-  tokenInfo: IReserve;
-  depositAPY: string;
-  miningAPR: string;
-  balance: BigNumber;
-  isApproved: boolean;
-  increaseAllownace: () => void;
-  deposit: (amount: BigNumber) => void;
-}> = ({
-  tokenInfo,
-  depositAPY,
-  miningAPR,
-  balance,
-  isApproved,
-  increaseAllownace,
-  deposit,
-}) => {
-  const [amount, setAmount] = useState<string>('');
+  tokenInfo: IReserve,
+  depositAPY: string,
+  miningAPR: string,
+  balance: BigNumber,
+  isApproved: boolean,
+  increaseAllownace: () => void,
+  deposit: (amount: BigNumber, max: boolean) => void,
+}> = ({ tokenInfo, depositAPY, miningAPR, balance, isApproved, increaseAllownace, deposit }) => {
+  const [amount, setAmount] = useState({ value: "", max: false });
 
-  const amountGtBalance = utils
-    .parseUnits(amount || '0', tokenInfo.decimals)
-    .gt(balance);
-  const amountLteZero = !amount || parseFloat(amount) <= 0;
+  const amountGtBalance = !amount.max && utils.parseUnits((amount.value || '0'), tokenInfo.decimals).gt(balance);
+  const amountLteZero = !amount.value || parseFloat(amount.value) <= 0;
 
   const { t } = useTranslation();
 
@@ -34,22 +24,16 @@ const DepositBody: React.FunctionComponent<{
     <>
       <div className="modal__deposit">
         <div className="modal__deposit__value-wrapper">
-          <p
-            className="modal__deposit__maximum bold"
-            onClick={() => {
-              setAmount(
-                (
-                  Math.floor(
-                    parseFloat(utils.formatUnits(balance, tokenInfo.decimals)) *
-                      100000000,
-                  ) / 100000000
-                )
-                  .toFixed(8)
-                  .toString(),
-              );
-            }}
-          >
-            {t('dashboard.max')}
+          <p className="modal__deposit__maximum bold" onClick={() => {
+            if (balance.isZero()) {
+              return
+            }
+            setAmount({
+              value: Math.floor(parseFloat(utils.formatUnits(balance, tokenInfo.decimals))).toFixed(8),
+              max: true,
+            })
+          }}>
+            {t("dashboard.max")}
           </p>
           <p className="modal__deposit__value bold">
             <input
@@ -58,17 +42,15 @@ const DepositBody: React.FunctionComponent<{
               placeholder="0"
               value={
                 // Intl.NumberFormat('en').format(parseFloat(amount))
-                amount
+                amount.value
               }
-              style={{
-                fontSize: amount.length < 8 ? 60 : amount.length > 12 ? 35 : 45,
-              }}
+              style={{ fontSize: amount.value.length < 8 ? 60 : amount.value.length > 12 ? 35 : 45 }}
               onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
                 ['-', '+', 'e'].includes(e.key) && e.preventDefault();
               }}
               onChange={({ target }) => {
                 target.value = target.value.replace(/(\.\d{18})\d+/g, '$1');
-                setAmount(target.value);
+                setAmount({ value: target.value, max: false });
               }}
             />
           </p>
@@ -80,9 +62,8 @@ const DepositBody: React.FunctionComponent<{
               <p className="spoqa__bold">{t('dashboard.wallet_balance')}</p>
               <div className="modal__deposit__despositable-wallet-balance-wrapper">
                 <p className="spoqa__bold">
-                  {`${formatCommaWithDigits(balance, 4, tokenInfo.decimals)} ${
-                    tokenInfo.name
-                  }`}
+                  {`${formatCommaWithDigits(balance, 4, tokenInfo.decimals)} ${tokenInfo.name
+                    }`}
                 </p>
               </div>
             </div>
@@ -100,32 +81,26 @@ const DepositBody: React.FunctionComponent<{
           </div>
         </div>
       </div>
-      {isApproved ? (
-        <div
-          className={`modal__button${
-            amountLteZero || amountGtBalance ? '--disable' : ''
-          }`}
-          onClick={() =>
-            !amountLteZero &&
-            !amountGtBalance &&
-            deposit(utils.parseUnits(amount, tokenInfo.decimals))
-          }
-        >
-          <p>
-            {amountLteZero
-              ? t('dashboard.enter_amount')
-              : amountGtBalance
-              ? t('dashboard.insufficient_balance', {
-                  tokenName: tokenInfo.name,
-                })
-              : t('dashboard.deposit--button')}
-          </p>
-        </div>
-      ) : (
-        <div className="modal__button" onClick={() => increaseAllownace()}>
-          <p>{t('dashboard.protocol_allow', { tokenName: tokenInfo.name })}</p>
-        </div>
-      )}
+      {
+        isApproved ?
+          <div
+            className={`modal__button${amountLteZero || amountGtBalance ? "--disable" : ""}`}
+            onClick={() => !amountLteZero && !amountGtBalance && deposit(utils.parseUnits(amount.value, tokenInfo.decimals), amount.max)}
+          >
+            <p>
+              {
+                amountLteZero ? t("dashboard.enter_amount") :
+                  amountGtBalance ? t("dashboard.insufficient_balance", { tokenName: tokenInfo.name }) : t("dashboard.deposit--button")
+              }
+            </p>
+          </div>
+          :
+          <div className="modal__button" onClick={() => increaseAllownace()}>
+            <p>
+              {t("dashboard.protocol_allow", { tokenName: tokenInfo.name })}
+            </p>
+          </div>
+      }
     </>
   );
 };
