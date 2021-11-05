@@ -40,14 +40,6 @@ function LpStakingItem(props: Props) {
         <LpStakingModal
           visible={stakingModalVisible}
           closeHandler={() => setStakingModalVisible(false)}
-          stakedToken={Token.ELFI}
-          stakedBalance={constants.Zero}
-          round={1}
-          afterTx={() => { }}
-          endedModal={() => { }}
-          setTxStatus={() => { }}
-          setTxWaiting={() => { }}
-          transactionModal={() => { }}
           firstToken={firstToken}
           secondToken={secondToken}
           positions={positions}
@@ -74,8 +66,8 @@ function LpStakingItem(props: Props) {
               />
             </div>
             <div className="spoqa lp_token_date">
-              {moment(lpStakingTime.startedAt).format('YYYY-MM-DD hh:mm:ss')} -{' '}
-              {moment(lpStakingTime.endedAt).format('YYYY-MM-DD hh:mm:ss')}
+              {moment(lpStakingTime.startedAt).format('YYYY-MM-DD HH:mm:ss')} -{' '}
+              {moment(lpStakingTime.endedAt).format('YYYY-MM-DD HH:mm:ss')}
             </div>
           </>
         ) : (
