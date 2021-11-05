@@ -1,5 +1,10 @@
 import { BigNumber, utils } from 'ethers';
-import Position, { TokenInfo } from 'src/core/types/Position';
+import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+import PriceContext from 'src/contexts/PriceContext';
+import envs from 'src/core/envs';
+import { TokenInfo } from 'src/core/types/Position';
+import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 
 type Props = {
   position: TokenInfo;
@@ -16,19 +21,30 @@ type Props = {
 
 function SelectBoxItems(props: Props) {
   const { index, setSelectedToken, selectBoxHandler, position } = props;
+  const { elfiEthPool, elfiDaiPool } = useContext(PriceContext);
+  const { t } = useTranslation();
+  const poolPrice =
+    position.pool.id.toLowerCase() === envs.ethElfiPoolAddress.toLowerCase()
+      ? elfiEthPool.price
+      : elfiDaiPool.price;
+
   return (
     <div
+      className="select_box_Item"
       style={{
         width: '100%',
         borderBottom: '1px solid black',
         borderRight: '1px solid black',
         borderLeft: '1px solid black',
-        background: '#FFFFFF',
+        cursor: 'pointer',
       }}
       onClick={() => {
         setSelectedToken({
           id: position.id.toString(),
-          liquidity: utils.formatEther(position.liquidity),
+          liquidity: formatDecimalFracionDigit(
+            parseFloat(utils.formatEther(position.liquidity)) * poolPrice,
+            2,
+          ),
           selectBoxTitle: '',
         });
         selectBoxHandler();
@@ -37,7 +53,6 @@ function SelectBoxItems(props: Props) {
         <div
           className="spoqa"
           style={{
-            color: '#333333',
             paddingLeft: 20.5,
             display: 'flex',
             alignItems: 'center',
@@ -49,7 +64,11 @@ function SelectBoxItems(props: Props) {
             |
           </div>
           <div style={{ marginLeft: 23 }}>
-            유동성 : $ {utils.formatEther(position.liquidity)}
+            {t('lpstaking.liquidity')} : ${' '}
+            {formatDecimalFracionDigit(
+              parseFloat(utils.formatEther(position.liquidity)) * poolPrice,
+              2,
+            )}
           </div>
         </div>
       </div>

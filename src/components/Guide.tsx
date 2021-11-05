@@ -1,6 +1,10 @@
 import { useState } from 'react';
 
-function Guide() {
+type Props = {
+  content: string;
+};
+
+function Guide(props: Props) {
   const [isBoxVisible, setIsBoxVisible] = useState(false);
 
   return (
@@ -8,13 +12,15 @@ function Guide() {
       style={{
         position: 'relative',
         display: 'inline-block',
-        border: '1px solid black',
-        width: 12,
-        height: 12,
-        borderRadius: 12,
+        border: '1px solid #4C4D72',
+        width: 15,
+        height: 15,
+        borderRadius: 15,
         textAlign: 'center',
-        lineHeight: 0.8,
+        lineHeight: 1.2,
         marginLeft: 11,
+        fontSize: 15.5,
+        color: '#4C4D72',
       }}
       onMouseEnter={(e) => {
         setIsBoxVisible(true);
@@ -27,11 +33,15 @@ function Guide() {
         <div
           style={{
             position: 'absolute',
-            width: 100,
-            height: 100,
-            border: '1px solid black',
+            width: 330,
+            left: -10,
+            padding: '5px 15px',
+            background: '#fff',
+            boxShadow: '0 0 6px rgb(0 0 0/16%)',
+            zIndex: 99,
+            textAlign: 'left',
           }}>
-          가이드 박스
+          {props.content}
         </div>
       )}
     </div>

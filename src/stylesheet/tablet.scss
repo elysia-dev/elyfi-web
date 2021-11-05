@@ -1207,6 +1207,7 @@ $footer-height: 100px;
   .staked_lp_item {
     display: flex;
     flex-direction: column;
+    margin-bottom: 15px;
 
     > div:nth-child(1) {
       height: 106px;

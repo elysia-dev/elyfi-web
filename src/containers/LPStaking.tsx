@@ -1,7 +1,7 @@
 import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants, ethers, utils } from 'ethers';
-import { useEffect, useContext, useState } from 'react';
+import { useEffect, useContext, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from 'src/components/Header';
 import LpStakingItem from 'src/components/LpStaking';
@@ -13,85 +13,106 @@ import StakerSubgraph from 'src/clients/StakerSubgraph';
 import LpReward from 'src/components/LpStaking/LpReward';
 import Position, { TokenInfo } from 'src/core/types/Position';
 import LpTokenPoolSubgraph from 'src/clients/LpTokenPoolSubgraph';
+import Token from 'src/enums/Token';
+import TxContext from 'src/contexts/TxContext';
 
 function LPStaking() {
   const { account, library } = useWeb3React();
   const { t } = useTranslation();
-  const { ethPrice, daiPrice, elfiPrice } = useContext(PriceContext);
+  const { elfiEthPool, elfiDaiPool } = useContext(PriceContext);
+  const { txWaiting } = useContext(TxContext);
+  const [isLoading, setIsLoading] = useState(false);
   const [positions, setPositions] = useState<Position[]>([]);
   const [lpTokens, setLpTokens] = useState<TokenInfo[]>([]);
-  const [state, setState] = useState({
-    ethBalanceOfEthPool: 0,
-    elfiBalanceOfEthPool: 0,
-    daiBalanceOfDaiPool: 0,
-    elfiBalanceOfDaiPool: 0,
+  const [totalLiquidity, setTotalLiquidity] = useState<{
+    daiElfiPoolTotalLiquidity: number;
+    ethElfiPoolTotalLiquidity: number;
+    ethElfiliquidityForApr: BigNumber;
+    daiElfiliquidityForApr: BigNumber;
+  }>({
+    daiElfiPoolTotalLiquidity: 0,
+    ethElfiPoolTotalLiquidity: 0,
+    ethElfiliquidityForApr: constants.Zero,
+    daiElfiliquidityForApr: constants.Zero,
   });
-  useEffect(() => {
-    (async () => {
-      setState({
-        ethBalanceOfEthPool: parseFloat(
-          utils.formatEther(
-            await ERC20__factory.connect(envs.wEth, library).balanceOf(
-              envs.ethElfiPoolAddress,
-            ),
-          ),
-        ),
-        elfiBalanceOfEthPool: parseFloat(
-          utils.formatEther(
-            await ERC20__factory.connect(
-              envs.governanceAddress,
-              library,
-            ).balanceOf(envs.ethElfiPoolAddress),
-          ),
-        ),
-        daiBalanceOfDaiPool: parseFloat(
-          utils.formatEther(
-            await ERC20__factory.connect(envs.daiAddress, library).balanceOf(
-              envs.daiElfiPoolAddress,
-            ),
-          ),
-        ),
-        elfiBalanceOfDaiPool: parseFloat(
-          utils.formatEther(
-            await ERC20__factory.connect(
-              envs.governanceAddress,
-              library,
-            ).balanceOf(envs.daiElfiPoolAddress),
-          ),
-        ),
-      });
-    })();
-  }, []);
 
-  useEffect(() => {
+  const getPositions = useCallback(() => {
     StakerSubgraph.getPositionsByOwner(account!).then((res) => {
       setPositions(res.data.data.positions);
     });
-  }, [account]);
+  }, [positions, LpTokenPoolSubgraph.getPositionsByOwner]);
 
-  useEffect(() => {
+  const getPoolPositions = useCallback(() => {
     LpTokenPoolSubgraph.getPositionsByOwner(account!).then((res) => {
       setLpTokens(res.data.data.positions);
     });
-  }, []);
+  }, [lpTokens, LpTokenPoolSubgraph.getPositionsByOwner]);
+
+  const getTotalLiquidity = useCallback(() => {
+    setIsLoading(true);
+    StakerSubgraph.getStakedPositionsByPoolId(
+      envs.ethElfiPoolAddress,
+      envs.daiElfiPoolAddress,
+    ).then((res) => {
+      const daiElfiPoolTotalLiquidity =
+        res.data.data.daiIncentive[0].incentivePotisions.reduce(
+          (sum, current) => sum.add(current.position.liquidity),
+          constants.Zero,
+        );
+
+      const ethElfiPoolTotalLiquidity =
+        res.data.data.wethIncentive[0].incentivePotisions.reduce(
+          (sum, current) => sum.add(current.position.liquidity),
+          constants.Zero,
+        );
+
+      setTotalLiquidity({
+        ...totalLiquidity,
+        daiElfiPoolTotalLiquidity: parseFloat(
+          utils.formatEther(daiElfiPoolTotalLiquidity),
+        ),
+        ethElfiPoolTotalLiquidity: parseFloat(
+          utils.formatEther(ethElfiPoolTotalLiquidity),
+        ),
+        daiElfiliquidityForApr: daiElfiPoolTotalLiquidity,
+        ethElfiliquidityForApr: ethElfiPoolTotalLiquidity,
+      });
+      setIsLoading(false);
+    });
+  }, [totalLiquidity, isLoading]);
+
+  useEffect(() => {
+    if (txWaiting) return;
+    getPositions();
+  }, [account, txWaiting]);
+
+  useEffect(() => {
+    if (txWaiting) return;
+    getTotalLiquidity();
+  }, [txWaiting]);
+
+  useEffect(() => {
+    if (txWaiting) return;
+    getPoolPositions();
+  }, [txWaiting]);
 
   return (
     <>
-      <Header
-        title={t('staking.token_staking', {
-          stakedToken: 'LP 토큰',
-        }).toUpperCase()}
-      />
-      <section className="staking">
+      <Header title={t('lpstaking.lp_token_staking')} />
+      <section
+        className="staking"
+        style={{
+          overflowX: 'hidden',
+          padding: 3,
+        }}>
         <div className="staking_detail_box">
           <div>
-            <LpStakingTitle firstToken={'ELFI'} secondToken={'ETH'} />
+            <LpStakingTitle firstToken={Token.ELFI} secondToken={Token.ETH} />
             <LpStakingItem
-              firstToken={'ELFI'}
-              secondToken={'ETH'}
+              firstToken={Token.ELFI}
+              secondToken={Token.ETH}
               totalLiquidity={
-                state.ethBalanceOfEthPool * ethPrice +
-                state.elfiBalanceOfEthPool * elfiPrice
+                totalLiquidity.ethElfiPoolTotalLiquidity * elfiEthPool.price
               }
               positions={positions.filter(
                 (position) =>
@@ -122,17 +143,18 @@ function LPStaking() {
                   envs.ethElfiPoolAddress.toLowerCase()
                 );
               })}
+              liquidityForApr={totalLiquidity.ethElfiliquidityForApr}
+              isLoading={isLoading}
             />
           </div>
           <div />
           <div>
-            <LpStakingTitle firstToken={'ELFI'} secondToken={'DAI'} />
+            <LpStakingTitle firstToken={Token.ELFI} secondToken={Token.DAI} />
             <LpStakingItem
-              firstToken={'ELFI'}
-              secondToken={'DAI'}
+              firstToken={Token.ELFI}
+              secondToken={Token.DAI}
               totalLiquidity={
-                state.daiBalanceOfDaiPool * daiPrice +
-                state.elfiBalanceOfDaiPool * elfiPrice
+                totalLiquidity.daiElfiPoolTotalLiquidity * elfiDaiPool.price
               }
               positions={positions.filter(
                 (position) =>
@@ -163,6 +185,8 @@ function LPStaking() {
                   envs.daiElfiPoolAddress.toLowerCase()
                 );
               })}
+              liquidityForApr={totalLiquidity.daiElfiliquidityForApr}
+              isLoading={isLoading}
             />
           </div>
         </div>

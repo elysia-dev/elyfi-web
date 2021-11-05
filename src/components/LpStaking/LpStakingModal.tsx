@@ -59,7 +59,7 @@ const LpStakingModal: React.FunctionComponent<{
   positions,
   lpTokens,
 }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { account, library } = useWeb3React();
   const [stakingMode, setStakingMode] = useState<boolean>(true);
   const [amount, setAmount] = useState({ value: '', max: false });
@@ -91,7 +91,7 @@ const LpStakingModal: React.FunctionComponent<{
   }>({
     id: '',
     liquidity: '',
-    selectBoxTitle: '스테이킹할 LP토큰을 선택해주세요.',
+    selectBoxTitle: t('lpstaking.lp_staking_modal_default'),
   });
 
   useEffect(() => {
@@ -101,11 +101,13 @@ const LpStakingModal: React.FunctionComponent<{
     });
   }, [stakingMode, visible]);
 
-  const secondImg = secondToken === 'ETH' ? eth : dai;
+  const secondImg = secondToken === Token.ETH ? eth : dai;
   const stakingPoolAdress =
-    secondToken === 'ETH' ? envs.ethElfiPoolAddress : envs.daiElfiPoolAddress;
+    secondToken === Token.ETH
+      ? envs.ethElfiPoolAddress
+      : envs.daiElfiPoolAddress;
   const rewardTokenAddress =
-    secondToken === 'ETH' ? envs.wEth : envs.daiAddress;
+    secondToken === Token.ETH ? envs.wEth : envs.daiAddress;
 
   const lpStakingHandler = async () => {
     const encode = new ethers.utils.AbiCoder().encode(
@@ -178,7 +180,10 @@ const LpStakingModal: React.FunctionComponent<{
             />
             <div className="modal__header__name-wrapper">
               <p className="modal__header__name spoqa__bold">
-                ELFI-ETH LP 토큰
+                {t('lpstaking.lp_token_staking_title', {
+                  firstToken,
+                  secondToken,
+                })}
               </p>
             </div>
           </div>
@@ -189,7 +194,7 @@ const LpStakingModal: React.FunctionComponent<{
               setSelectedToken({
                 id: '',
                 liquidity: '',
-                selectBoxTitle: '스테이킹할 LP토큰을 선택해주세요.',
+                selectBoxTitle: t('lpstaking.lp_staking_modal_default'),
               });
             }}>
             <div className="close-button--1">
@@ -213,73 +218,50 @@ const LpStakingModal: React.FunctionComponent<{
         ) : (
           <div className="modal__body">
             <div>
-              <SelectBox
-                positions={positions}
-                selectedToken={selectedToken}
-                setSelectedToken={setSelectedToken}
-                lpTokens={lpTokens}
-              />
+              {lpTokens.length === 0 ? (
+                <div
+                  className="spoqa"
+                  style={{
+                    fontSize: 15,
+                    color: '#646464',
+                    textAlign: 'center',
+                    paddingTop: 91,
+                    paddingBottom: 91,
+                  }}>
+                  {t('lpstaking.no_lp_token')}
+                </div>
+              ) : (
+                <SelectBox
+                  positions={positions}
+                  selectedToken={selectedToken}
+                  setSelectedToken={setSelectedToken}
+                  lpTokens={lpTokens}
+                />
+              )}
 
               {!stakingMode ? (
-                <div
-                  className={`modal__button${
-                    amountLteZero || amountGtStakedBalance ? '--disable' : ''
-                  }`}
-                  onClick={() => {
-                    if (!account || amountLteZero || amountGtStakedBalance)
-                      return;
-
-                    const tracker = initTxTracker(
-                      'LpStakingModal',
-                      'Withdraw',
-                      `${amount.value} ${amount.max} ${stakedToken} ${round}round`,
-                    );
-                    tracker.clicked();
-
-                    stakingPool
-                      .withdraw(
-                        amount.max
-                          ? constants.MaxUint256
-                          : utils.parseEther(amount.value),
-                        (round >= 3 && stakedToken === Token.ELFI
-                          ? round - 2
-                          : round
-                        ).toString(),
-                      )
-                      .then((tx) => {
-                        setTransaction(
-                          tx,
-                          tracker,
-                          (stakedToken +
-                            'StakingWithdraw') as RecentActivityType,
-                          () => {
-                            closeHandler();
-                            transactionModal();
-                          },
-                          () => {
-                            refetch();
-                            afterTx();
-                          },
-                        );
-                      })
-                      .catch((e) => {
-                        failTransaction(tracker, closeHandler, e);
-                      });
-                  }}>
-                  <p>
-                    {amountGtStakedBalance
-                      ? t('staking.insufficient_balance')
-                      : t('staking.unstaking')}
-                  </p>
-                </div>
+                <p>
+                  {amountGtStakedBalance
+                    ? t('staking.insufficient_balance')
+                    : t('staking.unstaking')}
+                </p>
               ) : !allowanceLoading && allowance.gte(balance) ? (
                 <div
                   className={`modal__button${
-                    // amountLteZero || amountGtBalance ? '--disable' : ''
-                    amountLteZero || amountGtBalance ? '' : ''
+                    lpTokens.length === 0
+                      ? '--disable'
+                      : selectedToken.id
+                      ? ''
+                      : '--disable'
                   }`}
-                  onClick={() => lpStakingHandler()}>
-                  <p>staking</p>
+                  onClick={() =>
+                    lpTokens.length === 0
+                      ? ''
+                      : selectedToken.id
+                      ? lpStakingHandler()
+                      : ''
+                  }>
+                  <p>{t('staking.staking')}</p>
                 </div>
               ) : (
                 <div

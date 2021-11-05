@@ -85,7 +85,7 @@ const RewardModal: React.FunctionComponent<{
           <div className="modal__header__token-info-wrapper">
             <div className="modal__header__name-wrapper">
               <p className="modal__header__name spoqa__bold">
-                {t('staking.receive_reward')}
+                {t('lpstaking.receive_reward')}
               </p>
             </div>
           </div>
@@ -102,22 +102,22 @@ const RewardModal: React.FunctionComponent<{
         <div className="lptoken_reward_Modal_body">
           <div className="spoqa__bold">
             <div>
-              <img src={eth} />
-              {Token.ETH}
-            </div>
-            <div className="lp_reward_eth">
-              {formatSixFracionDigit(totalReward.wEthReward)}
-              <div>{Token.ETH}</div>
-            </div>
-          </div>
-          <div className="spoqa__bold">
-            <div>
               <img src={elfi} />
               {Token.ELFI}
             </div>
             <div className="lp_reward_elfi">
               {formatSixFracionDigit(totalReward.elfiReward)}
               <div>{Token.ELFI}</div>
+            </div>
+          </div>
+          <div className="spoqa__bold">
+            <div>
+              <img src={eth} />
+              {Token.ETH}
+            </div>
+            <div className="lp_reward_eth">
+              {formatSixFracionDigit(totalReward.wEthReward)}
+              <div>{Token.ETH}</div>
             </div>
           </div>
           <div
@@ -139,7 +139,7 @@ const RewardModal: React.FunctionComponent<{
           <div
             className={`modal__button`}
             onClick={() => receiveRewardHandler()}>
-            <p>{t('staking.receive_reward')}</p>
+            <p>{t('staking.claim_reward')}</p>
           </div>
         </div>
       </div>

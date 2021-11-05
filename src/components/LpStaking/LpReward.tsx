@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import elfi from 'src/assets/images/ELFI.png';
 import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
@@ -7,7 +7,11 @@ import envs from 'src/core/envs';
 import stakerABI from 'src/core/abi/StakerABI.json';
 import { BigNumber, constants, ethers, utils } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
-import { formatSixFracionDigit } from 'src/utiles/formatters';
+import {
+  formatDecimalFracionDigit,
+  formatSixFracionDigit,
+} from 'src/utiles/formatters';
+import TxContext from 'src/contexts/TxContext';
 import Token from 'src/enums/Token';
 import Guide from '../Guide';
 import LpButton from './LpButton';
@@ -26,6 +30,7 @@ function LpReward() {
     daiReward: 0,
   });
   const [stakingModalVisible, setStakingModalVisible] = useState(false);
+  const { txWaiting, txStatus } = useContext(TxContext);
 
   const staker = new ethers.Contract(
     envs.stakerAddress,
@@ -55,8 +60,9 @@ function LpReward() {
   };
 
   useEffect(() => {
+    if (txWaiting) return;
     getReward();
-  }, []);
+  }, [txWaiting]);
 
   return (
     <>
@@ -73,8 +79,8 @@ function LpReward() {
           marginTop: 110,
         }}>
         <div className="spoqa__bold">
-          {t('staking.reward_amount')}
-          <Guide />
+          {t('lpstaking.reward_amount')}
+          <Guide content={t('guide.receive_reward')} />
         </div>
         <div className="header_line" />
       </div>
@@ -89,7 +95,7 @@ function LpReward() {
               style={{
                 color: '#00BFFF',
               }}>
-              {`${formatSixFracionDigit(totalReward.elfiReward)} `}
+              {`${formatDecimalFracionDigit(totalReward.elfiReward, 4)} `}
               <div>{Token.ELFI}</div>
             </div>
           </div>
@@ -102,7 +108,7 @@ function LpReward() {
               style={{
                 color: '#627EEA',
               }}>
-              {`${formatSixFracionDigit(totalReward.wEthReward)} `}
+              {`${formatDecimalFracionDigit(totalReward.wEthReward, 4)} `}
               <div>{Token.ETH}</div>
             </div>
           </div>
@@ -115,7 +121,7 @@ function LpReward() {
               style={{
                 color: '#FBC54E',
               }}>
-              {`${formatSixFracionDigit(totalReward.daiReward)} `}
+              {`${formatDecimalFracionDigit(totalReward.daiReward, 4)} `}
               <div>{Token.DAI}</div>
             </div>
           </div>

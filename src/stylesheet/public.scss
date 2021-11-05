@@ -2170,3 +2170,20 @@ span {
     opacity: 0;
   }
 }
+.select_box_Item {
+  background-color: #ffffff;
+
+  > div {
+    > div {
+      color: #333333;
+    }
+  }
+}
+.select_box_Item:hover {
+  background-color: rgb(116, 116, 116);
+  > div {
+    > div {
+      color: #ffffff;
+    }
+  }
+}
