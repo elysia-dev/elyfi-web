@@ -61,16 +61,16 @@ function LPStaking() {
       envs.daiElfiPoolAddress,
     ).then((res) => {
       const daiElfiPoolTotalLiquidity =
-        res.data.data.daiIncentive[0].incentivePotisions.reduce(
+        res.data.data.daiIncentive[0]?.incentivePotisions.reduce(
           (sum, current) => sum.add(current.position.liquidity),
           constants.Zero,
-        );
+        ) || constants.Zero;
 
       const ethElfiPoolTotalLiquidity =
-        res.data.data.wethIncentive[0].incentivePotisions.reduce(
+        res.data.data.wethIncentive[0]?.incentivePotisions.reduce(
           (sum, current) => sum.add(current.position.liquidity),
           constants.Zero,
-        );
+        ) || constants.Zero;
       setTotalLiquidity({
         ...totalLiquidity,
         daiElfiPoolTotalLiquidity: parseFloat(
