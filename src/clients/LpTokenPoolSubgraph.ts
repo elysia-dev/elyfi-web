@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { BigNumber } from 'ethers';
 import Position, { TokenInfo } from 'src/core/types/Position';
+import envs from 'src/core/envs';
 
 export interface ITokenInfo {
   data: {
@@ -8,8 +9,7 @@ export interface ITokenInfo {
   };
 }
 
-const baseUrl =
-  'https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-v3-rinkeby';
+const baseUrl = envs.lpTokenPoolSubgraphURL;
 
 export class LpTokenPoolSubgraph {
   static getPositionsByOwner = async (
