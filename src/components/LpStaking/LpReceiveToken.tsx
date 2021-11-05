@@ -29,7 +29,7 @@ function LpReceiveToken(props: Props) {
             rel="noopener noreferrer"
             href={
               secondToken === 'DAI'
-                ? `https://app.uniswap.org/#/add/${envs.governanceAddress}/${envs.wEth}`
+                ? `https://app.uniswap.org/#/add/${envs.governanceAddress}/${envs.wEthAddress}`
                 : `https://app.uniswap.org/#/add/${envs.governanceAddress}/${envs.daiAddress}`
             }>
             <button>{t('lpstaking.receive_lp_token')}</button>

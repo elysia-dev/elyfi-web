@@ -46,7 +46,7 @@ function LpReward() {
           utils.formatEther(await staker.rewards(envs.daiAddress, account)),
         ),
         wEthReward: parseFloat(
-          utils.formatEther(await staker.rewards(envs.wEth, account)),
+          utils.formatEther(await staker.rewards(envs.wEthAddress, account)),
         ),
         elfiReward: parseFloat(
           utils.formatEther(

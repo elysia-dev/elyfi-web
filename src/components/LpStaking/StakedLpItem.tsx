@@ -26,10 +26,12 @@ import LpButton from './LpButton';
 
 type Props = {
   position: Position;
+  setPositions: Dispatch<SetStateAction<Position[]>>;
+  positions: Position[];
 };
 
 function StakedLpItem(props: Props) {
-  const { position } = props;
+  const { position, setPositions, positions } = props;
   const { account, library } = useWeb3React();
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const { expectedReward, getExpectedReward } = useExpectedReward();
@@ -40,13 +42,11 @@ function StakedLpItem(props: Props) {
   const poolAddress = isEthToken
     ? envs.ethElfiPoolAddress
     : envs.daiElfiPoolAddress;
-  const rewardTokenAddress = isEthToken ? envs.wEth : envs.daiAddress;
+  const rewardTokenAddress = isEthToken ? envs.wEthAddress : envs.daiAddress;
   const tokenImg = isEthToken ? eth : dai;
   const rewardToken = isEthToken ? Token.ETH : Token.DAI;
   const { setTransaction } = useContext(TxContext);
   const initTxTracker = useTxTracking();
-  const { txType } = useContext(TxContext);
-  const [count, setCount] = useState(1);
 
   const unstakingHandler = async (position: {
     id: string;
@@ -64,21 +64,21 @@ function StakedLpItem(props: Props) {
     const iFace = new ethers.utils.Interface(stakerABI);
     const callOne = iFace.encodeFunctionData('unstakeToken', [
       [
-        envs.governanceAddress, // 두 번 이더 / 다이
+        envs.governanceAddress,
         poolAddress,
-        1635751200,
-        1638005456,
-        account,
+        envs.lpTokenStakingStartTime,
+        envs.lpTokenStakingEndTime,
+        envs.refundedAddress,
       ],
       position.tokenId,
     ]);
     const callTwo = iFace.encodeFunctionData('unstakeToken', [
       [
-        rewardTokenAddress, // 두 번 이더 / 다이
+        rewardTokenAddress,
         poolAddress,
-        1635751200,
-        1638005456,
-        account,
+        envs.lpTokenStakingStartTime,
+        envs.lpTokenStakingEndTime,
+        envs.refundedAddress,
       ],
       position.tokenId,
     ]);
@@ -89,6 +89,7 @@ function StakedLpItem(props: Props) {
     ]);
     const res = await staker.multicall([callOne, callTwo, callThree]);
     const tracker = initTxTracker('LpUnstaking', 'unstaking', ``);
+
     setTransaction(
       res,
       tracker,
@@ -96,24 +97,19 @@ function StakedLpItem(props: Props) {
       () => { },
       () => { },
     );
+    // setPositions((prev) =>
+    //   prev.filter((prevPosition) => prevPosition.tokenId !== position.tokenId),
+    // );
   };
 
   useEffect(() => {
-    if (count === 1) {
+    getExpectedReward(rewardTokenAddress, poolAddress, position.tokenId);
+    const getReward = setInterval(() => {
       getExpectedReward(rewardTokenAddress, poolAddress, position.tokenId);
-    }
-
-    let getReward: NodeJS.Timeout;
-
-    if (txType !== RecentActivityType.Withdraw) {
-      getReward = setTimeout(() => {
-        getExpectedReward(rewardTokenAddress, poolAddress, position.tokenId);
-        setCount((prev) => prev + 1);
-      }, 5000);
-    }
+    }, 5000);
 
     return () => clearTimeout(getReward);
-  }, [count]);
+  }, [positions]);
 
   return (
     <div className="staked_lp_item staked_lp_item_mobile ">

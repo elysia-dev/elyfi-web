@@ -1,6 +1,14 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants, ethers, utils } from 'ethers';
-import { useState, useEffect, useRef, useContext, useCallback } from 'react';
+import {
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+  useCallback,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import calcCurrencyValueFromLiquidity from 'src/utiles/calcCurrencyValueFromLiquidity';
 import PriceContext from 'src/contexts/PriceContext';
@@ -15,9 +23,10 @@ import StakedLpItem from './StakedLpItem';
 
 type Props = {
   positions: Position[];
+  setPositions: Dispatch<SetStateAction<Position[]>>;
 };
 function StakedLp(props: Props) {
-  const { positions } = props;
+  const { positions, setPositions } = props;
   const { account } = useWeb3React();
   const { t } = useTranslation();
   const { totalExpectedReward, addTotalExpectedReward } = useExpectedReward();
@@ -25,20 +34,10 @@ function StakedLp(props: Props) {
   const [count, setCount] = useState(1);
 
   useEffect(() => {
-    if (count === 1 && positions) {
+    if (positions.length > 0) {
       addTotalExpectedReward(positions);
-      return;
     }
-    let getTotalReward: NodeJS.Timeout;
-
-    if (txType !== RecentActivityType.Withdraw && positions) {
-      getTotalReward = setTimeout(() => {
-        addTotalExpectedReward(positions);
-        setCount((prev) => prev + 1);
-      }, 5000);
-    }
-    return () => clearTimeout(getTotalReward);
-  }, [positions, count]);
+  }, [positions]);
 
   return (
     <>
@@ -83,7 +82,14 @@ function StakedLp(props: Props) {
               </span>
             </div>
             {positions.map((position, idx) => {
-              return <StakedLpItem key={idx} position={position} />;
+              return (
+                <StakedLpItem
+                  key={idx}
+                  position={position}
+                  positions={positions}
+                  setPositions={setPositions}
+                />
+              );
             })}
           </>
         ) : (

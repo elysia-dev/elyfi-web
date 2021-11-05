@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { BigNumber } from 'ethers';
 import Position from 'src/core/types/Position';
-
+import envs from 'src/core/envs';
 export interface IPosition {
   data: {
     positions: Position[];
@@ -31,8 +31,7 @@ export interface IPoolPosition {
   };
 }
 
-const baseUrl =
-  'https://api.studio.thegraph.com/query/862/lp-staking-rinkeby/v0.0.4';
+const baseUrl = envs.stakerSubgraphURL;
 
 export class StakerSubgraph {
   static getPositionsByOwner = async (

@@ -46,13 +46,13 @@ function LPStaking() {
     StakerSubgraph.getPositionsByOwner(account!).then((res) => {
       setPositions(res.data.data.positions);
     });
-  }, [positions, LpTokenPoolSubgraph.getPositionsByOwner]);
+  }, [positions]);
 
   const getPoolPositions = useCallback(() => {
     LpTokenPoolSubgraph.getPositionsByOwner(account!).then((res) => {
       setLpTokens(res.data.data.positions);
     });
-  }, [lpTokens, LpTokenPoolSubgraph.getPositionsByOwner]);
+  }, [lpTokens]);
 
   const getTotalLiquidity = useCallback(() => {
     setIsLoading(true);
@@ -71,7 +71,6 @@ function LPStaking() {
           (sum, current) => sum.add(current.position.liquidity),
           constants.Zero,
         );
-
       setTotalLiquidity({
         ...totalLiquidity,
         daiElfiPoolTotalLiquidity: parseFloat(
@@ -196,7 +195,10 @@ function LPStaking() {
             />
           </div>
         </div>
-        <StakedLp positions={positions.filter((position) => position.staked)} />
+        <StakedLp
+          positions={positions.filter((position) => position.staked)}
+          setPositions={setPositions}
+        />
         <LpReward />
       </section>
     </>

@@ -41,11 +41,23 @@ function useExpectedReward() {
   ) => {
     try {
       const ethOrDaiReward = await staker.getRewardInfo(
-        [rewardTokenAddress, poolAddress, 1635751200, 1638005456, account],
+        [
+          rewardTokenAddress,
+          poolAddress,
+          envs.lpTokenStakingStartTime,
+          envs.lpTokenStakingEndTime,
+          envs.refundedAddress,
+        ],
         tokenId,
       );
       const elfiReward = await staker.getRewardInfo(
-        [envs.governanceAddress, poolAddress, 1635751200, 1638005456, account],
+        [
+          envs.governanceAddress,
+          poolAddress,
+          envs.lpTokenStakingStartTime,
+          envs.lpTokenStakingEndTime,
+          envs.refundedAddress,
+        ],
         tokenId,
       );
       setExpectedReward({
@@ -72,7 +84,9 @@ function useExpectedReward() {
         const poolAddress = isEthToken
           ? envs.ethElfiPoolAddress
           : envs.daiElfiPoolAddress;
-        const rewardTokenAddress = isEthToken ? envs.wEth : envs.daiAddress;
+        const rewardTokenAddress = isEthToken
+          ? envs.wEthAddress
+          : envs.daiAddress;
         const ethOrDaiReward = new Promise<{ reward: BigNumber }>(
           (resolve, reject) => {
             resolve(
@@ -80,9 +94,9 @@ function useExpectedReward() {
                 [
                   rewardTokenAddress,
                   poolAddress,
-                  1635751200,
-                  1638005456,
-                  account,
+                  envs.lpTokenStakingStartTime,
+                  envs.lpTokenStakingEndTime,
+                  envs.refundedAddress,
                 ],
                 position.tokenId,
               ),
@@ -97,9 +111,9 @@ function useExpectedReward() {
                 [
                   envs.governanceAddress,
                   poolAddress,
-                  1635751200,
-                  1638005456,
-                  account,
+                  envs.lpTokenStakingStartTime,
+                  envs.lpTokenStakingEndTime,
+                  envs.refundedAddress,
                 ],
                 position.tokenId,
               ),
@@ -133,10 +147,10 @@ function useExpectedReward() {
               });
             }
           })
-          .catch(() => console.log('unstaking'));
+          .catch((error) => console.log(error));
       });
     } catch (error) {
-      console.log('');
+      console.log(error);
     }
   }, []);
 
