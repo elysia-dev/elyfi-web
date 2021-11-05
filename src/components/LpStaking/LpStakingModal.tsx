@@ -13,13 +13,7 @@ import useWatingTx from 'src/hooks/useWaitingTx';
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import { useWeb3React } from '@web3-react/core';
 import Token from 'src/enums/Token';
-import moment from 'moment';
-import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
-import useStakingPool from 'src/hooks/useStakingPool';
-import useERC20Info from 'src/hooks/useERC20Info';
-import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import useTxTracking from 'src/hooks/useTxTracking';
-import txStatus from 'src/enums/TxStatus';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import elfi from 'src/assets/images/ELFI.png';
@@ -27,21 +21,11 @@ import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
 import SelectBox from 'src/components/SelectBox';
 import positionABI from 'src/core/abi/NonfungiblePositionManager.json';
-import stakerABI from 'src/core/abi/StakerABI.json';
-import AbiCoder from 'ethers/lib/utils';
 import Position, { TokenInfo } from 'src/core/types/Position';
 
 const LpStakingModal: React.FunctionComponent<{
   visible: boolean;
   closeHandler: () => void;
-  afterTx: () => void;
-  stakedToken: Token.ELFI | Token.EL;
-  stakedBalance: BigNumber;
-  round: number;
-  endedModal: () => void;
-  setTxStatus: (status: txStatus) => void;
-  setTxWaiting: (status: boolean) => void;
-  transactionModal: () => void;
   firstToken: string;
   secondToken: string;
   positions: Position[];
@@ -49,8 +33,6 @@ const LpStakingModal: React.FunctionComponent<{
 }> = ({
   visible,
   closeHandler,
-  stakedToken,
-  round,
   firstToken,
   secondToken,
   positions,
