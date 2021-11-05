@@ -28,7 +28,7 @@ function LpReceiveToken(props: Props) {
             target="_blank"
             rel="noopener noreferrer"
             href={
-              secondToken === 'DAI'
+              secondToken === 'ETH'
                 ? `https://app.uniswap.org/#/add/${envs.governanceAddress}/${envs.wEthAddress}`
                 : `https://app.uniswap.org/#/add/${envs.governanceAddress}/${envs.daiAddress}`
             }>
