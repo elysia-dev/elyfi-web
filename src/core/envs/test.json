@@ -14,7 +14,12 @@
   "etherscanURI": "https://ropsten.etherscan.io",
   "daiElfiPoolAddress": "0x8455b99b9e26a6fac1a6513b6912258932b5536b",
   "ethElfiPoolAddress": "0x1B9c8545Ad410e233a8b8CF7bC0f95630d7012EB",
-  "wEth": "0xc778417e063141139fce010982780140aa0cd5ab",
+  "wEthAddress": "0xc778417e063141139fce010982780140aa0cd5ab",
   "nonFungiblePositionAddress": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
-  "stakerAddress": "0xc462aB5e66067153Bf1B368493E4744C1cA4BeC9"
+  "stakerAddress": "0xc462aB5e66067153Bf1B368493E4744C1cA4BeC9",
+  "lpTokenStakingStartTime": 1635751200,
+  "lpTokenStakingEndTime": 1638005456,
+  "stakerSubgraphURL": "https://api.studio.thegraph.com/query/862/lp-staking-rinkeby/v0.0.4",
+  "lpTokenPoolSubgraphURL": "https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-v3-rinkeby",
+  "refundedAddress": "0x405bEF2743379b356F2176c68eBe83DE90811d01"
 }
