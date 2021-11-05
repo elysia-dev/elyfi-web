@@ -8,6 +8,29 @@ export interface IPosition {
   };
 }
 
+export interface IPoolPosition {
+  data: {
+    daiIncentive: {
+      id: string;
+      incentivePotisions: {
+        position: {
+          id: string;
+          liquidity: BigNumber;
+        };
+      }[];
+    }[];
+    wethIncentive: {
+      id: string;
+      incentivePotisions: {
+        position: {
+          id: string;
+          liquidity: string;
+        };
+      }[];
+    }[];
+  };
+}
+
 const baseUrl =
   'https://api.studio.thegraph.com/query/862/lp-staking-rinkeby/v0.0.4';
 
@@ -32,6 +55,36 @@ export class StakerSubgraph {
           }
         }
       }
+        `,
+    });
+  };
+
+  static getStakedPositionsByPoolId = async (
+    ethPoolId: string,
+    daiPoolId: string,
+  ): Promise<AxiosResponse<IPoolPosition>> => {
+    return axios.post(baseUrl, {
+      query: `
+      {
+        daiIncentive: incentives(where: {pool: "${daiPoolId}"}){
+         id
+         incentivePotisions(where: {active: true}){
+           position {
+             id,
+             liquidity
+           }
+         }
+       }
+       wethIncentive: incentives(where: {pool: "${ethPoolId}"}){
+         id
+         incentivePotisions(where: {active: true}){
+           position {
+             id,
+             liquidity
+           }
+         }
+       }
+     }
         `,
     });
   };
