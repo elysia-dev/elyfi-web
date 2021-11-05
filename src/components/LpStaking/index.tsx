@@ -1,20 +1,16 @@
-import { ERC20__factory } from '@elysia-dev/contract-typechain';
-import { BigNumber, constants, Contract, ethers, utils } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { formatComma, formatCommaWithDigits } from 'src/utiles/formatters';
-import positionABI from 'src/core/abi/NonfungiblePositionManager.json';
-import { useWeb3React } from '@web3-react/core';
-import StakingModal from 'src/containers/StakingModal';
+import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 import Position, { TokenInfo } from 'src/core/types/Position';
+import Skeleton from 'react-loading-skeleton';
 import Token from 'src/enums/Token';
-import Header from '../Header';
+import useLpApr from 'src/hooks/useLpApr';
+import lpStakingTime from 'src/core/data/lpStakingTime';
+import moment from 'moment';
 import LpReceiveToken from './LpReceiveToken';
-import LpReward from './LpReward';
-import LpStakeAndUnStake from './LpStakeAndUnStake';
 import LpStakingHeader from './LpStakingHeader';
-import LpStakingTitle from './LpStakingTitle';
 import LpStakingModal from './LpStakingModal';
+import LpStakeAndUnStake from './LpStakeAndUnStake';
 
 type Props = {
   firstToken: string;
@@ -23,6 +19,8 @@ type Props = {
   positions: Position[];
   totalStakedLiquidity: BigNumber;
   lpTokens: TokenInfo[];
+  liquidityForApr: BigNumber;
+  isLoading: boolean;
 };
 function LpStakingItem(props: Props) {
   const {
@@ -32,6 +30,8 @@ function LpStakingItem(props: Props) {
     positions,
     totalStakedLiquidity,
     lpTokens,
+    liquidityForApr,
+    isLoading,
   } = props;
   const [stakingModalVisible, setStakingModalVisible] = useState(false);
 
@@ -54,28 +54,34 @@ function LpStakingItem(props: Props) {
           positions={positions}
           lpTokens={lpTokens}
         />
-        <div className="lp_token_description">
-          <LpStakingHeader
-            TotalLiquidity={formatComma(
-              utils.parseEther(totalLiquidity.toString()),
-            )}
-            apr={200.0}
-          />
-          <LpReceiveToken
-            stakedToken={`${firstToken}-${secondToken} LP 토큰`}
-            firstToken={firstToken}
-            secondToken={secondToken}
-          />
-          <LpStakeAndUnStake
-            firstToken={firstToken}
-            secondToken={secondToken}
-            setStakingModalVisible={setStakingModalVisible}
-            totalStakedLiquidity={totalStakedLiquidity}
-          />
-        </div>
-        <div className="spoqa lp_token_date">
-          2021-11-21 00:00:00 - 2021-11-24 00:00:00
-        </div>
+
+        {!isLoading ? (
+          <>
+            <div className="lp_token_description">
+              <LpStakingHeader
+                TotalLiquidity={formatDecimalFracionDigit(totalLiquidity, 2)}
+                secondToken={secondToken}
+                liquidityForApr={liquidityForApr}
+              />
+              <LpReceiveToken
+                firstToken={firstToken}
+                secondToken={secondToken}
+              />
+              <LpStakeAndUnStake
+                firstToken={firstToken}
+                secondToken={secondToken}
+                setStakingModalVisible={setStakingModalVisible}
+                totalStakedLiquidity={totalStakedLiquidity}
+              />
+            </div>
+            <div className="spoqa lp_token_date">
+              {moment(lpStakingTime.startedAt).format('YYYY-MM-DD hh:mm:ss')} -{' '}
+              {moment(lpStakingTime.endedAt).format('YYYY-MM-DD hh:mm:ss')}
+            </div>
+          </>
+        ) : (
+          <Skeleton width={'100%'} height={550} />
+        )}
       </div>
     </>
   );
