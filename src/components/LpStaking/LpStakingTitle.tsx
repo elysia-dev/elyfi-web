@@ -45,7 +45,7 @@ function LpStakingTitle(props: Props) {
           style={{
             fontSize: 20,
           }}>
-          {t('staking.lp_token_staking_title', { firstToken, secondToken })}
+          {t('lpstaking.lp_token_staking_title', { firstToken, secondToken })}
         </div>
       </div>
     </div>
