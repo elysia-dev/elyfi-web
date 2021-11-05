@@ -49,11 +49,8 @@ const LpStakingModal: React.FunctionComponent<{
 }> = ({
   visible,
   closeHandler,
-  afterTx,
-  stakedBalance,
   stakedToken,
   round,
-  transactionModal,
   firstToken,
   secondToken,
   positions,
@@ -63,26 +60,8 @@ const LpStakingModal: React.FunctionComponent<{
   const { account, library } = useWeb3React();
   const [stakingMode, setStakingMode] = useState<boolean>(true);
   const [amount, setAmount] = useState({ value: '', max: false });
-  const current = moment();
   const { setTransaction, failTransaction } = useContext(TxContext);
-  const stakingPool = useStakingPool(stakedToken, round >= 3);
-  const {
-    allowance,
-    balance,
-    loading: allowanceLoading,
-    refetch,
-    contract,
-  } = useERC20Info(
-    stakedToken === Token.EL ? envs.elAddress : envs.governanceAddress,
-    stakingPool.address,
-  );
   const { waiting, wait } = useWatingTx();
-  const amountLteZero =
-    !amount || utils.parseEther(amount.value || '0').isZero();
-  const amountGtBalance = utils.parseEther(amount.value || '0').gt(balance);
-  const amountGtStakedBalance = utils
-    .parseEther(amount.value || '0')
-    .gt(stakedBalance);
   const initTxTracker = useTxTracking();
   const [selectedToken, setSelectedToken] = useState<{
     id: string;
@@ -107,7 +86,7 @@ const LpStakingModal: React.FunctionComponent<{
       ? envs.ethElfiPoolAddress
       : envs.daiElfiPoolAddress;
   const rewardTokenAddress =
-    secondToken === Token.ETH ? envs.wEth : envs.daiAddress;
+    secondToken === Token.ETH ? envs.wEthAddress : envs.daiAddress;
 
   const lpStakingHandler = async () => {
     const encode = new ethers.utils.AbiCoder().encode(
@@ -118,16 +97,16 @@ const LpStakingModal: React.FunctionComponent<{
           [
             envs.governanceAddress, // 두 번 이더 / 다이
             stakingPoolAdress,
-            1635751200,
-            1638005456,
-            account,
+            envs.lpTokenStakingStartTime,
+            envs.lpTokenStakingEndTime,
+            envs.refundedAddress,
           ],
           [
             rewardTokenAddress, // 두 번 이더 / 다이
             stakingPoolAdress,
-            1635751200,
-            1638005456,
-            account,
+            envs.lpTokenStakingStartTime,
+            envs.lpTokenStakingEndTime,
+            envs.refundedAddress,
           ],
         ],
       ],
@@ -141,7 +120,11 @@ const LpStakingModal: React.FunctionComponent<{
     const res: ContractTransaction = await contract1[
       'safeTransferFrom(address,address,uint256,bytes)'
     ](account, envs.stakerAddress, selectedToken.id, encode);
-
+    setSelectedToken({
+      id: '',
+      liquidity: '',
+      selectBoxTitle: t('lpstaking.lp_staking_modal_default'),
+    });
     const tracker = initTxTracker('LpStakingModal', 'LpStaking', ``);
     setTransaction(
       res,
@@ -238,69 +221,23 @@ const LpStakingModal: React.FunctionComponent<{
                   lpTokens={lpTokens}
                 />
               )}
-
-              {!stakingMode ? (
-                <p>
-                  {amountGtStakedBalance
-                    ? t('staking.insufficient_balance')
-                    : t('staking.unstaking')}
-                </p>
-              ) : !allowanceLoading && allowance.gte(balance) ? (
-                <div
-                  className={`modal__button${
-                    lpTokens.length === 0
-                      ? '--disable'
-                      : selectedToken.id
-                      ? ''
-                      : '--disable'
-                  }`}
-                  onClick={() =>
-                    lpTokens.length === 0
-                      ? ''
-                      : selectedToken.id
-                      ? lpStakingHandler()
-                      : ''
-                  }>
-                  <p>{t('staking.staking')}</p>
-                </div>
-              ) : (
-                <div
-                  className={'modal__button'}
-                  onClick={() => {
-                    const tracker = initTxTracker(
-                      'LpStakingModal',
-                      `Approve`,
-                      `${stakedToken} ${round}round`,
-                    );
-
-                    tracker.clicked();
-
-                    contract
-                      .approve(stakingPool.address, constants.MaxUint256)
-                      .then((tx) => {
-                        setTransaction(
-                          tx,
-                          tracker,
-                          RecentActivityType.Approve,
-                          () => {
-                            closeHandler();
-                            transactionModal();
-                          },
-                          () => {
-                            refetch();
-                            afterTx();
-                          },
-                        );
-                      })
-                      .catch((e) => {
-                        failTransaction(tracker, closeHandler, e);
-                      });
-                  }}>
-                  <p>
-                    {t('dashboard.protocol_allow', { tokenName: stakedToken })}
-                  </p>
-                </div>
-              )}
+              <div
+                className={`modal__button${
+                  lpTokens.length === 0
+                    ? '--disable'
+                    : selectedToken.id
+                    ? ''
+                    : '--disable'
+                }`}
+                onClick={() =>
+                  lpTokens.length === 0
+                    ? ''
+                    : selectedToken.id
+                    ? lpStakingHandler()
+                    : ''
+                }>
+                <p>{t('staking.staking')}</p>
+              </div>
             </div>
           </div>
         )}
