@@ -1,16 +1,15 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants, ethers, utils } from 'ethers';
-import { useState, useEffect, useRef } from 'react';
-import { IPosition } from 'src/clients/StakerSubgraph';
-import stakerABI from 'src/core/abi/StakerABI.json';
-import envs from 'src/core/envs';
-import elfi from 'src/assets/images/ELFI.png';
-import eth from 'src/assets/images/eth-color.png';
-import dai from 'src/assets/images/dai.png';
+import { useState, useEffect, useRef, useContext, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import calcCurrencyValueFromLiquidity from 'src/utiles/calcCurrencyValueFromLiquidity';
+import PriceContext from 'src/contexts/PriceContext';
 import Token from 'src/enums/Token';
 import useExpectedReward from 'src/hooks/useExpectedReward';
 import Position from 'src/core/types/Position';
-import { formatSixFracionDigit } from 'src/utiles/formatters';
+import { formatDecimalFracionDigit, toCompact } from 'src/utiles/formatters';
+import RecentActivityType from 'src/enums/RecentActivityType';
+import TxContext from 'src/contexts/TxContext';
 import Guide from '../Guide';
 import StakedLpItem from './StakedLpItem';
 
@@ -20,60 +19,26 @@ type Props = {
 function StakedLp(props: Props) {
   const { positions } = props;
   const { account } = useWeb3React();
-  const { expectedReward, getExpectedReward } = useExpectedReward();
-  const count = useRef(0);
-  const [isWEth, setIsWEth] = useState(false);
-  const [totalExpectedReward, setTotalExpectedReward] = useState<{
-    totalElfiReward: number;
-    totalEthReward: number;
-    totalDaiReward: number;
-  }>({
-    totalElfiReward: 0,
-    totalEthReward: 0,
-    totalDaiReward: 0,
-  });
+  const { t } = useTranslation();
+  const { totalExpectedReward, addTotalExpectedReward } = useExpectedReward();
+  const { txType } = useContext(TxContext);
+  const [count, setCount] = useState(1);
 
   useEffect(() => {
-    if (
-      expectedReward.elfiReward === '0' &&
-      expectedReward.ethOrDaiReward === '0'
-    )
+    if (count === 1 && positions) {
+      addTotalExpectedReward(positions);
       return;
-    setTotalExpectedReward({
-      ...totalExpectedReward,
-      totalElfiReward:
-        totalExpectedReward.totalElfiReward +
-        parseFloat(expectedReward.elfiReward),
-      totalDaiReward: isWEth
-        ? totalExpectedReward.totalDaiReward
-        : totalExpectedReward.totalDaiReward +
-          parseFloat(expectedReward.ethOrDaiReward),
-      totalEthReward: isWEth
-        ? totalExpectedReward.totalEthReward +
-          parseFloat(expectedReward.ethOrDaiReward)
-        : totalExpectedReward.totalEthReward,
-    });
-  }, [expectedReward]);
+    }
+    let getTotalReward: NodeJS.Timeout;
 
-  useEffect(() => {
-    if (positions.length === 0 || count.current === 1) return;
-    count.current += 1;
-    positions.forEach(async (position) => {
-      const isEthToken =
-        position.incentivePotisions[0].incentive.pool.toLowerCase() ===
-        envs.ethElfiPoolAddress.toLowerCase();
-      setIsWEth(isEthToken);
-      const poolAddress = isEthToken
-        ? envs.ethElfiPoolAddress
-        : envs.daiElfiPoolAddress;
-      const rewardTokenAddress = isEthToken ? envs.wEth : envs.daiAddress;
-      await getExpectedReward(
-        rewardTokenAddress,
-        poolAddress,
-        position.tokenId,
-      );
-    });
-  }, [positions]);
+    if (txType !== RecentActivityType.Withdraw && positions) {
+      getTotalReward = setTimeout(() => {
+        addTotalExpectedReward(positions);
+        setCount((prev) => prev + 1);
+      }, 5000);
+    }
+    return () => clearTimeout(getTotalReward);
+  }, [positions, count]);
 
   return (
     <>
@@ -85,8 +50,8 @@ function StakedLp(props: Props) {
           marginTop: 79,
         }}>
         <div className="spoqa__bold">
-          Staked LP
-          <Guide />
+          {t('lpstaking.staked_lp_token')}
+          <Guide content={t('guide.staked_lp_token')} />
         </div>
         <div className="header_line" />
       </div>
@@ -106,14 +71,16 @@ function StakedLp(props: Props) {
             <div className="staked_lp_content">
               <div>
                 <span>ID</span>
-                <span>LP Type</span>
-                <span>유동성</span>
+                <span>{t('lpstaking.staked_lp_token_type')}</span>
+                <span>{t('lpstaking.liquidity')}</span>
                 <div> </div>
               </div>
               <div className="staked_lp_content_pc">
                 <div />
               </div>
-              <span className="staked_lp_content_pc">예상 보상</span>
+              <span className="staked_lp_content_pc">
+                {t('lpstaking.expected_reward')}
+              </span>
             </div>
             {positions.map((position, idx) => {
               return <StakedLpItem key={idx} position={position} />;
@@ -130,38 +97,43 @@ function StakedLp(props: Props) {
                 paddingTop: 20,
                 paddingBottom: 20,
               }}>
-              지갑을 연결해주세요.
+              {t('dashboard.wallet_connect_content')}
             </div>
           </div>
         )}
         {positions.length > 0 ? (
           <div className="spoqa__bold total_expected_reward">
-            <div>유동성 합계</div>
-            <div className="total_expected_reward_amount">$ 500.15K</div>
-            <div />
-            <div>총 예상 보상</div>
+            <div>{t('lpstaking.staked_total_liquidity')}</div>
             <div className="total_expected_reward_amount">
-              {formatSixFracionDigit(totalExpectedReward.totalElfiReward)}{' '}
+              $ {toCompact(totalExpectedReward.totalliquidity)}
+            </div>
+            <div />
+            <div>{t('lpstaking.staked_total_expected_reward')}</div>
+            <div className="total_expected_reward_amount">
+              {formatDecimalFracionDigit(
+                totalExpectedReward.totalElfiReward,
+                2,
+              )}{' '}
               {Token.ELFI}
             </div>
             <div className="total_expected_reward_amount">
-              {formatSixFracionDigit(totalExpectedReward.totalEthReward)}{' '}
+              {formatDecimalFracionDigit(totalExpectedReward.totalEthReward, 2)}{' '}
               {Token.ETH}
             </div>
             <div className="total_expected_reward_amount">
-              {formatSixFracionDigit(totalExpectedReward.totalDaiReward)}{' '}
+              {formatDecimalFracionDigit(totalExpectedReward.totalDaiReward, 2)}{' '}
               {Token.DAI}
             </div>
           </div>
         ) : (
           <div className="spoqa__bold total_expected_reward">
-            <div>유동성 합계</div>
+            <div>{t('lpstaking.staked_total_liquidity')}</div>
             <div>$ -</div>
             <div />
-            <div>총 예상 보상</div>
-            <div>- ELFI</div>
-            <div>- ETH</div>
-            <div>- DAI</div>
+            <div>{t('lpstaking.staked_total_expected_reward')}</div>
+            <div>- {Token.ELFI}</div>
+            <div>- {Token.ETH}</div>
+            <div>- {Token.DAI}</div>
           </div>
         )}
       </div>
