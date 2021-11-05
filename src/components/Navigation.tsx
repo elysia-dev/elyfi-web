@@ -166,7 +166,10 @@ const Navigation: FunctionComponent<Props> = ({ txStatus, txWaiting }) => {
                 ['/', t('navigation.deposit_withdraw')],
                 ['/staking/EL', t('navigation.ELStake')],
                 ['/staking/ELFI', t('navigation.ELFIStake')],
-                ['/staking/LP', 'LP 스테이킹'],
+                [
+                  '/staking/LP',
+                  t('staking.token_staking', { stakedToken: 'LP' }),
+                ],
               ].map((data, index) => {
                 return (
                   <NavLink
