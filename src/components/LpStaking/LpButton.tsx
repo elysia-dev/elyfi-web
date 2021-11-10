@@ -1,26 +1,22 @@
-import moment from 'moment';
-import lpStakingTime from 'src/core/data/lpStakingTime';
+import { FunctionComponent } from 'react';
 
 type Props = {
   onHandler: () => void;
   btnTitle: string;
+  disabledBtn?: { background: string; color: string };
 };
 
-function LpButton(props: Props) {
-  const { onHandler, btnTitle } = props;
-  const isStakingDate = moment().isBefore(lpStakingTime.startedAt);
+const LpButton: FunctionComponent<Props> = (props) => {
+  const { onHandler, btnTitle, disabledBtn } = props;
 
   return (
     <button
       className="spoqa__medium lp_button"
-      style={{
-        background: isStakingDate ? '#f8f8f8' : undefined,
-        color: isStakingDate ? '#949494' : undefined,
-      }}
-      onClick={() => (isStakingDate ? '' : onHandler())}>
+      style={disabledBtn}
+      onClick={() => onHandler()}>
       {btnTitle}
     </button>
   );
-}
+};
 
 export default LpButton;
