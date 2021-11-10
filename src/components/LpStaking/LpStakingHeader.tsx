@@ -6,15 +6,14 @@ import Guide from '../Guide';
 
 type Props = {
   TotalLiquidity: string;
-  secondToken: string;
+  token1: string;
   apr: string;
 };
 
 function LpStakingHeader(props: Props) {
-  const { TotalLiquidity, secondToken, apr } = props;
+  const { TotalLiquidity, token1, apr } = props;
   const { t } = useTranslation();
-  const token =
-    secondToken === Token.ETH ? Token.ELFI_ETH_LP : Token.ELFI_DAI_LP;
+  const token = token1 === Token.ETH ? Token.ELFI_ETH_LP : Token.ELFI_DAI_LP;
 
   return (
     <>

@@ -26,24 +26,17 @@ import Position, { TokenInfo } from 'src/core/types/Position';
 const LpStakingModal: React.FunctionComponent<{
   visible: boolean;
   closeHandler: () => void;
-  firstToken: string;
-  secondToken: string;
+  token0: string;
+  token1: string;
   positions: Position[];
   lpTokens: TokenInfo[];
-}> = ({
-  visible,
-  closeHandler,
-  firstToken,
-  secondToken,
-  positions,
-  lpTokens,
-}) => {
+}> = ({ visible, closeHandler, token0, token1, positions, lpTokens }) => {
   const { t } = useTranslation();
   const { account, library } = useWeb3React();
   const [stakingMode, setStakingMode] = useState<boolean>(true);
   const [amount, setAmount] = useState({ value: '', max: false });
-  const { setTransaction, failTransaction } = useContext(TxContext);
-  const { waiting, wait } = useWatingTx();
+  const { setTransaction } = useContext(TxContext);
+  const { waiting } = useWatingTx();
   const initTxTracker = useTxTracking();
   const [selectedToken, setSelectedToken] = useState<{
     id: string;
@@ -62,13 +55,11 @@ const LpStakingModal: React.FunctionComponent<{
     });
   }, [stakingMode, visible]);
 
-  const secondImg = secondToken === Token.ETH ? eth : dai;
+  const secondImg = token1 === Token.ETH ? eth : dai;
   const stakingPoolAdress =
-    secondToken === Token.ETH
-      ? envs.ethElfiPoolAddress
-      : envs.daiElfiPoolAddress;
+    token1 === Token.ETH ? envs.ethElfiPoolAddress : envs.daiElfiPoolAddress;
   const rewardTokenAddress =
-    secondToken === Token.ETH ? envs.wEthAddress : envs.daiAddress;
+    token1 === Token.ETH ? envs.wEthAddress : envs.daiAddress;
 
   const lpStakingHandler = async () => {
     const encode = new ethers.utils.AbiCoder().encode(
@@ -146,8 +137,8 @@ const LpStakingModal: React.FunctionComponent<{
             <div className="modal__header__name-wrapper">
               <p className="modal__header__name spoqa__bold">
                 {t('lpstaking.lp_token_staking_title', {
-                  firstToken,
-                  secondToken,
+                  token0,
+                  token1,
                 })}
               </p>
             </div>

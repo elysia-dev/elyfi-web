@@ -1,15 +1,14 @@
 import { Trans, useTranslation } from 'react-i18next';
 import envs from 'src/core/envs';
 import Guide from '../Guide';
-import LpButton from './LpButton';
 
 type Props = {
-  firstToken: string;
-  secondToken: string;
+  token0: string;
+  token1: string;
 };
 
 function LpReceiveToken(props: Props) {
-  const { firstToken, secondToken } = props;
+  const { token0, token1 } = props;
   const { t } = useTranslation();
 
   return (
@@ -17,8 +16,8 @@ function LpReceiveToken(props: Props) {
       <div>
         <div className="spoqa__bold">
           {t('lpstaking.lp_token_staking_modal', {
-            firstToken,
-            secondToken,
+            token0,
+            token1,
           })}
           <Guide content={t('guide.create_liquidity')} />
         </div>
@@ -28,7 +27,7 @@ function LpReceiveToken(props: Props) {
             target="_blank"
             rel="noopener noreferrer"
             href={
-              secondToken === 'ETH'
+              token1 === 'ETH'
                 ? `https://app.uniswap.org/#/add/${envs.governanceAddress}/${envs.wEthAddress}`
                 : `https://app.uniswap.org/#/add/${envs.governanceAddress}/${envs.daiAddress}`
             }>
@@ -40,8 +39,8 @@ function LpReceiveToken(props: Props) {
         <Trans
           i18nKey="lpstaking.receive_lp_token_content"
           values={{
-            firstToken,
-            secondToken,
+            token0,
+            token1,
           }}
         />
       </div>
