@@ -1,9 +1,8 @@
-import { BigNumber, constants } from 'ethers';
-import { useState, useEffect } from 'react';
+import { BigNumber } from 'ethers';
+import { useState } from 'react';
 import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 import Position, { TokenInfo } from 'src/core/types/Position';
 import Skeleton from 'react-loading-skeleton';
-import Token from 'src/enums/Token';
 import lpStakingTime from 'src/core/data/lpStakingTime';
 import moment from 'moment';
 import LpReceiveToken from './LpReceiveToken';
@@ -12,8 +11,8 @@ import LpStakingModal from './LpStakingModal';
 import LpStakeAndUnStake from './LpStakeAndUnStake';
 
 type Props = {
-  firstToken: string;
-  secondToken: string;
+  token0: string;
+  token1: string;
   totalLiquidity: number;
   positions: Position[];
   totalStakedLiquidity: BigNumber;
@@ -23,8 +22,8 @@ type Props = {
 };
 function LpStakingItem(props: Props) {
   const {
-    firstToken,
-    secondToken,
+    token0,
+    token1,
     totalLiquidity,
     positions,
     totalStakedLiquidity,
@@ -40,8 +39,8 @@ function LpStakingItem(props: Props) {
         <LpStakingModal
           visible={stakingModalVisible}
           closeHandler={() => setStakingModalVisible(false)}
-          firstToken={firstToken}
-          secondToken={secondToken}
+          token0={token0}
+          token1={token1}
           positions={positions}
           lpTokens={lpTokens}
         />
@@ -51,16 +50,13 @@ function LpStakingItem(props: Props) {
             <div className="lp_token_description">
               <LpStakingHeader
                 TotalLiquidity={formatDecimalFracionDigit(totalLiquidity, 2)}
-                secondToken={secondToken}
+                token1={token1}
                 apr={apr}
               />
-              <LpReceiveToken
-                firstToken={firstToken}
-                secondToken={secondToken}
-              />
+              <LpReceiveToken token0={token0} token1={token1} />
               <LpStakeAndUnStake
-                firstToken={firstToken}
-                secondToken={secondToken}
+                token0={token0}
+                token1={token1}
                 setStakingModalVisible={setStakingModalVisible}
                 totalStakedLiquidity={totalStakedLiquidity}
               />

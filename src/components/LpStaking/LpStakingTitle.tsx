@@ -5,14 +5,14 @@ import dai from 'src/assets/images/dai.png';
 import Token from 'src/enums/Token';
 
 type Props = {
-  firstToken: string;
-  secondToken: string;
+  token0: string;
+  token1: string;
 };
 
 function LpStakingTitle(props: Props) {
-  const { firstToken, secondToken } = props;
+  const { token0, token1 } = props;
   const { t } = useTranslation();
-  const secondImg = secondToken === Token.ETH ? eth : dai;
+  const secondImg = token1 === Token.ETH ? eth : dai;
   return (
     <div>
       <div
@@ -45,7 +45,7 @@ function LpStakingTitle(props: Props) {
           style={{
             fontSize: 20,
           }}>
-          {t('lpstaking.lp_token_staking_title', { firstToken, secondToken })}
+          {t('lpstaking.lp_token_staking_title', { token0, token1 })}
         </div>
       </div>
     </div>

@@ -1,8 +1,6 @@
 import { BigNumber, utils } from 'ethers';
 import moment from 'moment';
-import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import PriceContext from 'src/contexts/PriceContext';
 import lpStakingTime from 'src/core/data/lpStakingTime';
 import Token from 'src/enums/Token';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
@@ -11,21 +9,22 @@ import Guide from '../Guide';
 import LpButton from './LpButton';
 
 type Props = {
-  firstToken: string;
-  secondToken: string;
+  token0: string;
+  token1: string;
   setStakingModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   totalStakedLiquidity: BigNumber;
 };
 
 function LpStakeAndUnStake(props: Props) {
-  const {
-    firstToken,
-    secondToken,
-    setStakingModalVisible,
-    totalStakedLiquidity,
-  } = props;
+  const { token0, token1, setStakingModalVisible, totalStakedLiquidity } =
+    props;
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const { t } = useTranslation();
+  const isStakingDate = moment().isBetween(
+    lpStakingTime.startedAt,
+    lpStakingTime.endedAt,
+  );
+
   return (
     <div
       style={{
@@ -38,8 +37,8 @@ function LpStakeAndUnStake(props: Props) {
           fontSize: 17,
         }}>
         {t('lpstaking.lp_token_staked', {
-          firstToken,
-          secondToken,
+          token0,
+          token1,
         })}
         <Guide content={t('guide.staked_total_amount')} />
       </div>
@@ -63,8 +62,8 @@ function LpStakeAndUnStake(props: Props) {
           {`$ `}
         </span>
         {formatDecimalFracionDigit(
-          (secondToken === Token.ETH ? pricePerEthLiquidity : pricePerDaiLiquidity) *
-          parseFloat(utils.formatEther(totalStakedLiquidity)),
+          (token1 === Token.ETH ? pricePerEthLiquidity : pricePerDaiLiquidity) *
+            parseFloat(utils.formatEther(totalStakedLiquidity)),
           2,
         )}
       </div>
@@ -74,7 +73,12 @@ function LpStakeAndUnStake(props: Props) {
         }}>
         <LpButton
           btnTitle={t('staking.staking')}
-          onHandler={() => setStakingModalVisible(true)}
+          onHandler={() => (isStakingDate ? setStakingModalVisible(true) : '')}
+          disableBtn={
+            isStakingDate
+              ? undefined
+              : { background: '#f8f8f8', color: '#949494' }
+          }
         />
       </div>
     </div>

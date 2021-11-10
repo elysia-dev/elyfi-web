@@ -112,12 +112,13 @@ function LPStaking() {
         }}>
         <div className="staking_detail_box">
           <div>
-            <LpStakingTitle firstToken={Token.ELFI} secondToken={Token.ETH} />
+            <LpStakingTitle token0={Token.ELFI} token1={Token.ETH} />
             <LpStakingItem
-              firstToken={Token.ELFI}
-              secondToken={Token.ETH}
+              token0={Token.ELFI}
+              token1={Token.ETH}
               totalLiquidity={
-                ethPool.stakedToken0 * elfiPrice + ethPool.stakedToken1 * ethPrice
+                ethPool.stakedToken0 * elfiPrice +
+                ethPool.stakedToken1 * ethPrice
               }
               positions={positions.filter(
                 (position) =>
@@ -154,10 +155,10 @@ function LPStaking() {
           </div>
           <div />
           <div>
-            <LpStakingTitle firstToken={Token.ELFI} secondToken={Token.DAI} />
+            <LpStakingTitle token0={Token.ELFI} token1={Token.DAI} />
             <LpStakingItem
-              firstToken={Token.ELFI}
-              secondToken={Token.DAI}
+              token0={Token.ELFI}
+              token1={Token.DAI}
               totalLiquidity={
                 daiPool.stakedToken0 * elfiPrice + daiPool.stakedToken1
               }
