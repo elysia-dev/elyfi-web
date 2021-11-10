@@ -70,7 +70,6 @@ function useExpectedReward() {
     }
   };
 
-  const a = () => { };
   const addTotalExpectedReward = useCallback(async (positions: Position[]) => {
     try {
       let ethTotal = 0;
