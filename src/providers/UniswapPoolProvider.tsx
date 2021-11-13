@@ -7,6 +7,7 @@ import UniswapPoolContext, {
   initialUniswapPoolContext,
   UniswapPoolContextType,
 } from 'src/contexts/UniswapPoolContext';
+import { BigNumber } from 'ethers';
 
 const UniswapPoolProvider: React.FC = (props) => {
   const [state, setState] = useState<UniswapPoolContextType>(
@@ -35,21 +36,37 @@ const UniswapPoolProvider: React.FC = (props) => {
           ),
           ethPool: {
             liquidity: res.data.data.ethPool.liquidity,
-            totalValueLockedToken0: parseFloat(res.data.data.ethPool.totalValueLockedToken0),
-            totalValueLockedToken1: parseFloat(res.data.data.ethPool.totalValueLockedToken1),
-            stakedToken0: res.data.data.stakedEthPositions
-              .reduce((sum, cur) => sum + parseFloat(cur.depositedToken0), 0),
-            stakedToken1: res.data.data.stakedEthPositions
-              .reduce((sum, cur) => sum + parseFloat(cur.depositedToken1), 0),
+            totalValueLockedToken0: parseFloat(
+              res.data.data.ethPool.totalValueLockedToken0,
+            ),
+            totalValueLockedToken1: parseFloat(
+              res.data.data.ethPool.totalValueLockedToken1,
+            ),
+            stakedToken0: res.data.data.stakedEthPositions.reduce(
+              (sum, cur) => sum + parseFloat(cur.depositedToken0),
+              0,
+            ),
+            stakedToken1: res.data.data.stakedEthPositions.reduce(
+              (sum, cur) => sum + parseFloat(cur.depositedToken1),
+              0,
+            ),
           },
           daiPool: {
             liquidity: res.data.data.daiPool.liquidity,
-            totalValueLockedToken0: parseFloat(res.data.data.daiPool.totalValueLockedToken0),
-            totalValueLockedToken1: parseFloat(res.data.data.daiPool.totalValueLockedToken1),
-            stakedToken0: res.data.data.stakedDaiPositions
-              .reduce((sum, cur) => sum + parseFloat(cur.depositedToken0), 0),
-            stakedToken1: res.data.data.stakedDaiPositions
-              .reduce((sum, cur) => sum + parseFloat(cur.depositedToken1), 0),
+            totalValueLockedToken0: parseFloat(
+              res.data.data.daiPool.totalValueLockedToken0,
+            ),
+            totalValueLockedToken1: parseFloat(
+              res.data.data.daiPool.totalValueLockedToken1,
+            ),
+            stakedToken0: res.data.data.stakedDaiPositions.reduce(
+              (sum, cur) => sum + parseFloat(cur.depositedToken0),
+              0,
+            ),
+            stakedToken1: res.data.data.stakedDaiPositions.reduce(
+              (sum, cur) => sum + parseFloat(cur.depositedToken1),
+              0,
+            ),
           },
           loading: false,
         });
@@ -57,9 +74,32 @@ const UniswapPoolProvider: React.FC = (props) => {
       .catch((e) => {
         setState({
           ...state,
+          totalValueLockedUSD: 0,
+          totalValueLockedToken0: 0,
+          totalValueLockedToken1: 0,
+          poolDayData: [],
+          latestPrice: 0.103,
+          ethPool: {
+            liquidity: BigNumber.from(0),
+            totalValueLockedToken0: 0,
+            totalValueLockedToken1: 0,
+            stakedToken0: 0,
+            stakedToken1: 0,
+          },
+          daiPool: {
+            liquidity: BigNumber.from(0),
+            totalValueLockedToken0: 0,
+            totalValueLockedToken1: 0,
+            stakedToken0: 0,
+            stakedToken1: 0,
+          },
           loading: false,
-          error: true,
         });
+        // setState({
+        //   ...state,
+        //   loading: false,
+        //   error: true,
+        // });
       });
   }, []);
 

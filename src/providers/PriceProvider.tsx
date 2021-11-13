@@ -31,21 +31,48 @@ const PriceProvider: React.FC = (props) => {
         tetherPrice: priceData.data.tether.usd,
         ethPrice: priceData.data.ethereum.usd,
         elfiDaiPool: {
-          price: calcPriceFromSqrtPriceX96(daiPoolData.data.data.pool.sqrtPrice),
-          liquidity: parseFloat(utils.formatEther(daiPoolData.data.data.pool.liquidity)),
+          price: calcPriceFromSqrtPriceX96(
+            daiPoolData.data.data.pool.sqrtPrice,
+          ),
+          liquidity: parseFloat(
+            utils.formatEther(daiPoolData.data.data.pool.liquidity),
+          ),
         },
         elfiEthPool: {
-          price: calcPriceFromSqrtPriceX96(ethPoolData.data.data.pool.sqrtPrice),
-          liquidity: parseFloat(utils.formatEther(ethPoolData.data.data.pool.liquidity)),
+          price: calcPriceFromSqrtPriceX96(
+            ethPoolData.data.data.pool.sqrtPrice,
+          ),
+          liquidity: parseFloat(
+            utils.formatEther(ethPoolData.data.data.pool.liquidity),
+          ),
         },
         loading: false,
       });
     } catch (e) {
-      setState({
-        ...state,
-        loading: false,
-        error: true,
+      Coingecko.getPrices().then((priceData) => {
+        setState({
+          ...state,
+          elfiPrice: 0.103,
+          elPrice: priceData.data.elysia.usd,
+          daiPrice: priceData.data.dai.usd,
+          tetherPrice: priceData.data.tether.usd,
+          ethPrice: priceData.data.ethereum.usd,
+          elfiDaiPool: {
+            liquidity: 0,
+            price: 0,
+          },
+          elfiEthPool: {
+            liquidity: 0,
+            price: 0,
+          },
+          loading: false,
+        });
       });
+      // setState({
+      //   ...state,
+      //   loading: false,
+      //   error: true,
+      // });
     }
   };
 
