@@ -166,7 +166,6 @@ const Navigation: FunctionComponent<Props> = ({ txStatus, txWaiting }) => {
                 ['/', t('navigation.deposit_withdraw')],
                 ['/staking/EL', t('navigation.ELStake')],
                 ['/staking/ELFI', t('navigation.ELFIStake')],
-                ['/staking/LP', 'LP 스테이킹'],
               ].map((data, index) => {
                 return (
                   <NavLink
@@ -182,9 +181,8 @@ const Navigation: FunctionComponent<Props> = ({ txStatus, txWaiting }) => {
                         {data[1].toUpperCase()}
                         <NavLink
                           to={data[0]}
-                          className={`navigation__link__under-line${
-                            hover === index + 1 ? ' hover' : ' blur'
-                          }`}
+                          className={`navigation__link__under-line${hover === index + 1 ? ' hover' : ' blur'
+                            }`}
                           style={{
                             opacity: 0,
                             width: 0,

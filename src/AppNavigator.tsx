@@ -16,7 +16,6 @@ import 'src/stylesheet/pc.scss';
 import 'src/stylesheet/tablet.scss';
 import 'src/stylesheet/mobile.scss';
 import Navigation from 'src/components/Navigation';
-import LPStaking from './containers/LPStaking';
 
 const AppNavigator: React.FC = () => {
   const isPc = useMediaQuery({
@@ -33,8 +32,8 @@ const AppNavigator: React.FC = () => {
     isPc
       ? window.sessionStorage.setItem('@MediaQuery', 'PC')
       : isTablet
-      ? window.sessionStorage.setItem('@MediaQuery', 'Tablet')
-      : window.sessionStorage.setItem('@MediaQuery', 'Mobile');
+        ? window.sessionStorage.setItem('@MediaQuery', 'Tablet')
+        : window.sessionStorage.setItem('@MediaQuery', 'Mobile');
   }, [isPc, isTablet, isMobile]);
 
   const { active, chainId, deactivate, activate } = useWeb3React();
@@ -69,15 +68,6 @@ const AppNavigator: React.FC = () => {
           component={
             active && chainId === envs.requiredChainId
               ? StakingELFI
-              : DisableWalletPage
-          }
-        />
-        <Route
-          exact
-          path="/staking/LP"
-          component={
-            active && chainId === envs.requiredChainId
-              ? LPStaking
               : DisableWalletPage
           }
         />
