@@ -1,5 +1,5 @@
 import { BigNumber, utils } from 'ethers';
-import { useContext } from 'react';
+import { FunctionComponent, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import PriceContext from 'src/contexts/PriceContext';
 import envs from 'src/core/envs';
@@ -20,7 +20,7 @@ type Props = {
   selectBoxHandler: () => void;
 };
 
-function SelectBoxItems(props: Props) {
+const SelectBoxItems: FunctionComponent<Props> = (props) => {
   const { setSelectedToken, selectBoxHandler, position } = props;
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const { t } = useTranslation();
@@ -69,12 +69,17 @@ function SelectBoxItems(props: Props) {
             {formatDecimalFracionDigit(
               parseFloat(utils.formatEther(position.liquidity)) * poolPrice,
               2,
-            )}
+            ) === 'NaN'
+              ? 0
+              : formatDecimalFracionDigit(
+                  parseFloat(utils.formatEther(position.liquidity)) * poolPrice,
+                  2,
+                )}
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default SelectBoxItems;
