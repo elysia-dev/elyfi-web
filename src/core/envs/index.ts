@@ -27,13 +27,9 @@ interface EnvironmentVariables {
   refundedAddress: string;
 }
 
-/*
 const vars =
   process.env.NODE_ENV === 'production' && !process.env.REACT_APP_TEST_MODE
     ? (prodVars as EnvironmentVariables)
     : (testVars as EnvironmentVariables);
-    */
-
-const vars = prodVars as EnvironmentVariables
 
 export default vars;
