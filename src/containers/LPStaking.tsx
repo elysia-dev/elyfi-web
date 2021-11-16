@@ -1,33 +1,56 @@
-import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants, ethers, utils } from 'ethers';
-import { useEffect, useContext, useState, useCallback } from 'react';
+import {
+  useEffect,
+  useContext,
+  useState,
+  useCallback,
+  FunctionComponent,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from 'src/components/Header';
-import LpStakingItem from 'src/components/LpStaking';
 import PriceContext from 'src/contexts/PriceContext';
 import envs from 'src/core/envs';
-import LpStakingTitle from 'src/components/LpStaking/LpStakingTitle';
 import StakedLp from 'src/components/LpStaking/StakedLp';
 import StakerSubgraph from 'src/clients/StakerSubgraph';
-import LpReward from 'src/components/LpStaking/LpReward';
 import Position, { TokenInfo } from 'src/core/types/Position';
 import LpTokenPoolSubgraph from 'src/clients/LpTokenPoolSubgraph';
 import Token from 'src/enums/Token';
 import TxContext from 'src/contexts/TxContext';
+import stakerABI from 'src/core/abi/StakerABI.json';
 import { useDaiPositionLpApr, useEthPositionLpApr } from 'src/hooks/useLpApy';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
+import RewardModal from 'src/components/LpStaking/RewardModal';
+import DetailBox from 'src/components/LpStaking/DetailBox';
+import StakingTitle from 'src/components/LpStaking/StakingTitle';
+import Reward from 'src/components/LpStaking/Reward';
+import StakingModal from 'src/components/LpStaking/StakingModal';
+import RecentActivityType from 'src/enums/RecentActivityType';
+import RewardTypes from 'src/core/types/RewardTypes';
 
-function LPStaking() {
-  const { account } = useWeb3React();
+const LPStaking: FunctionComponent = () => {
+  const { account, library } = useWeb3React();
   const { t } = useTranslation();
+  const { txType, txWaiting } = useContext(TxContext);
   const { elfiPrice } = useContext(PriceContext);
   const { ethPool, daiPool } = useContext(UniswapPoolContext);
-  const { ethPrice } = useContext(PriceContext);
-  const { txWaiting } = useContext(TxContext);
+  const { ethPrice, daiPrice } = useContext(PriceContext);
+  const [rewardVisibleModal, setRewardVisibleModal] = useState(false);
+  const [stakingVisibleModal, setStakingVisibleModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [positions, setPositions] = useState<Position[]>([]);
-  const [lpTokens, setLpTokens] = useState<TokenInfo[]>([]);
+  const [stakedPositions, setStakedPositions] = useState<Position[]>([]);
+  const [nonStakePositions, setNonStakePositions] = useState<TokenInfo[]>([]);
+  const [stakeToken, setStakeToken] = useState<Token.DAI | Token.ETH>();
+  const ethPoolTotalLiquidity =
+    ethPool.stakedToken0 * elfiPrice + ethPool.stakedToken1 * ethPrice;
+  const daiPoolTotalLiquidity =
+    daiPool.stakedToken0 * elfiPrice + daiPool.stakedToken1 * daiPrice;
+  const [unstakeTokenId, setUnstakeTokenId] = useState(0);
+  const [rewardToReceive, setRewardToRecive] = useState<RewardTypes>({
+    elfiReward: 0,
+    ethReward: 0,
+    daiReward: 0,
+  });
   const ethPoolApr = useEthPositionLpApr();
   const daiPoolApr = useDaiPositionLpApr();
   const [totalLiquidity, setTotalLiquidity] = useState<{
@@ -41,18 +64,44 @@ function LPStaking() {
     ethElfiliquidityForApr: constants.Zero,
     daiElfiliquidityForApr: constants.Zero,
   });
+  const staker = new ethers.Contract(
+    envs.stakerAddress,
+    stakerABI,
+    library.getSigner(),
+  );
 
-  const getPositions = useCallback(() => {
+  const getRewardToRecive = useCallback(async () => {
+    try {
+      setRewardToRecive({
+        ...rewardToReceive,
+        daiReward: parseFloat(
+          utils.formatEther(await staker.rewards(envs.daiAddress, account)),
+        ),
+        ethReward: parseFloat(
+          utils.formatEther(await staker.rewards(envs.wEthAddress, account)),
+        ),
+        elfiReward: parseFloat(
+          utils.formatEther(
+            await staker.rewards(envs.governanceAddress, account),
+          ),
+        ),
+      });
+    } catch (error) {
+      alert(error);
+    }
+  }, [setRewardToRecive]);
+
+  const getStakedPositions = useCallback(() => {
     StakerSubgraph.getPositionsByOwner(account!).then((res) => {
-      setPositions(res.data.data.positions);
+      setStakedPositions(res.data.data.positions);
     });
-  }, [positions]);
+  }, [stakedPositions]);
 
-  const getPoolPositions = useCallback(() => {
+  const getWithoutStakePositions = useCallback(() => {
     LpTokenPoolSubgraph.getPositionsByOwner(account!).then((res) => {
-      setLpTokens(res.data.data.positions);
+      setNonStakePositions(res.data.data.positions);
     });
-  }, [lpTokens]);
+  }, [nonStakePositions]);
 
   const getTotalLiquidity = useCallback(() => {
     setIsLoading(true);
@@ -86,23 +135,67 @@ function LPStaking() {
     });
   }, [totalLiquidity, isLoading]);
 
+  const totalStakedLiquidity = (poolAddress: string) => {
+    return stakedPositions
+      .filter(
+        (position) =>
+          position.staked &&
+          position.incentivePotisions.some(
+            (incentivePosition) =>
+              incentivePosition.incentive.pool.toLowerCase() ===
+              poolAddress.toLowerCase(),
+          ),
+      )
+      .reduce((sum, current) => sum.add(current.liquidity), constants.Zero);
+  };
+
   useEffect(() => {
-    if (txWaiting) return;
-    getPositions();
-  }, [account, txWaiting]);
+    if (
+      (txType === RecentActivityType.Deposit && !txWaiting) ||
+      stakedPositions.length === 0
+    ) {
+      getStakedPositions();
+    }
+  }, [account, txType, txWaiting]);
 
   useEffect(() => {
     if (txWaiting) return;
+    getWithoutStakePositions();
+    getRewardToRecive();
     getTotalLiquidity();
   }, [txWaiting]);
 
   useEffect(() => {
-    if (txWaiting) return;
-    getPoolPositions();
-  }, [txWaiting]);
+    if (txType === RecentActivityType.Withdraw && !txWaiting) {
+      setStakedPositions(
+        stakedPositions.filter(
+          (position) => position.tokenId !== unstakeTokenId,
+        ),
+      );
+      setUnstakeTokenId(0);
+    }
+  }, [txType, txWaiting]);
 
   return (
     <>
+      <RewardModal
+        visible={rewardVisibleModal}
+        closeHandler={() => setRewardVisibleModal(false)}
+        rewardToReceive={rewardToReceive}
+      />
+      <StakingModal
+        visible={stakingVisibleModal}
+        closeHandler={() => setStakingVisibleModal(false)}
+        token0={Token.ELFI}
+        token1={stakeToken}
+        nonStakePositions={nonStakePositions.filter((lpToken) => {
+          const poolAddress =
+            stakeToken === Token.ETH
+              ? envs.ethElfiPoolAddress.toLowerCase()
+              : envs.daiElfiPoolAddress.toLowerCase();
+          return lpToken.pool.id.toLowerCase() === poolAddress;
+        })}
+      />
       <Header title={t('lpstaking.lp_token_staking')} />
       <section
         className="staking"
@@ -112,98 +205,59 @@ function LPStaking() {
         }}>
         <div className="staking_detail_box">
           <div>
-            <LpStakingTitle token0={Token.ELFI} token1={Token.ETH} />
-            <LpStakingItem
+            <StakingTitle token0={Token.ELFI} token1={Token.ETH} />
+            <DetailBox
               token0={Token.ELFI}
               token1={Token.ETH}
-              totalLiquidity={
-                ethPool.stakedToken0 * elfiPrice +
-                ethPool.stakedToken1 * ethPrice
-              }
-              positions={positions.filter(
-                (position) =>
-                  !position.staked &&
-                  position.incentivePotisions.some(
-                    (incentivePosition) =>
-                      incentivePosition.incentive.pool.toLowerCase() ===
-                      envs.ethElfiPoolAddress.toLowerCase(),
-                  ),
+              totalLiquidity={ethPoolTotalLiquidity}
+              totalStakedLiquidity={totalStakedLiquidity(
+                envs.ethElfiPoolAddress,
               )}
-              totalStakedLiquidity={positions
-                .filter(
-                  (position) =>
-                    position.staked &&
-                    position.incentivePotisions.some(
-                      (incentivePosition) =>
-                        incentivePosition.incentive.pool.toLowerCase() ===
-                        envs.ethElfiPoolAddress.toLowerCase(),
-                    ),
-                )
-                .reduce(
-                  (sum, current) => sum.add(current.liquidity),
-                  constants.Zero,
-                )}
-              lpTokens={lpTokens.filter((lpToken) => {
-                return (
-                  lpToken.pool.id.toLowerCase() ===
-                  envs.ethElfiPoolAddress.toLowerCase()
-                );
-              })}
               apr={ethPoolApr}
               isLoading={isLoading}
+              setModalAndSetStakeToken={() => {
+                setStakingVisibleModal(true);
+                setStakeToken(Token.ETH);
+              }}
             />
           </div>
           <div />
           <div>
-            <LpStakingTitle token0={Token.ELFI} token1={Token.DAI} />
-            <LpStakingItem
+            <StakingTitle token0={Token.ELFI} token1={Token.DAI} />
+            <DetailBox
               token0={Token.ELFI}
               token1={Token.DAI}
-              totalLiquidity={
-                daiPool.stakedToken0 * elfiPrice + daiPool.stakedToken1
-              }
-              positions={positions.filter(
-                (position) =>
-                  !position.staked &&
-                  position.incentivePotisions.some(
-                    (incentivePosition) =>
-                      incentivePosition.incentive.pool.toLowerCase() ===
-                      envs.daiElfiPoolAddress.toLowerCase(),
-                  ),
+              totalLiquidity={daiPoolTotalLiquidity}
+              totalStakedLiquidity={totalStakedLiquidity(
+                envs.daiElfiPoolAddress,
               )}
-              totalStakedLiquidity={positions
-                .filter(
-                  (position) =>
-                    position.staked &&
-                    position.incentivePotisions.some(
-                      (incentivePosition) =>
-                        incentivePosition.incentive.pool.toLowerCase() ===
-                        envs.daiElfiPoolAddress.toLowerCase(),
-                    ),
-                )
-                .reduce(
-                  (sum, current) => sum.add(current.liquidity),
-                  constants.Zero,
-                )}
-              lpTokens={lpTokens.filter((lpToken) => {
-                return (
-                  lpToken.pool.id.toLowerCase() ===
-                  envs.daiElfiPoolAddress.toLowerCase()
-                );
-              })}
               apr={daiPoolApr}
               isLoading={isLoading}
+              setModalAndSetStakeToken={() => {
+                setStakingVisibleModal(true);
+                setStakeToken(Token.DAI);
+              }}
             />
           </div>
         </div>
         <StakedLp
-          positions={positions.filter((position) => position.staked)}
-          setPositions={setPositions}
+          stakedPositions={stakedPositions.filter(
+            (position) => position.staked,
+          )}
+          setUnstakeTokenId={setUnstakeTokenId}
+          unstakeTokenId={unstakeTokenId}
+          ethElfiStakedLiquidity={totalStakedLiquidity(envs.ethElfiPoolAddress)}
+          daiElfiStakedLiquidity={totalStakedLiquidity(envs.daiElfiPoolAddress)}
+          ethPoolTotalLiquidity={ethPoolTotalLiquidity}
+          daiPoolTotalLiquidity={daiPoolTotalLiquidity}
         />
-        <LpReward />
+        <Reward
+          rewardToReceive={rewardToReceive}
+          onHandler={() => setRewardVisibleModal(true)}
+        />
       </section>
     </>
   );
-}
+};
 
 export default LPStaking;
