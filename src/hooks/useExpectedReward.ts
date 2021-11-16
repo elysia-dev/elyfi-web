@@ -9,11 +9,11 @@ import { lpTokenValues } from 'src/utiles/lpTokenValues';
 function useExpectedReward() {
   const { library } = useWeb3React();
   const [expectedReward, setExpectedReward] = useState<{
-    elfiReward: string;
-    ethOrDaiReward: string;
+    rewardToken0: string;
+    rewardToken1: string;
   }>({
-    elfiReward: '0',
-    ethOrDaiReward: '0',
+    rewardToken0: '0',
+    rewardToken1: '0',
   });
   const [totalExpectedReward, setTotalExpectedReward] = useState<{
     totalElfiReward: number;
@@ -37,18 +37,18 @@ function useExpectedReward() {
     tokenId: number,
   ) => {
     try {
-      const ethOrDaiReward = await staker.getRewardInfo(
+      const rewardToken1 = await staker.getRewardInfo(
         lpTokenValues(poolAddress, rewardTokenAddress),
         tokenId,
       );
-      const elfiReward = await staker.getRewardInfo(
+      const rewardToken0 = await staker.getRewardInfo(
         lpTokenValues(poolAddress, envs.governanceAddress),
         tokenId,
       );
       setExpectedReward({
         ...expectedReward,
-        elfiReward: utils.formatEther(elfiReward.reward),
-        ethOrDaiReward: utils.formatEther(ethOrDaiReward.reward),
+        rewardToken0: utils.formatEther(rewardToken0.reward),
+        rewardToken1: utils.formatEther(rewardToken1.reward),
       });
     } catch (error) {
       console.log(error);
@@ -69,7 +69,7 @@ function useExpectedReward() {
       const rewardTokenAddress = isEthToken
         ? envs.wEthAddress
         : envs.daiAddress;
-      const ethOrDaiReward = new Promise<{ reward: BigNumber }>(
+      const rewardToken1 = new Promise<{ reward: BigNumber }>(
         (resolve, reject) => {
           resolve(
             staker.getRewardInfo(
@@ -80,7 +80,7 @@ function useExpectedReward() {
           reject(new Error());
         },
       );
-      const elfiReward = new Promise<{ reward: BigNumber }>(
+      const rewardToken0 = new Promise<{ reward: BigNumber }>(
         (resolve, reject) => {
           resolve(
             staker.getRewardInfo(
@@ -91,7 +91,7 @@ function useExpectedReward() {
           reject(new Error());
         },
       );
-      Promise.all([ethOrDaiReward, elfiReward])
+      Promise.all([rewardToken1, rewardToken0])
         .then((res) => {
           elfiTotal += parseFloat(utils.formatEther(res[1].reward));
           if (isEthToken) {
