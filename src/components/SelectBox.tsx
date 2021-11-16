@@ -1,11 +1,10 @@
 import { BigNumber } from 'ethers';
-import { useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Position, { TokenInfo } from 'src/core/types/Position';
 import SelectBoxItems from './SelectBoxItems';
 
 type Props = {
-  positions: Position[];
   selectedToken: {
     id: string;
     liquidity: string;
@@ -18,11 +17,11 @@ type Props = {
       selectBoxTitle: string;
     }>
   >;
-  lpTokens: TokenInfo[];
+  nonStakePositions: TokenInfo[];
 };
 
-function SelectBox(props: Props) {
-  const { selectedToken, setSelectedToken, positions, lpTokens } = props;
+const SelectBox: FunctionComponent<Props> = (props) => {
+  const { selectedToken, setSelectedToken, nonStakePositions } = props;
   const [isItemsVisible, setIsItemsVisible] = useState(false);
   const { t } = useTranslation();
   const selectBoxHandler = () => {
@@ -43,7 +42,7 @@ function SelectBox(props: Props) {
         }}>
         {t('lpstaking.lp_tokens_held')}
       </div>
-      {lpTokens.length > 0 ? (
+      {nonStakePositions.length > 0 ? (
         <div
           style={{
             border: '1px solid black',
@@ -127,7 +126,7 @@ function SelectBox(props: Props) {
                 bottom: '-214%',
                 position: 'absolute',
               }}>
-              {lpTokens.map((position, idx) => {
+              {nonStakePositions.map((position, idx) => {
                 return (
                   <SelectBoxItems
                     key={idx}
@@ -152,6 +151,6 @@ function SelectBox(props: Props) {
       )}
     </div>
   );
-}
+};
 
 export default SelectBox;
