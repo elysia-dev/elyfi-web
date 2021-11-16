@@ -126,13 +126,13 @@ const StakedLpItem: FunctionComponent<Props> = (props) => {
   }, [expectedTokenReward]);
 
   useEffect(() => {
-    if (!expectedReward.elfiReward) return;
+    if (!expectedReward.rewardToken0) return;
     setExpectedTokenReward({
       ...expectedTokenReward,
-      beforeRewardToken0: expectedReward.elfiReward,
-      rewardToken0: expectedReward.elfiReward,
-      beforeRewardToken1: expectedReward.ethOrDaiReward,
-      rewardToken1: expectedReward.ethOrDaiReward,
+      beforeRewardToken0: expectedReward.rewardToken0,
+      rewardToken0: expectedReward.rewardToken0,
+      beforeRewardToken1: expectedReward.rewardToken1,
+      rewardToken1: expectedReward.rewardToken1,
     });
   }, [expectedReward]);
 
