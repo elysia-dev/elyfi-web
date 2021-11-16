@@ -1,43 +1,39 @@
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber, constants, ethers, utils } from 'ethers';
-import {
-  useState,
-  useEffect,
-  useRef,
-  useContext,
-  useCallback,
-  Dispatch,
-  SetStateAction,
-} from 'react';
+import envs from 'src/core/envs';
+import { useEffect, Dispatch, SetStateAction, FunctionComponent } from 'react';
 import { useTranslation } from 'react-i18next';
-import calcCurrencyValueFromLiquidity from 'src/utiles/calcCurrencyValueFromLiquidity';
-import PriceContext from 'src/contexts/PriceContext';
 import Token from 'src/enums/Token';
 import useExpectedReward from 'src/hooks/useExpectedReward';
-import Position from 'src/core/types/Position';
 import { formatDecimalFracionDigit, toCompact } from 'src/utiles/formatters';
-import RecentActivityType from 'src/enums/RecentActivityType';
-import TxContext from 'src/contexts/TxContext';
+import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
+import { utils } from 'ethers';
+import StakedTokenProps from 'src/core/types/StakedTokenProps';
 import Guide from '../Guide';
 import StakedLpItem from './StakedLpItem';
 
-type Props = {
-  positions: Position[];
-  setPositions: Dispatch<SetStateAction<Position[]>>;
-};
-function StakedLp(props: Props) {
-  const { positions, setPositions } = props;
+type Props = StakedTokenProps;
+
+const StakedLp: FunctionComponent<Props> = (props) => {
+  const {
+    stakedPositions,
+    unstakeTokenId,
+    setUnstakeTokenId,
+    ethElfiStakedLiquidity,
+    daiElfiStakedLiquidity,
+    daiPoolTotalLiquidity,
+    ethPoolTotalLiquidity,
+  } = props;
   const { account } = useWeb3React();
   const { t } = useTranslation();
+  const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const { totalExpectedReward, addTotalExpectedReward } = useExpectedReward();
-  const { txType } = useContext(TxContext);
-  const [count, setCount] = useState(1);
 
   useEffect(() => {
-    if (positions.length > 0) {
-      addTotalExpectedReward(positions);
-    }
-  }, [positions]);
+    if (stakedPositions.length === 0) return;
+    addTotalExpectedReward(
+      stakedPositions.filter((position) => position.tokenId !== unstakeTokenId),
+    );
+  }, [stakedPositions]);
 
   return (
     <>
@@ -81,13 +77,19 @@ function StakedLp(props: Props) {
                 {t('lpstaking.expected_reward')}
               </span>
             </div>
-            {positions.map((position, idx) => {
+            {stakedPositions.map((position, idx) => {
               return (
                 <StakedLpItem
                   key={idx}
                   position={position}
-                  positions={positions}
-                  setPositions={setPositions}
+                  totalLiquidity={
+                    position.incentivePotisions[0].incentive.pool ===
+                    envs.ethElfiPoolAddress
+                      ? ethPoolTotalLiquidity
+                      : daiPoolTotalLiquidity
+                  }
+                  setUnstakeTokenId={setUnstakeTokenId}
+                  unstakeTokenId={unstakeTokenId}
                 />
               );
             })}
@@ -107,11 +109,17 @@ function StakedLp(props: Props) {
             </div>
           </div>
         )}
-        {positions.length > 0 ? (
+        {stakedPositions.length > 0 ? (
           <div className="spoqa__bold total_expected_reward">
             <div>{t('lpstaking.staked_total_liquidity')}</div>
             <div className="total_expected_reward_amount">
-              $ {toCompact(totalExpectedReward.totalliquidity)}
+              ${' '}
+              {toCompact(
+                parseFloat(utils.formatEther(ethElfiStakedLiquidity)) *
+                  pricePerEthLiquidity +
+                  parseFloat(utils.formatEther(daiElfiStakedLiquidity)) *
+                    pricePerDaiLiquidity,
+              )}
             </div>
             <div />
             <div>{t('lpstaking.staked_total_expected_reward')}</div>
@@ -145,6 +153,6 @@ function StakedLp(props: Props) {
       </div>
     </>
   );
-}
+};
 
 export default StakedLp;
