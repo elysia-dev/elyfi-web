@@ -12,14 +12,13 @@ import Button from './Button';
 type Props = {
   token0: string;
   token1: string;
-  totalStakedLiquidity: BigNumber;
+  totalStakedLiquidity: string;
   setModalAndSetStakeToken: () => void;
 };
 
 const DetailBoxItemStaking: FunctionComponent<Props> = (props) => {
   const { token0, token1, totalStakedLiquidity, setModalAndSetStakeToken } =
     props;
-  const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const { t } = useTranslation();
   const isStakingDate = moment().isBetween(
     lpStakingTime.startedAt,
@@ -63,21 +62,7 @@ const DetailBoxItemStaking: FunctionComponent<Props> = (props) => {
             }}>
             {`$ `}
           </span>
-          {formatDecimalFracionDigit(
-            (token1 === Token.ETH
-              ? pricePerEthLiquidity
-              : pricePerDaiLiquidity) *
-              parseFloat(utils.formatEther(totalStakedLiquidity)),
-            2,
-          ) === 'NaN'
-            ? 0
-            : formatDecimalFracionDigit(
-                (token1 === Token.ETH
-                  ? pricePerEthLiquidity
-                  : pricePerDaiLiquidity) *
-                  parseFloat(utils.formatEther(totalStakedLiquidity)),
-                2,
-              )}
+          {totalStakedLiquidity}
         </div>
         <div
           style={{
@@ -85,7 +70,7 @@ const DetailBoxItemStaking: FunctionComponent<Props> = (props) => {
           }}>
           <Button
             btnTitle={t('staking.staking')}
-            onHandler={() => (isStakingDate ? setModalAndSetStakeToken() : '')}
+            onHandler={() => isStakingDate && setModalAndSetStakeToken()}
             disabledBtn={
               isStakingDate
                 ? undefined
