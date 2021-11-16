@@ -28,6 +28,11 @@ const SelectBoxItems: FunctionComponent<Props> = (props) => {
     position.pool.id.toLowerCase() === envs.ethElfiPoolAddress.toLowerCase()
       ? pricePerEthLiquidity
       : pricePerDaiLiquidity;
+  const liquidity =
+    formatDecimalFracionDigit(
+      parseFloat(utils.formatEther(position.liquidity)) * poolPrice,
+      2,
+    ) || 0;
 
   return (
     <div
@@ -65,16 +70,7 @@ const SelectBoxItems: FunctionComponent<Props> = (props) => {
             |
           </div>
           <div style={{ marginLeft: 23 }}>
-            {t('lpstaking.liquidity')} : ${' '}
-            {formatDecimalFracionDigit(
-              parseFloat(utils.formatEther(position.liquidity)) * poolPrice,
-              2,
-            ) === 'NaN'
-              ? 0
-              : formatDecimalFracionDigit(
-                  parseFloat(utils.formatEther(position.liquidity)) * poolPrice,
-                  2,
-                )}
+            {t('lpstaking.liquidity')} : $ {liquidity}
           </div>
         </div>
       </div>
