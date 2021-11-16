@@ -1,9 +1,11 @@
 import { FunctionComponent } from 'react';
-import { BigNumber } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 import Skeleton from 'react-loading-skeleton';
 import lpStakingTime from 'src/core/data/lpStakingTime';
 import moment from 'moment';
+import Token from 'src/enums/Token';
+import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import DetailBoxItemReceiveToken from './DetailBoxItemReceiveToken';
 import DetailBoxItemHeader from './DetailBoxItemHeader';
 import DetailBoxItemStaking from './DetailBoxItemStaking';
@@ -27,6 +29,7 @@ const DetailBox: FunctionComponent<Props> = (props) => {
     isLoading,
     setModalAndSetStakeToken,
   } = props;
+  const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
 
   return (
     <>
@@ -42,7 +45,15 @@ const DetailBox: FunctionComponent<Props> = (props) => {
               <DetailBoxItemStaking
                 token0={token0}
                 token1={token1}
-                totalStakedLiquidity={totalStakedLiquidity}
+                totalStakedLiquidity={
+                  formatDecimalFracionDigit(
+                    (token1 === Token.ETH
+                      ? pricePerEthLiquidity
+                      : pricePerDaiLiquidity) *
+                      parseFloat(utils.formatEther(totalStakedLiquidity)),
+                    2,
+                  ) || '0'
+                }
                 setModalAndSetStakeToken={setModalAndSetStakeToken}
               />
             </div>
