@@ -77,7 +77,7 @@ function useExpectedReward() {
               position.tokenId,
             ),
           );
-          reject(new Error('nonReward'));
+          reject(new Error());
         },
       );
       const elfiReward = new Promise<{ reward: BigNumber }>(
@@ -88,7 +88,7 @@ function useExpectedReward() {
               position.tokenId,
             ),
           );
-          reject(new Error('nonReward'));
+          reject(new Error());
         },
       );
       Promise.all([ethOrDaiReward, elfiReward])
