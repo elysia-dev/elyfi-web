@@ -1,29 +1,33 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { BigNumber, ethers, utils } from 'ethers';
+import { useCallback, useState } from 'react';
+import { ethers, utils } from 'ethers';
 import envs from 'src/core/envs';
 import stakerABI from 'src/core/abi/StakerABI.json';
 import { useWeb3React } from '@web3-react/core';
 import Position from 'src/core/types/Position';
 import { lpTokenValues } from 'src/utiles/lpTokenValues';
+import {
+  DAIPerDayOnElfiDaiPool,
+  ELFIPerDayOnLpStakingPool,
+  ETHPerDayOnElfiEthPool,
+} from 'src/core/data/stakings';
+import calcLpExpectedReward from 'src/core/utils/calcLpExpectedReward';
+import { ExpectedRewardTypes } from 'src/core/types/RewardTypes';
+import usePricePerLiquidity from './usePricePerLiquidity';
 
-function useExpectedReward() {
+function useExpectedReward(): {
+  setExpecteReward: (positions: Position[]) => Promise<void>;
+  expectedReward: ExpectedRewardTypes[];
+  updateExpectedReward: (
+    positions: Position[],
+    ethPoolTotalLiquidity: number,
+    daiPoolTotalLiquidity: number,
+  ) => void;
+} {
   const { library } = useWeb3React();
-  const [expectedReward, setExpectedReward] = useState<{
-    rewardToken0: string;
-    rewardToken1: string;
-  }>({
-    rewardToken0: '0',
-    rewardToken1: '0',
-  });
-  const [totalExpectedReward, setTotalExpectedReward] = useState<{
-    totalElfiReward: number;
-    totalEthReward: number;
-    totalDaiReward: number;
-  }>({
-    totalElfiReward: 0,
-    totalEthReward: 0,
-    totalDaiReward: 0,
-  });
+  const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
+  const [expectedReward, setExpectedReward] = useState<ExpectedRewardTypes[]>(
+    [],
+  );
 
   const staker = new ethers.Contract(
     envs.stakerAddress,
@@ -31,97 +35,133 @@ function useExpectedReward() {
     library.getSigner(),
   );
 
-  const getExpectedReward = async (
-    rewardTokenAddress: string,
-    poolAddress: string,
-    tokenId: number,
-  ) => {
-    try {
-      const rewardToken1 = await staker.getRewardInfo(
-        lpTokenValues(poolAddress, rewardTokenAddress),
-        tokenId,
-      );
-      const rewardToken0 = await staker.getRewardInfo(
-        lpTokenValues(poolAddress, envs.governanceAddress),
-        tokenId,
-      );
-      setExpectedReward({
-        ...expectedReward,
-        rewardToken0: utils.formatEther(rewardToken0.reward),
-        rewardToken1: utils.formatEther(rewardToken1.reward),
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  const getReward = async (position: Position) => {
+    const isEthToken =
+      position.incentivePotisions[0].incentive.pool.toLowerCase() ===
+      envs.ethElfiPoolAddress.toLowerCase();
+    const poolAddress = isEthToken
+      ? envs.ethElfiPoolAddress
+      : envs.daiElfiPoolAddress;
+    const rewardTokenAddress = isEthToken ? envs.wEthAddress : envs.daiAddress;
+
+    const rewardToken0 = await staker.getRewardInfo(
+      lpTokenValues(poolAddress, envs.governanceAddress),
+      position.tokenId,
+    );
+
+    const rewardToken1 = await staker.getRewardInfo(
+      lpTokenValues(poolAddress, rewardTokenAddress),
+      position.tokenId,
+    );
+
+    return {
+      beforeElfiReward: parseFloat(utils.formatEther(rewardToken0[0])),
+      elfiReward: parseFloat(utils.formatEther(rewardToken0[0])),
+      beforeEthReward: isEthToken
+        ? parseFloat(utils.formatEther(rewardToken1[0]))
+        : 0,
+      ethReward: isEthToken
+        ? parseFloat(utils.formatEther(rewardToken1[0]))
+        : 0,
+      beforeDaiReward: isEthToken
+        ? 0
+        : parseFloat(utils.formatEther(rewardToken1[0])),
+      daiReward: isEthToken
+        ? 0
+        : parseFloat(utils.formatEther(rewardToken1[0])),
+      tokenId: position.tokenId,
+    };
   };
 
-  const addTotalExpectedReward = useCallback(async (positions: Position[]) => {
-    let ethTotal = 0;
-    let daiTotal = 0;
-    let elfiTotal = 0;
-    positions.forEach(async (position, idx) => {
-      const isEthToken =
+  const setExpecteReward = useCallback(
+    async (positions: Position[]) => {
+      const allReward: {
+        beforeElfiReward: number;
+        elfiReward: number;
+        beforeEthReward: number;
+        ethReward: number;
+        beforeDaiReward: number;
+        daiReward: number;
+        tokenId: number;
+      }[] = [];
+      const reward = positions.map(async (position, idx) => {
+        allReward.push(await getReward(position));
+      });
+
+      await Promise.all(reward).then(() => {
+        allReward.sort((prev, next) => prev.tokenId - next.tokenId);
+        setExpectedReward(allReward);
+      });
+    },
+    [expectedReward],
+  );
+
+  const updateExpectedReward = (
+    positions: Position[],
+    ethPoolTotalLiquidity: number,
+    daiPoolTotalLiquidity: number,
+  ) => {
+    const allReward: {
+      beforeElfiReward: number;
+      elfiReward: number;
+      beforeEthReward: number;
+      ethReward: number;
+      beforeDaiReward: number;
+      daiReward: number;
+      tokenId: number;
+    }[] = [];
+    positions.forEach((position, idx) => {
+      const isEthElfiPoolAddress =
         position.incentivePotisions[0].incentive.pool.toLowerCase() ===
         envs.ethElfiPoolAddress.toLowerCase();
-      const poolAddress = isEthToken
-        ? envs.ethElfiPoolAddress
-        : envs.daiElfiPoolAddress;
-      const rewardTokenAddress = isEthToken
-        ? envs.wEthAddress
-        : envs.daiAddress;
-      const rewardToken1 = new Promise<{ reward: BigNumber }>(
-        (resolve, reject) => {
-          resolve(
-            staker.getRewardInfo(
-              lpTokenValues(poolAddress, rewardTokenAddress),
-              position.tokenId,
+      const pricePerLiquidity = isEthElfiPoolAddress
+        ? pricePerEthLiquidity
+        : pricePerDaiLiquidity;
+      const mintedPerDay = isEthElfiPoolAddress
+        ? ETHPerDayOnElfiEthPool
+        : DAIPerDayOnElfiDaiPool;
+      const stakedLiquidity =
+        parseFloat(utils.formatEther(position.liquidity)) * pricePerLiquidity;
+      const totalLiquidity = isEthElfiPoolAddress
+        ? ethPoolTotalLiquidity
+        : daiPoolTotalLiquidity;
+
+      allReward.push({
+        beforeElfiReward: expectedReward[idx].elfiReward,
+        elfiReward: calcLpExpectedReward(
+          expectedReward[idx].beforeElfiReward,
+          stakedLiquidity,
+          totalLiquidity,
+          ELFIPerDayOnLpStakingPool,
+        ),
+        beforeEthReward: expectedReward[idx].ethReward,
+        ethReward: isEthElfiPoolAddress
+          ? calcLpExpectedReward(
+              expectedReward[idx].beforeEthReward,
+              stakedLiquidity,
+              totalLiquidity,
+              mintedPerDay,
+            )
+          : 0,
+        beforeDaiReward: expectedReward[idx].daiReward,
+        daiReward: isEthElfiPoolAddress
+          ? 0
+          : calcLpExpectedReward(
+              expectedReward[idx].beforeDaiReward,
+              stakedLiquidity,
+              totalLiquidity,
+              mintedPerDay,
             ),
-          );
-          reject(new Error());
-        },
-      );
-      const rewardToken0 = new Promise<{ reward: BigNumber }>(
-        (resolve, reject) => {
-          resolve(
-            staker.getRewardInfo(
-              lpTokenValues(poolAddress, envs.governanceAddress),
-              position.tokenId,
-            ),
-          );
-          reject(new Error());
-        },
-      );
-      Promise.all([rewardToken1, rewardToken0])
-        .then((res) => {
-          elfiTotal += parseFloat(utils.formatEther(res[1].reward));
-          if (isEthToken) {
-            ethTotal += parseFloat(utils.formatEther(res[0].reward));
-          } else {
-            daiTotal += parseFloat(utils.formatEther(res[0].reward));
-          }
-          if (
-            (positions.length - 1 === idx &&
-              totalExpectedReward.totalElfiReward < elfiTotal) ||
-            totalExpectedReward.totalEthReward < ethTotal ||
-            totalExpectedReward.totalDaiReward < daiTotal
-          ) {
-            setTotalExpectedReward({
-              ...totalExpectedReward,
-              totalElfiReward: elfiTotal,
-              totalDaiReward: daiTotal,
-              totalEthReward: ethTotal,
-            });
-          }
-        })
-        .catch((error) => console.log(error));
+        tokenId: expectedReward[idx].tokenId,
+      });
     });
-  }, []);
+    setExpectedReward(allReward);
+  };
 
   return {
+    setExpecteReward,
     expectedReward,
-    getExpectedReward,
-    addTotalExpectedReward,
-    totalExpectedReward,
+    updateExpectedReward,
   };
 }
 
