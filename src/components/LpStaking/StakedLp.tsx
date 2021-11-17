@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { FunctionComponent, useEffect } from 'react';
+import { FunctionComponent } from 'react';
 import { useTranslation } from 'react-i18next';
 import Token from 'src/enums/Token';
 import { formatDecimalFracionDigit, toCompact } from 'src/utiles/formatters';
