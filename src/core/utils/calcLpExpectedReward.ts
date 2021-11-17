@@ -5,11 +5,11 @@ const calcLpExpectedReward = (
   stakedLiquidity: number,
   totalLiquidity: number,
   minedPerDay: number,
-): string => {
+): number => {
   return (
     rewardToken +
     (((minedPerDay / (24 * 3600)) * stakedLiquidity) / totalLiquidity) * 2
-  ).toString();
+  );
 };
 
 export default calcLpExpectedReward;
