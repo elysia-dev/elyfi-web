@@ -58,36 +58,40 @@ const AppNavigator: React.FC = () => {
           exact
           path="/staking/LP"
           component={
-            active && chainId === envs.requiredChainId
-              ? LPStaking
-              : DisableWalletPage
+            // active && chainId === envs.requiredChainId
+            //   ? LPStaking
+            //   : DisableWalletPage
+            LPStaking
           }
         />
         <Route
           exact
           path="/staking/EL"
           component={
-            active && chainId === envs.requiredChainId
-              ? StakingEL
-              : DisableWalletPage
+            // active && chainId === envs.requiredChainId
+            //   ? StakingEL
+            //   : DisableWalletPage
+            StakingEL
           }
         />
         <Route
           exact
           path="/staking/ELFI"
           component={
-            active && chainId === envs.requiredChainId
-              ? StakingELFI
-              : DisableWalletPage
+            // active && chainId === envs.requiredChainId
+            //   ? StakingELFI
+            //   : DisableWalletPage
+            StakingELFI
           }
         />
         <Route
           exact
           path="/"
           component={
-            active && chainId === envs.requiredChainId
-              ? Dashboard
-              : DisableWalletPage
+            // active && chainId === envs.requiredChainId
+            //   ? Dashboard
+            //   : DisableWalletPage
+            Dashboard
           }
         />
       </Switch>
