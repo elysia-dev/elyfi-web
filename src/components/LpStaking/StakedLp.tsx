@@ -6,6 +6,7 @@ import { formatDecimalFracionDigit, toCompact } from 'src/utiles/formatters';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import { utils } from 'ethers';
 import StakedTokenProps from 'src/core/types/StakedTokenProps';
+import Skeleton from 'react-loading-skeleton';
 import CountUp from 'react-countup';
 import Guide from '../Guide';
 import StakedLpItem from './StakedLpItem';
@@ -67,17 +68,20 @@ const StakedLp: FunctionComponent<Props> = (props) => {
                 {t('lpstaking.expected_reward')}
               </span>
             </div>
-            {expectedReward.length >= 1 &&
-              stakedPositions.map((position, idx) => {
-                return (
-                  <StakedLpItem
-                    key={idx}
-                    position={position}
-                    setUnstakeTokenId={setUnstakeTokenId}
-                    expectedReward={expectedReward[idx]}
-                  />
-                );
-              })}
+            {expectedReward.length >= 1
+              ? stakedPositions.map((position, idx) => {
+                  return (
+                    <StakedLpItem
+                      key={idx}
+                      position={position}
+                      setUnstakeTokenId={setUnstakeTokenId}
+                      expectedReward={expectedReward[idx]}
+                    />
+                  );
+                })
+              : !(stakedPositions.length === 0) && (
+                  <Skeleton width={'100%'} height={200} />
+                )}
           </>
         ) : (
           <div>
