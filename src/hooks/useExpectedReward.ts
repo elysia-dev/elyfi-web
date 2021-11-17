@@ -36,13 +36,15 @@ function useExpectedReward(): {
   );
 
   const getReward = async (position: Position) => {
-    const isEthToken =
+    const isEthElfiPoolAddress =
       position.incentivePotisions[0].incentive.pool.toLowerCase() ===
       envs.ethElfiPoolAddress.toLowerCase();
-    const poolAddress = isEthToken
+    const poolAddress = isEthElfiPoolAddress
       ? envs.ethElfiPoolAddress
       : envs.daiElfiPoolAddress;
-    const rewardTokenAddress = isEthToken ? envs.wEthAddress : envs.daiAddress;
+    const rewardTokenAddress = isEthElfiPoolAddress
+      ? envs.wEthAddress
+      : envs.daiAddress;
 
     const rewardToken0 = await staker.getRewardInfo(
       lpTokenValues(poolAddress, envs.governanceAddress),
@@ -57,16 +59,16 @@ function useExpectedReward(): {
     return {
       beforeElfiReward: parseFloat(utils.formatEther(rewardToken0[0])),
       elfiReward: parseFloat(utils.formatEther(rewardToken0[0])),
-      beforeEthReward: isEthToken
+      beforeEthReward: isEthElfiPoolAddress
         ? parseFloat(utils.formatEther(rewardToken1[0]))
         : 0,
-      ethReward: isEthToken
+      ethReward: isEthElfiPoolAddress
         ? parseFloat(utils.formatEther(rewardToken1[0]))
         : 0,
-      beforeDaiReward: isEthToken
+      beforeDaiReward: isEthElfiPoolAddress
         ? 0
         : parseFloat(utils.formatEther(rewardToken1[0])),
-      daiReward: isEthToken
+      daiReward: isEthElfiPoolAddress
         ? 0
         : parseFloat(utils.formatEther(rewardToken1[0])),
       tokenId: position.tokenId,
