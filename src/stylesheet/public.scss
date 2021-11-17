@@ -82,31 +82,6 @@ span {
     right: 0;
     z-index: 900;
     transition: all 0.25s ease-in-out;
-    &__alert {
-      background-color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: all 0.25s ease-in-out;
-      position: relative;
-      > p {
-        margin: 0 auto;
-      }
-      &__container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      &__wrapper {
-        display: flex;
-        justify-content: space-between;
-        > a p {
-          color: #00a7ff;
-          text-decoration: underline;
-          cursor: pointer;
-        }
-      }
-    }
     &__container {
       margin: 0 auto;
       display: flex;

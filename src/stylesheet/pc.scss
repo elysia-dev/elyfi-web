@@ -13,19 +13,6 @@ $footer-height: 100px;
       width: 24px;
       height: 24px;
     }
-    &__alert {
-      height: 40px;
-      > p {
-        width: $device-width;
-        font-size: 13px;
-      }
-      &__container {
-        width: $device-width;
-      }
-      &__wrapper {
-        width: 160px;
-      }
-    }
     &__container {
       max-width: $device-width;
       padding: 15px;

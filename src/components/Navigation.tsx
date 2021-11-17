@@ -1,10 +1,8 @@
 import { FunctionComponent, useState, useEffect } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
 import { useTranslation } from 'react-i18next';
 import { useWeb3React } from '@web3-react/core';
-import envs from 'src/core/envs';
-import { ERC20Test__factory } from '@elysia-dev/contract-typechain';
 import InstallMetamask from './InstallMetamask';
 import Wallet from './Wallet';
 
@@ -20,18 +18,23 @@ const Navigation: FunctionComponent<Props> = ({ txStatus, txWaiting }) => {
   const [scrolling, setScrolling] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
 
-  useEffect(() => {
+  function setScrollTrigger () {
     function onScroll() {
       const currentPosition = window.pageYOffset;
-      if (currentPosition > scrollTop) {
-        setScrolling(false);
-      } else {
-        setScrolling(true);
-      }
+
+      (currentPosition > scrollTop) ? 
+        setScrolling(false) 
+        : 
+        setScrolling(true)
+
       setScrollTop(currentPosition <= 0 ? 0 : currentPosition);
     }
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
+  }
+
+  useEffect(() => {
+    setScrollTrigger()
   }, [scrollTop]);
 
   return (
@@ -39,108 +42,7 @@ const Navigation: FunctionComponent<Props> = ({ txStatus, txWaiting }) => {
       <nav
         className="navigation"
         style={{ backgroundColor: scrollTop > 125 ? '#10101077' : '#101010' }}>
-        {process.env.REACT_APP_TEST_MODE && (
-          <>
-            <div
-              className="navigation__alert pc-only tablet-only"
-              style={{
-                height: scrollTop > 125 ? 0 : 40,
-                top: scrollTop > 125 ? -40 : 0,
-              }}>
-              <div
-                className="navigation__alert__container"
-                style={{ height: scrollTop > 125 ? 0 : 40 }}>
-                <p className="spoqa">
-                  This website is for{' '}
-                  <span className="spoqa__bold" style={{ color: '#00A7FF' }}>
-                    ELYFI test version only.{' '}
-                  </span>
-                  Please connect to the {envs.requiredNetwork} network! You may
-                  get some test tokens&nbsp;
-                  <span
-                    className="spoqa__bold"
-                    style={{
-                      color: '#00A7FF',
-                      textDecoration: 'underline',
-                      cursor: 'pointer',
-                    }}
-                    onClick={() => {
-                      if (account && chainId === envs.requiredChainId) {
-                        ERC20Test__factory.connect(
-                          envs.testStableAddress,
-                          library.getSigner() as any,
-                        ).faucet();
-                      } else {
-                        alert(
-                          `Please connet to the ${envs.requiredNetwork} network`,
-                        );
-                      }
-                    }}>
-                    here!
-                  </span>
-                </p>
-                <div className="navigation__alert__wrapper">
-                  <Link to="/bounty">
-                    <p className="bold">Bounty</p>
-                  </Link>
-                  <Link to="/guide">
-                    <p className="bold">Guide</p>
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div
-              className="navigation__alert mobile-only"
-              style={{
-                height: scrollTop > 125 ? 0 : 60,
-                top: scrollTop > 125 ? -60 : 0,
-              }}>
-              <div
-                className="navigation__alert__container"
-                style={{ height: scrollTop > 125 ? 0 : 60 }}>
-                <p className="spoqa">
-                  This website is for{' '}
-                  <span className="spoqa__bold" style={{ color: '#00A7FF' }}>
-                    ELYFI test version only.
-                    <br />
-                  </span>
-                  Please connect to the {envs.requiredNetwork} network!
-                  <br />
-                  You may get some test tokens&nbsp;
-                  <span
-                    className="spoqa__bold"
-                    style={{
-                      color: '#00A7FF',
-                      textDecoration: 'underline',
-                      cursor: 'pointer',
-                    }}
-                    onClick={() => {
-                      if (account && chainId === envs.requiredChainId) {
-                        ERC20Test__factory.connect(
-                          envs.testStableAddress,
-                          library.getSigner() as any,
-                        ).faucet();
-                      } else {
-                        alert(
-                          `Please connet to the ${envs.requiredNetwork} network`,
-                        );
-                      }
-                    }}>
-                    here!
-                  </span>
-                </p>
-                <div className="navigation__alert__wrapper">
-                  <Link to="/bounty">
-                    <p className="bold">Bounty</p>
-                  </Link>
-                  <Link to="/guide">
-                    <p className="bold">Guide</p>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </>
-        )}
+        
         <div className="navigation__container">
           <div className="navigation__wrapper">
             <div>
