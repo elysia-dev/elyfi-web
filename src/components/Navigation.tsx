@@ -1,19 +1,14 @@
-import { FunctionComponent, useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, NavLink, useParams } from 'react-router-dom';
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
 import { useTranslation } from 'react-i18next';
-import { useWeb3React } from '@web3-react/core';
 import InstallMetamask from './InstallMetamask';
 import Wallet from './Wallet';
 
-interface Props {
-  txStatus?: string;
-  txWaiting?: boolean;
-}
-const Navigation: FunctionComponent<Props> = ({ txStatus, txWaiting }) => {
+const Navigation = () => {
   const [hover, setHover] = useState(0);
   const { t } = useTranslation();
-  const { account, chainId, library } = useWeb3React();
+  const { lng } = useParams<{ lng: string }>();
 
   const [scrolling, setScrolling] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
@@ -37,6 +32,55 @@ const Navigation: FunctionComponent<Props> = ({ txStatus, txWaiting }) => {
     setScrollTrigger()
   }, [scrollTop]);
 
+  const navigationLink = () => {
+    const navigationLinkArray = [
+      ['/', t('navigation.deposit_withdraw')],
+      [`/${lng}/governance`, "거버넌스"],
+      [`/${lng}/staking/EL`, t('navigation.ELStake')],
+      [`/${lng}/staking/ELFI`, t('navigation.ELFIStake')],
+      [`/${lng}/staking/LP`, t('staking.token_staking', { stakedToken: 'LP' })]
+    ]
+    return (
+      <div className="navigation__link__container">
+        {navigationLinkArray.map((data, index) => {
+          return (
+            <NavLink
+              to={data[0]}
+              key={index}
+              activeClassName="bold"
+              exact>
+              <div className="navigation__link__wrapper">
+                <div
+                  className="navigation__link"
+                  onMouseEnter={() => setHover(index + 1)}
+                  onMouseLeave={() => setHover(0)}>
+                  {data[1].toUpperCase()}
+                  <NavLink
+                    to={data[0]}
+                    className={`navigation__link__under-line${
+                      hover === index + 1 ? ' hover' : ' blur'
+                    }`}
+                    style={{
+                      opacity: 0,
+                      width: 0,
+                      left: -20,
+                    }}
+                    activeStyle={{
+                      opacity: 1,
+                      width: '100%',
+                      left: 0,
+                    }}
+                    exact
+                  />
+                </div>
+              </div>
+            </NavLink>
+          );
+        })}
+      </div>
+    )
+  }
+
   return (
     <>
       <nav
@@ -46,7 +90,7 @@ const Navigation: FunctionComponent<Props> = ({ txStatus, txWaiting }) => {
         <div className="navigation__container">
           <div className="navigation__wrapper">
             <div>
-              <a href="https://elyfi.world/" rel="noopener noreferrer">
+              <Link to="/">
                 <div className="logo-wrapper" style={{ cursor: 'pointer' }}>
                   <img
                     src={ElysiaLogo}
@@ -54,60 +98,12 @@ const Navigation: FunctionComponent<Props> = ({ txStatus, txWaiting }) => {
                     alt="Elysia_Logo"
                   />
                 </div>
-              </a>
+              </Link>
               <div className="navigation__wallet__container mobile-only">
-                {window.ethereum?.isMetaMask ? (
-                  <Wallet txWaiting={txWaiting} txStatus={txStatus} />
-                ) : (
-                  <InstallMetamask />
-                )}
+                {window.ethereum?.isMetaMask ? <Wallet /> : <InstallMetamask />}
               </div>
             </div>
-            <div className="navigation__link__container">
-              {[
-                ['/', t('navigation.deposit_withdraw')],
-                ['/staking/EL', t('navigation.ELStake')],
-                ['/staking/ELFI', t('navigation.ELFIStake')],
-                [
-                  '/staking/LP',
-                  t('staking.token_staking', { stakedToken: 'LP' }),
-                ],
-              ].map((data, index) => {
-                return (
-                  <NavLink
-                    to={data[0]}
-                    key={index}
-                    activeClassName="bold"
-                    exact>
-                    <div className="navigation__link__wrapper">
-                      <div
-                        className="navigation__link"
-                        onMouseEnter={() => setHover(index + 1)}
-                        onMouseLeave={() => setHover(0)}>
-                        {data[1].toUpperCase()}
-                        <NavLink
-                          to={data[0]}
-                          className={`navigation__link__under-line${
-                            hover === index + 1 ? ' hover' : ' blur'
-                          }`}
-                          style={{
-                            opacity: 0,
-                            width: 0,
-                            left: -20,
-                          }}
-                          activeStyle={{
-                            opacity: 1,
-                            width: '100%',
-                            left: 0,
-                          }}
-                          exact
-                        />
-                      </div>
-                    </div>
-                  </NavLink>
-                );
-              })}
-            </div>
+            {navigationLink()}
           </div>
           <div className="navigation__wallet__container pc-only">
             {window.ethereum?.isMetaMask ? <Wallet /> : <InstallMetamask />}

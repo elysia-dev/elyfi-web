@@ -1,6 +1,6 @@
 import WhiteLogo from 'src/assets/images/White-logo.png';
 import FooterBackgroundImg from 'src/assets/images/footer.png';
-import { LanguageConverter } from './LanguageConverter';
+import LanguageConverter from 'src/components/LanguageConverter';
 
 const Footer = () => {
   return (

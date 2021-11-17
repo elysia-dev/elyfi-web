@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import Footer from 'src/components/Footer';
 import Dashboard from 'src/containers/Dashboard';
 import { StakingEL, StakingELFI } from 'src/containers/Staking';
@@ -11,12 +11,15 @@ import usePageTracking from 'src/hooks/usePageTracking';
 import { useMediaQuery } from 'react-responsive';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
 
+import LPStaking from 'src/containers/LPStaking';
+
 import 'src/stylesheet/public.scss';
 import 'src/stylesheet/pc.scss';
 import 'src/stylesheet/tablet.scss';
 import 'src/stylesheet/mobile.scss';
 import Navigation from 'src/components/Navigation';
-import LPStaking from './containers/LPStaking';
+import getLocalLanauge from './utiles/getLocalLanguage';
+import LanguageProvider from './providers/LanguageProvider';
 
 const AppNavigator: React.FC = () => {
   const isPc = useMediaQuery({
@@ -28,13 +31,15 @@ const AppNavigator: React.FC = () => {
   const isMobile = useMediaQuery({
     query: '(max-width: 767px)',
   });
-
-  useEffect(() => {
+  const setMediaQuery = () => {
     isPc
       ? window.sessionStorage.setItem('@MediaQuery', 'PC')
       : isTablet
       ? window.sessionStorage.setItem('@MediaQuery', 'Tablet')
       : window.sessionStorage.setItem('@MediaQuery', 'Mobile');
+  }
+  useEffect(() => {
+    setMediaQuery()
   }, [isPc, isTablet, isMobile]);
 
   const { active, chainId, deactivate, activate } = useWeb3React();
@@ -48,54 +53,63 @@ const AppNavigator: React.FC = () => {
     }
   }, []);
 
+  const LanguageDetctionPage = () => {
+    const history = useHistory();
+  
+    useEffect(() => {
+      history.replace(`/${getLocalLanauge()}`);
+    }, []);
+  
+    return <></>;
+  };
+
   return (
     <div
       className={`elysia ${isPc ? 'view-w' : isTablet ? 'view-t' : 'view-m'}`}>
-      <Navigation />
       <ScrollToTop />
       <Switch>
-        <Route
-          exact
-          path="/staking/LP"
-          component={
-            // active && chainId === envs.requiredChainId
-            //   ? LPStaking
-            //   : DisableWalletPage
-            LPStaking
-          }
-        />
-        <Route
-          exact
-          path="/staking/EL"
-          component={
-            // active && chainId === envs.requiredChainId
-            //   ? StakingEL
-            //   : DisableWalletPage
-            StakingEL
-          }
-        />
-        <Route
-          exact
-          path="/staking/ELFI"
-          component={
-            // active && chainId === envs.requiredChainId
-            //   ? StakingELFI
-            //   : DisableWalletPage
-            StakingELFI
-          }
-        />
-        <Route
-          exact
-          path="/"
-          component={
-            // active && chainId === envs.requiredChainId
-            //   ? Dashboard
-            //   : DisableWalletPage
-            Dashboard
-          }
-        />
+        <Route path="/:lng">
+          <LanguageProvider>
+            <Navigation />
+            <Route
+              exact
+              path="/:lng/staking/LP"
+              component={
+                active && chainId === envs.requiredChainId
+                  ? LPStaking
+                  : DisableWalletPage
+              }
+            />
+            <Route
+              exact
+              path="/:lng/staking/EL"
+              component={
+                active && chainId === envs.requiredChainId
+                  ? StakingEL
+                  : DisableWalletPage
+              }
+            />
+            <Route
+              exact
+              path="/:lng/staking/ELFI"
+              component={
+                active && chainId === envs.requiredChainId
+                  ? StakingELFI
+                  : DisableWalletPage
+              }
+            />
+            <Route
+              exact
+              path="/:lng"
+              component={
+                Dashboard
+              }
+            />
+            <Footer />
+          </LanguageProvider>
+        </Route>
+        <Route path="/" component={LanguageDetctionPage} />
       </Switch>
-      <Footer />
     </div>
   );
 };
