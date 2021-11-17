@@ -19,18 +19,15 @@ $footer-height: 100px;
       height: 50px;
     }
     &__link {
-      font-size: 17px;
+      font-size: 15px;
       &::after {
         left: -45px;
         right: -45px;
         margin-top: -1px;
         height: 30px;
       }
-      &__container {
-        width: 600px;
-      }
       &__wrapper {
-        margin: 0 30px;
+        margin: 0 22px;
       }
     }
     &__sub-menu {
