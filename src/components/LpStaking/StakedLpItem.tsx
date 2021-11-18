@@ -1,35 +1,16 @@
 import { FunctionComponent, Dispatch, SetStateAction } from 'react';
 import { BigNumber, utils } from 'ethers';
 import CountUp from 'react-countup';
-import Position from 'src/core/types/Position';
-import envs from 'src/core/envs';
 import elfi from 'src/assets/images/ELFI.png';
-import eth from 'src/assets/images/eth-color.png';
-import dai from 'src/assets/images/dai.png';
 import { formatDecimalFracionDigit, toCompact } from 'src/utiles/formatters';
 import Token from 'src/enums/Token';
 import { useTranslation } from 'react-i18next';
-import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import useLpWithdraw from 'src/hooks/useLpWithdraw';
-import { ExpectedRewardTypes } from 'src/core/types/RewardTypes';
 import getAddressesByPool from 'src/core/utils/getAddressesByPool';
+import { StakedLpItemProps } from 'src/core/types/LpStakingTypeProps';
 import Button from './Button';
 
-type Props = {
-  position: Position;
-  setUnstakeTokenId: Dispatch<SetStateAction<number>>;
-  expectedReward: ExpectedRewardTypes;
-  positionInfo: () => {
-    rewardToken: number;
-    beforeRewardToken: number;
-    tokenImg: string;
-    rewardTokenType: Token.ETH | Token.DAI;
-    pricePerLiquidity: number;
-    lpTokenType: string;
-  };
-};
-
-const StakedLpItem: FunctionComponent<Props> = (props) => {
+const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
   const { position, setUnstakeTokenId, expectedReward, positionInfo } = props;
   const { t } = useTranslation();
   const { poolAddress, rewardTokenAddress } = getAddressesByPool(position);

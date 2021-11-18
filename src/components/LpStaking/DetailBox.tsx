@@ -1,28 +1,19 @@
 import { FunctionComponent } from 'react';
-import { BigNumber, utils } from 'ethers';
+import { utils } from 'ethers';
 import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 import Skeleton from 'react-loading-skeleton';
 import lpStakingTime from 'src/core/data/lpStakingTime';
 import moment from 'moment';
 import Token from 'src/enums/Token';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
+import { DetailBoxProps } from 'src/core/types/LpStakingTypeProps';
 import DetailBoxItemReceiveToken from './DetailBoxItemReceiveToken';
 import DetailBoxItemHeader from './DetailBoxItemHeader';
 import DetailBoxItemStaking from './DetailBoxItemStaking';
 
-type Props = {
-  token0: string;
-  token1: string;
-  totalLiquidity: number;
-  totalStakedLiquidity: BigNumber;
-  apr: string;
-  isLoading: boolean;
-  setModalAndSetStakeToken: () => void;
-};
-const DetailBox: FunctionComponent<Props> = (props) => {
+const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
   const {
-    token0,
-    token1,
+    tokens,
     totalLiquidity,
     totalStakedLiquidity,
     apr,
@@ -38,16 +29,18 @@ const DetailBox: FunctionComponent<Props> = (props) => {
           <>
             <div className="lp_token_description">
               <DetailBoxItemHeader
-                TotalLiquidity={formatDecimalFracionDigit(totalLiquidity, 2)}
+                totalLiquidity={formatDecimalFracionDigit(totalLiquidity, 2)}
                 apr={apr}
               />
-              <DetailBoxItemReceiveToken token0={token0} token1={token1} />
+              <DetailBoxItemReceiveToken
+                token0={tokens.token0}
+                token1={tokens.token1}
+              />
               <DetailBoxItemStaking
-                token0={token0}
-                token1={token1}
+                tokens={tokens}
                 totalStakedLiquidity={
                   formatDecimalFracionDigit(
-                    (token1 === Token.ETH
+                    (tokens.token1 === Token.ETH
                       ? pricePerEthLiquidity
                       : pricePerDaiLiquidity) *
                       parseFloat(utils.formatEther(totalStakedLiquidity)),

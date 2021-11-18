@@ -1,24 +1,19 @@
-import { BigNumber, utils } from 'ethers';
 import moment from 'moment';
 import { FunctionComponent } from 'react';
 import { useTranslation } from 'react-i18next';
 import lpStakingTime from 'src/core/data/lpStakingTime';
-import Token from 'src/enums/Token';
-import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
-import { formatDecimalFracionDigit } from 'src/utiles/formatters';
+import { DetailBoxItemStakingProps } from 'src/core/types/LpStakingTypeProps';
 import Guide from '../Guide';
 import Button from './Button';
 
-type Props = {
-  token0: string;
-  token1: string;
-  totalStakedLiquidity: string;
-  setModalAndSetStakeToken: () => void;
-};
-
-const DetailBoxItemStaking: FunctionComponent<Props> = (props) => {
-  const { token0, token1, totalStakedLiquidity, setModalAndSetStakeToken } =
-    props;
+const DetailBoxItemStaking: FunctionComponent<DetailBoxItemStakingProps> = (
+  props,
+) => {
+  const {
+    tokens: { token0, token1 },
+    totalStakedLiquidity,
+    setModalAndSetStakeToken,
+  } = props;
   const { t } = useTranslation();
   const isStakingDate = moment().isBetween(
     lpStakingTime.startedAt,

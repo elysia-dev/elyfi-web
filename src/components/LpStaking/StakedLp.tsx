@@ -14,9 +14,7 @@ import dai from 'src/assets/images/dai.png';
 import Guide from '../Guide';
 import StakedLpItem from './StakedLpItem';
 
-type Props = StakedTokenProps;
-
-const StakedLp: FunctionComponent<Props> = (props) => {
+const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
   const {
     stakedPositions,
     setUnstakeTokenId,

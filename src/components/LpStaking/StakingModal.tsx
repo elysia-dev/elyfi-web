@@ -2,23 +2,13 @@ import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import useWatingTx from 'src/hooks/useWaitingTx';
 import LoadingIndicator from 'src/components/LoadingIndicator';
-import Token from 'src/enums/Token';
 import TxContext from 'src/contexts/TxContext';
 import elfi from 'src/assets/images/ELFI.png';
 import SelectBox from 'src/components/SelectBox';
-import { TokenInfo } from 'src/core/types/Position';
 import useLpStaking from 'src/hooks/useLpStaking';
+import { LpStakingModalProps } from 'src/core/types/LpStakingTypeProps';
 
-const StakingModal: React.FunctionComponent<{
-  visible: boolean;
-  closeHandler: () => void;
-  token0: string;
-  token1?: Token.DAI | Token.ETH;
-  unstakedPositions: TokenInfo[];
-  tokenImg: string;
-  stakingPoolAddress: string;
-  rewardTokenAddress: string;
-}> = (props) => {
+const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
   const {
     visible,
     closeHandler,
