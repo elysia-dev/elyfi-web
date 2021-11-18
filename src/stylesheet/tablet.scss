@@ -1108,4 +1108,312 @@ $footer-height: 100px;
       top: 88px;
     }
   }
+  .lptoken_reward_Modal_body {
+    border-top: 1px solid #f0f0f1;
+    border-bottom: 1px solid #f0f0f1;
+    padding: 27px 21.5px 30px 30.5px;
+
+    img {
+      width: 30px;
+      height: 30px;
+      margin-right: 8px;
+    }
+    > div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+
+      > div {
+        display: flex;
+        align-items: center;
+        font-size: 17px;
+      }
+    }
+    .lp_reward_dai {
+      display: flex;
+      align-items: center;
+      color: #fab01d;
+      font-size: 30px;
+      > div {
+        font-size: 25px;
+        color: #646464;
+        display: inline-block;
+        margin-left: 3px;
+      }
+    }
+    .lp_reward_eth {
+      display: flex;
+      align-items: center;
+      color: #627eea;
+      font-size: 30px;
+      > div {
+        font-size: 25px;
+        color: #646464;
+        display: inline-block;
+        margin-left: 3px;
+      }
+    }
+    .lp_reward_elfi {
+      display: flex;
+      align-items: center;
+      color: #00bfff;
+      font-size: 30px;
+      > div {
+        font-size: 25px;
+        color: #646464;
+        display: inline-block;
+        margin-left: 3px;
+      }
+    }
+  }
+  .staking_detail_box {
+    display: flex;
+    flex-direction: column;
+    > div:nth-child(2) {
+      display: none;
+    }
+    .lp_token_description {
+      box-shadow: 0px 0px 6px #00000029;
+      border-radius: 10px;
+    }
+  }
+  .lp_token_date {
+    text-align: right;
+    margin-top: 15px;
+    font-size: 12px;
+    color: #646464;
+  }
+  .total_expected_reward {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding-top: 10.5px;
+    padding-bottom: 10.5px;
+    border: 1px solid #646464;
+    border-radius: 10px;
+    margin-top: 38px;
+    font-size: 17px;
+    > div:nth-child(1) {
+      color: #888888;
+    }
+    > div:nth-child(3) {
+      border-left: 1px solid #888888;
+      height: 59px;
+    }
+    > div:nth-child(4) {
+      color: #888888;
+    }
+  }
+  .staked_lp_item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+
+    > div:nth-child(1) {
+      height: 106px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      text-align: center;
+      flex-wrap: nowrap;
+      box-shadow: 0px 0px 6px #00000029;
+      border-radius: 5px;
+
+      > div:nth-child(1) {
+        width: 70px;
+        font-size: 17px;
+      }
+      > div:nth-child(2) {
+        width: 105px;
+        font-size: 17px;
+      }
+      > div:nth-child(3) {
+        width: 150px;
+        font-size: 17px;
+      }
+      > div:nth-child(4) {
+      }
+    }
+    > div:nth-child(2) {
+      display: flex;
+      justify-content: center;
+
+      > div {
+        width: 1px;
+        border-top: 12px solid #333333;
+        border-left: 9px solid transparent;
+        border-right: 9px solid transparent;
+        margin-top: 15px;
+        margin-bottom: 11px;
+      }
+    }
+    > div:nth-child(3) {
+      padding: 20px 15px 19px 21px;
+      box-shadow: 0px 0px 6px #00000029;
+      border-radius: 5px;
+
+      > div:nth-child(1) {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 7px;
+
+        > div:nth-child(1) {
+          display: flex;
+          align-items: center;
+          font-size: 17px;
+        }
+      }
+      > div:nth-child(2) {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        > div:nth-child(1) {
+          display: flex;
+          align-items: center;
+          font-size: 17px;
+        }
+      }
+      img {
+        width: 30px;
+        height: 30px;
+        margin-right: 8px;
+      }
+      .staked_lp_item_reward {
+        font-size: 20px;
+      }
+      .staked_lp_item_tokenType {
+        display: inline-block;
+        color: #646464;
+      }
+    }
+  }
+
+  .staked_lp_item_content_mobile {
+    display: none;
+  }
+
+  .staked_lp_content {
+    margin-bottom: 11px;
+
+    > div:nth-child(1) {
+      display: flex;
+      justify-content: space-around;
+      text-align: center;
+      > span:nth-child(1) {
+        width: 70px;
+        font-size: 15px;
+      }
+      > span:nth-child(2) {
+        width: 105px;
+        font-size: 15px;
+      }
+      > span:nth-child(3) {
+        width: 150px;
+        font-size: 15px;
+      }
+      > div:nth-child(4) {
+        width: 179px;
+      }
+    }
+
+    .staked_lp_content_pc {
+      display: none;
+    }
+  }
+  .header_line {
+    display: none;
+  }
+
+  .lp_button {
+    width: 179px;
+    height: 30px;
+    box-shadow: 0px 1px 6px #00000029;
+    border: 1px solid #333333;
+    background: #ffffff;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  .lp_reward_content_wrapper {
+    padding-top: 30px;
+    padding-bottom: 21px;
+    margin-top: 18px;
+    box-shadow: 0px 0px 6px #00000029;
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
+
+    .lp_reward_content {
+      display: flex;
+      flex-grow: 1;
+      border-bottom: 1px solid #e6e6e6;
+
+      .lp_token_wrapper {
+        border-right: 1px solid #e6e6e6;
+        flex-grow: 1;
+        padding-right: 32.5px;
+
+        > div:nth-child(1) {
+          display: flex;
+          align-items: center;
+          padding-top: 12.5px;
+        }
+        > div:nth-child(2) {
+          text-align: right;
+          margin-top: 26px;
+          margin-bottom: 35px;
+          font-size: 30px;
+          > div {
+            display: inline-block;
+            color: #646464;
+          }
+        }
+      }
+      img {
+        width: 30px;
+        height: 30px;
+        margin-right: 8px;
+        padding-left: 29px;
+      }
+    }
+  }
+  .lp_receive_token_wrapper {
+    padding: 17px 25px 19px 29px;
+    background: #f8f8f8;
+
+    > div:nth-child(1) {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      > div:nth-child(1) {
+        font-size: 17px;
+      }
+      > div:nth-child(2) {
+        > a {
+          cursor: pointer;
+
+          > button {
+            width: 179px;
+            height: 30px;
+            background: #ffffff;
+            box-shadow: 0px 1px 6px #00000029;
+            border: 1px solid #333333;
+            border-radius: 3px;
+            font-size: 15px;
+            color: #333333;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+    > div:nth-child(2) {
+      font-size: 15px;
+      color: #888888;
+      margin-top: 21px;
+      > span {
+        color: #888888;
+      }
+    }
+  }
 }

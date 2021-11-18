@@ -49,7 +49,8 @@
       "withdral--button": "WITHDRAW",
       "protocol_allow": "Allow the ELYFI Protocol to use your {{tokenName}}",
       "disable_content--1": "Connect your wallet to continue",
-      "elfi_reward": "ELFI Reward"
+      "elfi_reward": "ELFI Reward",
+      "wallet_connect_content": "Connect Wallet"
     },
     "portfolio": {
       "investment_status": "Loan Status",
@@ -184,6 +185,26 @@
       "reward_amount": "Accumulated reward amount",
       "current_round_null": "There is no current rounds in progress."
     },
+    "lpstaking": {
+      "lp_token_staking": "LP Token Staking",
+      "lp_token_staking_title": "{{token0}}-{{token1}} LP",
+      "lp_token_staking_modal": "{{token0}}-{{token1}} LP Token",
+      "lp_token_staked": "{{token0}}-{{token1}} LP Staked",
+      "lp_token_total_liquidity": "Total liquidity",
+      "no_lp_token": "There are no LP tokens available for staking.",
+      "receive_lp_token": "Get LP Token",
+      "receive_lp_token_content": "Supply liquidity to the {{token0}}-{{token1}} pool in Uniswap V3 and earn <strong>{{firstToken}}-{{secondToken}}</strong> LP tokens!",
+      "staked_lp_token": "Staked LP",
+      "staked_lp_token_type": "LP Type",
+      "liquidity": "Liquidity",
+      "expected_reward": "Expected reward",
+      "staked_total_liquidity": "Sum of liquidity",
+      "staked_total_expected_reward": "Total expected reward",
+      "lp_staking_modal_default": "Please select the LP tokens to be staked.",
+      "lp_tokens_held": "LP tokens held",
+      "receive_reward": "Rewards receiving",
+      "reward_amount": "Amount of rewards"
+    },
     "mobile": {
       "title": "COMING SOON!",
       "content": [
@@ -209,8 +230,16 @@
       "ELFIStake": "ELFI Staking",
       "ELFIStakingWithdraw": "ELFI Unstaking",
       "ELFIClaim": "Claim reward",
-      "Deposit": "Deposit DAI",
-      "Withdraw": "Withdraw DAI"
+      "Deposit": "Deposit",
+      "Withdraw": "Withdraw"
+    },
+    "guide": {
+      "apr": "APR is an abbreviation of Annual percentage rate, which means the ratio of the total compensation amount to the total liquidity.",
+      "total_liquidity": "Total liquidity means the total amount deposited in the ELFI-ETH pool among the information of the staked LP tokens expressed in dollars.",
+      "create_liquidity": "ELFI-ETH LP tokens are NFTs you receive when you provide liquidity to the ELFI-ETH pool created in Uniswap V3. You can stake LP with the corresponding LP Token.",
+      "staked_total_amount": "The liquidity of the LP tokens staked with the connected wallet is expressed in dollars.",
+      "staked_lp_token": "This is a list of LP tokens staked with the connected wallet. The expected reward represents the amount of rewards that can be obtained by staking each LP token. In order to receive the rewards, you must first unstake the corresponding LP tokens. You can check the reward tokens available for unstaking LP tokens in the ‘Amount of reward’ area located at the bottom. After clicking the ‘Claim rewards’ button, follow the procedure to complete the rewards collection.",
+      "receive_reward": "If you unstake the staked LP token, the amount of reward tokens for that LP token is displayed. Click the 'Claim rewards' button to receive the reward, and the reward token will be sent to the connected wallet."
     }
   }
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { utils } from 'ethers';
 import PriceContext, {
   initialPriceContext,
   PriceContextType,
@@ -7,33 +8,71 @@ import UniswapV3 from 'src/clients/UniswapV3';
 import Loading from 'src/components/Loading';
 import ErrorPage from 'src/components/ErrorPage';
 import Coingecko from 'src/clients/Coingecko';
+import calcPriceFromSqrtPriceX96 from 'src/utiles/calcPriceFromSqrtPriceX96';
 
 const PriceProvider: React.FC = (props) => {
   const [state, setState] = useState<PriceContextType>(initialPriceContext);
 
   const fetchPrices = async () => {
     try {
-      const poolData = await UniswapV3.getPoolData();
+      const ethPoolData = await UniswapV3.getElfiEthPoolData();
+      const daiPoolData = await UniswapV3.getElfiDaiPoolData();
+      const priceData = await Coingecko.getPrices();
 
       setState({
         ...state,
         elfiPrice: parseFloat(
-          poolData.data.data.pool.poolDayData[
-            poolData.data.data.pool.poolDayData.length - 1
+          daiPoolData.data.data.pool.poolDayData[
+            daiPoolData.data.data.pool.poolDayData.length - 1
           ].token1Price,
         ),
-        elPrice: (await Coingecko.getElPrice()).data.elysia.usd,
-        daiPrice: (await Coingecko.getDaiPrice()).data.dai.usd,
-        tetherPrice: (await Coingecko.getTetherPrice()).data.tether.usd,
-        ethPrice: (await Coingecko.getEthPrice()).data.ethereum.usd,
+        elPrice: priceData.data.elysia.usd,
+        daiPrice: priceData.data.dai.usd,
+        tetherPrice: priceData.data.tether.usd,
+        ethPrice: priceData.data.ethereum.usd,
+        elfiDaiPool: {
+          price: calcPriceFromSqrtPriceX96(
+            daiPoolData.data.data.pool.sqrtPrice,
+          ),
+          liquidity: parseFloat(
+            utils.formatEther(daiPoolData.data.data.pool.liquidity),
+          ),
+        },
+        elfiEthPool: {
+          price: calcPriceFromSqrtPriceX96(
+            ethPoolData.data.data.pool.sqrtPrice,
+          ),
+          liquidity: parseFloat(
+            utils.formatEther(ethPoolData.data.data.pool.liquidity),
+          ),
+        },
         loading: false,
       });
     } catch (e) {
-      setState({
-        ...state,
-        loading: false,
-        error: true,
+      Coingecko.getPrices().then((priceData) => {
+        setState({
+          ...state,
+          elfiPrice: 0.103,
+          elPrice: priceData.data.elysia.usd,
+          daiPrice: priceData.data.dai.usd,
+          tetherPrice: priceData.data.tether.usd,
+          ethPrice: priceData.data.ethereum.usd,
+          elfiDaiPool: {
+            liquidity: 0,
+            price: 0,
+          },
+          elfiEthPool: {
+            liquidity: 0,
+            price: 0,
+          },
+          loading: false,
+        });
       });
+      // setState({
+      //   ...state,
+      //   loading: false,
+      //   error: true,
+      // });
     }
   };
 

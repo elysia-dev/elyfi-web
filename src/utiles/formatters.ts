@@ -35,6 +35,16 @@ export const formatSixFracionDigit = (value: number) => {
   }).format(value);
 };
 
+export const formatDecimalFracionDigit = (value: number, decimal: number) => {
+  if (value <= 0.0000001) {
+    return '0';
+  }
+  return new Intl.NumberFormat('en', {
+    maximumFractionDigits: decimal,
+    minimumFractionDigits: decimal,
+  }).format(value);
+};
+
 export const formatCommaSmall = (value: BigNumber) => {
   if (value.isZero()) {
     return '0';

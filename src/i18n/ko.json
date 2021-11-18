@@ -21,7 +21,8 @@
       "install_metamask": "Install Metamask",
       "deposit_withdraw": "예치/출금",
       "ELStake": "EL 스테이킹",
-      "ELFIStake": "ELFI 스테이킹"
+      "ELFIStake": "ELFI 스테이킹",
+      "LPStake": "LP 스테이킹"
     },
     "dashboard": {
       "deposits--header": "예치한 토큰",
@@ -49,7 +50,8 @@
       "withdral--button": "출금하기",
       "protocol_allow": "ELYFI에서 {{tokenName}}에 접근할 수 있게 허용해주세요",
       "disable_content--1": "해당 페이지에 접근하기 위해 지갑을 연결해주세요.",
-      "elfi_reward": "ELFI 보상"
+      "elfi_reward": "ELFI 보상",
+      "wallet_connect_content": "지갑을 연결해주세요."
     },
     "portfolio": {
       "investment_status": "대출 현황",
@@ -182,7 +184,28 @@
       "current_round": "현재 진행중인 회차",
       "staking_amount": "스테이킹 수량",
       "reward_amount": "보상 수량",
+      "receive_reward": "보상 수령",
       "current_round_null": "현재 진행중인 회차가 없습니다."
+    },
+    "lpstaking": {
+      "lp_token_staking": "LP 토큰 스테이킹",
+      "lp_token_staking_title": "{{token0}}-{{token1}} LP",
+      "lp_token_staking_modal": "{{token0}}-{{token1}} LP 토큰",
+      "lp_token_staked": "{{token0}}-{{token1}} LP Staked",
+      "lp_token_total_liquidity": "총 유동성",
+      "no_lp_token": "스테이킹 가능한 LP토큰이 없습니다.",
+      "receive_lp_token": "LP Token 받기",
+      "receive_lp_token_content": "Uniswap V3 에 있는 {{token0}}-{{token1}} 풀에 유동성을 제공함으로써 <strong>{{token0}}-{{token1}}</strong> LP 토큰을 받으실 수 있습니다!",
+      "staked_lp_token": "스테이킹된 LP",
+      "staked_lp_token_type": "LP 타입",
+      "liquidity": "유동성",
+      "expected_reward": "예상 보상",
+      "staked_total_liquidity": "유동성 합계",
+      "staked_total_expected_reward": "총 예상 보상",
+      "lp_staking_modal_default": "스테이킹할 LP토큰을 선택해주세요.",
+      "lp_tokens_held": "보유한 LP 토큰",
+      "receive_reward": "보상 수령",
+      "reward_amount": "보상 수량"
     },
     "mobile": {
       "title": "COMING SOON!",
@@ -208,9 +231,17 @@
       "ELFIMigration": "ELFI 및 DAI 전송",
       "ELFIStake": "ELFI 스테이킹",
       "ELFIStakingWithdraw": "ELFI 언스테이킹",
-      "ELFIClaim": "DAI 수령",
-      "Deposit": "DAI 예치",
-      "Withdraw": "DAI 출금"
+      "ELFIClaim": "수령",
+      "Deposit": "예치",
+      "Withdraw": "출금"
+    },
+    "guide": {
+      "apr": "APR 은 Annual percentage rate의 약자로, 총 유동 성 대비 총 보상금액의 비율을 의미합니다.",
+      "total_liquidity": "총 유동성이란, 스테이킹된 LP 토큰의 정보 중에 ELFI-DAI 풀에 예치한 총 금액을 달러 가치로 표기한 것을 의미합니다.",
+      "create_liquidity": "ELFI-DAI LP 토큰은 Uniswap V3 에 조성한 ELFI-DAI 풀에 유동성을 제공하면 받게 되는 NFT 입니 다. 해당 LP Token 으로 LP 스테이킹을 할 수 있습니다.",
+      "staked_total_amount": "연결한 지갑으로 스테이킹한 LP 토큰의 유동성이 달러 가치로 표기됩니다.",
+      "staked_lp_token": "연결한 지갑으로 스테이킹한 LP 토큰 리스트입니다. 예상 보상은 각 LP 토큰을 스테 이킹함으로써 얻을 수 있는 보상 수량을 나타냅니다. 보상을 수령하려면 먼저 해당 LP 토큰을 언스테이킹해 야 합니다. 언스테이킹을 한 LP 토큰들에 대한 수령 가 능한 보상 토큰은 하단에 위치한 ‘보상 수령’ 영역에서 확인하실 수 있으며, ‘수령하기’ 버튼 클릭 후 이후 절차 를 진행하면 보상 수령이 완료됩니다.",
+      "receive_reward": "스테이킹한 LP 토큰을 언스테이킹하면 해당 LP 토큰에 대한 보상 토큰의 수량이 표기됩니다. '수령하기' 버튼을 클릭하여 보상 수령을 진행하시면 연결한 지갑으로 보상 토큰이 전송됩니다."
     }
   }
 }

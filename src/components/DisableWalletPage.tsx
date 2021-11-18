@@ -18,8 +18,7 @@ const DisableWalletPage = () => {
           borderRadius: 5,
           padding: 20,
           width: 200,
-        }}
-      >
+        }}>
         <p style={{ color: '#FFFFFF', margin: 0 }}>
           Access Completed!
           <br />
@@ -34,12 +33,10 @@ const DisableWalletPage = () => {
             window.sessionStorage.setItem('@connect', 'true');
           });
         }}
-        style={{ margin: 0 }}
-      >
+        style={{ margin: 0 }}>
         <div
           className="navigation__wallet__wrapper"
-          style={{ justifyContent: 'center' }}
-        >
+          style={{ justifyContent: 'center' }}>
           <p className={`navigation__wallet__status`}>
             {t('navigation.connect_wallet')}
           </p>
@@ -52,14 +49,15 @@ const DisableWalletPage = () => {
     <>
       <section
         className="dashboard--disable"
-        style={{ backgroundImage: `url(${MainBackground})` }}
-      >
+        style={{ backgroundImage: `url(${MainBackground})` }}>
         <div className="dashboard__content-container">
           <h1 className="dashboard__content--bold">
             {route.path.includes('ELFI')
               ? t('navigation.ELFIStake').toUpperCase()
               : route.path.includes('EL')
               ? t('navigation.ELStake').toUpperCase()
+              : route.path.includes('LP')
+              ? t('navigation.LPStake')
               : t('navigation.dashboard')}
           </h1>
           <p className="dashboard__content">

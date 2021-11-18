@@ -208,9 +208,9 @@
       "ELFIMigration": "传送ELFI代币和DAI",
       "ELFIStake": "ELFI代币Staking(权益质押)",
       "ELFIStakingWithdraw": "ELFI代币Unstaking(解除权益质押)",
-      "ELFIClaim": "获取DAI",
-      "Deposit": "存入DAI",
-      "Withdraw": "提现DAI"
+      "ELFIClaim": "获取",
+      "Deposit": "存入",
+      "Withdraw": "提现"
     }
   }
 }

@@ -1,8 +1,14 @@
+import { BigNumber, utils } from 'ethers';
+import { FunctionComponent, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+import PriceContext from 'src/contexts/PriceContext';
+import envs from 'src/core/envs';
+import { TokenInfo } from 'src/core/types/Position';
+import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
+import { formatDecimalFracionDigit } from 'src/utiles/formatters';
+
 type Props = {
-  lpToken: {
-    id: string;
-    liquidity: string;
-  };
+  position: TokenInfo;
   index: number;
   setSelectedToken: React.Dispatch<
     React.SetStateAction<{
@@ -14,18 +20,37 @@ type Props = {
   selectBoxHandler: () => void;
 };
 
-function SelectBoxItems(props: Props) {
-  const { lpToken, index, setSelectedToken, selectBoxHandler } = props;
+const SelectBoxItems: FunctionComponent<Props> = (props) => {
+  const { setSelectedToken, selectBoxHandler, position } = props;
+  const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
+  const { t } = useTranslation();
+  const poolPrice =
+    position.pool.id.toLowerCase() === envs.ethElfiPoolAddress.toLowerCase()
+      ? pricePerEthLiquidity
+      : pricePerDaiLiquidity;
+  const liquidity =
+    formatDecimalFracionDigit(
+      parseFloat(utils.formatEther(position.liquidity)) * poolPrice,
+      2,
+    ) || 0;
+
   return (
     <div
+      className="select_box_Item"
       style={{
         width: '100%',
         borderBottom: '1px solid black',
+        borderRight: '1px solid black',
+        borderLeft: '1px solid black',
+        cursor: 'pointer',
       }}
       onClick={() => {
         setSelectedToken({
-          id: lpToken.id,
-          liquidity: lpToken.liquidity,
+          id: position.id.toString(),
+          liquidity: formatDecimalFracionDigit(
+            parseFloat(utils.formatEther(position.liquidity)) * poolPrice,
+            2,
+          ),
           selectBoxTitle: '',
         });
         selectBoxHandler();
@@ -34,22 +59,23 @@ function SelectBoxItems(props: Props) {
         <div
           className="spoqa"
           style={{
-            color: '#333333',
             paddingLeft: 20.5,
             display: 'flex',
             alignItems: 'center',
             fontSize: 13,
             height: 47,
           }}>
-          <div style={{ marginRight: 25 }}>ID : {lpToken.id}</div>
+          <div style={{ marginRight: 25 }}>ID : {position.id}</div>
           <div className="spoqa__bold" style={{ color: '#B7B7B7' }}>
             |
           </div>
-          <div style={{ marginLeft: 23 }}>유동성 : $ {lpToken.liquidity}</div>
+          <div style={{ marginLeft: 23 }}>
+            {t('lpstaking.liquidity')} : $ {liquidity}
+          </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default SelectBoxItems;

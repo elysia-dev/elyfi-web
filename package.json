@@ -12,7 +12,7 @@
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
     "download-schema": "apollo service:download --endpoint=https://api.studio.thegraph.com/query/862/elyfi-ropsten/v0.0.6 graphql-schema.json",
-    "codegen": "apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql"
+    "codegen": "npm run download-schema && apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql"
   },
   "eslintConfig": {
     "extends": [
@@ -56,7 +56,7 @@
     "dotenv": "^10.0.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",
-    "ethers": "^5.2.0",
+    "ethers": "5.4.0",
     "i18next": "^20.2.1",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
@@ -78,6 +78,7 @@
     "react-scripts": "4.0.3",
     "react-spinners": "^0.11.0",
     "sass-loader": "^11.0.1",
+    "styled-components": "^5.3.3",
     "typescript": "^4.2.3",
     "web-vitals": "^1.0.1",
     "web3": "^1.3.6"

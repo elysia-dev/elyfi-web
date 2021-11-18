@@ -10,5 +10,15 @@
   "requiredNetwork": "Mainnet",
   "requiredChainId": 1,
   "subgraphURI": "https://api.studio.thegraph.com/query/862/elyfi/v0.0.4",
-  "etherscanURI": "https://etherscan.io"
+  "etherscanURI": "https://etherscan.io",
+  "nonFungiblePositionAddress": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
+  "stakerAddress": "0x1f98407aaB862CdDeF78Ed252D6f557aA5b0f00d",
+  "wEthAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+  "daiElfiPoolAddress": "0xbde484db131bd2ae80e44a57f865c1dfebb7e31f",
+  "ethElfiPoolAddress": "0xc311faebe8802f9cfc91284016d1de9537ec66b7",
+  "lpTokenStakingStartTime": 1636106400,
+  "lpTokenStakingEndTime": 1639562400,
+  "stakerSubgraphURL": "https://api.studio.thegraph.com/query/862/lp-staking/v0.0.1",
+  "lpTokenPoolSubgraphURL": "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3",
+  "refundedAddress": "0x23b062F33ed93EE8C8e658e609dbd80797DFdA89"
 }

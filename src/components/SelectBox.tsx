@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { BigNumber } from 'ethers';
+import { FunctionComponent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import Position, { TokenInfo } from 'src/core/types/Position';
 import SelectBoxItems from './SelectBoxItems';
 
 type Props = {
-  lpTokens: {
-    id: string;
-    liquidity: string;
-  }[];
   selectedToken: {
     id: string;
     liquidity: string;
@@ -18,12 +17,13 @@ type Props = {
       selectBoxTitle: string;
     }>
   >;
+  unstakedPositions: TokenInfo[];
 };
 
-function SelectBox(props: Props) {
-  const { lpTokens, selectedToken, setSelectedToken } = props;
+const SelectBox: FunctionComponent<Props> = (props) => {
+  const { selectedToken, setSelectedToken, unstakedPositions } = props;
   const [isItemsVisible, setIsItemsVisible] = useState(false);
-
+  const { t } = useTranslation();
   const selectBoxHandler = () => {
     setIsItemsVisible((prev) => !prev);
   };
@@ -32,7 +32,6 @@ function SelectBox(props: Props) {
     <div
       style={{
         height: 137,
-        // border: '1px solid none',
         background: '#FFFFFF',
       }}>
       <div
@@ -41,9 +40,9 @@ function SelectBox(props: Props) {
           paddingTop: 28.5,
           marginLeft: 27,
         }}>
-        보유한 LP 토큰
+        {t('lpstaking.lp_tokens_held')}
       </div>
-      {true ? (
+      {unstakedPositions.length > 0 ? (
         <div
           style={{
             border: '1px solid black',
@@ -54,6 +53,7 @@ function SelectBox(props: Props) {
             display: 'flex',
             alignItems: 'center',
             position: 'relative',
+            cursor: 'pointer',
           }}>
           <div
             style={{
@@ -102,7 +102,7 @@ function SelectBox(props: Props) {
                     fontSize: 13,
                     marginRight: 'auto',
                   }}>
-                  유동성 : $ {selectedToken.liquidity}
+                  {t('lpstaking.liquidity')} : $ {selectedToken.liquidity}
                 </div>
               </>
             )}
@@ -122,17 +122,15 @@ function SelectBox(props: Props) {
                 width: '100%',
                 left: -1,
                 height: 95,
-                overflow: 'scroll',
-                bottom: '-215%',
-                border: '1px solid black',
-                background: '#FFFFFF',
+                overflowX: 'visible',
+                bottom: '-214%',
                 position: 'absolute',
               }}>
-              {lpTokens.map((lpToken, idx) => {
+              {unstakedPositions.map((position, idx) => {
                 return (
                   <SelectBoxItems
                     key={idx}
-                    lpToken={lpToken}
+                    position={position}
                     index={idx}
                     setSelectedToken={setSelectedToken}
                     selectBoxHandler={selectBoxHandler}
@@ -148,11 +146,11 @@ function SelectBox(props: Props) {
             textAlign: 'center',
             marginTop: 17.5,
           }}>
-          스테이킹 가능한 LP토큰이 없습니다.
+          {t('lpstaking.no_lp_token')}
         </div>
       )}
     </div>
   );
-}
+};
 
 export default SelectBox;

@@ -15,6 +15,7 @@ import 'src/stylesheet/pc.scss';
 import 'src/stylesheet/tablet.scss';
 import 'src/stylesheet/mobile.scss';
 import TxProvider from './providers/TxProvider';
+import UniswapPoolProvider from './providers/UniswapPoolProvider';
 
 const client = new ApolloClient({
   uri: envs.subgraphURI,
@@ -24,19 +25,21 @@ const client = new ApolloClient({
 const App: React.FC = () => {
   return (
     <ApolloProvider client={client}>
-      <PriceProvider>
-        <LanguageProvider>
-          <Web3ReactProvider getLibrary={getLibrary}>
-            <ReservesProvider>
-              <TxProvider>
-                <Router>
-                  <AppNavigator />
-                </Router>
-              </TxProvider>
-            </ReservesProvider>
-          </Web3ReactProvider>
-        </LanguageProvider>
-      </PriceProvider>
+      <UniswapPoolProvider>
+        <PriceProvider>
+          <LanguageProvider>
+            <Web3ReactProvider getLibrary={getLibrary}>
+              <ReservesProvider>
+                <TxProvider>
+                  <Router>
+                    <AppNavigator />
+                  </Router>
+                </TxProvider>
+              </ReservesProvider>
+            </Web3ReactProvider>
+          </LanguageProvider>
+        </PriceProvider>
+      </UniswapPoolProvider>
     </ApolloProvider>
   );
 };
