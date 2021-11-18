@@ -7,9 +7,9 @@ import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
 import { formatSixFracionDigit } from 'src/utiles/formatters';
 import useClaimReward from 'src/hooks/useClaimReward';
-import { LpRewardModal } from 'src/core/types/RewardTypes';
+import { LpRewardModalProps } from 'src/core/types/RewardTypes';
 
-const RewardModal: React.FunctionComponent<LpRewardModal> = ({
+const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
   visible,
   closeHandler,
   rewardToReceive,
