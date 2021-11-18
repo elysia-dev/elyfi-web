@@ -1,12 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants, ethers, utils } from 'ethers';
-import {
-  useEffect,
-  useContext,
-  useState,
-  useCallback,
-  ReactElement,
-} from 'react';
+import { useEffect, useContext, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from 'src/components/Header';
 import PriceContext from 'src/contexts/PriceContext';
@@ -27,11 +21,11 @@ import Reward from 'src/components/LpStaking/Reward';
 import StakingModal from 'src/components/LpStaking/StakingModal';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import RewardTypes from 'src/core/types/RewardTypes';
-import useExpectedReward from 'src/hooks/useExpectedReward';
+import useUpdateExpectedReward from 'src/hooks/useUpdateExpectedReward';
 import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
 
-function LPStaking(): ReactElement {
+function LPStaking(): JSX.Element {
   const { account, library } = useWeb3React();
   const { t } = useTranslation();
   const { txType, txWaiting } = useContext(TxContext);
@@ -39,7 +33,7 @@ function LPStaking(): ReactElement {
   const { ethPool, daiPool } = useContext(UniswapPoolContext);
   const { ethPrice, daiPrice } = useContext(PriceContext);
   const { setExpecteReward, expectedReward, updateExpectedReward } =
-    useExpectedReward();
+    useUpdateExpectedReward();
   const [rewardVisibleModal, setRewardVisibleModal] = useState(false);
   const [stakingVisibleModal, setStakingVisibleModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -269,8 +263,10 @@ function LPStaking(): ReactElement {
           <div>
             <StakingTitle token0={Token.ELFI} token1={Token.ETH} />
             <DetailBox
-              token0={Token.ELFI}
-              token1={Token.ETH}
+              tokens={{
+                token0: Token.ELFI,
+                token1: Token.ETH,
+              }}
               totalLiquidity={ethPoolTotalLiquidity}
               totalStakedLiquidity={totalStakedLiquidity(
                 envs.ethElfiPoolAddress,
@@ -287,8 +283,10 @@ function LPStaking(): ReactElement {
           <div>
             <StakingTitle token0={Token.ELFI} token1={Token.DAI} />
             <DetailBox
-              token0={Token.ELFI}
-              token1={Token.DAI}
+              tokens={{
+                token0: Token.ELFI,
+                token1: Token.DAI,
+              }}
               totalLiquidity={daiPoolTotalLiquidity}
               totalStakedLiquidity={totalStakedLiquidity(
                 envs.daiElfiPoolAddress,
