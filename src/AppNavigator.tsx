@@ -1,8 +1,5 @@
 import { useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
-import Footer from 'src/components/Footer';
-import Dashboard from 'src/containers/Dashboard';
-import { StakingEL, StakingELFI } from 'src/containers/Staking';
 import { useWeb3React } from '@web3-react/core';
 import DisableWalletPage from 'src/components/DisableWalletPage';
 import ScrollToTop from 'src/hooks/ScrollToTop';
@@ -12,14 +9,20 @@ import { useMediaQuery } from 'react-responsive';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
 
 import LPStaking from 'src/containers/LPStaking';
+import Dashboard from 'src/containers/Dashboard';
+import { StakingEL, StakingELFI } from 'src/containers/Staking';
+import Main from 'src/containers/Main';
+import Guide from 'src/containers/Guide';
+import Governance from 'src/containers/Governance';
 
 import 'src/stylesheet/public.scss';
 import 'src/stylesheet/pc.scss';
 import 'src/stylesheet/tablet.scss';
 import 'src/stylesheet/mobile.scss';
 import Navigation from 'src/components/Navigation';
-import getLocalLanauge from './utiles/getLocalLanguage';
-import LanguageProvider from './providers/LanguageProvider';
+import Footer from 'src/components/Footer';
+import getLocalLanauge from 'src/utiles/getLocalLanguage';
+import LanguageProvider from 'src/providers/LanguageProvider';
 
 const AppNavigator: React.FC = () => {
   const isPc = useMediaQuery({
@@ -100,9 +103,30 @@ const AppNavigator: React.FC = () => {
             />
             <Route
               exact
-              path="/:lng"
+              path="/:lng/dashboard"
               component={
                 Dashboard
+              }
+            />
+            <Route
+              exact
+              path="/:lng/guide"
+              component={
+                Guide
+              }
+            />
+            <Route
+              exact
+              path="/:lng/governanace"
+              component={
+                Governance
+              }
+            />
+            <Route
+              exact
+              path="/:lng"
+              component={
+                Main
               }
             />
             <Footer />
