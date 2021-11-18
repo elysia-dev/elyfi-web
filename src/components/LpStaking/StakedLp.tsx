@@ -8,6 +8,9 @@ import { utils } from 'ethers';
 import StakedTokenProps from 'src/core/types/StakedTokenProps';
 import Skeleton from 'react-loading-skeleton';
 import CountUp from 'react-countup';
+import { isEthElfiPoolAddress } from 'src/core/utils/getAddressesByPool';
+import eth from 'src/assets/images/eth-color.png';
+import dai from 'src/assets/images/dai.png';
 import Guide from '../Guide';
 import StakedLpItem from './StakedLpItem';
 
@@ -76,6 +79,27 @@ const StakedLp: FunctionComponent<Props> = (props) => {
                       position={position}
                       setUnstakeTokenId={setUnstakeTokenId}
                       expectedReward={expectedReward[idx]}
+                      positionInfo={() => {
+                        const isEthPoolAddress = isEthElfiPoolAddress(position);
+                        return {
+                          rewardToken: isEthPoolAddress
+                            ? expectedReward[idx]?.ethReward
+                            : expectedReward[idx]?.daiReward,
+                          beforeRewardToken: isEthPoolAddress
+                            ? expectedReward[idx]?.beforeEthReward
+                            : expectedReward[idx]?.beforeDaiReward,
+                          tokenImg: isEthPoolAddress ? eth : dai,
+                          rewardTokenType: isEthPoolAddress
+                            ? Token.ETH
+                            : Token.DAI,
+                          pricePerLiquidity: isEthPoolAddress
+                            ? pricePerEthLiquidity
+                            : pricePerDaiLiquidity,
+                          lpTokenType: isEthPoolAddress
+                            ? 'ELFI-ETH LP'
+                            : 'ELFI-DAI LP',
+                        };
+                      }}
                     />
                   );
                 })
