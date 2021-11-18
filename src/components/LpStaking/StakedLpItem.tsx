@@ -12,38 +12,35 @@ import { useTranslation } from 'react-i18next';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import useLpWithdraw from 'src/hooks/useLpWithdraw';
 import { ExpectedRewardTypes } from 'src/core/types/RewardTypes';
+import getAddressesByPool from 'src/core/utils/getAddressesByPool';
 import Button from './Button';
 
 type Props = {
   position: Position;
   setUnstakeTokenId: Dispatch<SetStateAction<number>>;
   expectedReward: ExpectedRewardTypes;
+  positionInfo: () => {
+    rewardToken: number;
+    beforeRewardToken: number;
+    tokenImg: string;
+    rewardTokenType: Token.ETH | Token.DAI;
+    pricePerLiquidity: number;
+    lpTokenType: string;
+  };
 };
 
 const StakedLpItem: FunctionComponent<Props> = (props) => {
-  const { position, setUnstakeTokenId, expectedReward } = props;
-  const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
+  const { position, setUnstakeTokenId, expectedReward, positionInfo } = props;
   const { t } = useTranslation();
-  const isEthElfiPoolAddress =
-    position.incentivePotisions[0].incentive.pool.toLowerCase() ===
-    envs.ethElfiPoolAddress.toLowerCase();
-  const rewardToken = isEthElfiPoolAddress
-    ? expectedReward?.ethReward
-    : expectedReward?.daiReward;
-  const beforeRewardToken = isEthElfiPoolAddress
-    ? expectedReward?.beforeEthReward
-    : expectedReward?.beforeDaiReward;
-  const poolAddress = isEthElfiPoolAddress
-    ? envs.ethElfiPoolAddress
-    : envs.daiElfiPoolAddress;
-  const rewardTokenAddress = isEthElfiPoolAddress
-    ? envs.wEthAddress
-    : envs.daiAddress;
-  const tokenImg = isEthElfiPoolAddress ? eth : dai;
-  const rewardTokenType = isEthElfiPoolAddress ? Token.ETH : Token.DAI;
-  const pricePerLiquidity = isEthElfiPoolAddress
-    ? pricePerEthLiquidity
-    : pricePerDaiLiquidity;
+  const { poolAddress, rewardTokenAddress } = getAddressesByPool(position);
+  const {
+    rewardToken,
+    beforeRewardToken,
+    tokenImg,
+    rewardTokenType,
+    pricePerLiquidity,
+    lpTokenType,
+  } = positionInfo();
   const stakedLiquidity =
     parseFloat(utils.formatEther(position.liquidity)) * pricePerLiquidity;
   const unstake = useLpWithdraw();
@@ -73,7 +70,7 @@ const StakedLpItem: FunctionComponent<Props> = (props) => {
           <div className="staked_lp_item_content_mobile">
             {t('lpstaking.staked_lp_token_type')}
           </div>
-          <div>{isEthElfiPoolAddress ? 'ELFI-ETH LP' : 'ELFI-DAI LP'}</div>
+          <div>{lpTokenType}</div>
         </div>
         <div className="spoqa__bold">
           <div className="staked_lp_item_content_mobile">
