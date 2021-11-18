@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation, useParams } from 'react-router-dom';
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
 import { useTranslation } from 'react-i18next';
@@ -8,12 +8,29 @@ import Wallet from './Wallet';
 
 const Navigation = () => {
   const [hover, setHover] = useState(0);
+  const [showLocalNavigation, setLocalNavigation] = useState(0);
+  const [isLocalNavigationShowing, setLocalNavigationShowing] = useState(false);
   const { t } = useTranslation();
   const { lng } = useParams<{ lng: string }>();
   const location = useLocation();
+  const navigationRef = useRef<HTMLDivElement>(null);
 
   const [scrolling, setScrolling] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent): void {
+      if (navigationRef.current && !navigationRef.current.contains(e.target as Node)) {
+        setLocalNavigationShowing(false);
+        setLocalNavigation(0)
+        setHover(0)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [])
 
   function setScrollTrigger () {
     function onScroll() {
@@ -34,9 +51,16 @@ const Navigation = () => {
     setScrollTrigger()
   }, [scrollTop]);
 
-  
+  const setMediaQueryMetamask = (ref: "mobile" | "pc") => {
+    return (
+      <div className={`navigation__wallet__container ${ref === "mobile" ? "mobile-only" : "pc-only"}`}>
+        {window.ethereum?.isMetaMask ? <Wallet /> : <InstallMetamask />}
+      </div>
+    )
+  }
 
-  const setNavigation = (data: string[], index: number) => {
+
+  const setNavigation = (data: any, index: number) => {
     const innerNavigationContainer = () => {
       return (
         <div className="navigation__link__wrapper">
@@ -48,7 +72,7 @@ const Navigation = () => {
             <NavLink
               to={data[1]}
               className={`navigation__link__under-line${
-                hover === index + 1 ? ' hover' : ' blur'
+                (hover || showLocalNavigation) === index + 1 ? ' hover' : ' blur'
               }`}
               style={{
                 opacity: 0,
@@ -67,17 +91,21 @@ const Navigation = () => {
       )
     }
     const LNBNavigation = () => {
-      const [clicked, setClick] = useState(false);
-
       return (
-        <div onClick={() => setClick(!clicked)}>
+        <div 
+          onClick={() => setLocalNavigationShowing(true)}
+          onMouseEnter={() => setLocalNavigation(index + 1)}
+          onMouseLeave={() => {
+            isLocalNavigationShowing ? null : setLocalNavigation(0)
+          }}
+        >
           {innerNavigationContainer()}
         </div>
       )
     }
     const hrefNavigation = () => {
       return (
-        <a href={data[1]}>
+        <a href={data[1]} target="_blank">
           {innerNavigationContainer()}
         </a>
       )
@@ -106,15 +134,12 @@ const Navigation = () => {
     const navigationLinkArray = [
       [NavigationType.Link, `/${lng}/dashboard`, "Deposit"],
       [NavigationType.Link, `/${lng}/governance`, "Governance"],
-      [NavigationType.LNB,  `/${lng}/staking`, "Staking"],
-      [NavigationType.LNB,  'https://elyfi.world', "Docs"],
+      [NavigationType.LNB,  ``, "Staking"],
+      [NavigationType.LNB,  '', "Docs"],
       [NavigationType.Link, `/${lng}/guide`, "Guide"],
-      [NavigationType.Href, `/`, "Uniswap(ELFI)"]
-      
-      // [`/${lng}/staking/EL`, t('navigation.ELStake')],
-      // [`/${lng}/staking/ELFI`, t('navigation.ELFIStake')],
-      // [`/${lng}/staking/LP`, t('staking.token_staking', { stakedToken: 'LP' })]
+      [NavigationType.Href, `https://info.uniswap.org/#/pools/0xbde484db131bd2ae80e44a57f865c1dfebb7e31f`, "Uniswap(ELFI)"]
     ]
+
     
     return (
       <div className="navigation__link__container">
@@ -127,12 +152,34 @@ const Navigation = () => {
     )
   }
 
-  
-  
-  const setMediaQueryMetamask = (ref: "mobile" | "pc") => {
+  const localNavigation = () => {
+    const stakingArray = [
+      [`/${lng}/staking/EL`, t('navigation.ELStake')],
+      [`/${lng}/staking/ELFI`, t('navigation.ELFIStake')],
+      [`/${lng}/staking/LP`, t('staking.token_staking', { stakedToken: 'LP' })]
+    ]
+    const docsArray = [
+      [`https://elysia.gitbook.io/elysia.finance/`, "ELYFI Docs"],
+      [`https://www.naver.com`, "Governance FAQ"]
+    ]
     return (
-      <div className={`navigation__wallet__container ${ref === "mobile" ? "mobile-only" : "pc-only"}`}>
-        {window.ethereum?.isMetaMask ? <Wallet /> : <InstallMetamask />}
+      <div className="navigation__bottom" style={{
+        backgroundColor: scrollTop > 125 ? '#10101077' : '#000000',
+        display: (showLocalNavigation || isLocalNavigationShowing) ? "flex" : "none"
+      }}>
+        {
+          (showLocalNavigation === 3 ? stakingArray :
+          showLocalNavigation === 4 ? docsArray : [])
+          .map((data) => {
+            return (
+              <>
+                <p>
+                  {data[1].toUpperCase()}
+                </p>
+              </>
+            )
+          })
+        }
       </div>
     )
   }
@@ -141,8 +188,9 @@ const Navigation = () => {
     <>
       <nav
         className="navigation"
-        style={{ backgroundColor: scrollTop > 125 ? '#10101077' : '#101010' }}>
-        
+        style={{ backgroundColor: scrollTop > 125 ? '#10101077' : '#101010' }}
+        ref={navigationRef}  
+      >
         <div className="navigation__container">
           <div className="navigation__wrapper">
             <div>
@@ -161,9 +209,7 @@ const Navigation = () => {
           </div>
           {setMediaQueryMetamask("pc")}
         </div>
-        <div className="navigation__bottom">
-          123
-        </div>
+        {localNavigation()}
       </nav>
     </>
   );

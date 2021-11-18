@@ -83,13 +83,27 @@ span {
     z-index: 900;
     transition: all 0.25s ease-in-out;
     &__bottom {
-      background-color: #fff;
+      border-top: 1px solid #636363;
+      background-color: #000000;
+      height: 50px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+      transition: backdrop-filter 50ms ease-in-out 0s;
+      > p {
+        margin: 0 25px;
+        color: #fff;
+      }
     }
     &__container {
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      backdrop-filter: blur(10px);
+      transition: backdrop-filter 50ms ease-in-out 0s;
     }
     &__wrapper {
       display: flex;
