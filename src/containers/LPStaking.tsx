@@ -28,6 +28,8 @@ import StakingModal from 'src/components/LpStaking/StakingModal';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import RewardTypes from 'src/core/types/RewardTypes';
 import useExpectedReward from 'src/hooks/useExpectedReward';
+import eth from 'src/assets/images/eth-color.png';
+import dai from 'src/assets/images/dai.png';
 
 const LPStaking: FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -246,6 +248,15 @@ const LPStaking: FunctionComponent = () => {
               : envs.daiElfiPoolAddress.toLowerCase();
           return lpToken.pool.id.toLowerCase() === poolAddress;
         })}
+        tokenImg={stakeToken === Token.ETH ? eth : dai}
+        stakingPoolAddress={
+          stakeToken === Token.ETH
+            ? envs.ethElfiPoolAddress
+            : envs.daiElfiPoolAddress
+        }
+        rewardTokenAddress={
+          stakeToken === Token.ETH ? envs.wEthAddress : envs.daiAddress
+        }
       />
       <Header title={t('lpstaking.lp_token_staking')} />
       <section
