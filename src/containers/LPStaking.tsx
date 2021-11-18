@@ -42,7 +42,7 @@ const LPStaking: FunctionComponent = () => {
   const [stakingVisibleModal, setStakingVisibleModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [stakedPositions, setStakedPositions] = useState<Position[]>([]);
-  const [nonStakePositions, setNonStakePositions] = useState<TokenInfo[]>([]);
+  const [unstakedPositions, setUnstakedPositions] = useState<TokenInfo[]>([]);
   const [stakeToken, setStakeToken] = useState<Token.DAI | Token.ETH>();
   const [totalExpectedReward, setTotalExpectedReward] = useState<{
     beforeTotalElfi: number;
@@ -117,9 +117,9 @@ const LPStaking: FunctionComponent = () => {
 
   const getWithoutStakePositions = useCallback(() => {
     LpTokenPoolSubgraph.getPositionsByOwner(account!).then((res) => {
-      setNonStakePositions(res.data.data.positions);
+      setUnstakedPositions(res.data.data.positions);
     });
-  }, [nonStakePositions]);
+  }, [unstakedPositions]);
 
   const getTotalLiquidity = useCallback(() => {
     setIsLoading(true);
@@ -239,7 +239,7 @@ const LPStaking: FunctionComponent = () => {
         closeHandler={() => setStakingVisibleModal(false)}
         token0={Token.ELFI}
         token1={stakeToken}
-        nonStakePositions={nonStakePositions.filter((lpToken) => {
+        unstakedPositions={unstakedPositions.filter((lpToken) => {
           const poolAddress =
             stakeToken === Token.ETH
               ? envs.ethElfiPoolAddress.toLowerCase()

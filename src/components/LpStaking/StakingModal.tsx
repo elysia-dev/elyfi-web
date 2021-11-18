@@ -17,8 +17,8 @@ const StakingModal: React.FunctionComponent<{
   closeHandler: () => void;
   token0: string;
   token1?: Token.DAI | Token.ETH;
-  nonStakePositions: TokenInfo[];
-}> = ({ visible, closeHandler, token0, token1, nonStakePositions }) => {
+  unstakedPositions: TokenInfo[];
+}> = ({ visible, closeHandler, token0, token1, unstakedPositions }) => {
   const { t } = useTranslation();
   const [stakingMode, setStakingMode] = useState<boolean>(true);
   const { txWaiting } = useContext(TxContext);
@@ -124,7 +124,7 @@ const StakingModal: React.FunctionComponent<{
         ) : (
           <div className="modal__body">
             <div>
-              {nonStakePositions.length === 0 ? (
+              {unstakedPositions.length === 0 ? (
                 <div
                   className="spoqa"
                   style={{
@@ -140,19 +140,19 @@ const StakingModal: React.FunctionComponent<{
                 <SelectBox
                   selectedToken={selectedToken}
                   setSelectedToken={setSelectedToken}
-                  nonStakePositions={nonStakePositions}
+                  unstakedPositions={unstakedPositions}
                 />
               )}
               <div
                 className={`modal__button${
-                  nonStakePositions.length === 0
+                  unstakedPositions.length === 0
                     ? '--disable'
                     : selectedToken.id
                     ? ''
                     : '--disable'
                 }`}
                 onClick={() =>
-                  nonStakePositions.length === 0
+                  unstakedPositions.length === 0
                     ? ''
                     : selectedToken.id
                     ? lpStakingHandler()
