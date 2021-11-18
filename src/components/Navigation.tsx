@@ -1,41 +1,50 @@
-import { useState, useEffect, useRef } from 'react';
-import { Link, NavLink, useLocation, useParams } from 'react-router-dom';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
-import { useTranslation } from 'react-i18next';
 import NavigationType from 'src/enums/NavigationType';
-import InstallMetamask from './InstallMetamask';
-import Wallet from './Wallet';
+import Wallet from 'src/components/Wallet';
+import InstallMetamask from 'src/components/InstallMetamask';
+import { INavigation, navigationLink } from 'src/core/data/navigationLink'
+import { useTranslation } from 'react-i18next';
+
 
 const Navigation = () => {
   const [hover, setHover] = useState(0);
   const [showLocalNavigation, setLocalNavigation] = useState(0);
   const [isLocalNavigationShowing, setLocalNavigationShowing] = useState(false);
-  const { t } = useTranslation();
-  const { lng } = useParams<{ lng: string }>();
-  const location = useLocation();
   const navigationRef = useRef<HTMLDivElement>(null);
   const localNavigationRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
+
+  const location = useLocation();
+
+  const [GNBBoldIndex, setGNBBoldIndex] = useState(0)
+
+  const [LNBBoldIndex, setLNBBoldIndex] = useState(0)
 
   const [scrolling, setScrolling] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
 
-  const initialState = () => {
+  const initialNavigationState = () => {
     setLocalNavigationShowing(false);
     setLocalNavigation(0)
     setHover(0)
+    setGNBBoldIndex(0)
+    setLNBBoldIndex(0)
+  }
+  const setMediaQueryMetamask = (ref: "mobile" | "pc") => {
+    return (
+      <div className={`navigation__wallet__container ${ref === "mobile" ? "mobile-only" : "pc-only"}`}>
+        {window.ethereum?.isMetaMask ? <Wallet /> : <InstallMetamask />}
+      </div>
+    )
   }
 
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent): void {
-      if (navigationRef.current && !navigationRef.current.contains(e.target as Node)) {
-        initialState()
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [])
+  const currentPage = useMemo(() => {
+    return navigationLink.filter(
+      (nav) => location.pathname.split('/')[2] === nav.location.split('/')[1]
+    )
+  }, [location])
 
   function setScrollTrigger () {
     function onScroll() {
@@ -52,44 +61,24 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }
 
-  useEffect(() => {
-    setScrollTrigger()
-  }, [scrollTop]);
-
-  const setMediaQueryMetamask = (ref: "mobile" | "pc") => {
-    return (
-      <div className={`navigation__wallet__container ${ref === "mobile" ? "mobile-only" : "pc-only"}`}>
-        {window.ethereum?.isMetaMask ? <Wallet /> : <InstallMetamask />}
-      </div>
-    )
-  }
-
-  const setNavigation = (data: any, index: number) => {
-    const innerNavigationContainer = () => {
+  const setNavigation = (data: INavigation, index: number) => {
+    const innerNavigationContainer = (_data: INavigation, _index?: number) => {
       return (
         <div className="navigation__link__wrapper">
           <div
             className="navigation__link"
             onMouseEnter={() => setHover(index + 1)}
           >
-            {data[2].toUpperCase()}
-            <NavLink
-              to={data[1]}
+            {t(_data.i18nKeyword).toUpperCase()}
+            <div
               className={`navigation__link__under-line${
                 (hover || showLocalNavigation) === index + 1 ? ' hover' : ' blur'
               }`}
               style={{
-                opacity: 0,
-                width: 0,
-                left: -20,
-              }}
-              activeStyle={{
-                opacity: 1,
-                width: '100%',
-                left: 0,
-              }}
-              exact
-            />
+                opacity: (hover || showLocalNavigation) === index + 1 ? 1 : 0,
+                width: (hover || showLocalNavigation) === index + 1 ? "100%" : 0,
+                left: (hover || showLocalNavigation) === index + 1 ? 0 : -20,
+              }}/>
           </div>
         </div>
       )
@@ -105,64 +94,42 @@ const Navigation = () => {
             isLocalNavigationShowing ? null : setLocalNavigation(index + 1)
           }}
         >
-          {innerNavigationContainer()}
+          {innerNavigationContainer(data)}
         </div>
       )
     }
-    const hrefNavigation = () => {
+    const linkNavigation = (_data: INavigation, navPosition: "global" | "local", isExternalLink?: boolean) => {
       return (
         <a 
-          href={data[1]} 
-          target="_blank"
+          href={_data.location}
           onMouseEnter={() => {
+            navPosition === "global" ? setGNBBoldIndex(index + 1) : setLNBBoldIndex(index + 1)
             isLocalNavigationShowing ? null : setLocalNavigation(0)
           }}
+          onMouseLeave={() => {
+            
+          }}
+          onClick={() => {
+            initialNavigationState()
+          }}
         >
-          {innerNavigationContainer()}
+          {innerNavigationContainer(data)}
         </a>
       )
     }
-    const linkNavigation = () => {
-      return (
-        <NavLink
-          to={data[1]}
-          key={index}
-          activeClassName="bold"
-          exact
-          onMouseEnter={() => {
-            isLocalNavigationShowing ? null : setLocalNavigation(0)
-          }}
-          onClick={() => {
-            setLocalNavigationShowing(false)
-            setLocalNavigation(0)
-          }}>
-          {innerNavigationContainer()}
-        </NavLink>
-      )
-    }
     return (
-      data[0] === NavigationType.Link ?
-      linkNavigation() :
-      data[0] === NavigationType.Href ?
-      hrefNavigation() :
+      data.type === NavigationType.Link ?
+      linkNavigation(data, "global", false) :
+      data.type === NavigationType.Href ?
+      linkNavigation(data, "global", true) :
       LNBNavigation()
     )
   }
   
-  const navigationLink = () => {
-    const navigationLinkArray = [
-      [NavigationType.Link, `/${lng}/dashboard`, "Deposit"],
-      [NavigationType.Link, `/${lng}/governance`, "Governance"],
-      [NavigationType.LNB,  `/${lng}/staking`, "Staking"],
-      [NavigationType.LNB,  '', "Docs"],
-      [NavigationType.Link, `/${lng}/guide`, "Guide"],
-      [NavigationType.Href, `https://info.uniswap.org/#/pools/0xbde484db131bd2ae80e44a57f865c1dfebb7e31f`, "Uniswap(ELFI)"]
-    ]
-
-    
+  const setNavigationLink = () => {
     return (
       <div className="navigation__link__container">
-        {navigationLinkArray.map((data, index) => {
+        {navigationLink.map((data, index) => {
           return (
             setNavigation(data, index)
           );
@@ -172,54 +139,23 @@ const Navigation = () => {
   }
 
   const localNavigation = () => {
-    const stakingArray = [
-      [`/${lng}/staking/EL`, t('navigation.ELStake')],
-      [`/${lng}/staking/ELFI`, t('navigation.ELFIStake')],
-      [`/${lng}/staking/LP`, t('staking.token_staking', { stakedToken: 'LP' })]
-    ]
-    const docsArray = [
-      [`https://elysia.gitbook.io/elysia.finance/`, "ELYFI Docs"],
-      [`/${lng}/governance`, "Governance FAQ"]
-    ]
-    const [boldIndex, setBoldIndex] = useState(0)
-    const linkLocalNavigation = (data: string[], index: number) => {
-      return (
-        <NavLink
-          to={data[0]}
-          exact
-          onMouseEnter={() => {
-            setBoldIndex(index + 1)
-          }}
-          onMouseLeave={() => {
-            setBoldIndex(0)
-          }}
-          onClick={() => {
-            setLocalNavigationShowing(false)
-            setLocalNavigation(0)
-          }}>
-          <p className={`${index + 1 === boldIndex ? "bold" : ""}`}>
-            {data[1].toUpperCase()}
-          </p>
-        </NavLink>
-      )
-    }
-    const hrefLocalNavigation = (data: string[], index: number) => {
+    // To do : 스테이킹 뒤 주소 값을 아예 파라미터로 넘겨주기
+    const hrefLocalNavigation = (data: INavigation) => {
       return (
         <a 
-          href={data[0]} 
-          target="_blank" 
+          href={data.location}
           onMouseEnter={() => {
-            setBoldIndex(index + 1)
+            // setBoldIndex(index + 1)
           }}
           onMouseLeave={() => {
-            setBoldIndex(0)
+            // setBoldIndex(0)
           }}
           onClick={() => {
-            initialState()
+            initialNavigationState()
           }}
         >
-          <p className={`${index + 1 === boldIndex ? "bold" : ""}`}>
-            {data[1].toUpperCase()}
+          <p className={`${data.id === 1 ? "bold" : ""}`}>
+            {data.i18nKeyword.toUpperCase()}
           </p>
         </a>
       )
@@ -233,18 +169,33 @@ const Navigation = () => {
         }}
       >
         {
-          (showLocalNavigation === 3 ? stakingArray :
-          showLocalNavigation === 4 ? docsArray : [])
-          .map((data, index) => {
+          navigationLink.filter((nav) => 
+            nav.type === NavigationType.LNB
+          ).map((data) => {
             return (
-              showLocalNavigation === 3 ? linkLocalNavigation(data, index) :
-              showLocalNavigation === 4 ? hrefLocalNavigation(data, index) : undefined
+              hrefLocalNavigation(data)
             )
           })
         }
       </div>
     )
   }
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent): void {
+      if (navigationRef.current && !navigationRef.current.contains(e.target as Node)) {
+        initialNavigationState()
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [])
+  
+  useEffect(() => {
+    setScrollTrigger()
+  }, [scrollTop]);
 
   return (
     <>
@@ -271,7 +222,7 @@ const Navigation = () => {
               </Link>
               {setMediaQueryMetamask("mobile")}
             </div>
-            {navigationLink()}
+            {setNavigationLink()}
           </div>
           {setMediaQueryMetamask("pc")}
         </div>
