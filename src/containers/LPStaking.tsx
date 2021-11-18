@@ -5,7 +5,7 @@ import {
   useContext,
   useState,
   useCallback,
-  FunctionComponent,
+  ReactElement,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from 'src/components/Header';
@@ -31,7 +31,7 @@ import useExpectedReward from 'src/hooks/useExpectedReward';
 import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
 
-const LPStaking: FunctionComponent = () => {
+function LPStaking(): ReactElement {
   const { account, library } = useWeb3React();
   const { t } = useTranslation();
   const { txType, txWaiting } = useContext(TxContext);
@@ -319,6 +319,6 @@ const LPStaking: FunctionComponent = () => {
       </section>
     </>
   );
-};
+}
 
 export default LPStaking;
