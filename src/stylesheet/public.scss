@@ -92,7 +92,7 @@ span {
       justify-content: center;
       backdrop-filter: blur(10px);
       transition: backdrop-filter 50ms ease-in-out 0s;
-      > p {
+      > a > p {
         margin: 0 25px;
         color: #fff;
       }

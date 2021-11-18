@@ -14,16 +14,21 @@ const Navigation = () => {
   const { lng } = useParams<{ lng: string }>();
   const location = useLocation();
   const navigationRef = useRef<HTMLDivElement>(null);
+  const localNavigationRef = useRef<HTMLDivElement>(null);
 
   const [scrolling, setScrolling] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
 
+  const initialState = () => {
+    setLocalNavigationShowing(false);
+    setLocalNavigation(0)
+    setHover(0)
+  }
+
   useEffect(() => {
     function handleClickOutside(e: MouseEvent): void {
       if (navigationRef.current && !navigationRef.current.contains(e.target as Node)) {
-        setLocalNavigationShowing(false);
-        setLocalNavigation(0)
-        setHover(0)
+        initialState()
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -59,7 +64,6 @@ const Navigation = () => {
     )
   }
 
-
   const setNavigation = (data: any, index: number) => {
     const innerNavigationContainer = () => {
       return (
@@ -67,7 +71,7 @@ const Navigation = () => {
           <div
             className="navigation__link"
             onMouseEnter={() => setHover(index + 1)}
-            onMouseLeave={() => setHover(0)}>
+          >
             {data[2].toUpperCase()}
             <NavLink
               to={data[1]}
@@ -93,10 +97,12 @@ const Navigation = () => {
     const LNBNavigation = () => {
       return (
         <div 
-          onClick={() => setLocalNavigationShowing(true)}
-          onMouseEnter={() => setLocalNavigation(index + 1)}
-          onMouseLeave={() => {
-            isLocalNavigationShowing ? null : setLocalNavigation(0)
+          onClick={() => {
+            setLocalNavigationShowing(true)
+            setLocalNavigation(index + 1)
+          }}
+          onMouseEnter={() => {
+            isLocalNavigationShowing ? null : setLocalNavigation(index + 1)
           }}
         >
           {innerNavigationContainer()}
@@ -105,7 +111,13 @@ const Navigation = () => {
     }
     const hrefNavigation = () => {
       return (
-        <a href={data[1]} target="_blank">
+        <a 
+          href={data[1]} 
+          target="_blank"
+          onMouseEnter={() => {
+            isLocalNavigationShowing ? null : setLocalNavigation(0)
+          }}
+        >
           {innerNavigationContainer()}
         </a>
       )
@@ -116,7 +128,14 @@ const Navigation = () => {
           to={data[1]}
           key={index}
           activeClassName="bold"
-          exact>
+          exact
+          onMouseEnter={() => {
+            isLocalNavigationShowing ? null : setLocalNavigation(0)
+          }}
+          onClick={() => {
+            setLocalNavigationShowing(false)
+            setLocalNavigation(0)
+          }}>
           {innerNavigationContainer()}
         </NavLink>
       )
@@ -134,7 +153,7 @@ const Navigation = () => {
     const navigationLinkArray = [
       [NavigationType.Link, `/${lng}/dashboard`, "Deposit"],
       [NavigationType.Link, `/${lng}/governance`, "Governance"],
-      [NavigationType.LNB,  ``, "Staking"],
+      [NavigationType.LNB,  `/${lng}/staking`, "Staking"],
       [NavigationType.LNB,  '', "Docs"],
       [NavigationType.Link, `/${lng}/guide`, "Guide"],
       [NavigationType.Href, `https://info.uniswap.org/#/pools/0xbde484db131bd2ae80e44a57f865c1dfebb7e31f`, "Uniswap(ELFI)"]
@@ -160,23 +179,66 @@ const Navigation = () => {
     ]
     const docsArray = [
       [`https://elysia.gitbook.io/elysia.finance/`, "ELYFI Docs"],
-      [`https://www.naver.com`, "Governance FAQ"]
+      [`/${lng}/governance`, "Governance FAQ"]
     ]
+    const [boldIndex, setBoldIndex] = useState(0)
+    const linkLocalNavigation = (data: string[], index: number) => {
+      return (
+        <NavLink
+          to={data[0]}
+          exact
+          onMouseEnter={() => {
+            setBoldIndex(index + 1)
+          }}
+          onMouseLeave={() => {
+            setBoldIndex(0)
+          }}
+          onClick={() => {
+            setLocalNavigationShowing(false)
+            setLocalNavigation(0)
+          }}>
+          <p className={`${index + 1 === boldIndex ? "bold" : ""}`}>
+            {data[1].toUpperCase()}
+          </p>
+        </NavLink>
+      )
+    }
+    const hrefLocalNavigation = (data: string[], index: number) => {
+      return (
+        <a 
+          href={data[0]} 
+          target="_blank" 
+          onMouseEnter={() => {
+            setBoldIndex(index + 1)
+          }}
+          onMouseLeave={() => {
+            setBoldIndex(0)
+          }}
+          onClick={() => {
+            initialState()
+          }}
+        >
+          <p className={`${index + 1 === boldIndex ? "bold" : ""}`}>
+            {data[1].toUpperCase()}
+          </p>
+        </a>
+      )
+    }
     return (
-      <div className="navigation__bottom" style={{
-        backgroundColor: scrollTop > 125 ? '#10101077' : '#000000',
-        display: (showLocalNavigation || isLocalNavigationShowing) ? "flex" : "none"
-      }}>
+      <div className="navigation__bottom" 
+        ref={localNavigationRef}
+        style={{
+          backgroundColor: scrollTop > 125 ? '#10101077' : '#000000',
+          display: (showLocalNavigation || isLocalNavigationShowing) ? "flex" : "none"
+        }}
+      >
         {
           (showLocalNavigation === 3 ? stakingArray :
           showLocalNavigation === 4 ? docsArray : [])
-          .map((data) => {
+          .map((data, index) => {
             return (
-              <>
-                <p>
-                  {data[1].toUpperCase()}
-                </p>
-              </>
+              showLocalNavigation === 3 ? linkLocalNavigation(data, index) :
+              showLocalNavigation === 4 ? hrefLocalNavigation(data, index) : undefined
             )
           })
         }
@@ -190,6 +252,10 @@ const Navigation = () => {
         className="navigation"
         style={{ backgroundColor: scrollTop > 125 ? '#10101077' : '#101010' }}
         ref={navigationRef}  
+        onMouseLeave={() => {
+          setHover(0)
+          isLocalNavigationShowing ? null : setLocalNavigation(0)
+        }}
       >
         <div className="navigation__container">
           <div className="navigation__wrapper">
