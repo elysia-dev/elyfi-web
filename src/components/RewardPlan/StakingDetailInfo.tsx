@@ -3,7 +3,7 @@ import { FunctionComponent } from 'react';
 import CountUp from 'react-countup';
 import { useTranslation } from 'react-i18next';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
-import { formatCommaSmall, formatCommaSubSmall } from 'src/utiles/formatters';
+import { formatCommaSmallFourDisits } from 'src/utiles/formatters';
 
 type Props = {
   nth: string;
@@ -134,7 +134,7 @@ const StakingDetailInfo: FunctionComponent<Props> = (props: Props) => {
             end={isDai ? end : miningEnd!}
             decimals={4}
             duration={1}
-            formattingFn={(number) => formatCommaSubSmall(number)}
+            formattingFn={(number) => formatCommaSmallFourDisits(number)}
           />
           {` ${unit}`}
         </p>
@@ -164,7 +164,7 @@ const StakingDetailInfo: FunctionComponent<Props> = (props: Props) => {
             }
             decimals={4}
             duration={1}
-            formattingFn={(number) => formatCommaSubSmall(number)}
+            formattingFn={(number) => formatCommaSmallFourDisits(number)}
           />
           {` ${unit}`}
         </p>

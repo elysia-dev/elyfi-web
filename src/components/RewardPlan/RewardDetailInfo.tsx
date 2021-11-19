@@ -2,7 +2,7 @@ import { BigNumber } from 'ethers';
 import { FunctionComponent, ReactElement } from 'react';
 import CountUp from 'react-countup';
 import { useTranslation } from 'react-i18next';
-import { formatCommaSubSmall } from 'src/utiles/formatters';
+import { formatCommaSmallFourDisits } from 'src/utiles/formatters';
 
 type Props = {
   start: number;
@@ -41,7 +41,7 @@ const RewardDetailInfo: FunctionComponent<Props> = (props) => {
             end={props.end}
             decimals={4}
             duration={1}
-            formattingFn={(number) => formatCommaSubSmall(number)}
+            formattingFn={(number) => formatCommaSmallFourDisits(number)}
           />
           {` ${props.unit}`}
         </p>
@@ -59,7 +59,7 @@ const RewardDetailInfo: FunctionComponent<Props> = (props) => {
             end={props.miningEnd}
             decimals={4}
             duration={1}
-            formattingFn={(number) => formatCommaSubSmall(number)}
+            formattingFn={(number) => formatCommaSmallFourDisits(number)}
           />
           {` ${props.unit}`}
         </p>

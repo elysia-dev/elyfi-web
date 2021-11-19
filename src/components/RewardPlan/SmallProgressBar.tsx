@@ -2,7 +2,7 @@ import { BigNumber } from 'ethers';
 import { FunctionComponent, ReactElement } from 'react';
 import CountUp from 'react-countup';
 import { useTranslation } from 'react-i18next';
-import { formatCommaSmall, formatCommaSubSmall } from 'src/utiles/formatters';
+import { formatCommaSmallFourDisits } from 'src/utiles/formatters';
 
 type Props = {
   start: number;
@@ -66,7 +66,7 @@ const SmallProgressBar: FunctionComponent<Props> = (props) => {
             end={end}
             decimals={4}
             duration={1}
-            formattingFn={(number) => formatCommaSubSmall(number)}
+            formattingFn={(number) => formatCommaSmallFourDisits(number)}
           />
           {` ${unit}`}
         </p>
