@@ -7,6 +7,7 @@ import moment from 'moment';
 import Token from 'src/enums/Token';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import { DetailBoxProps } from 'src/core/types/LpStakingTypeProps';
+import { useWeb3React } from '@web3-react/core';
 import DetailBoxItemReceiveToken from './DetailBoxItemReceiveToken';
 import DetailBoxItemHeader from './DetailBoxItemHeader';
 import DetailBoxItemStaking from './DetailBoxItemStaking';
@@ -21,7 +22,7 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
     setModalAndSetStakeToken,
   } = props;
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
-
+  const { account } = useWeb3React();
   return (
     <>
       <div>
@@ -39,13 +40,15 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
               <DetailBoxItemStaking
                 tokens={tokens}
                 totalStakedLiquidity={
-                  formatDecimalFracionDigit(
-                    (tokens.token1 === Token.ETH
-                      ? pricePerEthLiquidity
-                      : pricePerDaiLiquidity) *
-                      parseFloat(utils.formatEther(totalStakedLiquidity)),
-                    2,
-                  ) || '0'
+                  account
+                    ? formatDecimalFracionDigit(
+                        (tokens.token1 === Token.ETH
+                          ? pricePerEthLiquidity
+                          : pricePerDaiLiquidity) *
+                          parseFloat(utils.formatEther(totalStakedLiquidity)),
+                        2,
+                      ) || '0'
+                    : '0'
                 }
                 setModalAndSetStakeToken={setModalAndSetStakeToken}
               />

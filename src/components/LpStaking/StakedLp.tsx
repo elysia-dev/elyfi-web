@@ -120,7 +120,7 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
             </div>
           </div>
         )}
-        {stakedPositions.length > 0 ? (
+        {stakedPositions.length > 0 && account ? (
           <div className="spoqa__bold total_expected_reward">
             <div>{t('lpstaking.staked_total_liquidity')}</div>
             <div className="total_expected_reward_amount">

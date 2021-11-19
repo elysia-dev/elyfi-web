@@ -1,3 +1,4 @@
+import { useWeb3React } from '@web3-react/core';
 import moment from 'moment';
 import { FunctionComponent } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +10,7 @@ import Button from './Button';
 const DetailBoxItemStaking: FunctionComponent<DetailBoxItemStakingProps> = (
   props,
 ) => {
+  const { account } = useWeb3React();
   const {
     tokens: { token0, token1 },
     totalStakedLiquidity,
@@ -57,7 +59,7 @@ const DetailBoxItemStaking: FunctionComponent<DetailBoxItemStakingProps> = (
             }}>
             {`$ `}
           </span>
-          {totalStakedLiquidity}
+          {account ? totalStakedLiquidity : 0}
         </div>
         <div
           style={{
@@ -65,7 +67,9 @@ const DetailBoxItemStaking: FunctionComponent<DetailBoxItemStakingProps> = (
           }}>
           <Button
             btnTitle={t('staking.staking')}
-            onHandler={() => isStakingDate && setModalAndSetStakeToken()}
+            onHandler={() =>
+              isStakingDate && account && setModalAndSetStakeToken()
+            }
             disabledBtn={
               isStakingDate
                 ? undefined
