@@ -21,5 +21,6 @@
   "lpTokenStakingEndTime": 1638005456,
   "stakerSubgraphURL": "https://api.studio.thegraph.com/query/862/lp-staking-rinkeby/v0.0.5",
   "lpTokenPoolSubgraphURL": "https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-v3-rinkeby",
-  "refundedAddress": "0x405bEF2743379b356F2176c68eBe83DE90811d01"
+  "refundedAddress": "0x405bEF2743379b356F2176c68eBe83DE90811d01",
+  "appURI": "https://elyfi-test.elysia.land"
 }
