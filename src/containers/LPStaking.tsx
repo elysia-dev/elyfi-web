@@ -78,14 +78,24 @@ function LPStaking(): JSX.Element {
     ethElfiliquidityForApr: constants.Zero,
     daiElfiliquidityForApr: constants.Zero,
   });
-  const staker = new ethers.Contract(
-    envs.stakerAddress,
-    stakerABI,
-    library.getSigner(),
-  );
 
   const getRewardToRecive = useCallback(async () => {
     try {
+      if (!account) {
+        setRewardToRecive({
+          ...rewardToReceive,
+          daiReward: 0,
+          ethReward: 0,
+          elfiReward: 0,
+        });
+        return;
+      }
+      const staker = new ethers.Contract(
+        envs.stakerAddress,
+        stakerABI,
+        library.getSigner(),
+      );
+
       setRewardToRecive({
         ...rewardToReceive,
         daiReward: parseFloat(
@@ -103,19 +113,21 @@ function LPStaking(): JSX.Element {
     } catch (error) {
       alert(error);
     }
-  }, [setRewardToRecive]);
+  }, [setRewardToRecive, account]);
 
   const getStakedPositions = useCallback(() => {
+    if (!account) return;
     StakerSubgraph.getPositionsByOwner(account!).then((res) => {
       setStakedPositions(res.data.data.positions);
     });
-  }, [stakedPositions]);
+  }, [stakedPositions, account]);
 
   const getWithoutStakePositions = useCallback(() => {
+    if (!account) return;
     LpTokenPoolSubgraph.getPositionsByOwner(account!).then((res) => {
       setUnstakedPositions(res.data.data.positions);
     });
-  }, [unstakedPositions]);
+  }, [unstakedPositions, account]);
 
   const getTotalLiquidity = useCallback(() => {
     setIsLoading(true);
@@ -166,7 +178,8 @@ function LPStaking(): JSX.Element {
   useEffect(() => {
     if (
       (txType === RecentActivityType.Deposit && !txWaiting) ||
-      stakedPositions.length === 0
+      stakedPositions.length === 0 ||
+      account
     ) {
       getStakedPositions();
     }
@@ -177,7 +190,7 @@ function LPStaking(): JSX.Element {
     getWithoutStakePositions();
     getRewardToRecive();
     getTotalLiquidity();
-  }, [txWaiting]);
+  }, [txWaiting, account]);
 
   useEffect(() => {
     if (txType === RecentActivityType.Withdraw && !txWaiting) {
@@ -188,11 +201,11 @@ function LPStaking(): JSX.Element {
       );
       setUnstakeTokenId(0);
     }
-  }, [txType, txWaiting]);
+  }, [txType, txWaiting, account]);
 
   useEffect(() => {
     setExpecteReward(stakedPositions);
-  }, [stakedPositions]);
+  }, [stakedPositions, account]);
 
   useEffect(() => {
     setTotalExpectedReward({
@@ -213,6 +226,7 @@ function LPStaking(): JSX.Element {
         0,
       ),
     });
+    if (expectedReward.length === 0) return;
     const inter = setInterval(() => {
       updateExpectedReward(
         stakedPositions,
@@ -221,7 +235,7 @@ function LPStaking(): JSX.Element {
       );
     }, 1000);
     return () => clearInterval(inter);
-  }, [expectedReward]);
+  }, [expectedReward, account]);
 
   return (
     <>
