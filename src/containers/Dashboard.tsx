@@ -76,9 +76,8 @@ const Dashboard: React.FunctionComponent = () => {
       };
     }),
   );
-  const [incentiveModalVisible, setIncentiveModalVisible] = useState<boolean>(
-    false,
-  );
+  const [incentiveModalVisible, setIncentiveModalVisible] =
+    useState<boolean>(false);
   const { data: userConnection, refetch: refetchUserData } = useQuery<GetUser>(
     GET_USER,
     { variables: { id: account?.toLocaleLowerCase() } },
