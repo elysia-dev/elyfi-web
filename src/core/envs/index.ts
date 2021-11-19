@@ -25,6 +25,7 @@ interface EnvironmentVariables {
   stakerSubgraphURL: string;
   lpTokenPoolSubgraphURL: string;
   refundedAddress: string;
+  appURI: string;
 }
 
 const vars =
