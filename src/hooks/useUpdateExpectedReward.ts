@@ -26,19 +26,18 @@ function useExpectedReward(): {
     daiPoolTotalLiquidity: number,
   ) => void;
 } {
-  const { library } = useWeb3React();
+  const { account, library } = useWeb3React();
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const [expectedReward, setExpectedReward] = useState<ExpectedRewardTypes[]>(
     [],
   );
 
-  const staker = new ethers.Contract(
-    envs.stakerAddress,
-    stakerABI,
-    library.getSigner(),
-  );
-
   const getReward = async (position: Position) => {
+    const staker = new ethers.Contract(
+      envs.stakerAddress,
+      stakerABI,
+      library.getSigner(),
+    );
     const isEthPoolAddress = isEthElfiPoolAddress(position);
     const { poolAddress, rewardTokenAddress } = getAddressesByPool(position);
 
@@ -82,6 +81,7 @@ function useExpectedReward(): {
         daiReward: number;
         tokenId: number;
       }[] = [];
+      if (!account) return;
       const reward = positions.map(async (position, idx) => {
         allReward.push(await getReward(position));
       });
@@ -91,7 +91,7 @@ function useExpectedReward(): {
         setExpectedReward(allReward);
       });
     },
-    [expectedReward],
+    [expectedReward, account],
   );
 
   const updateExpectedReward = (
@@ -123,7 +123,6 @@ function useExpectedReward(): {
       const totalLiquidity = isEthElfiPoolAddress
         ? ethPoolTotalLiquidity
         : daiPoolTotalLiquidity;
-
       allReward.push({
         beforeElfiReward: expectedReward[idx].elfiReward,
         elfiReward: calcLpExpectedReward(
