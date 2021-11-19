@@ -16,7 +16,6 @@
       "dashboard": "대시보드",
       "governance": "거버넌스",
       "staking": "스테이킹",
-      "token_staking": "{{token}} 스테이킹",
       "docs": "문서",
       "elyfi_docs": "엘리파이 백서",
       "governance_docs": "거버넌스 문서",
@@ -26,8 +25,6 @@
       "connect_wallet": "지갑 연결하기",
       "disconnect": "연결 끊기",
       "install_metamask": "Install Metamask",
-
-
 
       "deposit_withdraw": "예치/출금",
       "ELStake": "EL 스테이킹",

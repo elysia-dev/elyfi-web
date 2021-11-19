@@ -14,14 +14,22 @@
     },
     "navigation": {
       "dashboard": "DASHBOARD",
-      "real_assets": "Real Assets",
-      "partners": "PARTNERS",
+      "governance": "governance",
+      "staking": "staking",
+      "docs": "docs",
+      "elyfi_docs": "elyfi docs",
+      "governance_docs": "governance docs",
+      "guide": "guide",
+      "uniswap_elfi": "Uniswap(ELFI)",
+
       "connect_wallet": "Connect Wallet",
       "disconnect": "Disconnect",
       "install_metamask": "Install Metamask",
+
       "deposit_withdraw": "Deposit/Withdraw",
       "ELStake": "EL Staking",
-      "ELFIStake": "ELFI Staking"
+      "ELFIStake": "ELFI Staking",
+      "LPStake": "LP Staking"
     },
     "dashboard": {
       "deposits--header": "DEPOSITS",

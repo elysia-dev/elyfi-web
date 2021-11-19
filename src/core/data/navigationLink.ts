@@ -1,22 +1,23 @@
 import NavigationType from 'src/enums/NavigationType';
 
+export interface ISubNavigation {
+  type: NavigationType;
+  location: string;
+  i18nKeyword: string;
+}
 export interface INavigation {
   id: number;
   type: NavigationType;
   location: string;
   i18nKeyword: string;
-  subNavigation?: {
-    type: NavigationType;
-    location: string;
-    i18nKeyword: string;
-  }[]
+  subNavigation?: ISubNavigation[]
 }
 
 export const navigationLink: INavigation[] = [
   {
     id: 1,
     type: NavigationType.Link,
-    location: `/dashboard`,
+    location: "/dashboard",
     i18nKeyword: "navigation.dashboard"
   },
   {

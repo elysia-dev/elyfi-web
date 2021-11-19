@@ -1,36 +1,59 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
 import NavigationType from 'src/enums/NavigationType';
 import Wallet from 'src/components/Wallet';
 import InstallMetamask from 'src/components/InstallMetamask';
-import { INavigation, navigationLink } from 'src/core/data/navigationLink'
+import { INavigation, ISubNavigation, navigationLink } from 'src/core/data/navigationLink'
 import { useTranslation } from 'react-i18next';
 
+const InitialNavigation: INavigation[] = [
+  {
+    id: 0,
+    type: NavigationType.Link,
+    location: "/",
+    i18nKeyword: ""
+  }
+]
 
 const Navigation = () => {
-  const [hover, setHover] = useState(0);
-  const [showLocalNavigation, setLocalNavigation] = useState(0);
-  const [isLocalNavigationShowing, setLocalNavigationShowing] = useState(false);
+
+  // Hover Value
+  const [globalNavHover, setGlobalNavHover] = useState(0);
+  const [localNavHover, setLocalNavHover] = useState(0);
+
+  // Type.LNB Dropdown Nav Seleted
+  const [selectedLocalNavIndex, setSelectedLocalNavIndex] = useState(0);
+  const [isLocalNavPinned, setLocalNavPinned] = useState(false);
+
   const navigationRef = useRef<HTMLDivElement>(null);
   const localNavigationRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
+  const { lng } = useParams<{ lng: string }>();
 
   const location = useLocation();
-
-  const [GNBBoldIndex, setGNBBoldIndex] = useState(0)
-
-  const [LNBBoldIndex, setLNBBoldIndex] = useState(0)
 
   const [scrolling, setScrolling] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
 
   const initialNavigationState = () => {
-    setLocalNavigationShowing(false);
-    setLocalNavigation(0)
-    setHover(0)
-    setGNBBoldIndex(0)
-    setLNBBoldIndex(0)
+    setLocalNavPinned(false);
+    setSelectedLocalNavIndex(0)
+    setGlobalNavHover(0)
+    setLocalNavHover(0)
+  }
+  function setScrollTrigger () {
+    function onScroll() {
+      const currentPosition = window.pageYOffset;
+
+      (currentPosition > scrollTop) ? 
+        setScrolling(false) 
+        : 
+        setScrolling(true)
+      setScrollTop(currentPosition <= 0 ? 0 : currentPosition);
+    }
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
   }
   const setMediaQueryMetamask = (ref: "mobile" | "pc") => {
     return (
@@ -41,87 +64,146 @@ const Navigation = () => {
   }
 
   const currentPage = useMemo(() => {
-    return navigationLink.filter(
+    const getPath = navigationLink.filter(
       (nav) => location.pathname.split('/')[2] === nav.location.split('/')[1]
     )
+    return getPath.length === 0 ? 
+      InitialNavigation : 
+      getPath
   }, [location])
 
-  function setScrollTrigger () {
-    function onScroll() {
-      const currentPosition = window.pageYOffset;
+  const getLNBData = navigationLink.filter((nav) => nav.type === NavigationType.LNB);
+  const getHoveredLNBData = useMemo(() => {
+    return getLNBData.filter(
+      (subNav) => subNav.id === globalNavHover
+    )
+  }, [globalNavHover])
 
-      (currentPosition > scrollTop) ? 
-        setScrolling(false) 
-        : 
-        setScrolling(true)
-
-      setScrollTop(currentPosition <= 0 ? 0 : currentPosition);
-    }
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+  const requireBold = (_index: number) => {
+    return currentPage[0].id === _index + 1 ? true :
+      (globalNavHover || selectedLocalNavIndex) === _index + 1 ? true : 
+      false
+  }
+  const globalNavInnerContainer = (_data: INavigation, _index: number) => {
+    return (
+      <div className="navigation__link__wrapper">
+        <div
+          className="navigation__link"
+          onMouseEnter={() => {
+            setGlobalNavHover(_index + 1)
+          }}
+        >
+          {t(_data.i18nKeyword).toUpperCase()}
+          <div
+            className={`navigation__link__under-line${requireBold(_index) ? ' hover' : ' blur'
+            }`}
+            style={{
+              opacity: requireBold(_index) ? 1 : 0,
+              width: requireBold(_index) ? "100%" : 0,
+              left: requireBold(_index) ? 0 : -20,
+            }}/>
+        </div>
+      </div>
+    )
+  }
+  
+  const getLocalCurrentPath = (_data: ISubNavigation, _index: number) => {
+    if (localNavHover === _index + 1) return true;
+    if (currentPage[0].subNavigation !== undefined) {
+      const arr = currentPage[0].subNavigation.filter((subNav) => {
+        return subNav.location === `/${location.pathname.split('/')[2]}/${location.pathname.split('/')[3]}`
+      })
+      return arr[0].location === _data.location ? true : 
+      false
+    } return false; 
+  }
+  const localNavInnerContainer = (_data: ISubNavigation, _index: number) => {
+    return (
+      <div className="navigation__link__wrapper">
+        <div
+          className="navigation__link"
+          onMouseEnter={() => {
+            setLocalNavHover(_index + 1)
+          }}
+        >
+          {t(_data.i18nKeyword).toUpperCase()}
+          <div
+            className={`navigation__link__under-line${getLocalCurrentPath(_data, _index) ? ' hover' : ' blur'
+            }`}
+            style={{
+              opacity: getLocalCurrentPath(_data, _index) ? 1 : 0,
+              width: getLocalCurrentPath(_data, _index) ? "100%" : 0,
+              left: getLocalCurrentPath(_data, _index) ? 0 : -20,
+            }}/>
+        </div>
+      </div>
+    )
   }
 
+  const linkNavigation = (_data: INavigation | ISubNavigation, navPosition: "global" | "local", _index: number, isExternalLink?: boolean) => {
+    return (
+      <a 
+        href={
+          !isExternalLink ?
+          `/${lng + _data.location}` :
+          isExternalLink ?
+          _data.location :
+          undefined
+        }
+        target={
+          isExternalLink ? "_blank" : undefined
+        }
+        onMouseEnter={() => {
+          navPosition === "global" ? 
+            setGlobalNavHover(_index + 1) : 
+            setLocalNavHover(_index + 1)
+          
+          navPosition === "global" ?
+            isLocalNavPinned ?
+              null :
+              setSelectedLocalNavIndex(0)
+            :
+            null
+        }}
+        onClick={() => {
+          initialNavigationState()
+        }}
+      >
+        {
+          navPosition === "global" ? 
+          globalNavInnerContainer(_data as INavigation, _index) :
+          navPosition === "local" ?
+          localNavInnerContainer(_data as ISubNavigation, _index) :
+          undefined
+        }
+      </a>
+    )
+  }
+
+
   const setNavigation = (data: INavigation, index: number) => {
-    const innerNavigationContainer = (_data: INavigation, _index?: number) => {
-      return (
-        <div className="navigation__link__wrapper">
-          <div
-            className="navigation__link"
-            onMouseEnter={() => setHover(index + 1)}
-          >
-            {t(_data.i18nKeyword).toUpperCase()}
-            <div
-              className={`navigation__link__under-line${
-                (hover || showLocalNavigation) === index + 1 ? ' hover' : ' blur'
-              }`}
-              style={{
-                opacity: (hover || showLocalNavigation) === index + 1 ? 1 : 0,
-                width: (hover || showLocalNavigation) === index + 1 ? "100%" : 0,
-                left: (hover || showLocalNavigation) === index + 1 ? 0 : -20,
-              }}/>
-          </div>
-        </div>
-      )
-    }
     const LNBNavigation = () => {
       return (
         <div 
           onClick={() => {
-            setLocalNavigationShowing(true)
-            setLocalNavigation(index + 1)
+            setLocalNavPinned(true)
+            setSelectedLocalNavIndex(index + 1)
           }}
           onMouseEnter={() => {
-            isLocalNavigationShowing ? null : setLocalNavigation(index + 1)
+            setLocalNavHover(0);
+            setSelectedLocalNavIndex(index + 1)
           }}
         >
-          {innerNavigationContainer(data)}
+          {globalNavInnerContainer(data, index)}
         </div>
       )
     }
-    const linkNavigation = (_data: INavigation, navPosition: "global" | "local", isExternalLink?: boolean) => {
-      return (
-        <a 
-          href={_data.location}
-          onMouseEnter={() => {
-            navPosition === "global" ? setGNBBoldIndex(index + 1) : setLNBBoldIndex(index + 1)
-            isLocalNavigationShowing ? null : setLocalNavigation(0)
-          }}
-          onMouseLeave={() => {
-            
-          }}
-          onClick={() => {
-            initialNavigationState()
-          }}
-        >
-          {innerNavigationContainer(data)}
-        </a>
-      )
-    }
+    
     return (
       data.type === NavigationType.Link ?
-      linkNavigation(data, "global", false) :
+      linkNavigation(data, "global", index, false) :
       data.type === NavigationType.Href ?
-      linkNavigation(data, "global", true) :
+      linkNavigation(data, "global", index, true) :
       LNBNavigation()
     )
   }
@@ -139,42 +221,19 @@ const Navigation = () => {
   }
 
   const localNavigation = () => {
-    // To do : 스테이킹 뒤 주소 값을 아예 파라미터로 넘겨주기
-    const hrefLocalNavigation = (data: INavigation) => {
-      return (
-        <a 
-          href={data.location}
-          onMouseEnter={() => {
-            // setBoldIndex(index + 1)
-          }}
-          onMouseLeave={() => {
-            // setBoldIndex(0)
-          }}
-          onClick={() => {
-            initialNavigationState()
-          }}
-        >
-          <p className={`${data.id === 1 ? "bold" : ""}`}>
-            {data.i18nKeyword.toUpperCase()}
-          </p>
-        </a>
-      )
-    }
     return (
       <div className="navigation__bottom" 
         ref={localNavigationRef}
         style={{
           backgroundColor: scrollTop > 125 ? '#10101077' : '#000000',
-          display: (showLocalNavigation || isLocalNavigationShowing) ? "flex" : "none"
+          display: (selectedLocalNavIndex || isLocalNavPinned) ? "flex" : "none"
         }}
       >
         {
-          navigationLink.filter((nav) => 
-            nav.type === NavigationType.LNB
-          ).map((data) => {
-            return (
-              hrefLocalNavigation(data)
-            )
+          getHoveredLNBData.map((getData) => {
+            return getData.subNavigation!.map((subData, index) => {
+              return linkNavigation(subData, "local", index, false)
+            })
           })
         }
       </div>
@@ -204,14 +263,15 @@ const Navigation = () => {
         style={{ backgroundColor: scrollTop > 125 ? '#10101077' : '#101010' }}
         ref={navigationRef}  
         onMouseLeave={() => {
-          setHover(0)
-          isLocalNavigationShowing ? null : setLocalNavigation(0)
+          setGlobalNavHover(0)
+          setLocalNavHover(0)
+          isLocalNavPinned ? null : setSelectedLocalNavIndex(0)
         }}
       >
         <div className="navigation__container">
           <div className="navigation__wrapper">
             <div>
-              <Link to="/">
+              <Link to={`/${lng}`}>
                 <div className="logo-wrapper" style={{ cursor: 'pointer' }}>
                   <img
                     src={ElysiaLogo}
