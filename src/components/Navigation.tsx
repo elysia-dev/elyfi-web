@@ -17,7 +17,6 @@ const InitialNavigation: INavigation[] = [
 ]
 
 const Navigation = () => {
-
   // Hover Value
   const [globalNavHover, setGlobalNavHover] = useState(0);
   const [localNavHover, setLocalNavHover] = useState(0);
@@ -57,7 +56,13 @@ const Navigation = () => {
   }
   const setMediaQueryMetamask = (ref: "mobile" | "pc") => {
     return (
-      <div className={`navigation__wallet__container ${ref === "mobile" ? "mobile-only" : "pc-only"}`}>
+      <div className={`navigation__wallet__container ${ref === "mobile" ? "mobile-only" : "pc-only"}`} 
+        onMouseEnter={() => {
+          setGlobalNavHover(0)
+          setLocalNavHover(0)
+          isLocalNavPinned ? null : setSelectedLocalNavIndex(0)
+        }}
+      >
         {window.ethereum?.isMetaMask ? <Wallet /> : <InstallMetamask />}
       </div>
     )
@@ -79,11 +84,12 @@ const Navigation = () => {
     )
   }, [globalNavHover])
 
-  const requireBold = (_index: number) => {
+  const isBold = (_index: number) => {
     return currentPage[0].id === _index + 1 ? true :
       (globalNavHover || selectedLocalNavIndex) === _index + 1 ? true : 
       false
   }
+
   const globalNavInnerContainer = (_data: INavigation, _index: number) => {
     return (
       <div className="navigation__link__wrapper">
@@ -95,12 +101,12 @@ const Navigation = () => {
         >
           {t(_data.i18nKeyword).toUpperCase()}
           <div
-            className={`navigation__link__under-line${requireBold(_index) ? ' hover' : ' blur'
+            className={`navigation__link__under-line${isBold(_index) ? ' hover' : ' blur'
             }`}
             style={{
-              opacity: requireBold(_index) ? 1 : 0,
-              width: requireBold(_index) ? "100%" : 0,
-              left: requireBold(_index) ? 0 : -20,
+              opacity: isBold(_index) ? 1 : 0,
+              width: isBold(_index) ? "100%" : 0,
+              left: isBold(_index) ? 0 : -20,
             }}/>
         </div>
       </div>
@@ -210,7 +216,7 @@ const Navigation = () => {
   
   const setNavigationLink = () => {
     return (
-      <div className="navigation__link__container">
+      <div className="navigation__link__container pc-only tablet-only">
         {navigationLink.map((data, index) => {
           return (
             setNavigation(data, index)
@@ -256,6 +262,7 @@ const Navigation = () => {
     setScrollTrigger()
   }, [scrollTop]);
 
+
   return (
     <>
       <nav
@@ -271,7 +278,11 @@ const Navigation = () => {
         <div className="navigation__container">
           <div className="navigation__wrapper">
             <div>
-              <Link to={`/${lng}`}>
+              <Link to={`/${lng}`} onMouseEnter={() => {
+                setGlobalNavHover(0)
+                setLocalNavHover(0)
+                isLocalNavPinned ? null : setSelectedLocalNavIndex(0)
+              }}>
                 <div className="logo-wrapper" style={{ cursor: 'pointer' }}>
                   <img
                     src={ElysiaLogo}
