@@ -1,14 +1,10 @@
 import { FunctionComponent } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import envs from 'src/core/envs';
+import { tokenTypes } from 'src/core/types/LpStakingTypeProps';
 import Guide from '../Guide';
 
-type Props = {
-  token0: string;
-  token1: string;
-};
-
-const DetailBoxItemReceiveToken: FunctionComponent<Props> = (props) => {
+const DetailBoxItemReceiveToken: FunctionComponent<tokenTypes> = (props) => {
   const { token0, token1 } = props;
   const { t } = useTranslation();
 

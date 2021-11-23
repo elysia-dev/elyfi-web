@@ -1,24 +1,24 @@
 import { useContext, useEffect, useState } from 'react';
-import envs from 'src/core/envs';
 import { useTranslation } from 'react-i18next';
 import useWatingTx from 'src/hooks/useWaitingTx';
 import LoadingIndicator from 'src/components/LoadingIndicator';
-import Token from 'src/enums/Token';
 import TxContext from 'src/contexts/TxContext';
 import elfi from 'src/assets/images/ELFI.png';
-import eth from 'src/assets/images/eth-color.png';
-import dai from 'src/assets/images/dai.png';
 import SelectBox from 'src/components/SelectBox';
-import { TokenInfo } from 'src/core/types/Position';
 import useLpStaking from 'src/hooks/useLpStaking';
+import { LpStakingModalProps } from 'src/core/types/LpStakingTypeProps';
 
-const StakingModal: React.FunctionComponent<{
-  visible: boolean;
-  closeHandler: () => void;
-  token0: string;
-  token1?: Token.DAI | Token.ETH;
-  nonStakePositions: TokenInfo[];
-}> = ({ visible, closeHandler, token0, token1, nonStakePositions }) => {
+const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
+  const {
+    visible,
+    closeHandler,
+    token0,
+    token1,
+    unstakedPositions,
+    tokenImg,
+    stakingPoolAddress,
+    rewardTokenAddress,
+  } = props;
   const { t } = useTranslation();
   const [stakingMode, setStakingMode] = useState<boolean>(true);
   const { txWaiting } = useContext(TxContext);
@@ -34,15 +34,9 @@ const StakingModal: React.FunctionComponent<{
     selectBoxTitle: t('lpstaking.lp_staking_modal_default'),
   });
 
-  const secondImg = token1 === Token.ETH ? eth : dai;
-  const stakingPoolAdress =
-    token1 === Token.ETH ? envs.ethElfiPoolAddress : envs.daiElfiPoolAddress;
-  const rewardTokenAddress =
-    token1 === Token.ETH ? envs.wEthAddress : envs.daiAddress;
-
   const lpStakingHandler = async () => {
     try {
-      staking(stakingPoolAdress, rewardTokenAddress, selectedToken.id);
+      staking(stakingPoolAddress, rewardTokenAddress, selectedToken.id);
     } catch (error) {
       alert(error);
     } finally {
@@ -75,8 +69,8 @@ const StakingModal: React.FunctionComponent<{
               }}
             />
             <img
-              src={secondImg}
-              alt={secondImg}
+              src={tokenImg}
+              alt={tokenImg}
               style={{
                 width: 41,
                 height: 41,
@@ -124,7 +118,7 @@ const StakingModal: React.FunctionComponent<{
         ) : (
           <div className="modal__body">
             <div>
-              {nonStakePositions.length === 0 ? (
+              {unstakedPositions.length === 0 ? (
                 <div
                   className="spoqa"
                   style={{
@@ -140,19 +134,19 @@ const StakingModal: React.FunctionComponent<{
                 <SelectBox
                   selectedToken={selectedToken}
                   setSelectedToken={setSelectedToken}
-                  nonStakePositions={nonStakePositions}
+                  unstakedPositions={unstakedPositions}
                 />
               )}
               <div
                 className={`modal__button${
-                  nonStakePositions.length === 0
+                  unstakedPositions.length === 0
                     ? '--disable'
                     : selectedToken.id
                     ? ''
                     : '--disable'
                 }`}
                 onClick={() =>
-                  nonStakePositions.length === 0
+                  unstakedPositions.length === 0
                     ? ''
                     : selectedToken.id
                     ? lpStakingHandler()

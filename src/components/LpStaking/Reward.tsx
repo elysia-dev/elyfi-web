@@ -6,15 +6,11 @@ import dai from 'src/assets/images/dai.png';
 import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 import Token from 'src/enums/Token';
 import RewardTypes from 'src/core/types/RewardTypes';
+import { StakingTitleProps } from 'src/core/types/LpStakingTypeProps';
 import Guide from '../Guide';
 import Button from './Button';
 
-type Props = {
-  rewardToReceive: RewardTypes;
-  onHandler: () => void;
-};
-
-const Reward: FunctionComponent<Props> = (props) => {
+const Reward: FunctionComponent<StakingTitleProps> = (props) => {
   const { rewardToReceive, onHandler } = props;
   const { t } = useTranslation();
 

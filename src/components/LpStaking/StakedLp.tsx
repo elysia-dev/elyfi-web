@@ -1,39 +1,31 @@
 import { useWeb3React } from '@web3-react/core';
-import envs from 'src/core/envs';
-import { useEffect, Dispatch, SetStateAction, FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useTranslation } from 'react-i18next';
 import Token from 'src/enums/Token';
-import useExpectedReward from 'src/hooks/useExpectedReward';
 import { formatDecimalFracionDigit, toCompact } from 'src/utiles/formatters';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import { utils } from 'ethers';
 import StakedTokenProps from 'src/core/types/StakedTokenProps';
+import Skeleton from 'react-loading-skeleton';
+import CountUp from 'react-countup';
+import { isEthElfiPoolAddress } from 'src/core/utils/getAddressesByPool';
+import eth from 'src/assets/images/eth-color.png';
+import dai from 'src/assets/images/dai.png';
 import Guide from '../Guide';
 import StakedLpItem from './StakedLpItem';
 
-type Props = StakedTokenProps;
-
-const StakedLp: FunctionComponent<Props> = (props) => {
+const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
   const {
     stakedPositions,
-    unstakeTokenId,
     setUnstakeTokenId,
     ethElfiStakedLiquidity,
     daiElfiStakedLiquidity,
-    daiPoolTotalLiquidity,
-    ethPoolTotalLiquidity,
+    expectedReward,
+    totalExpectedReward,
   } = props;
   const { account } = useWeb3React();
   const { t } = useTranslation();
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
-  const { totalExpectedReward, addTotalExpectedReward } = useExpectedReward();
-
-  useEffect(() => {
-    if (stakedPositions.length === 0) return;
-    addTotalExpectedReward(
-      stakedPositions.filter((position) => position.tokenId !== unstakeTokenId),
-    );
-  }, [stakedPositions]);
 
   return (
     <>
@@ -77,22 +69,41 @@ const StakedLp: FunctionComponent<Props> = (props) => {
                 {t('lpstaking.expected_reward')}
               </span>
             </div>
-            {stakedPositions.map((position, idx) => {
-              return (
-                <StakedLpItem
-                  key={idx}
-                  position={position}
-                  totalLiquidity={
-                    position.incentivePotisions[0].incentive.pool ===
-                    envs.ethElfiPoolAddress
-                      ? ethPoolTotalLiquidity
-                      : daiPoolTotalLiquidity
-                  }
-                  setUnstakeTokenId={setUnstakeTokenId}
-                  unstakeTokenId={unstakeTokenId}
-                />
-              );
-            })}
+            {expectedReward.length >= 1
+              ? stakedPositions.map((position, idx) => {
+                  return (
+                    <StakedLpItem
+                      key={idx}
+                      position={position}
+                      setUnstakeTokenId={setUnstakeTokenId}
+                      expectedReward={expectedReward[idx]}
+                      positionInfo={() => {
+                        const isEthPoolAddress = isEthElfiPoolAddress(position);
+                        return {
+                          rewardToken: isEthPoolAddress
+                            ? expectedReward[idx]?.ethReward
+                            : expectedReward[idx]?.daiReward,
+                          beforeRewardToken: isEthPoolAddress
+                            ? expectedReward[idx]?.beforeEthReward
+                            : expectedReward[idx]?.beforeDaiReward,
+                          tokenImg: isEthPoolAddress ? eth : dai,
+                          rewardTokenType: isEthPoolAddress
+                            ? Token.ETH
+                            : Token.DAI,
+                          pricePerLiquidity: isEthPoolAddress
+                            ? pricePerEthLiquidity
+                            : pricePerDaiLiquidity,
+                          lpTokenType: isEthPoolAddress
+                            ? 'ELFI-ETH LP'
+                            : 'ELFI-DAI LP',
+                        };
+                      }}
+                    />
+                  );
+                })
+              : !(stakedPositions.length === 0) && (
+                  <Skeleton width={'100%'} height={200} />
+                )}
           </>
         ) : (
           <div>
@@ -124,18 +135,42 @@ const StakedLp: FunctionComponent<Props> = (props) => {
             <div />
             <div>{t('lpstaking.staked_total_expected_reward')}</div>
             <div className="total_expected_reward_amount">
-              {formatDecimalFracionDigit(
-                totalExpectedReward.totalElfiReward,
-                2,
-              )}{' '}
+              <CountUp
+                className="spoqa__bold staked_lp_item_reward"
+                start={totalExpectedReward.beforeTotalElfi}
+                end={totalExpectedReward.totalElfi}
+                formattingFn={(number) => {
+                  return formatDecimalFracionDigit(number, 2);
+                }}
+                duration={1}
+                decimals={4}
+              />
               {Token.ELFI}
             </div>
             <div className="total_expected_reward_amount">
-              {formatDecimalFracionDigit(totalExpectedReward.totalEthReward, 2)}{' '}
+              <CountUp
+                className="spoqa__bold staked_lp_item_reward"
+                start={totalExpectedReward.beforeTotalEth}
+                end={totalExpectedReward.totalEth}
+                formattingFn={(number) => {
+                  return formatDecimalFracionDigit(number, 2);
+                }}
+                duration={1}
+                decimals={4}
+              />
               {Token.ETH}
             </div>
             <div className="total_expected_reward_amount">
-              {formatDecimalFracionDigit(totalExpectedReward.totalDaiReward, 2)}{' '}
+              <CountUp
+                className="spoqa__bold staked_lp_item_reward"
+                start={totalExpectedReward.beforeTotalDai}
+                end={totalExpectedReward.totalDai}
+                formattingFn={(number) => {
+                  return formatDecimalFracionDigit(number, 2);
+                }}
+                duration={1}
+                decimals={4}
+              />
               {Token.DAI}
             </div>
           </div>

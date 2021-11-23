@@ -1,12 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants, ethers, utils } from 'ethers';
-import {
-  useEffect,
-  useContext,
-  useState,
-  useCallback,
-  FunctionComponent,
-} from 'react';
+import { useEffect, useContext, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from 'src/components/Header';
 import PriceContext from 'src/contexts/PriceContext';
@@ -27,20 +21,40 @@ import Reward from 'src/components/LpStaking/Reward';
 import StakingModal from 'src/components/LpStaking/StakingModal';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import RewardTypes from 'src/core/types/RewardTypes';
+import useUpdateExpectedReward from 'src/hooks/useUpdateExpectedReward';
+import eth from 'src/assets/images/eth-color.png';
+import dai from 'src/assets/images/dai.png';
 
-const LPStaking: FunctionComponent = () => {
+function LPStaking(): JSX.Element {
   const { account, library } = useWeb3React();
   const { t } = useTranslation();
   const { txType, txWaiting } = useContext(TxContext);
   const { elfiPrice } = useContext(PriceContext);
   const { ethPool, daiPool } = useContext(UniswapPoolContext);
   const { ethPrice, daiPrice } = useContext(PriceContext);
+  const { setExpecteReward, expectedReward, updateExpectedReward } =
+    useUpdateExpectedReward();
   const [rewardVisibleModal, setRewardVisibleModal] = useState(false);
   const [stakingVisibleModal, setStakingVisibleModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [stakedPositions, setStakedPositions] = useState<Position[]>([]);
-  const [nonStakePositions, setNonStakePositions] = useState<TokenInfo[]>([]);
+  const [unstakedPositions, setUnstakedPositions] = useState<TokenInfo[]>([]);
   const [stakeToken, setStakeToken] = useState<Token.DAI | Token.ETH>();
+  const [totalExpectedReward, setTotalExpectedReward] = useState<{
+    beforeTotalElfi: number;
+    totalElfi: number;
+    beforeTotalEth: number;
+    totalEth: number;
+    beforeTotalDai: number;
+    totalDai: number;
+  }>({
+    beforeTotalElfi: 0,
+    totalElfi: 0,
+    beforeTotalEth: 0,
+    totalEth: 0,
+    beforeTotalDai: 0,
+    totalDai: 0,
+  });
   const ethPoolTotalLiquidity =
     ethPool.stakedToken0 * elfiPrice + ethPool.stakedToken1 * ethPrice;
   const daiPoolTotalLiquidity =
@@ -99,9 +113,9 @@ const LPStaking: FunctionComponent = () => {
 
   const getWithoutStakePositions = useCallback(() => {
     LpTokenPoolSubgraph.getPositionsByOwner(account!).then((res) => {
-      setNonStakePositions(res.data.data.positions);
+      setUnstakedPositions(res.data.data.positions);
     });
-  }, [nonStakePositions]);
+  }, [unstakedPositions]);
 
   const getTotalLiquidity = useCallback(() => {
     setIsLoading(true);
@@ -176,6 +190,39 @@ const LPStaking: FunctionComponent = () => {
     }
   }, [txType, txWaiting]);
 
+  useEffect(() => {
+    setExpecteReward(stakedPositions);
+  }, [stakedPositions]);
+
+  useEffect(() => {
+    setTotalExpectedReward({
+      ...totalExpectedReward,
+      beforeTotalElfi: totalExpectedReward.totalElfi,
+      totalElfi: expectedReward.reduce(
+        (current, reward) => current + reward.elfiReward,
+        0,
+      ),
+      beforeTotalEth: totalExpectedReward.totalEth,
+      totalEth: expectedReward.reduce(
+        (current, reward) => current + reward.ethReward,
+        0,
+      ),
+      beforeTotalDai: totalExpectedReward.totalDai,
+      totalDai: expectedReward.reduce(
+        (current, reward) => current + reward.daiReward,
+        0,
+      ),
+    });
+    const inter = setInterval(() => {
+      updateExpectedReward(
+        stakedPositions,
+        ethPoolTotalLiquidity,
+        daiPoolTotalLiquidity,
+      );
+    }, 1000);
+    return () => clearInterval(inter);
+  }, [expectedReward]);
+
   return (
     <>
       <RewardModal
@@ -188,13 +235,22 @@ const LPStaking: FunctionComponent = () => {
         closeHandler={() => setStakingVisibleModal(false)}
         token0={Token.ELFI}
         token1={stakeToken}
-        nonStakePositions={nonStakePositions.filter((lpToken) => {
+        unstakedPositions={unstakedPositions.filter((lpToken) => {
           const poolAddress =
             stakeToken === Token.ETH
               ? envs.ethElfiPoolAddress.toLowerCase()
               : envs.daiElfiPoolAddress.toLowerCase();
           return lpToken.pool.id.toLowerCase() === poolAddress;
         })}
+        tokenImg={stakeToken === Token.ETH ? eth : dai}
+        stakingPoolAddress={
+          stakeToken === Token.ETH
+            ? envs.ethElfiPoolAddress
+            : envs.daiElfiPoolAddress
+        }
+        rewardTokenAddress={
+          stakeToken === Token.ETH ? envs.wEthAddress : envs.daiAddress
+        }
       />
       <Header title={t('lpstaking.lp_token_staking')} />
       <section
@@ -207,8 +263,10 @@ const LPStaking: FunctionComponent = () => {
           <div>
             <StakingTitle token0={Token.ELFI} token1={Token.ETH} />
             <DetailBox
-              token0={Token.ELFI}
-              token1={Token.ETH}
+              tokens={{
+                token0: Token.ELFI,
+                token1: Token.ETH,
+              }}
               totalLiquidity={ethPoolTotalLiquidity}
               totalStakedLiquidity={totalStakedLiquidity(
                 envs.ethElfiPoolAddress,
@@ -225,8 +283,10 @@ const LPStaking: FunctionComponent = () => {
           <div>
             <StakingTitle token0={Token.ELFI} token1={Token.DAI} />
             <DetailBox
-              token0={Token.ELFI}
-              token1={Token.DAI}
+              tokens={{
+                token0: Token.ELFI,
+                token1: Token.DAI,
+              }}
               totalLiquidity={daiPoolTotalLiquidity}
               totalStakedLiquidity={totalStakedLiquidity(
                 envs.daiElfiPoolAddress,
@@ -245,11 +305,10 @@ const LPStaking: FunctionComponent = () => {
             (position) => position.staked,
           )}
           setUnstakeTokenId={setUnstakeTokenId}
-          unstakeTokenId={unstakeTokenId}
           ethElfiStakedLiquidity={totalStakedLiquidity(envs.ethElfiPoolAddress)}
           daiElfiStakedLiquidity={totalStakedLiquidity(envs.daiElfiPoolAddress)}
-          ethPoolTotalLiquidity={ethPoolTotalLiquidity}
-          daiPoolTotalLiquidity={daiPoolTotalLiquidity}
+          expectedReward={expectedReward}
+          totalExpectedReward={totalExpectedReward}
         />
         <Reward
           rewardToReceive={rewardToReceive}
@@ -258,6 +317,6 @@ const LPStaking: FunctionComponent = () => {
       </section>
     </>
   );
-};
+}
 
 export default LPStaking;
