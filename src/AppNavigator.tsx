@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import DisableWalletPage from 'src/components/DisableWalletPage';
@@ -23,8 +23,20 @@ import Navigation from 'src/components/Navigation';
 import Footer from 'src/components/Footer';
 import getLocalLanauge from 'src/utiles/getLocalLanguage';
 import LanguageProvider from 'src/providers/LanguageProvider';
+import DarkmodeModal from 'src/components/DarkmodeButton';
 
 const AppNavigator: React.FC = () => {
+  const [isDarkmodeActivated, setDarkModeActivated] = useState(false);
+  const setDarkMode = () => {
+    setDarkModeActivated(!isDarkmodeActivated);
+    window.sessionStorage.getItem('@isDarkMode') === 'true' ?
+      window.sessionStorage.setItem('@isDarkMode', 'false') :
+      window.sessionStorage.setItem('@isDarkMode', 'true')
+  }
+  useEffect(() => {
+    window.sessionStorage.getItem('@isDarkMode') === 'true' ? setDarkModeActivated(true) : setDarkModeActivated(false)
+  }, [])
+
   const isPc = useMediaQuery({
     query: '(min-width: 1190px)',
   });
@@ -68,12 +80,16 @@ const AppNavigator: React.FC = () => {
 
   return (
     <div
-      className={`elysia ${isPc ? 'view-w' : isTablet ? 'view-t' : 'view-m'}`}>
+      className={`elysia ${isPc ? 'view-w' : isTablet ? 'view-t' : 'view-m'} ${isDarkmodeActivated ? "dark" : "light"}`}>
       <ScrollToTop />
       <Switch>
         <Route path="/:lng">
           <LanguageProvider>
             <Navigation />
+            {/* <DarkmodeModal 
+              isDarkmode={isDarkmodeActivated}
+              setDarkMode={() => setDarkMode()}
+            /> */}
             <Route
               exact
               path="/:lng/staking/LP"
