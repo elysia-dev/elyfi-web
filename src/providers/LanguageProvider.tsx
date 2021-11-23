@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import getLocalLanauge from 'src/utiles/getLocalLanguage';
 import LanguageContext from '../contexts/LanguageContext';
@@ -9,11 +9,18 @@ const LanguageProvider: React.FC = (props) => {
   const { i18n } = useTranslation();
   const { lng } = useParams<{ lng: string }>();
   const history = useHistory();
+  const location = useLocation();
+
 
   const setLanguage = (language: LanguageType) => {
     window.localStorage.setItem('@language', language);
-    console.log(language)
-    history.push(`/${language}`);
+    const getPath = location.pathname.split('/')[2]
+    console.log(getPath)
+    if (getPath === undefined) { 
+      return history.push(`/${language}`);
+    }
+    i18n.changeLanguage(language)
+    history.push(`/${language + "/" + getPath + location.pathname.split(getPath)[1]}`);
   };
 
   useEffect(() => {
