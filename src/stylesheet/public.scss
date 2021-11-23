@@ -42,12 +42,127 @@ $dark-text: #ffffff;
   }
 }
 
+* {
+  box-sizing: border-box;
+}
 
 .elysia {
   @include theme-colors($light-theme: true);
   white-space: pre-line;
   &.dark {
     @include theme-colors($light-theme: false);
+  }
+  .main {
+    @include theme-colors($light-theme: true);
+    &__content {
+      &__panel {
+        position: relative;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &__bg {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 1;
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #ffffff;
+          text-shadow: 0px 0px 6px #00000029;
+        }
+      }
+    }
+    &__title {
+      height: 100vh;
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      > div {
+        display: flex;
+        position: relative;
+        width: 100vw;
+        max-height: 100vh;
+        overflow: hidden;
+        &::before {
+          content: "";
+          display: block;
+          padding-bottom: calc(100% / (16 / 9));
+        }
+        > .main__title__images {
+          > img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 160%;
+            object-fit: cover;
+          }
+        }
+        > .main__title__content {
+          display: none;
+          position: absolute;
+          right: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+          > div > div {
+            --pading: 1.5vmin;
+            --duration: 400ms;
+            --delay: calc(var(--duration) / 2);
+            --ease: cubic-bezier(0.25, 1, 0.5, 1);
+
+            position: relative;
+            display: inline-block;
+            font-size: 15px;
+            overflow: hidden;
+            margin-top: calc(var(--padding) * -1);
+            padding: var(--padding);
+
+            &::after {
+              content: "";
+              position: absolute;
+              top: calc(100% - var(--padding));
+              left: 0;
+              background-color: white;
+              width: 100%;
+              height: 1.5vmin;
+              transform: scaleX(0);
+              transition: transform var(--duration) var(--delay) var(--ease);
+            }
+            p {
+              color: #fff;
+            }
+            h3 {
+              display: block;
+              transform: translateY(110%);
+              transition: transform var(--duration) var(--ease);
+            }
+          
+            .active & {
+              &::after {
+                transform: scaleX(1);
+                transition-delay: 0s;
+              }
+              h3 {
+                transform: translateY(0);
+                transition-delay: var(--delay);
+              }
+            }
+          }
+        }
+      }
+    }
   }
   .darkmode {
     position: fixed;
