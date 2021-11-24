@@ -299,6 +299,7 @@ const Navigation = () => {
         </div>
         {localNavigation()}
       </nav>
+      <div className="navigation__margin" />
     </>
   );
 };

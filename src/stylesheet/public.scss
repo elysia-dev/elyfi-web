@@ -52,6 +52,9 @@ $dark-text: #ffffff;
   &.dark {
     @include theme-colors($light-theme: false);
   }
+  .governance {
+
+  }
   .main {
     @include theme-colors($light-theme: true);
     &__content {
@@ -236,6 +239,9 @@ $dark-text: #ffffff;
     right: 0;
     z-index: 900;
     transition: all 0.25s ease-in-out;
+    &__margin { 
+      margin-top: 150px;
+    }
     &__bottom {
       border-top: 1px solid #636363;
       background-color: #000000;
