@@ -9,7 +9,7 @@
   "usdtAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
   "requiredNetwork": "Mainnet",
   "requiredChainId": 1,
-  "subgraphURI": "https://api.studio.thegraph.com/query/862/elyfi/v0.0.4",
+  "subgraphURI": "https://gateway.thegraph.com/api/96f993b15274d04d4c1be0cb5fb79ff6/subgraphs/id/0x9d2d46e67c420147834c76b23c9bac485f114feb-0",
   "etherscanURI": "https://etherscan.io",
   "nonFungiblePositionAddress": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
   "stakerAddress": "0x1f98407aaB862CdDeF78Ed252D6f557aA5b0f00d",
