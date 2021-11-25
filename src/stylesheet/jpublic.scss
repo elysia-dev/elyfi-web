@@ -513,15 +513,11 @@ span {
         margin: 0 auto;
       }
       &__wrapper {
-        display: flex;
-        flex-direction: row;
         justify-content: space-between;
       }
       &__pie-chart {
-        margin: 0 auto;
         box-sizing: border-box;
         &__data {
-          border-top: 1px solid #f0f0f1;
           > div {
             display: flex;
             justify-content: space-between;
@@ -1217,8 +1213,19 @@ span {
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
+      > div > div {
+        display: flex;
+        align-items: center;
+        > img {
+          margin-right: 10px;
+          width: 40px;
+          height: 40px;
+        }
+      }
+
       > div > p {
-        margin: 10px 0;
+        margin: 0;
+        margin-left: 50px;
         &:first-child {
           margin-top: 0;
         }
@@ -1248,6 +1255,8 @@ span {
       box-shadow: 0px 0px 6px #00000029;
       display: flex;
       flex-direction: column;
+      padding: 25px;
+      margin: 30px auto;
     }
     &__progress-bar {
       color: #e6e6e6;
@@ -1485,6 +1494,11 @@ span {
       }
     }
     &__eth {
+      box-sizing: border-box;
+      box-shadow: 0px 0px 6px #00000029;
+      border-radius: 5px;
+      padding: 25px;
+      margin: 30px auto;
       .jreward {
         &__progress-content {
           > div {
@@ -1506,6 +1520,11 @@ span {
       }
     }
     &__dai {
+      box-sizing: border-box;
+      box-shadow: 0px 0px 6px #00000029;
+      border-radius: 5px;
+      padding: 25px;
+      margin: 30px auto;
       .jreward {
         &__progress-content {
           > div {
@@ -1527,6 +1546,11 @@ span {
       }
     }
     &__elfi {
+      box-sizing: border-box;
+      box-shadow: 0px 0px 6px #00000029;
+      border-radius: 5px;
+      padding: 25px;
+      margin: 30px auto;
       .jreward {
         &__progress-content {
           > div {
@@ -1548,11 +1572,22 @@ span {
         &__dai-deposit {
           display: flex;
           flex-direction: column;
+          box-sizing: border-box;
+          box-shadow: 0px 0px 6px #00000029;
+          border-radius: 5px;
+          padding: 25px;
+          margin: 30px auto;
           &__content {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
+          }
+          &__lp-warpper {
+            box-shadow: 0px 0px 6px #00000029;
+            border-radius: 5px;
+            padding: 25px;
+            margin: 30px auto;
           }
         }
       }

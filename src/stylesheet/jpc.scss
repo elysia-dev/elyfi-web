@@ -325,10 +325,27 @@
         margin-bottom: 100px;
       }
       &__pie-chart {
-        width: 240px;
-        padding: 15px;
+        &__dataWrapper {
+          width: 50%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding: 20px;
+        }
         &__data {
-          padding: 20px 0;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          height: 100%;
+          width: 50%;
+          padding: 20px;
+          border-right: 1px solid gray;
+          > div:nth-child(1) {
+            font-size: 17px;
+            border-bottom: 1px solid #f0f0f1;
+            padding-bottom: 15px;
+          }
           > div {
             > p {
               margin: 7px 0;
@@ -338,18 +355,17 @@
           &__block {
             &__wrapper {
               > p {
+                margin: 7px 0;
                 margin-left: 10px;
-                font-size: 13px;
+                font-size: 17px;
               }
             }
           }
           &__wrapper {
-            margin-top: 13px;
-            &:last-child {
-              margin-bottom: 20px;
-            }
+            margin-top: 0px;
             > p {
-              font-size: 13px;
+              margin: 7px 0;
+              font-size: 17px;
             }
             &--total {
               padding-bottom: 15px;
@@ -360,13 +376,16 @@
           }
         }
         &__wrapper {
-          padding: 34px 29px;
-          width: 383px;
-          height: 620px;
+          // padding: 34px 29px;
+          width: 100%;
+          // height: 300px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
         }
       }
       &__graph {
-        width: 700px;
+        width: 100%;
         padding-bottom: 50px;
         &__converter {
           width: 155px;
@@ -378,7 +397,7 @@
           }
         }
         &__wrapper {
-          width: 776px;
+          width: 100%;
           height: 620px;
         }
       }
@@ -603,7 +622,7 @@
         max-width: 1210px;
       }
       &__info {
-        width: 379px;
+        // width: 379px;
         height: 600px;
         &__container {
           display: grid;
