@@ -73,9 +73,14 @@ export const toPercentWithoutSign = (value: any) =>
 export const toCompactForBignumber = (
   value: BigNumber | number,
   decimals?: number,
-) =>
+): string =>
   new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 2,
     notation: 'compact',
     compactDisplay: 'short',
   }).format(parseFloat(utils.formatUnits(value, decimals || 18)));
+
+export const toUsd = (value: any, decimals?: number): string =>
+  new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' }).format(
+    parseFloat(utils.formatUnits(value, decimals || 18)),
+  );
