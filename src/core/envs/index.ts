@@ -26,6 +26,9 @@ interface EnvironmentVariables {
   lpTokenPoolSubgraphURL: string;
   refundedAddress: string;
   appURI: string;
+  etherscan: string;
+  daiTokenizerAddress: string;
+  usdtTokeninzerAddress: string;
 }
 
 const vars =
