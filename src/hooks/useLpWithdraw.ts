@@ -16,11 +16,6 @@ const useLpWithdraw: () => (
   const { account, library } = useWeb3React();
   const { setTransaction } = useContext(TxContext);
   const initTxTracker = useTxTracking();
-  const staker = new ethers.Contract(
-    envs.stakerAddress,
-    stakerABI,
-    library.getSigner(),
-  );
   const iFace = new ethers.utils.Interface(stakerABI);
 
   const unstake = async (
@@ -29,6 +24,11 @@ const useLpWithdraw: () => (
     tokenId: string,
   ) => {
     try {
+      const staker = new ethers.Contract(
+        envs.stakerAddress,
+        stakerABI,
+        library.getSigner(),
+      );
       const elfiUnstake = iFace.encodeFunctionData('unstakeToken', [
         lpTokenValues(poolAddress, envs.governanceAddress),
         tokenId,
@@ -55,8 +55,8 @@ const useLpWithdraw: () => (
         () => {},
         () => {},
       );
-    } catch (error) {
-      throw Error(error);
+    } catch (error: any) {
+      alert(error.message);
     }
   };
   return unstake;
