@@ -58,7 +58,12 @@
       "protocol_allow": "Allow the ELYFI Protocol to use your {{tokenName}}",
       "disable_content--1": "Connect your wallet to continue",
       "elfi_reward": "ELFI Reward",
-      "wallet_connect_content": "Connect Wallet"
+      "wallet_connect_content": "Connect Wallet",
+      "token_mining_apr": "ELFI Mining APR",
+      "total_borrowed": "Total Borrowed",
+      "borrow_apy": "Borrow APY",
+      "claim_reward": "Claim rewards",
+      "reward_amount": "Amount of rewards"
     },
     "portfolio": {
       "investment_status": "Loan Status",
@@ -199,7 +204,8 @@
       "current_round": "Current round",
       "staking_amount": "Staked Amount",
       "reward_amount": "Accumulated reward amount",
-      "current_round_null": "There is no current rounds in progress."
+      "current_round_null": "There is no current rounds in progress.",
+      "location_staking": "Staking"
     },
     "lpstaking": {
       "lp_token_staking": "LP Token Staking",
@@ -320,7 +326,8 @@
       "lp_token_staking_description": "Providing liquidity to the {{token0}}-{{token1}} pool in Uniswap V3 and staking the received {{token0}}-{{token1}} LP tokens will give you {{token0}} and {{token1}}",
       "apr": "APR",
       "lp_token_total_liquidity": "Total liquidity",
-      "lp_token_reward_plan": "ELFI, ETH, DAI Reward plan"
+      "lp_token_reward_plan": "ELFI, ETH, DAI Reward plan",
+      "reward_plan": "Reward plan"
     },
     "guide": {
       "apr": "APR is an abbreviation of Annual percentage rate, which means the ratio of the total compensation amount to the total liquidity.",
