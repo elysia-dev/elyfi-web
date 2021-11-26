@@ -2,6 +2,9 @@ import { toCompact } from 'src/utiles/formatters';
 import envs from 'src/core/envs';
 import { useTranslation } from 'react-i18next';
 import { FunctionComponent } from 'react';
+import eth from 'src/assets/images/eth-color.png';
+import elfi from 'src/assets/images/ELFI.png';
+import dai from 'src/assets/images/dai.png';
 
 type Props = {
   token0: string;
@@ -13,26 +16,40 @@ type Props = {
 const LpStakingHeader: FunctionComponent<Props> = (props) => {
   const { t } = useTranslation();
   const { token0, token1 } = props;
+  const token1Img = token1 === 'ETH' ? eth : dai;
   return (
     <>
       <div className="jreward__title">
         <div>
-          <p className="spoqa__bold">
-            {t('reward.lp_token_staking', { token0, token1 })}
-          </p>
-          <p className="spoqa">
+          <div>
+            <img src={elfi} />
+            <img
+              src={token1Img}
+              style={{
+                marginLeft: -23,
+              }}
+            />
+            <p className="spoqa__bold">
+              {t('reward.lp_token_staking', { token0, token1 })}
+            </p>
+          </div>
+          <p
+            className="spoqa"
+            style={{
+              marginLeft: 77,
+            }}>
             {t('reward.lp_token_staking_description', {
               token0,
               token1,
             })}
           </p>
         </div>
-        <a
+        {/* <a
           className="jreward__button"
           target="_blank"
           href={`${envs.appURI}/staking/LP`}>
           <p>{t('reward.staking')}</p>
-        </a>
+        </a> */}
       </div>
       <div className="jreward__apy-wrapper">
         <div className="jreward__apy-wrapper--left">
