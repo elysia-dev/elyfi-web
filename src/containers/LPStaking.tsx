@@ -24,6 +24,7 @@ import RewardTypes from 'src/core/types/RewardTypes';
 import useUpdateExpectedReward from 'src/hooks/useUpdateExpectedReward';
 import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
+import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 
 function LPStaking(): JSX.Element {
   const { account, library } = useWeb3React();
@@ -273,6 +274,7 @@ function LPStaking(): JSX.Element {
           overflowX: 'hidden',
           padding: 3,
         }}>
+        <RewardPlanButton stakingType={'LP'} />
         <div className="staking_detail_box">
           <div>
             <StakingTitle token0={Token.ELFI} token1={Token.ETH} />
