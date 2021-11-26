@@ -64,9 +64,14 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
 
   return (
     <div
-      className="jreward__dai-deposit jcontainer"
+      className="jreward__dai-deposit__lp-warpper jcontainer"
       style={{
         marginTop: '60px',
+        borderRadius: 5,
+        boxShadow: '0px 0px 6px #00000029',
+        padding: 25,
+        margin: '30px auto',
+        width: 1140,
       }}>
       <LpStakingHeader
         tvl={props.tvl}
