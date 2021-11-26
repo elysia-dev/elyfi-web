@@ -32,6 +32,7 @@ import ReactGA from 'react-ga';
 import Header from 'src/components/Header';
 import TokenTable from 'src/components/TokenTable';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
+import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 import CountUp from 'react-countup';
 import Token from 'src/enums/Token';
 import IncentiveModal from './IncentiveModal';
@@ -258,6 +259,7 @@ const Dashboard: React.FunctionComponent = () => {
       <section className="tokens">
         {/* <Title label={t('dashboard.deposits--header')} /> */}
         <div className="tokens__table__wrapper">
+          <RewardPlanButton stakingType={'deposit'} />
           {/* <table className="tokens__table"> */}
           {/* <thead className="tokens__table__header pc-only">
               <tr>
