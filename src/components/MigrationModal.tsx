@@ -309,7 +309,7 @@ const MigrationModal: React.FunctionComponent<{
             // TRICKY
             // ELFI V2 StakingPool need round - 2 value
             stakingPool
-              .migrate(
+              ?.migrate(
                 state.migrationMax
                   ? stakedBalance
                   : state.withdrawMax
