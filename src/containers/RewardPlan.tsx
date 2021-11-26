@@ -11,8 +11,11 @@ import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import LpStakingBox from 'src/components/RewardPlan/LpStakingBox';
 import StakingBox from 'src/components/RewardPlan/StakingBox';
+import TokenDeposit from 'src/components/RewardPlan/TokenDeposit';
 import PriceContext from 'src/contexts/PriceContext';
+import ReservesContext from 'src/contexts/ReservesContext';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
+import { moneyPoolStartedAt } from 'src/core/data/moneypoolTimes';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import {
   DAIPerDayOnELFIStakingPool,
@@ -42,6 +45,7 @@ const RewardPlan: FunctionComponent = () => {
   const { stakingType } = useParams<{ stakingType: string }>();
   const { latestPrice, ethPool, daiPool } = useContext(UniswapPoolContext);
   const { ethPrice } = useContext(PriceContext);
+  const { reserves } = useContext(ReservesContext);
   const daiPoolApr = useDaiPositionLpApr();
   const ethPoolApr = useEthPositionLpApr();
   const current = moment();
@@ -91,6 +95,20 @@ const RewardPlan: FunctionComponent = () => {
     beforeEthRewardByLp: 0,
     ethRewardByLp: calcEthRewardByLp(),
   });
+  const totalMiningValue = [3000000, 1583333];
+  const startMoneyPool = [
+    moneyPoolStartedAt.format('yyyy.MM.DD'),
+    '2021.10.08',
+  ];
+  const beforeMintedMoneypool = [
+    amountData.beforeMintedByDaiMoneypool,
+    amountData.beforeMintedByTetherMoneypool,
+  ];
+  const mintedMoneypool = [
+    amountData.mintedByDaiMoneypool,
+    amountData.mintedByTetherMoneypool,
+  ];
+
   const beforeTotalMintedByElStakingPool = useMemo(() => {
     return amountData.beforeMintedByElStakingPool.reduce(
       (res, cur) => res + cur,
@@ -217,7 +235,7 @@ const RewardPlan: FunctionComponent = () => {
               }}
             />
           </>
-        ) : stakingType === 'DAI' ? (
+        ) : stakingType === 'ELFI' ? (
           <section className="jreward__dai">
             <div className="jreward__elfi-staking jcontainer">
               <StakingBox
@@ -240,7 +258,7 @@ const RewardPlan: FunctionComponent = () => {
               />
             </div>
           </section>
-        ) : (
+        ) : stakingType === 'EL' ? (
           <section className="jreward__elfi">
             <div className="jreward__el-staking container">
               <StakingBox
@@ -262,6 +280,21 @@ const RewardPlan: FunctionComponent = () => {
                 OrdinalNumberConverter={OrdinalNumberConverter}
               />
             </div>
+          </section>
+        ) : (
+          <section className="jreward">
+            {reserves.map((reserve, index) => {
+              return (
+                <TokenDeposit
+                  index={index}
+                  reserve={reserve}
+                  startMoneyPool={startMoneyPool}
+                  totalMiningValue={totalMiningValue}
+                  beforeMintedMoneypool={beforeMintedMoneypool}
+                  mintedMoneypool={mintedMoneypool}
+                />
+              );
+            })}
           </section>
         )}
       </section>
