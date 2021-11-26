@@ -53,14 +53,14 @@ const reserves: IReserve[] = [
     name: 'USDT',
     image: usdt,
     decimals: 6,
-    address: envs.daiAddress,
+    address: envs.usdtAddress,
     tokeninzer: envs.usdtTokeninzerAddress,
   },
   {
     name: 'DAI',
     image: dai,
     decimals: 18,
-    address: envs.usdtAddress,
+    address: envs.daiAddress,
     tokeninzer: envs.daiTokenizerAddress,
   },
   {
