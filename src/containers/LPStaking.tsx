@@ -25,6 +25,7 @@ import useUpdateExpectedReward from 'src/hooks/useUpdateExpectedReward';
 import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
+import UniswapButton from 'src/components/LpStaking/UniswapButton';
 
 function LPStaking(): JSX.Element {
   const { account, library } = useWeb3React();
@@ -274,6 +275,32 @@ function LPStaking(): JSX.Element {
           overflowX: 'hidden',
           padding: 3,
         }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <UniswapButton
+            linkLocation={'left'}
+            token0={Token.ELFI}
+            token1={Token.ETH}
+          />
+          <div
+            style={{
+              width: 20,
+            }}
+          />
+          <UniswapButton
+            linkLocation={'right'}
+            token0={Token.ELFI}
+            token1={Token.DAI}
+          />
+        </div>
+        <div>
+          {`${t('staking.location_staking')} > `}
+          {t('staking.token_staking', { stakedToken: 'LP' })}
+        </div>
         <RewardPlanButton stakingType={'LP'} />
         <div className="staking_detail_box">
           <div>
