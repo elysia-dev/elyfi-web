@@ -254,11 +254,12 @@ const Dashboard: React.FunctionComponent = () => {
           setTransactionModal(false);
         }}
       />
-      <Header title={t('navigation.deposit_withdraw').toUpperCase()} />
 
+      <Header title={t('navigation.deposit_withdraw').toUpperCase()} />
       <section className="tokens">
         {/* <Title label={t('dashboard.deposits--header')} /> */}
         <div className="tokens__table__wrapper">
+          {t('dashboard.deposit')}
           <RewardPlanButton stakingType={'deposit'} />
           {/* <table className="tokens__table"> */}
           {/* <thead className="tokens__table__header pc-only">
