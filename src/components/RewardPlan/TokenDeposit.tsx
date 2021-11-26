@@ -31,7 +31,6 @@ const TokenDeposit: FunctionComponent<Props> = ({
   const { t } = useTranslation();
   const tokenInfo = ReserveData.find((datum) => datum.address === reserve.id);
   const { latestPrice } = useContext(UniswapPoolContext);
-
   const miningDescription = [
     [
       t('reward.mining_term'),
