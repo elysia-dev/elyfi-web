@@ -6,6 +6,9 @@ import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import { formatComma, toCompact } from 'src/utiles/formatters';
 import { useTranslation } from 'react-i18next';
 import { FunctionComponent } from 'react';
+import elfi from 'src/assets/images/ELFI.png';
+import el from 'src/assets/images/el.png';
+import Token from 'src/enums/Token';
 
 type Props = {
   nth: string;
@@ -19,22 +22,26 @@ type Props = {
 const StakingBoxHeader: FunctionComponent<Props> = (props) => {
   const current = moment();
   const { t } = useTranslation();
+  const tokenImg = props.unit === Token.DAI ? elfi : el;
 
   return (
     <>
       <div className="jreward__title">
         <div>
-          <p className="spoqa__bold">
-            {t(`reward.${props.unit === 'DAI' ? 'elfi' : 'el'}_staking`)}
-          </p>
+          <div>
+            <img src={tokenImg} />
+            <div className="spoqa__bold">
+              {t(`reward.${props.unit === 'DAI' ? 'elfi' : 'el'}_staking`)}
+            </div>
+          </div>
           <p className="spoqa">{t('reward.elfi_staking_content')}</p>
         </div>
-        <a
+        {/* <a
           className="jreward__button"
           target="_blank"
           href={`${envs.appURI}/staking/ELFI`}>
           <p>{t('reward.staking')}</p>
-        </a>
+        </a> */}
       </div>
       <div className="jreward__staking-wrapper">
         <div>
