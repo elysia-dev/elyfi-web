@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import LpStakingBox from 'src/components/RewardPlan/LpStakingBox';
 import StakingBox from 'src/components/RewardPlan/StakingBox';
 import TokenDeposit from 'src/components/RewardPlan/TokenDeposit';
@@ -41,8 +41,9 @@ import { useDaiPositionLpApr, useEthPositionLpApr } from 'src/hooks/useLpApy';
 import useStakingRoundData from 'src/hooks/useStakingRoundData';
 
 const RewardPlan: FunctionComponent = () => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { stakingType } = useParams<{ stakingType: string }>();
+  const history = useHistory();
   const { latestPrice, ethPool, daiPool } = useContext(UniswapPoolContext);
   const { ethPrice } = useContext(PriceContext);
   const { reserves } = useContext(ReservesContext);
@@ -54,6 +55,10 @@ const RewardPlan: FunctionComponent = () => {
       (round) => current.diff(round.startedAt) >= 0,
     ).length;
   }, [current]);
+
+  const onClickHandler = () => {
+    history.goBack();
+  };
 
   const [state, setState] = useState({
     elStaking: currentPhase - 1,
@@ -194,6 +199,30 @@ const RewardPlan: FunctionComponent = () => {
           overflowX: 'hidden',
           padding: 3,
         }}>
+        {stakingType === 'deposit' ? (
+          <div>
+            <span
+              style={{
+                cursor: 'pointer',
+              }}
+              onClick={() => onClickHandler()}>
+              {t('dashboard.deposit')}
+            </span>
+            {` > ${t('reward.reward_plan')}`}
+          </div>
+        ) : (
+          <div>
+            {`${t('staking.location_staking')} > `}
+            <span
+              style={{
+                cursor: 'pointer',
+              }}
+              onClick={() => onClickHandler()}>
+              {t('staking.token_staking', { stakedToken: stakingType })}
+            </span>
+            {` > ${t('reward.reward_plan')}`}
+          </div>
+        )}
         {stakingType === 'LP' ? (
           <>
             {' '}
