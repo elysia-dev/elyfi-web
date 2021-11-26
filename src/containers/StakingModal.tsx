@@ -1,5 +1,5 @@
-import { useContext, useState, useEffect } from 'react';
 import { BigNumber, constants, utils } from 'ethers';
+import { useContext, useState, useEffect } from 'react';
 import ELFI from 'src/assets/images/ELFI.png';
 import { formatComma } from 'src/utiles/formatters';
 import envs from 'src/core/envs';
@@ -56,7 +56,7 @@ const StakingModal: React.FunctionComponent<{
     contract,
   } = useERC20Info(
     stakedToken === Token.EL ? envs.elAddress : envs.governanceAddress,
-    stakingPool.address,
+    stakingPool ? stakingPool.address : '',
   );
   const { waiting, wait } = useWatingTx();
   const amountLteZero =
@@ -206,7 +206,7 @@ const StakingModal: React.FunctionComponent<{
                     tracker.clicked();
 
                     stakingPool
-                      .withdraw(
+                      ?.withdraw(
                         amount.max
                           ? constants.MaxUint256
                           : utils.parseEther(amount.value),
@@ -267,8 +267,11 @@ const StakingModal: React.FunctionComponent<{
                     // setTxWaiting(true)
 
                     stakingPool
-                      .stake(
+                      ?.stake(
                         amount.max ? balance : utils.parseEther(amount.value),
+                        {
+                          gasLimit: 1000000,
+                        },
                       )
                       .then((tx) => {
                         setTransaction(
@@ -308,7 +311,7 @@ const StakingModal: React.FunctionComponent<{
                     tracker.clicked();
 
                     contract
-                      .approve(stakingPool.address, constants.MaxUint256)
+                      .approve(stakingPool!.address, constants.MaxUint256)
                       .then((tx) => {
                         setTransaction(
                           tx,
