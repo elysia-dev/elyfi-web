@@ -157,7 +157,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     tracker.clicked();
 
     moneyPool
-      .deposit(reserve.id, account, max ? balance : amount)
+      ?.deposit(reserve.id, account, max ? balance : amount)
       .then((tx) => {
         setTransaction(
           tx,
@@ -189,7 +189,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     tracker.clicked();
 
     moneyPool
-      .withdraw(reserve.id, account, max ? constants.MaxUint256 : amount)
+      ?.withdraw(reserve.id, account, max ? constants.MaxUint256 : amount)
       .then((tx) => {
         setTransaction(
           tx,
@@ -211,14 +211,18 @@ const DepositOrWithdrawModal: FunctionComponent<{
 
   useEffect(() => {
     if (!reserve) return;
-
-    reserveERC20.balanceOf(reserve.lToken.id).then((value) => {
-      setLiquidity({
-        value,
-        loaded: true,
+    reserveERC20
+      .balanceOf(reserve.lToken.id)
+      .then((value) => {
+        setLiquidity({
+          value,
+          loaded: true,
+        });
+      })
+      .catch((e) => {
+        console.log(e);
       });
-    });
-  }, [reserve, reserveERC20]);
+  }, [reserve, reserveERC20, account]);
 
   useEffect(() => {
     const interval = setInterval(
