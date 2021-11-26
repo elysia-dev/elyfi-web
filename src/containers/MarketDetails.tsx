@@ -16,9 +16,6 @@ import calcHistoryChartData from 'src/utiles/calcHistoryChartData';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import envs from 'src/core/envs';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
-import { GET_USER } from 'src/queries/userQueries';
-import { GetUser } from 'src/queries/__generated__/GetUser';
-import { useQuery } from '@apollo/client';
 import { useWeb3React } from '@web3-react/core';
 import {
   ERC20__factory,
