@@ -115,13 +115,12 @@ const TokenTable: React.FC<Props> = ({
                     <>
                       <DetailInfoDiv
                         style={{
+                          height: 20,
                           marginBottom: 15,
-                        }}>
-                        <div>ELFI 채굴 APY</div>
-                        <div>{miningAPR || 0}</div>
-                      </DetailInfoDiv>
+                        }}
+                      />
                       <DetailInfoDiv>
-                        <div>ELFI 채굴 APY</div>
+                        <div>{t('dashboard.token_mining_apr')}</div>
                         <div>{miningAPR || 0}</div>
                       </DetailInfoDiv>
                       {/* <span className="token-name spoqa__bold">
@@ -150,7 +149,7 @@ const TokenTable: React.FC<Props> = ({
                       </div>
                     </DetailInfoDiv>
                     <DetailInfoDiv>
-                      <div>예치 APY</div>
+                      <div>{t('dashboard.deposit_apy')}</div>
                       <div>{depositAPY || 0}</div>
                     </DetailInfoDiv>
                   </div>
@@ -170,13 +169,13 @@ const TokenTable: React.FC<Props> = ({
                         style={{
                           marginBottom: 15,
                         }}>
-                        <div>총 대출금</div>
+                        <div>{t('dashboard.total_borrowed')}</div>
                         <div>
                           {toUsd(reserveData.totalBorrow, tokenInfo?.decimals)}
                         </div>
                       </DetailInfoDiv>
                       <DetailInfoDiv>
-                        <div>대출 APY</div>
+                        <div>{t('dashboard.borrow_apy')}</div>
                         <div>{toPercent(reserveData.borrowAPY)}</div>
                       </DetailInfoDiv>
                     </div>
@@ -250,7 +249,7 @@ const TokenTable: React.FC<Props> = ({
                     alignItems: 'center',
                     marginBottom: 10,
                   }}>
-                  <div>예치</div>
+                  <div>{t('dashboard.deposit')}</div>
                   <div
                     onClick={!isDisable ? onClick : undefined}
                     style={{
@@ -262,7 +261,9 @@ const TokenTable: React.FC<Props> = ({
                       alignItems: 'center',
                       borderRadius: '20px',
                     }}>
-                    <div>예치 | 출금</div>
+                    <div>{`${t('dashboard.deposit')} | ${t(
+                      'dashboard.withdraw',
+                    )}`}</div>
                   </div>
                 </div>
                 {account ? (
@@ -277,7 +278,8 @@ const TokenTable: React.FC<Props> = ({
                         margin: 0,
                         marginTop: 5,
                       }}>
-                      지갑잔액: {walletBalance} {tokenInfo?.name}
+                      {t('dashboard.wallet_balance')}: {walletBalance}{' '}
+                      {tokenInfo?.name}
                     </p>
                   </div>
                 ) : (
@@ -285,7 +287,7 @@ const TokenTable: React.FC<Props> = ({
                     style={{
                       textAlign: 'center',
                     }}>
-                    지갑을 연결해주세요.
+                    {t('dashboard.wallet_connect_content')}
                   </div>
                 )}
               </div>
@@ -301,7 +303,7 @@ const TokenTable: React.FC<Props> = ({
                     alignItems: 'center',
                     marginBottom: 10,
                   }}>
-                  <div>보상 수량</div>
+                  <div>{t('dashboard.reward_amount')}</div>
                   <div
                     onClick={(e) => {
                       e.preventDefault();
@@ -318,7 +320,7 @@ const TokenTable: React.FC<Props> = ({
                       alignItems: 'center',
                       borderRadius: '20px',
                     }}>
-                    수령하기
+                    {t('dashboard.claim_reward')}
                   </div>
                 </div>
                 {account ? (
@@ -343,7 +345,7 @@ const TokenTable: React.FC<Props> = ({
                     style={{
                       textAlign: 'center',
                     }}>
-                    지갑을 연결해주세요.
+                    {t('dashboard.wallet_connect_content')}
                   </div>
                 )}
               </div>
@@ -352,7 +354,7 @@ const TokenTable: React.FC<Props> = ({
               <Skeleton width={1148} height={768} />
             ) : (
               <div>
-                <div>대출리스트</div>
+                <div>{t('portfolio.portfolio_list')}</div>
                 <div>
                   <AssetList
                     assetBondTokens={
