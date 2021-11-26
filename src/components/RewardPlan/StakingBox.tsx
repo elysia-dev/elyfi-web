@@ -45,7 +45,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
         staking={props.staking}
         unit={props.unit}
       />
-      <div className="reward__data-wrapper">
+      <div className="jreward__data-wrapper">
         <SmallProgressBar
           start={props.start}
           end={props.end}
