@@ -36,6 +36,7 @@ import calcExpectedReward from 'src/core/utils/calcExpectedReward';
 import LanguageType from 'src/enums/LanguageType';
 import useStakingRoundData from 'src/hooks/useStakingRoundData';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
+import GovernanceGuideBox from 'src/components/GovernanceGuideBox';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI;
@@ -301,8 +302,19 @@ const Staking: React.FunctionComponent<IProps> = ({
           }}
           round={selectModalRound + 1}
         />
+        <div>
+          {`${t('staking.location_staking')} > `}
+          {t('staking.token_staking', { stakedToken })}
+        </div>
         <RewardPlanButton stakingType={stakedToken} />
-        <Title label={t('staking.token_staking', { stakedToken })} />
+        <Title
+          stakedToken={stakedToken}
+          label={t('staking.token_staking', { stakedToken })}
+          style={{
+            marginBottom: stakedToken === Token.ELFI ? 50 : undefined,
+          }}
+        />
+        {stakedToken === Token.ELFI && <GovernanceGuideBox />}
         <div>
           <p>
             {t('staking.token_staking--content.0', {
