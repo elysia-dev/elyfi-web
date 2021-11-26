@@ -6,67 +6,64 @@ import { useEffect, useRef } from "react";
 
 const Main = () => {
 
-const el = useRef();
-const q = gsap.utils.selector(el);
+  gsap.registerPlugin(ScrollTrigger);
 
-gsap.registerPlugin(ScrollTrigger);
+  gsap.to(".main__title", {
+    scrollTrigger: {
+      trigger: ".main__title",
+      scrub: true,
+      pin: true,
+      start: "center center",
+      end: "bottom -100%",
+      toggleClass: "active"
+    }
+  })
+  gsap.to(".main__title__image", {
+    scrollTrigger: {
+      trigger: ".main__title",
+      scrub: 0.5,
+      start: "top bottom",
+      end: "bottom -300%"
+    },
+    y: "-30%"
+  })
 
-gsap.to(".main__title", {
-  scrollTrigger: {
-    trigger: ".main__title",
-    scrub: true,
-    pin: true,
-    start: "center center",
-    end: "bottom -100%",
-    toggleClass: "active"
-  }
-})
-gsap.to(".main__title__image", {
-  scrollTrigger: {
-    trigger: ".main__title",
-    scrub: 0.5,
-    start: "top bottom",
-    end: "bottom -300%"
-  },
-  y: "-30%"
-})
+  gsap.utils.toArray(".main__content__panel").forEach((section: any, i) => {
+    const innerWidth = window.innerWidth;
+    const innerHeight = window.innerHeight;
+    section.bg = section.querySelector(".main__content__panel__bg"); 
+    section.bg.style.backgroundImage = `url(https://picsum.photos/${innerWidth}/${innerHeight}?random=${i})`;
 
-gsap.utils.toArray(".main__content__panel").forEach((section: any, i) => {
-  const innerWidth = window.innerWidth;
-  const innerHeight = window.innerHeight;
-  section.bg = section.querySelector(".main__content__panel__bg"); 
-  section.bg.style.backgroundImage = `url(https://picsum.photos/${innerWidth}/${innerHeight}?random=${i})`;
+    // Do the parallax effect on each section
+    if (i) {
+      section.bg.style.backgroundPosition = `50% ${-innerHeight / 2}px`;
 
-  // Do the parallax effect on each section
-  if (i) {
-    section.bg.style.backgroundPosition = `50% ${-innerHeight / 2}px`;
+      gsap.to(section.bg, {
+        backgroundPosition: `50% ${innerHeight / 2}px`,
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          scrub: true
+        }
+      });
+    } 
+    
+    // the first image should be positioned against the top. Use px on the animating part to work with GSAP. 
+    else {
+      section.bg.style.backgroundPosition = "50% 0px"; 
 
-    gsap.to(section.bg, {
-      backgroundPosition: `50% ${innerHeight / 2}px`,
-      ease: "none",
-      scrollTrigger: {
-        trigger: section,
-        scrub: true
-      }
-    });
-  } 
-  
-  // the first image should be positioned against the top. Use px on the animating part to work with GSAP. 
-  else {
-    section.bg.style.backgroundPosition = "50% 0px"; 
-
-    gsap.to(section.bg, {
-      backgroundPosition: `50% ${innerHeight / 2}px`,
-      ease: "none",
-      scrollTrigger: {
-        trigger: section,
-        start: "top top", 
-        end: "bottom top",
-        scrub: true
-      }
-    });
-  }
-});
+      gsap.to(section.bg, {
+        backgroundPosition: `50% ${innerHeight / 2}px`,
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top top", 
+          end: "bottom top",
+          scrub: true
+        }
+      });
+    }
+  });
 
 
   return (

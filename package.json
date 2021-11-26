@@ -1,4 +1,4 @@
-{
+  {
   "name": "elyfi-web",
   "version": "0.1.0",
   "private": true,
@@ -30,6 +30,7 @@
       }
     ]
   },
+  "proxy": "https://forum.elyfi.world/",
   "browserslist": {
     "production": [
       ">0.2%",

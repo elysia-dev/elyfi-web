@@ -133,7 +133,7 @@ const AppNavigator: React.FC = () => {
             />
             <Route
               exact
-              path="/:lng/governanace"
+              path="/:lng/governance"
               component={
                 Governance
               }
