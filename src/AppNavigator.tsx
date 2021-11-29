@@ -5,6 +5,7 @@ import ScrollToTop from 'src/hooks/ScrollToTop';
 import usePageTracking from 'src/hooks/usePageTracking';
 import { useMediaQuery } from 'react-responsive';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
+import envs from 'src/core/envs';
 
 import Dashboard from 'src/containers/Dashboard';
 import { StakingEL, StakingELFI } from 'src/containers/Staking';
@@ -98,29 +99,17 @@ const AppNavigator: React.FC = () => {
             <Route
               exact
               path="/:lng/staking/LP"
-              component={
-                active && chainId === envs.requiredChainId
-                  ? LPStaking
-                  : DisableWalletPage
-              }
+              component={LPStaking}
             />
             <Route
               exact
               path="/:lng/staking/EL"
-              component={
-                active && chainId === envs.requiredChainId
-                  ? StakingEL
-                  : DisableWalletPage
-              }
+              component={StakingEL}
             />
             <Route
               exact
               path="/:lng/staking/ELFI"
-              component={
-                active && chainId === envs.requiredChainId
-                  ? StakingELFI
-                  : DisableWalletPage
-              }
+              component={StakingELFI}
             />
             <Route
               exact
