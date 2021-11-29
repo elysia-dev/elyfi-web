@@ -11,14 +11,14 @@ const useClaimReward: () => () => void = () => {
   const { account, library } = useWeb3React();
   const { setTransaction } = useContext(TxContext);
   const initTxTracker = useTxTracking();
-  const staker = new ethers.Contract(
-    envs.stakerAddress,
-    stakerABI,
-    library.getSigner(),
-  );
   const iFace = new ethers.utils.Interface(stakerABI);
 
   const claim = async () => {
+    const staker = new ethers.Contract(
+      envs.stakerAddress,
+      stakerABI,
+      library.getSigner(),
+    );
     try {
       const elfi = iFace.encodeFunctionData('claimReward', [
         envs.governanceAddress,

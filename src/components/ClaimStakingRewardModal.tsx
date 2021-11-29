@@ -42,8 +42,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
   return (
     <div
       className="modal modal--deposit"
-      style={{ display: visible ? 'block' : 'none' }}
-    >
+      style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
         <div className="modal__header">
           <div className="modal__header__token-info-wrapper">
@@ -76,8 +75,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
                       window.sessionStorage.getItem('@MediaQuery') !== 'PC'
                         ? 30
                         : 60,
-                  }}
-                >
+                  }}>
                   {formatCommaSmall(balance)}
                 </p>
               </div>
@@ -99,7 +97,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
                   // TRICKY
                   // ELFI V2 StakingPool need round - 2 value
                   stakingPool
-                    .claim(
+                    ?.claim(
                       (round >= 3 && stakedToken === Token.ELFI
                         ? round - 2
                         : round
@@ -122,8 +120,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
                     .catch((e) => {
                       failTransaction(tracker, closeHandler, e);
                     });
-                }}
-              >
+                }}>
                 <p>{t('staking.claim_reward')}</p>
               </div>
             </div>

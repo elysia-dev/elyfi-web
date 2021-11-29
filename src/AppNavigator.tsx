@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
-import DisableWalletPage from 'src/components/DisableWalletPage';
 import ScrollToTop from 'src/hooks/ScrollToTop';
-import envs from 'src/core/envs';
 import usePageTracking from 'src/hooks/usePageTracking';
 import { useMediaQuery } from 'react-responsive';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
 
-import LPStaking from 'src/containers/LPStaking';
 import Dashboard from 'src/containers/Dashboard';
 import { StakingEL, StakingELFI } from 'src/containers/Staking';
 import Main from 'src/containers/Main';
@@ -19,11 +16,19 @@ import 'src/stylesheet/public.scss';
 import 'src/stylesheet/pc.scss';
 import 'src/stylesheet/tablet.scss';
 import 'src/stylesheet/mobile.scss';
+import 'src/stylesheet/jpublic.scss';
+import 'src/stylesheet/jpc.scss';
+import 'src/stylesheet/jtablet.scss';
+import 'src/stylesheet/jmobile.scss';
 import Navigation from 'src/components/Navigation';
 import Footer from 'src/components/Footer';
 import getLocalLanauge from 'src/utiles/getLocalLanguage';
 import LanguageProvider from 'src/providers/LanguageProvider';
 import DarkmodeModal from 'src/components/DarkmodeButton';
+import LPStaking from './containers/LPStaking';
+import RewardPlan from './containers/RewardPlan';
+import MarketDetail from './containers/MarketDetails';
+import PortfolioDetail from './containers/PortfolioDetail';
 
 const AppNavigator: React.FC = () => {
   const [isDarkmodeActivated, setDarkModeActivated] = useState(false);
@@ -52,9 +57,9 @@ const AppNavigator: React.FC = () => {
       : isTablet
       ? window.sessionStorage.setItem('@MediaQuery', 'Tablet')
       : window.sessionStorage.setItem('@MediaQuery', 'Mobile');
-  }
+  };
   useEffect(() => {
-    setMediaQuery()
+    setMediaQuery();
   }, [isPc, isTablet, isMobile]);
 
   const { active, chainId, deactivate, activate } = useWeb3React();
@@ -70,11 +75,11 @@ const AppNavigator: React.FC = () => {
 
   const LanguageDetctionPage = () => {
     const history = useHistory();
-  
+
     useEffect(() => {
       history.replace(`/${getLocalLanauge()}`);
     }, []);
-  
+
     return <></>;
   };
 

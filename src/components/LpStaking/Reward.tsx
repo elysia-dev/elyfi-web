@@ -6,15 +6,13 @@ import dai from 'src/assets/images/dai.png';
 import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 import Token from 'src/enums/Token';
 import RewardTypes from 'src/core/types/RewardTypes';
+import { StakingTitleProps } from 'src/core/types/LpStakingTypeProps';
+import { useWeb3React } from '@web3-react/core';
 import Guide from '../Guide';
 import Button from './Button';
 
-type Props = {
-  rewardToReceive: RewardTypes;
-  onHandler: () => void;
-};
-
-const Reward: FunctionComponent<Props> = (props) => {
+const Reward: FunctionComponent<StakingTitleProps> = (props) => {
+  const { account } = useWeb3React();
   const { rewardToReceive, onHandler } = props;
   const { t } = useTranslation();
 
@@ -80,7 +78,10 @@ const Reward: FunctionComponent<Props> = (props) => {
             textAlign: 'center',
             marginTop: 25,
           }}>
-          <Button onHandler={onHandler} btnTitle={t('staking.claim_reward')} />
+          <Button
+            onHandler={() => account && onHandler()}
+            btnTitle={t('staking.claim_reward')}
+          />
         </div>
       </div>
     </>

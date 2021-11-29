@@ -1,14 +1,12 @@
 import { FunctionComponent } from 'react';
 import { useTranslation } from 'react-i18next';
+import { DetailBoxItemHeaderProps } from 'src/core/types/LpStakingTypeProps';
 import Guide from '../Guide';
 
-type Props = {
-  TotalLiquidity: string;
-  apr: string;
-};
-
-const DetailBoxItemHeader: FunctionComponent<Props> = (props) => {
-  const { TotalLiquidity, apr } = props;
+const DetailBoxItemHeader: FunctionComponent<DetailBoxItemHeaderProps> = (
+  props,
+) => {
+  const { totalLiquidity, apr } = props;
   const { t } = useTranslation();
 
   return (
@@ -79,7 +77,7 @@ const DetailBoxItemHeader: FunctionComponent<Props> = (props) => {
               }}>
               $
             </div>
-            {TotalLiquidity}
+            {totalLiquidity}
           </div>
         </div>
       </div>

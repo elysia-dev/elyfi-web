@@ -70,15 +70,13 @@ const IncentiveModal: FunctionComponent<{
   return (
     <div
       className="modal modal--deposit"
-      style={{ display: visible ? 'block' : 'none' }}
-    >
+      style={{ display: visible ? 'block' : 'none' }}>
       <div
         className="modal__container"
         style={{
           height:
             window.sessionStorage.getItem('@MediaQuery') !== 'PC' ? 260 : 360,
-        }}
-      >
+        }}>
         <div className="modal__header">
           <div className="modal__header__token-info-wrapper">
             <img
@@ -106,8 +104,7 @@ const IncentiveModal: FunctionComponent<{
                   : 170,
               minHeight: 0,
               overflowY: 'clip',
-            }}
-          >
+            }}>
             <div className="modal__withdraw__value-wrapper">
               <p></p>
               <p
@@ -117,8 +114,7 @@ const IncentiveModal: FunctionComponent<{
                     window.sessionStorage.getItem('@MediaQuery') !== 'PC'
                       ? 30
                       : 60,
-                }}
-              >
+                }}>
                 <CountUp
                   className="modal__withdraw__value bold"
                   start={parseFloat(formatEther(balanceBefore))}
@@ -136,8 +132,7 @@ const IncentiveModal: FunctionComponent<{
             className="modal__button"
             onClick={() => {
               reqeustClaimIncentive();
-            }}
-          >
+            }}>
             <p>CLAIM REWARD</p>
           </div>
         </div>

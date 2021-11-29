@@ -7,13 +7,13 @@ import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
 import { formatSixFracionDigit } from 'src/utiles/formatters';
 import useClaimReward from 'src/hooks/useClaimReward';
-import RewardTypes from 'src/core/types/RewardTypes';
+import { LpRewardModalProps } from 'src/core/types/RewardTypes';
 
-const RewardModal: React.FunctionComponent<{
-  visible: boolean;
-  closeHandler: () => void;
-  rewardToReceive: RewardTypes;
-}> = ({ visible, closeHandler, rewardToReceive }) => {
+const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
+  visible,
+  closeHandler,
+  rewardToReceive,
+}) => {
   const { t } = useTranslation();
   const { txWaiting } = useContext(TxContext);
   const claim = useClaimReward();

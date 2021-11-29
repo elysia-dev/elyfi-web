@@ -3,13 +3,9 @@ import elfi from 'src/assets/images/ELFI.png';
 import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
 import Token from 'src/enums/Token';
+import { tokenTypes } from 'src/core/types/LpStakingTypeProps';
 
-type Props = {
-  token0: string;
-  token1: string;
-};
-
-const StakingTitle: React.FunctionComponent<Props> = (props) => {
+const StakingTitle: React.FunctionComponent<tokenTypes> = (props) => {
   const { token0, token1 } = props;
   const { t } = useTranslation();
   const secondImg = token1 === Token.ETH ? eth : dai;

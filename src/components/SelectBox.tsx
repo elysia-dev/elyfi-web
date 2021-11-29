@@ -17,11 +17,11 @@ type Props = {
       selectBoxTitle: string;
     }>
   >;
-  nonStakePositions: TokenInfo[];
+  unstakedPositions: TokenInfo[];
 };
 
 const SelectBox: FunctionComponent<Props> = (props) => {
-  const { selectedToken, setSelectedToken, nonStakePositions } = props;
+  const { selectedToken, setSelectedToken, unstakedPositions } = props;
   const [isItemsVisible, setIsItemsVisible] = useState(false);
   const { t } = useTranslation();
   const selectBoxHandler = () => {
@@ -42,7 +42,7 @@ const SelectBox: FunctionComponent<Props> = (props) => {
         }}>
         {t('lpstaking.lp_tokens_held')}
       </div>
-      {nonStakePositions.length > 0 ? (
+      {unstakedPositions.length > 0 ? (
         <div
           style={{
             border: '1px solid black',
@@ -126,7 +126,7 @@ const SelectBox: FunctionComponent<Props> = (props) => {
                 bottom: '-214%',
                 position: 'absolute',
               }}>
-              {nonStakePositions.map((position, idx) => {
+              {unstakedPositions.map((position, idx) => {
                 return (
                   <SelectBoxItems
                     key={idx}

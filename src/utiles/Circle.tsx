@@ -1,5 +1,4 @@
-import { CSSProperties } from 'react';
-import { FunctionComponent, useState, useEffect } from 'react';
+import { CSSProperties, FunctionComponent, useState, useEffect } from 'react';
 
 interface CircleProps {
   progress: number;
@@ -70,8 +69,7 @@ export const Circle: FunctionComponent<CircleProps> = (props: CircleProps) => {
                   x={175}
                   y={175}
                   textAnchor="middle"
-                  dominantBaseline="central"
-                >
+                  dominantBaseline="central">
                   <tspan dx={0} fontSize="70">
                     {' '}
                     100%
@@ -133,8 +131,7 @@ export const Circle: FunctionComponent<CircleProps> = (props: CircleProps) => {
                     ) /
                       100 +
                     5
-                  }
-                >
+                  }>
                   <tspan dx={-20} dy={3} fontSize="20">
                     {props.progress}%
                   </tspan>
@@ -174,8 +171,7 @@ export const Circle: FunctionComponent<CircleProps> = (props: CircleProps) => {
                   x={175}
                   y={175}
                   textAnchor="middle"
-                  dominantBaseline="central"
-                >
+                  dominantBaseline="central">
                   <tspan dx={0} fontSize="70">
                     {' '}
                     100%
@@ -237,8 +233,7 @@ export const Circle: FunctionComponent<CircleProps> = (props: CircleProps) => {
                     ) /
                       100 +
                     5
-                  }
-                >
+                  }>
                   <tspan dx={-20} dy={3} fontSize="20">
                     {100 - props.progress}%
                   </tspan>

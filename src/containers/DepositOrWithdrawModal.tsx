@@ -50,265 +50,273 @@ const DepositOrWithdrawModal: FunctionComponent<{
   afterTx,
   transactionModal,
 }) => {
-    const { account } = useWeb3React();
-    const { elfiPrice } = useContext(PriceContext);
-    const [selected, select] = useState<boolean>(true);
-    const { allowance, loading, contract: reserveERC20, refetch } = useERC20Info(
-      reserve.id,
-      envs.moneyPoolAddress,
-    );
-    const [liquidity, setLiquidity] = useState<{
-      value: BigNumber;
-      loaded: boolean;
-    }>({ value: constants.Zero, loaded: false });
-    const { waiting, wait } = useWaitingTx();
-    const [currentIndex, setCurrentIndex] = useState<BigNumber>(
-      calcCurrentIndex(
-        BigNumber.from(reserve.lTokenInterestIndex),
-        reserve.lastUpdateTimestamp,
-        BigNumber.from(reserve.depositAPY),
-      ),
-    );
-    const { t } = useTranslation();
-    const moneyPool = useMoneyPool();
-    const initTxTracker = useTxTracking();
-    const { setTransaction, failTransaction } = useContext(TxContext);
+  const { account } = useWeb3React();
+  const { elfiPrice } = useContext(PriceContext);
+  const [selected, select] = useState<boolean>(true);
+  const {
+    allowance,
+    loading,
+    contract: reserveERC20,
+    refetch,
+  } = useERC20Info(reserve.id, envs.moneyPoolAddress);
+  const [liquidity, setLiquidity] = useState<{
+    value: BigNumber;
+    loaded: boolean;
+  }>({ value: constants.Zero, loaded: false });
+  const { waiting, wait } = useWaitingTx();
+  const [currentIndex, setCurrentIndex] = useState<BigNumber>(
+    calcCurrentIndex(
+      BigNumber.from(reserve.lTokenInterestIndex),
+      reserve.lastUpdateTimestamp,
+      BigNumber.from(reserve.depositAPY),
+    ),
+  );
+  const { t } = useTranslation();
+  const moneyPool = useMoneyPool();
+  const initTxTracker = useTxTracking();
+  const { setTransaction, failTransaction } = useContext(TxContext);
 
-    const tokenInfo = ReserveData.find(
-      (_reserve) => _reserve.address === reserve.id,
-    );
+  const tokenInfo = ReserveData.find(
+    (_reserve) => _reserve.address === reserve.id,
+  );
 
-    const accumulatedYield = useMemo(() => {
-      return calcAccumulatedYield(
-        balance,
-        currentIndex,
+  const accumulatedYield = useMemo(() => {
+    return calcAccumulatedYield(
+      balance,
+      currentIndex,
+      userData?.lTokenMint.filter(
+        (mint) => mint.lToken.id === reserve.lToken.id,
+      ) || [],
+      userData?.lTokenBurn.filter(
+        (burn) => burn.lToken.id === reserve.lToken.id,
+      ) || [],
+    );
+  }, [reserve, userData, currentIndex, balance]);
+
+  const yieldProduced = useMemo(() => {
+    return accumulatedYield.sub(
+      calcAccumulatedYield(
+        // FIXME
+        // Tricky constant.One
+        // yieldProduced should be calculated with last burn index
+        constants.One,
+        BigNumber.from(
+          userData?.lTokenBurn[userData.lTokenBurn.length - 1]?.index ||
+            reserve.lTokenInterestIndex,
+        ),
         userData?.lTokenMint.filter(
           (mint) => mint.lToken.id === reserve.lToken.id,
         ) || [],
         userData?.lTokenBurn.filter(
           (burn) => burn.lToken.id === reserve.lToken.id,
         ) || [],
-      );
-    }, [reserve, userData, currentIndex, balance]);
+      ),
+    );
+  }, [accumulatedYield, reserve, userData]);
 
-    const yieldProduced = useMemo(() => {
-      return accumulatedYield.sub(
-        calcAccumulatedYield(
-          // FIXME
-          // Tricky constant.One
-          // yieldProduced should be calculated with last burn index
-          constants.One,
-          BigNumber.from(
-            userData?.lTokenBurn[userData.lTokenBurn.length - 1]?.index ||
-            reserve.lTokenInterestIndex,
-          ),
-          userData?.lTokenMint.filter(
-            (mint) => mint.lToken.id === reserve.lToken.id,
-          ) || [],
-          userData?.lTokenBurn.filter(
-            (burn) => burn.lToken.id === reserve.lToken.id,
-          ) || [],
-        ),
-      );
-    }, [accumulatedYield, reserve, userData]);
+  const increateAllowance = async () => {
+    if (!account) return;
+    const tracker = initTxTracker(
+      'DepositOrWithdrawalModal',
+      'Approve',
+      `${reserve.id}`,
+    );
 
-    const increateAllowance = async () => {
-      if (!account) return;
-      const tracker = initTxTracker(
-        'DepositOrWithdrawalModal',
-        'Approve',
-        `${reserve.id}`,
-      );
+    tracker.clicked();
 
-      tracker.clicked();
+    reserveERC20
+      .approve(envs.moneyPoolAddress, constants.MaxUint256)
+      .then((tx) => {
+        setTransaction(
+          tx,
+          tracker,
+          RecentActivityType.Approve,
+          () => {
+            transactionModal();
+            onClose();
+          },
+          () => {
+            refetch();
+          },
+        );
+      })
+      .catch(() => {
+        tracker.canceled();
+      });
+  };
 
-      reserveERC20
-        .approve(envs.moneyPoolAddress, constants.MaxUint256)
-        .then((tx) => {
-          setTransaction(
-            tx,
-            tracker,
-            RecentActivityType.Approve,
-            () => {
-              transactionModal();
-              onClose();
-            },
-            () => {
-              refetch();
-            },
-          );
-        })
-        .catch(() => {
-          tracker.canceled();
-        });
-    };
+  const requestDeposit = async (amount: BigNumber, max: boolean) => {
+    if (!account) return;
 
-    const requestDeposit = async (amount: BigNumber, max: boolean) => {
-      if (!account) return;
+    const tracker = initTxTracker(
+      'DepositOrWithdrawalModal',
+      'Deposit',
+      `${utils.formatUnits(amount, tokenInfo?.decimals)} ${reserve.id}`,
+    );
 
-      const tracker = initTxTracker(
-        'DepositOrWithdrawalModal',
-        'Deposit',
-        `${utils.formatUnits(amount, tokenInfo?.decimals)} ${reserve.id}`,
-      );
+    tracker.clicked();
 
-      tracker.clicked();
+    moneyPool
+      ?.deposit(reserve.id, account, max ? balance : amount)
+      .then((tx) => {
+        setTransaction(
+          tx,
+          tracker,
+          RecentActivityType.Deposit,
+          () => {
+            transactionModal();
+            onClose();
+          },
+          () => {
+            afterTx();
+          },
+        );
+      })
+      .catch((e) => {
+        failTransaction(tracker, onClose, e);
+      });
+  };
 
-      moneyPool
-        .deposit(reserve.id, account, max ? balance : amount)
-        .then((tx) => {
-          setTransaction(
-            tx,
-            tracker,
-            RecentActivityType.Deposit,
-            () => {
-              transactionModal();
-              onClose();
-            },
-            () => {
-              afterTx();
-            },
-          );
-        })
-        .catch((e) => {
-          failTransaction(tracker, onClose, e);
-        });
-    };
+  const reqeustWithdraw = (amount: BigNumber, max: boolean) => {
+    if (!account) return;
 
-    const reqeustWithdraw = (amount: BigNumber, max: boolean) => {
-      if (!account) return;
+    const tracker = initTxTracker(
+      'DepositOrWithdrawalModal',
+      'Withdraw',
+      `${utils.formatUnits(amount, tokenInfo?.decimals)} ${max} ${reserve.id}`,
+    );
 
-      const tracker = initTxTracker(
-        'DepositOrWithdrawalModal',
-        'Withdraw',
-        `${utils.formatUnits(amount, tokenInfo?.decimals)} ${max} ${reserve.id}`,
-      );
+    tracker.clicked();
 
-      tracker.clicked();
+    moneyPool
+      ?.withdraw(reserve.id, account, max ? constants.MaxUint256 : amount)
+      .then((tx) => {
+        setTransaction(
+          tx,
+          tracker,
+          RecentActivityType.Withdraw,
+          () => {
+            transactionModal();
+            onClose();
+          },
+          () => {
+            afterTx();
+          },
+        );
+      })
+      .catch((e) => {
+        failTransaction(tracker, onClose, e);
+      });
+  };
 
-      moneyPool
-        .withdraw(reserve.id, account, max ? constants.MaxUint256 : amount)
-        .then((tx) => {
-          setTransaction(
-            tx,
-            tracker,
-            RecentActivityType.Withdraw,
-            () => {
-              transactionModal();
-              onClose();
-            },
-            () => {
-              afterTx();
-            },
-          );
-        })
-        .catch((e) => {
-          failTransaction(tracker, onClose, e);
-        });
-    };
-
-    useEffect(() => {
-      if (!reserve) return;
-
-      reserveERC20.balanceOf(reserve.lToken.id).then((value) => {
+  useEffect(() => {
+    if (!reserve) return;
+    reserveERC20
+      .balanceOf(reserve.lToken.id)
+      .then((value) => {
         setLiquidity({
           value,
           loaded: true,
         });
+      })
+      .catch((e) => {
+        console.log(e);
       });
-    }, [reserve, reserveERC20]);
+  }, [reserve, reserveERC20, account]);
 
-    useEffect(() => {
-      const interval = setInterval(
-        () =>
-          setCurrentIndex(
-            calcCurrentIndex(
-              BigNumber.from(reserve.lTokenInterestIndex),
-              reserve.lastUpdateTimestamp,
-              BigNumber.from(reserve.depositAPY),
-            ),
+  useEffect(() => {
+    const interval = setInterval(
+      () =>
+        setCurrentIndex(
+          calcCurrentIndex(
+            BigNumber.from(reserve.lTokenInterestIndex),
+            reserve.lastUpdateTimestamp,
+            BigNumber.from(reserve.depositAPY),
           ),
-        500,
-      );
+        ),
+      500,
+    );
 
-      return () => {
-        clearInterval(interval);
-      };
-    });
+    return () => {
+      clearInterval(interval);
+    };
+  });
 
-    return (
-      <div
-        className="modal modal--deposit"
-        style={{ display: visible ? 'block' : 'none' }}>
-        <div className="modal__container">
-          <div className="modal__header">
-            <div className="modal__header__token-info-wrapper">
-              <img
-                className="modal__header__image"
-                src={tokenImage}
-                alt="Token"
-              />
-              <div className="modal__header__name-wrapper">
-                <p className="modal__header__name spoqa__bold">{tokenName}</p>
-              </div>
-            </div>
-            <div className="close-button" onClick={onClose}>
-              <div className="close-button--1">
-                <div className="close-button--2" />
-              </div>
+  return (
+    <div
+      className="modal modal--deposit"
+      style={{ display: visible ? 'block' : 'none' }}>
+      <div className="modal__container">
+        <div className="modal__header">
+          <div className="modal__header__token-info-wrapper">
+            <img
+              className="modal__header__image"
+              src={tokenImage}
+              alt="Token"
+            />
+            <div className="modal__header__name-wrapper">
+              <p className="modal__header__name spoqa__bold">{tokenName}</p>
             </div>
           </div>
-          <div className="modal__converter">
-            <div
-              className={`modal__converter__column${selected ? '--selected' : ''
-                }`}
-              onClick={() => {
-                select(true);
-              }}>
-              <p className="bold">{t('dashboard.deposit')}</p>
+          <div className="close-button" onClick={onClose}>
+            <div className="close-button--1">
+              <div className="close-button--2" />
             </div>
-            <div
-              className={`modal__converter__column${!selected ? '--selected' : ''
-                }`}
-              onClick={() => {
-                select(false);
-              }}>
-              <p className="bold">{t('dashboard.withdraw')}</p>
-            </div>
-          </div>
-          <div className="modal__body">
-            {waiting ? (
-              <LoadingIndicator />
-            ) : selected ? (
-              <DepositBody
-                tokenInfo={tokenInfo!}
-                depositAPY={toPercent(reserve.depositAPY || '0')}
-                miningAPR={toPercent(
-                  calcMiningAPR(
-                    elfiPrice,
-                    BigNumber.from(reserve.totalDeposit),
-                    tokenInfo?.decimals,
-                  ),
-                )}
-                balance={balance}
-                isApproved={!loading && allowance.gt(balance)}
-                increaseAllownace={increateAllowance}
-                deposit={requestDeposit}
-              />
-            ) : (
-              <WithdrawBody
-                tokenInfo={tokenInfo!}
-                depositBalance={depositBalance}
-                accumulatedYield={accumulatedYield}
-                yieldProduced={yieldProduced}
-                liquidity={liquidity.value}
-                withdraw={reqeustWithdraw}
-              />
-            )}
           </div>
         </div>
+        <div className="modal__converter">
+          <div
+            className={`modal__converter__column${
+              selected ? '--selected' : ''
+            }`}
+            onClick={() => {
+              select(true);
+            }}>
+            <p className="bold">{t('dashboard.deposit')}</p>
+          </div>
+          <div
+            className={`modal__converter__column${
+              !selected ? '--selected' : ''
+            }`}
+            onClick={() => {
+              select(false);
+            }}>
+            <p className="bold">{t('dashboard.withdraw')}</p>
+          </div>
+        </div>
+        <div className="modal__body">
+          {waiting ? (
+            <LoadingIndicator />
+          ) : selected ? (
+            <DepositBody
+              tokenInfo={tokenInfo!}
+              depositAPY={toPercent(reserve.depositAPY || '0')}
+              miningAPR={toPercent(
+                calcMiningAPR(
+                  elfiPrice,
+                  BigNumber.from(reserve.totalDeposit),
+                  tokenInfo?.decimals,
+                ),
+              )}
+              balance={balance}
+              isApproved={!loading && allowance.gt(balance)}
+              increaseAllownace={increateAllowance}
+              deposit={requestDeposit}
+            />
+          ) : (
+            <WithdrawBody
+              tokenInfo={tokenInfo!}
+              depositBalance={depositBalance}
+              accumulatedYield={accumulatedYield}
+              yieldProduced={yieldProduced}
+              liquidity={liquidity.value}
+              withdraw={reqeustWithdraw}
+            />
+          )}
+        </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
 export default DepositOrWithdrawModal;

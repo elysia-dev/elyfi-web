@@ -1,4 +1,10 @@
-import { useContext, useState, useEffect, useRef } from 'react';
+import {
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  FunctionComponent,
+} from 'react';
 import LanguageType from 'src/enums/LanguageType';
 import LanguageContext from 'src/contexts/LanguageContext';
 import ko from 'src/assets/images/korea@2x.png';
@@ -21,7 +27,7 @@ const languageData = {
   },
 };
 
-export const LanguageConverter = () => {
+export const LanguageConverter: FunctionComponent = () => {
   const { setLanguage } = useContext(LanguageContext);
   const [visible, setVisible] = useState(false);
   const LangRef = useRef<HTMLDivElement>(null);
@@ -54,8 +60,7 @@ export const LanguageConverter = () => {
     return (
       <div
         className="lang__image-wrapper"
-        style={{ display: visible ? 'flex' : 'none' }}
-      >
+        style={{ display: visible ? 'flex' : 'none' }}>
         {[LanguageType.EN, LanguageType.KO, LanguageType.ZHHANS]
           .filter((languageType) => languageType !== lng)
           .map((languageType, index) => {
@@ -66,8 +71,7 @@ export const LanguageConverter = () => {
                 onClick={() => {
                   setLanguage(languageType);
                   handleHover();
-                }}
-              >
+                }}>
                 <img
                   className="lang__select-image"
                   src={languageData[languageType].image}
@@ -78,28 +82,28 @@ export const LanguageConverter = () => {
             );
           })}
       </div>
-    )
-  }
+    );
+  };
 
   const showingLanguageIcon = (languageType: LanguageType) => {
     return (
       <>
-        <img className="lang__select-image" src={languageData[languageType].image} />
-        <p
-          className="lang__select-image__text"
-          style={{ cursor: 'pointer' }}
-        >
+        <img
+          className="lang__select-image"
+          src={languageData[languageType].image}
+        />
+        <p className="lang__select-image__text" style={{ cursor: 'pointer' }}>
           {languageData[languageType].title}
         </p>
       </>
-    )
-  }
+    );
+  };
 
   return (
     <div className="lang" ref={LangRef}>
       {changeLanguage()}
       <div className="lang__button-wrapper" onClick={() => handleHover()}>
-        {showingLanguageIcon(lng as LanguageType)}
+        {showingLanguageIcon(LanguageType.KO as LanguageType)}
       </div>
     </div>
   );

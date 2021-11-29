@@ -20,5 +20,9 @@
   "lpTokenStakingEndTime": 1639562400,
   "stakerSubgraphURL": "https://api.studio.thegraph.com/query/862/lp-staking/v0.0.1",
   "lpTokenPoolSubgraphURL": "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3",
-  "refundedAddress": "0x23b062F33ed93EE8C8e658e609dbd80797DFdA89"
+  "refundedAddress": "0x23b062F33ed93EE8C8e658e609dbd80797DFdA89",
+  "appURI": "https://app.elyfi.world",
+  "etherscan": "https://etherscan.io",
+  "daiTokenizerAddress": "0xc6701e7be98A79485364419961838EB141141aAf",
+  "usdtTokeninzerAddress": "0x68f69Ab21242e194ebd7534B598e26180dD92616"
 }
