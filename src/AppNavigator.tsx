@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import ScrollToTop from 'src/hooks/ScrollToTop';
 import usePageTracking from 'src/hooks/usePageTracking';
 import { useMediaQuery } from 'react-responsive';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
+import envs from 'src/core/envs';
 
 import Dashboard from 'src/containers/Dashboard';
 import { StakingEL, StakingELFI } from 'src/containers/Staking';
@@ -24,12 +25,24 @@ import Navigation from 'src/components/Navigation';
 import Footer from 'src/components/Footer';
 import getLocalLanauge from 'src/utiles/getLocalLanguage';
 import LanguageProvider from 'src/providers/LanguageProvider';
+// import DarkmodeModal from 'src/components/DarkmodeButton';
 import LPStaking from './containers/LPStaking';
 import RewardPlan from './containers/RewardPlan';
 import MarketDetail from './containers/MarketDetails';
 import PortfolioDetail from './containers/PortfolioDetail';
 
 const AppNavigator: React.FC = () => {
+  const [isDarkmodeActivated, setDarkModeActivated] = useState(false);
+  const setDarkMode = () => {
+    setDarkModeActivated(!isDarkmodeActivated);
+    window.sessionStorage.getItem('@isDarkMode') === 'true' ?
+      window.sessionStorage.setItem('@isDarkMode', 'false') :
+      window.sessionStorage.setItem('@isDarkMode', 'true')
+  }
+  useEffect(() => {
+    window.sessionStorage.getItem('@isDarkMode') === 'true' ? setDarkModeActivated(true) : setDarkModeActivated(false)
+  }, [])
+
   const isPc = useMediaQuery({
     query: '(min-width: 1190px)',
   });
@@ -72,56 +85,66 @@ const AppNavigator: React.FC = () => {
   };
 
   return (
-    <>
-      <div
-        className={`elysia ${
-          isPc ? 'view-w' : isTablet ? 'view-t' : 'view-m'
-        }`}>
-        <Navigation />
-        <ScrollToTop />
-        <Switch>
-          <Route exact path="/:lng">
-            <LanguageProvider>
-              <Route
-                exact
-                path="/:lng/staking/LP"
-                component={
-                  LPStaking
-                }
-              />
-              <Route
-                exact
-                path="/:lng/staking/EL"
-                component={
-                  StakingEL
-                }
-              />
-              <Route
-                exact
-                path="/:lng/staking/ELFI"
-                component={
-                  StakingELFI
-                }
-              />
-              <Route exact path="/:lng/dashboard" component={Dashboard} />
-              <Route exact path="/:lng/guide" component={Guide} />
-              <Route exact path="/:lng/governance" component={Governance} />
-              <Route exact path="/:lng" component={Main} />
-              <Footer />
-            </LanguageProvider>
-          </Route>
-          {/* <Route exact path="/" component={LanguageDetctionPage} />
-          <Route exact path="/staking/LP" component={LPStaking} />
-          <Route exact path="/portfolio/:id" component={PortfolioDetail} />
-          <Route exact path="/rewardplan/:stakingType" component={RewardPlan} />
-          <Route exact path="/staking/EL" component={StakingEL} />
-          <Route exact path="/staking/ELFI" component={StakingELFI} />
-          <Route exact path="/deposits/:token" component={MarketDetail} />
-          <Route exact path="/" component={Dashboard} /> */}
-        </Switch>
-        {/* <Footer /> */}
-      </div>
-    </>
+    <div
+      className={`elysia ${isPc ? 'view-w' : isTablet ? 'view-t' : 'view-m'} ${isDarkmodeActivated ? "dark" : "light"}`}>
+      <ScrollToTop />
+      <Switch>
+        <Route path="/:lng">
+          <LanguageProvider>
+            <Navigation />
+            {/* <DarkmodeModal 
+              isDarkmode={isDarkmodeActivated}
+              setDarkMode={() => setDarkMode()}
+            /> */}
+            <Route
+              exact
+              path="/:lng/staking/LP"
+              component={LPStaking}
+            />
+            <Route
+              exact
+              path="/:lng/staking/EL"
+              component={StakingEL}
+            />
+            <Route
+              exact
+              path="/:lng/staking/ELFI"
+              component={StakingELFI}
+            />
+            <Route
+              exact
+              path="/:lng/dashboard"
+              component={
+                Dashboard
+              }
+            />
+            <Route
+              exact
+              path="/:lng/guide"
+              component={
+                Guide
+              }
+            />
+            <Route
+              exact
+              path="/:lng/governance"
+              component={
+                Governance
+              }
+            />
+            <Route
+              exact
+              path="/:lng"
+              component={
+                Main
+              }
+            />
+            <Footer />
+          </LanguageProvider>
+        </Route>
+        <Route path="/" component={LanguageDetctionPage} />
+      </Switch>
+    </div>
   );
 };
 
