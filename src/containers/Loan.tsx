@@ -4,7 +4,7 @@ import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
 import { useTranslation } from 'react-i18next';
 import Footer from 'src/components/Footer';
 import Skeleton from 'react-loading-skeleton';
-import { GET_ALL_ASSET_BONDS } from 'src/queries/__generated__/assetBondQueries';
+import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
 import { BigNumber, constants, utils } from 'ethers';
 import AssetList from './AssetList';
 

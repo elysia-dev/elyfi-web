@@ -10,7 +10,7 @@ import CountUp from 'react-countup';
 import { formatEther } from '@ethersproject/units';
 import { BigNumber } from 'ethers';
 import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
-import { GET_ALL_ASSET_BONDS } from 'src/queries/__generated__/assetBondQueries';
+import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
 import { useQuery } from '@apollo/client';
 import AssetList from 'src/containers/AssetList';
 import Token from 'src/enums/Token';
