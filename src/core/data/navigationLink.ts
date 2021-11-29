@@ -72,11 +72,5 @@ export const navigationLink: INavigation[] = [
     type: NavigationType.Link,
     location: `/guide`,
     i18nKeyword: "navigation.guide"
-  },
-  {
-    id: 6,
-    type: NavigationType.Href,
-    location: 'https://info.uniswap.org/#/pools/0xbde484db131bd2ae80e44a57f865c1dfebb7e31f',
-    i18nKeyword: "navigation.uniswap_elfi"
   }
 ]

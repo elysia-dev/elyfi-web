@@ -105,7 +105,7 @@ const AppNavigator: React.FC = () => {
               />
               <Route exact path="/:lng/dashboard" component={Dashboard} />
               <Route exact path="/:lng/guide" component={Guide} />
-              <Route exact path="/:lng/governanace" component={Governance} />
+              <Route exact path="/:lng/governance" component={Governance} />
               <Route exact path="/:lng" component={Main} />
               <Footer />
             </LanguageProvider>
