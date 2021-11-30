@@ -1,12 +1,16 @@
 $device-width: 1190px;
 $footer-height: 100px;
+$navigation-height: 100px;
 
 .view-w {
-  $footer-height: 100px;
   min-width: $device-width;
   min-height: calc(100vh - #{$footer-height});
   .mobile-only {
     display: none;
+  }
+  .root-container {
+    width: 1190px;
+    margin: 0 auto;
   }
   .navigation {
     &__status {
@@ -15,8 +19,7 @@ $footer-height: 100px;
     }
     &__container {
       max-width: $device-width;
-      padding: 15px;
-      height: 50px;
+      height: $navigation-height;
     }
     &__link {
       font-size: 15px;
@@ -81,13 +84,17 @@ $footer-height: 100px;
         }
       }
     }
+  } // navigation end
+
+  .main {
+    margin-top: 100px;
   }
   .logo-wrapper {
     width: 205px;
   }
   .elysia-logo {
-    width: 151px;
-    height: 38px;
+    width: 146px;
+    height: 34px;
   }
 
   .header {

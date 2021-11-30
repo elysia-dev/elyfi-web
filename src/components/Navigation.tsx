@@ -98,6 +98,9 @@ const Navigation = () => {
           onMouseEnter={() => {
             setGlobalNavHover(_index + 1)
           }}
+          style={{ 
+            color: scrollTop > 125 ? '#000000' : '#000000'
+          }}
         >
           {t(_data.i18nKeyword).toUpperCase()}
           <div
@@ -130,6 +133,9 @@ const Navigation = () => {
           className="navigation__link"
           onMouseEnter={() => {
             setLocalNavHover(_index + 1)
+          }}
+          style={{ 
+            color: scrollTop > 125 ? '#000000' : '#000000'
           }}
         >
           {t(_data.i18nKeyword).toUpperCase()}
@@ -231,8 +237,12 @@ const Navigation = () => {
       <div className="navigation__bottom" 
         ref={localNavigationRef}
         style={{
-          backgroundColor: scrollTop > 125 ? '#10101077' : '#000000',
-          display: (selectedLocalNavIndex || isLocalNavPinned) ? "flex" : "none"
+          backgroundColor: scrollTop > 125 ? '#FFFFFF' : 
+          // 'transparent',
+          "#FFFFFF",
+          display: (selectedLocalNavIndex || isLocalNavPinned) ? "flex" : "none",
+          borderTop: scrollTop > 125 ? "1px solid #e6e6e6" : "1px solid #e6e6e6",
+          borderBottom: scrollTop > 125 ? "1px solid #e6e6e6" : "1px solid #e6e6e6"
         }}
       >
         {
@@ -267,7 +277,10 @@ const Navigation = () => {
     <>
       <nav
         className="navigation"
-        style={{ backgroundColor: scrollTop > 125 ? '#10101077' : '#101010' }}
+        style={{ 
+          backgroundColor: scrollTop > 125 ? '#FFFFFF' : '#FFFFFF',
+          borderBottom: scrollTop > 125 ? "1px solid #e6e6e6" : "1px solid #e6e6e6"
+        }}
         ref={navigationRef}  
         onMouseLeave={() => {
           setGlobalNavHover(0)
@@ -299,7 +312,6 @@ const Navigation = () => {
         </div>
         {localNavigation()}
       </nav>
-      <div className="navigation__margin" />
     </>
   );
 };

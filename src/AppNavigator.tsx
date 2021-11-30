@@ -13,14 +13,15 @@ import Main from 'src/containers/Main';
 import Guide from 'src/containers/Guide';
 import Governance from 'src/containers/Governance';
 
+
+// import 'src/stylesheet/jpublic.scss';
+// import 'src/stylesheet/jpc.scss';
+// import 'src/stylesheet/jtablet.scss';
+// import 'src/stylesheet/jmobile.scss';
 import 'src/stylesheet/public.scss';
 import 'src/stylesheet/pc.scss';
 import 'src/stylesheet/tablet.scss';
 import 'src/stylesheet/mobile.scss';
-import 'src/stylesheet/jpublic.scss';
-import 'src/stylesheet/jpc.scss';
-import 'src/stylesheet/jtablet.scss';
-import 'src/stylesheet/jmobile.scss';
 import Navigation from 'src/components/Navigation';
 import Footer from 'src/components/Footer';
 import getLocalLanauge from 'src/utiles/getLocalLanguage';
