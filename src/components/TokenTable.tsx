@@ -14,12 +14,8 @@ import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
 import { useQuery } from '@apollo/client';
 import AssetList from 'src/containers/AssetList';
 import Token from 'src/enums/Token';
+import { useParams } from 'react-router-dom';
 
-const DetailInfoDiv = styled.div`
-  width: 200px;
-  display: flex;
-  justify-content: space-between;
-`;
 
 interface Props {
   tokenImage: string;
@@ -70,266 +66,99 @@ const TokenTable: React.FC<Props> = ({
     return product.reserve.id === reserveData?.id;
   });
 
+  const { lng } = useParams<{ lng: string }>();
+
   return (
     <>
-      {window.sessionStorage.getItem('@MediaQuery') === 'PC' ? (
-        <div
-          style={{
-            border: '1px solid black',
-            marginTop: '30px',
-          }}>
-          <div
-            // className={`tokens__table__row${!isDisable ? '' : '--disable'}`}
-            key={index}
-            style={{
-              height: 100,
-              border: '1px solid black',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingRight: '20px',
-            }}>
-            <div
-              className={`tokens__table__image`}
-              style={{
-                width: 110,
-                border: '1px solid black',
-                borderRadius: '30px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <div>
-                {/* {isDisable && <div className="tokens__table__image--disable" />} */}
-                <img src={tokenImage} alt="token" />
-                <p className="spoqa__bold">{tokenName}</p>
-              </div>
-            </div>
-            <div>
-              {skeletonLoading ? (
-                <Skeleton width={120} />
-              ) : (
-                <>
-                  {/* {!isDisable ? toCompactForBignumber(depositBalance[index] || constants.Zero) : "-"} <span className="token-name spoqa__bold">{tokenName}</span> */}
-                  {!isDisable ? (
-                    <>
-                      <DetailInfoDiv
-                        style={{
-                          height: 20,
-                          marginBottom: 15,
-                        }}
-                      />
-                      <DetailInfoDiv>
-                        <div>{t('dashboard.token_mining_apr')}</div>
-                        <div>{miningAPR || 0}</div>
-                      </DetailInfoDiv>
-                      {/* <span className="token-name spoqa__bold">
-                        {tokenName}
-                      </span> */}
-                    </>
+      <div className="deposit__table">
+        <div className="deposit__table__header">
+          <div className="deposit__table__header__token-info">
+            <img src={tokenImage} alt="Token icon" />
+            <p className="bold">
+              {tokenName}
+            </p>
+          </div>
+          <div className="deposit__table__header__data-grid">
+            <div />
+            {
+              [
+                ["총 예치금", toUsd(reserveData.totalDeposit, tokenInfo?.decimals)],
+                ["총 대출금", toUsd(reserveData.totalBorrow, tokenInfo?.decimals)],
+                ["ELFI 채굴 APR", miningAPR || 0],
+                ["대출 APY", toPercent(reserveData.borrowAPY)],
+                ["예치 APY", depositAPY || 0]
+              ].map((data) => {
+                return (
+                  skeletonLoading ? (
+                    <Skeleton width={120} />
                   ) : (
-                    '-'
-                  )}
-                </>
-              )}
-            </div>
-            <div>
-              {!isDisable ? (
-                skeletonLoading ? (
-                  <Skeleton width={120} />
-                ) : (
-                  <div>
-                    <DetailInfoDiv
-                      style={{
-                        marginBottom: 15,
-                      }}>
-                      <div>총 예치금</div>
-                      <div>
-                        {toUsd(reserveData.totalDeposit, tokenInfo?.decimals)}
-                      </div>
-                    </DetailInfoDiv>
-                    <DetailInfoDiv>
-                      <div>{t('dashboard.deposit_apy')}</div>
-                      <div>{depositAPY || 0}</div>
-                    </DetailInfoDiv>
-                  </div>
-                )
-              ) : (
-                <p>-</p>
-              )}
-            </div>
-            <div>
-              {skeletonLoading ? (
-                <Skeleton width={120} />
-              ) : (
-                <>
-                  {!isDisable ? (
                     <div>
-                      <DetailInfoDiv
-                        style={{
-                          marginBottom: 15,
-                        }}>
-                        <div>{t('dashboard.total_borrowed')}</div>
-                        <div>
-                          {toUsd(reserveData.totalBorrow, tokenInfo?.decimals)}
-                        </div>
-                      </DetailInfoDiv>
-                      <DetailInfoDiv>
-                        <div>{t('dashboard.borrow_apy')}</div>
-                        <div>{toPercent(reserveData.borrowAPY)}</div>
-                      </DetailInfoDiv>
+                      <p>
+                        {data[0]}
+                      </p>
+                      <p className="bold">
+                        {data[1]}
+                      </p>
                     </div>
-                  ) : (
-                    '-'
-                  )}
-                </>
-              )}
-            </div>
-            {/* <div>
-            {!isDisable ? (
-              skeletonLoading ? (
-                <Skeleton width={120} />
-              ) : (
-                <>
-                  <p className={`spoqa`}>{depositAPY || 0}</p>
-                  <div className={`tokens__table__apr`}>
-                    <img src={ELFIIcon} />
-                    <p className="spoqa__bold">{miningAPR || 0}</p>
-                  </div>
-                </>
-              )
-            ) : (
-              <p>-</p>
-            )}
+                  )
+                )
+              })
+            }
           </div>
-          <div>
-            {skeletonLoading ? (
-              <Skeleton width={120} />
-            ) : (
-              <>
-                <p className="spoqa__bold">
-                  {!isDisable ? (
-                    <>
-                      {walletBalance}{' '}
-                      <span className="token-name spoqa__bold">
-                        {tokenName}
-                      </span>
-                    </>
-                  ) : (
-                    '-'
-                  )}
-                </p>
-                <p className="spoqa div-balance">
-                  {!isDisable ? '$ ' + walletBalanceDivValue : '-'}
-                </p>
-              </>
-            )}
-          </div> */}
-          </div>
-          <div
-            style={{
-              padding: 20,
-            }}>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                border: '1px solid black',
-              }}>
-              <div
-                style={{
-                  width: '50%',
-                  borderRight: '1px solid black',
-                  padding: 10,
-                }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginBottom: 10,
-                  }}>
-                  <div>{t('dashboard.deposit')}</div>
-                  <div
-                    onClick={!isDisable ? onClick : undefined}
-                    style={{
-                      border: '1px solid black',
-                      width: 100,
-                      height: 30,
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      borderRadius: '20px',
-                    }}>
-                    <div>{`${t('dashboard.deposit')} | ${t(
-                      'dashboard.withdraw',
-                    )}`}</div>
-                  </div>
-                </div>
-                {account ? (
-                  <div
-                    style={{
-                      textAlign: 'right',
-                    }}>
-                    {depositBalance} {tokenInfo?.name}
-                    <p
-                      style={{
-                        fontSize: 11,
-                        margin: 0,
-                        marginTop: 5,
-                      }}>
-                      {t('dashboard.wallet_balance')}: {walletBalance}{' '}
-                      {tokenInfo?.name}
-                    </p>
-                  </div>
-                ) : (
-                  <div
-                    style={{
-                      textAlign: 'center',
-                    }}>
-                    {t('dashboard.wallet_connect_content')}
-                  </div>
-                )}
+        </div>
+
+        <div className="deposit__table__body">
+          <div className="deposit__table__body__amount__container">
+            <div className="deposit__table__body__amount__wrapper left">
+              <div>
+                <h2>
+                  예치 수량
+                </h2>
               </div>
-              <div
-                style={{
-                  width: '50%',
-                  padding: 10,
-                }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginBottom: 10,
-                  }}>
-                  <div>{t('dashboard.reward_amount')}</div>
-                  <div
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIncentiveModalVisible();
-                      setModalNumber();
-                      modalview();
-                    }}
-                    style={{
-                      border: '1px solid black',
-                      width: 100,
-                      height: 30,
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      borderRadius: '20px',
-                    }}>
-                    {t('dashboard.claim_reward')}
-                  </div>
+              <div className="deposit__table__body__amount">
+                <div onClick={!isDisable ? onClick : undefined}>
+                  <p>
+                    예치 | 출금
+                  </p>
                 </div>
-                {account ? (
-                  <div
-                    style={{
-                      textAlign: 'right',
-                    }}>
+                <div>
+                  <h2>
+                    {account ? depositBalance : "-"}<span className="bold">&nbsp;{tokenInfo?.name}</span>
+                  </h2>
+                  <p>
+                    {account ? (
+                      "지갑 잔액 : " + walletBalance + " " + tokenInfo.name
+                      ) : 
+                      ""
+                    }
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="deposit__table__body__amount__wrapper right">
+              <div>
+                <h2>
+                  보상 수량
+                </h2>
+              </div>
+              <div className="deposit__table__body__amount">
+                <div
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIncentiveModalVisible();
+                    setModalNumber();
+                    modalview();
+                  }}
+                >
+                  <p>
+                    수령하기
+                  </p>
+                </div>
+                <div>
+                  <h2>
+                  {account ? (
                     <CountUp
-                      className="spoqa__bold"
+                      className="bold amount"
                       start={parseFloat(formatEther(expectedIncentiveBefore))}
                       end={parseFloat(formatEther(expectedIncentiveAfter))}
                       formattingFn={(number) => {
@@ -337,28 +166,26 @@ const TokenTable: React.FC<Props> = ({
                       }}
                       decimals={6}
                       duration={1}
-                    />{' '}
-                    ELFI
-                  </div>
-                ) : (
-                  <div
-                    style={{
-                      textAlign: 'center',
-                    }}>
-                    {t('dashboard.wallet_connect_content')}
-                  </div>
-                )}
+                    />
+                  ) : "-"
+                  }<span className="bold">&nbsp;ELFI</span>
+                  </h2>
+                </div>
               </div>
             </div>
-            {loading ? (
+          </div>
+          
+          <div className="deposit__table__body__loan-list">
+          {
+            loading ? (
               <Skeleton width={1148} height={768} />
             ) : (
               <div>
-                <div>{t('portfolio.portfolio_list')}</div>
+                <h2>최근 대출리스트</h2>
                 <div>
                   <AssetList
                     assetBondTokens={
-                      /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
+                      // Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다.
                       [...(list || [])]
                         .sort((a, b) => {
                           return b.loanStartTimestamp! -
@@ -372,98 +199,20 @@ const TokenTable: React.FC<Props> = ({
                   />
                 </div>
                 <div
-                  style={{
-                    textAlign: 'center',
-                    border: '1px solid black',
-                  }}>
-                  <a href={`/deposits/${tokenName}`}>더보기</a>
+                  className="deposit__table__body__loan-list__more-button"
+                  style={{ display: (!!list && list?.length > 3) ? "block" : "none" }}>
+                  <a href={`/${lng}/deposits/${tokenName}`}>
+                    <p>
+                      + 더보기
+                    </p>
+                  </a>
                 </div>
               </div>
-            )}
+            )
+          }
           </div>
         </div>
-      ) : (
-        <div
-          className={`tokens__table__row${!isDisable ? '' : '--disable'}`}
-          key={index}
-          onClick={!isDisable ? onClick : undefined}>
-          <div className="tokens__table__image">
-            {isDisable && <div className="tokens__table__image--disable" />}
-            <div>
-              <img src={tokenImage} alt="token" />
-              <p className="spoqa__bold">{tokenName}</p>
-            </div>
-          </div>
-          <div className="tokens__table__content">
-            <div className="tokens__table__content__data">
-              <p className="spoqa">{t('dashboard.deposit_balance')}</p>
-              {skeletonLoading ? (
-                <Skeleton width={120} />
-              ) : (
-                <>
-                  <p className="spoqa__bold">
-                    {!isDisable ? (
-                      <>
-                        {depositBalance}{' '}
-                        <span className="token-name spoqa__bold">
-                          {tokenName}
-                        </span>
-                      </>
-                    ) : (
-                      '-'
-                    )}
-                  </p>
-                  <p className="spoqa div-balance">
-                    {!isDisable ? '$ ' + depositBalanceDivValue : '-'}
-                  </p>
-                </>
-              )}
-            </div>
-            <div className="tokens__table__content__data">
-              <p className="spoqa">{t('dashboard.deposit_apy')}</p>
-              {skeletonLoading ? (
-                <Skeleton width={120} />
-              ) : (
-                <>
-                  <p className="spoqa__bold">
-                    {!isDisable ? depositAPY || 0 : '-'}
-                  </p>
-                  {!isDisable && (
-                    <div className="tokens__table__apr">
-                      <img src={ELFIIcon} />
-                      <p className="spoqa">{miningAPR || 0}</p>
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-            <div className="tokens__table__content__data">
-              <p className="spoqa">{t('dashboard.wallet_balance')}</p>
-              {skeletonLoading ? (
-                <Skeleton width={120} />
-              ) : (
-                <>
-                  <p className="spoqa__bold">
-                    {!isDisable ? (
-                      <>
-                        {walletBalance}{' '}
-                        <span className="token-name spoqa__bold">
-                          {tokenName}
-                        </span>
-                      </>
-                    ) : (
-                      '-'
-                    )}
-                  </p>
-                  <p className="spoqa div-balance">
-                    {!isDisable ? '$ ' + walletBalanceDivValue : '-'}
-                  </p>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      </div>
     </>
   );
 };

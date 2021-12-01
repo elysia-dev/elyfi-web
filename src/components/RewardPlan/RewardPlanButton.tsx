@@ -7,14 +7,16 @@ type Props = {
 const RewardPlanButton: FunctionComponent<Props> = ({ stakingType }) => {
   return (
     <>
-      <div>
+      <div className="reward-plan-button">
         <a
           style={{
             cursor: 'pointer',
           }}
           href={`/rewardplan/${stakingType}`}
           rel="noopener noreferrer">
-          {'보상 플랜 확인 하기 >'}
+          <p className="bold blue">
+            {'보상플랜 확인 하기 >'}
+          </p>
         </a>
       </div>
     </>

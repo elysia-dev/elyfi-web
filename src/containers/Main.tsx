@@ -91,7 +91,7 @@ const Main = () => {
   }
   
   return (
-    <section className="main root-container">
+    <div className="main root-container">
       <div className="main__title main__section">
         <div className="main__title__text-container">
           <p>
@@ -301,7 +301,7 @@ const Main = () => {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   )
 }
 

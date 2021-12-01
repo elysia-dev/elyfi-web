@@ -56,25 +56,10 @@ const AssetItem: FunctionComponent<{
   }, [abToken]);
 
   return (
-    <div className="portfolio__asset-list__info" style={style}>
-      <p
-        className="portfolio__asset-list__info__status spoqa"
-        onClick={onClick}>
-        {t(
-          `words.${
-            CollateralCategory[
-              parsedTokenId.collateralCategory as CollateralCategory
-            ]
-          }`,
-        )}
-      </p>
-      <div style={{ width: '100%', height: 304, border: 0 }} onClick={onClick}>
+    <div className="component__loan-list" style={style} onClick={onClick}>
+      <div className="component__loan-list__image">
         {image ? (
-          <img
-            src={image}
-            alt={`csp_image_${abToken.id}`}
-            style={{ width: '100%' }}
-          />
+          <img src={image} alt={`csp_image_${abToken.id}`} />
         ) : (
           <GoogleMapReact
             bootstrapURLKeys={{
@@ -89,43 +74,20 @@ const AssetItem: FunctionComponent<{
           </GoogleMapReact>
         )}
       </div>
-      <div
-        className="portfolio__asset-list__info__value__container"
-        onClick={onClick}>
-        <div className="portfolio__asset-list__info__value__wrapper">
-          <p
-            className="portfolio__asset-list__info__value spoqa__bold"
-            style={{ color: '#333333' }}>
-            {t('portfolio.loan_number', { nonce: parsedTokenId.nonce })}
+      <div className="component__loan-list__data">
+        <div>
+          <p>
+            {toPercent(abToken.interestRate || '0')}
           </p>
         </div>
-        <div className="portfolio__asset-list__info__value__wrapper">
-          <p className="portfolio__asset-list__info__value spoqa">
-            {t('portfolio.borrowed')}
+        <div>
+          <p className="bold">
+            {'$ ' +
+              toCompactForBignumber(
+                abToken.principal || '0',
+                tokenInfo?.decimals,
+              )}
           </p>
-          <div>
-            <span className="bold">
-              {'$ ' +
-                toCompactForBignumber(
-                  abToken.principal || '0',
-                  tokenInfo?.decimals,
-                )}
-            </span>
-          </div>
-        </div>
-        <div className="portfolio__asset-list__info__value__wrapper">
-          <p className="portfolio__asset-list__info__value spoqa">
-            {t('portfolio.borrow_apy--loan')}
-          </p>
-          <div>{toPercent(abToken.interestRate || '0')}</div>
-        </div>
-        <div className="portfolio__asset-list__info__value__wrapper">
-          <p className="portfolio__asset-list__info__value spoqa">
-            {t('portfolio.maturity_date')}
-          </p>
-          <div>
-            <p className="bold">{maturityFormmater(abToken)}</p>
-          </div>
         </div>
       </div>
     </div>

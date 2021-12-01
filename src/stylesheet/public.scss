@@ -31,6 +31,14 @@
 $font-color: #333333;
 $elysia-color: #00A7FF;
 $background-color: #FFFFFF;
+$gray-line: #F0F0F1;
+$gray-font-color: #888888;
+$loan-list-size: 315px;
+
+
+// $font-color: #000000;
+// $gray-font-color: #555555;
+// $background-color: #83c333;
 
 h1,
 h2 {
@@ -59,8 +67,14 @@ span {
   user-select: none;
   margin: 0;
 }
+.montserrat {
+  font-family: 'Montserrat';
+  &__bold {
+    font-family: 'Montserrat-bold';
+  }
+}
 .bold {
-  font-family: 'SpoqaHanSansNeo-Bold';
+  font-family: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 }
 .blue {
   color: $elysia-color;
@@ -630,6 +644,300 @@ span {
       }
     }
   } // main end
+
+  .deposit {
+    width: 1190px;
+    margin: 0 auto;
+    position: relative;
+    &__title {
+      height: 400px;
+      background: no-repeat bottom;
+      > p {
+        padding-top: 200px;
+        text-align: center;
+        font-size: 25px;
+      }
+      > h2 {
+        padding-top: 16px;
+        text-align: center;
+        font-size: 50px;
+      }
+    }
+    &__table {
+      margin-bottom: 50px;
+      &__wrapper {
+        margin-top: 20px; 
+      }
+      background-color: $background-color;
+      border: 1px solid $gray-line;
+      border-radius: 5px;
+      &__header {
+        background-color: $background-color;
+        box-shadow: 0px 0px 6px #00000029;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 56px 20px 29px;
+        &__token-info {
+          display: flex;
+          justify-content: left;
+          flex-direction: row;
+          align-items: center;
+
+          height: 60px;
+          border-radius: 31px;
+          padding: 10px 12px 10px;
+          min-width: 150px;
+          box-shadow: 0px 0px 6px #00000029;
+          > img {
+            width: 42px;
+            height: 42px;
+          }
+          > p {
+            font-size: 20px;
+
+            margin-left: 20px;
+          }
+        }
+        &__data-grid {
+          width: 900px;
+          display: grid;
+          grid-template-columns: repeat(3,1fr);
+          grid-template-rows: 1fr;
+          gap: 10px;
+          justify-items: flex-end;
+          > div {
+            display: flex;
+            justify-content: space-between;
+            width: 210px;
+            > p {
+              font-size: 15px;
+              &:first-child {
+                color: $gray-font-color;
+              }
+              &:last-child {
+                color: $font-color;
+              }
+            }
+          }
+        }
+      }
+      &__body {
+        padding: 30px;
+        &__amount {
+          text-align: right;
+          > div:first-child {
+            background-color: #FFFFFF;
+            box-shadow: 0px 0px 6px #00000029;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 130px;
+            height: 30px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            > p {
+              font-size: 15px;
+              cursor: pointer;
+            }
+          }
+          > div {
+            .amount {
+              font-size: 20px;
+            }
+            > h2 {
+              color: $font-color;
+  
+              font-size: 20px;
+              margin-bottom: 5px;
+              > span {
+                color: $font-color;
+    
+                font-size: 17px;
+              }
+            }
+            > p {
+              color: $gray-font-color;
+
+              font-size: 10px;
+            }
+          }
+         
+          &__container {
+            border-top: 1px solid $gray-line; 
+            border-bottom: 1px solid $gray-line; 
+            display: flex;
+            justify-content: space-between;
+          }
+          &__wrapper {
+            flex: 1;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            &.left {
+              padding-right: 25px;
+            }
+            &.right {
+              border-left: 1px solid $gray-line;
+              padding-left: 25px;
+            }
+
+            > div {
+              > h2 {
+                color: $font-color;
+
+                font-size: 18px;
+              }
+            }
+          }
+        }
+        &__loan-list {
+          > div {
+            > h2 {
+              color: $font-color;
+
+              margin-top: 25px;
+              font-size: 18px;
+            }
+          }
+          &__more-button {
+            width: 100%;
+            text-align: center;
+            color: $font-color;
+            border-radius: 5px;
+            border: 1px solid $gray-line;
+
+            height: 61px;
+            line-height: 61px;
+            cursor: pointer;
+            > a > p {
+              font-size: 15px;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+    &__remote-control {
+      box-shadow: 0px 0px 6px #00000029;
+      border-radius: 5px;
+      position: fixed;
+      width: 120px;
+      &__wrapper {
+        width: 120px;
+        position: absolute;
+        left: -150px;
+      }
+      > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-top: 1px solid $gray-line;
+        padding: 10px 0px 14px;
+        cursor: pointer;
+        &:first-child {
+          border: 0;
+        }
+      }
+      &__images {
+        > img {
+          width: 15px;
+          height: 15px;
+        }
+      }
+      &__name {
+        > p {
+          font-size: 14px;
+          cursor: pointer;
+        }
+      }
+      &__apy {
+        font-size: 15px;
+        line-height: 25px;
+        cursor: pointer;
+      }
+      &__mining {
+        width: 91px;
+        height: 40px;
+        border: 1px solid $gray-line;
+        border-radius: 5px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        > p {
+          font-size: 10px;
+          line-height: 15px;
+          color: $font-color;
+          cursor: pointer;
+          &:first-child {
+            color: $gray-font-color;
+          }
+        }
+      }
+    }
+  }// deposit end
+  
+  .component {
+    &__loan-list {
+      border-radius: 5px;
+      box-shadow: 0px 0px 6px #00000029;
+      cursor: pointer;
+
+      width: $loan-list-size;
+      &__container {
+        display: grid;
+        grid-template-columns: repeat(3, $loan-list-size);
+        grid-template-rows: 1fr;
+        justify-content: space-between;
+        margin-top: 25px;
+        margin-bottom: 30px;
+      }
+      &__image {
+        height: 256px;
+        > img {
+          border-radius: 5px 5px 0px 0px;
+
+          width: 100%;
+        }
+      }
+      &__data {
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        > div {
+          flex: 1;
+          text-align: center;
+          &:first-child {
+            border-right: 1px solid $gray-line;
+          }
+          > p {
+            font-size: 15px;
+            cursor: pointer;
+          }
+        }
+      }
+    } // loan-list end
+  }
+
+  .reward-plan-button {
+    text-align: right;
+    > a > p {
+      font-size: 15px;
+      cursor: pointer;
+    }
+  }
+
+
+
   .logo-wrapper {
     display: inline-flex;
     justify-content: space-between;

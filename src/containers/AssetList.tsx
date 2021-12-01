@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import AssetItem from 'src/components/AssetItem';
 import { GetAllAssetBonds_assetBondTokens } from 'src/queries/__generated__/GetAllAssetBonds';
 
@@ -6,9 +6,10 @@ const AssetList: React.FC<{
   assetBondTokens: GetAllAssetBonds_assetBondTokens[];
 }> = ({ assetBondTokens }) => {
   const history = useHistory();
+  const { lng } = useParams<{ lng: string }>();
 
   return (
-    <div className="portfolio__asset-list__info__container">
+    <div className="component__loan-list__container">
       {assetBondTokens.map((abToken, index) => {
         return (
           <AssetItem
@@ -16,7 +17,7 @@ const AssetList: React.FC<{
             abToken={abToken}
             onClick={() => {
               history.push({
-                pathname: `/portfolio/${abToken.id}`,
+                pathname: `/${lng}/portfolio/${abToken.id}`,
               });
             }}
           />

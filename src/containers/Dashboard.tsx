@@ -29,12 +29,12 @@ import {
   IncentivePool__factory,
 } from '@elysia-dev/contract-typechain';
 import ReactGA from 'react-ga';
-import Header from 'src/components/Header';
 import TokenTable from 'src/components/TokenTable';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 import CountUp from 'react-countup';
 import Token from 'src/enums/Token';
+import HeaderCircle from 'src/assets/images/title-circle.png'
 import IncentiveModal from './IncentiveModal';
 
 const initialBalanceState = {
@@ -210,6 +210,7 @@ const Dashboard: React.FunctionComponent = () => {
       clearInterval(interval);
     };
   });
+
   return (
     <>
       {reserve && (
@@ -255,30 +256,57 @@ const Dashboard: React.FunctionComponent = () => {
         }}
       />
 
-      <Header title={t('navigation.deposit_withdraw').toUpperCase()} />
-      <section className="tokens">
-        {/* <Title label={t('dashboard.deposits--header')} /> */}
-        <div className="tokens__table__wrapper">
-          {t('dashboard.deposit')}
-          <RewardPlanButton stakingType={'deposit'} />
-          {/* <table className="tokens__table"> */}
-          {/* <thead className="tokens__table__header pc-only">
-              <tr>
-                {[
-                  t('dashboard.asset'),
-                  t('dashboard.deposit_balance'),
-                  t('dashboard.deposit_apy'),
-                  t('dashboard.wallet_balance'),
-                ].map((key, index) => {
-                  return (
-                    <th key={index} style={{ width: index === 0 ? 150 : 228 }}>
-                      <p className="tokens__table__header__column">{key}</p>
-                    </th>
-                  );
-                })}
-              </tr>
-            </thead> */}
-          {/* <tbody className="tokens__table-body"> */}
+      <div className="deposit">
+        <div className="deposit__title" style={{ backgroundImage: `url(${HeaderCircle})` }}>
+          <p className="montserrat__bold">
+            Total Value Locked
+          </p>
+          <h2 className="blue">
+            $ 123,123,123.23
+          </h2>
+        </div>
+        <RewardPlanButton stakingType={'deposit'} />
+        <div className="deposit__table__wrapper">
+          <div className="deposit__remote-control__wrapper">
+            <div className="deposit__remote-control">
+              {balances.map((data, index) => {
+                return (
+                  <>
+                    <div>
+                      <div className="deposit__remote-control__images">
+                        <img src={reserveTokenData[data.tokenName].image} />
+                      </div>
+                      <div className="deposit__remote-control__name">
+                        <p className="montserrat">
+                          {data.tokenName}
+                        </p>
+                      </div>
+                      <p className="deposit__remote-control__apy bold">
+                        {toPercent(reserves[index].depositAPY)}
+                      </p>
+                      <div className="deposit__remote-control__mining">
+                        <p>
+                          ELFI 채굴 APR
+                        </p>
+                        <p>
+                          {
+                            toPercent(
+                              calcMiningAPR(
+                                elfiPrice,
+                                BigNumber.from(reserves[index].totalDeposit),
+                                reserveTokenData[data.tokenName].decimals,
+                              ) || '0',
+                            )
+                          }
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                )
+              })}
+            </div>
+          </div>{/* remote control end */}
+          
           {balances.map((balance, index) => {
             return (
               <>
@@ -333,141 +361,11 @@ const Dashboard: React.FunctionComponent = () => {
                   setModalNumber={() => setModalNumber(index)}
                   modalview={() => ReactGA.modalview('Incentive')}
                 />
-
-                {/* mobile only */}
-                <div className="tokens__table__minted mobile-only">
-                  <p>▼</p>
-                  <div
-                    className="content"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIncentiveModalVisible(true);
-                      ReactGA.modalview('Incentive');
-                    }}>
-                    <div>
-                      <img src={ELFI} alt="Token" />
-                      <p className="spoqa__bold">
-                        {t('dashboard.minted_balance')}
-                      </p>
-                    </div>
-
-                    {balance.loading ? (
-                      <Skeleton width={50} />
-                    ) : (
-                      <div>
-                        <p className="spoqa__bold">
-                          <CountUp
-                            className="spoqa__bold"
-                            start={parseFloat(
-                              formatEther(balance.expectedIncentiveBefore),
-                            )}
-                            end={parseFloat(
-                              formatEther(balance.expectedIncentiveAfter),
-                            )}
-                            formattingFn={(number) => {
-                              return formatSixFracionDigit(number);
-                            }}
-                            decimals={6}
-                            duration={1}
-                          />
-                        </p>
-                        <p className="spoqa div-balance">
-                          <CountUp
-                            className="spoqa div-balance"
-                            start={
-                              parseFloat(
-                                formatEther(balance.expectedIncentiveBefore),
-                              ) * elfiPrice
-                            }
-                            end={
-                              parseFloat(
-                                formatEther(balance.expectedIncentiveAfter),
-                              ) * elfiPrice
-                            }
-                            formattingFn={(number) => {
-                              return '$ ' + formatSixFracionDigit(number);
-                            }}
-                            decimals={6}
-                            duration={1}
-                          />
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </div>
               </>
             );
           })}
-          {/* </tbody> */}
-          {/* </table> */}
-          {/* <div className="tokens__table__minted pc-only">
-            <p>{t('dashboard.minted_balance')}</p>
-            <div>
-              {balances.map((balance, index) => {
-                if (index > 1) return;
-                return (
-                  <div>
-                    <p>▶</p>
-                    <div
-                      className="content"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setIncentiveModalVisible(true);
-                        setModalNumber(index);
-                        ReactGA.modalview('Incentive');
-                      }}>
-                      <img src={ELFI} alt="Token" />
-                      {balance.loading ? (
-                        <Skeleton width={50} />
-                      ) : (
-                        <div>
-                          <p className="spoqa__bold">
-                            <CountUp
-                              className="spoqa__bold"
-                              start={parseFloat(
-                                formatEther(balance.expectedIncentiveBefore),
-                              )}
-                              end={parseFloat(
-                                formatEther(balance.expectedIncentiveAfter),
-                              )}
-                              formattingFn={(number) => {
-                                return formatSixFracionDigit(number);
-                              }}
-                              decimals={6}
-                              duration={1}
-                            />
-                          </p>
-                          <p className="spoqa div-balance">
-                            <CountUp
-                              className="spoqa div-balance"
-                              start={
-                                parseFloat(
-                                  formatEther(balance.expectedIncentiveBefore),
-                                ) * elfiPrice
-                              }
-                              end={
-                                parseFloat(
-                                  formatEther(balance.expectedIncentiveAfter),
-                                ) * elfiPrice
-                              }
-                              formattingFn={(number) => {
-                                return '$ ' + formatSixFracionDigit(number);
-                              }}
-                              decimals={6}
-                              duration={1}
-                            />
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div> */}
         </div>
-        <div style={{ height: 100 }} />
-      </section>
+      </div>
     </>
   );
 };
