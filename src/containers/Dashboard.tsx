@@ -211,6 +211,22 @@ const Dashboard: React.FunctionComponent = () => {
     };
   });
 
+  const remoteControlScroll = (ref: string) => {
+    const element = document.getElementById(ref);
+
+    const offset = 438;
+
+    const bodyRect = document.body.getBoundingClientRect().top;
+    const elementRect = element!.getBoundingClientRect().top;
+    const elementPosition = elementRect - bodyRect;
+    const offsetPosition = elementPosition - offset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+  }
+
   return (
     <>
       {reserve && (
@@ -271,7 +287,9 @@ const Dashboard: React.FunctionComponent = () => {
             <div className="deposit__remote-control">
               {balances.map((data, index) => {
                 return (
-                  <>
+                  <a 
+                    onClick={() => remoteControlScroll(`table-${index}`)}
+                  >
                     <div>
                       <div className="deposit__remote-control__images">
                         <img src={reserveTokenData[data.tokenName].image} />
@@ -301,7 +319,7 @@ const Dashboard: React.FunctionComponent = () => {
                         </p>
                       </div>
                     </div>
-                  </>
+                  </a>
                 )
               })}
             </div>
@@ -313,6 +331,7 @@ const Dashboard: React.FunctionComponent = () => {
                 <TokenTable
                   key={index}
                   index={index}
+                  id={`table-${index}`}
                   onClick={(e: any) => {
                     e.preventDefault();
                     setReserve(reserves[index]);
@@ -326,12 +345,6 @@ const Dashboard: React.FunctionComponent = () => {
                     balance.deposit || constants.Zero,
                     reserveTokenData[balance.tokenName].decimals,
                   )}
-                  depositBalanceDivValue={toCompactForBignumber(
-                    balance.deposit.mul(
-                      Math.round(index === 0 ? daiPrice : tetherPrice),
-                    ) || constants.Zero,
-                    reserveTokenData[balance.tokenName].decimals,
-                  )}
                   depositAPY={toPercent(reserves[index].depositAPY)}
                   miningAPR={toPercent(
                     calcMiningAPR(
@@ -342,12 +355,6 @@ const Dashboard: React.FunctionComponent = () => {
                   )}
                   walletBalance={toCompactForBignumber(
                     balance.value || constants.Zero,
-                    reserveTokenData[balance.tokenName].decimals,
-                  )}
-                  walletBalanceDivValue={toCompactForBignumber(
-                    balance.value.mul(
-                      Math.round(index === 0 ? daiPrice : tetherPrice),
-                    ) || constants.Zero,
                     reserveTokenData[balance.tokenName].decimals,
                   )}
                   isDisable={!reserves[index]}
