@@ -35,13 +35,14 @@ import {
   calcMintedByDaiMoneypool,
   calcMintedByTetherMoneypool,
 } from 'src/core/utils/calcMintedByDaiMoneypool';
-import LanguageType from 'src/enums/LanguageType';
 import Token from 'src/enums/Token';
 import { useDaiPositionLpApr, useEthPositionLpApr } from 'src/hooks/useLpApy';
 import useStakingRoundData from 'src/hooks/useStakingRoundData';
+import { ordinalNumberConverter } from 'src/utiles/ordinalNumberConverter';
+import ELFI from 'src/assets/images/ELFI.png';
 
 const RewardPlan: FunctionComponent = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { stakingType } = useParams<{ stakingType: string }>();
   const history = useHistory();
   const { latestPrice, ethPool, daiPool } = useContext(UniswapPoolContext);
@@ -125,37 +126,6 @@ const RewardPlan: FunctionComponent = () => {
     return amountData.mintedByElStakingPool.reduce((res, cur) => res + cur, 0);
   }, [amountData.mintedByElStakingPool]);
 
-  const OrdinalNumberConverter = (value: number) => {
-    switch (value) {
-      case 1:
-        return i18n.language === LanguageType.EN
-          ? '1st'
-          : i18n.language === LanguageType.ZHHANS
-          ? '一'
-          : '1';
-      case 2:
-        return i18n.language === LanguageType.EN
-          ? '2nd'
-          : i18n.language === LanguageType.ZHHANS
-          ? '二'
-          : '2';
-      case 3:
-        return i18n.language === LanguageType.EN
-          ? '3rd'
-          : i18n.language === LanguageType.ZHHANS
-          ? '三'
-          : '3';
-      case 4:
-        return i18n.language === LanguageType.EN
-          ? '4th'
-          : i18n.language === LanguageType.ZHHANS
-          ? '四'
-          : '4';
-      default:
-        return '';
-    }
-  };
-
   useEffect(() => {
     const interval = setInterval(() => {
       setAmountData({
@@ -193,37 +163,40 @@ const RewardPlan: FunctionComponent = () => {
 
   return (
     <>
-      <section
-        className="staking"
-        style={{
-          overflowX: 'hidden',
-          padding: 3,
-        }}>
+      <div
+        className="reward"
+      >
         {stakingType === 'deposit' ? (
-          <div>
-            <span
-              style={{
-                cursor: 'pointer',
-              }}
-              onClick={() => onClickHandler()}>
+          <div className="component__text-navigation">
+            <p onClick={() => onClickHandler()} className="pointer">
               {t('dashboard.deposit')}
-            </span>
-            {` > ${t('reward.reward_plan')}`}
+            </p>
+            &nbsp;&gt;&nbsp;
+            <p>
+              {t('reward.reward_plan')}
+            </p>
           </div>
         ) : (
-          <div>
+          <div className="component__text-navigation">
             {`${t('staking.location_staking')} > `}
-            <span
-              style={{
-                cursor: 'pointer',
-              }}
-              onClick={() => onClickHandler()}>
+            <p onClick={() => onClickHandler()}>
               {t('staking.token_staking', { stakedToken: stakingType })}
-            </span>
+            </p>
             {` > ${t('reward.reward_plan')}`}
           </div>
         )}
-        {stakingType === 'LP' ? (
+        <div className="reward__token">
+          <img src={ELFI} />
+          <h2>
+            예치 보상 플랜
+          </h2>
+          <div className="reward__token__elfi">
+            <p>
+              ELFI Price : $ 0.1
+            </p>
+          </div>
+        </div>
+        {/* {stakingType === 'LP' ? (
           <>
             {' '}
             <LpStakingBox
@@ -268,7 +241,7 @@ const RewardPlan: FunctionComponent = () => {
           <section className="jreward__dai">
             <div className="jreward__elfi-staking jcontainer">
               <StakingBox
-                nth={OrdinalNumberConverter(state.currentElfiLevel + 1)}
+                nth={ordinalNumberConverter(state.currentElfiLevel + 1)}
                 loading={elfiPoolLoading}
                 poolApr={elfiPoolApr}
                 poolPrincipal={elfiPoolPrincipal}
@@ -291,7 +264,7 @@ const RewardPlan: FunctionComponent = () => {
           <section className="jreward__elfi">
             <div className="jreward__el-staking container">
               <StakingBox
-                nth={OrdinalNumberConverter(state.elStaking + 1)}
+                nth={ordinalNumberConverter(state.elStaking + 1)}
                 loading={elPoolLoading}
                 poolApr={elPoolApr}
                 poolPrincipal={elPoolPrincipal}
@@ -306,12 +279,12 @@ const RewardPlan: FunctionComponent = () => {
                 }
                 miningEnd={amountData.mintedByElStakingPool[state.elStaking]}
                 currentPhase={currentPhase}
-                OrdinalNumberConverter={OrdinalNumberConverter}
+                OrdinalNumberConverter={ordinalNumberConverter}
               />
             </div>
           </section>
-        ) : (
-          <section className="jreward">
+        ) : ( */}
+          <section className="reward__container">
             {reserves.map((reserve, index) => {
               return (
                 <TokenDeposit
@@ -325,8 +298,8 @@ const RewardPlan: FunctionComponent = () => {
               );
             })}
           </section>
-        )}
-      </section>
+        {/* )} */}
+      </div>
     </>
   );
 };
