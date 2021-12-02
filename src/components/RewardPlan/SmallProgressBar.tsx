@@ -21,7 +21,7 @@ const SmallProgressBar: FunctionComponent<Props> = (props) => {
     props;
   const isDai = unit !== 'ELFI';
   return (
-    <div className="jreward__data-wrapper--left jreward__progress-content">
+    <div className="component__progress-bar">
       <div>
         {isDai && rewardOrMining === 'reward' ? (
           nth ? (
@@ -53,15 +53,15 @@ const SmallProgressBar: FunctionComponent<Props> = (props) => {
           )
         ) : (
           <>
-            <p className="spoqa">{t('reward.current_mining')}</p>
-            <p className="spoqa">{t('reward.total_mining')}</p>
+            <p>{t('reward.current_mining')}</p>
+            <p>{t('reward.total_mining')}</p>
           </>
         )}
       </div>
       <div>
-        <p className="spoqa__bold">
+        <p className="bold">
           <CountUp
-            className={`spoqa__bold ${unit.toLowerCase()}`}
+            className={`bold ${unit.toLowerCase()}`}
             start={start}
             end={end}
             decimals={4}
@@ -70,8 +70,8 @@ const SmallProgressBar: FunctionComponent<Props> = (props) => {
           />
           {` ${unit}`}
         </p>
-        <p className="spoqa__bold">
-          <span className="spoqa__bold">{totalMiningValue}</span> {unit}
+        <p className="bold">
+          <span className="bold">{totalMiningValue}</span> {unit}
         </p>
       </div>
       {props.stakingRoundFill ? (

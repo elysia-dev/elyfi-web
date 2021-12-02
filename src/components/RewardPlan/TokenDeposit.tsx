@@ -41,73 +41,52 @@ const TokenDeposit: FunctionComponent<Props> = ({
 
   return (
     <>
-      <div className="jreward__dai-deposit jcontainer">
-        <div className="jreward__title">
+      <div className="reward__token-deposit">
+        <div className="reward__token-deposit__header">
+          <img src={tokenInfo?.image} alt="Token image" />
           <div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                height: 40,
-              }}>
-              <img
-                src={tokenInfo?.image}
-                width={40}
-                height={40}
-                style={{
-                  marginRight: 10,
-                }}
-              />
-              <p className="spoqa__bold">
-                {t('reward.token_deposit', { Token: tokenInfo?.name })}
-              </p>
-            </div>
-            <p className="spoqa">
+            <p className="bold">
+              {t('reward.token_deposit', { Token: tokenInfo?.name })}
+            </p>
+            <p>
               {t('reward.token_deposit_content', { Token: tokenInfo?.name })}
             </p>
           </div>
-          {/* <a
-            className="jreward__button"
-            target="_blank"
-            href={`${envs.appURI}/?reserveId=${reserve.id}`}>
-            <p>{t('reward.deposit')}</p>
-          </a> */}
         </div>
-        <div className="jreward__apy-wrapper">
-          <div className="jreward__apy-wrapper--left">
-            <p className="spoqa__bold">{t('market.deposit_apy')}</p>
+        <div className="reward__token-deposit__apy">
+          <div className="reward__token-deposit__apy--left">
             <div>
-              {
-                <>
-                  <p className="spoqa__bold">{toPercent(reserve.depositAPY)}</p>
-                  <div>
-                    <img src={ELFIIcon} alt="elysia" />
-                    <p className="spoqa">
-                      {toPercent(
-                        calcMiningAPR(
-                          latestPrice,
-                          BigNumber.from(reserve.totalDeposit || 0),
-                          tokenInfo?.decimals,
-                        ),
-                      ) || 0}
-                    </p>
-                  </div>
-                </>
-              }
+              <p>{t('market.deposit_apy')}</p>
+              <h2>{toPercent(reserve.depositAPY)}</h2>
+            </div>
+            <div>
+              <p>ELFI 채굴 APR</p>
+              <h2>
+                {toPercent(
+                  calcMiningAPR(
+                    latestPrice,
+                    BigNumber.from(reserve.totalDeposit || 0),
+                    tokenInfo?.decimals,
+                  ),
+                ) || 0}
+              </h2>
             </div>
           </div>
-          <div className="jreward__apy-wrapper--right">
-            <p className="spoqa__bold">{t('market.total_deposit')}</p>
-            <p className="spoqa__bold">
-              $&nbsp;
-              {toCompactForBignumber(
-                reserve.totalDeposit || 0,
-                tokenInfo?.decimals,
-              )}
-            </p>
+          <div className="reward__token-deposit__apy--right">
+            <div>
+              <p>{t('market.total_deposit')}</p>
+              <h2>
+                $&nbsp;
+                {toCompactForBignumber(
+                  reserve.totalDeposit || 0,
+                  tokenInfo?.decimals,
+                )}
+              </h2>
+            </div>
           </div>
         </div>
-        <div className="jreward__data-wrapper">
+
+        <div className="reward__token-deposit__data">
           <SmallProgressBar
             start={
               beforeMintedMoneypool[index] <= 0

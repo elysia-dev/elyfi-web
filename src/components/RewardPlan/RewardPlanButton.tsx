@@ -1,10 +1,12 @@
 import { FunctionComponent } from 'react';
+import { useParams } from 'react-router-dom';
 
 type Props = {
   stakingType: string;
 };
 
 const RewardPlanButton: FunctionComponent<Props> = ({ stakingType }) => {
+  const { lng } = useParams<{ lng: string }>();
   return (
     <>
       <div className="reward-plan-button">
@@ -12,7 +14,7 @@ const RewardPlanButton: FunctionComponent<Props> = ({ stakingType }) => {
           style={{
             cursor: 'pointer',
           }}
-          href={`/rewardplan/${stakingType}`}
+          href={`/${lng}/rewardplan/${stakingType}`}
           rel="noopener noreferrer">
           <p className="bold blue">
             {'보상플랜 확인 하기 >'}

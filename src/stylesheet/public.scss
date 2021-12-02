@@ -34,6 +34,7 @@ $background-color: #FFFFFF;
 $gray-line: #F0F0F1;
 $gray-font-color: #888888;
 $loan-list-size: 315px;
+$navigation-margin-height: 100px;
 
 
 // $font-color: #000000;
@@ -671,6 +672,10 @@ span {
       background-color: $background-color;
       border: 1px solid $gray-line;
       border-radius: 5px;
+      position: relative;
+      &__ref {
+        position: absolute;
+      }
       &__header {
         background-color: $background-color;
         box-shadow: 0px 0px 6px #00000029;
@@ -833,7 +838,7 @@ span {
         position: absolute;
         left: -150px;
       }
-      > div {
+      > a > div {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -883,6 +888,129 @@ span {
       }
     }
   }// deposit end
+
+  .reward {
+    width: 1190px;
+    margin: 0 auto;
+    margin-top: $navigation-margin-height;
+    &__token {
+      margin-top: 25px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      > img {
+        width: 60px;
+        height: 60px;
+      }
+      > h2 {
+        color: $font-color;
+
+        margin-top: 15px;
+        font-size: 25px;
+      }
+      &__elfi {
+        width: 216px;
+        height: 30px;
+        border-radius: 15px;
+        background: $background-color;
+        border: 1px solid $gray-line;
+        text-align: center;
+        margin-top: 24px;
+        margin-bottom: 90px;
+        > p {
+          color: #333;
+
+          font-size: 15px;
+          line-height: 30px;
+        }
+      }
+    }
+    &__token-deposit {
+      background: $background-color;
+      box-shadow: 0px 0px 6px #00000029;
+      border-radius: 5px;
+      padding: 25px 30px 24px;
+      margin-bottom: 42px;
+      &__header {
+        display: flex;
+        flex-direction: row;
+        padding-bottom: 18px;
+        border-bottom: 1px solid $gray-line;
+        > img {
+          width: 27px;
+          height: 27px;
+          margin-right: 8px;
+        }
+        > div {
+          display: flex;
+          flex-direction: column;
+          > p {
+            &:first-child {
+              font-size: 18px;
+              color: $font-color;
+              margin-bottom: 10px;
+            }
+            &:last-child {
+              font-size: 15px;
+              color: $gray-font-color;
+            }
+          }
+        }
+      }
+      &__apy {
+        border-bottom: 1px solid $gray-line;
+        display: flex;
+        flex-direction: row;
+        > div {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          padding: 28px 0px 25px;
+          > div {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            > p {
+              font-size: 15px;
+              color: $font-color;
+            }
+            > h2 {
+              font-size: 20px;
+              color: $font-color;
+              line-height: 35px;
+            }
+          }
+        }
+        &--left {
+          border-right: 1px solid $gray-line;
+          padding-right: 25px !important;
+        }
+        &--right {
+          padding-left: 25px !important;
+        }
+      }
+      &__data {
+        display: flex;
+        flex-direction: row;
+        border-bottom: 1px solid $gray-line;
+        align-items: center;
+        > div { 
+          flex: 1;
+          padding: 21px 0px 18px;
+          &:first-child {
+            padding-right: 25px !important;
+          }
+          &:last-child {
+            border-left: 1px solid $gray-line;
+            padding-left: 25px !important;
+          }
+        }
+      }
+    }
+  } // reward end
   
   .component {
     &__loan-list {
@@ -926,7 +1054,97 @@ span {
         }
       }
     } // loan-list end
-  }
+    &__text-navigation {
+      padding-top: 30px;
+      display: flex;
+      align-content: center;
+
+      font-size: 15px;
+      color: $gray-font-color;
+      cursor: default;
+      > p {
+        font-size: 15px;
+        color: $gray-font-color;
+        &.pointer {
+          cursor: pointer;
+        }
+      }
+    } // text navigation end
+    &__progress-bar {
+      > div {
+        margin-bottom: 12px;
+        
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        &:first-child {
+          > p {
+            font-size: 15px;
+  
+            color: $gray-font-color;
+          }
+        }
+        &:nth-child(2) {
+          > p {
+            font-size: 13px;
+            color: $font-color;
+            &:last-child {
+              font-size: 13px;
+              color: $gray-font-color;
+              > span {
+                font-size: 15px;
+                color: $gray-font-color;
+              }
+            }
+            > span {
+              font-size: 15px;
+              color: $font-color;
+            }
+          }
+        }
+      }
+      progress {
+        color: #e6e6e6;
+        width: 100%;
+        height: 13px;
+        border-radius: 13px;
+        margin-top: 5px;
+        &::-webkit-progress-bar {
+          border: 0;
+          border-radius: 13px;
+          background: #e6e6e6;
+        }
+        &::-webkit-progress-value {
+          border: 0;
+          border-radius: 13px;
+          background: #00bfff;
+        }
+        &::-moz-progress-bar {
+          border: 0;
+          background: #00bfff;
+        }
+      }
+    } // progress bar end
+    &__data-info {
+      > div { 
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        > p {
+          font-size: 15px;
+          margin-bottom: 10px;
+          &:first-child {
+            color: $gray-font-color;
+          }
+          &:last-child { 
+            color: $font-color;
+          }
+        }
+      }
+    } // data info end
+  } // component end
 
   .reward-plan-button {
     text-align: right;

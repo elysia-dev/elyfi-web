@@ -23,11 +23,9 @@ interface Props {
   index: number;
   onClick?: (e: any) => void;
   depositBalance?: string;
-  depositBalanceDivValue?: string;
   depositAPY?: string;
   miningAPR?: string;
   walletBalance?: string;
-  walletBalanceDivValue?: string;
   isDisable: boolean;
   skeletonLoading: boolean;
   reserveData: GetAllReserves_reserves;
@@ -36,6 +34,7 @@ interface Props {
   setIncentiveModalVisible: () => void;
   setModalNumber: () => void;
   modalview: () => void;
+  id: string;
 }
 
 const TokenTable: React.FC<Props> = ({
@@ -49,14 +48,13 @@ const TokenTable: React.FC<Props> = ({
   walletBalance,
   isDisable,
   skeletonLoading,
-  depositBalanceDivValue,
-  walletBalanceDivValue,
   reserveData,
   expectedIncentiveBefore,
   expectedIncentiveAfter,
   setIncentiveModalVisible,
   setModalNumber,
   modalview,
+  id
 }) => {
   const { data, loading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
   const { account } = useWeb3React();
@@ -71,6 +69,7 @@ const TokenTable: React.FC<Props> = ({
   return (
     <>
       <div className="deposit__table">
+        <div className="deposit__table__ref" id={id} />
         <div className="deposit__table__header">
           <div className="deposit__table__header__token-info">
             <img src={tokenImage} alt="Token icon" />

@@ -17,12 +17,10 @@ const RewardDetailInfo: FunctionComponent<Props> = (props) => {
   const { t } = useTranslation();
 
   return (
-    <div className="jreward__data-wrapper--right">
+    <div className="component__data-info">
       {props.miningDescription.map((data, _index) => {
         return (
-          <div
-            key={`elfi_mining_terms_${_index}`}
-            className={`reward__data__${_index}`}>
+          <div>
             <p>{data[0]}</p>
             <p className="spoqa data">{data[1]}</p>
           </div>
@@ -34,9 +32,8 @@ const RewardDetailInfo: FunctionComponent<Props> = (props) => {
             ? t('reward.accumulated_mining')
             : t('reward.accumulated_reward')}
         </p>
-        <p className="spoqa data">
+        <p>
           <CountUp
-            className="spoqa data"
             start={props.start}
             end={props.end}
             decimals={4}
@@ -52,9 +49,8 @@ const RewardDetailInfo: FunctionComponent<Props> = (props) => {
             ? t('reward.mining_limit')
             : t('reward.reward_limit')}
         </p>
-        <p className="spoqa data">
+        <p>
           <CountUp
-            className="spoqa data"
             start={props.miningStart}
             end={props.miningEnd}
             decimals={4}
