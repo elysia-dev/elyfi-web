@@ -102,7 +102,7 @@ const Governance = () => {
                     {vote.html}
                   </p>
                   <progress 
-                    className="governance__asset__progress-bar"
+                    className={`governance__asset__progress-bar index-${_x}`}
                     value={vote.votes}
                     max={totalVoters}
                   />
@@ -228,7 +228,7 @@ const Governance = () => {
                     For
                   </p>
                   <progress 
-                    className="governance__asset__progress-bar"
+                    className="governance__asset__progress-bar index-0"
                     value={30}
                     max={100}
                   />
@@ -238,7 +238,7 @@ const Governance = () => {
                     Againest
                   </p>
                   <progress 
-                    className="governance__asset__progress-bar"
+                    className="governance__asset__progress-bar index-1"
                     value={30}
                     max={100}
                   />
@@ -248,7 +248,7 @@ const Governance = () => {
                     Abstain
                   </p>
                   <progress 
-                    className="governance__asset__progress-bar"
+                    className="governance__asset__progress-bar index-2"
                     value={30}
                     max={100}
                   />

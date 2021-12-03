@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { reserveTokenData } from 'src/core/data/reserves';
 
@@ -43,8 +43,9 @@ function MarketDetail(): JSX.Element {
   const [transactionModal, setTransactionModal] = useState(false);
   const { reserves } = useContext(ReservesContext);
   const { latestPrice, poolDayData } = useContext(UniswapPoolContext);
-  const { token } = useParams<{ token: Token.DAI | Token.USDT }>();
-  const tokenInfo = reserveTokenData[token];
+  const { lng, id } = useParams<{ lng: string, id: Token.DAI | Token.USDT }>();
+  const history = useHistory();
+  const tokenInfo = reserveTokenData[id];
   const data = reserves.find((reserve) => reserve.id === tokenInfo.address);
   const { t } = useTranslation();
 
@@ -59,7 +60,7 @@ function MarketDetail(): JSX.Element {
     updatedAt: number;
   }>({
     ...initialBalanceState,
-    tokenName: token,
+    tokenName: id,
   });
 
   const fetchBalanceFrom = async (
@@ -159,226 +160,213 @@ function MarketDetail(): JSX.Element {
           setTransactionModal(false);
         }}
       />
-      <div className={`elysia--pc`}>
-        <section className="market__detail market">
-          <div className="market__detail__page-container">
-            <div className="market__detail">
-              <div className="market__detail__title-token">
-                <div className="market__detail__title-token__token-wrapper">
-                  <div>
-                    <img
-                      src={tokenInfo?.image}
-                      className="market__detail__title-token__token-image"
-                      alt="token"
-                    />
-                    <p className="market__detail__title-token__token-type spoqa__bold">
-                      {tokenInfo?.name.toLocaleUpperCase()}
-                    </p>
-                  </div>
-                  <div>
-                    <p
-                      className="market__detail__title-token__data-wrapper--popup__icon mobile-only"
-                      onMouseEnter={() => {
-                        setMouseHover(true);
-                      }}
-                      onMouseLeave={() => {
-                        setMouseHover(false);
-                      }}>
-                      ?
-                    </p>
-                  </div>
-                </div>
-                <div className="market__detail__title-token__data-container"></div>
+      <div className="detail">
+        <div className="component__text-navigation">
+          <p onClick={() => history.push(`/${lng}/dashboard`)} className="pointer">
+            {t('dashboard.deposit')}
+          </p>
+          &nbsp;&gt;&nbsp;
+          <p>
+            {t('reward.reward_plan')}
+          </p>
+        </div>
+        <div className="detail__header">
+          <img
+            src={tokenInfo?.image}
+            alt="Token image"
+          />
+          <h2>{tokenInfo?.name.toLocaleUpperCase()}</h2>
+        </div>
+        <div className="detail__container">
+          <div className="detail__data-wrapper">
+            <div className="detail__data-wrapper__title">
+              <h2>{t('market.details')}</h2>
+            </div>
+            <div className="detail__data-wrapper__total">
+              <div>
+                <h2> 
+                  총 예치 수익률
+                </h2>
+                <h2>
+                  {toPercent(BigNumber.from(data.depositAPY).add(miningAPR))}
+                </h2>
+              </div>
+              <div>
+                <h2>
+                  총 예치금
+                </h2>
+                <h2>
+                  {toUsd(data.totalDeposit, tokenInfo?.decimals)}
+                </h2>
               </div>
             </div>
-            <div className="market__detail__container">
-              <div className="market__detail__wrapper">
-                <div className="market__detail__pie-chart__wrapper">
-                  <div className="market__detail__pie-chart__data">
-                    <div className="bold">{t('market.details')}</div>
+            <div className="detail__data-wrapper__info">
+              <div>
+                <div>
+                  <p>{t('market.deposit_apy')}</p>
+                  <p>
+                    {toPercent(data.depositAPY)}
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    ELFI 채굴 APR
+                  </p>
+                  <p>
+                    {toPercent(miningAPR)}
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    {t('market.total_depositor')}
+                  </p>
+                  <p>{data.deposit.length}</p>
+                </div>
+                <div>
+                  <p>{t('market.total_loans')}</p>
+                  <p>{data.borrow.length}</p>
+                </div>
+              </div>
+
+              <div>
+                <div>
+                  <div className="detail__data-wrapper__info__deposit__wrapper">
                     <div>
-                      <p className="spoqa__bold">{t('market.deposit_apy')}</p>
-                      <p className="spoqa__bold">
-                        {toPercent(data.depositAPY)}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="spoqa__bold">{t('market.borrow_apy')}</p>
-                      <p className="spoqa__bold">{toPercent(data.borrowAPY)}</p>
-                    </div>
-                    <div>
-                      <p className="spoqa__bold">
-                        {t('market.total_depositor')}
-                      </p>
-                      <p className="spoqa__bold">{data.deposit.length}</p>
-                    </div>
-                    <div>
-                      <p className="spoqa__bold">{t('market.total_loans')}</p>
-                      <p className="spoqa__bold">{data.borrow.length}</p>
-                    </div>
-                  </div>
-                  <div className="market__detail__pie-chart__dataWrapper">
-                    <div className="market__detail__pie-chart__data__wrapper--total">
-                      <p className="spoqa__bold">{t('market.total_deposit')}</p>
-                      <p className="spoqa__bold">
-                        {toUsd(data.totalDeposit, tokenInfo?.decimals)}
-                      </p>
-                    </div>
-                    <div
-                      style={{
-                        display: 'flex',
-                      }}>
-                      <div
-                        style={{
-                          width: '70%',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          justifyContent: 'space-between',
-                          marginRight: 'auto',
-                        }}>
-                        <div className="market__detail__pie-chart__data__wrapper">
-                          <div className="market__detail__pie-chart__data__block__wrapper">
-                            <div
-                              className="market__detail__pie-chart__data__block"
-                              style={{
-                                backgroundColor: '#00A7FF',
-                              }}
-                            />
-                            <p className="spoqa">
-                              {t('market.total_borrowed')}
-                            </p>
-                          </div>
-                          <p className="spoqa">
-                            {toUsd(data.totalBorrow, tokenInfo?.decimals)}
-                          </p>
-                        </div>
-                        <div className="market__detail__pie-chart__data__wrapper">
-                          <div className="market__detail__pie-chart__data__block__wrapper">
-                            <div
-                              className="market__detail__pie-chart__data__block"
-                              style={{
-                                backgroundColor: '#1C5E9A',
-                              }}
-                            />
-                            <p className="spoqa">
-                              {t('market.available_liquidity')}
-                            </p>
-                          </div>
-                          <p className="spoqa">
-                            {toUsd(
-                              BigNumber.from(data.totalDeposit).sub(
-                                data.totalBorrow,
-                              ),
-                              tokenInfo?.decimals,
-                            )}
-                          </p>
-                        </div>
-                        <div
-                          className="market__detail__pie-chart__data__wrapper"
+                      <div className="detail__data-wrapper__info__deposit">
+                        <div 
                           style={{
-                            marginTop: 'auto',
-                          }}>
-                          <p className="spoqa__bold">
-                            {t('market.utilization')}
-                          </p>
-                          <p className="spoqa__bold">{`${utilization}%`}</p>
-                        </div>
+                            backgroundColor: "#F9AE19"
+                          }}
+                        />
+                        <p>
+                          {t('market.total_borrowed')}
+                        </p>
                       </div>
-                      <div className="market__detail__pie-chart">
-                        <Circle progress={Math.round(100 - utilization)} />
-                      </div>
+                      <p>
+                        {toUsd(data.totalBorrow, tokenInfo?.decimals)}
+                      </p>
                     </div>
+                    <div>
+                      <div className="detail__data-wrapper__info__deposit">
+                        <div 
+                          style={{
+                            backgroundColor: "#F9AE19"
+                          }}
+                        />
+                        <p>
+                          {t('market.available_liquidity')}
+                        </p>
+                      </div>
+                      <p>
+                      {toUsd(
+                        BigNumber.from(data.totalDeposit).sub(
+                          data.totalBorrow,
+                        ),
+                        tokenInfo?.decimals,
+                      )}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="detail__data-wrapper__info__deposit__utilization">
+                    <h2>
+                      {t('market.utilization')}
+                    </h2>
+                    <h2>{`${utilization}%`}</h2>
                   </div>
                 </div>
-                <div className="market__detail__graph__wrapper">
-                  <div className="market__detail__graph__converter__wrapper">
-                    <div
-                      className={`market__detail__graph__converter${
-                        graphConverter ? '--disable' : ''
-                      }`}
-                      onClick={() => setGraphConverter(false)}>
-                      <p className="spoqa__bold">{t('market.deposit')}</p>
-                    </div>
-                    <div
-                      className={`market__detail__graph__converter${
-                        !graphConverter ? '--disable' : ''
-                      }`}
-                      onClick={() => setGraphConverter(true)}>
-                      <p className="spoqa__bold">{t('market.borrow')}</p>
-                    </div>
-                  </div>
-                  <div className="market__detail__graph">
-                    <Chart
-                      height={'500px'}
-                      chartType="ComboChart"
-                      loader={<div>Loading Chart</div>}
-                      data={[
-                        [
-                          'Month',
-                          graphConverter
-                            ? t('market.borrow_apy')
-                            : t('market.total_deposit_yield'),
-                          { role: 'tooltip', p: { html: true } },
-                          graphConverter
-                            ? t('market.total_borrowed')
-                            : t('market.total_deposit'),
-                          { role: 'tooltip', p: { html: true } },
-                        ],
-                        ...calcHistoryChartData(
-                          data,
-                          graphConverter ? 'borrow' : 'deposit',
-                          poolDayData,
-                          tokenInfo!.decimals,
-                        ),
-                      ]}
-                      options={{
-                        chartArea: {
-                          left: 50,
-                          right: 50,
-                          top: 100,
-                          width: '700px',
-                          height: '400px',
-                        },
-                        backgroundColor: 'transparent',
-                        tooltip: {
-                          textStyle: {
-                            color: '#FF0000',
-                          },
-                          showColorCode: true,
-                          isHtml: true,
-                          ignoreBounds: true,
-                        },
-                        seriesType: 'bars',
-                        bar: {
-                          groupWidth: 15,
-                        },
-                        vAxis: {
-                          gridlines: {
-                            count: 0,
-                          },
-                          textPosition: 'none',
-                        },
-                        focusTarget: 'category',
-                        curveType: 'function',
-                        legend: { position: 'none' },
-                        series: {
-                          0: {
-                            color: '#E6E6E6',
-                          },
-                          1: {
-                            type: 'line',
-                            color: '#1C5E9A',
-                          },
-                        },
-                      }}
-                    />
-                  </div>
+                <div className="detail__data-wrapper__info__circle-wrapper">
+                  <Circle progress={Math.round(100 - utilization)} />
                 </div>
               </div>
             </div>
-            <Loan id={tokenInfo.address} />
           </div>
-        </section>
+          <div className="market__detail__graph__wrapper">
+            <div className="market__detail__graph__converter__wrapper">
+              <div
+                className={`market__detail__graph__converter${
+                  graphConverter ? '--disable' : ''
+                }`}
+                onClick={() => setGraphConverter(false)}>
+                <p className="spoqa__bold">{t('market.deposit')}</p>
+              </div>
+              <div
+                className={`market__detail__graph__converter${
+                  !graphConverter ? '--disable' : ''
+                }`}
+                onClick={() => setGraphConverter(true)}>
+                <p className="spoqa__bold">{t('market.borrow')}</p>
+              </div>
+            </div>
+            <div className="market__detail__graph">
+              <Chart
+                height={'500px'}
+                chartType="ComboChart"
+                loader={<div>Loading Chart</div>}
+                data={[
+                  [
+                    'Month',
+                    graphConverter
+                      ? t('market.borrow_apy')
+                      : t('market.total_deposit_yield'),
+                    { role: 'tooltip', p: { html: true } },
+                    graphConverter
+                      ? t('market.total_borrowed')
+                      : t('market.total_deposit'),
+                    { role: 'tooltip', p: { html: true } },
+                  ],
+                  ...calcHistoryChartData(
+                    data,
+                    graphConverter ? 'borrow' : 'deposit',
+                    poolDayData,
+                    tokenInfo!.decimals,
+                  ),
+                ]}
+                options={{
+                  chartArea: {
+                    left: 50,
+                    right: 50,
+                    top: 100,
+                    width: '700px',
+                    height: '400px',
+                  },
+                  backgroundColor: 'transparent',
+                  tooltip: {
+                    textStyle: {
+                      color: '#FF0000',
+                    },
+                    showColorCode: true,
+                    isHtml: true,
+                    ignoreBounds: true,
+                  },
+                  seriesType: 'bars',
+                  bar: {
+                    groupWidth: 15,
+                  },
+                  vAxis: {
+                    gridlines: {
+                      count: 0,
+                    },
+                    textPosition: 'none',
+                  },
+                  focusTarget: 'category',
+                  curveType: 'function',
+                  legend: { position: 'none' },
+                  series: {
+                    0: {
+                      color: '#E6E6E6',
+                    },
+                    1: {
+                      type: 'line',
+                      color: '#1C5E9A',
+                    },
+                  },
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        <Loan id={tokenInfo.address} />
       </div>
     </>
   );
