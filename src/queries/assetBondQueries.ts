@@ -8,7 +8,7 @@ export const GET_ALL_ASSET_BONDS = gql`
     assetBondTokens(
       orderBy: loanStartTimestamp
       orderDirection: desc
-      where: { state_gt: ${baseStage} }
+      where: { state_gt: 2 }
     ) {
       id
       state
