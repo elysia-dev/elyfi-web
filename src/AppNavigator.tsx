@@ -136,7 +136,7 @@ const AppNavigator: React.FC = () => {
              <Route exact path="/:lng/staking/LP" component={LPStaking} />
             <Route
               exact
-              path="/:lng/deposits/portfolio/:id"
+              path="/:lng/portfolio/:id"
               component={PortfolioDetail}
             />
             <Route exact path="/:lng/rewardplan/:stakingType" component={RewardPlan} />

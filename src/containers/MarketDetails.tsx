@@ -36,6 +36,25 @@ const initialBalanceState = {
   updatedAt: moment().unix(),
 };
 
+interface ITokencolor {
+  name: string,
+  color: string,
+  subColor: string,
+}
+
+const tokenColorData: ITokencolor[] = [
+  {
+    name: "DAI",
+    color: "#F9AE19",
+    subColor: "#FFDB8B"
+  },
+  {
+    name: "USDT",
+    color: "#26A17B",
+    subColor: "#70E8C3"
+  }
+]
+
 function MarketDetail(): JSX.Element {
   const { account, library } = useWeb3React();
   const [mouseHover, setMouseHover] = useState(false);
@@ -48,6 +67,10 @@ function MarketDetail(): JSX.Element {
   const tokenInfo = reserveTokenData[id];
   const data = reserves.find((reserve) => reserve.id === tokenInfo.address);
   const { t } = useTranslation();
+
+  const selectToken = tokenColorData.find((color) => {
+    return color.name === id;
+  })
 
   const [balances, setBalances] = useState<{
     loading: boolean;
@@ -235,7 +258,7 @@ function MarketDetail(): JSX.Element {
                       <div className="detail__data-wrapper__info__deposit">
                         <div 
                           style={{
-                            backgroundColor: "#F9AE19"
+                            backgroundColor: selectToken?.color || "#333333"
                           }}
                         />
                         <p>
@@ -250,7 +273,7 @@ function MarketDetail(): JSX.Element {
                       <div className="detail__data-wrapper__info__deposit">
                         <div 
                           style={{
-                            backgroundColor: "#F9AE19"
+                            backgroundColor: selectToken?.subColor || "#888888"
                           }}
                         />
                         <p>
@@ -276,94 +299,97 @@ function MarketDetail(): JSX.Element {
                   </div>
                 </div>
                 <div className="detail__data-wrapper__info__circle-wrapper">
-                  <Circle progress={Math.round(100 - utilization)} />
+                  <Circle 
+                    progress={Math.round(100 - utilization)} 
+                    color={selectToken?.color}
+                    subColor={selectToken?.subColor}
+                  />
                 </div>
               </div>
             </div>
           </div>
-          <div className="market__detail__graph__wrapper">
-            <div className="market__detail__graph__converter__wrapper">
+
+          <div className="detail__graph">
+            <div className="detail__graph__converter">
               <div
-                className={`market__detail__graph__converter${
-                  graphConverter ? '--disable' : ''
+                className={`detail__graph__converter__button${
+                  graphConverter ? ' disable' : ''
                 }`}
                 onClick={() => setGraphConverter(false)}>
-                <p className="spoqa__bold">{t('market.deposit')}</p>
+                <h2>{t('market.deposit')}</h2>
               </div>
               <div
-                className={`market__detail__graph__converter${
-                  !graphConverter ? '--disable' : ''
+                className={`detail__graph__converter__button${
+                  !graphConverter ? ' disable' : ''
                 }`}
                 onClick={() => setGraphConverter(true)}>
-                <p className="spoqa__bold">{t('market.borrow')}</p>
+                <h2>{t('market.borrow')}</h2>
               </div>
             </div>
-            <div className="market__detail__graph">
-              <Chart
-                height={'500px'}
-                chartType="ComboChart"
-                loader={<div>Loading Chart</div>}
-                data={[
-                  [
-                    'Month',
-                    graphConverter
-                      ? t('market.borrow_apy')
-                      : t('market.total_deposit_yield'),
-                    { role: 'tooltip', p: { html: true } },
-                    graphConverter
-                      ? t('market.total_borrowed')
-                      : t('market.total_deposit'),
-                    { role: 'tooltip', p: { html: true } },
-                  ],
-                  ...calcHistoryChartData(
-                    data,
-                    graphConverter ? 'borrow' : 'deposit',
-                    poolDayData,
-                    tokenInfo!.decimals,
-                  ),
-                ]}
-                options={{
-                  chartArea: {
-                    left: 50,
-                    right: 50,
-                    top: 100,
-                    width: '700px',
-                    height: '400px',
+            <Chart
+              height={'500px'}
+              chartType="ComboChart"
+              loader={<div>Loading Chart</div>}
+              data={[
+                [
+                  'Month',
+                  graphConverter
+                    ? t('market.borrow_apy')
+                    : t('market.total_deposit_yield'),
+                  { role: 'tooltip', p: { html: true } },
+                  graphConverter
+                    ? t('market.total_borrowed')
+                    : t('market.total_deposit'),
+                  { role: 'tooltip', p: { html: true } },
+                ],
+                ...calcHistoryChartData(
+                  data,
+                  graphConverter ? 'borrow' : 'deposit',
+                  poolDayData,
+                  tokenInfo!.decimals,
+                ),
+              ]}
+              options={{
+                chartArea: {
+                  left: 50,
+                  right: 50,
+                  top: 100,
+                  width: '700px',
+                  height: '400px',
+                },
+                backgroundColor: 'transparent',
+                tooltip: {
+                  textStyle: {
+                    color: '#FF0000',
                   },
-                  backgroundColor: 'transparent',
-                  tooltip: {
-                    textStyle: {
-                      color: '#FF0000',
-                    },
-                    showColorCode: true,
-                    isHtml: true,
-                    ignoreBounds: true,
+                  showColorCode: true,
+                  isHtml: true,
+                  ignoreBounds: true,
+                },
+                seriesType: 'bars',
+                bar: {
+                  groupWidth: 15,
+                },
+                vAxis: {
+                  gridlines: {
+                    count: 0,
                   },
-                  seriesType: 'bars',
-                  bar: {
-                    groupWidth: 15,
+                  textPosition: 'none',
+                },
+                focusTarget: 'category',
+                curveType: 'function',
+                legend: { position: 'none' },
+                series: {
+                  0: {
+                    color: '#E6E6E6',
                   },
-                  vAxis: {
-                    gridlines: {
-                      count: 0,
-                    },
-                    textPosition: 'none',
+                  1: {
+                    type: 'line',
+                    color: '#1C5E9A',
                   },
-                  focusTarget: 'category',
-                  curveType: 'function',
-                  legend: { position: 'none' },
-                  series: {
-                    0: {
-                      color: '#E6E6E6',
-                    },
-                    1: {
-                      type: 'line',
-                      color: '#1C5E9A',
-                    },
-                  },
-                }}
-              />
-            </div>
+                },
+              }}
+            />
           </div>
         </div>
         <Loan id={tokenInfo.address} />

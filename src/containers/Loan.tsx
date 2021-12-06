@@ -38,9 +38,14 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
   return (
     <>
       <section className="loan">
-        <div className="text__title" style={{ marginTop: 100 }}>
-          <p className="bold">{t('portfolio.portfolio_list')}</p>
-          <hr />
+        <div >
+          <h2>{t('portfolio.portfolio_list')}</h2>
+          <p>
+            거버넌스(DAO)에서 통과하여 엘리파이에서 DAI로 실행된 대출 리스트입니다.
+          </p>
+        </div>
+        
+        {/* <div className="text__title" >
           <div
             className="loan__select-box"
             onClick={() => {
@@ -60,7 +65,7 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
               </p>
             </div>
           </div>
-        </div>
+        </div> */}
         {loading ? (
           <div className="portfolio__asset-list__info__container">
             <Skeleton className="portfolio__asset-list__info" />
@@ -99,7 +104,6 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
           </>
         )}
       </section>
-      <Footer />
     </>
   );
 };

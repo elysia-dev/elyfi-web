@@ -1,6 +1,6 @@
 // import { useTranslation } from 'react-i18next';
 import { FunctionComponent, useMemo, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import GoogleMapReact from 'google-map-react';
 import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
 import ErrorPage from 'src/components/ErrorPage';
@@ -53,6 +53,7 @@ const PortfolioDetail: FunctionComponent = () => {
   const tokenInfo = ReserveData.find(
     (reserve) => reserve.address === abToken?.reserve.id,
   );
+  const history = useHistory();
 
   const loadAddress = async (
     lat: number,
@@ -113,200 +114,96 @@ const PortfolioDetail: FunctionComponent = () => {
   };
 
   return (
-    <div className="elysia--pc">
-      <Navigation />
-      <section
-        className="market"
-        style={{ backgroundImage: `url(${ServiceBackground})` }}>
-        <div className="market__title">
-          <h2>{t('navigation.real_assets')}</h2>
-        </div>
-      </section>
-      <div className="portfolio__info">
-        {/* <Title label={t("portfolio.asset_detail")} style={{ marginTop: 100 }} /> */}
-        {loading ? (
-          <Skeleton height={900} />
-        ) : (
-          <div className="portfolio__info__container">
-            <div className="portfolio__info__collateral">
+    <div className="portfolio">
+      <div className="component__text-navigation">
+        <p onClick={() => history.push(`/${lng}/dashboard`)} className="pointer">
+          {t('dashboard.deposit')}
+        </p>
+        &nbsp;&gt;&nbsp;
+        <p>
+          대출 정보
+        </p>
+      </div>
+      <div className="detail__header">
+        <h2>대출 정보</h2>
+      </div>
+      {loading ? (
+        <Skeleton height={900} />
+      ) : (
+        <>
+          <div className="portfolio__borrower">
+            <h2 className="portfolio__borrower__title">
+              차입자 정보
+            </h2>
+            <div className="portfolio__borrower__header">
+              <img src={CollateralLogo} />
               <div>
-                <img src={CollateralLogo} />
+                <p>{t('portfolio.borrower--loan')}</p>
+                <p>Elyloan Corp</p>
               </div>
-              <table>
-                <tr>
-                  <td colSpan={2}>
-                    <p className="bold">{t('portfolio.borrower_info')}</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <p>{t('portfolio.borrower--loan')}</p>
-                  </td>
-                  <td>
-                    <p>Elyloan Corp</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <p>{t('portfolio.license_number')}</p>
-                  </td>
-                  <td>
-                    <p>220111-0189192</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <p>{t('portfolio.wallet_address')}</p>
-                  </td>
-                  <td>
-                    <p>0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7</p>
-                  </td>
-                </tr>
-              </table>
+              <div>
+                <p>{t('portfolio.license_number')}</p>
+                <p>220111-0189192</p>
+              </div>
+              <div>
+                <p>{t('portfolio.wallet_address')}</p>
+                <p onClick={() => AddressCopy("0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7")}>
+                  0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7
+                </p>
+              </div>
             </div>
-            <table
-              className="portfolio__info__table portfolio-loan-table"
-              style={{ height: 360 }}>
-              <tr>
-                <td className="portfolio__info__table__title">
+            <div className="portfolio__borrower__data">
+              <div className="portfolio__borrower__data--left">
+                <div>
                   <p>{t('portfolio.loan_number--table')}</p>
-                  <p
-                    className="portfolio__info__popup"
-                    onMouseEnter={() => {
-                      setMouseHover(1);
-                    }}
-                    onMouseLeave={() => {
-                      setMouseHover(0);
-                    }}>
-                    ?
-                  </p>
-                  <p
-                    className="portfolio__info__popup__showing"
-                    style={{ display: mouseHover === 1 ? 'block' : 'none' }}>
-                    {t('portfolio.infomation_popup.0')}
-                  </p>
-                </td>
-                <td colSpan={2}>
-                  <p className="spoqa__bold">{parsedTokenId.nonce}</p>
-                </td>
-              </tr>
-              <tr>
-                <td className="portfolio__info__table__title">
+                  <p>{parsedTokenId.nonce}</p>
+                </div>
+                <div>
                   <p>{t('portfolio.loan_status')}</p>
-                  <p
-                    className="portfolio__info__popup"
-                    onMouseEnter={() => {
-                      setMouseHover(2);
-                    }}
-                    onMouseLeave={() => {
-                      setMouseHover(0);
-                    }}>
-                    ?
+                  <p>
+                  {t(
+                    `words.${
+                      LoanStatus[toLoanStatus(abToken?.state as ABTokenState)]
+                    }`,
+                  )}
                   </p>
-                  <p
-                    className="portfolio__info__popup__showing"
-                    style={{ display: mouseHover === 2 ? 'block' : 'none' }}>
-                    <p className="bold">{t('portfolio.infomation_popup.1')}</p>
-                    <p>- {t('portfolio.infomation_popup.2')}</p>
-                    <br />
-                    <p className="bold">{t('portfolio.infomation_popup.3')}</p>
-                    <p>- {t('portfolio.infomation_popup.4')}</p>
-                    <br />
-                    <p className="bold">{t('portfolio.infomation_popup.5')}</p>
-                    <p>- {t('portfolio.infomation_popup.6')}</p>
-                  </p>
-                </td>
-                <td colSpan={2}>
-                  <p className="spoqa__bold">
-                    {t(
-                      `words.${
-                        LoanStatus[toLoanStatus(abToken?.state as ABTokenState)]
-                      }`,
-                    )}
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td className="portfolio__info__table__title">
+                </div>
+                <div>
                   <p>{t('portfolio.receiving_address')}</p>
-                </td>
-                <td colSpan={2}>
-                  <p className="spoqa__bold">{abToken?.borrower?.id || '-'}</p>
-                </td>
-              </tr>
-              <tr>
-                <td className="portfolio__info__table__title">
+                  <p onClick={() => abToken?.borrower?.id ? AddressCopy(abToken?.borrower?.id) : undefined}>
+                    {abToken?.borrower?.id || '-'}
+                  </p>
+                </div>
+                <div>
                   <p>{t('portfolio.borrowed')}</p>
-                </td>
-                <td colSpan={2}>
-                  <p className="spoqa__bold">
-                    {toUsd(abToken?.principal || '0', tokenInfo.decimals)}
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td className="portfolio__info__table__title">
+                  <p>{toUsd(abToken?.principal || '0', tokenInfo.decimals)}</p>
+                </div>
+              </div>
+
+              <div className="portfolio__borrower__data--right">
+                <div>
                   <p>{t('portfolio.loan_interest_rate')}</p>
-                </td>
-                <td colSpan={2}>
-                  <p className="spoqa__bold">
-                    {toPercent(abToken?.interestRate || '0')}
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td className="portfolio__info__table__title">
+                  <p>{toPercent(abToken?.interestRate || '0')}</p>
+                </div>
+                <div>
                   <p>{t('portfolio.loan_date')}</p>
-                </td>
-                <td colSpan={2}>
-                  <p className="spoqa__bold">
+                  <p>
                     {abToken?.loanStartTimestamp
-                      ? moment(abToken.loanStartTimestamp * 1000).format(
-                          'YYYY.MM.DD',
-                        )
-                      : '-'}
+                        ? moment(abToken.loanStartTimestamp * 1000).format(
+                            'YYYY.MM.DD',
+                          )
+                        : '-'}
                   </p>
-                </td>
-              </tr>
-              <tr>
-                <td className="portfolio__info__table__title">
+                </div>
+                <div>
                   <p>{t('portfolio.maturity_date')}</p>
-                </td>
-                <td colSpan={2}>
-                  <p className="spoqa__bold">{maturityFormmater(abToken)}</p>
-                </td>
-              </tr>
-              <tr>
-                <td className="portfolio__info__table__title">
+                  <p>{maturityFormmater(abToken)}</p>
+                </div>
+                <div>
                   <p>{t('portfolio.collateral_nft')}</p>
                   <p
-                    className="portfolio__info__popup"
-                    onMouseEnter={() => {
-                      setMouseHover(3);
-                    }}
-                    onMouseLeave={() => {
-                      setMouseHover(0);
-                    }}>
-                    ?
-                  </p>
-                  <p
-                    className="portfolio__info__popup__showing"
-                    style={{
-                      display: mouseHover === 3 ? 'block' : 'none',
-                      top: 60,
-                    }}>
-                    {t('portfolio.infomation_popup.7')}
-                  </p>
-                </td>
-                <td colSpan={2} style={{ height: 80 }}>
-                  <p className="spoqa__bold">ABToken ID</p>
-                  <p
                     title={abToken?.id}
-                    style={{
-                      color: '#00A7FF',
-                      cursor: 'pointer',
-                      marginTop: 5,
-                    }}
+                    className="link"
                     onClick={() => {
                       window.open(
                         `${envs.etherscan}/token/${tokenInfo.tokeninzer}?a=${abToken?.id}`,
@@ -315,214 +212,70 @@ const PortfolioDetail: FunctionComponent = () => {
                     }}>
                     {abToken?.id.slice(0, 12)} ... {abToken?.id.slice(-12)}
                   </p>
-                </td>
-              </tr>
-            </table>
-          </div>
-        )}
-        <div className="portfolio__info__details">
-          <div className="text__title" style={{ marginTop: 100 }}>
-            <p className="bold">{t('portfolio.nft_details')}</p>
-            <hr />
-          </div>
-          <div className="portfolio__info__details__content">
-            <b className="spoqa__bold">{t('portfolio.abtoken_title')}</b>
-            <p>{t('portfolio.abtoken_content')}</p>
-            <div className="portfolio__info__details__image">
-              {i18n.language === LanguageType.KO ? (
-                <img src={PortfolioInfoKor} />
-              ) : i18n.language === LanguageType.ZHHANS ? (
-                <img src={PortfolioInfoCha} />
-              ) : (
-                <img src={PortfolioInfoEng} />
-              )}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div>
-          <b className="spoqa__bold">{t('portfolio.abtoken_details')}</b>
-          <div className="portfolio__info__abtoken-info">
-            <div className="portfolio__info__google-map__wrapper">
-              {loading ? (
-                <Skeleton height={900} />
-              ) : (
-                <GoogleMapReact
-                  bootstrapURLKeys={{
-                    key: process.env.REACT_APP_GOOGLE_MAP_API_KEY!,
-                  }}
-                  defaultCenter={{
-                    lat,
-                    lng,
-                  }}
-                  defaultZoom={15}>
-                  <Marker lat={lat} lng={lng} />
-                </GoogleMapReact>
-              )}
-            </div>
-            {loading ? (
+        </>
+      )}
+      <div className="portfolio__collateral">
+        <h2>{t('portfolio.nft_details')}</h2>
+        <div className="portfolio__collateral__data">
+          <div className="portfolio__collateral__data--left">
+          {loading ? (
               <Skeleton height={900} />
             ) : (
-              <table className="portfolio__info__table">
-                <tr>
-                  <td className="portfolio__info__table__title">
-                    <p>{t('portfolio.abtokenid')}</p>
-                  </td>
-                  <td colSpan={2}>
-                    <p
-                      title={abToken?.id}
-                      style={{ color: '#00A7FF', cursor: 'pointer' }}
-                      onClick={() => {
-                        window.open(
-                          `${envs.etherscan}/token/${tokenInfo.tokeninzer}?a=${abToken?.id}`,
-                          '_blank',
-                        );
-                      }}
-                      className="spoqa__bold">
-                      {abToken?.id.slice(0, 12)} ... {abToken?.id.slice(-12)}
-                    </p>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="portfolio__info__table__title">
-                    <p>{t('portfolio.borrower')}</p>
-                  </td>
-                  <td colSpan={2}>
-                    <p className="spoqa__bold">Elyloan Corp</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="portfolio__info__table__title">
-                    <p>{t('portfolio.loan_product')}</p>
-                    <p
-                      className="portfolio__info__popup"
-                      onMouseEnter={() => {
-                        setMouseHover(4);
-                      }}
-                      onMouseLeave={() => {
-                        setMouseHover(0);
-                      }}>
-                      ?
-                    </p>
-                    <p
-                      className="portfolio__info__popup__showing"
-                      style={{ display: mouseHover === 4 ? 'block' : 'none' }}>
-                      {t('portfolio.infomation_popup.8')}
-                    </p>
-                  </td>
-                  <td colSpan={2}>
-                    <p className="spoqa__bold">
-                      {t(
-                        `words.${
-                          LoanProduct[
-                            parsedTokenId.productNumber as LoanProduct
-                          ]
-                        }`,
-                      )}
-                    </p>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="portfolio__info__table__title">
-                    <p>{t('portfolio.borrowed')}</p>
-                  </td>
-                  <td colSpan={2}>
-                    <p className="spoqa__bold">
-                      {toUsd(abToken?.principal || '0', tokenInfo.decimals)}
-                    </p>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="portfolio__info__table__title">
-                    <p>{t('portfolio.loan_interest_rate')}</p>
-                  </td>
-                  <td colSpan={2}>
-                    <p className="spoqa__bold">
-                      {toPercent(abToken?.couponRate || '0')}
-                    </p>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="portfolio__info__table__title">
-                    <p>{t('portfolio.overdue_interest_rate')}</p>
-                  </td>
-                  <td colSpan={2}>
-                    <p className="spoqa__bold">
-                      {toPercent(abToken?.delinquencyRate || '0')}
-                    </p>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="portfolio__info__table__title">
-                    <p>{t('portfolio.maturity_date')}</p>
-                  </td>
-                  <td colSpan={2}>
-                    <p className="spoqa__bold">{maturityFormmater(abToken)}</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="portfolio__info__table__title">
-                    <p>{t('portfolio.maximum_amount')}</p>
-                  </td>
-                  <td colSpan={2}>
-                    <p className="spoqa__bold">
-                      {toUsd(abToken?.debtCeiling || '0', tokenInfo.decimals)}
-                    </p>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="portfolio__info__table__title">
-                    <p>{t('portfolio.collateral_type')}</p>
-                    <p
-                      className="portfolio__info__popup"
-                      onMouseEnter={() => {
-                        setMouseHover(5);
-                      }}
-                      onMouseLeave={() => {
-                        setMouseHover(0);
-                      }}>
-                      ?
-                    </p>
-                    <p
-                      className="portfolio__info__popup__showing"
-                      style={{ display: mouseHover === 5 ? 'block' : 'none' }}>
-                      {t('portfolio.infomation_popup.9')}
-                    </p>
-                  </td>
-                  <td colSpan={2}>
-                    <p className="spoqa__bold">
-                      {t(
-                        `words.${
-                          CollateralCategory[
-                            parsedTokenId.collateralCategory as CollateralCategory
-                          ]
-                        }`,
-                      )}
-                    </p>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="portfolio__info__table__title">
-                    <p>{t('portfolio.collateral_address')}</p>
-                  </td>
-                  <td colSpan={2}>
-                    <p className="spoqa__bold">{address}</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="portfolio__info__table__title">
-                    <p>{t('portfolio.contract_image')}</p>
-                  </td>
-                  <td colSpan={2}>
-                    <a
-                      className="spoqa__bold"
-                      href={contractImage.link}
-                      style={{ color: '#00A7FF', cursor: 'pointer' }}>
-                      {contractImage.hash || '-'}
-                    </a>
-                  </td>
-                </tr>
-              </table>
+              <GoogleMapReact
+                bootstrapURLKeys={{
+                  key: process.env.REACT_APP_GOOGLE_MAP_API_KEY!,
+                }}
+                defaultCenter={{
+                  lat,
+                  lng,
+                }}
+                defaultZoom={15}>
+                <Marker lat={lat} lng={lng} />
+              </GoogleMapReact>
             )}
+          </div>
+          <div className="portfolio__collateral__data--right">
+          {loading ? (
+            <Skeleton height={900} />
+          ) : (
+            <>
+            {[
+              ["NFT Type", "ABToken", "", ""],
+              [t('portfolio.abtokenid'), `${abToken?.id.slice(0, 12)} ... ${abToken?.id.slice(-12)}`, "", `${envs.etherscan}/token/${tokenInfo.tokeninzer}?a=${abToken?.id}`],
+              [t('portfolio.borrower'), "Elyloan Corp", "", ""],
+              [t('portfolio.loan_product'), t(`words.${LoanProduct[parsedTokenId.productNumber as LoanProduct]}`), "", ""],
+              [t('portfolio.borrowed'), toUsd(abToken?.principal || '0', tokenInfo.decimals), "", ""],
+              [t('portfolio.loan_interest_rate'), toPercent(abToken?.couponRate || '0'), "", ""],
+              [t('portfolio.overdue_interest_rate'), toPercent(abToken?.delinquencyRate || '0'), "", ""],
+              [t('portfolio.maturity_date'), maturityFormmater(abToken), "", ""],
+              [t('portfolio.maximum_amount'), toUsd(abToken?.debtCeiling || '0', tokenInfo.decimals), "", ""],
+              [t('portfolio.collateral_type'), t(`words.${CollateralCategory[parsedTokenId.collateralCategory as CollateralCategory]}`), "", ""],
+              [t('portfolio.collateral_address'), address, "", ""],
+              [t('portfolio.contract_image'), `${contractImage.hash.slice(0, 12)} ... ${contractImage.hash.slice(-12)}` || '-', "", contractImage.link]
+            ].map((data) => {
+              return (
+                <div>
+                  <p>{data[0]}</p>
+                  <p 
+                    onClick={() => {
+                      !!data[3] === true ? 
+                        window.open(data[3], '_blank'
+                      ) : 
+                      undefined
+                    }}
+                    className={!!data[3] === true ? "link" : ""}
+                  >
+                    {data[1]}
+                  </p>
+                </div>
+              )
+            })}
+            </>
+          )}
           </div>
         </div>
       </div>

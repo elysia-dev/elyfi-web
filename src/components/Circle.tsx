@@ -6,6 +6,8 @@ interface CircleProps {
   progress: number;
   progressColor?: string;
   style?: CSSProperties;
+  color?: string;
+  subColor?: string;
 }
 
 export const Circle: FunctionComponent<CircleProps> = (props: CircleProps) => {
@@ -39,11 +41,11 @@ export const Circle: FunctionComponent<CircleProps> = (props: CircleProps) => {
 
   return (
     <>
-      <svg width="135" height="135" viewBox="-25 -25 400 400">
+      <svg width="200" height="200" viewBox="-25 -25 400 400">
         {state.progress !== 0 && (
           <>
             <circle
-              stroke={'#1C5E9A'}
+              stroke={props.color || '#1C5E9A'}
               transform={`rotate(${
                 state.progress === 100 ? -90 : -85
               } 175 175)`}
@@ -72,7 +74,7 @@ export const Circle: FunctionComponent<CircleProps> = (props: CircleProps) => {
               <>
                 <text
                   style={{ font: 'bold 4rem Helvetica, Arial, sans-serif' }}
-                  fill={'#1C5E9A'}
+                  fill={props.color || '#1C5E9A'}
                   x={175}
                   y={175}
                   textAnchor="middle"
@@ -152,7 +154,7 @@ export const Circle: FunctionComponent<CircleProps> = (props: CircleProps) => {
         {state.progress !== 100 && (
           <>
             <circle
-              stroke={'#00A7FF'}
+              stroke={props.subColor || '#00A7FF'}
               transform={`rotate(${
                 state.progress === 0 ? -90.1 : -95.1
               } 175 175)`}
@@ -192,7 +194,7 @@ export const Circle: FunctionComponent<CircleProps> = (props: CircleProps) => {
               <>
                 <text
                   style={{ font: 'bold 4rem Helvetica, Arial, sans-serif' }}
-                  fill={'#00A7FF'}
+                  fill={props.subColor || '#00A7FF'}
                   x={175}
                   y={175}
                   textAnchor="middle"
