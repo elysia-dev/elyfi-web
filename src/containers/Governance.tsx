@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import TempAssets from 'src/assets/images/temp_assets.png';
 import OffChainTopic from 'src/clients/OffChainTopic';
 import Skeleton from 'react-loading-skeleton';
+import { IProposals, OnChainTopic } from 'src/clients/OnChainTopic';
+import { utils } from 'ethers';
 
 interface IOffChainVote {
   html: string;
@@ -34,33 +36,68 @@ const initialNapData: INapData = {
 }
 
 const Governance = () => {
-  const [loading, setLoading] = useState({
-    offChain: true
-  })
-  const [napData, setNapData] = useState<INapData[]>([])
+  const [onChainLoading, setOnChainLoading] = useState(true)
+  const [offChainLoading, setOffChainLoading] = useState(true)
+  const [onChainData, setOnChainData] = useState<IProposals[]>([])
+  const [offChainNapData, setOffChainNapData] = useState<INapData[]>([])
 
-  const getNAPTitles = async () => {
+
+  const getOnChainNAPDatas = async () => {
     try {
-      const getApis = await OffChainTopic.getTopicList()
-      const getNAPTitles = getApis.data.topic_list.topics.filter((topic) => {
+      const getOnChainApis = await OnChainTopic.getOnChainTopicData()
+      const getNAPCodes = getOnChainApis.data.data.proposals.filter((topic) => {
+        return topic.data.description.startsWith("NAP")
+        // return topic.data.description.match(/(?<=NAP).*(?=:)/)?.toString()
+      })
+      return getNAPCodes || undefined;
+    } catch (e) {
+      console.log(e)
+      setOnChainLoading(false)
+    }
+
+  }
+  const getOffChainNAPTitles = async () => {
+    try {
+      const getOffChainApis = await OffChainTopic.getTopicList()
+      const getNAPTitles = getOffChainApis.data.topic_list.topics.filter((topic) => {
         return topic.title.startsWith("NAP")
       })
-
       return getNAPTitles.map((title) => title.id) || undefined;
     } catch (e) {
       console.log(e)
-      setLoading({ ...loading, offChain: false })
+      setOffChainLoading(false)
     }
   }
+  
 
   useEffect(() => {
-    getNAPTitles().then((title_res) => {
-      title_res === undefined ? setLoading({ ...loading, offChain: false }) : 
+    getOnChainNAPDatas().then((res) => {
+      res === undefined ? setOnChainLoading(false) :
+        res.map((data) => {
+          return setOnChainData(_data => [
+            ..._data,
+            {
+              data: {
+                description: data.data.description.match(/(?<=NAP).*(?=:)/)?.toString()
+              },
+              status: data.status,
+              totalVotesCast: data.totalVotesCast,
+              totalVotesCastAbstained: data.totalVotesCastAbstained,
+              totalVotesCastAgainst: data.totalVotesCastAgainst,
+              totalVotesCastInSupport: data.totalVotesCastInSupport
+            } as IProposals
+          ])
+        }) 
+        setOnChainLoading(false)
+    })
+
+    getOffChainNAPTitles().then((title_res) => {
+      title_res === undefined ? setOffChainLoading(false) : 
         title_res.map(async (_res, _x) => {
           const getNATData = await OffChainTopic.getTopicResult(_res)
           const getHTMLStringData: string = getNATData.data.post_stream.posts[0].cooked.toString();
 
-          setNapData(napData => [ 
+          setOffChainNapData(napData => [ 
             ...napData, 
             {
               id: _x,
@@ -73,29 +110,29 @@ const Governance = () => {
           ])
         })
       
-        setLoading({ ...loading, offChain: false })
+        setOffChainLoading(false)
     })
   }, [])
 
-  const OffChainContainer = (nap: string, status: string, images: string, votes: IOffChainVote[], totalVoters: number) => {
+  const offChainContainer = (data: INapData) => {
     return (
       <div className="governance__validation__assets governance__asset">
         <div>
-          <img src={images} />
+          <img src={data.images} />
         </div>
         <div>
           <div className="governance__asset__nap">
             <p>
-              NAP#: {nap}
+              NAP#: {data.nap}
             </p>
           </div>
           <div className="governance__asset__status">
             <p>
-              Status: {status}
+              Status: {data.status}
             </p>
           </div>
           <div>
-            {votes.map((vote, _x) => {
+            {data.votes.map((vote, _x) => {
               return (
                 <div>
                   <p>
@@ -104,11 +141,64 @@ const Governance = () => {
                   <progress 
                     className={`governance__asset__progress-bar index-${_x}`}
                     value={vote.votes}
-                    max={totalVoters}
+                    max={data.totalVoters}
                   />
                 </div>
               )
             })}
+          </div>
+        </div>
+      </div>
+    )
+  }
+  const onChainConatainer = (data: IProposals) => {
+    return (
+      <div className="governance__onchain-vote__assets governance__asset">
+        <div>
+          <img src={TempAssets} />
+        </div>
+        <div>
+          <div className="governance__nap">
+            <p>
+              NAP#: {data.data.description}
+            </p>
+          </div>
+          <div className="governance__status">
+            <p>
+              Status: {data.status}
+            </p>
+          </div>
+          <div>
+            <div>
+              <p>
+                For
+              </p>
+              <progress 
+                className="governance__asset__progress-bar index-0"
+                value={parseFloat(utils.formatEther(data.totalVotesCastInSupport))}
+                max={parseFloat(utils.formatEther(data.totalVotesCast))}
+              />
+            </div>
+            <div>
+              <p>
+                Againest
+              </p>
+              <progress 
+                className="governance__asset__progress-bar index-1"
+                value={parseFloat(utils.formatEther(data.totalVotesCastAgainst))}
+                max={parseFloat(utils.formatEther(data.totalVotesCast))}
+              />
+            </div>
+            <div>
+              <p>
+                Abstain
+              </p>
+              <progress 
+                className="governance__asset__progress-bar index-2"
+                value={parseFloat(utils.formatEther(data.totalVotesCastAbstained))}
+                max={parseFloat(utils.formatEther(data.totalVotesCast))}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -179,19 +269,19 @@ const Governance = () => {
       <section className="governance__validation">
         <div>
           <h3>
-            데이터 검증 리스트 ({napData.length} 건)
+            데이터 검증 리스트 ({offChainNapData.length} 건)
           </h3>
           <p>
             오프체인 거버넌스(DAO)에서 투표가 진행중인 매물 리스트 입니다.
           </p>
         </div>
         {
-          loading.offChain ? (
+          offChainLoading ? (
             <Skeleton width={"100%"} height={600} /> 
           ) : (
             <div className="governance__grid">
-              {napData.map((data, index) => {
-                return OffChainContainer(data.nap, data.status, data.images, data.votes, data.totalVoters)
+              {offChainNapData.map((data, index) => {
+                return offChainContainer(data)
               })}
             </div>
           )
@@ -200,63 +290,23 @@ const Governance = () => {
       <section className="governance__onchain-vote">
         <div>
           <h3>
-            온체인 투표 (3 건)
+            온체인 투표 ({onChainData.length} 건)
           </h3>
           <p>
             온체인 거버넌스(DAO)에서 투표가 진행중인 매물 리스트 입니다.
           </p>
         </div>
-        <div className="governance__grid">
-          <div className="governance__onchain-vote__assets governance__asset">
-            <div>
-              <img src={TempAssets} />
+        {
+          onChainLoading ? (
+            <Skeleton width={"100%"} height={600} />
+          ) : (
+            <div className="governance__grid">
+              {onChainData.map((data, index) => {
+                return onChainConatainer(data)
+              })}
             </div>
-            <div>
-              <div className="governance__nap">
-                <p>
-                  NAP#: 124
-                </p>
-              </div>
-              <div className="governance__status">
-                <p>
-                  Status: Voting
-                </p>
-              </div>
-              <div>
-                <div>
-                  <p>
-                    For
-                  </p>
-                  <progress 
-                    className="governance__asset__progress-bar index-0"
-                    value={30}
-                    max={100}
-                  />
-                </div>
-                <div>
-                  <p>
-                    Againest
-                  </p>
-                  <progress 
-                    className="governance__asset__progress-bar index-1"
-                    value={30}
-                    max={100}
-                  />
-                </div>
-                <div>
-                  <p>
-                    Abstain
-                  </p>
-                  <progress 
-                    className="governance__asset__progress-bar index-2"
-                    value={30}
-                    max={100}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+          )
+        }
       </section>
       <section className="governance__loan">
         <div>
