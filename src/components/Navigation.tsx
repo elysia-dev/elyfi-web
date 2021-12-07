@@ -6,6 +6,7 @@ import Wallet from 'src/components/Wallet';
 import InstallMetamask from 'src/components/InstallMetamask';
 import { INavigation, ISubNavigation, navigationLink } from 'src/core/data/navigationLink'
 import { useTranslation } from 'react-i18next';
+import ExternalLinkImage from 'src/assets/images/external_link.png';
 
 const InitialNavigation: INavigation[] = [
   {
@@ -19,11 +20,9 @@ const InitialNavigation: INavigation[] = [
 const Navigation = () => {
   // Hover Value
   const [globalNavHover, setGlobalNavHover] = useState(0);
-  const [localNavHover, setLocalNavHover] = useState(0);
 
   // Type.LNB Dropdown Nav Seleted
   const [selectedLocalNavIndex, setSelectedLocalNavIndex] = useState(0);
-  const [isLocalNavPinned, setLocalNavPinned] = useState(false);
 
   const navigationRef = useRef<HTMLDivElement>(null);
   const localNavigationRef = useRef<HTMLDivElement>(null);
@@ -36,10 +35,8 @@ const Navigation = () => {
   const [scrollTop, setScrollTop] = useState(0);
 
   const initialNavigationState = () => {
-    setLocalNavPinned(false);
     setSelectedLocalNavIndex(0)
     setGlobalNavHover(0)
-    setLocalNavHover(0)
   }
   function setScrollTrigger () {
     function onScroll() {
@@ -59,8 +56,7 @@ const Navigation = () => {
       <div className={`navigation__wallet__container ${ref === "mobile" ? "mobile-only" : "pc-only"}`} 
         onMouseEnter={() => {
           setGlobalNavHover(0)
-          setLocalNavHover(0)
-          isLocalNavPinned ? null : setSelectedLocalNavIndex(0)
+          setSelectedLocalNavIndex(0)
         }}
       >
         {window.ethereum?.isMetaMask ? <Wallet /> : <InstallMetamask />}
@@ -89,6 +85,40 @@ const Navigation = () => {
       (globalNavHover || selectedLocalNavIndex) === _index + 1 ? true : 
       false
   }
+  
+  const localNavInnerContainer = (_data: ISubNavigation, isExternalLink: boolean) => {
+    return (
+      <a 
+        href={
+          !isExternalLink ?
+          `/${lng + _data.location}` :
+          isExternalLink ?
+          _data.location :
+          undefined
+        }
+        target={
+          isExternalLink ? "_blank" : undefined
+        }
+        onMouseEnter={() => {
+          setSelectedLocalNavIndex(0)
+        }}
+        onClick={() => {
+          initialNavigationState()
+        }}
+        className="navigation__bottom__link"
+      >
+        <div
+          className="navigation__link"
+        >
+          <p>
+            {t(_data.i18nKeyword).toUpperCase()}
+          </p>
+          {isExternalLink && (<img src={ExternalLinkImage} />)}
+        </div>
+      </a>
+      
+    )
+  }
 
   const globalNavInnerContainer = (_data: INavigation, _index: number) => {
     return (
@@ -110,49 +140,33 @@ const Navigation = () => {
               opacity: isBold(_index) ? 1 : 0,
               width: isBold(_index) ? "100%" : 0,
               left: isBold(_index) ? 0 : -20,
-            }}/>
-        </div>
-      </div>
-    )
-  }
-  
-  const getLocalCurrentPath = (_data: ISubNavigation, _index: number) => {
-    if (localNavHover === _index + 1) return true;
-    if (currentPage[0].subNavigation !== undefined) {
-      const arr = currentPage[0].subNavigation.filter((subNav) => {
-        return subNav.location === `/${location.pathname.split('/')[2]}/${location.pathname.split('/')[3]}`
-      })
-      return arr[0].location === _data.location ? true : 
-      false
-    } return false; 
-  }
-  const localNavInnerContainer = (_data: ISubNavigation, _index: number) => {
-    return (
-      <div className="navigation__link__wrapper">
-        <div
-          className="navigation__link"
-          onMouseEnter={() => {
-            setLocalNavHover(_index + 1)
-          }}
-          style={{ 
-            color: scrollTop > 125 ? '#000000' : '#000000'
-          }}
-        >
-          {t(_data.i18nKeyword).toUpperCase()}
-          <div
-            className={`navigation__link__under-line${getLocalCurrentPath(_data, _index) ? ' hover' : ' blur'
-            }`}
-            style={{
-              opacity: getLocalCurrentPath(_data, _index) ? 1 : 0,
-              width: getLocalCurrentPath(_data, _index) ? "100%" : 0,
-              left: getLocalCurrentPath(_data, _index) ? 0 : -20,
-            }}/>
+            }}>
+              <div className="navigation__bottom" 
+                ref={localNavigationRef}
+                style={{
+                  backgroundColor: scrollTop > 125 ? '#FFFFFF' : 
+                  // 'transparent',
+                  "#FFFFFF",
+                  display: isBold(_index) ? "flex" : "none",
+                  borderTop: scrollTop > 125 ? "1px solid #e6e6e6" : "1px solid #e6e6e6",
+                  borderBottom: scrollTop > 125 ? "1px solid #e6e6e6" : "1px solid #e6e6e6",
+                }}
+              >
+                {
+                  getHoveredLNBData.map((getData) => {
+                    return getData.subNavigation!.map((subData) => {
+                      return localNavInnerContainer(subData, subData.type === NavigationType.Link ? false : true) 
+                    })
+                  })
+                }
+              </div>
+          </div>
         </div>
       </div>
     )
   }
 
-  const linkNavigation = (_data: INavigation | ISubNavigation, navPosition: "global" | "local", _index: number, isExternalLink?: boolean) => {
+  const linkNavigation = (_data: INavigation | ISubNavigation, _index: number, isExternalLink?: boolean) => {
     return (
       <a 
         href={
@@ -166,28 +180,15 @@ const Navigation = () => {
           isExternalLink ? "_blank" : undefined
         }
         onMouseEnter={() => {
-          navPosition === "global" ? 
-            setGlobalNavHover(_index + 1) : 
-            setLocalNavHover(_index + 1)
-          
-          navPosition === "global" ?
-            isLocalNavPinned ?
-              null :
-              setSelectedLocalNavIndex(0)
-            :
-            null
+          setGlobalNavHover(_index + 1)
+
+          setSelectedLocalNavIndex(0)
         }}
         onClick={() => {
           initialNavigationState()
         }}
       >
-        {
-          navPosition === "global" ? 
-          globalNavInnerContainer(_data as INavigation, _index) :
-          navPosition === "local" ?
-          localNavInnerContainer(_data as ISubNavigation, _index) :
-          undefined
-        }
+        {globalNavInnerContainer(_data as INavigation, _index)}
       </a>
     )
   }
@@ -196,13 +197,8 @@ const Navigation = () => {
   const setNavigation = (data: INavigation, index: number) => {
     const LNBNavigation = () => {
       return (
-        <div 
-          onClick={() => {
-            setLocalNavPinned(true)
-            setSelectedLocalNavIndex(index + 1)
-          }}
+        <div
           onMouseEnter={() => {
-            setLocalNavHover(0);
             setSelectedLocalNavIndex(index + 1)
           }}
         >
@@ -213,45 +209,21 @@ const Navigation = () => {
     
     return (
       data.type === NavigationType.Link ?
-      linkNavigation(data, "global", index, false) :
+      linkNavigation(data, index, false) :
       data.type === NavigationType.Href ?
-      linkNavigation(data, "global", index, true) :
+      linkNavigation(data, index, true) :
       LNBNavigation()
     )
   }
   
   const setNavigationLink = () => {
     return (
-      <div className="navigation__link__container pc-only tablet-only">
+      <div className="navigation__link__container">
         {navigationLink.map((data, index) => {
           return (
             setNavigation(data, index)
           );
         })}
-      </div>
-    )
-  }
-
-  const localNavigation = () => {
-    return (
-      <div className="navigation__bottom" 
-        ref={localNavigationRef}
-        style={{
-          backgroundColor: scrollTop > 125 ? '#FFFFFF' : 
-          // 'transparent',
-          "#FFFFFF",
-          display: (selectedLocalNavIndex || isLocalNavPinned) ? "flex" : "none",
-          borderTop: scrollTop > 125 ? "1px solid #e6e6e6" : "1px solid #e6e6e6",
-          borderBottom: scrollTop > 125 ? "1px solid #e6e6e6" : "1px solid #e6e6e6"
-        }}
-      >
-        {
-          getHoveredLNBData.map((getData) => {
-            return getData.subNavigation!.map((subData, index) => {
-              return linkNavigation(subData, "local", index, false)
-            })
-          })
-        }
       </div>
     )
   }
@@ -264,7 +236,7 @@ const Navigation = () => {
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [])
   
@@ -278,14 +250,12 @@ const Navigation = () => {
       <nav
         className="navigation"
         style={{ 
-          backgroundColor: scrollTop > 125 ? '#FFFFFF' : '#FFFFFF',
-          borderBottom: scrollTop > 125 ? "1px solid #e6e6e6" : "1px solid #e6e6e6"
+          backgroundColor: scrollTop > 125 ? '#FFFFFF' : '#FFFFFF'
         }}
         ref={navigationRef}  
         onMouseLeave={() => {
           setGlobalNavHover(0)
-          setLocalNavHover(0)
-          isLocalNavPinned ? null : setSelectedLocalNavIndex(0)
+          setSelectedLocalNavIndex(0)
         }}
       >
         <div className="navigation__container">
@@ -293,8 +263,7 @@ const Navigation = () => {
             <div>
               <Link to={`/${lng}`} onMouseEnter={() => {
                 setGlobalNavHover(0)
-                setLocalNavHover(0)
-                isLocalNavPinned ? null : setSelectedLocalNavIndex(0)
+                setSelectedLocalNavIndex(0)
               }}>
                 <div className="logo-wrapper" style={{ cursor: 'pointer' }}>
                   <img
@@ -304,14 +273,13 @@ const Navigation = () => {
                   />
                 </div>
               </Link>
-              {setMediaQueryMetamask("mobile")}
             </div>
             {setNavigationLink()}
           </div>
           {setMediaQueryMetamask("pc")}
         </div>
-        {localNavigation()}
       </nav>
+      <div className="navigation__margin" style={{ marginBottom: 100 }} />
     </>
   );
 };

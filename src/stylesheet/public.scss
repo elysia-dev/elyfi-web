@@ -99,24 +99,43 @@ span {
     left: 0;
     right: 0;
     z-index: 900;
-    opacity: 0.9;
+    border-bottom: 1px solid $gray-line;
     transition: all 0.5s ease-in-out;
     &__status {
       width: 24px;
       height: 24px;
     }
     &__bottom {
-      height: 60px;
+      position: absolute;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      // backdrop-filter: blur(10px);
-      // transition: backdrop-filter 50ms ease-in-out 0s;
-      transition: all 0.5s ease-in-out;
+      top: 25px;
+      box-shadow: 0px 0px 6px #00000029;
+      border: 1px solid #E6E6E6;
+      border-radius: 5px;
+      &__link { 
+        width: 170px;
+        padding: 20px 15px;
+        border-bottom: 1px solid $gray-line;
+        cursor: pointer;
+        > div {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          > img {
+            margin-left: 10px;
+          }
+          > p {
+            cursor: pointer;
+            color: $font-color;
+            font-size: 15px;
+          }
+        }
+      }
       > a > p {
         margin: 0 25px;
-        transition: all 0.5s ease-in-out;
       }
     }
     &__container {
@@ -131,7 +150,7 @@ span {
     }
     &__wrapper {
       display: flex;
-      justify-content: space-between;
+      justify-content: left;
       align-items: center;
       width: 100%;
     }
@@ -142,20 +161,21 @@ span {
       transition: all 0.5s ease-in-out;
 
       font-size: 15px;
-      &::after {
-        content: '';
-        position: absolute;
-        top: 100%;
+      // &::after {
+      //   content: '';
+      //   position: absolute;
+      //   top: 100%;
 
-        left: -45px;
-        right: -45px;
-        margin-top: -1px;
-        height: 30px;
-      }
+      //   left: -45px;
+      //   right: -45px;
+      //   margin-top: -1px;
+      //   height: 30px;
+      // }
       &__container {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-left: 40px;
       }
       &__under-line {
         position: absolute;
@@ -225,11 +245,11 @@ span {
         width: 100%;
       }
       &__status {
-        color: #fff;
+        color: $font-color;
         font-family: 'Montserrat-bold', 'SpoqaHanSansNeo-Bold';
         cursor: pointer;
         &--connected {
-          color: #fff;
+          color: $font-color;
           font-family: 'Montserrat-bold', 'SpoqaHanSansNeo-Bold';
           text-align: right;
           margin: 0;
@@ -241,7 +261,7 @@ span {
       }
       &__mainnet {
         margin: 0;
-        color: #fff;
+        color: $font-color;
         text-align: right;
         cursor: pointer;
 
