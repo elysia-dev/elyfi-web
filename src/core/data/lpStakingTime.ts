@@ -8,6 +8,34 @@ interface IStakingPool {
 
 const format = 'YYYY.MM.DD hh:mm:ss Z';
 
+export const lpRoundDate = [
+  {
+    startedAt: moment('2021.11.05 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
+    endedAt: moment('2021.12.15 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
+  },
+  {
+    startedAt: moment('2021.12.16 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
+    endedAt: moment('2022.01.24 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
+  },
+  {
+    startedAt: moment('2022.01.25 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
+    endedAt: moment('2022.03.05 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
+  },
+];
+
+export const lpUnixTimestamp = [
+  {
+    startedAt: 1638788400,
+    // endedAt: 1640950200,
+    endedAt: 1638820942,
+  },
+  {
+    // startedAt: 1638790200,
+    startedAt: 1638993742,
+    endedAt: 1640950200,
+  },
+];
+
 const lpStakingTime: IStakingPool = {
   startedAt: moment('2021.11.05 19:00:00 +9:00', format).tz('Asia/Seoul', true),
   endedAt: moment('2021.12.15 19:00:00 +9:00', format).tz('Asia/Seoul', true),
