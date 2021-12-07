@@ -40,7 +40,9 @@ const useLpStaking: () => (
       );
       const res = await contract[
         'safeTransferFrom(address,address,uint256,bytes)'
-      ](account, envs.stakerAddress, tokenId, encode);
+      ](account, envs.stakerAddress, tokenId, encode, {
+        gasLimit: 300000,
+      });
       const tracker = initTxTracker('LpStakingModal', 'LpStaking', ``);
       setTransaction(
         res,
@@ -49,8 +51,9 @@ const useLpStaking: () => (
         () => {},
         () => {},
       );
-    } catch (error) {
-      throw Error(error);
+    } catch (error: any) {
+      console.error(error.code);
+      // throw Error(error);
     }
   };
 
