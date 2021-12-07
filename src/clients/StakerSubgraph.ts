@@ -48,6 +48,7 @@ export class StakerSubgraph {
           liquidity
           incentivePotisions(where: {active: true}){
             incentive{
+              id
               pool
               rewardToken
             }
@@ -70,7 +71,7 @@ export class StakerSubgraph {
          incentivePotisions(where: {active: true}){
            position {
              id,
-             liquidity
+             liquidity,
            }
          }
        }
