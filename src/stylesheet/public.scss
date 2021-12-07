@@ -1292,9 +1292,15 @@ span {
         &:last-child {
           > div {
             border-bottom: 1px solid $gray-line;
-            padding: 10px; 
+            padding: 10px 30px; 
             &:last-child {
               border: 0;
+              padding: 0px 30px 20px; 
+              > div > h2 {
+                font-size: 15px;
+                line-height: 25px;
+                margin-top: 13px;
+              }
             } 
           }
         }
@@ -1306,9 +1312,9 @@ span {
       grid-template-rows: 1fr;
       box-sizing: border-box;
       margin-bottom: 125px;
-      grid-gap: 25px;
+      grid-gap: 50px 25px;
     }
-    &__validation {
+    &__header {
       > div:first-child {
         border-bottom: 1px solid $elysia-color;
         padding-bottom: 20px;

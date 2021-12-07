@@ -4,6 +4,10 @@ import OffChainTopic from 'src/clients/OffChainTopic';
 import Skeleton from 'react-loading-skeleton';
 import { IProposals, OnChainTopic } from 'src/clients/OnChainTopic';
 import { utils } from 'ethers';
+import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
+import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
+import { useQuery } from '@apollo/client';
+import AssetList from 'src/containers/AssetList';
 
 interface IOffChainVote {
   html: string;
@@ -40,8 +44,8 @@ const Governance = () => {
   const [offChainLoading, setOffChainLoading] = useState(true)
   const [onChainData, setOnChainData] = useState<IProposals[]>([])
   const [offChainNapData, setOffChainNapData] = useState<INapData[]>([])
-
-
+  const { data, loading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
+  
   const getOnChainNAPDatas = async () => {
     try {
       const getOnChainApis = await OnChainTopic.getOnChainTopicData()
@@ -135,9 +139,9 @@ const Governance = () => {
             {data.votes.map((vote, _x) => {
               return (
                 <div>
-                  <p>
+                  <h2>
                     {vote.html}
-                  </p>
+                  </h2>
                   <progress 
                     className={`governance__asset__progress-bar index-${_x}`}
                     value={vote.votes}
@@ -170,9 +174,9 @@ const Governance = () => {
           </div>
           <div>
             <div>
-              <p>
+              <h2>
                 For
-              </p>
+              </h2>
               <progress 
                 className="governance__asset__progress-bar index-0"
                 value={parseFloat(utils.formatEther(data.totalVotesCastInSupport))}
@@ -180,9 +184,9 @@ const Governance = () => {
               />
             </div>
             <div>
-              <p>
+              <h2>
                 Againest
-              </p>
+              </h2>
               <progress 
                 className="governance__asset__progress-bar index-1"
                 value={parseFloat(utils.formatEther(data.totalVotesCastAgainst))}
@@ -190,9 +194,9 @@ const Governance = () => {
               />
             </div>
             <div>
-              <p>
+              <h2>
                 Abstain
-              </p>
+              </h2>
               <progress 
                 className="governance__asset__progress-bar index-2"
                 value={parseFloat(utils.formatEther(data.totalVotesCastAbstained))}
@@ -266,7 +270,7 @@ const Governance = () => {
           </div>
         </div>
       </section>
-      <section className="governance__validation">
+      <section className="governance__validation governance__header">
         <div>
           <h3>
             데이터 검증 리스트 ({offChainNapData.length} 건)
@@ -287,7 +291,7 @@ const Governance = () => {
           )
         }
       </section>
-      <section className="governance__onchain-vote">
+      <section className="governance__onchain-vote governance__header">
         <div>
           <h3>
             온체인 투표 ({onChainData.length} 건)
@@ -308,34 +312,22 @@ const Governance = () => {
           )
         }
       </section>
-      <section className="governance__loan">
+      <section className="governance__loan governance__header">
         <div>
           <h3>
-            대출리스트 (3 건)
+            대출리스트 ({data?.assetBondTokens.length} 건)
           </h3>
           <p>
             거버넌스(DAO)에서 통과해서 엘리파이에 DAI로 실행뙨 대출 리스트입니다.
           </p>
         </div>
-        <div className="governance__grid">
-          <div className="governance__loan__assets governance__asset">
-            <div>
-              <img src={TempAssets} />
-            </div>
-            <div>
-              <div>
-                <p>
-                  123.4456%
-                </p>
-              </div>
-              <div>
-                <p>
-                  $ 123,456K
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+        {
+          loading ? (
+            <Skeleton width={1148} height={768} />
+          ) : (
+            <AssetList assetBondTokens={data?.assetBondTokens || []} />
+          )
+        }
       </section>
     </div>
   )
