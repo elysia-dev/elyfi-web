@@ -59,21 +59,20 @@ export const LanguageConverter: FunctionComponent = () => {
   const changeLanguage = () => {
     return (
       <div
-        className="lang__image-wrapper"
+        className="footer__lang__image-handler"
         style={{ display: visible ? 'flex' : 'none' }}>
         {[LanguageType.EN, LanguageType.KO, LanguageType.ZHHANS]
           .filter((languageType) => languageType !== lng)
           .map((languageType, index) => {
             return (
               <div
-                className="lang__select-image__wrapper"
+                className="footer__lang__image-handler__wrapper"
                 key={index}
                 onClick={() => {
                   setLanguage(languageType);
                   handleHover();
                 }}>
                 <img
-                  className="lang__select-image"
                   src={languageData[languageType].image}
                   alt={languageData[languageType].title}
                 />
@@ -88,11 +87,8 @@ export const LanguageConverter: FunctionComponent = () => {
   const showingLanguageIcon = (languageType: LanguageType) => {
     return (
       <>
-        <img
-          className="lang__select-image"
-          src={languageData[languageType].image}
-        />
-        <p className="lang__select-image__text" style={{ cursor: 'pointer' }}>
+        <img src={languageData[languageType].image} alt="Selected language icon" />
+        <p className="montserrat">
           {languageData[languageType].title}
         </p>
       </>
@@ -100,10 +96,10 @@ export const LanguageConverter: FunctionComponent = () => {
   };
 
   return (
-    <div className="lang" ref={LangRef}>
+    <div className="footer__lang" ref={LangRef}>
       {changeLanguage()}
-      <div className="lang__button-wrapper" onClick={() => handleHover()}>
-        {showingLanguageIcon(LanguageType.KO as LanguageType)}
+      <div className="footer__lang__wrapper" onClick={() => handleHover()}>
+        {showingLanguageIcon(lng as LanguageType)}
       </div>
     </div>
   );
