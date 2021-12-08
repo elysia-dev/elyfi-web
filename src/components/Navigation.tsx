@@ -147,7 +147,7 @@ const Navigation = () => {
                   backgroundColor: scrollTop > 125 ? '#FFFFFF' : 
                   // 'transparent',
                   "#FFFFFF",
-                  display: isBold(_index) ? "flex" : "none",
+                  display: (isBold(_index) && globalNavHover === _index + 1) ? "flex" : "none",
                   borderTop: scrollTop > 125 ? "1px solid #e6e6e6" : "1px solid #e6e6e6",
                   borderBottom: scrollTop > 125 ? "1px solid #e6e6e6" : "1px solid #e6e6e6",
                 }}
