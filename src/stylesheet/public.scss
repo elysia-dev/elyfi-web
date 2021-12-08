@@ -389,7 +389,7 @@ span {
     &__section {
       display: flex;
       align-items: center;
-      height: 100vh;
+      height: 100%;
       min-height: 800px;
     }
     &__title {
@@ -543,6 +543,7 @@ span {
       flex-direction: column;
       justify-content: space-around;
       align-items: flex-start;
+      height: 100vh;
       &__comment {
         display: flex;
         flex-direction: row;
@@ -695,6 +696,8 @@ span {
       }
     }
     &__partners {
+      height: 100vh;
+      flex-direction: column;
       > div {
         display: flex;
         flex-direction: column;
@@ -717,6 +720,101 @@ span {
         justify-items: center;
         margin-top: 80px;
         
+      }
+    }
+    &__governance {
+      flex-direction: column;
+      justify-content: center;
+      > h2 {
+        font-size: 40px;
+        color: $font-color;
+        > span {
+          color: $elysia-color;
+        }
+      }
+      &__table {
+        width: 1190px;
+        margin-top: 50px;
+        > hr {
+          border: 0;
+          height: 1px;
+          border-top: 1px solid $elysia-color;
+          margin-top: 10px;
+          margin-bottom: 10px;
+        }
+      }
+      &__converter {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 45px;
+        &__button {
+          flex: 1;
+          height: 55px;
+          border-radius: 10px;
+          border: 1px solid $elysia-color;
+          text-align: center;
+          cursor: pointer;
+          > h2 {
+            font-size: 20px;
+            color: $font-color;
+            line-height: 55px;
+            cursor: pointer;
+          }
+          &.disable {
+            border: 1px solid $gray-line;
+            > h2 {
+              color: $gray-font-color;
+            }
+          }
+        }
+      }
+      &__content {
+        border-radius: 18px;
+        border: 1px solid $gray-line;
+        > div {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+        }
+      }
+      &__header {
+        padding: 21px 50px 9px;
+        border-bottom: 1px solid $gray-line;
+        > p {
+          font-size: 18px;
+          color: $font-color;
+        }
+      }
+      &__body {
+        margin: 0px 25px;
+        padding: 25px 0px;
+        border-bottom: 1px solid $gray-line;
+        cursor: pointer;
+        &:last-child { 
+          border: 0;
+        }
+        > p {
+          margin: 0px 25px;
+          cursor: pointer;
+          font-size: 20px;
+          color: $font-color;
+        }
+      }
+      &__more {
+        height: 60px;
+        text-align: center;
+        border-radius: 5px;
+        border: 1px solid $gray-line;
+        cursor: pointer;
+        margin-top: 20px;
+        > p {
+          font-size: 18px;
+          line-height: 60px;
+          cursor: pointer;
+        }
       }
     }
   } // main end

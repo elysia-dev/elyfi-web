@@ -13,6 +13,7 @@ import FocusLaw from 'src/assets/images/focus_law_asia.png';
 import HUB from 'src/assets/images/hub.png';
 import HOW from 'src/assets/images/how.png';
 import TSMP from 'src/assets/images/tsmp.png';
+import MainGovernanceTable from 'src/components/MainGovernanceTable';
 
 
 const Main = () => {
@@ -278,7 +279,7 @@ const Main = () => {
           </div>
         </div>
       </div>
-      <div className="main__partners">
+      <div className="main__partners  main__section">
         <div>
           <h2 className="bold">
             ELFI Token Contract <span className="blue bold">Audited</span> by
@@ -301,6 +302,7 @@ const Main = () => {
           </div>
         </div>
       </div>
+      <MainGovernanceTable />
     </div>
   )
 }

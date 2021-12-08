@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import TempAssets from 'src/assets/images/temp_assets.png';
-import OffChainTopic from 'src/clients/OffChainTopic';
+import OffChainTopic, { INapData } from 'src/clients/OffChainTopic';
 import Skeleton from 'react-loading-skeleton';
 import { IProposals, OnChainTopic } from 'src/clients/OnChainTopic';
 import { utils } from 'ethers';
@@ -9,20 +9,6 @@ import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
 import { useQuery } from '@apollo/client';
 import AssetList from 'src/containers/AssetList';
 
-interface IOffChainVote {
-  html: string;
-  id: string;
-  votes: number;
-}[]
-
-interface INapData {
-  id: number;
-  nap: string;
-  status: string;
-  images: string;
-  votes: IOffChainVote[];
-  totalVoters: number;
-}
 
 const initialNapData: INapData = {
   id: 0,

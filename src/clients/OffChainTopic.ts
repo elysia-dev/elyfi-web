@@ -9,6 +9,21 @@ export interface TopicList {
   }
 }
 
+export interface IOffChainVote {
+  html: string;
+  id: string;
+  votes: number;
+}[]
+
+export interface INapData {
+  id: number;
+  nap: string;
+  status: string;
+  images: string;
+  votes: IOffChainVote[];
+  totalVoters: number;
+}
+
 export default class OffChainTopic {
   static getTopicList = async (): Promise<AxiosResponse<TopicList>> => {
     return axios.get("/c/nap/10.json");

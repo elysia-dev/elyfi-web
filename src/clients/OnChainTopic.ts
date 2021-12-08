@@ -9,7 +9,8 @@ export interface IProposals {
   totalVotesCast: BigNumber,
   totalVotesCastAbstained: BigNumber, 
   totalVotesCastAgainst: BigNumber,
-  totalVotesCastInSupport: BigNumber 
+  totalVotesCastInSupport: BigNumber,
+  timestamp: string
 }
 export interface IOnChainToipc {
   data: {
@@ -31,6 +32,7 @@ export class OnChainTopic {
           totalVotesCastAgainst
           totalVotesCastInSupport
           totalVotesCastAbstained
+          timestamp
         }
       }`
     })
