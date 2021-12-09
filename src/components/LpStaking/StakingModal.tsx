@@ -18,6 +18,7 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
     tokenImg,
     stakingPoolAddress,
     rewardTokenAddress,
+    round,
   } = props;
   const { t } = useTranslation();
   const [stakingMode, setStakingMode] = useState<boolean>(true);
@@ -36,7 +37,7 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
 
   const lpStakingHandler = async () => {
     try {
-      staking(stakingPoolAddress, rewardTokenAddress, selectedToken.id);
+      staking(stakingPoolAddress, rewardTokenAddress, selectedToken.id, round);
     } catch (error) {
       alert(error);
     } finally {
