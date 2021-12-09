@@ -12,6 +12,7 @@ const useLpStaking: () => (
   stakingPoolAdress: string,
   rewardTokenAddress: string,
   tokenId: string,
+  round: number,
 ) => void = () => {
   const { account, library } = useWeb3React();
   const { setTransaction } = useContext(TxContext);
@@ -21,14 +22,15 @@ const useLpStaking: () => (
     stakingPoolAdress: string,
     rewardTokenAddress: string,
     tokenId: string,
+    round: number,
   ) => {
     try {
       const encode = new ethers.utils.AbiCoder().encode(
         ['tuple(address,address,uint256,uint256,address)[]'],
         [
           [
-            lpTokenValues(stakingPoolAdress, envs.governanceAddress),
-            lpTokenValues(stakingPoolAdress, rewardTokenAddress),
+            lpTokenValues(stakingPoolAdress, envs.governanceAddress, round - 1),
+            lpTokenValues(stakingPoolAdress, rewardTokenAddress, round - 1),
           ],
         ],
       );
@@ -38,6 +40,7 @@ const useLpStaking: () => (
         positionABI,
         library.getSigner(),
       );
+
       const res = await contract[
         'safeTransferFrom(address,address,uint256,bytes)'
       ](account, envs.stakerAddress, tokenId, encode, {
