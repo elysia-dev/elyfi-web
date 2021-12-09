@@ -41,44 +41,50 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
   };
 
   return (
-    <div className="staked_lp_item staked_lp_item_mobile ">
-      <div>
-        <div className="spoqa__bold">
-          <div className="staked_lp_item_content_mobile">ID</div>
-          <div>{position.tokenId}</div>
-        </div>
-        <div className="spoqa__bold">
-          <div className="staked_lp_item_content_mobile">
-            {t('lpstaking.staked_lp_token_type')}
-          </div>
-          <div>{lpTokenType}</div>
-        </div>
-        <div className="spoqa__bold">
-          <div className="staked_lp_item_content_mobile">
-            {t('lpstaking.liquidity')}
-          </div>
-          <div>$ {toCompact(stakedLiquidity)}</div>
+    <div className="staking__lp__staked__table__content">
+      <div className="staking__lp__staked__table__content--left">
+        <div>
+          <h2>{position.tokenId}</h2>
         </div>
         <div>
-          <Button
-            onHandler={() => unstakingHandler(position)}
-            btnTitle={t('staking.unstaking')}
-          />
+          <h2>{lpTokenType}</h2>
+        </div>
+        <div>
+          <h2>$ {toCompact(stakedLiquidity)}</h2>
+        </div>
+        <div>
+          <div 
+            onClick={() => unstakingHandler(position)}
+            className="staking__lp__staked__table__content__button"
+          >
+            <p>
+              {t('staking.unstaking')}
+            </p>
+          </div>
+          <div 
+            onClick={() => unstakingHandler(position)}
+            className="staking__lp__staked__table__content__button"
+          >
+            <p>
+              마이그레이션
+            </p>
+          </div>
         </div>
       </div>
-      <div>
+
+      <div className="staking__lp__staked__table__content--center" >
         <div />
       </div>
-      <div>
-        <div className="spoqa__bold">
-          <div>
+      <div className="staking__lp__staked__table__content--right">
+        <div>
+          <div className="staking__lp__staked__table__content--right__image">
             <img src={tokenImg} />
-            {rewardTokenType}
+            <h2>{rewardTokenType}</h2>
           </div>
-          <div className="staked_lp_item_reward">
+          <div className="staking__lp__staked__table__content--right__reward">
             {rewardToken > 0.0001 ? (
               <CountUp
-                className="spoqa__bold staked_lp_item_reward"
+                className="staking__lp__staked__table__content--right__reward__amount"
                 start={beforeRewardToken}
                 end={rewardToken}
                 formattingFn={(number) => {
@@ -88,21 +94,20 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
                 decimals={4}
               />
             ) : (
-              '0.0000...'
+              <h2 className="staking__lp__staked__table__content--right__reward__amount">0.0000...</h2>
             )}
-            {` `}
-            <div className="staked_lp_item_tokenType">{rewardTokenType}</div>
+            <h2 className="staking__lp__staked__table__content--right__reward__unit">&nbsp;{rewardTokenType}</h2>
           </div>
         </div>
-        <div className="spoqa__bold">
-          <div>
+        <div>
+          <div className="staking__lp__staked__table__content--right__image">
             <img src={elfi} />
-            {Token.ELFI}
+            <h2>{Token.ELFI}</h2>
           </div>
-          <div className="staked_lp_item_reward">
+          <div className="staking__lp__staked__table__content--right__reward">
             {expectedReward?.elfiReward > 0.0001 ? (
               <CountUp
-                className="spoqa__bold staked_lp_item_reward"
+                className="staking__lp__staked__table__content--right__reward__amount"
                 start={expectedReward?.beforeElfiReward}
                 end={expectedReward?.elfiReward}
                 formattingFn={(number) => {
@@ -112,10 +117,9 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
                 decimals={4}
               />
             ) : (
-              '0.0000...'
+              <h2 className="staking__lp__staked__table__content--right__reward__amount">0.0000...</h2>
             )}
-            {` `}
-            <div className="staked_lp_item_tokenType">{Token.ELFI}</div>
+            <h2 className="staking__lp__staked__table__content--right__reward__unit">&nbsp;{rewardTokenType}</h2>
           </div>
         </div>
       </div>

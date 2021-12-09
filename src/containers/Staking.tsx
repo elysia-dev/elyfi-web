@@ -1,6 +1,7 @@
 import { Title } from 'src/components/Texts';
 import Header from 'src/components/Header';
-
+import elfi from 'src/assets/images/ELFI.png';
+import el from 'src/assets/images/el.png';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { constants } from 'ethers';
@@ -225,17 +226,13 @@ const Staking: React.FunctionComponent<IProps> = ({
 
   return (
     <>
-      <Header
-        title={t('staking.token_staking', { stakedToken }).toUpperCase()}
-      />
       <TransactionConfirmModal
         visible={transactionModal}
         closeHandler={() => {
           setTransactionModal(false);
         }}
       />
-      <section className="staking">
-        <ClaimStakingRewardModal
+      <ClaimStakingRewardModal
           visible={claimStakingRewardModalVisible}
           stakedToken={stakedToken}
           token={rewardToken}
@@ -302,51 +299,28 @@ const Staking: React.FunctionComponent<IProps> = ({
           }}
           round={selectModalRound + 1}
         />
-        <div>
-          {`${t('staking.location_staking')} > `}
-          {t('staking.token_staking', { stakedToken })}
-        </div>
-        <RewardPlanButton stakingType={stakedToken} />
-        <Title
-          stakedToken={stakedToken}
-          label={t('staking.token_staking', { stakedToken })}
-          style={{
-            marginBottom: stakedToken === Token.ELFI ? 50 : undefined,
-          }}
-        />
-        {stakedToken === Token.ELFI && <GovernanceGuideBox />}
-        <div>
+      <section className="staking">
+        <div className="component__text-navigation">
+          <p 
+            onClick={() => 
+              {} // history.push(`/${lng}/dashboard`)
+            } 
+            className="pointer">
+            {t('staking.location_staking')}
+          </p>
+          &nbsp;&gt;&nbsp;
           <p>
-            {t('staking.token_staking--content.0', {
-              stakedToken,
-              rewardToken,
-            })}
-            <br />
-            {t('staking.token_staking--content.1', {
-              stakedToken,
-              rewardToken,
-            })}
-            <br />
-            {t('staking.token_staking--content.2', {
-              stakedToken,
-              rewardToken,
-            })}
-            <br />
-            <br />
-            {t('staking.token_staking--content.3')}
-            <a
-              href={`https://elyfi.world/${
-                (window.localStorage.getItem('@language') as LanguageType) ||
-                'en'
-              }/rewards`}
-              target="_blank"
-              className="link">
-              {t('staking.token_staking--content.4')}
-            </a>
-            {t('staking.token_staking--content.5')}
+            {t('staking.token_staking', { stakedToken })}
           </p>
         </div>
-
+        <div className="staking__title">
+          <img src={stakedToken === Token.EL ? el : elfi} />
+          <h2>
+            {t('staking.token_staking', { stakedToken }).toUpperCase()}
+          </h2>
+        </div>
+        <RewardPlanButton stakingType={stakedToken} />
+        
         {loading ? (
           <Skeleton width={'100%'} height={600} />
         ) : (

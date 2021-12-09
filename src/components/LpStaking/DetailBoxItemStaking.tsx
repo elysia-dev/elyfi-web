@@ -24,59 +24,31 @@ const DetailBoxItemStaking: FunctionComponent<DetailBoxItemStakingProps> = (
 
   return (
     <>
-      <div
-        style={{
-          padding: '19px 25px 22px 29px',
-        }}>
-        <div
-          className="spoqa__bold"
-          style={{
-            paddingBottom: 7,
-            fontSize: 17,
-          }}>
+      <div className="staking__lp__detail-box__staking__header">
+        <div>
+          <p>
           {t('lpstaking.lp_token_staked', {
             token0,
             token1,
           })}
+          </p>
           <Guide content={t('guide.staked_total_amount')} />
         </div>
         <div
-          className="spoqa__bold"
-          style={{
-            textAlign: 'right',
-            paddingTop: 19,
-            paddingBottom: 30,
-            fontSize: 30,
-            display: 'flex',
-            alignItems: 'center',
-          }}>
-          <span
-            className="spoqa__bold"
-            style={{
-              fontSize: 25,
-              marginLeft: 'auto',
-              marginRight: 3,
-            }}>
-            {`$ `}
-          </span>
-          {account ? totalStakedLiquidity : 0}
+          onClick={() =>
+            isStakingDate && account && setModalAndSetStakeToken()
+          }
+          className={`staking__lp__detail-box__staking__button ${!isStakingDate ? "disable" : ""}`}
+        >
+          <p>
+            {t('staking.staking')}
+          </p>
         </div>
-        <div
-          style={{
-            textAlign: 'center',
-          }}>
-          <Button
-            btnTitle={t('staking.staking')}
-            onHandler={() =>
-              isStakingDate && account && setModalAndSetStakeToken()
-            }
-            disabledBtn={
-              isStakingDate
-                ? undefined
-                : { background: '#f8f8f8', color: '#949494' }
-            }
-          />
-        </div>
+      </div>
+      <div className="staking__lp__detail-box__staking__value">
+        <h2 className="amount">
+        {account ? totalStakedLiquidity : 0}
+        </h2>
       </div>
     </>
   );

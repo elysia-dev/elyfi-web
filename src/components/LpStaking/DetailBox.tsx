@@ -8,9 +8,13 @@ import Token from 'src/enums/Token';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import { DetailBoxProps } from 'src/core/types/LpStakingTypeProps';
 import { useWeb3React } from '@web3-react/core';
-import DetailBoxItemReceiveToken from './DetailBoxItemReceiveToken';
-import DetailBoxItemHeader from './DetailBoxItemHeader';
-import DetailBoxItemStaking from './DetailBoxItemStaking';
+import DetailBoxItemReceiveToken from 'src/components/LpStaking/DetailBoxItemReceiveToken';
+import DetailBoxItemHeader from 'src/components/LpStaking/DetailBoxItemHeader';
+import DetailBoxItemStaking from 'src/components/LpStaking/DetailBoxItemStaking';
+import { useTranslation } from 'react-i18next';
+import elfi from 'src/assets/images/ELFI.png';
+import eth from 'src/assets/images/eth-color.png';
+import dai from 'src/assets/images/dai.png';
 
 const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
   const {
@@ -21,22 +25,36 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
     isLoading,
     setModalAndSetStakeToken,
   } = props;
+  const { token0, token1 } = tokens
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const { account } = useWeb3React();
+  const { t } = useTranslation();
+  const secondImg = tokens.token1 === Token.ETH ? eth : dai;
   return (
-    <>
-      <div>
+    <section className="staking__lp__detail-box__container">
+      <div className="staking__lp__detail-box__header">
+        <img src={elfi} alt="Token Icon" />
+        <img src={secondImg} alt="Token Icon" className="second-token" />
+        <h2>
+          {t('lpstaking.lp_token_staking_title', { token0, token1 })}
+        </h2>
+      </div>
+      <div className="staking__lp__detail-box__body">
         {!isLoading ? (
           <>
-            <div className="lp_token_description">
+            <section className="staking__lp__detail-box__item-header">
               <DetailBoxItemHeader
                 totalLiquidity={formatDecimalFracionDigit(totalLiquidity, 2)}
                 apr={apr}
               />
+            </section>
+            <section className="staking__lp__detail-box__receive-token">
               <DetailBoxItemReceiveToken
                 token0={tokens.token0}
                 token1={tokens.token1}
               />
+            </section>
+            <section className="staking__lp__detail-box__staking">
               <DetailBoxItemStaking
                 tokens={tokens}
                 totalStakedLiquidity={
@@ -52,17 +70,17 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
                 }
                 setModalAndSetStakeToken={setModalAndSetStakeToken}
               />
-            </div>
-            <div className="spoqa lp_token_date">
-              {moment(lpStakingTime.startedAt).format('YYYY-MM-DD HH:mm:ss')} -{' '}
-              {moment(lpStakingTime.endedAt).format('YYYY-MM-DD HH:mm:ss')}
-            </div>
+            </section>
           </>
         ) : (
           <Skeleton width={'100%'} height={550} />
         )}
       </div>
-    </>
+      <p className="staking__lp__detail-box__time-data">
+        {moment(lpStakingTime.startedAt).format('YYYY-MM-DD HH:mm:ss')} -{' '}
+        {moment(lpStakingTime.endedAt).format('YYYY-MM-DD HH:mm:ss')}
+      </p>
+    </section>
   );
 };
 
