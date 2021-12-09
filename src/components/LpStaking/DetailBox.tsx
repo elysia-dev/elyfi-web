@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import { utils } from 'ethers';
 import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 import Skeleton from 'react-loading-skeleton';
-import lpStakingTime from 'src/core/data/lpStakingTime';
+import lpStakingTime, { lpUnixTimestamp } from 'src/core/data/lpStakingTime';
 import moment from 'moment';
 import Token from 'src/enums/Token';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
@@ -19,6 +19,7 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
     apr,
     isLoading,
     setModalAndSetStakeToken,
+    round,
   } = props;
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
 
@@ -51,8 +52,13 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
               />
             </div>
             <div className="spoqa lp_token_date">
-              {moment(lpStakingTime.startedAt).format('YYYY-MM-DD HH:mm:ss')} -{' '}
-              {moment(lpStakingTime.endedAt).format('YYYY-MM-DD HH:mm:ss')}
+              {moment
+                .unix(lpUnixTimestamp[round - 1].startedAt)
+                .format('YYYY-MM-DD HH:mm:ss')}{' '}
+              -{' '}
+              {moment
+                .unix(lpUnixTimestamp[round - 1].endedAt)
+                .format('YYYY-MM-DD HH:mm:ss')}
             </div>
           </>
         ) : (
