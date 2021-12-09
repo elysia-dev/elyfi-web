@@ -2,6 +2,7 @@ import { useWeb3React } from '@web3-react/core';
 import { ContractTransaction, ethers } from 'ethers';
 import envs from 'src/core/envs';
 import stakerABI from 'src/core/abi/StakerABI.json';
+import positionABI from 'src/core/abi/NonfungiblePositionManager.json';
 import { useContext } from 'react';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
@@ -12,6 +13,7 @@ const useLpWithdraw: () => (
   poolAddress: string,
   rewardTokenAddress: string,
   tokenId: string,
+  round: number,
 ) => void = () => {
   const { account, library } = useWeb3React();
   const { setTransaction } = useContext(TxContext);
@@ -22,19 +24,21 @@ const useLpWithdraw: () => (
     library.getSigner(),
   );
   const iFace = new ethers.utils.Interface(stakerABI);
+  const positionIFace = new ethers.utils.Interface(positionABI);
 
   const unstake = async (
     poolAddress: string,
     rewardTokenAddress: string,
     tokenId: string,
+    round: number,
   ) => {
     try {
       const elfiUnstake = iFace.encodeFunctionData('unstakeToken', [
-        lpTokenValues(poolAddress, envs.governanceAddress),
+        lpTokenValues(poolAddress, envs.governanceAddress, round - 1),
         tokenId,
       ]);
       const rewardUnstake = iFace.encodeFunctionData('unstakeToken', [
-        lpTokenValues(poolAddress, rewardTokenAddress),
+        lpTokenValues(poolAddress, rewardTokenAddress, round - 1),
         tokenId,
       ]);
       const withdraw = iFace.encodeFunctionData('withdrawToken', [
@@ -42,6 +46,12 @@ const useLpWithdraw: () => (
         account,
         '0x',
       ]);
+
+      const stake = iFace.encodeFunctionData('stakeToken', [
+        lpTokenValues(poolAddress, rewardTokenAddress, round - 1),
+        tokenId,
+      ]);
+
       const res = await staker.multicall([
         elfiUnstake,
         rewardUnstake,
@@ -56,7 +66,8 @@ const useLpWithdraw: () => (
         () => {},
       );
     } catch (error) {
-      throw Error(error);
+      console.error(error);
+      // throw Error(error);
     }
   };
   return unstake;
