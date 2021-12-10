@@ -5,6 +5,7 @@ import Token from 'src/enums/Token';
 import { formatDecimalFracionDigit, toCompact } from 'src/utiles/formatters';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import { utils } from 'ethers';
+import envs from 'src/core/envs';
 import StakedTokenProps from 'src/core/types/StakedTokenProps';
 import Skeleton from 'react-loading-skeleton';
 import CountUp from 'react-countup';
@@ -22,10 +23,22 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
     daiElfiStakedLiquidity,
     expectedReward,
     totalExpectedReward,
+    round,
+    incentiveIds,
+    isLoading,
   } = props;
   const { account } = useWeb3React();
   const { t } = useTranslation();
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
+  const positionsByRound = stakedPositions.filter((position) =>
+    position.incentivePotisions.some((pool) =>
+      pool.incentive.rewardToken.toLowerCase() === envs.daiAddress.toLowerCase()
+        ? pool.incentive.id.toLowerCase() ===
+          incentiveIds[round - 1].daiIncentiveId
+        : pool.incentive.id.toLowerCase() ===
+          incentiveIds[round - 1].ethIncentiveId,
+    ),
+  );
 
   return (
     <>
@@ -69,8 +82,8 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
                 {t('lpstaking.expected_reward')}
               </span>
             </div>
-            {expectedReward.length >= 1
-              ? stakedPositions.map((position, idx) => {
+            {!isLoading
+              ? positionsByRound.map((position, idx) => {
                   return (
                     <StakedLpItem
                       key={idx}
@@ -98,6 +111,7 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
                             : 'ELFI-DAI LP',
                         };
                       }}
+                      round={round}
                     />
                   );
                 })
@@ -120,7 +134,7 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
             </div>
           </div>
         )}
-        {stakedPositions.length > 0 ? (
+        {positionsByRound.length > 0 ? (
           <div className="spoqa__bold total_expected_reward">
             <div>{t('lpstaking.staked_total_liquidity')}</div>
             <div className="total_expected_reward_amount">
