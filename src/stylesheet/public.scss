@@ -500,48 +500,39 @@ span {
     }
     &__advantages {
       flex-direction: column;
-      justify-content: space-around;
-      align-items: flex-start;
-      > h2 {
-        font-size: 40px;
-      }
       &__container {
+        margin-top: 130px;
         display: grid;
-        grid-template-columns: repeat(3,1fr);
+        grid-template-columns: repeat(2, 1fr);
         grid-template-rows: 1fr;
         width: 100%;
-        height: 750px;
         align-items: flex-start;
         justify-items: center;
-      }
-      &__wrapper { 
-        width: 313px;
-        height: 313px;
-        border-radius: 313px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        text-shadow: 0px 0px 10px #000000;
-        position: relative;
         > div {
-          width: 100%;
-          height: 100%;
-          background-color: #000000;
-          border-radius: 313px;
-          opacity: 0;
-          transition: all 0.3s ease-in-out;
-          cursor: help;
-        }
-        > p {
-          color: #FFFFFF;
-          font-size: 25px;
-          line-height: 40px;
-          position: absolute;
-          cursor: help;
-          
+          display: flex;
+          width: 500px;
+          margin-bottom: 110px;
+          > img { 
+            width: 100px;
+            height: 90px;
+            object-fit: none;
+          }
+          > div {
+            margin-left: 18px;
+            > h2 {
+              font-size: 25px;
+              color: $font-color;
+              line-height: 90px;
+              white-space: nowrap;
+            }
+            > p {
+              font-size: 20px;
+              color: $gray-font-color;
+            }
+          }
         }
       }
+
     }
     &__service {
       flex-direction: column;
@@ -1070,6 +1061,42 @@ span {
     width: 1190px;
     margin: 0 auto;
     margin-top: $navigation-margin-height;
+    &__progress-bar {
+      width: 100%;
+      height: 13px;
+      border: 0;
+      border-radius: 13px;
+      color: #e6e6e6;
+      margin-top: 5px;
+      &__wrapper {
+        margin-bottom: 12px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+      }
+      &__content {
+        width: 100%;
+        height: 29px;
+        top: 5px;
+        position: absolute;
+        display: flex;
+        justify-content: space-between;
+        &__fill {
+          border-right: 1px solid $font-color;
+          flex: 1 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          text-align: right;
+          > p {
+            font-size: 10px;
+            margin-right: 3.5px;
+          }
+        }
+      }
+    }
     &__token {
       margin-top: 25px;
       display: flex;
@@ -1099,6 +1126,85 @@ span {
 
           font-size: 15px;
           line-height: 30px;
+        }
+      }
+      &__container {
+        margin-top: 130px;
+        box-shadow: 0px 0px 6px #00000029;
+        border-radius: 5px;
+        padding: 31px 29px 43px;
+      }
+      &__header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding-bottom: 27px;
+        border-bottom: 1px solid $gray-line;
+        > img {
+          width: 37px;
+          height: 37px;
+        }
+        > h2 {
+          font-size: 18px;
+          margin-left: 8px;
+          color: $font-color;
+        }
+      }
+      &__staking {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid $gray-line;
+        > div {
+          flex: 1;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          padding: 25px 0px 20px;
+          &:first-child {
+            padding-right: 25px;
+            border-right: 1px solid $gray-line;
+          }
+          &:last-child {
+            padding-left: 25px;
+          }
+          > p {
+            font-size: 15px;
+            color: $font-color;
+          }
+          > div {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            > h2 {
+              font-size: 20px;
+              color: $font-color;
+            }
+            > span {
+              margin-left: 5px;
+              font-size: 20px;
+              color: $gray-font-color;
+            }
+          }
+        }
+      }
+      &__data {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border-bottom: 1px solid $gray-line;
+        > div {
+          flex: 1;
+
+          &:first-child {
+            padding-right: 25px;
+          }
+          &:last-child {
+            padding-left: 25px;
+            border-left: 1px solid $gray-line;
+          }
         }
       }
     }
@@ -2860,20 +2966,6 @@ span {
         }
       }
     }
-    .percent {
-      &::after {
-        content: "%";
-        color: $sub-font-color;
-        margin-left: 5px;
-      }
-    }
-    .amount {
-      &::before {
-        content: "$";
-        color: $sub-font-color;
-        margin-right: 5px;
-      }
-    }
   } // staking end
   
 
@@ -3103,6 +3195,22 @@ span {
       }
     } // data info end
   } // component end
+
+
+  .percent {
+    &::after {
+      content: "%";
+      color: $sub-font-color;
+      margin-left: 5px;
+    }
+  }
+  .amount {
+    &::before {
+      content: "$";
+      color: $sub-font-color;
+      margin-right: 5px;
+    }
+  }
 
 
   .footer {

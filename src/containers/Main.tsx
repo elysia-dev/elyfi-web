@@ -17,7 +17,6 @@ import MainGovernanceTable from 'src/components/MainGovernanceTable';
 
 
 const Main = () => {
-  const [advantagesHover, setAdvantagesHover] = useState(0);
 
   const animationLine = (length: number, deg: "up" | "down" | "left" | "right") => {
     const result = [];
@@ -141,24 +140,12 @@ const Main = () => {
             ].map((data, _index) => {
               return (
                 <>
-                  <div
-                    className="main__advantages__wrapper"
-                    style={{ 
-                      backgroundImage: `url(${data[0]})`,
-                      backgroundColor: advantagesHover === _index + 1 ? "#00000055" : "#FFFFFFFF"
-                    }}
-                    onMouseEnter={() => setAdvantagesHover(_index + 1)}
-                    onMouseLeave={() => setAdvantagesHover(0)}
-                  >
-                    <div 
-                      className="main__advantages__wrapper--hovers" 
-                      style={{
-                        opacity: advantagesHover === _index + 1 ? 0.5 : 0
-                      }}
-                    />
-                    <p>
-                      {advantagesHover === _index + 1 ? data[2] : data[1]}
-                    </p>
+                  <div>
+                    <img src={data[0]} />
+                    <div>
+                      <h2>{data[1]}</h2>
+                      <p>{data[2]}</p>
+                    </div>
                   </div>
                 </>
               )
