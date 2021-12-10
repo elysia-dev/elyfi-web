@@ -21,14 +21,20 @@ function useExpectedReward(): {
   setExpecteReward: (
     positions: Position[],
     round: number,
-    incentiveIds: string[],
+    incentiveIds: {
+      daiIncentiveId: string;
+      ethIncentiveId: string;
+    }[],
   ) => Promise<void>;
   expectedReward: ExpectedRewardTypes[];
   updateExpectedReward: (
     positions: Position[],
     ethPoolTotalLiquidity: number,
     daiPoolTotalLiquidity: number,
-    incentiveIds: string[],
+    incentiveId: {
+      daiIncentiveId: string;
+      ethIncentiveId: string;
+    },
   ) => void;
 } {
   const { library } = useWeb3React();
@@ -77,7 +83,14 @@ function useExpectedReward(): {
   };
 
   const setExpecteReward = useCallback(
-    async (positions: Position[], round: number, incentiveIds: string[]) => {
+    async (
+      positions: Position[],
+      round: number,
+      incentiveIds: {
+        daiIncentiveId: string;
+        ethIncentiveId: string;
+      }[],
+    ) => {
       const allReward: {
         beforeElfiReward: number;
         elfiReward: number;
@@ -91,8 +104,10 @@ function useExpectedReward(): {
         position.incentivePotisions.some((pool) =>
           pool.incentive.rewardToken.toLowerCase() ===
           envs.daiAddress.toLowerCase()
-            ? pool.incentive.id.toLowerCase() === incentiveIds[0].toLowerCase()
-            : pool.incentive.id.toLowerCase() === incentiveIds[1].toLowerCase(),
+            ? pool.incentive.id.toLowerCase() ===
+              incentiveIds[round - 1].daiIncentiveId
+            : pool.incentive.id.toLowerCase() ===
+              incentiveIds[round - 1].ethIncentiveId,
         ),
       );
       if (positionsByRound.length === 0) return;
@@ -116,7 +131,10 @@ function useExpectedReward(): {
     positions: Position[],
     ethPoolTotalLiquidity: number,
     daiPoolTotalLiquidity: number,
-    incentiveIds: string[],
+    incentiveId: {
+      daiIncentiveId: string;
+      ethIncentiveId: string;
+    },
   ) => {
     const allReward: {
       beforeElfiReward: number;
@@ -132,8 +150,8 @@ function useExpectedReward(): {
         position.incentivePotisions.some((pool) =>
           pool.incentive.rewardToken.toLowerCase() ===
           envs.daiAddress.toLowerCase()
-            ? pool.incentive.id.toLowerCase() === incentiveIds[0].toLowerCase()
-            : pool.incentive.id.toLowerCase() === incentiveIds[1].toLowerCase(),
+            ? pool.incentive.id.toLowerCase() === incentiveId.daiIncentiveId
+            : pool.incentive.id.toLowerCase() === incentiveId.ethIncentiveId,
         ),
       );
       positionsByRound.forEach((position, idx) => {
