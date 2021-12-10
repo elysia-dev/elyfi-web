@@ -59,7 +59,7 @@ export class StakerSubgraph {
     });
   };
 
-  static getStakedPositionsByPoolId = async (
+  static getIncentivesWithPositionsByPoolId = async (
     ethPoolId: string,
     daiPoolId: string,
   ): Promise<AxiosResponse<IPoolPosition>> => {
