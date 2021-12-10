@@ -205,7 +205,8 @@
       "lp_staking_modal_default": "스테이킹할 LP토큰을 선택해주세요.",
       "lp_tokens_held": "보유한 LP 토큰",
       "receive_reward": "보상 수령",
-      "reward_amount": "보상 수량"
+      "reward_amount": "보상 수량",
+      "round_staking": "{{round}}차 스테이킹"
     },
     "mobile": {
       "title": "COMING SOON!",
