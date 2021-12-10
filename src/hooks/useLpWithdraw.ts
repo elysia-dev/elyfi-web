@@ -24,8 +24,6 @@ const useLpWithdraw: () => (
     library.getSigner(),
   );
   const iFace = new ethers.utils.Interface(stakerABI);
-  const positionIFace = new ethers.utils.Interface(positionABI);
-
   const unstake = async (
     poolAddress: string,
     rewardTokenAddress: string,
@@ -45,11 +43,6 @@ const useLpWithdraw: () => (
         tokenId,
         account,
         '0x',
-      ]);
-
-      const stake = iFace.encodeFunctionData('stakeToken', [
-        lpTokenValues(poolAddress, rewardTokenAddress, round - 1),
-        tokenId,
       ]);
 
       const res = await staker.multicall([
