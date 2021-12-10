@@ -33,20 +33,24 @@ const useERC20Info = (
 
   const load = useCallback(
     async (account: string) => {
-      setState({
-        ...state,
-        loading: true,
-      });
+      try {
+        setState({
+          ...state,
+          loading: true,
+        });
 
-      const balance = await contract.balanceOf(account);
-      const allowance = await contract.allowance(account, targetAddress);
+        const balance = await contract.balanceOf(account);
+        const allowance = await contract.allowance(account, targetAddress);
 
-      setState({
-        ...state,
-        allowance,
-        balance,
-        loading: false,
-      });
+        setState({
+          ...state,
+          allowance,
+          balance,
+          loading: false,
+        });
+      } catch (error) {
+        console.error(error);
+      }
     },
     [contract, targetAddress, state],
   );
