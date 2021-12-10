@@ -23,7 +23,15 @@ const stakingRoundTimes: IStakingPoolRound[] = [
   },
   {
     startedAt: '2021.11.05 19:00:00 +9:00',
-    endedAt: '2021.12.15 19:00:00 +9:00',
+    endedAt: '2021.11.11 19:00:00 +9:00',
+  },
+  {
+    startedAt: '2021.11.16 19:00:00 +9:00',
+    endedAt: '2021.11.18 19:00:00 +9:00',
+  },
+  {
+    startedAt: '2021.11.19 19:00:00 +9:00',
+    endedAt: '2021.12.31 19:00:00 +9:00',
   },
 ].map((item) => {
   return {
