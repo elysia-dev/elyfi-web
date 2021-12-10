@@ -25,13 +25,11 @@ export const lpRoundDate = [
 
 export const lpUnixTimestamp = [
   {
-    startedAt: 1638788400,
-    // endedAt: 1640950200,
-    endedAt: 1638820942,
+    startedAt: 1638880500,
+    endedAt: 1640950200,
   },
   {
-    // startedAt: 1638790200,
-    startedAt: 1638993742,
+    startedAt: 1638880800,
     endedAt: 1640950200,
   },
 ];
