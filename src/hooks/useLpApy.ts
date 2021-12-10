@@ -1,4 +1,4 @@
-import { useCallback, useContext, useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import PriceContext from 'src/contexts/PriceContext';
 import { toCompact } from 'src/utiles/formatters';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
@@ -13,22 +13,22 @@ const useLpApr = () => {
   const { latestPrice: elfiPrice } = useContext(UniswapPoolContext);
 
   // Token0 is ELFI
-  // Token1 is ETH
+  // Token1 is ETHa
 
   const apy = (stakedValue: number, totalReward: number) => {
     if (stakedValue === 0) return '-';
 
     return toCompact(((totalReward * 365) / DAYS / stakedValue) * 100);
   };
-  const calcDaiElfiPoolApr = (liquidity: number) => {
+  const calcDaiElfiPoolApr = (totalValue: number) => {
     return apy(
-      liquidity,
+      totalValue,
       ELFI_AMOUNT_PER_POOL * elfiPrice + DAI_AMOUNT_PER_POOL * daiPrice,
     );
   };
-  const calcEthElfiPoolApr = (liquidity: number) => {
+  const calcEthElfiPoolApr = (totalValue: number) => {
     return apy(
-      liquidity,
+      totalValue,
       ELFI_AMOUNT_PER_POOL * elfiPrice + ETH_AMOUNT_PER_POOL * ethPrice,
     );
   };
