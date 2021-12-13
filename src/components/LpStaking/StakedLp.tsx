@@ -24,21 +24,11 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
     expectedReward,
     totalExpectedReward,
     round,
-    incentiveIds,
     isLoading,
   } = props;
   const { account } = useWeb3React();
   const { t } = useTranslation();
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
-  const positionsByRound = stakedPositions.filter((position) =>
-    position.incentivePotisions.some((pool) =>
-      pool.incentive.rewardToken.toLowerCase() === envs.daiAddress.toLowerCase()
-        ? pool.incentive.id.toLowerCase() ===
-          incentiveIds[round - 1].daiIncentiveId
-        : pool.incentive.id.toLowerCase() ===
-          incentiveIds[round - 1].ethIncentiveId,
-    ),
-  );
 
   return (
     <>
@@ -83,7 +73,7 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
               </span>
             </div>
             {!isLoading
-              ? positionsByRound.map((position, idx) => {
+              ? stakedPositions.map((position, idx) => {
                   return (
                     <StakedLpItem
                       key={idx}
@@ -134,7 +124,7 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
             </div>
           </div>
         )}
-        {positionsByRound.length > 0 ? (
+        {stakedPositions.length > 0 ? (
           <div className="spoqa__bold total_expected_reward">
             <div>{t('lpstaking.staked_total_liquidity')}</div>
             <div className="total_expected_reward_amount">
