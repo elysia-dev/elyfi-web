@@ -64,22 +64,14 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
 
   return (
     <div
-      className="jreward__dai-deposit__lp-warpper jcontainer"
-      style={{
-        marginTop: '60px',
-        borderRadius: 5,
-        boxShadow: '0px 0px 6px #00000029',
-        padding: 25,
-        margin: '30px auto',
-        width: 1140,
-      }}>
+      className="reward__token__lp__container">
       <LpStakingHeader
         tvl={props.tvl}
         apr={props.apr}
         token0={token0}
         token1={token1}
       />
-      <div className="jreward__data-wrapper">
+      <div className="reward__token__data">
         <SmallProgressBar
           start={firstTokenValue.start <= 0 ? 0 : firstTokenValue.start}
           end={firstTokenValue.end <= 0 ? 0 : firstTokenValue.end}
@@ -107,7 +99,7 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
           unit={token0}
         />
       </div>
-      <div className="jreward__data-wrapper">
+      <div className="reward__token__data">
         <SmallProgressBar
           start={secondTokenValue.start <= 0 ? 0 : secondTokenValue.start}
           end={secondTokenValue.end <= 0 ? 0 : secondTokenValue.end}

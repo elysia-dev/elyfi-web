@@ -61,46 +61,12 @@ const StakingDetailInfo: FunctionComponent<Props> = (props: Props) => {
         [t('reward.daily_mining'), '25,000 ELFI'],
       ];
   return (
-    <div className="jreward__data-wrapper--right">
-      <div className="jreward__data-wrapper__array-handler">
-        <p
-          className={`jreward__data-wrapper__array-handler__button${
-            staking === 0 ? ' disable' : ''
-          }`}
-          onClick={() => {
-            staking > 0 &&
-              props.setState({
-                ...props.state,
-                elStaking: isDai ? props.state.elStaking : staking - 1,
-                currentElfiLevel: isDai
-                  ? staking - 1
-                  : props.state.currentElfiLevel,
-              });
-          }}>
-          ◂
-        </p>
-        <p className="spoqa__bold">
-          {t(isDai ? 'reward.nth_reward' : 'reward.nth_mining', {
-            nth,
-          })}
-        </p>
-        <p
-          className={`jreward__data-wrapper__array-handler__button${
-            staking >= stakingRoundTimes.length - 1 ? ' disable' : ''
-          }`}
-          onClick={() => {
-            staking < stakingRoundTimes.length - 1 &&
-              props.setState({
-                ...props.state,
-                elStaking: isDai ? props.state.elStaking : staking + 1,
-                currentElfiLevel: isDai
-                  ? staking + 1
-                  : props.state.currentElfiLevel,
-              });
-          }}>
-          ▸
-        </p>
-      </div>
+    <div className="reward__token__data__content">
+      <h2>
+        {t(isDai ? 'reward.nth_reward' : 'reward.nth_mining', {
+          nth,
+        })}
+      </h2>
       {miningDescription.map((data, index) => {
         return (
           <div
@@ -168,27 +134,6 @@ const StakingDetailInfo: FunctionComponent<Props> = (props: Props) => {
           />
           {` ${unit}`}
         </p>
-      </div>
-      <div className="jreward__data-wrapper__array-handler__circle__wrapper">
-        {stakingRoundTimes.map((_x, index) => {
-          return (
-            <div
-              className={`jreward__data-wrapper__array-handler__circle${
-                index !== staking ? ' disable' : ''
-              }`}
-              onClick={() => {
-                props.setState({
-                  ...props.state,
-                  currentElfiLevel: isDai
-                    ? index
-                    : props.state.currentElfiLevel,
-                  elStaking: isDai ? props.state.elStaking : index,
-                });
-              }}
-              key={`elfi-reward-btn-${index}`}
-            />
-          );
-        })}
       </div>
     </div>
   );

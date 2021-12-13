@@ -40,6 +40,8 @@ import { useDaiPositionLpApr, useEthPositionLpApr } from 'src/hooks/useLpApy';
 import useStakingRoundData from 'src/hooks/useStakingRoundData';
 import { ordinalNumberConverter } from 'src/utiles/ordinalNumberConverter';
 import ELFI from 'src/assets/images/ELFI.png';
+import ETH from 'src/assets/images/eth-color.png';
+import DAI from 'src/assets/images/dai.png';
 
 const RewardPlan: FunctionComponent = () => {
   const { t } = useTranslation();
@@ -185,20 +187,27 @@ const RewardPlan: FunctionComponent = () => {
             {` > ${t('reward.reward_plan')}`}
           </div>
         )}
-        <div className="reward__token">
-          <img src={ELFI} />
-          <h2>
-            예치 보상 플랜
-          </h2>
-          <div className="reward__token__elfi">
-            <p>
-              ELFI Price : $ 0.1
-            </p>
-          </div>
-        </div>
-        {/* {stakingType === 'LP' ? (
+        
+        {stakingType === 'LP' ? (
           <>
-            {' '}
+            <div className="reward__token">
+              <div className="reward__token__image-container">
+              {[ELFI, ETH, DAI].map((tokenImage, _index, _array) => {
+                return (
+                  <img 
+                    src={tokenImage}
+                    style={{
+                      zIndex: (_array.length + 1) - _index,
+                      left: ((_array.length * 10) - ((_index + 2) * 10))
+                    }}
+                  />
+                )
+              })}
+              </div>
+              <h2>
+                LP 스테이킹 보상 플랜
+              </h2>
+            </div>
             <LpStakingBox
               index={1}
               tvl={
@@ -238,67 +247,76 @@ const RewardPlan: FunctionComponent = () => {
             />
           </>
         ) : stakingType === 'ELFI' ? (
-          <section className="jreward__dai">
-            <div className="jreward__elfi-staking jcontainer">
-              <StakingBox
-                nth={ordinalNumberConverter(state.currentElfiLevel + 1)}
-                loading={elfiPoolLoading}
-                poolApr={elfiPoolApr}
-                poolPrincipal={elfiPoolPrincipal}
-                staking={state.currentElfiLevel}
-                unit={'DAI'}
-                start={
-                  amountData.beforeDaiRewardByElFiStakingPool[
-                    state.currentElfiLevel
-                  ]
-                }
-                end={
-                  amountData.daiRewardByElFiStakingPool[state.currentElfiLevel]
-                }
-                state={state}
-                setState={setState}
-              />
-            </div>
+          <section className="reward__elfi">
+            <StakingBox
+              nth={ordinalNumberConverter(state.currentElfiLevel + 1)}
+              loading={elfiPoolLoading}
+              poolApr={elfiPoolApr}
+              poolPrincipal={elfiPoolPrincipal}
+              staking={state.currentElfiLevel}
+              unit={'DAI'}
+              start={
+                amountData.beforeDaiRewardByElFiStakingPool[
+                  state.currentElfiLevel
+                ]
+              }
+              end={
+                amountData.daiRewardByElFiStakingPool[state.currentElfiLevel]
+              }
+              state={state}
+              setState={setState}
+            />
           </section>
         ) : stakingType === 'EL' ? (
-          <section className="jreward__elfi">
-            <div className="jreward__el-staking container">
-              <StakingBox
-                nth={ordinalNumberConverter(state.elStaking + 1)}
-                loading={elPoolLoading}
-                poolApr={elPoolApr}
-                poolPrincipal={elPoolPrincipal}
-                staking={state.elStaking}
-                unit={'ELFI'}
-                start={beforeTotalMintedByElStakingPool}
-                end={totalMintedByElStakingPool}
-                state={state}
-                setState={setState}
-                miningStart={
-                  amountData.beforeMintedByElStakingPool[state.elStaking]
-                }
-                miningEnd={amountData.mintedByElStakingPool[state.elStaking]}
-                currentPhase={currentPhase}
-                OrdinalNumberConverter={ordinalNumberConverter}
-              />
+          <section className="reward__el">
+            <StakingBox
+              nth={ordinalNumberConverter(state.elStaking + 1)}
+              loading={elPoolLoading}
+              poolApr={elPoolApr}
+              poolPrincipal={elPoolPrincipal}
+              staking={state.elStaking}
+              unit={'ELFI'}
+              start={beforeTotalMintedByElStakingPool}
+              end={totalMintedByElStakingPool}
+              state={state}
+              setState={setState}
+              miningStart={
+                amountData.beforeMintedByElStakingPool[state.elStaking]
+              }
+              miningEnd={amountData.mintedByElStakingPool[state.elStaking]}
+              currentPhase={currentPhase}
+              OrdinalNumberConverter={ordinalNumberConverter}
+            />
+          </section>
+        ) : (
+          <>
+            <div className="reward__token">
+              <img src={ELFI} />
+              <h2>
+                예치 보상 플랜
+              </h2>
+              <div className="reward__token__elfi">
+                <p>
+                  ELFI Price : $ 0.1
+                </p>
+              </div>
             </div>
-          </section>
-        ) : ( */}
-          <section className="reward__container">
-            {reserves.map((reserve, index) => {
-              return (
-                <TokenDeposit
-                  index={index}
-                  reserve={reserve}
-                  startMoneyPool={startMoneyPool}
-                  totalMiningValue={totalMiningValue}
-                  beforeMintedMoneypool={beforeMintedMoneypool}
-                  mintedMoneypool={mintedMoneypool}
-                />
-              );
-            })}
-          </section>
-        {/* )} */}
+            <section className="reward__container">
+              {reserves.map((reserve, index) => {
+                return (
+                  <TokenDeposit
+                    index={index}
+                    reserve={reserve}
+                    startMoneyPool={startMoneyPool}
+                    totalMiningValue={totalMiningValue}
+                    beforeMintedMoneypool={beforeMintedMoneypool}
+                    mintedMoneypool={mintedMoneypool}
+                  />
+                );
+              })}
+            </section>
+            </>
+        )}
       </div>
     </>
   );

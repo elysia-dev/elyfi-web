@@ -19,55 +19,25 @@ const LpStakingHeader: FunctionComponent<Props> = (props) => {
   const token1Img = token1 === 'ETH' ? eth : dai;
   return (
     <>
-      <div className="jreward__title">
-        <div>
-          <div>
-            <img src={elfi} />
-            <img
-              src={token1Img}
-              style={{
-                marginLeft: -23,
-              }}
-            />
-            <p className="spoqa__bold">
-              {t('reward.lp_token_staking', { token0, token1 })}
-            </p>
-          </div>
-          <p
-            className="spoqa"
-            style={{
-              marginLeft: 77,
-            }}>
-            {t('reward.lp_token_staking_description', {
-              token0,
-              token1,
-            })}
-          </p>
-        </div>
-        {/* <a
-          className="jreward__button"
-          target="_blank"
-          href={`${envs.appURI}/staking/LP`}>
-          <p>{t('reward.staking')}</p>
-        </a> */}
+      <div className="reward__token__lp__title">
+        <img src={elfi} />
+        <img className="last-token" src={token1Img} />
+        <h2>
+          {t('reward.lp_token_staking', { token0, token1 })}
+        </h2>
       </div>
-      <div className="jreward__apy-wrapper">
-        <div className="jreward__apy-wrapper--left">
-          <p className="spoqa__bold">{t('reward.apr')}</p>
-          <div>
-            {
-              <>
-                <p className="spoqa__bold">{`${props.apr}%`}</p>
-              </>
-            }
-          </div>
+      <div className="reward__token__lp__content">
+        <div className="reward__token__lp__content--left">
+          <p>{t('reward.apr')}</p>
+          <h2 className="percent">
+          {props.apr}
+          </h2>
         </div>
-        <div className="jreward__apy-wrapper--right">
-          <p className="spoqa__bold">{t('reward.lp_token_total_liquidity')}</p>
-          <p className="spoqa__bold">
-            $&nbsp;
+        <div className="reward__token__lp__content--right">
+          <p>{t('reward.lp_token_total_liquidity')}</p>
+          <h2 className="amount">
             {toCompact(props.tvl)}
-          </p>
+          </h2>
         </div>
       </div>
     </>

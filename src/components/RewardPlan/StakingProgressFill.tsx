@@ -16,15 +16,15 @@ const StakingProgressFill: FunctionComponent<Props> = (props) => {
   const isDai = props.unit === 'DAI';
 
   return (
-    <div className="jreward__progress-bar__wrapper">
+    <div className="reward__progress-bar__wrapper">
       <progress
-        className="jreward__progress-bar"
+        className="reward__progress-bar"
         value={props.end}
         max={isDai ? (props.staking > 1 ? 50000 : 25000) : 3000000}
       />
-      <div className="jreward__progress-bar__content">
+      <div className="reward__progress-bar__content">
         {isDai ? (
-          <div className={`jreward__progress-bar__content__fill`}>
+          <div className={`reward__progress-bar__content__fill`}>
             <p className="spoqa">
               {t('reward.nth_reward', {
                 nth: props.nth,
@@ -35,7 +35,7 @@ const StakingProgressFill: FunctionComponent<Props> = (props) => {
           stakingRoundTimes.map((_x, index) => {
             return (
               <div
-                className={`jreward__progress-bar__content__fill${
+                className={`reward__progress-bar__content__fill${
                   index > props.currentPhase! - 1 ? ' disable' : ''
                 }`}
                 key={`elfi-reward-progress-${index}`}
