@@ -18,10 +18,6 @@ type StakedTokenProps = {
     totalDai: number;
   };
   round: number;
-  incentiveIds: {
-    daiIncentiveId: string;
-    ethIncentiveId: string;
-  }[];
   isLoading: boolean;
 };
 
