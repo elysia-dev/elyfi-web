@@ -1,22 +1,49 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { lpUnixTimestamp } from 'src/core/data/lpStakingTime';
+import styled from 'styled-components';
 
 type Props = {
   round: number;
   setRound: () => void;
+  idx: number;
 };
 
-const SelectRoundButton: FunctionComponent<Props> = ({ round, setRound }) => {
+const SelectedButton = styled.div`
+  @media (max-width: 375px) {
+    margin-right: ${({ theme }) =>
+      theme.idx === lpUnixTimestamp.length ? undefined : '20px'};
+    background-color: ${({ theme, color }) =>
+      theme.round === theme.idx ? '#00BFFF' : color ? color : ''};
+  }
+
+  margin-right: ${({ theme }) =>
+    theme.idx === lpUnixTimestamp.length ? undefined : '66px'};
+  background-color: ${({ theme, color }) =>
+    theme.round === theme.idx ? '#00BFFF' : color ? color : ''};
+`;
+
+const SelectRoundButton: FunctionComponent<Props> = ({
+  round,
+  setRound,
+  idx,
+}) => {
+  const [color, setColor] = useState('');
+  const { t } = useTranslation();
+
   return (
-    <div
-      style={{
-        width: 200,
-        height: 30,
-        border: '1px solid #000000',
-        cursor: 'pointer',
+    <SelectedButton
+      className="spoqa__bold selecte_button"
+      theme={{
+        idx,
+        round,
       }}
-      onClick={setRound}>
-      {round}차 버튼
-    </div>
+      color={color}
+      onClick={setRound}
+      onMouseEnter={() => setColor('#00BFFF')}
+      onMouseLeave={() => setColor('')}>
+      {t('lpstaking.round_staking', { round: idx })}
+    </SelectedButton>
   );
 };
 
