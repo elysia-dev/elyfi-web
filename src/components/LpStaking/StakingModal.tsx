@@ -102,17 +102,6 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
             </div>
           </div>
         </div>
-        <div className="modal__converter">
-          <div
-            className={`modal__converter__column${
-              stakingMode ? '--selected' : ''
-            }`}
-            onClick={() => {
-              setStakingMode(true);
-            }}>
-            <p className="bold">{t('staking.staking')}</p>
-          </div>
-        </div>
         {waiting ? (
           <LoadingIndicator />
         ) : (

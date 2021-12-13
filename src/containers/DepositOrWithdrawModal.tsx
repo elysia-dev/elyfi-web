@@ -24,6 +24,8 @@ import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ReserveData from 'src/core/data/reserves';
+import ModalHeader from 'src/components/ModalHeader';
+import ModalConverter from 'src/components/ModalConverter';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
 
@@ -247,73 +249,46 @@ const DepositOrWithdrawModal: FunctionComponent<{
       className="modal modal--deposit"
       style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
-        <div className="modal__header">
-          <div className="modal__header__token-info-wrapper">
-            <img
-              className="modal__header__image"
-              src={tokenImage}
-              alt="Token"
-            />
-            <div className="modal__header__name-wrapper">
-              <p className="modal__header__name spoqa__bold">{tokenName}</p>
-            </div>
-          </div>
-          <div className="close-button" onClick={onClose}>
-            <div className="close-button--1">
-              <div className="close-button--2" />
-            </div>
-          </div>
-        </div>
-        <div className="modal__converter">
-          <div
-            className={`modal__converter__column${
-              selected ? '--selected' : ''
-            }`}
-            onClick={() => {
-              select(true);
-            }}>
-            <p className="bold">{t('dashboard.deposit')}</p>
-          </div>
-          <div
-            className={`modal__converter__column${
-              !selected ? '--selected' : ''
-            }`}
-            onClick={() => {
-              select(false);
-            }}>
-            <p className="bold">{t('dashboard.withdraw')}</p>
-          </div>
-        </div>
-        <div className="modal__body">
-          {waiting ? (
-            <LoadingIndicator />
-          ) : selected ? (
-            <DepositBody
-              tokenInfo={tokenInfo!}
-              depositAPY={toPercent(reserve.depositAPY || '0')}
-              miningAPR={toPercent(
-                calcMiningAPR(
-                  elfiPrice,
-                  BigNumber.from(reserve.totalDeposit),
-                  tokenInfo?.decimals,
-                ),
-              )}
-              balance={balance}
-              isApproved={!loading && allowance.gt(balance)}
-              increaseAllownace={increateAllowance}
-              deposit={requestDeposit}
-            />
-          ) : (
-            <WithdrawBody
-              tokenInfo={tokenInfo!}
-              depositBalance={depositBalance}
-              accumulatedYield={accumulatedYield}
-              yieldProduced={yieldProduced}
-              liquidity={liquidity.value}
-              withdraw={reqeustWithdraw}
-            />
-          )}
-        </div>
+        <ModalHeader
+          image={tokenImage}
+          title={tokenName}
+          onClose={onClose}
+        />
+        <ModalConverter
+          handlerProps={selected}
+          setState={select}
+          title={
+            [t('dashboard.deposit'), t('dashboard.withdraw')]
+          }
+        />
+        {waiting ? (
+          <LoadingIndicator />
+        ) : selected ? (
+          <DepositBody
+            tokenInfo={tokenInfo!}
+            depositAPY={toPercent(reserve.depositAPY || '0')}
+            miningAPR={toPercent(
+              calcMiningAPR(
+                elfiPrice,
+                BigNumber.from(reserve.totalDeposit),
+                tokenInfo?.decimals,
+              ),
+            )}
+            balance={balance}
+            isApproved={!loading && allowance.gt(balance)}
+            increaseAllownace={increateAllowance}
+            deposit={requestDeposit}
+          />
+        ) : (
+          <WithdrawBody
+            tokenInfo={tokenInfo!}
+            depositBalance={depositBalance}
+            accumulatedYield={accumulatedYield}
+            yieldProduced={yieldProduced}
+            liquidity={liquidity.value}
+            withdraw={reqeustWithdraw}
+          />
+        )}
       </div>
     </div>
   );

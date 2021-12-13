@@ -23,8 +23,8 @@ const DepositBody: React.FunctionComponent<{
   return (
     <>
       <div className="modal__deposit">
-        <div className="modal__deposit__value-wrapper">
-          <p className="modal__deposit__maximum bold" onClick={() => {
+        <div className="modal__input">
+          <h2 className="modal__input__maximum" onClick={() => {
             if (balance.isZero()) {
               return
             }
@@ -34,11 +34,11 @@ const DepositBody: React.FunctionComponent<{
             })
           }}>
             {t("dashboard.max")}
-          </p>
-          <p className="modal__deposit__value bold">
+          </h2>
+          <h2 className="modal__input__value">
             <input
               type="number"
-              className="modal__text-input"
+              className="modal__input__value__amount"
               placeholder="0"
               value={
                 // Intl.NumberFormat('en').format(parseFloat(amount))
@@ -53,30 +53,25 @@ const DepositBody: React.FunctionComponent<{
                 setAmount({ value: target.value, max: false });
               }}
             />
-          </p>
+          </h2>
         </div>
         <div className="modal__deposit__container">
-          <div className="modal__deposit__despositable-amount-container">
-            <p className="spoqa__bold">{t('dashboard.deposit_available')}</p>
-            <div className="modal__deposit__despositable-amount-wrapper">
-              <p className="spoqa__bold">{t('dashboard.wallet_balance')}</p>
-              <div className="modal__deposit__despositable-wallet-balance-wrapper">
-                <p className="spoqa__bold">
-                  {`${formatCommaWithDigits(balance, 4, tokenInfo.decimals)} ${tokenInfo.name
-                    }`}
-                </p>
-              </div>
+          <div className="modal__deposit__despositable-amount">
+            <p>{t('dashboard.deposit_available')}</p>
+            <div>
+              <h2>{t('dashboard.wallet_balance')}</h2>
+              <h2>{`${formatCommaWithDigits(balance, 4, tokenInfo.decimals)} ${tokenInfo.name}`}</h2>
             </div>
           </div>
-          <div className="modal__deposit__despositable-value-wrapper">
-            <p className="spoqa__bold">{t('dashboard.total_deposit_yield')}</p>
+          <div className="modal__deposit__despositable-value">
+            <p>{t('dashboard.total_deposit_yield')}</p>
             <div>
-              <p className="spoqa__bold">{t('dashboard.deposit_apy')}</p>
-              <p className="spoqa__bold">{depositAPY}</p>
+              <h2>{t('dashboard.deposit_apy')}</h2>
+              <h2>{depositAPY}</h2>
             </div>
             <div>
-              <p className="spoqa__bold">{t('dashboard.mining_apr')}</p>
-              <p className="spoqa__bold">{miningAPR}</p>
+              <h2>{t('dashboard.mining_apr')}</h2>
+              <h2>{miningAPR}</h2>
             </div>
           </div>
         </div>
@@ -84,7 +79,7 @@ const DepositBody: React.FunctionComponent<{
       {
         isApproved ?
           <div
-            className={`modal__button${amountLteZero || amountGtBalance ? "--disable" : ""}`}
+            className={`modal__button${amountLteZero || amountGtBalance ? " disable" : ""}`}
             onClick={() => !amountLteZero && !amountGtBalance && deposit(utils.parseUnits(amount.value, tokenInfo.decimals), amount.max)}
           >
             <p>

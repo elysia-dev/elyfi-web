@@ -3202,12 +3202,37 @@ span {
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.4);
     z-index: 999;
     overflow: hidden;
-    &__container {
-      background-color: #fff;
+    &__button {
+      width: 452px;
+      height: 47px;
       border-radius: 5px;
+      margin: 30px auto;
+      line-height: 47px;
+      border-radius: 47px;
+      box-shadow: 0px 0px 6px #00000029;
+      background: $elysia-color;
+      text-align: center;
+      cursor: pointer;
+      > p {
+        font-size: 18px;
+        color: #FFFFFF;
+        cursor: pointer;
+      }
+      &.disable {
+        background: $gray-line;
+        cursor: default;
+        > p {
+          color: $gray-font-color;
+          cursor: default;
+        }
+      }
+    }
+    &__container {
+      background-color: $background-color;
+      border-radius: 10px;
       position: fixed;
       width: 514px;
       top: 50%;
@@ -3228,13 +3253,162 @@ span {
         margin-right: 15px;
       }
       &__name {
-        margin: 0;
+        font-size: 18px;
+        color: $font-color;
       }
-      &__token-info-wrapper {
+      &__content {
         display: flex;
         justify-content: left;
         align-items: center;
       }
+    }
+    &__converter {
+      display: flex;
+      &__column {
+        flex: 1;
+        text-align: center;
+        cursor: pointer;
+        > h2 {
+          color: #b7b7b7;
+          cursor: pointer;
+          font-size: 15px;
+          margin-top: 15px;
+          margin-bottom: 15px;
+        }
+        &.selected {
+          flex: 1;
+          text-align: center;
+          border-bottom: 3px solid #00bfff;
+          cursor: pointer;
+          > h2 {
+            color: $elysia-color;
+          }
+        }
+      }
+    }
+    &__input {
+      background-color: $gray-line;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-justify-content: space-between;
+      justify-content: space-between;
+      -webkit-align-items: center;
+      align-items: center;
+      
+      height: 144px;
+      padding: 0 20px;
+      &__maximum {
+        font-size: 20px;
+        color: $gray-font-color;
+        display: flex;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      &__value {
+        color: $font-color;
+        &__amount {
+          text-align: right;
+          padding: 0;
+          border: 0;
+          background: none;
+          color: $font-color;
+          width: 100%;
+          float: right;
+          font-family: 'SpoqaHanSansNeo-Bold';
+          outline: 0;
+          transition: all 0.3s linear;
+        }
+      }
+    }
+    &__deposit {
+      border-bottom: 2px solid $gray-line;
+      &__despositable-amount {
+        margin: 36px 26px 0;
+        padding-bottom: 36px;
+        -webkit-justify-content: space-between;
+        justify-content: space-between;
+        border-bottom: 1px solid #f0f0f1;
+        > p { 
+          font-size: 15px;
+          color: $gray-font-color;
+        }
+        > div {
+          display: -webkit-flex;
+          display: flex;
+          -webkit-justify-content: space-between;
+          justify-content: space-between;
+          -webkit-align-items: center;
+          align-items: center;
+          margin-top: 20px;
+          > h2 {
+            font-size: 15px;
+            color: $font-color;
+          }
+        }
+      }
+      &__despositable-value {
+        margin: 36px 26px 31px;
+
+        > p {
+          margin-bottom: 16px;
+          font-size: 15px;
+          color: $gray-font-color;
+        }
+        > div { 
+          display: -webkit-flex;
+          display: flex;
+          -webkit-justify-content: space-between;
+          justify-content: space-between;
+          > h2 { 
+            margin: 7.5px 0;
+            color: $font-color;
+            font-size: 15px;
+          }
+        }
+      }
+    }
+    &__withdraw {
+      border-bottom: 2px solid $gray-line;
+      &__withdrawalable {
+        &__amount {
+          display: -webkit-flex;
+          display: flex;
+          -webkit-flex-direction: column;
+          flex-direction: column;
+          -webkit-justify-content: space-between;
+          justify-content: space-between;
+          border-bottom: 1px solid $gray-line;
+          
+          margin: 36px 26px 0;
+          padding-bottom: 36px;
+          
+        }
+        &__value {
+          margin: 36px 26px 31px;
+        }
+        &__content {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          > h2 {
+            margin: 7.5px 0;
+            font-size: 15px;
+            color: $font-color;
+          }
+        }
+        &__title {
+          display: -webkit-flex;
+          display: flex;
+          -webkit-justify-content: space-between;
+          justify-content: space-between;
+          margin-bottom: 20px;
+          > p {
+            font-size: 15px;
+            color: $gray-font-color;
+          }
+        }
+      }
+      
     }
     &__account {
       display: flex;
@@ -3489,25 +3663,6 @@ span {
         }
       }
     }
-    &__button {
-      background-color: #00bfff;
-      border-radius: 5px;
-      text-align: center;
-      > p {
-        margin: 0;
-        color: #fff;
-        cursor: pointer;
-      }
-    }
-    &__button--disable {
-      background-color: #b7b7b7;
-      text-align: center;
-      > p {
-        margin: 0;
-        color: #fff;
-      }
-    }
-    
     &__withdraw__value-wrapper,
     &__deposit__value-wrapper,
     &__value-wrapper {
@@ -3516,28 +3671,7 @@ span {
       justify-content: space-between;
       align-items: center;
     }
-    &__converter {
-      display: flex;
-      &__column {
-        flex: 1;
-        text-align: center;
-        cursor: pointer;
-        > p {
-          color: #b7b7b7;
-          cursor: pointer;
-        }
-        &--selected {
-          flex: 1;
-          text-align: center;
-          border-bottom: 3px solid #00bfff;
-          cursor: pointer;
-          > p {
-            color: #00bfff;
-            cursor: pointer;
-          }
-        }
-      }
-    }
+    
     &__input {
       &__maximum {
         margin: 0;
@@ -3588,72 +3722,7 @@ span {
             }
           }
         }
-        &__withdraw {
-          &__withdrawalable {
-            border-bottom: 2px solid #f0f0f1;
-            &__title {
-              > p {
-                color: #b7b7b7;
-              }
-            }
-            &-amount-wrapper {
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-              border-bottom: 1px solid #f0f0f1;
-              > div {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-              }
-            }
-            &-value-wrapper {
-              > div {
-                display: flex;
-                justify-content: space-between;
-              }
-            }
-          }
-        }
-        &__deposit {
-          &__container {
-            border-bottom: 2px solid #f0f0f1;
-          }
-          &__despositable {
-            &-amount {
-              &-container {
-                justify-content: space-between;
-                border-bottom: 1px solid #f0f0f1;
-                > p {
-                  color: #b7b7b7;
-                }
-              }
-              &-wrapper {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                > div {
-                  text-align: right;
-                  // > p:last-child {
-                  //   color: #888888;
-                  //   font-size: 13px;
-                  // }
-                }
-              }
-            }
-            &-value {
-              &-wrapper {
-                > p {
-                  color: #b7b7b7;
-                }
-                > div {
-                  display: flex;
-                  justify-content: space-between;
-                }
-              }
-            }
-          }
-        }
+        
       }
     }
     &--minted {
