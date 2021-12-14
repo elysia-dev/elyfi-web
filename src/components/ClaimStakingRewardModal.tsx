@@ -12,6 +12,7 @@ import useWatingTx from 'src/hooks/useWaitingTx';
 import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
+import ModalHeader from './ModalHeader';
 
 const ClaimStakingRewardModal: FunctionComponent<{
   stakedToken: Token.ELFI | Token.EL;
@@ -41,35 +42,22 @@ const ClaimStakingRewardModal: FunctionComponent<{
 
   return (
     <div
-      className="modal modal--deposit"
+      className="modal modal__incentive"
       style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
-        <div className="modal__header">
-          <div className="modal__header__token-info-wrapper">
-            <img
-              className="modal__header__image"
-              src={token === Token.ELFI ? ElifyTokenImage : DaiImage}
-              alt="Token"
-            />
-            <div className="modal__header__name-wrapper">
-              <p className="modal__header__name bold">{token}</p>
-            </div>
-          </div>
-          <div className="close-button" onClick={closeHandler}>
-            <div className="close-button--1">
-              <div className="close-button--2" />
-            </div>
-          </div>
-        </div>
+        <ModalHeader
+          image={token === Token.ELFI ? ElifyTokenImage : DaiImage}
+          title={token}
+          onClose={closeHandler}
+        />
         <div className="modal__body">
           {waiting ? (
             <LoadingIndicator />
           ) : (
-            <div className="modal__withdraw">
-              <div className="modal__withdraw__value-wrapper">
-                <p></p>
+            <>
+              <div className="modal__incentive__body">
                 <p
-                  className="modal__withdraw__value bold"
+                  className="modal__incentive__value bold"
                   style={{
                     fontSize:
                       window.sessionStorage.getItem('@MediaQuery') !== 'PC'
@@ -123,7 +111,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
                 }}>
                 <p>{t('staking.claim_reward')}</p>
               </div>
-            </div>
+            </>
           )}
         </div>
       </div>

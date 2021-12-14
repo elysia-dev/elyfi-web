@@ -8,11 +8,15 @@ const ModalHeader: React.FunctionComponent<{
   return (
     <div className="modal__header">
       <div className="modal__header__content">
-        <img
-          className="modal__header__image"
-          src={image}
-          alt="Token image"
-        />
+        {
+          !!image && (
+            <img
+              className="modal__header__image"
+              src={image}
+              alt="Token image"
+            />
+          )
+        }
         <h2 className="modal__header__name">{title}</h2>
       </div>
       {!!onClose && (

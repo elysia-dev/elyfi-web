@@ -9,6 +9,7 @@ import NewTab from 'src/assets/images/new_tab.png';
 import Copy from 'src/assets/images/copy.png';
 import envs from 'src/core/envs';
 import TxStatus from 'src/enums/TxStatus';
+import ModalHeader from './ModalHeader';
 
 const AccountModal: React.FunctionComponent<{
   visible: boolean;
@@ -36,20 +37,10 @@ const AccountModal: React.FunctionComponent<{
       className="modal"
       style={{ display: visible ? 'block' : 'none', opacity: 1 }}>
       <div className="modal__container">
-        <div className="modal__header">
-          <div className="modal__header__token-info-wrapper">
-            <div className="modal__header__name-wrapper">
-              <p className="modal__header__name spoqa__bold">
-                {t('transaction.account')}
-              </p>
-            </div>
-          </div>
-          <div className="close-button" onClick={() => closeHandler()}>
-            <div className="close-button--1">
-              <div className="close-button--2" />
-            </div>
-          </div>
-        </div>
+        <ModalHeader
+          title={t('transaction.account')}
+          onClose={() => closeHandler()}
+        />
         <div className="modal__account">
           <div className="modal__account__mainnet-info">
             <div>

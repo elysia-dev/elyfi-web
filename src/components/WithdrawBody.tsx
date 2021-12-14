@@ -6,6 +6,7 @@ import {
   formatCommaFillZero,
 } from 'src/utiles/formatters';
 import { IReserve } from 'src/core/data/reserves';
+import ModalButton from 'src/components/ModalButton';
 
 const WithdrawBody: React.FunctionComponent<{
   tokenInfo: IReserve;
@@ -127,9 +128,8 @@ const WithdrawBody: React.FunctionComponent<{
             </div>
           </div>
         </div>
-        <div
-          className={`modal__button${amountGtBalance || amountLteZero ? ' disable' : ''
-            }`}
+        <ModalButton
+          className={`modal__button${amountGtBalance || amountLteZero ? ' disable' : ''}`}
           onClick={() => {
             if (!(amountLteZero || amountGtBalance)) {
               withdraw(
@@ -137,15 +137,13 @@ const WithdrawBody: React.FunctionComponent<{
                 amount.max,
               );
             }
-          }}>
-          <p>
-            {amountLteZero
-              ? t('dashboard.enter_amount')
-              : amountGtBalance
-                ? t('dashboard.insufficient_balance', { tokenName: tokenInfo.name })
-                : t('dashboard.withdraw')}
-          </p>
-        </div>
+          }}
+          content={amountLteZero
+            ? t('dashboard.enter_amount')
+            : amountGtBalance
+              ? t('dashboard.insufficient_balance', { tokenName: tokenInfo.name })
+              : t('dashboard.withdraw')}
+        />
       </>
     );
   };

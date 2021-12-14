@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatCommaWithDigits } from 'src/utiles/formatters';
 import { IReserve } from 'src/core/data/reserves';
+import ModalButton from 'src/components/ModalButton';
 
 const DepositBody: React.FunctionComponent<{
   tokenInfo: IReserve,
@@ -76,26 +77,20 @@ const DepositBody: React.FunctionComponent<{
           </div>
         </div>
       </div>
-      {
-        isApproved ?
-          <div
-            className={`modal__button${amountLteZero || amountGtBalance ? " disable" : ""}`}
-            onClick={() => !amountLteZero && !amountGtBalance && deposit(utils.parseUnits(amount.value, tokenInfo.decimals), amount.max)}
-          >
-            <p>
-              {
-                amountLteZero ? t("dashboard.enter_amount") :
-                  amountGtBalance ? t("dashboard.insufficient_balance", { tokenName: tokenInfo.name }) : t("dashboard.deposit--button")
-              }
-            </p>
-          </div>
-          :
-          <div className="modal__button" onClick={() => increaseAllownace()}>
-            <p>
-              {t("dashboard.protocol_allow", { tokenName: tokenInfo.name })}
-            </p>
-          </div>
-      }
+      <ModalButton
+        className={isApproved ? `modal__button${amountLteZero || amountGtBalance ? " disable" : ""}` : undefined}
+        onClick={() => {
+          isApproved ? 
+          !amountLteZero && !amountGtBalance && deposit(utils.parseUnits(amount.value, tokenInfo.decimals), amount.max) :
+          increaseAllownace()
+        }}
+        content={
+          isApproved ? 
+          (amountLteZero ? t("dashboard.enter_amount") :
+            amountGtBalance ? t("dashboard.insufficient_balance", { tokenName: tokenInfo.name }) : t("dashboard.deposit--button")) :
+          t("dashboard.protocol_allow", { tokenName: tokenInfo.name })
+        }
+      />
     </>
   );
 };

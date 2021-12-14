@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
+import ModalHeader from 'src/components/ModalHeader';
 
 const MigrationEnded: React.FunctionComponent<{
   visible: boolean;
@@ -11,31 +12,21 @@ const MigrationEnded: React.FunctionComponent<{
 
   return (
     <div
-      className="modal modal--deposit"
+      className="modal modal__alert"
       style={{ display: visible ? 'block' : 'none' }}
     >
       <div className="modal__container">
-        <div className="modal__header">
-          <div className="modal__header__token-info-wrapper">
-            <div className="modal__header__name-wrapper">
-              <p className="modal__header__name spoqa__bold">
-                {t('staking.migration')}
-              </p>
-            </div>
-          </div>
-          <div className="close-button" onClick={onClose}>
-            <div className="close-button--1">
-              <div className="close-button--2" />
-            </div>
-          </div>
-        </div>
-        <div className="modal__migration__alert">
-          <p className="spoqa__bold">
+        <ModalHeader
+          title={t('staking.migration')}
+          onClose={onClose}
+        />
+        <div className="modal__alert__content">
+          <h2>
             {t('staking.nth_staking_round_ended', {
               nth: toOrdinalNumber(i18n.language, round),
             })}
-          </p>
-          <div>
+          </h2>
+          <div className="modal__alert__wrapper">
             <p>
               {t('staking.nth_period', {
                 nth: toOrdinalNumber(i18n.language, round),

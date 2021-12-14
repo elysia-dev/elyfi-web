@@ -32,7 +32,7 @@ const Reward: FunctionComponent<StakingTitleProps> = (props) => {
               <h2>{Token.ELFI}</h2>
             </div>
             <div className="staking__lp__reward__content__amount">
-              <h2 className="elfi">
+              <h2>
                 {`${formatDecimalFracionDigit(rewardToReceive.elfiReward, 4)} `}
               </h2>
               <h2>
@@ -46,7 +46,7 @@ const Reward: FunctionComponent<StakingTitleProps> = (props) => {
               <h2>{Token.ETH}</h2>
             </div>
             <div className="staking__lp__reward__content__amount">
-              <h2 className="eth">
+              <h2>
                 {`${formatDecimalFracionDigit(rewardToReceive.ethReward, 4)} `}
               </h2>
               <h2>{Token.ETH}</h2>
@@ -58,7 +58,7 @@ const Reward: FunctionComponent<StakingTitleProps> = (props) => {
               <h2>{Token.DAI}</h2>
             </div>
             <div className="staking__lp__reward__content__amount">
-              <h2 className="dai">
+              <h2>
               {`${formatDecimalFracionDigit(rewardToReceive.daiReward, 4)} `}
               </h2>
               <h2>{Token.DAI}</h2>
