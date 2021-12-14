@@ -2,9 +2,10 @@
 
 const ModalHeader: React.FunctionComponent<{
   image?: string,
+  subImage?: string,
   title: string,
   onClose?: () => void
-}> = ({ image, title, onClose }) => {
+}> = ({ image, subImage, title, onClose }) => {
   return (
     <div className="modal__header">
       <div className="modal__header__content">
@@ -13,6 +14,15 @@ const ModalHeader: React.FunctionComponent<{
             <img
               className="modal__header__image"
               src={image}
+              alt="Token image"
+            />
+          )
+        }
+        {
+          (!!subImage && !!image) && (
+            <img
+              className="modal__header__image--sub-token"
+              src={subImage}
               alt="Token image"
             />
           )

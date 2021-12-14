@@ -3228,6 +3228,14 @@ input[type=number] {
         width: 41px;
         height: 41px;
         margin-right: 15px;
+        &--sub-token {
+          width: 41px;
+          height: 41px;
+          margin-left: -22px;
+          border: 1px solid #ffffff;
+          border-radius: 100%;
+          margin-right: 10px;
+        }
       }
       &__name {
         font-size: 18px;
@@ -3245,6 +3253,7 @@ input[type=number] {
         flex: 1;
         text-align: center;
         cursor: pointer;
+        border-bottom: 1px solid $gray-line;
         > h2 {
           color: #b7b7b7;
           cursor: pointer;
@@ -3743,6 +3752,61 @@ input[type=number] {
           > p {
             font-size: 15px;
             color: $font-color;
+          }
+        }
+      }
+    }
+    &__lp {
+      &__reward {
+        &__container {
+          border-bottom: 2px solid $gray-line;
+          > div {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0 30px;
+            border-bottom: 1px solid $gray-line;
+            &:last-child {
+              border: 0;
+            }
+            > div {
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-start;
+              align-items: center;
+              padding: 20px 0px;
+              > img {
+                width: 26px;
+                height: 26px;
+                margin-right: 10px;
+              }
+              > h2 {
+                font-size: 18px;
+              }
+            }
+            > h2 {
+              font-size: 20px;
+              color: $font-color;
+              > span {
+                font-size: 15px;
+                color: $gray-font-color;
+                margin-left: 5px
+              }
+            }
+          }
+        }
+      }
+      &__staking {
+        &__body {
+          border-bottom: 2px solid $gray-line;
+        }
+        &__undefined {
+          > h2 {
+            font-size: 15px;
+            color: $sub-font-color;
+            text-align: center;
+            padding: 100px 0;
           }
         }
       }
