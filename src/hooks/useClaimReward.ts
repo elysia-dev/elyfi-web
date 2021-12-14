@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { ContractTransaction, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import envs from 'src/core/envs';
 import stakerABI from 'src/core/abi/StakerABI.json';
 import { useContext } from 'react';
