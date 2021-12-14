@@ -32,6 +32,10 @@ export const lpUnixTimestamp = [
     startedAt: 1638880800,
     endedAt: 1640950200,
   },
+  {
+    startedAt: 1638880800,
+    endedAt: 1640950200,
+  },
 ];
 
 const lpStakingTime: IStakingPool = {
