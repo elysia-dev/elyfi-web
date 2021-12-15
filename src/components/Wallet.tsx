@@ -22,7 +22,7 @@ const Wallet = (props: any) => {
   const WalletRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setConnected(!!account && chainId === envs.requiredChainId);
+    setConnected(!!account && (envs.requiredNetwork === "Ganache" || chainId === envs.requiredChainId));
   }, [account, chainId]);
 
   return (

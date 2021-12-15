@@ -48,6 +48,8 @@ const AppNavigator: React.FC = () => {
     }
   }, []);
 
+  const isValidChain = envs.requiredNetwork === 'Ganache' || chainId === envs.requiredChainId
+
   return (
     <div
       className={`elysia ${isPc ? 'view-w' : isTablet ? 'view-t' : 'view-m'}`}>
@@ -58,7 +60,7 @@ const AppNavigator: React.FC = () => {
           exact
           path="/staking/LP"
           component={
-            active && chainId === envs.requiredChainId
+            active && isValidChain
               ? LPStaking
               : DisableWalletPage
           }
@@ -67,7 +69,7 @@ const AppNavigator: React.FC = () => {
           exact
           path="/staking/EL"
           component={
-            active && chainId === envs.requiredChainId
+            active && isValidChain
               ? StakingEL
               : DisableWalletPage
           }
@@ -76,7 +78,7 @@ const AppNavigator: React.FC = () => {
           exact
           path="/staking/ELFI"
           component={
-            active && chainId === envs.requiredChainId
+            active && isValidChain
               ? StakingELFI
               : DisableWalletPage
           }
@@ -85,7 +87,7 @@ const AppNavigator: React.FC = () => {
           exact
           path="/"
           component={
-            active && chainId === envs.requiredChainId
+            active && isValidChain
               ? Dashboard
               : DisableWalletPage
           }
