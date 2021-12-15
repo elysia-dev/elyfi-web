@@ -405,9 +405,9 @@ input[type=number] {
     }
     &__title {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       justify-content: center;
-      align-items: flex-start;
+      align-items: center;
       position: relative;
       height: calc(100vh - 100px);
       bottom: 50px;
@@ -423,7 +423,7 @@ input[type=number] {
           }
         }
         > h2 {
-          font-size: 57px;
+          font-size: 50px;
           line-height: 80px;
           margin-bottom: 35px;
         }
@@ -4066,12 +4066,13 @@ input[type=number] {
         position: absolute;
         bottom: 50px;
         height: 52px;
-        cursor: pointer;
+        cursor: default;
         &__wrapper {
           display: flex;
           justify-content: space-between;
           align-items: center;
           width: 82px;
+          cursor: pointer;
           > img {
             width: 21px;
             height: 21px;

@@ -61,7 +61,11 @@ export const LanguageConverter: FunctionComponent = () => {
       <div
         className="footer__lang__image-handler"
         style={{ display: visible ? 'flex' : 'none' }}>
-        {[LanguageType.EN, LanguageType.KO, LanguageType.ZHHANS]
+          {[
+            LanguageType.EN, 
+            LanguageType.KO, 
+            // LanguageType.ZHHANS
+          ]
           .filter((languageType) => languageType !== lng)
           .map((languageType, index) => {
             return (
