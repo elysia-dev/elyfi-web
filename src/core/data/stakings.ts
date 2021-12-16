@@ -8,4 +8,4 @@ export const ELFIPerDayOnLpStakingPool = 7500;
 
 export const DAIPerDayOnElfiDaiPool = 625;
 
-export const ETHPerDayOnElfiEthPool = 0.1376;
+export const ETHPerDayOnElfiEthPool = 0.1609;
