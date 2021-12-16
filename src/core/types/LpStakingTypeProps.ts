@@ -11,6 +11,7 @@ export type tokenTypes = {
 export type DetailBoxItemHeaderProps = {
   totalLiquidity: string;
   apr: string;
+  token1: string;
 };
 
 export type DetailBoxItemStakingProps = {
