@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { FunctionComponent } from 'react';
 import { useTranslation } from 'react-i18next';
-import lpStakingTime from 'src/core/data/lpStakingTime';
+import lpStakingTime, { lpRoundDate } from 'src/core/data/lpStakingTime';
 import { DetailBoxItemStakingProps } from 'src/core/types/LpStakingTypeProps';
 import Guide from '../Guide';
 import Button from './Button';
@@ -13,11 +13,12 @@ const DetailBoxItemStaking: FunctionComponent<DetailBoxItemStakingProps> = (
     tokens: { token0, token1 },
     totalStakedLiquidity,
     setModalAndSetStakeToken,
+    round,
   } = props;
   const { t } = useTranslation();
   const isStakingDate = moment().isBetween(
-    lpStakingTime.startedAt,
-    lpStakingTime.endedAt,
+    lpRoundDate[round - 1].startedAt,
+    lpRoundDate[round - 1].endedAt,
   );
 
   return (
