@@ -26,8 +26,9 @@ import useUpdateExpectedReward from 'src/hooks/useUpdateExpectedReward';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
-import { lpUnixTimestamp } from 'src/core/data/lpStakingTime';
+import { lpRoundDate, lpUnixTimestamp } from 'src/core/data/lpStakingTime';
 import getIncentiveId from 'src/utiles/getIncentiveId';
+import positionManagerABI from 'src/core/abi/NonfungiblePositionManager.json';
 
 function LPStaking(): JSX.Element {
   const { account, library } = useWeb3React();
@@ -272,6 +273,14 @@ function LPStaking(): JSX.Element {
           0,
         ),
       });
+      if (
+        !moment().isBetween(
+          lpRoundDate[round - 1].startedAt,
+          lpRoundDate[round - 1].endedAt,
+        )
+      )
+        return;
+
       const interval = setInterval(() => {
         updateExpectedReward(
           stakedPositions,
@@ -285,6 +294,66 @@ function LPStaking(): JSX.Element {
       console.error(error);
     }
   }, [expectedReward]);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const positionContract = new ethers.Contract(
+  //       envs.nonFungiblePositionAddress,
+  //       positionManagerABI,
+  //       library.getSigner(),
+  //     );
+
+  //     const getBalance = positionContract.interface.getFunction('balanceOf');
+
+  //     const encode = positionContract.interface.encodeFunctionData(getBalance, [
+  //       account,
+  //     ]);
+
+  //     const balance = await positionContract.balanceOf(account);
+
+  //     console.log('sasasas', utils.formatUnits(balance, 0));
+
+  //     for (let j = 0; j < balance; j++) {
+  //       const i = await positionContract.tokenOfOwnerByIndex(account, j);
+  //       console.log('i', utils.formatUnits(i, 0));
+  //       const position = await positionContract.positions(
+  //         utils.formatUnits(i, 0),
+  //       );
+  //       console.log('position', position);
+  //     }
+
+  //     const testOwner = '0x405bEF2743379b356F2176c68eBe83DE90811d01';
+  //     const startBlock = 9600000;
+
+  //     // get token Ids from nft manager
+  //     const res = await positionContract.queryFilter(
+  //       positionContract.filters.Transfer(testOwner, staker.address),
+  //       startBlock,
+  //     );
+  //     // console.log('11111111111', res);
+
+  //     // get stake & unstake event from stakers
+  //     const promises = res.map(async (item) => {
+  //       // console.log(item.args?.tokenId);
+
+  //       const res2 = await staker.queryFilter(
+  //         staker.filters.TokenStaked(item.args?.tokenId),
+  //         startBlock,
+  //       );
+
+  //       // console.log('2222222222', res2);
+
+  //       const res3 = await staker.queryFilter(
+  //         staker.filters.TokenUnstaked(item.args?.tokenId),
+  //         startBlock,
+  //       );
+  //       // console.log('333333', res3);
+
+  //     });
+  //     const a = await Promise.all(promises);
+  //     console.log(a);
+  //   })();
+  // }, []);
 
   return (
     <>
