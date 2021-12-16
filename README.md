@@ -1,4 +1,4 @@
-# Elyfi-web
+![plot](./src/assets/images/intro.png)
 
 This repository contains ElYFI web interface source code.
 
