@@ -236,8 +236,8 @@
     },
     "guide": {
       "apr": "APR is an abbreviation of Annual percentage rate, which means the ratio of the total compensation amount to the total liquidity.",
-      "total_liquidity": "Total liquidity means the total amount deposited in the ELFI-ETH pool among the information of the staked LP tokens expressed in dollars.",
-      "create_liquidity": "ELFI-ETH LP tokens are NFTs you receive when you provide liquidity to the ELFI-ETH pool created in Uniswap V3. You can stake LP with the corresponding LP Token.",
+      "total_liquidity": "Total liquidity means the total amount deposited in the ELFI-{{token}} pool among the information of the staked LP tokens expressed in dollars.",
+      "create_liquidity": "ELFI-{{token}} LP tokens are NFTs you receive when you provide liquidity to the ELFI-{{token}} pool created in Uniswap V3. You can stake LP with the corresponding LP Token.",
       "staked_total_amount": "The liquidity of the LP tokens staked with the connected wallet is expressed in dollars.",
       "staked_lp_token": "This is a list of LP tokens staked with the connected wallet. The expected reward represents the amount of rewards that can be obtained by staking each LP token. In order to receive the rewards, you must first unstake the corresponding LP tokens. You can check the reward tokens available for unstaking LP tokens in the ‘Amount of reward’ area located at the bottom. After clicking the ‘Claim rewards’ button, follow the procedure to complete the rewards collection.",
       "receive_reward": "If you unstake the staked LP token, the amount of reward tokens for that LP token is displayed. Click the 'Claim rewards' button to receive the reward, and the reward token will be sent to the connected wallet."
