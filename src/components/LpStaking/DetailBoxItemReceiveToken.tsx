@@ -16,7 +16,7 @@ const DetailBoxItemReceiveToken: FunctionComponent<tokenTypes> = (props) => {
             token0,
             token1,
           })}
-          <Guide content={t('guide.create_liquidity')} />
+          <Guide content={t('guide.create_liquidity', { token: token1 })} />
         </div>
         <div>
           <a
