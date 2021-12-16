@@ -175,10 +175,10 @@ const Staking: React.FunctionComponent<IProps> = ({
 
       setExpectedReward({
         before: expectedReward.value.isZero()
-          ? roundData[currentPhase - 1].accountReward
+          ? roundData[4].accountReward
           : expectedReward.value,
         value: calcExpectedReward(
-          roundData[currentPhase - 1],
+          roundData[4],
           rewardToken === Token.ELFI
             ? ELFIPerDayOnELStakingPool
             : DAIPerDayOnELFIStakingPool,
@@ -329,7 +329,7 @@ const Staking: React.FunctionComponent<IProps> = ({
             <div className="staking__round">
               <div
                 className="staking__round__border pc-only"
-                style={{ height: 760 + 180 * (currentPhase - 4) }}
+                style={{ height: 920 }}
               />
               <div className="staking__round__container">
                 <div>
@@ -537,15 +537,15 @@ const Staking: React.FunctionComponent<IProps> = ({
                     <div className="staking__round__remaining-data__title">
                       <div>
                         <p className="spoqa__bold">
-                          {t('staking.nth', { nth: currentPhase })}
+                          {t('staking.nth', { nth: 5 })}
                         </p>
                         <p>
-                          {stakingRoundTimes[currentPhase - 1].startedAt.format(
+                          {stakingRoundTimes[4].startedAt.format(
                             'YYYY.MM.DD HH:mm:ss',
                           )}
                           <br />
                           ~&nbsp;
-                          {stakingRoundTimes[currentPhase - 1].endedAt.format(
+                          {stakingRoundTimes[4].endedAt.format(
                             'YYYY.MM.DD HH:mm:ss',
                           )}{' '}
                           (KST)
@@ -554,19 +554,11 @@ const Staking: React.FunctionComponent<IProps> = ({
                       <div>
                         <p className="spoqa">APR</p>
                         <p className="spoqa__bold">
-                          {current.diff(
-                            stakingRoundTimes[currentPhase - 1].startedAt,
-                          ) <= 0 ||
-                          roundData[currentPhase - 1]?.apr.eq(
-                            constants.MaxUint256,
-                          ) ||
-                          current.diff(
-                            stakingRoundTimes[currentPhase - 1].endedAt,
-                          ) >= 0
+                          {current.diff(stakingRoundTimes[4].startedAt) <= 0 ||
+                          roundData[4]?.apr.eq(constants.MaxUint256) ||
+                          current.diff(stakingRoundTimes[4].endedAt) >= 0
                             ? '-'
-                            : toPercentWithoutSign(
-                                roundData[currentPhase - 1].apr || 0,
-                              )}
+                            : toPercentWithoutSign(roundData[4].apr || 0)}
                           <span className="spoqa__bold staking__sign">
                             &nbsp;%
                           </span>
@@ -581,12 +573,9 @@ const Staking: React.FunctionComponent<IProps> = ({
                         <div>
                           <h2>
                             {`${
-                              current.diff(
-                                stakingRoundTimes[currentPhase - 1].startedAt,
-                              ) > 0
+                              current.diff(stakingRoundTimes[4].startedAt) > 0
                                 ? formatCommaSmall(
-                                    roundData[currentPhase - 1]
-                                      ?.accountPrincipal || '0',
+                                    roundData[4]?.accountPrincipal || '0',
                                   )
                                 : '-'
                             }`}
@@ -594,25 +583,20 @@ const Staking: React.FunctionComponent<IProps> = ({
                           </h2>
                           <div
                             className={`staking__button ${
-                              current.diff(
-                                stakingRoundTimes[currentPhase - 1].startedAt,
-                              ) <= 0
+                              current.diff(stakingRoundTimes[4].startedAt) <= 0
                                 ? 'disable'
                                 : ''
                             }`}
                             onClick={(e) => {
                               if (
-                                current.diff(
-                                  stakingRoundTimes[currentPhase - 1].startedAt,
-                                ) < 0 ||
-                                current.diff(
-                                  stakingRoundTimes[currentPhase - 1].endedAt,
-                                ) > 0
+                                current.diff(stakingRoundTimes[4].startedAt) <
+                                  0 ||
+                                current.diff(stakingRoundTimes[4].endedAt) > 0
                               ) {
                                 return;
                               }
                               ReactGA.modalview(`${stakedToken}Staking`);
-                              setRoundModal(currentPhase - 1);
+                              setRoundModal(4);
                               setModalValue(currentRound.accountPrincipal);
                               setStakingModalVisible(true);
                             }}>
@@ -664,9 +648,8 @@ const Staking: React.FunctionComponent<IProps> = ({
                               }
                               ReactGA.modalview(`${stakedToken}StakingReward`);
 
-                              current.diff(
-                                stakingRoundTimes[currentPhase - 1].startedAt,
-                              ) > 0 && setRoundModal(currentPhase - 1);
+                              current.diff(stakingRoundTimes[4].startedAt) >
+                                0 && setRoundModal(4);
                               setModalValue(expectedReward.value);
                               setClaimStakingRewardModalVisible(true);
                             }}>
