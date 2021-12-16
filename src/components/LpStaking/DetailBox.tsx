@@ -49,6 +49,7 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
                   ) || '0'
                 }
                 setModalAndSetStakeToken={setModalAndSetStakeToken}
+                round={round}
               />
             </div>
             <div className="spoqa lp_token_date">
