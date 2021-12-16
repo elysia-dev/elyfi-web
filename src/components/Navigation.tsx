@@ -88,14 +88,12 @@ const Navigation = () => {
   
   const localNavInnerContainer = (_data: ISubNavigation, isExternalLink: boolean) => {
     return (
-      <a 
-        href={
-          !isExternalLink ?
-          `/${lng + _data.location}` :
-          isExternalLink ?
-          _data.location :
-          undefined
-        }
+      <Link
+        to={{
+          pathname: !isExternalLink ?
+            `/${lng + _data.location}` :
+            _data.location
+        }}
         target={
           isExternalLink ? "_blank" : undefined
         }
@@ -115,8 +113,7 @@ const Navigation = () => {
           </p>
           {isExternalLink && (<img src={ExternalLinkImage} />)}
         </div>
-      </a>
-      
+      </Link>
     )
   }
 
@@ -168,13 +165,11 @@ const Navigation = () => {
 
   const linkNavigation = (_data: INavigation | ISubNavigation, _index: number, isExternalLink?: boolean) => {
     return (
-      <a 
-        href={
+      <Link
+        to={
           !isExternalLink ?
           `/${lng + _data.location}` :
-          isExternalLink ?
-          _data.location :
-          undefined
+          _data.location
         }
         target={
           isExternalLink ? "_blank" : undefined
@@ -189,7 +184,7 @@ const Navigation = () => {
         }}
       >
         {globalNavInnerContainer(_data as INavigation, _index)}
-      </a>
+      </Link>
     )
   }
 
