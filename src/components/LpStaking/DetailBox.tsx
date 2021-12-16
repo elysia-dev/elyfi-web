@@ -2,7 +2,10 @@ import { FunctionComponent } from 'react';
 import { utils } from 'ethers';
 import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 import Skeleton from 'react-loading-skeleton';
-import lpStakingTime, { lpUnixTimestamp } from 'src/core/data/lpStakingTime';
+import lpStakingTime, {
+  lpRoundDate,
+  lpUnixTimestamp,
+} from 'src/core/data/lpStakingTime';
 import moment from 'moment';
 import Token from 'src/enums/Token';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
@@ -31,7 +34,15 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
             <div className="lp_token_description">
               <DetailBoxItemHeader
                 totalLiquidity={formatDecimalFracionDigit(totalLiquidity, 2)}
-                apr={apr}
+                apr={
+                  moment().isBetween(
+                    lpRoundDate[round - 1].startedAt,
+                    lpRoundDate[round - 1].endedAt,
+                  )
+                    ? apr
+                    : '-'
+                }
+                token1={tokens.token1}
               />
               <DetailBoxItemReceiveToken
                 token0={tokens.token0}

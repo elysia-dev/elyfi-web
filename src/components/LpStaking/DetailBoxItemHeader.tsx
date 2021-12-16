@@ -6,7 +6,7 @@ import Guide from '../Guide';
 const DetailBoxItemHeader: FunctionComponent<DetailBoxItemHeaderProps> = (
   props,
 ) => {
-  const { totalLiquidity, apr } = props;
+  const { totalLiquidity, apr, token1 } = props;
   const { t } = useTranslation();
 
   return (
@@ -44,7 +44,7 @@ const DetailBoxItemHeader: FunctionComponent<DetailBoxItemHeaderProps> = (
                 display: 'inline-block',
                 marginLeft: 2,
               }}>
-              %
+              {}%
             </div>
           </div>
         </div>
@@ -61,7 +61,7 @@ const DetailBoxItemHeader: FunctionComponent<DetailBoxItemHeaderProps> = (
               fontSize: 17,
             }}>
             {t('lpstaking.lp_token_total_liquidity')}
-            <Guide content={t('guide.total_liquidity')} />
+            <Guide content={t('guide.total_liquidity', { token: token1 })} />
           </div>
           <div
             className="spoqa__bold"
