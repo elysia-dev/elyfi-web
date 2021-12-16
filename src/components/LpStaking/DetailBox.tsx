@@ -40,7 +40,7 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
                     lpRoundDate[round - 1].endedAt,
                   )
                     ? apr
-                    : ''
+                    : '-'
                 }
                 token1={tokens.token1}
               />
