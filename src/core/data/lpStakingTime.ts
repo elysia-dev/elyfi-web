@@ -23,20 +23,24 @@ export const lpRoundDate = [
   },
 ];
 
-export const lpUnixTimestamp = [
-  {
-    startedAt: 1638880500,
-    endedAt: 1640950200,
-  },
-  {
-    startedAt: 1638880800,
-    endedAt: 1640950200,
-  },
-  {
-    startedAt: 1638880800,
-    endedAt: 1640950200,
-  },
-];
+// export const lpUnixTimestamp = [
+//   {
+//     startedAt: 1638880500,
+//     endedAt: 1640950200,
+//   },
+//   {
+//     startedAt: 1638880800,
+//     endedAt: 1640950200,
+//   },
+//   {
+//     startedAt: 1638880800,
+//     endedAt: 1640950200,
+//   },
+// ];
+
+export const lpUnixTimestamp = lpRoundDate.map((item) => {
+  return { startedAt: item.startedAt.unix(), endedAt: item.endedAt.unix() };
+});
 
 const lpStakingTime: IStakingPool = {
   startedAt: moment('2021.11.05 19:00:00 +9:00', format).tz('Asia/Seoul', true),
