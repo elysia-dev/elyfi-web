@@ -4,6 +4,7 @@ import prodVars from './prod.json';
 interface EnvironmentVariables {
   moneyPoolAddress: string;
   governanceAddress: string;
+  testStableAddress: string;
   elStakingPoolAddress: string;
   elfyStakingPoolAddress: string;
   elfyV2StakingPoolAddress: string;
