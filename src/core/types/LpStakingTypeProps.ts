@@ -17,6 +17,7 @@ export type DetailBoxItemStakingProps = {
   tokens: tokenTypes;
   totalStakedLiquidity: string;
   setModalAndSetStakeToken: () => void;
+  round: number;
 };
 export type DetailBoxProps = {
   tokens: tokenTypes;
