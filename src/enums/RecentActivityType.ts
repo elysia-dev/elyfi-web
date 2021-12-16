@@ -12,6 +12,7 @@ enum RecentActivityType {
   ELFIStake = 'ELFIStake',
   Approve = 'Approve',
   Idle = 'Idle',
+  LPMigration = 'LPMigration',
 }
 
 export default RecentActivityType;

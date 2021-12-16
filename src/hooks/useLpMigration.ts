@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { ContractTransaction, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import envs from 'src/core/envs';
 import stakerABI from 'src/core/abi/StakerABI.json';
 import positionABI from 'src/core/abi/NonfungiblePositionManager.json';
@@ -9,7 +9,7 @@ import RecentActivityType from 'src/enums/RecentActivityType';
 import { lpTokenValues } from 'src/utiles/lpTokenValues';
 import useTxTracking from './useTxTracking';
 
-const useLpWithdraw: () => (
+const useLpMigration: () => (
   poolAddress: string,
   rewardTokenAddress: string,
   tokenId: string,
@@ -24,7 +24,8 @@ const useLpWithdraw: () => (
     library.getSigner(),
   );
   const iFace = new ethers.utils.Interface(stakerABI);
-  const unstake = async (
+
+  const migration = async (
     poolAddress: string,
     rewardTokenAddress: string,
     tokenId: string,
@@ -39,22 +40,28 @@ const useLpWithdraw: () => (
         lpTokenValues(poolAddress, rewardTokenAddress, round - 1),
         tokenId,
       ]);
-      const withdraw = iFace.encodeFunctionData('withdrawToken', [
+
+      const stakeGovernance = iFace.encodeFunctionData('stakeToken', [
+        lpTokenValues(poolAddress, envs.governanceAddress, round),
         tokenId,
-        account,
-        '0x',
+      ]);
+
+      const stakeToken = iFace.encodeFunctionData('stakeToken', [
+        lpTokenValues(poolAddress, rewardTokenAddress, round),
+        tokenId,
       ]);
 
       const res = await staker.multicall([
         elfiUnstake,
         rewardUnstake,
-        withdraw,
+        stakeGovernance,
+        stakeToken,
       ]);
-      const tracker = initTxTracker('LpUnstaking', 'unstaking', ``);
+      const tracker = initTxTracker('LpMigration', 'migration', ``);
       setTransaction(
         res,
         tracker,
-        'Withdraw' as RecentActivityType,
+        'LPMigration' as RecentActivityType,
         () => {},
         () => {},
       );
@@ -63,7 +70,7 @@ const useLpWithdraw: () => (
       // throw Error(error);
     }
   };
-  return unstake;
+  return migration;
 };
 
-export default useLpWithdraw;
+export default useLpMigration;

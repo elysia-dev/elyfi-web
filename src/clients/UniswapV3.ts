@@ -21,10 +21,10 @@ interface IPosition {
 
 interface ILpInfo {
   data: {
-    daiPool: IPool
-    ethPool: IPool
-    stakedDaiPositions: IPosition[]
-    stakedEthPositions: IPosition[]
+    daiPool: IPool;
+    ethPool: IPool;
+    stakedDaiPositions: IPosition[];
+    stakedEthPositions: IPosition[];
   };
 }
 

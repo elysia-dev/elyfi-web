@@ -25,6 +25,14 @@ const stakingRoundTimes: IStakingPoolRound[] = [
     startedAt: '2021.11.05 19:00:00 +9:00',
     endedAt: '2021.12.15 19:00:00 +9:00',
   },
+  {
+    startedAt: '2021.12.16 19:00:00 +9:00',
+    endedAt: '2022.01.24 19:00:00 +9:00',
+  },
+  {
+    startedAt: '2022.01.25 19:00:00 +9:00',
+    endedAt: '2022.03.05 19:00:00 +9:00',
+  },
 ].map((item) => {
   return {
     startedAt: moment(item.startedAt, format).tz('Asia/Seoul', true),

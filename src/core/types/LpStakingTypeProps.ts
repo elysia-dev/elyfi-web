@@ -17,6 +17,7 @@ export type DetailBoxItemStakingProps = {
   tokens: tokenTypes;
   totalStakedLiquidity: string;
   setModalAndSetStakeToken: () => void;
+  round: number;
 };
 export type DetailBoxProps = {
   tokens: tokenTypes;
@@ -25,6 +26,7 @@ export type DetailBoxProps = {
   apr: string;
   isLoading: boolean;
   setModalAndSetStakeToken: () => void;
+  round: number;
 };
 
 export type LpStakingModalProps = {
@@ -36,6 +38,7 @@ export type LpStakingModalProps = {
   tokenImg: string;
   stakingPoolAddress: string;
   rewardTokenAddress: string;
+  round: number;
 };
 
 export type StakedLpItemProps = {
@@ -50,6 +53,7 @@ export type StakedLpItemProps = {
     pricePerLiquidity: number;
     lpTokenType: string;
   };
+  round: number;
 };
 
 export type StakingTitleProps = {

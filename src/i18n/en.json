@@ -203,7 +203,8 @@
       "lp_staking_modal_default": "Please select the LP tokens to be staked.",
       "lp_tokens_held": "LP tokens held",
       "receive_reward": "Rewards receiving",
-      "reward_amount": "Amount of rewards"
+      "reward_amount": "Amount of rewards",
+      "round_staking": "{{round}} round staking"
     },
     "mobile": {
       "title": "COMING SOON!",

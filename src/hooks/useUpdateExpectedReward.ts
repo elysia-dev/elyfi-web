@@ -18,12 +18,23 @@ import { ExpectedRewardTypes } from 'src/core/types/RewardTypes';
 import usePricePerLiquidity from './usePricePerLiquidity';
 
 function useExpectedReward(): {
-  setExpecteReward: (positions: Position[]) => Promise<void>;
+  setExpecteReward: (
+    positions: Position[],
+    round: number,
+    incentiveIds: {
+      daiIncentiveId: string;
+      ethIncentiveId: string;
+    }[],
+  ) => Promise<void>;
   expectedReward: ExpectedRewardTypes[];
   updateExpectedReward: (
     positions: Position[],
     ethPoolTotalLiquidity: number,
     daiPoolTotalLiquidity: number,
+    incentiveId: {
+      daiIncentiveId: string;
+      ethIncentiveId: string;
+    },
   ) => void;
 } {
   const { library } = useWeb3React();
@@ -38,17 +49,17 @@ function useExpectedReward(): {
     library.getSigner(),
   );
 
-  const getReward = async (position: Position) => {
+  const getReward = async (position: Position, round: number) => {
     const isEthPoolAddress = isEthElfiPoolAddress(position);
     const { poolAddress, rewardTokenAddress } = getAddressesByPool(position);
 
     const rewardToken0 = await staker.getRewardInfo(
-      lpTokenValues(poolAddress, envs.governanceAddress),
+      lpTokenValues(poolAddress, envs.governanceAddress, round - 1),
       position.tokenId,
     );
 
     const rewardToken1 = await staker.getRewardInfo(
-      lpTokenValues(poolAddress, rewardTokenAddress),
+      lpTokenValues(poolAddress, rewardTokenAddress, round - 1),
       position.tokenId,
     );
 
@@ -72,7 +83,14 @@ function useExpectedReward(): {
   };
 
   const setExpecteReward = useCallback(
-    async (positions: Position[]) => {
+    async (
+      positions: Position[],
+      round: number,
+      incentiveIds: {
+        daiIncentiveId: string;
+        ethIncentiveId: string;
+      }[],
+    ) => {
       const allReward: {
         beforeElfiReward: number;
         elfiReward: number;
@@ -82,14 +100,29 @@ function useExpectedReward(): {
         daiReward: number;
         tokenId: number;
       }[] = [];
-      const reward = positions.map(async (position, idx) => {
-        allReward.push(await getReward(position));
+      const positionsByRound = positions.filter((position) =>
+        position.incentivePotisions.some((pool) =>
+          pool.incentive.rewardToken.toLowerCase() ===
+          envs.daiAddress.toLowerCase()
+            ? pool.incentive.id.toLowerCase() ===
+              incentiveIds[round - 1].daiIncentiveId
+            : pool.incentive.id.toLowerCase() ===
+              incentiveIds[round - 1].ethIncentiveId,
+        ),
+      );
+      if (positionsByRound.length === 0) return;
+      const reward = positionsByRound.map(async (position, idx) => {
+        allReward.push(await getReward(position, round));
       });
 
-      await Promise.all(reward).then(() => {
-        allReward.sort((prev, next) => prev.tokenId - next.tokenId);
-        setExpectedReward(allReward);
-      });
+      await Promise.all(reward)
+        .then(() => {
+          allReward.sort((prev, next) => prev.tokenId - next.tokenId);
+          setExpectedReward(allReward);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
     [expectedReward],
   );
@@ -98,6 +131,10 @@ function useExpectedReward(): {
     positions: Position[],
     ethPoolTotalLiquidity: number,
     daiPoolTotalLiquidity: number,
+    incentiveId: {
+      daiIncentiveId: string;
+      ethIncentiveId: string;
+    },
   ) => {
     const allReward: {
       beforeElfiReward: number;
@@ -108,52 +145,64 @@ function useExpectedReward(): {
       daiReward: number;
       tokenId: number;
     }[] = [];
-    positions.forEach((position, idx) => {
-      const isEthElfiPoolAddress =
-        position.incentivePotisions[0].incentive.pool.toLowerCase() ===
-        envs.ethElfiPoolAddress.toLowerCase();
-      const pricePerLiquidity = isEthElfiPoolAddress
-        ? pricePerEthLiquidity
-        : pricePerDaiLiquidity;
-      const mintedPerDay = isEthElfiPoolAddress
-        ? ETHPerDayOnElfiEthPool
-        : DAIPerDayOnElfiDaiPool;
-      const stakedLiquidity =
-        parseFloat(utils.formatEther(position.liquidity)) * pricePerLiquidity;
-      const totalLiquidity = isEthElfiPoolAddress
-        ? ethPoolTotalLiquidity
-        : daiPoolTotalLiquidity;
-
-      allReward.push({
-        beforeElfiReward: expectedReward[idx].elfiReward,
-        elfiReward: calcLpExpectedReward(
-          expectedReward[idx].beforeElfiReward,
-          stakedLiquidity,
-          totalLiquidity,
-          ELFIPerDayOnLpStakingPool,
+    try {
+      const positionsByRound = positions.filter((position) =>
+        position.incentivePotisions.some((pool) =>
+          pool.incentive.rewardToken.toLowerCase() ===
+          envs.daiAddress.toLowerCase()
+            ? pool.incentive.id.toLowerCase() === incentiveId.daiIncentiveId
+            : pool.incentive.id.toLowerCase() === incentiveId.ethIncentiveId,
         ),
-        beforeEthReward: expectedReward[idx].ethReward,
-        ethReward: isEthElfiPoolAddress
-          ? calcLpExpectedReward(
-              expectedReward[idx].beforeEthReward,
-              stakedLiquidity,
-              totalLiquidity,
-              mintedPerDay,
-            )
-          : 0,
-        beforeDaiReward: expectedReward[idx].daiReward,
-        daiReward: isEthElfiPoolAddress
-          ? 0
-          : calcLpExpectedReward(
-              expectedReward[idx].beforeDaiReward,
-              stakedLiquidity,
-              totalLiquidity,
-              mintedPerDay,
-            ),
-        tokenId: expectedReward[idx].tokenId,
+      );
+      positionsByRound.forEach((position, idx) => {
+        const isEthElfiPoolAddress =
+          position.incentivePotisions[0].incentive.pool.toLowerCase() ===
+          envs.ethElfiPoolAddress.toLowerCase();
+        const pricePerLiquidity = isEthElfiPoolAddress
+          ? pricePerEthLiquidity
+          : pricePerDaiLiquidity;
+        const mintedPerDay = isEthElfiPoolAddress
+          ? ETHPerDayOnElfiEthPool
+          : DAIPerDayOnElfiDaiPool;
+        const stakedLiquidity =
+          parseFloat(utils.formatEther(position.liquidity)) * pricePerLiquidity;
+        const totalLiquidity = isEthElfiPoolAddress
+          ? ethPoolTotalLiquidity
+          : daiPoolTotalLiquidity;
+
+        allReward.push({
+          beforeElfiReward: expectedReward[idx].elfiReward,
+          elfiReward: calcLpExpectedReward(
+            expectedReward[idx].beforeElfiReward,
+            stakedLiquidity,
+            totalLiquidity,
+            ELFIPerDayOnLpStakingPool,
+          ),
+          beforeEthReward: expectedReward[idx].ethReward,
+          ethReward: isEthElfiPoolAddress
+            ? calcLpExpectedReward(
+                expectedReward[idx].beforeEthReward,
+                stakedLiquidity,
+                totalLiquidity,
+                mintedPerDay,
+              )
+            : 0,
+          beforeDaiReward: expectedReward[idx].daiReward,
+          daiReward: isEthElfiPoolAddress
+            ? 0
+            : calcLpExpectedReward(
+                expectedReward[idx].beforeDaiReward,
+                stakedLiquidity,
+                totalLiquidity,
+                mintedPerDay,
+              ),
+          tokenId: expectedReward[idx].tokenId,
+        });
       });
-    });
-    setExpectedReward(allReward);
+      setExpectedReward(allReward);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return {

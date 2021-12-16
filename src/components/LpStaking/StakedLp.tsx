@@ -5,6 +5,7 @@ import Token from 'src/enums/Token';
 import { formatDecimalFracionDigit, toCompact } from 'src/utiles/formatters';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import { utils } from 'ethers';
+import envs from 'src/core/envs';
 import StakedTokenProps from 'src/core/types/StakedTokenProps';
 import Skeleton from 'react-loading-skeleton';
 import CountUp from 'react-countup';
@@ -22,6 +23,8 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
     daiElfiStakedLiquidity,
     expectedReward,
     totalExpectedReward,
+    round,
+    isLoading,
   } = props;
   const { account } = useWeb3React();
   const { t } = useTranslation();
@@ -69,7 +72,7 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
                 {t('lpstaking.expected_reward')}
               </span>
             </div>
-            {expectedReward.length >= 1
+            {!isLoading
               ? stakedPositions.map((position, idx) => {
                   return (
                     <StakedLpItem
@@ -98,6 +101,7 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
                             : 'ELFI-DAI LP',
                         };
                       }}
+                      round={round}
                     />
                   );
                 })
