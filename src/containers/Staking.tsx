@@ -43,7 +43,7 @@ interface IProps {
 const v2Threshold = 2;
 
 const migratable = (staked: Token, round: number): boolean => {
-  if (round >= 3) return false;
+  if (round >= 5) return false;
   if (staked === Token.ELFI) {
     return (
       round >= 2 && moment().diff(stakingRoundTimes[round + 1].startedAt) > 0
@@ -149,7 +149,6 @@ const Staking: React.FunctionComponent<IProps> = ({
           } as RoundData;
         }),
       );
-
       setroundData(data);
       setLoading(false);
     } catch (e) {
@@ -176,10 +175,10 @@ const Staking: React.FunctionComponent<IProps> = ({
 
       setExpectedReward({
         before: expectedReward.value.isZero()
-          ? roundData[5].accountReward
+          ? roundData[currentPhase - 1].accountReward
           : expectedReward.value,
         value: calcExpectedReward(
-          roundData[5],
+          roundData[currentPhase - 1],
           rewardToken === Token.ELFI
             ? ELFIPerDayOnELStakingPool
             : DAIPerDayOnELFIStakingPool,
@@ -198,6 +197,7 @@ const Staking: React.FunctionComponent<IProps> = ({
   const getWaiting = (isWaiting: boolean) => {
     setState({ ...state, txWaiting: isWaiting });
   };
+
   return (
     <>
       <Header
@@ -215,10 +215,22 @@ const Staking: React.FunctionComponent<IProps> = ({
           stakedToken={stakedToken}
           token={rewardToken}
           balance={
-            selectModalRound === 2
-              ? expectedReward.value
-              : roundData[selectModalRound]?.accountReward || constants.Zero
+            moment().isBetween(
+              stakingRoundTimes[selectModalRound].startedAt,
+              stakingRoundTimes[selectModalRound].endedAt,
+            )
+              ? expectedReward
+              : undefined
           }
+          endedBalance={
+            (!moment().isBetween(
+              stakingRoundTimes[selectModalRound].startedAt,
+              stakingRoundTimes[selectModalRound].endedAt,
+            ) &&
+              roundData[selectModalRound]?.accountReward) ||
+            constants.Zero
+          }
+          currentRound={currentRound}
           round={selectModalRound + 1}
           closeHandler={() => setClaimStakingRewardModalVisible(false)}
           afterTx={() => {
@@ -545,7 +557,9 @@ const Staking: React.FunctionComponent<IProps> = ({
                           {current.diff(
                             stakingRoundTimes[currentPhase - 1].startedAt,
                           ) <= 0 ||
-                          roundData[3]?.apr.eq(constants.MaxUint256) ||
+                          roundData[currentPhase - 1]?.apr.eq(
+                            constants.MaxUint256,
+                          ) ||
                           current.diff(
                             stakingRoundTimes[currentPhase - 1].endedAt,
                           ) >= 0
@@ -581,8 +595,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                           <div
                             className={`staking__button ${
                               current.diff(
-                                stakingRoundTimes[stakingRoundTimes.length - 1]
-                                  .startedAt,
+                                stakingRoundTimes[currentPhase - 1].startedAt,
                               ) <= 0
                                 ? 'disable'
                                 : ''
@@ -590,14 +603,10 @@ const Staking: React.FunctionComponent<IProps> = ({
                             onClick={(e) => {
                               if (
                                 current.diff(
-                                  stakingRoundTimes[
-                                    stakingRoundTimes.length - 1
-                                  ].startedAt,
+                                  stakingRoundTimes[currentPhase - 1].startedAt,
                                 ) < 0 ||
                                 current.diff(
-                                  stakingRoundTimes[
-                                    stakingRoundTimes.length - 1
-                                  ].endedAt,
+                                  stakingRoundTimes[currentPhase - 1].endedAt,
                                 ) > 0
                               ) {
                                 return;
@@ -656,7 +665,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                               ReactGA.modalview(`${stakedToken}StakingReward`);
 
                               current.diff(
-                                stakingRoundTimes[currentPhase].startedAt,
+                                stakingRoundTimes[currentPhase - 1].startedAt,
                               ) > 0 && setRoundModal(currentPhase - 1);
                               setModalValue(expectedReward.value);
                               setClaimStakingRewardModalVisible(true);
