@@ -66,7 +66,7 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
             className="staking__lp__staked__table__content__button"
           >
             <p>
-              마이그레이션
+              {t("staking.migration")}
             </p>
           </div>
         </div>

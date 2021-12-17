@@ -33,10 +33,10 @@ const TokenDeposit: FunctionComponent<Props> = ({
   const { latestPrice } = useContext(UniswapPoolContext);
   const miningDescription = [
     [
-      t('reward.mining_term'),
+      t('dashboard.mining_term'),
       `${startMoneyPool[index]} ~ ${moneyPoolEndedAt.format('yyyy.MM.DD')} KST`,
     ],
-    [t('reward.daily_mining'), '16,666.6667 ELFI'],
+    [t('dashboard.daily_mining'), '16,666.6667 ELFI'],
   ];
 
   return (
@@ -46,21 +46,21 @@ const TokenDeposit: FunctionComponent<Props> = ({
           <img src={tokenInfo?.image} alt="Token image" />
           <div>
             <p className="bold">
-              {t('reward.token_deposit', { Token: tokenInfo?.name })}
+              {t('dashboard.token_deposit', { Token: tokenInfo?.name })}
             </p>
             <p>
-              {t('reward.token_deposit_content', { Token: tokenInfo?.name })}
+              {t('dashboard.token_deposit_content', { Token: tokenInfo?.name })}
             </p>
           </div>
         </div>
         <div className="reward__token-deposit__apy">
           <div className="reward__token-deposit__apy--left">
             <div>
-              <p>{t('market.deposit_apy')}</p>
+              <p>{t('dashboard.deposit_apy')}</p>
               <h2>{toPercent(reserve.depositAPY)}</h2>
             </div>
             <div>
-              <p>ELFI 채굴 APR</p>
+              <p>{t('dashboard.token_mining_apr')}</p>
               <h2>
                 {toPercent(
                   calcMiningAPR(
@@ -74,7 +74,7 @@ const TokenDeposit: FunctionComponent<Props> = ({
           </div>
           <div className="reward__token-deposit__apy--right">
             <div>
-              <p>{t('market.total_deposit')}</p>
+              <p>{t('dashboard.total_deposit')}</p>
               <h2>
                 $&nbsp;
                 {toCompactForBignumber(

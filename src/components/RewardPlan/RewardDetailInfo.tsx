@@ -22,7 +22,7 @@ const RewardDetailInfo: FunctionComponent<Props> = (props) => {
         return (
           <div>
             <p>{data[0]}</p>
-            <p className="spoqa data">{data[1]}</p>
+            <p className="data">{data[1]}</p>
           </div>
         );
       })}

@@ -61,8 +61,8 @@ export const navigationLink: INavigation[] = [
         i18nKeyword: "navigation.elyfi_docs"
       },
       {
-        type: NavigationType.Link,
-        location: `/governance`, 
+        type: NavigationType.Href,
+        location: "https://elysia.gitbook.io/elyfi-governance-faq/", 
         i18nKeyword: "navigation.governance_docs"
       }
     ]

@@ -7,7 +7,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { useHistory, useParams } from 'react-router-dom';
 import LpStakingBox from 'src/components/RewardPlan/LpStakingBox';
 import StakingBox from 'src/components/RewardPlan/StakingBox';
@@ -205,7 +205,7 @@ const RewardPlan: FunctionComponent = () => {
               })}
               </div>
               <h2>
-                LP 스테이킹 보상 플랜
+                {t("reward.token_staking__reward_plan", { token: "LP" })}
               </h2>
             </div>
             <LpStakingBox
@@ -293,11 +293,14 @@ const RewardPlan: FunctionComponent = () => {
             <div className="reward__token">
               <img src={ELFI} />
               <h2>
-                예치 보상 플랜
+                {t("reward.deposit__reward_plan")}
               </h2>
               <div className="reward__token__elfi">
                 <p>
-                  ELFI Price : $ 0.1
+                  <Trans
+                    i18nKey="reward.elfi_price"
+                    count={Math.round(latestPrice * 1000) / 1000}
+                  />
                 </p>
               </div>
             </div>

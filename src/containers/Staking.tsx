@@ -22,7 +22,7 @@ import moment from 'moment';
 import ClaimStakingRewardModal from 'src/components/ClaimStakingRewardModal';
 import StakingModal from 'src/containers/StakingModal';
 import Token from 'src/enums/Token';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import RoundData from 'src/core/types/RoundData';
 import CountUp from 'react-countup';
 import { formatEther } from 'ethers/lib/utils';
@@ -39,6 +39,7 @@ import useStakingRoundData from 'src/hooks/useStakingRoundData';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 import GovernanceGuideBox from 'src/components/GovernanceGuideBox';
 import Uniswap from "src/assets/images/uniswap.png";
+import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI;
@@ -62,7 +63,7 @@ const Staking: React.FunctionComponent<IProps> = ({
   stakedToken,
   rewardToken,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const current = moment();
   const { account } = useWeb3React();
   const { elPrice, elfiPrice } = useContext(PriceContext);
@@ -314,12 +315,11 @@ const Staking: React.FunctionComponent<IProps> = ({
         <section>
           <div className="staking__title">
             <h2>
-              {stakedToken.toUpperCase()} 토큰 스테이킹
+              {t("staking.staking__token", { token: stakedToken.toUpperCase() })}
             </h2>
             <p>
               {stakedToken === Token.EL ? 
-                "EL 토큰을 스테이킹하고 보상 토큰 ELFI를 받아가세요!" :
-                "ELFI 토큰을 스테이킹하고 보상 토큰과 투표권을 받아가세요!\nELFI 홀더들은 보유한 ELFI를 스테이킹함으로써 탈중앙 거버넌스에 참여할 수 있으며,\n스테이킹시 프로토콜 순이익을 분배 받을 수 있습니다"  
+                t("staking.el.staking__content") : t("staking.elfi.staking__content")
               }
             </p>
             <div className="staking__title__button">
@@ -329,64 +329,26 @@ const Staking: React.FunctionComponent<IProps> = ({
               <p>
                 {
                   stakedToken === Token.EL ? 
-                    "EL 토큰 구매하러 가기" :
-                    "유니스왑에서 ELFI 토큰 구매하기"
+                    t("staking.el.staking__content--button") : t("staking.elfi.staking__content--button")
                 }
               </p>
             </div>
           </div>
           {
             stakedToken === Token.ELFI && (
-              <section className="governance__elyfi-graph" style={{ marginBottom: 50 }}>
-                <div>
-                  <div>
-                    <p>
-                      ELYFI
-                    </p>
-                  </div>
-                </div>
-                <div className="governance__elyfi-graph__arrow-container">
-                  <div>
-                    <p>
-                      프로토콜 순 이익
-                    </p>
-                  </div>
-                  <div className="arrow-wrapper">
-                    <div className="line" />
-                    <div className="right-arrow" />
-                  </div>
-                  <div className="arrow-wrapper">
-                    <div className="left-arrow" />
-                    <div className="line"/>
-                  </div>
-                  <div>
-                    <p>
-                      거버넌스 참여
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <div>
-                    <p>
-                      ELYFI Holder
-                    </p>
-                  </div>
-                </div>
-              </section>
+              <GovernanceGuideBox />
             )
           }
           <div className="staking__title__content__wrapper">
             <div className="staking__title__content__token-wrapper">
               <img src={stakedToken === Token.EL ? el : elfi} />
               <h2>
-                Staked {stakedToken.toUpperCase()}
+                {t("staking.staking__token", { token: stakedToken.toUpperCase() })}
               </h2>
             </div>
             <div className="staking__title__content">
               <p>
-              {
-                `${stakedToken} 스테이킹은 ${rewardToken} 채굴 플랜에 따라 4차례로 나눠서 진행됩니다.\n${stakedToken} 토큰을 스테이킹하면 ${rewardToken} 토큰을 리워드로 받게 되며, 스테이킹한 ${stakedToken} 토큰은 언제든지 언스테이킹이 가능합니다.\n\n* 이전 회차에 스테이킹한 ${stakedToken} 토큰과 보상 받은 ${rewardToken} 토큰은 다음 회차의 스테이킹 풀에 자동으로 전송되지 않습니다.`
-              }
+              {t("staking.staking__notice", { stakedToken, rewardToken })}
               </p>
               <RewardPlanButton stakingType={stakedToken} />
             </div>
@@ -410,11 +372,8 @@ const Staking: React.FunctionComponent<IProps> = ({
                     <>
                       <div>
                         <div>
-                          <h2>
-                            {t('staking.nth', { nth: currentPhase })}
-                          </h2>
                           <p>
-                            스테이킹 진행중
+                            <Trans i18nKey="staking.staking__in_progress" values={{ nth: toOrdinalNumber(i18n.language, currentPhase) }} />
                           </p>
                         </div>
                         <h2>
@@ -459,7 +418,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                             <div>
                               <div className="staking__round__previous__title">
                                 <h2>
-                                  {t('staking.nth', { nth: index + 1 })}
+                                  {t('staking.nth', { nth: toOrdinalNumber(i18n.language, index + 1) })}
                                 </h2>
                                 <p className="spoqa">
                                   {stakingRoundTimes[index].startedAt.format(
@@ -583,7 +542,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                   <div className="staking__round__remaining-data__title">
                     <div>
                       <h2>
-                        {t('staking.nth', { nth: 4 })}
+                        {t('staking.nth', { nth: toOrdinalNumber(i18n.language, 4) })}
                       </h2>
                       <p>
                         {stakingRoundTimes[3].startedAt.format(

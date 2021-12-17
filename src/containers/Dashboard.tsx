@@ -35,7 +35,10 @@ import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 import CountUp from 'react-countup';
 import Token from 'src/enums/Token';
 import HeaderCircle from 'src/assets/images/title-circle.png'
-import IncentiveModal from './IncentiveModal';
+import IncentiveModal from 'src/containers/IncentiveModal';
+import useTvl from 'src/hooks/useTvl';
+import isWalletConnect from 'src/hooks/isWalletConnect';
+import ConnectWalletModal from './ConnectWalletModal';
 
 const initialBalanceState = {
   loading: false,
@@ -46,6 +49,10 @@ const initialBalanceState = {
   deposit: constants.Zero,
   updatedAt: moment().unix(),
 };
+const usdFormatter = new Intl.NumberFormat('en', {
+  style: 'currency',
+  currency: 'USD',
+});
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -88,6 +95,9 @@ const Dashboard: React.FunctionComponent = () => {
   const [selectedModalToken, setModalToken] = useState<Token.DAI | Token.USDT>(
     Token.DAI,
   );
+  const { value: tvl, loading: tvlLoading } = useTvl();
+  const [connectWalletModalvisible, setConnectWalletModalvisible] = useState<boolean>(false);
+  const walletConnect = isWalletConnect();
 
   useEffect(() => {
     const paramsData = reserves.find((_reserve) => reserveId === _reserve.id);
@@ -214,7 +224,7 @@ const Dashboard: React.FunctionComponent = () => {
   const remoteControlScroll = (ref: string) => {
     const element = document.getElementById(ref);
 
-    const offset = 438;
+    const offset = 338;
 
     const bodyRect = document.body.getBoundingClientRect().top;
     const elementRect = element!.getBoundingClientRect().top;
@@ -271,15 +281,29 @@ const Dashboard: React.FunctionComponent = () => {
           setTransactionModal(false);
         }}
       />
+      <ConnectWalletModal
+        visible={connectWalletModalvisible}
+        onClose={()=>{
+          setConnectWalletModalvisible(false)
+        }}
+      />
 
       <div className="deposit">
         <div className="deposit__title" style={{ backgroundImage: `url(${HeaderCircle})` }}>
           <p className="montserrat__bold">
             Total Value Locked
           </p>
-          <h2 className="blue">
-            $ 123,123,123.23
-          </h2>
+          <CountUp
+            start={0}
+            end={tvlLoading ? 0 : tvl}
+            formattingFn={(number) => usdFormatter.format(number)}
+            decimals={4}
+            duration={2}
+            delay={0}>
+            {({ countUpRef }) => (
+              <h2 className="blue" ref={countUpRef} />
+            )}
+          </CountUp>
         </div>
         <RewardPlanButton stakingType={'deposit'} />
         <div className="deposit__table__wrapper">
@@ -304,7 +328,7 @@ const Dashboard: React.FunctionComponent = () => {
                       </p>
                       <div className="deposit__remote-control__mining">
                         <p>
-                          ELFI 채굴 APR
+                          {t("dashboard.token_mining_apr")}
                         </p>
                         <p>
                           {
@@ -333,11 +357,15 @@ const Dashboard: React.FunctionComponent = () => {
                   index={index}
                   id={`table-${index}`}
                   onClick={(e: any) => {
-                    e.preventDefault();
-                    setReserve(reserves[index]);
-                    setModalNumber(index);
-                    setModalToken(balance.tokenName);
-                    ReactGA.modalview('DepositOrWithdraw');
+                    walletConnect === false ? 
+                      setConnectWalletModalvisible(true) : 
+                      (
+                        e.preventDefault(),
+                        setReserve(reserves[index]),
+                        setModalNumber(index),
+                        setModalToken(balance.tokenName),
+                        ReactGA.modalview('DepositOrWithdraw')
+                      )
                   }}
                   tokenName={balance.tokenName}
                   tokenImage={reserveTokenData[balance.tokenName].image}
@@ -362,9 +390,11 @@ const Dashboard: React.FunctionComponent = () => {
                   reserveData={reserves[index]}
                   expectedIncentiveBefore={balance.expectedIncentiveBefore}
                   expectedIncentiveAfter={balance.expectedIncentiveAfter}
-                  setIncentiveModalVisible={() =>
-                    setIncentiveModalVisible(true)
-                  }
+                  setIncentiveModalVisible={() => {
+                    walletConnect === false ? 
+                      setConnectWalletModalvisible(true) : 
+                      setIncentiveModalVisible(true)
+                  }}
                   setModalNumber={() => setModalNumber(index)}
                   modalview={() => ReactGA.modalview('Incentive')}
                 />

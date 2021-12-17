@@ -5,43 +5,42 @@ const GovernanceGuideBox: FunctionComponent = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="jreward__governance-title">
+    <section className="governance__elyfi-graph">
       <div>
         <div>
-          <div />
-          <p className="spoqa">
-            <Trans i18nKey="reward.governance--header" />
+          <p>
+            {t("governance.graph.0")}
           </p>
         </div>
-        <p className="spoqa">{t('reward.governance--content')}</p>
+      </div>
+      <div className="governance__elyfi-graph__arrow-container">
+        <div>
+          <p>
+            {t("governance.graph.1")}
+          </p>
+        </div>
+        <div className="arrow-wrapper">
+          <div className="line" />
+          <div className="right-arrow" />
+        </div>
+        <div className="arrow-wrapper">
+          <div className="left-arrow" />
+          <div className="line"/>
+        </div>
+        <div>
+          <p>
+            {t("governance.graph.2")}
+          </p>
+        </div>
       </div>
       <div>
         <div>
-          <div>
-            <p className="spoqa__bold">{t('reward.elyfi')}</p>
-          </div>
-          <div>
-            <div>
-              <p>{t('reward.protocol_profit')}</p>
-            </div>
-            <div className="dashed_arrow">
-              <div className="line" />
-              <div className="down_arrow" />
-            </div>
-            <div className="dashed_arrow">
-              <div className="up_arrow" />
-              <div className="line" />
-            </div>
-            <div>
-              <p>{t('reward.participate_governance')}</p>
-            </div>
-          </div>
-          <div>
-            <p className="spoqa__bold">{t('reward.elyfi_holder')}</p>
-          </div>
+          <p>
+            {t("governance.graph.3")}
+          </p>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

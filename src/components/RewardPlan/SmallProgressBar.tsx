@@ -27,12 +27,12 @@ const SmallProgressBar: FunctionComponent<Props> = (props) => {
           nth ? (
             <>
               <p>
-                {t(`reward.nth_current_reward`, {
+                {t(`dashboard.nth_current_reward`, {
                   nth,
                 })}
               </p>
               <p>
-                {t('reward.nth_total_reward', {
+                {t('dashboard.nth_total_reward', {
                   nth,
                 })}
               </p>
@@ -40,12 +40,12 @@ const SmallProgressBar: FunctionComponent<Props> = (props) => {
           ) : (
             <>
               <p>
-                {t(`reward.current_reward`, {
+                {t(`dashboard.current_reward`, {
                   nth,
                 })}
               </p>
               <p>
-                {t('reward.total_reward', {
+                {t('dashboard.total_reward', {
                   nth,
                 })}
               </p>
@@ -53,8 +53,8 @@ const SmallProgressBar: FunctionComponent<Props> = (props) => {
           )
         ) : (
           <>
-            <p>{t('reward.current_mining')}</p>
-            <p>{t('reward.total_mining')}</p>
+            <p>{t('dashboard.current_mining')}</p>
+            <p>{t('dashboard.total_mining')}</p>
           </>
         )}
       </div>

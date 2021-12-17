@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import OffChainTopic, { INapData } from 'src/clients/OffChainTopic';
 import Skeleton from 'react-loading-skeleton';
 import { IProposals, OnChainTopic } from 'src/clients/OnChainTopic';
+import { useTranslation, Trans } from 'react-i18next';
 
 const MainGovernanceTable = () => {
   const [selectButton, setSelectButton] = useState(false);
@@ -9,17 +10,22 @@ const MainGovernanceTable = () => {
   const [offChainLoading, setOffChainLoading] = useState(true)
   const [onChainData, setOnChainData] = useState<{
     title: string,
-    created_at: Date
+    created_at: Date,
+    link: string
   }[]>([])
   const [offChainNapData, setOffChainNapData] = useState<{
     title: string,
-    created_at: Date
+    created_at: Date,
+    link: string
   }[]>([])
   const [moreload, setMoreload] = useState(false)
+
+  const { t } = useTranslation();
 
   const getOnChainNAPDatas = async () => {
     try {
       const getOnChainApis = await OnChainTopic.getOnChainTopicData()
+      console.log(getOnChainApis)
       const getNAPCodes = getOnChainApis.data.data.proposals.filter((topic) => {
         return topic.data.description.startsWith("NAP")
         // return topic.data.description.match(/(?<=NAP).*(?=:)/)?.toString()
@@ -53,7 +59,8 @@ const MainGovernanceTable = () => {
             ..._data,
             {
               title: data.data.description.match(/(?=NAP).*(?<=)/)?.toString() || "",
-              created_at: dates
+              created_at: dates,
+              link: "https://www.withtally.com/governance/elyfi/proposal/110042509135245071528856369095215227320251736400475387226026289672205689907343"
             }
           ])
         }) 
@@ -64,12 +71,14 @@ const MainGovernanceTable = () => {
       title_res === undefined ? setOffChainLoading(false) : 
         title_res.map(async (_res, _x) => {
           const getNATData = await OffChainTopic.getTopicResult(_res)
+          console.log(getNATData)
           const dates: Date = new Date(getNATData.data.created_at)
           setOffChainNapData(napData => [ 
             ...napData, 
             {
               title: getNATData.data.title,
-              created_at: dates
+              created_at: dates,
+              link: `https://forum.elyfi.world/t/${getNATData.data.slug}`
             }
           ])
         })
@@ -81,7 +90,7 @@ const MainGovernanceTable = () => {
   return (
     <div className="main__governance main__section">
       <h2>
-        <span className="bold">ELYFI</span>&nbsp;거버넌스
+        <Trans i18nKey="main.governance.title" />
       </h2>
       <div className="main__governance__table">
         <div className="main__governance__converter">
@@ -92,7 +101,7 @@ const MainGovernanceTable = () => {
             }}
           >
             <h2>
-              데이터 검증
+              {t("main.governance.data-verification")}
             </h2>
           </div>
           <div 
@@ -102,7 +111,7 @@ const MainGovernanceTable = () => {
             }}
           >
             <h2>
-              온체인 투표
+              {t("main.governance.onchain-vote")}
             </h2>
           </div>
         </div>
@@ -110,10 +119,10 @@ const MainGovernanceTable = () => {
         <div className="main__governance__content">
           <div className="main__governance__header">
             <p>
-              활 동
+              {t("main.governance.table--title")}
             </p>
             <p>
-              일 자
+              {t("main.governance.table--date")}
             </p>
           </div>
           {(selectButton ? 
@@ -135,6 +144,7 @@ const MainGovernanceTable = () => {
               <div 
                 className="main__governance__body"
                 style={{ display: (index >= 5 && !moreload) ? "none" : "flex"}}
+                onClick={() => window.open(_data.link)}
               >
                 <p>{_data.title}</p>
                 <p>
@@ -154,7 +164,7 @@ const MainGovernanceTable = () => {
         </div>
         <div className="main__governance__more" onClick={() => setMoreload(!moreload)}>
           <p>
-            {moreload ? "접기" : "더 보기"}
+            {moreload ? t("main.governance.view-more--disable") : t("main.governance.view-more")}
           </p>
         </div>
       </div>

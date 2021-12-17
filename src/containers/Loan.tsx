@@ -39,9 +39,9 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
     <>
       <section className="loan">
         <div >
-          <h2>{t('portfolio.portfolio_list')}</h2>
+          <h2>{t('loan.loan__title')}</h2>
           <p>
-            거버넌스(DAO)에서 통과하여 엘리파이에서 DAI로 실행된 대출 리스트입니다.
+            {t('loan.loan__content')}
           </p>
         </div>
         
@@ -97,7 +97,7 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
                 <button
                   style={{ width: '100px', height: '50px' }}
                   onClick={() => viewMoreHandler()}>
-                  더보기
+                  {t("loan.view-more")}
                 </button>
               </div>
             )}

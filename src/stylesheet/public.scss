@@ -41,6 +41,8 @@ $governance-progress-00: #0099CC;
 $governance-progress-01: #CC0000;
 $governance-progress-02: #888888;
 
+$bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
+
 // $font-color: #000000;
 // $gray-font-color: #555555;
 // $background-color: #83c333;
@@ -78,11 +80,14 @@ span {
     font-family: 'Montserrat-bold';
   }
 }
-.bold {
+.bold, strong {
   font-family: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 }
+i {
+  font-style: initial;
+}
 .blue {
-  color: $elysia-color;
+  color: $elysia-color !important;
 }
 .link {
   color: $elysia-color !important;
@@ -406,7 +411,7 @@ input[type=number] {
     &__title {
       display: flex;
       flex-direction: row;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       position: relative;
       height: calc(100vh - 100px);
@@ -416,6 +421,15 @@ input[type=number] {
         > p {
           &:first-child {
             font-size: 35px;
+            margin-bottom: 35px;
+            strong {
+              font-size: 50px;
+              line-height: 80px;
+            }
+            i {
+              color: $elysia-color;
+              font-family: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
+            }
           }
           &:last-child {
             font-size: 20px;
@@ -424,8 +438,6 @@ input[type=number] {
         }
         > h2 {
           font-size: 50px;
-          line-height: 80px;
-          margin-bottom: 35px;
         }
       }
 
@@ -477,11 +489,12 @@ input[type=number] {
           > p {
             &:first-child {
               font-size: 40px;
+              margin-bottom: 30px;
+              line-height: 55px;
             }
           }
-          > h2 {
+          strong {
             font-size: 40px;
-            margin-bottom: 30px;
           }
           > div {
             width: 226px;
@@ -507,6 +520,15 @@ input[type=number] {
     }
     &__advantages {
       flex-direction: column;
+      align-items: flex-start;
+      > h2 {
+        font-size: 40px;
+        color: $font-color;
+        text-align: left;
+        i {
+          color: $elysia-color;
+        }
+      }
       &__container {
         margin-top: 130px;
         display: grid;
@@ -564,7 +586,7 @@ input[type=number] {
           display: flex;
           justify-content: center;
           align-items: center;
-          > p {
+          > h2 {
             color: $elysia-color;
             cursor: pointer;
             font-size: 15px;
@@ -573,8 +595,22 @@ input[type=number] {
       }
       > h2 {
         font-size: 40px;
+        strong {
+          color: $elysia-color;
+        }
       }
       &__graph {
+        &--circle {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+          text-align: center;
+          > p {
+            font-size: 20px;
+            color: $font-color;
+          }
+        }
         &__line-wrapper {
           position: relative;
           flex: 0 !important;
@@ -595,9 +631,11 @@ input[type=number] {
             }
           }
           &--02 {
-            width: 250px;
+            width: 255px;
             display: flex;
             flex-direction: column;
+            height: 50%;
+            margin-top: 50px;
             > div {
               flex: 1;
               &:first-child {
@@ -634,8 +672,8 @@ input[type=number] {
             display: flex;
             flex-direction: column;
             &--01 {
-              width: 200px;
-              height: 80px;
+              width: 205px;
+              height: 85px;
               display: flex;
               flex-direction: row;
               > div {
@@ -647,8 +685,10 @@ input[type=number] {
                 &:last-child {
                   // border-left: 1px dashed $elysia-color;
                   display: flex;
-                  justify-content: center;
+                  justify-content: flex-end;
                   align-items: center;
+                  padding-left: 20px;
+                  text-align: center;
                 }
               }
             }
@@ -681,8 +721,8 @@ input[type=number] {
                   height: 180px;
                 }
                 > div {
-                  width: 350px;
-                  height: 180px;
+                  width: 342px;
+                  height: 187px;
                   // border-right: 1px dashed $elysia-color;
                   // border-bottom: 1px dashed $elysia-color;
                 }
@@ -708,7 +748,11 @@ input[type=number] {
         align-items: center;
         > h2 {
           font-size: 40px;
-          text-align: center ;
+          text-align: center;
+          margin-bottom: 45px;
+          strong {
+            color: $elysia-color;
+          }
         }
         &:last-child {
           margin-top: 200px;
@@ -732,7 +776,7 @@ input[type=number] {
       > h2 {
         font-size: 40px;
         color: $font-color;
-        > span {
+        strong {
           color: $elysia-color;
         }
       }
@@ -918,7 +962,7 @@ input[type=number] {
             justify-content: center;
             align-items: center;
 
-            width: 130px;
+            width: 160px;
             height: 30px;
             margin-bottom: 20px;
             cursor: pointer;
@@ -1170,6 +1214,9 @@ input[type=number] {
           font-size: 18px;
           margin-left: 8px;
           color: $font-color;
+          strong {
+            color: $elysia-color;
+          }
         }
       }
       &__staking {
@@ -1801,6 +1848,34 @@ input[type=number] {
         display: flex;
         flex-direction: column;
         align-items: center;
+        .arrow-wrapper {
+          width: 100%;
+          display: -webkit-flex;
+          display: flex;
+          -webkit-align-items: center;
+          align-items: center;
+          -webkit-flex-direction: row;
+          flex-direction: row;
+          > .line { 
+            height: 0;
+            width: 100%;
+            border: 1px dashed $elysia-color;
+          }
+          > .left-arrow {
+            width: 0;
+            height: 0;
+            border-right: 10px solid $elysia-color;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+          }
+          > .right-arrow {
+            width: 0;
+            height: 0;
+            border-left: 10px solid $elysia-color;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+          }
+        }
       }
       > div {
         flex: 1;
@@ -1958,6 +2033,7 @@ input[type=number] {
       > h2 {
         padding-bottom: 10px;
         border-bottom: 1px solid $gray-line;
+        font-size: 18px;
       }
       &__data {
         display: flex;
@@ -2006,6 +2082,7 @@ input[type=number] {
   .staking {
     width: 1190px;
     margin: 0 auto;
+    
     &__title {
       margin-top: 250px;
       display: flex;
@@ -2152,12 +2229,11 @@ input[type=number] {
             justify-content: flex-start;
             > p {
               color: $gray-font-color;
-              margin-left: 5px;
               font-size: 15px;
-            }
-            > h2 {
-              color: $elysia-color;
-              font-size: 15px;
+              strong {
+                color: $elysia-color;
+                font-size: 15px;
+              }
             }
           }
           &:last-child {
@@ -3811,6 +3887,19 @@ input[type=number] {
         }
       }
     }
+    &__connect {
+      &__content {
+        margin: 0 auto;
+        padding: 40px;
+        text-align: center;
+        border-bottom: 2px solid $gray-line;
+        > p {
+          font-size: 15px;
+          color: $font-color;
+          line-height: 25px;
+        }
+      }
+    }
   }// modal end
 
   .component {
@@ -4132,8 +4221,31 @@ input[type=number] {
     // display: flex;
     // flex-direction: column;
     position: absolute;
+    align-items: center;
+    &.down {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      > span {
+        &:last-child {
+          border-left: 5px solid transparent;
+          border-right: 5px solid transparent;
+          border-top: 10px solid #00a7ff;
+        }
+      }
+    }
     &.up {
       transform: rotate(180deg);
+      top: 7px;
+      display: flex;
+      flex-direction: column;
+      > span {
+        &:last-child {
+          border-left: 5px solid transparent;
+          border-right: 5px solid transparent;
+          border-top: 10px solid #00a7ff;
+        }
+      }
     }
     &.left {
       display: flex;
@@ -4142,6 +4254,11 @@ input[type=number] {
       > span {
         -webkit-transform: rotate(-45deg) skew(20deg, 20deg);
         transform: rotate(-45deg) skew(20deg, 20deg);
+        &:last-child {
+          border-top: 5px solid transparent;
+          border-bottom: 5px solid transparent;
+          border-left: 10px solid #00a7ff;
+        }
       }
     }
     &.right {
@@ -4149,6 +4266,12 @@ input[type=number] {
       > span {
         -webkit-transform: rotate(-45deg) skew(20deg, 20deg);
         transform: rotate(-45deg) skew(20deg, 20deg);
+
+        &:last-child {
+          border-top: 5px solid transparent;
+          border-bottom: 5px solid transparent;
+          border-left: 10px solid #00a7ff;
+        }
       }
     }
     > span {
@@ -4162,8 +4285,7 @@ input[type=number] {
       
       width: 10px;
       height: 10px;
-
-      margin-top: 1px;
+      
       -webkit-animation: mouse-scroll 1.4s infinite;
       animation: mouse-scroll 1.4s infinite;
     }
@@ -4175,6 +4297,12 @@ input[type=number] {
         
         animation-direction: alternate;
         animation-delay: alternate;
+        width: 4px;
+        height: 4px;
+        margin: 2px;
+        background: $elysia-color;
+        border-radius: 100%;
+        transform: none !important;
       }
       &--01 {
         -webkit-animation-delay: .2s;
@@ -4183,6 +4311,13 @@ input[type=number] {
         
         animation-direction: alternate;
         animation-delay: alternate;
+
+        width: 4px;
+        height: 4px;
+        margin: 2px;
+        background: $elysia-color;
+        border-radius: 100%;
+        transform: none !important;
       }
       &--02 {
         -webkit-animation-delay: .3s;
@@ -4191,6 +4326,13 @@ input[type=number] {
         
         animation-direction: alternate;
         animation-delay: alternate;
+
+        width: 4px;
+        height: 4px;
+        margin: 2px;
+        background: $elysia-color;
+        border-radius: 100%;
+        transform: none !important;
       }
       &--03 {
         -webkit-animation-delay: .4s;
@@ -4199,6 +4341,13 @@ input[type=number] {
         
         animation-direction: alternate;
         animation-delay: alternate;
+
+        width: 4px;
+        height: 4px;
+        margin: 2px;
+        background: $elysia-color;
+        border-radius: 100%;
+        transform: none !important;
       }
       &--04 {
         -webkit-animation-delay: .5s;
@@ -4207,6 +4356,20 @@ input[type=number] {
         
         animation-direction: alternate;
         animation-delay: alternate;
+
+        width: 4px;
+        height: 4px;
+        margin: 2px;
+        background: $elysia-color;
+        border-radius: 100%;
+        transform: none !important;
+        &:last-child {
+          width: 0;
+          background: transparent;
+          border-radius: 0;
+          height: 0;
+          border: none;
+        }
       }
     }
   }
@@ -4778,23 +4941,23 @@ input[type=number] {
   }
 }
 @-webkit-keyframes mouse-scroll {
-  0%   { opacity: 0;}
-  50%  { opacity: .5;}
+  0%   { opacity: .25;}
+  50%  { opacity: .7;}
   100% { opacity: 1;}
 }
 @-moz-keyframes mouse-scroll {
-  0%   { opacity: 0; }
-  50%  { opacity: .5; }
-  100% { opacity: 1; }
+  0%   { opacity: .25;}
+  50%  { opacity: .7;}
+  100% { opacity: 1;}
 }
 @-o-keyframes mouse-scroll {
-  0%   { opacity: 0; }
-  50%  { opacity: .5; }
-  100% { opacity: 1; }
+  0%   { opacity: .25;}
+  50%  { opacity: .7;}
+  100% { opacity: 1;}
 }
 @keyframes mouse-scroll {
-  0%   { opacity: 0; }
-  50%  { opacity: .5; }
-  100% { opacity: 1; }
+  0%   { opacity: .25;}
+  50%  { opacity: .7;}
+  100% { opacity: 1;}
 }
 }

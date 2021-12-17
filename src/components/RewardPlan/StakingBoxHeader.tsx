@@ -3,7 +3,7 @@ import moment from 'moment';
 import Skeleton from 'react-loading-skeleton';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import { formatComma, toCompact } from 'src/utiles/formatters';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { FunctionComponent } from 'react';
 import Token from 'src/enums/Token';
 import elfi from 'src/assets/images/ELFI.png';
@@ -20,19 +20,25 @@ type Props = {
 
 const StakingBoxHeader: FunctionComponent<Props> = (props) => {
   const current = moment();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const tokenImg = props.unit === Token.DAI ? elfi : el;
+  const tokenName = props.unit === 'DAI' ? 'ELFI' : 'EL';
+  const currentNth = props.nth
+  console.log(tokenName)
   return (
     <>
       <div className="reward__token__header">
         <img src={tokenImg} />
         <h2>
-          {props.unit === 'DAI' ? 'ELFI' : 'EL'} {props.nth}차 스테이킹
+          <Trans i18nKey={"reward.staking__nth"} values={{ 
+            token: tokenName, 
+            nth: currentNth 
+          }} />
         </h2>
       </div>
       <div className="reward__token__staking">
         <div>
-          <p>{`${t('reward.nth_staking', {
+          <p>{`${t('reward.staking__nth--apr', {
               nth: props.nth,
             })} `}</p>
           <div>
@@ -49,7 +55,7 @@ const StakingBoxHeader: FunctionComponent<Props> = (props) => {
           </div>
         </div>
         <div>
-          <p>{`${t('reward.nth_staking_amount', {
+          <p>{`${t('reward.staking__nth--amount', {
             nth: props.nth,
           })} `}</p>
           <div>

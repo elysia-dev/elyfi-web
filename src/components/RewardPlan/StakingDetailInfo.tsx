@@ -70,13 +70,12 @@ const StakingDetailInfo: FunctionComponent<Props> = (props: Props) => {
       {miningDescription.map((data, index) => {
         return (
           <div
-            key={`reward-term-${index}`}
-            className={`jreward__data__${index}`}>
+            key={`reward-term-${index}`}>
             <p>{data[0]}</p>
             {isDai ? (
-              <p className="spoqa data">{data[1]}</p>
+              <p>{data[1]}</p>
             ) : (
-              <p className="spoqa data">
+              <p>
                 {index === 1 && staking >= 2
                   ? '1,000,000'
                   : index === 1
@@ -93,9 +92,8 @@ const StakingDetailInfo: FunctionComponent<Props> = (props: Props) => {
         <p>
           {t(isDai ? 'reward.accumulated_reward' : 'reward.accumulated_mining')}
         </p>
-        <p className="spoqa data">
+        <p>
           <CountUp
-            className="spoqa data"
             start={isDai ? start : miningStart}
             end={isDai ? end : miningEnd!}
             decimals={4}
@@ -107,9 +105,8 @@ const StakingDetailInfo: FunctionComponent<Props> = (props: Props) => {
       </div>
       <div>
         <p>{t(isDai ? 'reward.reward_limit' : 'reward.mining_limit')}</p>
-        <p className="spoqa data">
+        <p>
           <CountUp
-            className="spoqa data"
             start={
               staking <= 1
                 ? isDai

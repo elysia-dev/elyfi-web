@@ -14,7 +14,7 @@ import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
 import { useQuery } from '@apollo/client';
 import AssetList from 'src/containers/AssetList';
 import Token from 'src/enums/Token';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 
 interface Props {
@@ -63,6 +63,7 @@ const TokenTable: React.FC<Props> = ({
   const list = data?.assetBondTokens.filter((product) => {
     return product.reserve.id === reserveData?.id;
   });
+  const history = useHistory();
 
   const { lng } = useParams<{ lng: string }>();
 
@@ -71,9 +72,17 @@ const TokenTable: React.FC<Props> = ({
       <div className="deposit__table">
         <div className="deposit__table__ref" id={id} />
         <div className="deposit__table__header">
-          <div className="deposit__table__header__token-info">
+          <div 
+            className="deposit__table__header__token-info" 
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              history.push({
+                pathname: `/${lng}/deposits/${tokenName}`,
+              });
+            }}>
             <img src={tokenImage} alt="Token icon" />
-            <p className="bold">
+            <p className="bold"
+              style={{ cursor: 'pointer' }}>
               {tokenName}
             </p>
           </div>
@@ -81,11 +90,11 @@ const TokenTable: React.FC<Props> = ({
             <div />
             {
               [
-                ["총 예치금", toUsd(reserveData.totalDeposit, tokenInfo?.decimals)],
-                ["총 대출금", toUsd(reserveData.totalBorrow, tokenInfo?.decimals)],
-                ["ELFI 채굴 APR", miningAPR || 0],
-                ["대출 APY", toPercent(reserveData.borrowAPY)],
-                ["예치 APY", depositAPY || 0]
+                [t("dashboard.total_deposit"), toUsd(reserveData.totalDeposit, tokenInfo?.decimals)],
+                [t("dashboard.total_borrowed"), toUsd(reserveData.totalBorrow, tokenInfo?.decimals)],
+                [t("dashboard.token_mining_apr"), miningAPR || 0],
+                [t("dashboard.borrow_apy"), toPercent(reserveData.borrowAPY)],
+                [t("dashboard.deposit_apy"), depositAPY || 0]
               ].map((data) => {
                 return (
                   skeletonLoading ? (
@@ -111,13 +120,13 @@ const TokenTable: React.FC<Props> = ({
             <div className="deposit__table__body__amount__wrapper left">
               <div>
                 <h2>
-                  예치 수량
+                  {t("dashboard.deposit_amount")}
                 </h2>
               </div>
               <div className="deposit__table__body__amount">
                 <div onClick={!isDisable ? onClick : undefined}>
                   <p>
-                    예치 | 출금
+                    {t("dashboard.deposit_amount--button")}
                   </p>
                 </div>
                 <div>
@@ -126,7 +135,7 @@ const TokenTable: React.FC<Props> = ({
                   </h2>
                   <p>
                     {account ? (
-                      "지갑 잔액 : " + walletBalance + " " + tokenInfo.name
+                      `${t("dashboard.wallet_balance")} : ` + walletBalance + " " + tokenInfo.name
                       ) : 
                       ""
                     }
@@ -137,7 +146,7 @@ const TokenTable: React.FC<Props> = ({
             <div className="deposit__table__body__amount__wrapper right">
               <div>
                 <h2>
-                  보상 수량
+                  {t("dashboard.reward_amount")}
                 </h2>
               </div>
               <div className="deposit__table__body__amount">
@@ -150,7 +159,7 @@ const TokenTable: React.FC<Props> = ({
                   }}
                 >
                   <p>
-                    수령하기
+                    {t("dashboard.claim_reward")}
                   </p>
                 </div>
                 <div>
@@ -180,7 +189,7 @@ const TokenTable: React.FC<Props> = ({
               <Skeleton width={1148} height={768} />
             ) : (
               <div>
-                <h2>최근 대출리스트</h2>
+                <h2>{t("dashboard.recent_loan")}</h2>
                 <div>
                   <AssetList
                     assetBondTokens={
@@ -202,7 +211,7 @@ const TokenTable: React.FC<Props> = ({
                   style={{ display: (!!list && list?.length > 3) ? "block" : "none" }}>
                   <a href={`/${lng}/deposits/${tokenName}`}>
                     <p>
-                      + 더보기
+                      {t("main.governance.view-more")}
                     </p>
                   </a>
                 </div>

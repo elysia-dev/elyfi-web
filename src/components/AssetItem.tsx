@@ -2,13 +2,10 @@ import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 import { GetAllAssetBonds_assetBondTokens } from 'src/queries/__generated__/GetAllAssetBonds';
 import { toCompactForBignumber, toPercent } from 'src/utiles/formatters';
 import { parseTokenId } from 'src/utiles/parseTokenId';
-import { useTranslation } from 'react-i18next';
 import GoogleMapReact from 'google-map-react';
 
 import isLat from 'src/utiles/isLat';
 import isLng from 'src/utiles/isLng';
-import CollateralCategory from 'src/enums/CollateralCategory';
-import maturityFormmater from 'src/utiles/maturityFormmater';
 
 import Slate from 'src/clients/Slate';
 import ReserveData from 'src/core/data/reserves';
@@ -25,7 +22,6 @@ const AssetItem: FunctionComponent<{
   const parsedTokenId = useMemo(() => {
     return parseTokenId(abToken.id);
   }, [abToken]);
-  const { t } = useTranslation();
 
   const lat = parsedTokenId.collateralLatitude / 100000;
   const lng = parsedTokenId.collateralLongitude / 100000;

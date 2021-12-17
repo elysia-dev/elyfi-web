@@ -190,7 +190,7 @@ function MarketDetail(): JSX.Element {
           </p>
           &nbsp;&gt;&nbsp;
           <p>
-            {t('reward.reward_plan')}
+            {t('dashboard.reward_plan')}
           </p>
         </div>
         <div className="detail__header">
@@ -203,12 +203,12 @@ function MarketDetail(): JSX.Element {
         <div className="detail__container">
           <div className="detail__data-wrapper">
             <div className="detail__data-wrapper__title">
-              <h2>{t('market.details')}</h2>
+              <h2>{t('dashboard.details')}</h2>
             </div>
             <div className="detail__data-wrapper__total">
               <div>
                 <h2> 
-                  총 예치 수익률
+                  {t("dashboard.total_deposit--reward")}
                 </h2>
                 <h2>
                   {toPercent(BigNumber.from(data.depositAPY).add(miningAPR))}
@@ -216,7 +216,7 @@ function MarketDetail(): JSX.Element {
               </div>
               <div>
                 <h2>
-                  총 예치금
+                  {t("dashboard.total_deposit")}
                 </h2>
                 <h2>
                   {toUsd(data.totalDeposit, tokenInfo?.decimals)}
@@ -226,14 +226,14 @@ function MarketDetail(): JSX.Element {
             <div className="detail__data-wrapper__info">
               <div>
                 <div>
-                  <p>{t('market.deposit_apy')}</p>
+                  <p>{t('dashboard.deposit_apy')}</p>
                   <p>
                     {toPercent(data.depositAPY)}
                   </p>
                 </div>
                 <div>
                   <p>
-                    ELFI 채굴 APR
+                    {t('dashboard.token_mining_apr')}
                   </p>
                   <p>
                     {toPercent(miningAPR)}
@@ -241,12 +241,12 @@ function MarketDetail(): JSX.Element {
                 </div>
                 <div>
                   <p>
-                    {t('market.total_depositor')}
+                    {t('dashboard.total_depositor')}
                   </p>
                   <p>{data.deposit.length}</p>
                 </div>
                 <div>
-                  <p>{t('market.total_loans')}</p>
+                  <p>{t('dashboard.total_loans')}</p>
                   <p>{data.borrow.length}</p>
                 </div>
               </div>
@@ -262,7 +262,7 @@ function MarketDetail(): JSX.Element {
                           }}
                         />
                         <p>
-                          {t('market.total_borrowed')}
+                          {t('dashboard.total_borrowed')}
                         </p>
                       </div>
                       <p>
@@ -277,7 +277,7 @@ function MarketDetail(): JSX.Element {
                           }}
                         />
                         <p>
-                          {t('market.available_liquidity')}
+                          {t('dashboard.available_liquidity')}
                         </p>
                       </div>
                       <p>
@@ -293,7 +293,7 @@ function MarketDetail(): JSX.Element {
 
                   <div className="detail__data-wrapper__info__deposit__utilization">
                     <h2>
-                      {t('market.utilization')}
+                      {t('dashboard.utilization')}
                     </h2>
                     <h2>{`${utilization}%`}</h2>
                   </div>
@@ -316,14 +316,14 @@ function MarketDetail(): JSX.Element {
                   graphConverter ? ' disable' : ''
                 }`}
                 onClick={() => setGraphConverter(false)}>
-                <h2>{t('market.deposit')}</h2>
+                <h2>{t('dashboard.deposit')}</h2>
               </div>
               <div
                 className={`detail__graph__converter__button${
                   !graphConverter ? ' disable' : ''
                 }`}
                 onClick={() => setGraphConverter(true)}>
-                <h2>{t('market.borrow')}</h2>
+                <h2>{t('dashboard.borrow')}</h2>
               </div>
             </div>
             <Chart
@@ -334,12 +334,12 @@ function MarketDetail(): JSX.Element {
                 [
                   'Month',
                   graphConverter
-                    ? t('market.borrow_apy')
-                    : t('market.total_deposit_yield'),
+                    ? t('dashboard.borrow_apy')
+                    : t('dashboard.total_deposit--yield'),
                   { role: 'tooltip', p: { html: true } },
                   graphConverter
-                    ? t('market.total_borrowed')
-                    : t('market.total_deposit'),
+                    ? t('dashboard.total_borrowed')
+                    : t('dashboard.total_deposit'),
                   { role: 'tooltip', p: { html: true } },
                 ],
                 ...calcHistoryChartData(

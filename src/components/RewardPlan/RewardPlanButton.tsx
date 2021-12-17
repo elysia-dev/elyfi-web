@@ -1,4 +1,5 @@
 import { FunctionComponent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
 type Props = {
@@ -7,6 +8,7 @@ type Props = {
 
 const RewardPlanButton: FunctionComponent<Props> = ({ stakingType }) => {
   const { lng } = useParams<{ lng: string }>();
+  const { t } = useTranslation();
   return (
     <>
       <div className="reward-plan-button">
@@ -17,7 +19,7 @@ const RewardPlanButton: FunctionComponent<Props> = ({ stakingType }) => {
           href={`/${lng}/rewardplan/${stakingType}`}
           rel="noopener noreferrer">
           <p className="bold blue">
-            {'보상플랜 확인 하기 >'}
+            {t("dashboard.reward_plan--button")}
           </p>
         </a>
       </div>

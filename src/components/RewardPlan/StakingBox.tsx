@@ -48,7 +48,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
       <div className="reward__token">
         <img src={tokenImg} />
         <h2>
-          {t(`reward.${props.unit === 'DAI' ? 'elfi' : 'el'}_staking`)}
+          {t(`reward.token_staking__reward_plan`, { token: props.unit === 'DAI' ? 'ELFI' : 'EL' })}
         </h2>
       </div>
       <div className="reward__token__array-handler">

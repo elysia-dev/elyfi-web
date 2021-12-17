@@ -29,10 +29,11 @@ import { formatDecimalFracionDigit, toCompact } from 'src/utiles/formatters';
 import Skeleton from 'react-loading-skeleton';
 import CountUp from 'react-countup';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
+import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 
 function LPStaking(): JSX.Element {
   const { account, library } = useWeb3React();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { txType, txWaiting } = useContext(TxContext);
   const { elfiPrice } = useContext(PriceContext);
   const { ethPool, daiPool } = useContext(UniswapPoolContext);
@@ -280,17 +281,17 @@ function LPStaking(): JSX.Element {
             {t('lpstaking.lp_token_staking')}
           </h2>
           <p>
-            ELFI-ETH, ELFI-DAI 풀에 유동성을 공급하고 보상 토큰을 받아가세요!
+            {t('lpstaking.lp_token_staking__content')}
           </p>
           <div>
-            {["차 스테이킹", "차 스테이킹", "차 스테이킹"].map((data, index) => {
+            {Array(3).fill(0).map((_x, index) => {
               return (
                 <div
                   className={index === selectStaking ? "active" : ""}
                   onClick={() => setSelectStaking(index)}
                 >
                   <p>
-                    {(index + 1) + data}
+                    {t("staking.staking__nth", {nth: toOrdinalNumber(i18n.language, index + 1)})}
                   </p>
                 </div>
               )

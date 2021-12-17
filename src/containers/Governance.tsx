@@ -8,22 +8,10 @@ import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
 import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
 import { useQuery } from '@apollo/client';
 import AssetList from 'src/containers/AssetList';
-
-
-const initialNapData: INapData = {
-  id: 0,
-  nap: "",
-  status: "",
-  images: "",
-  votes: [
-    {
-      html: "",
-      id: "",
-      votes: 0
-    }
-  ],
-  totalVoters: 0
-}
+import { useTranslation, Trans } from 'react-i18next';
+import GovernanceGuideBox from 'src/components/GovernanceGuideBox';
+import { useParams, useHistory } from 'react-router-dom';
+import LanguageType from 'src/enums/LanguageType';
 
 const Governance = () => {
   const [onChainLoading, setOnChainLoading] = useState(true)
@@ -31,6 +19,9 @@ const Governance = () => {
   const [onChainData, setOnChainData] = useState<IProposals[]>([])
   const [offChainNapData, setOffChainNapData] = useState<INapData[]>([])
   const { data, loading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
+  const { t } = useTranslation();
+  const History = useHistory();
+  const { lng } = useParams<{ lng: string }>();
   
   const getOnChainNAPDatas = async () => {
     try {
@@ -118,7 +109,7 @@ const Governance = () => {
           </div>
           <div className="governance__asset__status">
             <p>
-              Status: {data.status}
+              {t("governance.status")}: {data.status}
             </p>
           </div>
           <div>
@@ -155,7 +146,7 @@ const Governance = () => {
           </div>
           <div className="governance__status">
             <p>
-              Status: {data.status}
+              {t("governance.status")}: {data.status}
             </p>
           </div>
           <div>
@@ -200,69 +191,36 @@ const Governance = () => {
       <section className="governance__content">
         <div>
           <h2>
-            ELYFI 거버넌스
+            {t("governance.title")}
           </h2>
           <p>
-            엘리파이는 탈중앙 조직(DAO)에 의해 운영되는 디파이(DeFi) 프로토콜입니다. <br/>
-            ELFI 토큰을 보유한 홀더는 누구나 탈중앙 조직멤버로서 엘리파이 운영에 참여할 수 있으며, 스테이킹시 프로토콜 순이익을 분배받을 수 있습니다.
+            {t("governance.content")}
           </p>
         </div>
         <div className="governance__content__button__wrapper">
-          <div className="governance__content__button">
+          <div className="governance__content__button"
+            onClick={() => History.push({ pathname: `/${lng}/staking/ELFI` })}
+          >
             <p>
-              ELFI 스테이킹 하기
+              {t("governance.button--staking")}
             </p>
           </div>
-          <div className="governance__content__button">
+          <div className="governance__content__button" onClick={() => 
+              window.open(lng === LanguageType.KO ? "https://elysia.gitbook.io/elyfi-governance-faq/v/kor/" : "https://elysia.gitbook.io/elyfi-governance-faq/")}>
             <p>
-              Governance FAQ
-            </p>
-          </div>
-        </div>
-      </section>
-      <section className="governance__elyfi-graph">
-        <div>
-          <div>
-            <p>
-              ELYFI
-            </p>
-          </div>
-        </div>
-        <div className="governance__elyfi-graph__arrow-container">
-          <div>
-            <p>
-              프로토콜 순 이익
-            </p>
-          </div>
-          <div className="arrow-wrapper">
-            <div className="line" />
-            <div className="right-arrow" />
-          </div>
-          <div className="arrow-wrapper">
-            <div className="left-arrow" />
-            <div className="line"/>
-          </div>
-          <div>
-            <p>
-              거버넌스 참여
-            </p>
-          </div>
-        </div>
-        <div>
-          <div>
-            <p>
-              ELYFI Holder
+              {t("governance.button--governance_faq")}
             </p>
           </div>
         </div>
       </section>
+      <GovernanceGuideBox />
       <section className="governance__validation governance__header">
         <div>
           <h3>
-            데이터 검증 리스트 ({offChainNapData.length} 건)
+            {t("governance.data_verification", { count: offChainNapData.length })}
           </h3>
           <p>
-            오프체인 거버넌스(DAO)에서 투표가 진행중인 매물 리스트 입니다.
+            {t("governance.data_verification__content")}
           </p>
         </div>
         {
@@ -280,10 +238,10 @@ const Governance = () => {
       <section className="governance__onchain-vote governance__header">
         <div>
           <h3>
-            온체인 투표 ({onChainData.length} 건)
+            {t("governance.on_chain_voting", { count: onChainData.length })}
           </h3>
           <p>
-            온체인 거버넌스(DAO)에서 투표가 진행중인 매물 리스트 입니다.
+            {t("governance.on_chain_voting__content")}
           </p>
         </div>
         {
@@ -301,10 +259,10 @@ const Governance = () => {
       <section className="governance__loan governance__header">
         <div>
           <h3>
-            대출리스트 ({data?.assetBondTokens.length} 건)
+            {t("governance.loan_list", { count: data?.assetBondTokens.length })}
           </h3>
           <p>
-            거버넌스(DAO)에서 통과해서 엘리파이에 DAI로 실행뙨 대출 리스트입니다.
+            {t("governance.loan_list__content")}
           </p>
         </div>
         {
