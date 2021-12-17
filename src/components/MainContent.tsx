@@ -14,13 +14,14 @@ const MainContent: React.FunctionComponent<{
 
   return (
     <div className="main__section">
-      <div className="main__content__image-container">
       {
-        index % 2 ? 
-          <img src={data.image} /> : 
+        index % 2 ? (
+          <div className="main__content__image-container">
+            <img src={data.image} /> 
+          </div>
+        ) : 
           <></>
       }
-      </div>
       <div className="main__content">
         <div>
           <h2 className="blue">
@@ -43,13 +44,14 @@ const MainContent: React.FunctionComponent<{
           </div>
         </div>
       </div>
-      <div className="main__content__image-container">
       {
-        !(index % 2) ? 
-          <img src={data.image} /> : 
+        !(index % 2) ? (
+          <div className="main__content__image-container">
+            <img src={data.image} /> 
+          </div>
+        ) : 
           <></>
       }
-      </div>
     </div>
   )
 }
