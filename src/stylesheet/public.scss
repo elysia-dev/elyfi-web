@@ -1772,6 +1772,7 @@ input[type=number] {
             > p {
               font-size: 10px;
               margin-right: 3.5px;
+              cursor: pointer;
             }
           }
         }
@@ -1808,13 +1809,19 @@ input[type=number] {
           > div {
             border-bottom: 1px solid $gray-line;
             padding: 10px 30px; 
+            > p {
+              cursor: pointer;
+              color: $font-color;
+              font-size: 15px;
+            }
             &:last-child {
               border: 0;
-              padding: 0px 30px 20px; 
+              padding: 0px 30px 20px;
               > div > h2 {
                 font-size: 15px;
                 line-height: 25px;
                 margin-top: 13px;
+                cursor: pointer;
               }
             } 
           }
@@ -1958,6 +1965,16 @@ input[type=number] {
     width: 1190px;
     margin: 0 auto;
     margin-top: $navigation-margin-height;
+    &__view-button {
+      width: 100%;
+      height: 61px;
+      background: #ffffff;
+      cursor: pointer;
+      border: 1px solid #e6e6e6;
+      color: #333333;
+      font-size: 15px;
+      border-radius: 5px;
+    }
     &__borrower {
       border-radius: 5px;
       border: 1px solid $gray-line;
