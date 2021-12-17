@@ -166,7 +166,7 @@ const TokenTable: React.FC<Props> = ({
                   <h2>
                   {account ? (
                     <CountUp
-                      className="bold amount"
+                      className="bold amounts"
                       start={parseFloat(formatEther(expectedIncentiveBefore))}
                       end={parseFloat(formatEther(expectedIncentiveAfter))}
                       formattingFn={(number) => {
