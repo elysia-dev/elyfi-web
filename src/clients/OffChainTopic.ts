@@ -22,6 +22,7 @@ export interface INapData {
   images: string;
   votes: IOffChainVote[];
   totalVoters: number;
+  link: string;
 }
 
 export default class OffChainTopic {

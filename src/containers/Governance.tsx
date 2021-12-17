@@ -65,7 +65,8 @@ const Governance = () => {
               totalVotesCast: data.totalVotesCast,
               totalVotesCastAbstained: data.totalVotesCastAbstained,
               totalVotesCastAgainst: data.totalVotesCastAgainst,
-              totalVotesCastInSupport: data.totalVotesCastInSupport
+              totalVotesCastInSupport: data.totalVotesCastInSupport,
+              id: data.id.match(/(?=).*(?=-proposal)/)?.toString()
             } as IProposals
           ])
         }) 
@@ -77,7 +78,6 @@ const Governance = () => {
         title_res.map(async (_res, _x) => {
           const getNATData = await OffChainTopic.getTopicResult(_res)
           const getHTMLStringData: string = getNATData.data.post_stream.posts[0].cooked.toString();
-
           setOffChainNapData(napData => [ 
             ...napData, 
             {
@@ -87,6 +87,7 @@ const Governance = () => {
               images: getHTMLStringData.match(/(?<=a href=").*(?=" rel="noopener nofollow ugc">Collateral Image)/)?.toString() || "",
               votes: getNATData.data.post_stream.posts[0].polls[0].options,
               totalVoters: getNATData.data.post_stream.posts[0].polls[0].voters,
+              link: `https://forum.elyfi.world/t/${getNATData.data.slug}`
             } as INapData 
           ])
         })
@@ -97,7 +98,7 @@ const Governance = () => {
 
   const offChainContainer = (data: INapData) => {
     return (
-      <div className="governance__validation__assets governance__asset">
+      <div className="governance__validation__assets governance__asset" onClick={()=> window.open(data.link)}>
         <div>
           <img src={data.images} />
         </div>
@@ -134,7 +135,7 @@ const Governance = () => {
   }
   const onChainConatainer = (data: IProposals) => {
     return (
-      <div className="governance__onchain-vote__assets governance__asset">
+      <div className="governance__onchain-vote__assets governance__asset" onClick={()=> window.open(`https://www.withtally.com/governance/elyfi/proposal/${data.id}`)}>
         <div>
           <img src={TempAssets} />
         </div>

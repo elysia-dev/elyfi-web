@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import OffChainTopic, { INapData } from 'src/clients/OffChainTopic';
+import OffChainTopic from 'src/clients/OffChainTopic';
 import Skeleton from 'react-loading-skeleton';
-import { IProposals, OnChainTopic } from 'src/clients/OnChainTopic';
+import { OnChainTopic } from 'src/clients/OnChainTopic';
 import { useTranslation, Trans } from 'react-i18next';
 
 const MainGovernanceTable = () => {
@@ -25,7 +25,6 @@ const MainGovernanceTable = () => {
   const getOnChainNAPDatas = async () => {
     try {
       const getOnChainApis = await OnChainTopic.getOnChainTopicData()
-      console.log(getOnChainApis)
       const getNAPCodes = getOnChainApis.data.data.proposals.filter((topic) => {
         return topic.data.description.startsWith("NAP")
         // return topic.data.description.match(/(?<=NAP).*(?=:)/)?.toString()
@@ -55,12 +54,13 @@ const MainGovernanceTable = () => {
       res === undefined ? setOnChainLoading(false) : 
         res.map((data) => {
           const dates: Date = new Date(parseInt(data.timestamp, 10) * 1000)
+          const getDataId = data.id.match(/(?=).*(?=-proposal)/)?.toString();
           return setOnChainData(_data => [
             ..._data,
             {
               title: data.data.description.match(/(?=NAP).*(?<=)/)?.toString() || "",
               created_at: dates,
-              link: "https://www.withtally.com/governance/elyfi/proposal/110042509135245071528856369095215227320251736400475387226026289672205689907343"
+              link: `https://www.withtally.com/governance/elyfi/proposal/${getDataId}`
             }
           ])
         }) 
@@ -124,7 +124,7 @@ const MainGovernanceTable = () => {
               {t("main.governance.table--date")}
             </p>
           </div>
-          {(selectButton ? 
+          {(!selectButton ? 
             [...(offChainNapData || [])]
               .sort((a, b) => {
                 return b.created_at! > a.created_at!
