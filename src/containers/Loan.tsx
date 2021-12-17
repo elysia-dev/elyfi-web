@@ -39,7 +39,9 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
     <>
       <section className="loan">
         <div >
-          <h2>{t('loan.loan__title')}</h2>
+          <h2>
+            {t("governance.loan_list", { count: data?.assetBondTokens.length })}
+          </h2>
           <p>
             {t('loan.loan__content')}
           </p>
@@ -95,7 +97,7 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
             {list?.length && list.length >= pageNumber * 9 && (
               <div>
                 <button
-                  style={{ width: '100px', height: '50px' }}
+                  className="portfolio__view-button"
                   onClick={() => viewMoreHandler()}>
                   {t("loan.view-more")}
                 </button>
