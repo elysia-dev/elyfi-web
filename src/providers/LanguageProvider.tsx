@@ -13,10 +13,8 @@ const LanguageProvider: React.FC = (props) => {
 
   const setLanguage = (language: LanguageType) => {
     window.localStorage.setItem('@language', language);
-    console.log(language)
     history.push(`/${language}`);
     const getPath = location.pathname.split('/')[2]
-    console.log(getPath)
     if (getPath === undefined) { 
       return history.push(`/${language}`);
     }

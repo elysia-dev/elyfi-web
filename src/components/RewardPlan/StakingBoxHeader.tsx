@@ -24,7 +24,6 @@ const StakingBoxHeader: FunctionComponent<Props> = (props) => {
   const tokenImg = props.unit === Token.DAI ? elfi : el;
   const tokenName = props.unit === 'DAI' ? 'ELFI' : 'EL';
   const currentNth = props.nth
-  console.log(tokenName)
   return (
     <>
       <div className="reward__token__header">

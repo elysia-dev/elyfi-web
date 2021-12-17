@@ -71,7 +71,6 @@ const MainGovernanceTable = () => {
       title_res === undefined ? setOffChainLoading(false) : 
         title_res.map(async (_res, _x) => {
           const getNATData = await OffChainTopic.getTopicResult(_res)
-          console.log(getNATData)
           const dates: Date = new Date(getNATData.data.created_at)
           setOffChainNapData(napData => [ 
             ...napData, 
