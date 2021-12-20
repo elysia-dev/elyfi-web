@@ -1,5 +1,8 @@
 import { Trans, useTranslation } from 'react-i18next';
-import { useParams, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import MediaQuery from 'src/enums/MediaQuery';
 
 const MainContent: React.FunctionComponent<{
   index: number,
@@ -12,10 +15,13 @@ const MainContent: React.FunctionComponent<{
   const { t } = useTranslation();
   const History = useHistory();
 
+  const { value: mediaQuery } = useMediaQueryType();
+
+
   return (
     <div className="main__section">
       {
-        index % 2 ? (
+        (!(index % 2) && mediaQuery !== MediaQuery.Mobile) ? (
           <div className="main__content__image-container">
             <img src={data.image} /> 
           </div>
@@ -37,7 +43,14 @@ const MainContent: React.FunctionComponent<{
           <p className="main__content__details">
             {t(`main.section.${index}.content`)}
           </p>
-          <div onClick={() => History.push({ pathname: data.link })}>
+          {
+            mediaQuery === MediaQuery.Mobile && (
+              <div className="main__content__image-container">
+                <img src={data.image} /> 
+              </div>
+            )
+          }
+          <div onClick={() => History.push({ pathname: data.link })} className="main__content__button">
             <p>
               {t(`main.section.${index}.button`)}
             </p>
@@ -45,7 +58,7 @@ const MainContent: React.FunctionComponent<{
         </div>
       </div>
       {
-        !(index % 2) ? (
+        (index % 2 && mediaQuery !== MediaQuery.Mobile)? (
           <div className="main__content__image-container">
             <img src={data.image} /> 
           </div>

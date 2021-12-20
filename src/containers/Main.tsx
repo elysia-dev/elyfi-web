@@ -16,11 +16,9 @@ import HOW from 'src/assets/images/how.png';
 import TSMP from 'src/assets/images/tsmp.png';
 import MainGovernanceTable from 'src/components/MainGovernanceTable';
 import AssetDom from 'src/assets/images/main/asset-dom.png';
-import Bottom from 'src/assets/images/main/bottom.png';
 import Pit from 'src/assets/images/main/pit.png';
 import { useTranslation, Trans } from 'react-i18next';
 import MainContent from 'src/components/MainContent';
-import translations from 'src/i18n/index';
 import MainGraph from 'src/components/MainGraph';
 import LanguageType from 'src/enums/LanguageType';
 
@@ -54,7 +52,7 @@ const Main = () => {
               {t("main.landing.header__content")}
             </p>
           </div>
-          <div className="main__title__button">
+          <div className="main__title__button pc-only">
             <div onClick={() => History.push({ pathname: `/${lng}/dashboard` })}>
               <p>
                 {t("main.landing.button__deposit")}
@@ -70,6 +68,18 @@ const Main = () => {
         <div className="main__image-wrapper">
           <img src={AssetDom} className="dom" />
           <img src={Pit} className="pit" />
+        </div>
+        <div className="main__title__button mobile-only">
+          <div onClick={() => History.push({ pathname: `/${lng}/dashboard` })}>
+            <p>
+              {t("main.landing.button__deposit")}
+            </p>
+          </div>
+          <div onClick={() => window.open(lng === LanguageType.KO ? 'https://elysia.gitbook.io/elysia.finance/' : 'https://elysia.gitbook.io/elysia.finance/v/eng')}>
+            <p>
+              {t("main.landing.button__view-more")}
+            </p>
+          </div>
         </div>
       </section>
       {
@@ -113,9 +123,10 @@ const Main = () => {
       </section>
       <section className="main__service main__section">
         <h2><Trans i18nKey={"main.graph.title"} /></h2>
+        
         <MainGraph />
 
-        <div className="main__service__comment">
+        <div className="main__service__comment pc-only">
           <p>
             {t("main.graph.investment-linked-financial")}
           </p>
@@ -126,7 +137,7 @@ const Main = () => {
           </div>
         </div>
       </section>
-      <section className="main__partners  main__section">
+      <section className="main__partners main__section">
         <div>
           <h2 className="bold">
             <Trans i18nKey={"main.partners.title"} />
