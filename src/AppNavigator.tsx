@@ -3,7 +3,6 @@ import { Switch, Route, useHistory } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import ScrollToTop from 'src/hooks/ScrollToTop';
 import usePageTracking from 'src/hooks/usePageTracking';
-import { useMediaQuery } from 'react-responsive';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
 import envs from 'src/core/envs';
 
@@ -13,27 +12,25 @@ import Main from 'src/containers/Main';
 import Guide from 'src/containers/Guide';
 import Governance from 'src/containers/Governance';
 
-
-// import 'src/stylesheet/jpublic.scss';
-// import 'src/stylesheet/jpc.scss';
-// import 'src/stylesheet/jtablet.scss';
-// import 'src/stylesheet/jmobile.scss';
 import 'src/stylesheet/public.scss';
-// import 'src/stylesheet/pc.scss';
+import 'src/stylesheet/pc.scss';
 // import 'src/stylesheet/tablet.scss';
-// import 'src/stylesheet/mobile.scss';
+import 'src/stylesheet/mobile.scss';
 import Navigation from 'src/components/Navigation';
 import Footer from 'src/components/Footer';
 import getLocalLanauge from 'src/utiles/getLocalLanguage';
 import LanguageProvider from 'src/providers/LanguageProvider';
 // import DarkmodeModal from 'src/components/DarkmodeButton';
-import LPStaking from './containers/LPStaking';
-import RewardPlan from './containers/RewardPlan';
-import MarketDetail from './containers/MarketDetails';
-import PortfolioDetail from './containers/PortfolioDetail';
+import LPStaking from 'src/containers/LPStaking';
+import RewardPlan from 'src/containers/RewardPlan';
+import MarketDetail from 'src/containers/MarketDetails';
+import PortfolioDetail from 'src/containers/PortfolioDetail';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import MediaQuery from 'src/enums/MediaQuery';
 
 const AppNavigator: React.FC = () => {
   const [isDarkmodeActivated, setDarkModeActivated] = useState(false);
+  const [hamburgerBar, setHamburgerBar] = useState(false);
   const setDarkMode = () => {
     setDarkModeActivated(!isDarkmodeActivated);
     window.sessionStorage.getItem('@isDarkMode') === 'true' ?
@@ -44,25 +41,7 @@ const AppNavigator: React.FC = () => {
     window.sessionStorage.getItem('@isDarkMode') === 'true' ? setDarkModeActivated(true) : setDarkModeActivated(false)
   }, [])
 
-  const isPc = useMediaQuery({
-    query: '(min-width: 1190px)',
-  });
-  const isTablet = useMediaQuery({
-    query: '(min-width: 768px) and (max-width: 1189px)',
-  });
-  const isMobile = useMediaQuery({
-    query: '(max-width: 767px)',
-  });
-  const setMediaQuery = () => {
-    isPc
-      ? window.sessionStorage.setItem('@MediaQuery', 'PC')
-      : isTablet
-      ? window.sessionStorage.setItem('@MediaQuery', 'Tablet')
-      : window.sessionStorage.setItem('@MediaQuery', 'Mobile');
-  };
-  useEffect(() => {
-    setMediaQuery();
-  }, [isPc, isTablet, isMobile]);
+  const { value: mediaQuery } = useMediaQueryType();
 
   const { active, chainId, deactivate, activate } = useWeb3React();
   usePageTracking();
@@ -88,14 +67,18 @@ const AppNavigator: React.FC = () => {
   return (
     <div
       className={
-        // `elysia ${isPc ? 'view-w' : isTablet ? 'view-t' : 'view-m'} ${isDarkmodeActivated ? "dark" : "light"}`
-        "elysia"
-      }>
+        `elysia ${mediaQuery === MediaQuery.PC ? 'view-w' : mediaQuery === MediaQuery.Tablet ? 'view-t' : 'view-m'}`
+        // "elysia"
+      }
+      style={{
+        position: hamburgerBar ? "fixed": "initial"
+      }}
+      >
       <ScrollToTop />
       <Switch>
         <Route path="/:lng">
           <LanguageProvider>
-            <Navigation />
+            <Navigation hamburgerBar={hamburgerBar} setHamburgerBar={setHamburgerBar} />
             {/* <DarkmodeModal 
               isDarkmode={isDarkmodeActivated}
               setDarkMode={() => setDarkMode()}
