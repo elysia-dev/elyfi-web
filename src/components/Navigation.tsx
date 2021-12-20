@@ -17,7 +17,12 @@ const InitialNavigation: INavigation[] = [
   }
 ]
 
-const Navigation = () => {
+const Navigation:React.FunctionComponent<{
+  hamburgerBar: boolean,
+  setHamburgerBar: (
+    value: React.SetStateAction<boolean>
+  ) => void,
+}> = ({ hamburgerBar, setHamburgerBar }) => {
   // Hover Value
   const [globalNavHover, setGlobalNavHover] = useState(0);
 
@@ -34,10 +39,30 @@ const Navigation = () => {
   const [scrolling, setScrolling] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
 
-  const initialNavigationState = () => {
-    setSelectedLocalNavIndex(0)
-    setGlobalNavHover(0)
+
+  const getLNBData = navigationLink.filter((nav) => nav.type === NavigationType.LNB);
+  
+  const currentPage = useMemo(() => {
+    const getPath = navigationLink.filter(
+      (nav) => location.pathname.split('/')[2] === nav.location.split('/')[1]
+    )
+    return getPath.length === 0 ? 
+      InitialNavigation : 
+      getPath
+  }, [location])
+
+  const getHoveredLNBData = useMemo(() => {
+    return getLNBData.filter(
+      (subNav) => subNav.id === globalNavHover
+    )
+  }, [globalNavHover])
+
+  const isBold = (_index: number) => {
+    return currentPage[0].id === _index + 1 ? true :
+      (globalNavHover || selectedLocalNavIndex) === _index + 1 ? true : 
+      false
   }
+  
   function setScrollTrigger () {
     function onScroll() {
       const currentPosition = window.pageYOffset;
@@ -51,6 +76,12 @@ const Navigation = () => {
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }
+
+  const initialNavigationState = () => {
+    setSelectedLocalNavIndex(0)
+    setGlobalNavHover(0)
+  }
+  
   const setMediaQueryMetamask = (ref: "mobile" | "pc") => {
     return (
       <div className={`navigation__wallet__container ${ref === "mobile" ? "mobile-only" : "pc-only"}`} 
@@ -64,28 +95,7 @@ const Navigation = () => {
     )
   }
 
-  const currentPage = useMemo(() => {
-    const getPath = navigationLink.filter(
-      (nav) => location.pathname.split('/')[2] === nav.location.split('/')[1]
-    )
-    return getPath.length === 0 ? 
-      InitialNavigation : 
-      getPath
-  }, [location])
 
-  const getLNBData = navigationLink.filter((nav) => nav.type === NavigationType.LNB);
-  const getHoveredLNBData = useMemo(() => {
-    return getLNBData.filter(
-      (subNav) => subNav.id === globalNavHover
-    )
-  }, [globalNavHover])
-
-  const isBold = (_index: number) => {
-    return currentPage[0].id === _index + 1 ? true :
-      (globalNavHover || selectedLocalNavIndex) === _index + 1 ? true : 
-      false
-  }
-  
   const localNavInnerContainer = (_data: ISubNavigation, isExternalLink: boolean) => {
     return (
       <Link
@@ -243,9 +253,10 @@ const Navigation = () => {
   return (
     <>
       <nav
-        className="navigation"
+        className={`navigation`}
         style={{ 
-          backgroundColor: scrollTop > 125 ? '#FFFFFF' : '#FFFFFF'
+          backgroundColor: scrollTop > 125 ? '#FFFFFF' : '#FFFFFF',
+          height: hamburgerBar ? "100vh" : "auto"
         }}
         ref={navigationRef}  
         onMouseLeave={() => {
@@ -270,9 +281,29 @@ const Navigation = () => {
               </Link>
             </div>
             {setNavigationLink()}
+            <div
+              className={`navigation__hamburger ${hamburgerBar && 'active'} mobile-only`}
+              onClick={() => {
+                setHamburgerBar(!hamburgerBar)
+              }}>
+              <i />
+              <i />
+              <i />
+            </div>
           </div>
           {setMediaQueryMetamask("pc")}
         </div>
+        {hamburgerBar && (
+          navigationLink.map((data) => {
+            return (
+              <div>
+                <p>
+                  {data.i18nKeyword}
+                </p>
+              </div>
+            )
+          })
+        )}
       </nav>
       <div className="navigation__margin" style={{ marginBottom: 100 }} />
     </>
