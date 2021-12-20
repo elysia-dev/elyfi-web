@@ -19,9 +19,9 @@ import Governance from 'src/containers/Governance';
 // import 'src/stylesheet/jtablet.scss';
 // import 'src/stylesheet/jmobile.scss';
 import 'src/stylesheet/public.scss';
-import 'src/stylesheet/pc.scss';
-import 'src/stylesheet/tablet.scss';
-import 'src/stylesheet/mobile.scss';
+// import 'src/stylesheet/pc.scss';
+// import 'src/stylesheet/tablet.scss';
+// import 'src/stylesheet/mobile.scss';
 import Navigation from 'src/components/Navigation';
 import Footer from 'src/components/Footer';
 import getLocalLanauge from 'src/utiles/getLocalLanguage';
@@ -87,7 +87,10 @@ const AppNavigator: React.FC = () => {
 
   return (
     <div
-      className={`elysia ${isPc ? 'view-w' : isTablet ? 'view-t' : 'view-m'} ${isDarkmodeActivated ? "dark" : "light"}`}>
+      className={
+        // `elysia ${isPc ? 'view-w' : isTablet ? 'view-t' : 'view-m'} ${isDarkmodeActivated ? "dark" : "light"}`
+        "elysia"
+      }>
       <ScrollToTop />
       <Switch>
         <Route path="/:lng">
@@ -133,15 +136,12 @@ const AppNavigator: React.FC = () => {
                 Governance
               }
             />
-             <Route exact path="/:lng/staking/LP" component={LPStaking} />
             <Route
               exact
               path="/:lng/portfolio/:id"
               component={PortfolioDetail}
             />
             <Route exact path="/:lng/rewardplan/:stakingType" component={RewardPlan} />
-            <Route exact path="/:lng/staking/EL" component={StakingEL} />
-            <Route exact path="/:lng/staking/ELFI" component={StakingELFI} />
             <Route exact path="/:lng/deposits/:id" component={MarketDetail} />
             <Route
               exact

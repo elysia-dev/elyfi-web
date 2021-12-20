@@ -16,6 +16,8 @@ import HOW from 'src/assets/images/how.png';
 import TSMP from 'src/assets/images/tsmp.png';
 import MainGovernanceTable from 'src/components/MainGovernanceTable';
 import AssetDom from 'src/assets/images/main/asset-dom.png';
+import Bottom from 'src/assets/images/main/bottom.png';
+import Pit from 'src/assets/images/main/pit.png';
 import { useTranslation, Trans } from 'react-i18next';
 import MainContent from 'src/components/MainContent';
 import translations from 'src/i18n/index';
@@ -65,7 +67,10 @@ const Main = () => {
             </div>
           </div>
         </div>
-        <img src={AssetDom} />
+        <div className="main__image-wrapper">
+          <img src={AssetDom} className="dom" />
+          <img src={Pit} className="pit" />
+        </div>
       </section>
       {
         sectionEvent.map((_data, _index) => {

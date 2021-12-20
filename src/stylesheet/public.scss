@@ -402,6 +402,29 @@ input[type=number] {
   .main {
     width: 1190px;
     margin: 0 auto;
+    &__image-wrapper {
+      position: relative;
+      width: 515px;
+      display: flex;
+      .dom {
+        position: relative;
+        top: -50px;
+        z-index: 1;
+        animation: floating alternate 10s ease-in-out infinite;
+      }
+      .pit {
+        position: absolute;
+        top: 200px;
+      }
+      @keyframes floating {
+        from {
+          top: -50px;
+        }
+        to {
+          top: 40px;
+        }
+      }
+    }
     &__section {
       display: flex;
       align-items: center;

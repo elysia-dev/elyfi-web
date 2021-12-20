@@ -4,7 +4,7 @@ import envs from "src/core/envs";
 
 const isWalletConnect = (): boolean => {
   const { active, chainId } = useWeb3React();
-  const isValidChain = envs.requiredNetwork === 'Ganache' || chainId === envs.requiredChainId
+  const isValidChain = envs.requiredNetwork === 'ganache' || chainId === envs.requiredChainId
 
   return active && isValidChain
 }

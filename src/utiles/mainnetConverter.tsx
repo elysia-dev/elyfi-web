@@ -15,7 +15,7 @@ const mainnetConverter = (mainnetChainId: number | undefined) => {
     case 97:
       return 'Binance Testnet';
     default:
-      return 'Binance Mainnet';
+      return 'Ethereum Mainnet';
   }
 };
 
