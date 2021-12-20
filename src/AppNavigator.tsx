@@ -122,13 +122,7 @@ const AppNavigator: React.FC = () => {
                 Dashboard
               }
             />
-            <Route
-              exact
-              path="/:lng/guide"
-              component={
-                Guide
-              }
-            />
+            
             <Route
               exact
               path="/:lng/governance"

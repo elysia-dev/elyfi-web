@@ -66,11 +66,5 @@ export const navigationLink: INavigation[] = [
         i18nKeyword: "navigation.governance_docs"
       }
     ]
-  },
-  {
-    id: 5,
-    type: NavigationType.Link,
-    location: `/guide`,
-    i18nKeyword: "navigation.guide"
   }
 ]
