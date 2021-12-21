@@ -13,12 +13,12 @@ const DetailBoxItemReceiveToken: FunctionComponent<tokenTypes> = (props) => {
       <div className="staking__lp__detail-box__receive-token__header">
         <div>
           <p>
-          {t('lpstaking.lp_token_staking_modal', {
-            token0,
-            token1,
-          })}
+            {t('lpstaking.lp_token_staking_modal', {
+              token0,
+              token1,
+            })}
           </p>
-          <Guide content={t('guide.create_liquidity')} />
+          <Guide content={t('guide.create_liquidity', { token: token1 })} />
         </div>
         <a
           className="staking__lp__detail-box__receive-token__button"
@@ -29,9 +29,7 @@ const DetailBoxItemReceiveToken: FunctionComponent<tokenTypes> = (props) => {
               ? `https://app.uniswap.org/#/add/${envs.governanceAddress}/${envs.wEthAddress}`
               : `https://app.uniswap.org/#/add/${envs.governanceAddress}/${envs.daiAddress}`
           }>
-          <p>
-            {t('lpstaking.receive_lp_token')}
-          </p>
+          <p>{t('lpstaking.receive_lp_token')}</p>
         </a>
       </div>
       <div className="staking__lp__detail-box__receive-token__content">
@@ -44,7 +42,6 @@ const DetailBoxItemReceiveToken: FunctionComponent<tokenTypes> = (props) => {
             }}
           />
         </p>
-        
       </div>
     </>
   );
