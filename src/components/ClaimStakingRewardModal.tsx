@@ -4,7 +4,7 @@ import { FunctionComponent, useContext } from 'react';
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
 import DaiImage from 'src/assets/images/dai.png';
-import { formatCommaSmall } from 'src/utiles/formatters';
+import { formatCommaSmall, formatSixFracionDigit } from 'src/utiles/formatters';
 import Token from 'src/enums/Token';
 import { useTranslation } from 'react-i18next';
 import useStakingPool from 'src/hooks/useStakingPool';
@@ -12,12 +12,20 @@ import useWatingTx from 'src/hooks/useWaitingTx';
 import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
+import RoundData from 'src/core/types/RoundData';
+import CountUp from 'react-countup';
+import { formatEther } from '@ethersproject/units';
 import ModalHeader from './ModalHeader';
 
 const ClaimStakingRewardModal: FunctionComponent<{
   stakedToken: Token.ELFI | Token.EL;
   token: Token.ELFI | Token.DAI;
-  balance: BigNumber;
+  balance?: {
+    before: BigNumber;
+    value: BigNumber;
+  };
+  endedBalance: BigNumber;
+  currentRound: RoundData;
   visible: boolean;
   round: number;
   closeHandler: () => void;
@@ -28,6 +36,8 @@ const ClaimStakingRewardModal: FunctionComponent<{
   stakedToken,
   token,
   balance,
+  endedBalance,
+  currentRound,
   round,
   closeHandler,
   afterTx,
@@ -64,7 +74,28 @@ const ClaimStakingRewardModal: FunctionComponent<{
                         ? 30
                         : 60,
                   }}>
-                  {formatCommaSmall(balance)}
+                  {!endedBalance?.isZero()
+                    ? formatCommaSmall(endedBalance)
+                    : balance && (
+                        <CountUp
+                          className={`spoqa__bold colored ${
+                            token === Token.ELFI ? 'EL' : 'ELFI'
+                          }`}
+                          start={parseFloat(formatEther(balance.before))}
+                          end={parseFloat(
+                            formatEther(
+                              balance.before.isZero()
+                                ? currentRound.accountReward
+                                : balance.value,
+                            ),
+                          )}
+                          formattingFn={(number) => {
+                            return formatSixFracionDigit(number);
+                          }}
+                          decimals={6}
+                          duration={1}
+                        />
+                      )}
                 </p>
               </div>
               <div
@@ -76,7 +107,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
                     'ClaimStakingRewardModal',
                     'Claim',
                     `${utils.formatEther(
-                      balance,
+                      (balance?.value || endedBalance)!,
                     )} ${stakedToken} ${round}round`,
                   );
 

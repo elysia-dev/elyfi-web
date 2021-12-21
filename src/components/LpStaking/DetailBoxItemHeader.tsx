@@ -6,32 +6,24 @@ import Guide from '../Guide';
 const DetailBoxItemHeader: FunctionComponent<DetailBoxItemHeaderProps> = (
   props,
 ) => {
-  const { totalLiquidity, apr } = props;
+  const { totalLiquidity, apr, token1 } = props;
   const { t } = useTranslation();
 
   return (
     <>
       <div>
         <div>
-          <p>
-            APR
-          </p>
+          <p>APR</p>
           <Guide content={t('guide.apr')} />
         </div>
-        <h2 className="percent">
-          {apr}
-        </h2>
+        <h2 className="percent">{apr}</h2>
       </div>
       <div>
         <div>
-          <p>
-            {t('lpstaking.lp_token_total_liquidity')}
-          </p>
-          <Guide content={t('guide.total_liquidity')} />
+          <p>{t('lpstaking.lp_token_total_liquidity')}</p>
+          <Guide content={t('guide.total_liquidity', { token: token1 })} />
         </div>
-        <h2 className="amount">
-          {totalLiquidity}
-        </h2>
+        <h2 className="amount">{totalLiquidity}</h2>
       </div>
     </>
   );

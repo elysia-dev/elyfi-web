@@ -2,7 +2,10 @@ import { FunctionComponent } from 'react';
 import { utils } from 'ethers';
 import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 import Skeleton from 'react-loading-skeleton';
-import lpStakingTime from 'src/core/data/lpStakingTime';
+import lpStakingTime, {
+  lpRoundDate,
+  lpUnixTimestamp,
+} from 'src/core/data/lpStakingTime';
 import moment from 'moment';
 import Token from 'src/enums/Token';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
@@ -24,20 +27,20 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
     apr,
     isLoading,
     setModalAndSetStakeToken,
+    round,
   } = props;
-  const { token0, token1 } = tokens
+  const { token0, token1 } = tokens;
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const { account } = useWeb3React();
   const { t } = useTranslation();
   const secondImg = tokens.token1 === Token.ETH ? eth : dai;
+
   return (
     <section className="staking__lp__detail-box__container">
       <div className="staking__lp__detail-box__header">
         <img src={elfi} alt="Token Icon" />
         <img src={secondImg} alt="Token Icon" className="second-token" />
-        <h2>
-          {t('lpstaking.lp_token_staking_title', { token0, token1 })}
-        </h2>
+        <h2>{t('lpstaking.lp_token_staking_title', { token0, token1 })}</h2>
       </div>
       <div className="staking__lp__detail-box__body">
         {!isLoading ? (
@@ -45,14 +48,19 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
             <section className="staking__lp__detail-box__item-header">
               <DetailBoxItemHeader
                 totalLiquidity={formatDecimalFracionDigit(totalLiquidity, 2)}
-                apr={apr}
+                apr={
+                  moment().isBetween(
+                    lpRoundDate[round - 1].startedAt,
+                    lpRoundDate[round - 1].endedAt,
+                  )
+                    ? apr
+                    : '-'
+                }
+                token1={token1}
               />
             </section>
             <section className="staking__lp__detail-box__receive-token">
-              <DetailBoxItemReceiveToken
-                token0={tokens.token0}
-                token1={tokens.token1}
-              />
+              <DetailBoxItemReceiveToken token0={token0} token1={token1} />
             </section>
             <section className="staking__lp__detail-box__staking">
               <DetailBoxItemStaking
@@ -69,17 +77,23 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
                     : '0'
                 }
                 setModalAndSetStakeToken={setModalAndSetStakeToken}
+                round={round}
               />
             </section>
+            <p className="staking__lp__detail-box__time-data">
+              {moment
+                .unix(lpUnixTimestamp[round - 1].startedAt)
+                .format('YYYY-MM-DD HH:mm:ss')}{' '}
+              -{' '}
+              {moment
+                .unix(lpUnixTimestamp[round - 1].endedAt)
+                .format('YYYY-MM-DD HH:mm:ss')}
+            </p>
           </>
         ) : (
           <Skeleton width={'100%'} height={550} />
         )}
       </div>
-      <p className="staking__lp__detail-box__time-data">
-        {moment(lpStakingTime.startedAt).format('YYYY-MM-DD HH:mm:ss')} -{' '}
-        {moment(lpStakingTime.endedAt).format('YYYY-MM-DD HH:mm:ss')}
-      </p>
     </section>
   );
 };

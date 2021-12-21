@@ -4,6 +4,7 @@ type Position = {
   id: string;
   incentivePotisions: {
     incentive: {
+      id: string;
       pool: string;
       rewardToken: string;
     };

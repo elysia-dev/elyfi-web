@@ -20,7 +20,7 @@ const StakingProgressFill: FunctionComponent<Props> = (props) => {
       <progress
         className="reward__progress-bar"
         value={props.end}
-        max={isDai ? (props.staking > 1 ? 50000 : 25000) : 3000000}
+        max={isDai ? (props.staking > 1 ? 50000 : 25000) : 5000000}
       />
       <div className="reward__progress-bar__content">
         {isDai ? (

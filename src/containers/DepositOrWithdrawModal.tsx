@@ -142,7 +142,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
           },
         );
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error(error);
         tracker.canceled();
       });
   };
@@ -174,8 +175,9 @@ const DepositOrWithdrawModal: FunctionComponent<{
           },
         );
       })
-      .catch((e) => {
-        failTransaction(tracker, onClose, e);
+      .catch((error) => {
+        failTransaction(tracker, onClose, error);
+        console.error(error);
       });
   };
 
@@ -206,8 +208,9 @@ const DepositOrWithdrawModal: FunctionComponent<{
           },
         );
       })
-      .catch((e) => {
-        failTransaction(tracker, onClose, e);
+      .catch((error) => {
+        failTransaction(tracker, onClose, error);
+        console.error(error);
       });
   };
 
@@ -221,8 +224,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
           loaded: true,
         });
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((error) => {
+        console.error(error);
       });
   }, [reserve, reserveERC20, account]);
 

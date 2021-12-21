@@ -35,8 +35,6 @@ type Props = {
   OrdinalNumberConverter?: (value: number) => string;
 };
 
-// 컴포넌트명 변경 해줘야함
-
 const StakingBox: FunctionComponent<Props> = (props: Props) => {
   const isDai = props.unit === 'DAI';
   const rewardOrMining = isDai ? 'reward' : 'mining';
@@ -48,11 +46,13 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
       <div className="reward__token">
         <img src={tokenImg} />
         <h2>
-          {t(`reward.token_staking__reward_plan`, { token: props.unit === 'DAI' ? 'ELFI' : 'EL' })}
+          {t(`reward.token_staking__reward_plan`, {
+            token: props.unit === 'DAI' ? 'ELFI' : 'EL',
+          })}
         </h2>
       </div>
       <div className="reward__token__array-handler">
-        <div 
+        <div
           className={`reward__token__array-handler--left${
             props.staking === 0 ? ' disabled' : ''
           }`}
@@ -65,12 +65,11 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
                   ? props.staking - 1
                   : props.state.currentElfiLevel,
               });
-          }} 
-        >
+          }}>
           <i />
           <i />
         </div>
-        <div 
+        <div
           className={`reward__token__array-handler--right${
             props.staking >= stakingRoundTimes.length - 1 ? ' disabled' : ''
           }`}
@@ -83,8 +82,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
                   ? props.staking + 1
                   : props.state.currentElfiLevel,
               });
-          }}
-        >
+          }}>
           <i />
           <i />
         </div>
@@ -108,9 +106,9 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
                 ? props.staking > 1
                   ? '50,000'
                   : '25,000'
-                : (3000000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                : (5000000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
             }
-            max={isDai ? (props.staking > 1 ? 50000 : 25000) : 3000000}
+            max={isDai ? (props.staking > 1 ? 50000 : 25000) : 5000000}
             unit={props.unit}
             nth={props.nth}
             stakingRoundFill={
@@ -138,7 +136,6 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
           />
         </div>
       </div>
-      
     </>
   );
 };

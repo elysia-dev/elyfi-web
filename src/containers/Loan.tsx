@@ -2,7 +2,6 @@ import { FunctionComponent, useCallback, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
 import { useTranslation } from 'react-i18next';
-import Footer from 'src/components/Footer';
 import Skeleton from 'react-loading-skeleton';
 import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
 import { BigNumber, constants, utils } from 'ethers';
@@ -38,15 +37,13 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
   return (
     <>
       <section className="loan">
-        <div >
+        <div>
           <h2>
-            {t("governance.loan_list", { count: data?.assetBondTokens.length })}
+            {t('governance.loan_list', { count: data?.assetBondTokens.length })}
           </h2>
-          <p>
-            {t('loan.loan__content')}
-          </p>
+          <p>{t('loan.loan__content')}</p>
         </div>
-        
+
         {/* <div className="text__title" >
           <div
             className="loan__select-box"
@@ -99,7 +96,7 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
                 <button
                   className="portfolio__view-button"
                   onClick={() => viewMoreHandler()}>
-                  {t("loan.view-more")}
+                  {t('loan.view-more')}
                 </button>
               </div>
             )}

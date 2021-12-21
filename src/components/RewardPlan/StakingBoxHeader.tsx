@@ -23,23 +23,26 @@ const StakingBoxHeader: FunctionComponent<Props> = (props) => {
   const { t, i18n } = useTranslation();
   const tokenImg = props.unit === Token.DAI ? elfi : el;
   const tokenName = props.unit === 'DAI' ? 'ELFI' : 'EL';
-  const currentNth = props.nth
+  const currentNth = props.nth;
   return (
     <>
       <div className="reward__token__header">
         <img src={tokenImg} />
         <h2>
-          <Trans i18nKey={"reward.staking__nth"} values={{ 
-            token: tokenName, 
-            nth: currentNth 
-          }} />
+          <Trans
+            i18nKey={'reward.staking__nth'}
+            values={{
+              token: tokenName,
+              nth: currentNth,
+            }}
+          />
         </h2>
       </div>
       <div className="reward__token__staking">
         <div>
           <p>{`${t('reward.staking__nth--apr', {
-              nth: props.nth,
-            })} `}</p>
+            nth: props.nth,
+          })} `}</p>
           <div>
             <h2 className="percent">
               {props.loading ? (
@@ -65,9 +68,7 @@ const StakingBoxHeader: FunctionComponent<Props> = (props) => {
                 formatComma(props.poolPrincipal)
               )}
             </h2>
-            <span className="bold">
-              {props.unit === 'DAI' ? 'ELFI' : 'EL'}
-            </span>
+            <span className="bold">{props.unit === 'DAI' ? 'ELFI' : 'EL'}</span>
           </div>
         </div>
       </div>

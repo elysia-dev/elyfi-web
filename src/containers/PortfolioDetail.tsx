@@ -73,7 +73,8 @@ const PortfolioDetail: FunctionComponent = () => {
           link: contractDoc.link,
         });
       }
-    } catch {
+    } catch (error) {
+      console.error(error);
       setContractImage({
         hash: '',
         link: '',

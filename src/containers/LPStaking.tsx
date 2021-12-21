@@ -6,13 +6,13 @@ import Header from 'src/components/Header';
 import PriceContext from 'src/contexts/PriceContext';
 import envs from 'src/core/envs';
 import StakedLp from 'src/components/LpStaking/StakedLp';
-import StakerSubgraph from 'src/clients/StakerSubgraph';
+import StakerSubgraph, { IPoolPosition } from 'src/clients/StakerSubgraph';
 import Position, { TokenInfo } from 'src/core/types/Position';
 import LpTokenPoolSubgraph from 'src/clients/LpTokenPoolSubgraph';
 import Token from 'src/enums/Token';
 import TxContext from 'src/contexts/TxContext';
 import stakerABI from 'src/core/abi/StakerABI.json';
-import { useDaiPositionLpApr, useEthPositionLpApr } from 'src/hooks/useLpApy';
+import useLpApr from 'src/hooks/useLpApy';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import RewardModal from 'src/components/LpStaking/RewardModal';
 import DetailBox from 'src/components/LpStaking/DetailBox';
@@ -30,6 +30,9 @@ import Skeleton from 'react-loading-skeleton';
 import CountUp from 'react-countup';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
+import moment from 'moment';
+import { lpRoundDate, lpUnixTimestamp } from 'src/core/data/lpStakingTime';
+import getIncentiveId from 'src/utiles/getIncentive';
 
 function LPStaking(): JSX.Element {
   const { account, library } = useWeb3React();
@@ -38,7 +41,8 @@ function LPStaking(): JSX.Element {
   const { elfiPrice } = useContext(PriceContext);
   const { ethPool, daiPool } = useContext(UniswapPoolContext);
   const { ethPrice, daiPrice } = useContext(PriceContext);
-  const { setExpecteReward, expectedReward, updateExpectedReward } =
+  const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
+  const { setExpecteReward, expectedReward, updateExpectedReward, isError } =
     useUpdateExpectedReward();
   const [rewardVisibleModal, setRewardVisibleModal] = useState(false);
   const [stakingVisibleModal, setStakingVisibleModal] = useState(false);
@@ -46,6 +50,9 @@ function LPStaking(): JSX.Element {
   const [stakedPositions, setStakedPositions] = useState<Position[]>([]);
   const [unstakedPositions, setUnstakedPositions] = useState<TokenInfo[]>([]);
   const [stakeToken, setStakeToken] = useState<Token.DAI | Token.ETH>();
+  const [totalStakedPositions, setTotalStakedPositions] = useState<
+    IPoolPosition | undefined
+  >();
   const [totalExpectedReward, setTotalExpectedReward] = useState<{
     beforeTotalElfi: number;
     totalElfi: number;
@@ -65,28 +72,41 @@ function LPStaking(): JSX.Element {
     ethPool.stakedToken0 * elfiPrice + ethPool.stakedToken1 * ethPrice;
   const daiPoolTotalLiquidity =
     daiPool.stakedToken0 * elfiPrice + daiPool.stakedToken1 * daiPrice;
+
+  const currentRound =
+    lpUnixTimestamp.findIndex((staking) => {
+      const startedAt = moment
+        .unix(staking.startedAt)
+        .format('YYYY.MM.DD HH:mm:ss Z');
+      const endedAt = moment
+        .unix(staking.endedAt)
+        .format('YYYY.MM.DD HH:mm:ss Z');
+      return moment().isBetween(startedAt, endedAt);
+    }) + 1 || 1;
+
+  const [round, setRound] = useState(currentRound);
+
+  const incentiveIds = getIncentiveId();
+
   const [unstakeTokenId, setUnstakeTokenId] = useState(0);
+  const { calcEthElfiPoolApr, calcDaiElfiPoolApr } = useLpApr();
   const [rewardToReceive, setRewardToRecive] = useState<RewardTypes>({
     elfiReward: 0,
     ethReward: 0,
     daiReward: 0,
   });
-  const ethPoolApr = useEthPositionLpApr();
-  const daiPoolApr = useDaiPositionLpApr();
   const [totalLiquidity, setTotalLiquidity] = useState<{
     daiElfiPoolTotalLiquidity: number;
     ethElfiPoolTotalLiquidity: number;
-    ethElfiliquidityForApr: BigNumber;
-    daiElfiliquidityForApr: BigNumber;
+    ethElfiliquidityForApr: string;
+    daiElfiliquidityForApr: string;
   }>({
     daiElfiPoolTotalLiquidity: 0,
     ethElfiPoolTotalLiquidity: 0,
-    ethElfiliquidityForApr: constants.Zero,
-    daiElfiliquidityForApr: constants.Zero,
+    ethElfiliquidityForApr: '0',
+    daiElfiliquidityForApr: '0',
   });
-  const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
-  const [selectStaking, setSelectStaking] = useState(0) // 추후 current staking 값 계산해서 연결 필요!!
-  
+
   const getRewardToRecive = useCallback(async () => {
     try {
       if (!account) {
@@ -119,69 +139,109 @@ function LPStaking(): JSX.Element {
         ),
       });
     } catch (error) {
-      console.log(error);
+      console.error(`${error}`);
     }
   }, [setRewardToRecive, account]);
 
+  const filterPosition = (position: Position) => {
+    return position.incentivePotisions.some((incentivePotision) =>
+      incentivePotision.incentive.rewardToken.toLowerCase() ===
+      envs.daiAddress.toLowerCase()
+        ? incentivePotision.incentive.id.toLowerCase() ===
+          incentiveIds[round - 1].daiIncentiveId
+        : incentivePotision.incentive.id.toLowerCase() ===
+          incentiveIds[round - 1].ethIncentiveId,
+    );
+  };
+
   const getStakedPositions = useCallback(() => {
     if (!account) return;
-    StakerSubgraph.getPositionsByOwner(account!).then((res) => {
-      // console.log(res)
-      setStakedPositions(res.data.data.positions);
-    });
-  }, [stakedPositions, account]);
-  
+    StakerSubgraph.getPositionsByOwner(account!)
+      .then((res) => {
+        setStakedPositions(res.data.data.positions);
+      })
+      .catch((error) => {
+        console.error(`${error}`);
+      });
+  }, [stakedPositions, account, incentiveIds]);
+
   const getWithoutStakePositions = useCallback(() => {
     if (!account) return;
-    LpTokenPoolSubgraph.getPositionsByOwner(account!).then((res) => {
-      setUnstakedPositions(res.data.data.positions);
-    });
+    LpTokenPoolSubgraph.getPositionsByOwner(account!)
+      .then((res) => {
+        setUnstakedPositions(res.data.data.positions);
+      })
+      .catch((error) => {
+        console.error(`${error}`);
+      });
   }, [unstakedPositions, account]);
 
-  const getTotalLiquidity = useCallback(() => {
+  const getAllStakedPositions = useCallback(() => {
     setIsLoading(true);
-    StakerSubgraph.getStakedPositionsByPoolId(
+    StakerSubgraph.getIncentivesWithPositionsByPoolId(
       envs.ethElfiPoolAddress,
       envs.daiElfiPoolAddress,
     ).then((res) => {
-      const daiElfiPoolTotalLiquidity =
-        res.data.data.daiIncentive[0]?.incentivePotisions.reduce(
+      setTotalStakedPositions(res.data);
+    });
+  }, [totalLiquidity, isLoading, stakedPositions]);
+
+  // total value of the steak in the pool.
+  const calcTotalStakedLpToken = useCallback(() => {
+    const daiElfiPoolTotalLiquidity =
+      totalStakedPositions?.data.daiIncentive
+        .filter(
+          (incentive) =>
+            incentive.id === incentiveIds[round - 1].daiIncentiveId,
+        )[0]
+        ?.incentivePotisions.reduce(
           (sum, current) => sum.add(current.position.liquidity),
           constants.Zero,
         ) || constants.Zero;
 
-      const ethElfiPoolTotalLiquidity =
-        res.data.data.wethIncentive[0]?.incentivePotisions.reduce(
+    const ethElfiPoolTotalLiquidity =
+      totalStakedPositions?.data.wethIncentive
+        .filter(
+          (incentive) =>
+            incentive.id === incentiveIds[round - 1].ethIncentiveId,
+        )[0]
+        ?.incentivePotisions.reduce(
           (sum, current) => sum.add(current.position.liquidity),
           constants.Zero,
         ) || constants.Zero;
-      setTotalLiquidity({
-        ...totalLiquidity,
-        daiElfiPoolTotalLiquidity: parseFloat(
-          utils.formatEther(daiElfiPoolTotalLiquidity),
-        ),
-        ethElfiPoolTotalLiquidity: parseFloat(
-          utils.formatEther(ethElfiPoolTotalLiquidity),
-        ),
-        daiElfiliquidityForApr: daiElfiPoolTotalLiquidity,
-        ethElfiliquidityForApr: ethElfiPoolTotalLiquidity,
-      });
-      setIsLoading(false);
+
+    const daiElfiLiquidityToDollar =
+      parseFloat(utils.formatEther(daiElfiPoolTotalLiquidity)) *
+      pricePerDaiLiquidity;
+    const ethElfiLiquidityToDollar =
+      parseFloat(utils.formatEther(ethElfiPoolTotalLiquidity)) *
+      pricePerEthLiquidity;
+
+    setTotalLiquidity({
+      ...totalLiquidity,
+      daiElfiPoolTotalLiquidity: daiElfiLiquidityToDollar,
+      ethElfiPoolTotalLiquidity: ethElfiLiquidityToDollar,
+      daiElfiliquidityForApr: calcDaiElfiPoolApr(daiElfiLiquidityToDollar),
+      ethElfiliquidityForApr: calcEthElfiPoolApr(ethElfiLiquidityToDollar),
     });
-  }, [totalLiquidity, isLoading]);
+    setIsLoading(false);
+  }, [totalLiquidity, round, totalStakedPositions]);
 
   const totalStakedLiquidity = (poolAddress: string) => {
-    return stakedPositions
-      .filter(
-        (position) =>
-          position.staked &&
-          position.incentivePotisions.some(
-            (incentivePosition) =>
-              incentivePosition.incentive.pool.toLowerCase() ===
-              poolAddress.toLowerCase(),
-          ),
+    const positionsByIncentiveId = stakedPositions.filter(
+      (position) => position.staked && filterPosition(position),
+    );
+    const totalLiquidity = positionsByIncentiveId
+      .filter((position) =>
+        position.incentivePotisions.some(
+          (incentivePosition) =>
+            incentivePosition.incentive.pool.toLowerCase() ===
+            poolAddress.toLowerCase(),
+        ),
       )
       .reduce((sum, current) => sum.add(current.liquidity), constants.Zero);
+
+    return totalLiquidity;
   };
 
   useEffect(() => {
@@ -192,13 +252,13 @@ function LPStaking(): JSX.Element {
     ) {
       getStakedPositions();
     }
-  }, [account, txType, txWaiting]);
+  }, [account, txType, txWaiting, round]);
 
   useEffect(() => {
     if (txWaiting) return;
     getWithoutStakePositions();
     getRewardToRecive();
-    getTotalLiquidity();
+    getAllStakedPositions();
   }, [txWaiting, account]);
 
   useEffect(() => {
@@ -213,37 +273,53 @@ function LPStaking(): JSX.Element {
   }, [txType, txWaiting, account]);
 
   useEffect(() => {
-    setExpecteReward(stakedPositions);
-  }, [stakedPositions, account]);
+    setExpecteReward(stakedPositions, round, incentiveIds);
+  }, [account, stakedPositions, round]);
 
   useEffect(() => {
-    setTotalExpectedReward({
-      ...totalExpectedReward,
-      beforeTotalElfi: totalExpectedReward.totalElfi,
-      totalElfi: expectedReward.reduce(
-        (current, reward) => current + reward.elfiReward,
-        0,
-      ),
-      beforeTotalEth: totalExpectedReward.totalEth,
-      totalEth: expectedReward.reduce(
-        (current, reward) => current + reward.ethReward,
-        0,
-      ),
-      beforeTotalDai: totalExpectedReward.totalDai,
-      totalDai: expectedReward.reduce(
-        (current, reward) => current + reward.daiReward,
-        0,
-      ),
-    });
-    if (expectedReward.length === 0) return;
-    const inter = setInterval(() => {
-      updateExpectedReward(
-        stakedPositions,
-        ethPoolTotalLiquidity,
-        daiPoolTotalLiquidity,
-      );
-    }, 1000);
-    return () => clearInterval(inter);
+    calcTotalStakedLpToken();
+  }, [totalStakedPositions, round]);
+
+  useEffect(() => {
+    try {
+      setTotalExpectedReward({
+        ...totalExpectedReward,
+        beforeTotalElfi: totalExpectedReward.totalElfi,
+        totalElfi: expectedReward.reduce(
+          (current, reward) => current + reward.elfiReward,
+          0,
+        ),
+        beforeTotalEth: totalExpectedReward.totalEth,
+        totalEth: expectedReward.reduce(
+          (current, reward) => current + reward.ethReward,
+          0,
+        ),
+        beforeTotalDai: totalExpectedReward.totalDai,
+        totalDai: expectedReward.reduce(
+          (current, reward) => current + reward.daiReward,
+          0,
+        ),
+      });
+      if (
+        !moment().isBetween(
+          lpRoundDate[round - 1].startedAt,
+          lpRoundDate[round - 1].endedAt,
+        )
+      )
+        return;
+
+      const interval = setInterval(() => {
+        updateExpectedReward(
+          stakedPositions,
+          ethPoolTotalLiquidity,
+          daiPoolTotalLiquidity,
+          incentiveIds[round - 1],
+        );
+      }, 1000);
+      return () => clearInterval(interval);
+    } catch (error) {
+      console.error(error);
+    }
   }, [expectedReward, account]);
 
   return (
@@ -274,28 +350,28 @@ function LPStaking(): JSX.Element {
         rewardTokenAddress={
           stakeToken === Token.ETH ? envs.wEthAddress : envs.daiAddress
         }
+        round={round}
       />
       <section className="staking">
         <div className="staking__lp__header">
-          <h2>
-            {t('lpstaking.lp_token_staking')}
-          </h2>
-          <p>
-            {t('lpstaking.lp_token_staking__content')}
-          </p>
+          <h2>{t('lpstaking.lp_token_staking')}</h2>
+          <p>{t('lpstaking.lp_token_staking__content')}</p>
           <div>
-            {Array(3).fill(0).map((_x, index) => {
-              return (
-                <div
-                  className={index === selectStaking ? "active" : ""}
-                  onClick={() => setSelectStaking(index)}
-                >
-                  <p>
-                    {t("staking.staking__nth", {nth: toOrdinalNumber(i18n.language, index + 1)})}
-                  </p>
-                </div>
-              )
-            })}
+            {Array(3)
+              .fill(0)
+              .map((_x, index) => {
+                return (
+                  <div
+                    className={index + 1 === round ? 'active' : ''}
+                    onClick={() => setRound(index + 1)}>
+                    <p>
+                      {t('staking.staking__nth', {
+                        nth: toOrdinalNumber(i18n.language, index + 1),
+                      })}
+                    </p>
+                  </div>
+                );
+              })}
           </div>
         </div>
         <RewardPlanButton stakingType={'LP'} />
@@ -305,143 +381,51 @@ function LPStaking(): JSX.Element {
               token0: Token.ELFI,
               token1: Token.ETH,
             }}
-            totalLiquidity={ethPoolTotalLiquidity}
-            totalStakedLiquidity={totalStakedLiquidity(
-              envs.ethElfiPoolAddress,
-            )}
-            apr={ethPoolApr}
+            totalLiquidity={totalLiquidity.ethElfiPoolTotalLiquidity}
+            totalStakedLiquidity={totalStakedLiquidity(envs.ethElfiPoolAddress)}
+            apr={totalLiquidity.ethElfiliquidityForApr}
             isLoading={isLoading}
             setModalAndSetStakeToken={() => {
               setStakingVisibleModal(true);
               setStakeToken(Token.ETH);
             }}
+            round={round}
           />
           <DetailBox
             tokens={{
               token0: Token.ELFI,
               token1: Token.DAI,
             }}
-            totalLiquidity={daiPoolTotalLiquidity}
-            totalStakedLiquidity={totalStakedLiquidity(
-              envs.daiElfiPoolAddress,
-            )}
-            apr={daiPoolApr}
+            totalLiquidity={totalLiquidity.daiElfiPoolTotalLiquidity}
+            totalStakedLiquidity={totalStakedLiquidity(envs.daiElfiPoolAddress)}
+            apr={totalLiquidity.daiElfiliquidityForApr}
             isLoading={isLoading}
             setModalAndSetStakeToken={() => {
               setStakingVisibleModal(true);
               setStakeToken(Token.DAI);
             }}
+            round={round}
           />
         </section>
         <section className="staking__lp__staked">
           <StakedLp
-            stakedPositions={stakedPositions.filter(
-              (position) => position.staked,
-            )}
+            stakedPositions={stakedPositions
+              .filter((position) => position.staked)
+              .filter((stakedPosition) => filterPosition(stakedPosition))}
             setUnstakeTokenId={setUnstakeTokenId}
-            ethElfiStakedLiquidity={totalStakedLiquidity(envs.ethElfiPoolAddress)}
-            daiElfiStakedLiquidity={totalStakedLiquidity(envs.daiElfiPoolAddress)}
+            ethElfiStakedLiquidity={totalStakedLiquidity(
+              envs.ethElfiPoolAddress,
+            )}
+            daiElfiStakedLiquidity={totalStakedLiquidity(
+              envs.daiElfiPoolAddress,
+            )}
             expectedReward={expectedReward}
             totalExpectedReward={totalExpectedReward}
+            isError={isError}
+            round={round}
+            isLoading={isLoading}
           />
         </section>
-        {stakedPositions.length > 0 || !account ? (
-          <section className="staking__lp__staked__reward">
-            <div className="staking__lp__staked__reward__total-liquidity">
-              <h2>
-                {t('lpstaking.staked_total_liquidity')}
-              </h2>
-              <h2 className="amount">
-                {toCompact(
-                  parseFloat(utils.formatEther(totalStakedLiquidity(envs.ethElfiPoolAddress))) *
-                    pricePerEthLiquidity +
-                    parseFloat(utils.formatEther(totalStakedLiquidity(envs.daiElfiPoolAddress))) *
-                      pricePerDaiLiquidity,
-                )}
-              </h2>
-            </div>
-            <div className="staking__lp__staked__reward__amount">
-              <h2>{t('lpstaking.staked_total_expected_reward')}</h2>
-              <div>
-                <CountUp
-                  className="bold"
-                  start={totalExpectedReward.beforeTotalElfi}
-                  end={totalExpectedReward.totalElfi}
-                  formattingFn={(number) => {
-                    return formatDecimalFracionDigit(number, 2);
-                  }}
-                  duration={1}
-                  decimals={4}
-                />
-                <h2 className="staking__lp__staked__reward__amount__unit">
-                  {Token.ELFI}
-                </h2>
-              </div>
-              <div>
-                <CountUp
-                  className="bold"
-                  start={totalExpectedReward.beforeTotalEth}
-                  end={totalExpectedReward.totalEth}
-                  formattingFn={(number) => {
-                    return formatDecimalFracionDigit(number, 2);
-                  }}
-                  duration={1}
-                  decimals={4}
-                />
-                <h2 className="staking__lp__staked__reward__amount__unit">
-                  {Token.ETH}
-                </h2>
-              </div>
-              <div>
-                <CountUp
-                  className="bold"
-                  start={totalExpectedReward.beforeTotalDai}
-                  end={totalExpectedReward.totalDai}
-                  formattingFn={(number) => {
-                    return formatDecimalFracionDigit(number, 2);
-                  }}
-                  duration={1}
-                  decimals={4}
-                />
-                <h2 className="staking__lp__staked__reward__amount__unit">
-                  {Token.DAI}
-                </h2>
-              </div>
-            </div>
-          </section>
-        ) : (
-          <section className="staking__lp__staked__reward">
-            <div className="staking__lp__staked__reward__total-liquidity">
-              <h2>
-                {t('lpstaking.staked_total_liquidity')}
-              </h2>
-              <h2 className="amount">
-                -
-              </h2>
-            </div>
-            <div className="staking__lp__staked__reward__amount">
-              <h2>{t('lpstaking.staked_total_expected_reward')}</h2>
-              <div>
-                <span>-</span>
-                <h2 className="staking__lp__staked__reward__amount__unit">
-                  {Token.ELFI}
-                </h2>
-              </div>
-              <div>
-                <span>-</span>
-                <h2 className="staking__lp__staked__reward__amount__unit">
-                  {Token.ETH}
-                </h2>
-              </div>
-              <div>
-                <span>-</span>
-                <h2 className="staking__lp__staked__reward__amount__unit">
-                  {Token.DAI}
-                </h2>
-              </div>
-            </div>
-          </section>
-        )}
 
         <section className="staking__lp__reward">
           <Reward

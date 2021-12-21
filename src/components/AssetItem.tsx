@@ -42,9 +42,12 @@ const AssetItem: FunctionComponent<{
         'https://elysia-public.s3.ap-northeast-2.amazonaws.com/elyfi/borrow01.png',
       );
     }
-
-    const response = await Slate.fetctABTokenIpfs(abToken.ipfsHash || '');
-    setImage(response.data.images[0]?.link);
+    try {
+      const response = await Slate.fetctABTokenIpfs(abToken.ipfsHash || '');
+      setImage(response.data.images[0]?.link);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {

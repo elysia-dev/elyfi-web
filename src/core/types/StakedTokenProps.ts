@@ -17,6 +17,9 @@ type StakedTokenProps = {
     beforeTotalDai: number;
     totalDai: number;
   };
+  isError: string;
+  round: number;
+  isLoading: boolean;
 };
 
 export default StakedTokenProps;

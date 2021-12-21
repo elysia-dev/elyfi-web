@@ -10,16 +10,17 @@ const LanguageProvider: React.FC = (props) => {
   const history = useHistory();
   const location = useLocation();
 
-
   const setLanguage = (language: LanguageType) => {
     window.localStorage.setItem('@language', language);
     history.push(`/${language}`);
-    const getPath = location.pathname.split('/')[2]
-    if (getPath === undefined) { 
+    const getPath = location.pathname.split('/')[2];
+    if (getPath === undefined) {
       return history.push(`/${language}`);
     }
-    i18n.changeLanguage(language)
-    history.push(`/${language + "/" + getPath + location.pathname.split(getPath)[1]}`);
+    i18n.changeLanguage(language);
+    history.push(
+      `/${language + '/' + getPath + location.pathname.split(getPath)[1]}`,
+    );
   };
 
   useEffect(() => {

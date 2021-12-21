@@ -16,7 +16,6 @@ import Skeleton from 'react-loading-skeleton';
 import { useQuery } from '@apollo/client';
 import { GetUser } from 'src/queries/__generated__/GetUser';
 import { GET_USER } from 'src/queries/userQueries';
-import ELFI from 'src/assets/images/ELFI.png';
 import { useTranslation } from 'react-i18next';
 import envs from 'src/core/envs';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
@@ -31,13 +30,13 @@ import {
 import ReactGA from 'react-ga';
 import TokenTable from 'src/components/TokenTable';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
-import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 import CountUp from 'react-countup';
 import Token from 'src/enums/Token';
-import HeaderCircle from 'src/assets/images/title-circle.png'
+import HeaderCircle from 'src/assets/images/title-circle.png';
 import IncentiveModal from 'src/containers/IncentiveModal';
 import useTvl from 'src/hooks/useTvl';
 import isWalletConnect from 'src/hooks/isWalletConnect';
+import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 import ConnectWalletModal from './ConnectWalletModal';
 
 const initialBalanceState = {
@@ -96,7 +95,8 @@ const Dashboard: React.FunctionComponent = () => {
     Token.DAI,
   );
   const { value: tvl, loading: tvlLoading } = useTvl();
-  const [connectWalletModalvisible, setConnectWalletModalvisible] = useState<boolean>(false);
+  const [connectWalletModalvisible, setConnectWalletModalvisible] =
+    useState<boolean>(false);
   const walletConnect = isWalletConnect();
 
   useEffect(() => {
@@ -112,47 +112,54 @@ const Dashboard: React.FunctionComponent = () => {
     reserve: GetAllReserves_reserves,
     account: string,
   ) => {
-    const incentive = await IncentivePool__factory.connect(
-      reserve.incentivePool.id,
-      library.getSigner(),
-    ).getUserIncentive(account);
+    try {
+      const incentive = await IncentivePool__factory.connect(
+        reserve.incentivePool.id,
+        library.getSigner(),
+      ).getUserIncentive(account);
 
-    return {
-      value: await ERC20__factory.connect(reserve.id, library).balanceOf(
-        account,
-      ),
-      incentive,
-      expectedIncentiveBefore: incentive,
-      expectedIncentiveAfter: incentive,
-      governance: await ERC20__factory.connect(
-        envs.governanceAddress,
-        library,
-      ).balanceOf(account),
-      deposit: await ERC20__factory.connect(
-        reserve.lToken.id,
-        library,
-      ).balanceOf(account),
-    };
+      return {
+        value: await ERC20__factory.connect(reserve.id, library).balanceOf(
+          account,
+        ),
+        incentive,
+        expectedIncentiveBefore: incentive,
+        expectedIncentiveAfter: incentive,
+        governance: await ERC20__factory.connect(
+          envs.governanceAddress,
+          library,
+        ).balanceOf(account),
+        deposit: await ERC20__factory.connect(
+          reserve.lToken.id,
+          library,
+        ).balanceOf(account),
+      };
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const loadBalance = async (index: number) => {
     if (!account) return;
+    try {
+      refetchReserve();
+      refetchUserData();
 
-    refetchReserve();
-    refetchUserData();
-
-    setBalances(
-      await Promise.all(
-        balances.map(async (data, _index) => {
-          if (_index !== index) return data;
-          return {
-            ...data,
-            ...(await fetchBalanceFrom(reserves[index], account)),
-            updatedAt: moment().unix(),
-          };
-        }),
-      ),
-    );
+      setBalances(
+        await Promise.all(
+          balances.map(async (data, _index) => {
+            if (_index !== index) return data;
+            return {
+              ...data,
+              ...(await fetchBalanceFrom(reserves[index], account)),
+              updatedAt: moment().unix(),
+            };
+          }),
+        ),
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const loadBalances = async () => {
@@ -175,8 +182,8 @@ const Dashboard: React.FunctionComponent = () => {
           }),
         ),
       );
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.error(error);
       setBalances(
         balances.map((data) => {
           return {
@@ -233,9 +240,9 @@ const Dashboard: React.FunctionComponent = () => {
 
     window.scrollTo({
       top: offsetPosition,
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
-  }
+  };
 
   return (
     <>
@@ -283,16 +290,16 @@ const Dashboard: React.FunctionComponent = () => {
       />
       <ConnectWalletModal
         visible={connectWalletModalvisible}
-        onClose={()=>{
-          setConnectWalletModalvisible(false)
+        onClose={() => {
+          setConnectWalletModalvisible(false);
         }}
       />
 
       <div className="deposit">
-        <div className="deposit__title" style={{ backgroundImage: `url(${HeaderCircle})` }}>
-          <p className="montserrat__bold">
-            Total Value Locked
-          </p>
+        <div
+          className="deposit__title"
+          style={{ backgroundImage: `url(${HeaderCircle})` }}>
+          <p className="montserrat__bold">Total Value Locked</p>
           <CountUp
             start={0}
             end={tvlLoading ? 0 : tvl}
@@ -300,9 +307,7 @@ const Dashboard: React.FunctionComponent = () => {
             decimals={4}
             duration={2}
             delay={0}>
-            {({ countUpRef }) => (
-              <h2 className="blue" ref={countUpRef} />
-            )}
+            {({ countUpRef }) => <h2 className="blue" ref={countUpRef} />}
           </CountUp>
         </div>
         <RewardPlanButton stakingType={'deposit'} />
@@ -311,44 +316,37 @@ const Dashboard: React.FunctionComponent = () => {
             <div className="deposit__remote-control">
               {balances.map((data, index) => {
                 return (
-                  <a 
-                    onClick={() => remoteControlScroll(`table-${index}`)}
-                  >
+                  <a onClick={() => remoteControlScroll(`table-${index}`)}>
                     <div>
                       <div className="deposit__remote-control__images">
                         <img src={reserveTokenData[data.tokenName].image} />
                       </div>
                       <div className="deposit__remote-control__name">
-                        <p className="montserrat">
-                          {data.tokenName}
-                        </p>
+                        <p className="montserrat">{data.tokenName}</p>
                       </div>
                       <p className="deposit__remote-control__apy bold">
                         {toPercent(reserves[index].depositAPY)}
                       </p>
                       <div className="deposit__remote-control__mining">
+                        <p>{t('dashboard.token_mining_apr')}</p>
                         <p>
-                          {t("dashboard.token_mining_apr")}
-                        </p>
-                        <p>
-                          {
-                            toPercent(
-                              calcMiningAPR(
-                                elfiPrice,
-                                BigNumber.from(reserves[index].totalDeposit),
-                                reserveTokenData[data.tokenName].decimals,
-                              ) || '0',
-                            )
-                          }
+                          {toPercent(
+                            calcMiningAPR(
+                              elfiPrice,
+                              BigNumber.from(reserves[index].totalDeposit),
+                              reserveTokenData[data.tokenName].decimals,
+                            ) || '0',
+                          )}
                         </p>
                       </div>
                     </div>
                   </a>
-                )
+                );
               })}
             </div>
-          </div>{/* remote control end */}
-          
+          </div>
+          {/* remote control end */}
+
           {balances.map((balance, index) => {
             return (
               <>
@@ -357,15 +355,13 @@ const Dashboard: React.FunctionComponent = () => {
                   index={index}
                   id={`table-${index}`}
                   onClick={(e: any) => {
-                    walletConnect === false ? 
-                      setConnectWalletModalvisible(true) : 
-                      (
-                        e.preventDefault(),
+                    walletConnect === false
+                      ? setConnectWalletModalvisible(true)
+                      : (e.preventDefault(),
                         setReserve(reserves[index]),
                         setModalNumber(index),
                         setModalToken(balance.tokenName),
-                        ReactGA.modalview('DepositOrWithdraw')
-                      )
+                        ReactGA.modalview('DepositOrWithdraw'));
                   }}
                   tokenName={balance.tokenName}
                   tokenImage={reserveTokenData[balance.tokenName].image}
@@ -391,9 +387,9 @@ const Dashboard: React.FunctionComponent = () => {
                   expectedIncentiveBefore={balance.expectedIncentiveBefore}
                   expectedIncentiveAfter={balance.expectedIncentiveAfter}
                   setIncentiveModalVisible={() => {
-                    walletConnect === false ? 
-                      setConnectWalletModalvisible(true) : 
-                      setIncentiveModalVisible(true)
+                    walletConnect === false
+                      ? setConnectWalletModalvisible(true)
+                      : setIncentiveModalVisible(true);
                   }}
                   setModalNumber={() => setModalNumber(index)}
                   modalview={() => ReactGA.modalview('Incentive')}

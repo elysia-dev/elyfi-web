@@ -7,6 +7,7 @@ import elfi from 'src/assets/images/ELFI.png';
 import SelectBox from 'src/components/SelectBox';
 import useLpStaking from 'src/hooks/useLpStaking';
 import { LpStakingModalProps } from 'src/core/types/LpStakingTypeProps';
+import useTxTracking from 'src/hooks/useTxTracking';
 import ModalHeader from '../ModalHeader';
 import ModalConverter from '../ModalConverter';
 
@@ -20,11 +21,13 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
     tokenImg,
     stakingPoolAddress,
     rewardTokenAddress,
+    round,
   } = props;
   const { t } = useTranslation();
   const [stakingMode, setStakingMode] = useState<boolean>(true);
   const { txWaiting } = useContext(TxContext);
   const { waiting } = useWatingTx();
+  const initTxTracker = useTxTracking();
   const staking = useLpStaking();
   const [selectedToken, setSelectedToken] = useState<{
     id: string;
@@ -37,10 +40,17 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
   });
 
   const lpStakingHandler = async () => {
+    const tracker = initTxTracker('LpStakingModal', 'LpStaking', ``);
     try {
-      staking(stakingPoolAddress, rewardTokenAddress, selectedToken.id);
-    } catch (error) {
-      alert(error);
+      await staking(
+        stakingPoolAddress,
+        rewardTokenAddress,
+        selectedToken.id,
+        round,
+      );
+    } catch (error: any) {
+      closeHandler();
+      console.error(error);
     } finally {
       setSelectedToken({
         id: '',
@@ -57,7 +67,9 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
   }, [txWaiting]);
 
   return (
-    <div className="modal modal__lp__staking" style={{ display: visible ? 'block' : 'none' }}>
+    <div
+      className="modal modal__lp__staking"
+      style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
         <ModalHeader
           image={elfi}
@@ -78,9 +90,7 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
         <ModalConverter
           handlerProps={stakingMode}
           setState={setStakingMode}
-          title={
-            [t('staking.staking'), t('staking.unstaking')]
-          }
+          title={[t('staking.staking'), t('staking.unstaking')]}
         />
         {waiting ? (
           <LoadingIndicator />
@@ -88,9 +98,7 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
           <div className="modal__lp__staking__body">
             {unstakedPositions.length === 0 ? (
               <div className="modal__lp__staking__undefined">
-                <h2>
-                  {t('lpstaking.no_lp_token')}
-                </h2>
+                <h2>{t('lpstaking.no_lp_token')}</h2>
               </div>
             ) : (
               <SelectBox

@@ -146,8 +146,8 @@ function MarketDetail(): JSX.Element {
         )),
         updatedAt: moment().unix(),
       });
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.error(error);
       setBalances({
         ...balances,
         loading: false,

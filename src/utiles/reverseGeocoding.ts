@@ -58,8 +58,8 @@ const reverseGeocoding = async (
             },
           );
         });
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        console.error(error);
         return '-';
       }
     } else {
@@ -71,7 +71,8 @@ const reverseGeocoding = async (
       );
       return res?.results[0]?.formatted_address;
     }
-  } catch (e) {
+  } catch (error) {
+    console.error(error);
     return '-';
   }
 };
