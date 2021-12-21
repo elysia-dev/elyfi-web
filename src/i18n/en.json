@@ -55,8 +55,19 @@
       },
       "graph": {
         "title": "What is <strong>ELYFI</strong>?",
-        "circle-content": ["Online investment-linked financial business entities", "Lending Company", "ELYFI", "Property owner"],
-        "line-content": ["Investment", "Loan receivable & NFT collateral", "Virtual asset loan", "Loan agreement", "Loan agreement"],
+        "circle-content": [
+          "Online investment-linked financial business entities",
+          "Lending Company",
+          "ELYFI",
+          "Property owner"
+        ],
+        "line-content": [
+          "Investment",
+          "Loan receivable & NFT collateral",
+          "Virtual asset loan",
+          "Loan agreement",
+          "Loan agreement"
+        ],
         "investment-linked-financial": "* A company that intends to operate an online investment-linked financial business registered with the Financial Services Commission",
         "investment-linked-financial--button": "Go to check list of registrars >"
       },
@@ -129,7 +140,6 @@
       "deposit": "Deposit",
       "borrow": "Borrow",
 
-
       "deposits--header": "DEPOSITS",
       "asset": "Asset",
       "deposit_balance": "Deposit Balance",
@@ -154,7 +164,6 @@
       "disable_content--1": "Connect your wallet to continue",
       "elfi_reward": "ELFI Reward",
       "wallet_connect_content": "Connect Wallet",
-
 
       "governance--header": "Participate in the <strong>ELYFI Governance</strong>",
       "governance--content": "ELFI holders can participate in decentralized governance by staking their ELFI and receive a share of the protocol net profit when staking.",
@@ -187,7 +196,7 @@
       "receive_lp_token": "Get {{token0}}-{{token1}} LP tokens",
       "lp_token_staking": " {{token0}}-{{token1}} LP token staking",
       "lp_token_staking_description": "Providing liquidity to the {{token0}}-{{token1}} pool in Uniswap V3 and staking the received {{token0}}-{{token1}} LP tokens will give you {{token0}} and {{token1}}",
-      
+
       "lp_token_reward_plan": "ELFI, ETH, DAI Reward plan"
     },
     "loan": {
@@ -225,7 +234,10 @@
       "button--staking": "Go to stake ELFI",
       "button--governance_faq": "Governance FAQ",
       "graph": [
-        "ELYFI", "Protocol Net Profit", "Participate in the Governance", "ELYFI Holder"
+        "ELYFI",
+        "Protocol Net Profit",
+        "Participate in the Governance",
+        "ELYFI Holder"
       ],
       "data_verification": "Data verification list ({{ count }} case)",
       "data_verification_plural": "Data verification list ({{ count }} cases)",
@@ -237,7 +249,7 @@
       "loan_list_plural": "Loan list ({{ count }} cases)",
       "loan_list__content": "List of loans that have passed in governance(DAO) and executed as DAI in ELYFI."
     },
-    
+
     "staking": {
       "staking__token": "{{ token }} Staking",
       "staking__notice": "{{ stakedToken }} Staking will be carried out in four separate sessions according to the {{ rewardToken }} mining plan.\nStaking {{ stakedToken }} tokens reward the {{ rewardToken }} tokens, and the staked {{ stakedToken }} tokens can be unstaken at any time.\n\n* In addition, {{ stakedToken }} tokens staked in the previous round and the rewarded {{ rewardToken }} tokens are not automatically sent to the next staking pool.",
@@ -324,7 +336,7 @@
       "apr": "APR",
       "lp_token_total_liquidity": "Total liquidity",
       "lp_token_staking": " {{token0}}-{{token1}} LP token staking",
-      
+
       "reward_plan": "Reward plan",
       "deposit__reward_plan": "Deposit reward plan",
       "elfi_price": "ELFI Price: <strong>$ {{count}}</strong>"
@@ -484,8 +496,8 @@
     },
     "guide": {
       "apr": "APR is an abbreviation of Annual percentage rate, which means the ratio of the total compensation amount to the total liquidity.",
-      "total_liquidity": "Total liquidity means the total amount deposited in the ELFI-ETH pool among the information of the staked LP tokens expressed in dollars.",
-      "create_liquidity": "ELFI-ETH LP tokens are NFTs you receive when you provide liquidity to the ELFI-ETH pool created in Uniswap V3. You can stake LP with the corresponding LP Token.",
+      "total_liquidity": "Total liquidity means the total amount deposited in the ELFI-{{token}} pool among the information of the staked LP tokens expressed in dollars.",
+      "create_liquidity": "ELFI-{{token}} LP tokens are NFTs you receive when you provide liquidity to the ELFI-{{token}} pool created in Uniswap V3. You can stake LP with the corresponding LP Token.",
       "staked_total_amount": "The liquidity of the LP tokens staked with the connected wallet is expressed in dollars.",
       "staked_lp_token": "This is a list of LP tokens staked with the connected wallet. The expected reward represents the amount of rewards that can be obtained by staking each LP token. In order to receive the rewards, you must first unstake the corresponding LP tokens. You can check the reward tokens available for unstaking LP tokens in the ‘Amount of reward’ area located at the bottom. After clicking the ‘Claim rewards’ button, follow the procedure to complete the rewards collection.",
       "receive_reward": "If you unstake the staked LP token, the amount of reward tokens for that LP token is displayed. Click the 'Claim rewards' button to receive the reward, and the reward token will be sent to the connected wallet."
