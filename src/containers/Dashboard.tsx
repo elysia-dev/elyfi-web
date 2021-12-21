@@ -12,7 +12,6 @@ import ReservesContext from 'src/contexts/ReservesContext';
 import { BigNumber, constants } from 'ethers';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { useHistory, useLocation } from 'react-router-dom';
-import Skeleton from 'react-loading-skeleton';
 import { useQuery } from '@apollo/client';
 import { GetUser } from 'src/queries/__generated__/GetUser';
 import { GET_USER } from 'src/queries/userQueries';
@@ -58,7 +57,7 @@ const Dashboard: React.FunctionComponent = () => {
   const location = useLocation();
   const history = useHistory();
   const { reserves, refetch: refetchReserve } = useContext(ReservesContext);
-  const { elfiPrice, daiPrice, tetherPrice } = useContext(PriceContext);
+  const { elfiPrice } = useContext(PriceContext);
   const reserveId = new URLSearchParams(location.search).get('reserveId');
   const [reserve, setReserve] = useState<GetAllReserves_reserves | undefined>(
     reserves.find((reserve) => reserveId === reserve.id),
@@ -95,6 +94,7 @@ const Dashboard: React.FunctionComponent = () => {
     Token.DAI,
   );
   const { value: tvl, loading: tvlLoading } = useTvl();
+  const [prevTvl, setPrevTvl] = useState(0);
   const [connectWalletModalvisible, setConnectWalletModalvisible] =
     useState<boolean>(false);
   const walletConnect = isWalletConnect();
@@ -201,6 +201,7 @@ const Dashboard: React.FunctionComponent = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
+      setPrevTvl(tvl);
       setBalances(
         balances.map((balance, index) => {
           if (index > 1) return { ...balance };
@@ -226,7 +227,7 @@ const Dashboard: React.FunctionComponent = () => {
     return () => {
       clearInterval(interval);
     };
-  });
+  }, [tvl, balances]);
 
   const remoteControlScroll = (ref: string) => {
     const element = document.getElementById(ref);
@@ -301,8 +302,8 @@ const Dashboard: React.FunctionComponent = () => {
           style={{ backgroundImage: `url(${HeaderCircle})` }}>
           <p className="montserrat__bold">Total Value Locked</p>
           <CountUp
-            start={0}
-            end={tvlLoading ? 0 : tvl}
+            start={prevTvl}
+            end={tvl}
             formattingFn={(number) => usdFormatter.format(number)}
             decimals={4}
             duration={2}
