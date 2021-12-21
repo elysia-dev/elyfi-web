@@ -1371,16 +1371,10 @@ input[type=number] {
   } // detail end
 
   .governance {
-    width: 1190px;
-    margin: 0 auto;
-    margin-top: $navigation-margin-height + 150px;
     &__asset {
       box-shadow: 0 0 6px #00000029;
       border-radius: 5px;
       cursor: pointer;
-
-      width: 379px;
-      height: 100%;
       &__progress-bar {
         width: 100%;
         color: $gray-line;
@@ -1458,19 +1452,13 @@ input[type=number] {
         &:last-child {
           > div {
             border-bottom: 1px solid $gray-line;
-            padding: 10px 30px; 
             > p {
               cursor: pointer;
               color: $font-color;
-              font-size: 15px;
             }
             &:last-child {
-              border: 0;
               padding: 0px 30px 20px;
               > div > h2 {
-                font-size: 15px;
-                line-height: 25px;
-                margin-top: 13px;
                 cursor: pointer;
               }
             } 
@@ -1480,17 +1468,13 @@ input[type=number] {
     }
     &__grid {
       display: grid;
-      grid-template-columns: repeat(3,1fr);
       grid-template-rows: 1fr;
       box-sizing: border-box;
-      margin-bottom: 125px;
-      grid-gap: 50px 25px;
+      justify-content: space-between;
     }
     &__header {
       > div:first-child {
         border-bottom: 1px solid $elysia-color;
-        padding-bottom: 20px;
-        margin-bottom: 20px;
       }
     }
     &__elyfi-graph {
@@ -1499,8 +1483,6 @@ input[type=number] {
       flex-direction: row;
       justify-content: space-around;
       align-items: center;
-      padding: 30px;
-      margin-bottom: 80px;
       &__arrow-container {
         display: flex;
         flex-direction: column;
@@ -1541,13 +1523,10 @@ input[type=number] {
           justify-content: right;
           > div {
             background-color: $elysia-color;
-            border-radius: 15px;
             width: 90%;
-            height: 50px;
             > p {
               color: #fff;
               text-align: center;
-              line-height: 50px;
             }
           }
         }
@@ -1556,13 +1535,10 @@ input[type=number] {
           justify-content: left;
           > div {
             border: 1px solid $elysia-color;
-            border-radius: 15px;
             width: 90%;
-            height: 50px;
             > p {
               color: $elysia-color;
               text-align: center;
-              line-height: 50px;
             }
           }
         }
@@ -1570,17 +1546,9 @@ input[type=number] {
     }
     &__content {
       text-align: center;
-      h2 {
-        margin-bottom: 30px;
-      }
       &__button {
-        margin: 0px 40px;
-
-        // temp
         cursor: pointer;
         box-shadow: 0px 0px 6px #00000029;
-        border-radius: 30px;
-        padding: 5px 30px;
         > p {
           cursor: pointer;
         }
@@ -1588,69 +1556,45 @@ input[type=number] {
           display: flex;
           flex-direction: row;
           justify-content: center;
-          margin: 40px;
         }
       }
     }
   } // governance end
   .loan {
-    margin-top: 100px;
-    margin-bottom: 100px;
     > div {
       border-bottom: 1px solid $gray-line;
-      margin-bottom: 25px;
-      padding-bottom: 15px;
       > h2 { 
-        font-size: 18px;
-        margin-bottom: 15px;
         color: $font-color;
       }
       > p {
-        font-size: 15px;
         color: $font-color;
       }
     }
   }
   .portfolio {
-    width: 1190px;
-    margin: 0 auto;
-    margin-top: $navigation-margin-height;
     &__view-button {
       width: 100%;
-      height: 61px;
       background: #ffffff;
       cursor: pointer;
       border: 1px solid #e6e6e6;
       color: #333333;
-      font-size: 15px;
       border-radius: 5px;
     }
     &__borrower {
       border-radius: 5px;
       border: 1px solid $gray-line;
-      padding: 35px 30px 0px;
       &__title {
-        font-size: 18px;
         color: $font-color;
         border-bottom: 1px solid $gray-line;
-        padding-bottom: 10px;
       }
       &__header {
         display: flex;
         justify-content: space-around;
         flex-direction: row;
         align-items: center;
-
-        padding-top: 20px;
-        padding-bottom: 20px;
         border-bottom: 1px solid $gray-line;
-        > img {
-          width: 160px;
-        }
         > div {
           > p {
-            font-size: 15px;
-            line-height: 25px;
             text-align: center;
             &:first-child {
               color: $gray-font-color;
@@ -1665,14 +1609,11 @@ input[type=number] {
         display: flex;
         > div {
           flex: 1;
-          padding-top: 22px;
           > div {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
-            padding-bottom: 20px;
             > p {
-              font-size: 15px;
               &:first-child {
                 color: $gray-font-color;
               }
@@ -1682,25 +1623,16 @@ input[type=number] {
             }
           }
         }
-        &--left {
-          padding-right: 25px;
-        }
         &--right {
           border-left: 1px solid $gray-line;
-          padding-left: 25px;
         }
       }
     }
     &__collateral {
-      margin-top: 25px;
       border: 1px solid $gray-line;
-      padding: 35px 30px 25px;
-      margin-bottom: 100px;
-
+      border-radius: 5px;
       > h2 {
-        padding-bottom: 10px;
         border-bottom: 1px solid $gray-line;
-        font-size: 18px;
       }
       &__data {
         display: flex;
@@ -1710,29 +1642,21 @@ input[type=number] {
           flex: 1;
         }
         &--left {
-          padding-right: 25px;
-          padding-top: 30px;
-          padding-bottom: 30px;
           > div {
             width: 100%;
             height: 100%;
           }
         }
         &--right {
-          padding-left: 25px;
           border-left: 1px solid $gray-line;
-          padding-top: 30px;
-          padding-bottom: 30px;
           > div {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
-            margin-bottom: 20px;
             &:last-child {
               margin: 0;
             }
             > p {
-              font-size: 15px;
               &:first-child { 
                 color: $gray-font-color;
               }

@@ -609,6 +609,167 @@ $device-width: 1190px;
       }
     } // detail end
 
+    .governance {
+      @include page-container;
+      &__asset {
+        width: 379px;
+        > div {
+          &:last-child {
+            > div {
+              padding: 10px 30px; 
+              > p {
+                font-size: 15px;
+              }
+              &:last-child {
+                padding: 0px 30px 20px;
+                > div > h2 {
+                  font-size: 15px;
+                  line-height: 25px;
+                  margin-top: 13px;
+                }
+              } 
+            }
+          }
+        }
+      }
+      &__grid {
+        margin-bottom: 125px;
+        grid-gap: 50px 25px;
+        grid-template-columns: repeat(3,1fr);
+      }
+      &__header {
+        > div:first-child {
+          padding-bottom: 20px;
+          margin-bottom: 20px;
+        }
+      }
+      &__elyfi-graph {
+        padding: 30px;
+        margin-bottom: 80px;
+        > div {
+          &:first-child {
+            > div {
+              border-radius: 15px;
+              height: 50px;
+              > p {
+                line-height: 50px;
+              }
+            }
+          }
+          &:last-child {
+            > div {
+              border-radius: 15px;
+              height: 50px;
+              > p {
+                line-height: 50px;
+              }
+            }
+          }
+        }
+      }
+      &__content {
+        h2 {
+          font-size: 30px;
+          margin-bottom: 30px;
+        }
+        &__button {
+          margin: 0px 40px;
+          border-radius: 30px;
+          padding: 5px 30px;
+          &__wrapper {
+            margin: 40px;
+          }
+        }
+      }
+    } // governance end
+
+    .loan {
+      margin-top: 100px;
+      margin-bottom: 100px;
+      > div {
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        > h2 { 
+          font-size: 18px;
+          margin-bottom: 15px;
+        }
+        > p {
+          font-size: 15px;
+        }
+      }
+    }
+    .portfolio {
+      @include page-container;
+      &__view-button {
+        height: 61px;
+        font-size: 15px;
+      }
+      &__borrower {
+        padding: 35px 30px 0px;
+        &__title {
+          font-size: 18px;
+          padding-bottom: 10px;
+        }
+        &__header {
+          padding-top: 20px;
+          padding-bottom: 20px;
+          > img {
+            width: 160px;
+          }
+          > div {
+            > p {
+              font-size: 15px;
+              line-height: 25px;
+            }
+          }
+        }
+        &__data {
+          > div {
+            padding-top: 22px;
+            > div {
+              padding-bottom: 20px;
+              > p {
+                font-size: 15px;
+              }
+            }
+          }
+          &--left {
+            padding-right: 25px;
+          }
+          &--right {
+            padding-left: 25px;
+          }
+        }
+      }
+      &__collateral {
+        margin-top: 25px;
+        padding: 35px 30px 25px;
+        margin-bottom: 100px;
+        > h2 {
+          padding-bottom: 10px;
+          font-size: 18px;
+        }
+        &__data {
+          &--left {
+            padding-right: 25px;
+            padding-top: 30px;
+            padding-bottom: 30px;
+          }
+          &--right {
+            padding-left: 25px;
+            padding-top: 30px;
+            padding-bottom: 30px;
+            > div {
+              margin-bottom: 20px;
+              > p {
+                font-size: 15px;
+              }
+            }
+          }
+        }
+      }
+    }// portfolio end
+
     .component {
       &__loan-list {
         width: $loan-list-size;

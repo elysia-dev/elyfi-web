@@ -2,8 +2,6 @@ import { useHistory, useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { reserveTokenData } from 'src/core/data/reserves';
 
-/* temp */
-import { Circle } from 'src/components/Circle';
 import { toUsd, toPercent } from 'src/utiles/formatters';
 import { BigNumber, constants } from 'ethers';
 import { Chart } from 'react-google-charts';
@@ -24,7 +22,8 @@ import {
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
 import Token from 'src/enums/Token';
 import moment from 'moment';
-import Loan from './Loan';
+import Loan from 'src/containers/Loan';
+import MarketDetailsBody from 'src/components/MarketDetailsBody';
 
 const initialBalanceState = {
   loading: true,
@@ -201,113 +200,24 @@ function MarketDetail(): JSX.Element {
           <h2>{tokenInfo?.name.toLocaleUpperCase()}</h2>
         </div>
         <div className="detail__container">
-          <div className="detail__data-wrapper">
-            <div className="detail__data-wrapper__title">
-              <h2>{t('dashboard.details')}</h2>
-            </div>
-            <div className="detail__data-wrapper__total">
-              <div>
-                <h2> 
-                  {t("dashboard.total_deposit--reward")}
-                </h2>
-                <h2>
-                  {toPercent(BigNumber.from(data.depositAPY).add(miningAPR))}
-                </h2>
-              </div>
-              <div>
-                <h2>
-                  {t("dashboard.total_deposit")}
-                </h2>
-                <h2>
-                  {toUsd(data.totalDeposit, tokenInfo?.decimals)}
-                </h2>
-              </div>
-            </div>
-            <div className="detail__data-wrapper__info">
-              <div>
-                <div>
-                  <p>{t('dashboard.deposit_apy')}</p>
-                  <p>
-                    {toPercent(data.depositAPY)}
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    {t('dashboard.token_mining_apr')}
-                  </p>
-                  <p>
-                    {toPercent(miningAPR)}
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    {t('dashboard.total_depositor')}
-                  </p>
-                  <p>{data.deposit.length}</p>
-                </div>
-                <div>
-                  <p>{t('dashboard.total_loans')}</p>
-                  <p>{data.borrow.length}</p>
-                </div>
-              </div>
-
-              <div>
-                <div>
-                  <div className="detail__data-wrapper__info__deposit__wrapper">
-                    <div>
-                      <div className="detail__data-wrapper__info__deposit">
-                        <div 
-                          style={{
-                            backgroundColor: selectToken?.color || "#333333"
-                          }}
-                        />
-                        <p>
-                          {t('dashboard.total_borrowed')}
-                        </p>
-                      </div>
-                      <p>
-                        {toUsd(data.totalBorrow, tokenInfo?.decimals)}
-                      </p>
-                    </div>
-                    <div>
-                      <div className="detail__data-wrapper__info__deposit">
-                        <div 
-                          style={{
-                            backgroundColor: selectToken?.subColor || "#888888"
-                          }}
-                        />
-                        <p>
-                          {t('dashboard.available_liquidity')}
-                        </p>
-                      </div>
-                      <p>
-                      {toUsd(
-                        BigNumber.from(data.totalDeposit).sub(
-                          data.totalBorrow,
-                        ),
-                        tokenInfo?.decimals,
-                      )}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="detail__data-wrapper__info__deposit__utilization">
-                    <h2>
-                      {t('dashboard.utilization')}
-                    </h2>
-                    <h2>{`${utilization}%`}</h2>
-                  </div>
-                </div>
-                <div className="detail__data-wrapper__info__circle-wrapper">
-                  <Circle 
-                    progress={Math.round(100 - utilization)} 
-                    color={selectToken?.color}
-                    subColor={selectToken?.subColor}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+          <MarketDetailsBody
+            depositReward={toPercent(BigNumber.from(data.depositAPY).add(miningAPR))}
+            totalDeposit={toUsd(data.totalDeposit, tokenInfo?.decimals)}
+            depositAPY={toPercent(data.depositAPY)}
+            miningAPRs={toPercent(miningAPR)}
+            depositor={data.deposit.length}
+            totalLoans={data.borrow.length}
+            totalBorrowed={toUsd(data.totalBorrow, tokenInfo?.decimals)}
+            availableLiquidity={toUsd(
+              BigNumber.from(data.totalDeposit).sub(
+                data.totalBorrow,
+              ),
+              tokenInfo?.decimals,
+            )}
+            utilization={utilization}
+            color={selectToken?.color}
+            subColor={selectToken?.subColor}
+          />
 
           <div className="detail__graph">
             <div className="detail__graph__converter">
