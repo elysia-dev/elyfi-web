@@ -38,9 +38,7 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
     <>
       <section className="loan">
         <div>
-          <h2>
-            {t('governance.loan_list', { count: data?.assetBondTokens.length })}
-          </h2>
+          <h2>{t('governance.loan_list', { count: list?.length })}</h2>
           <p>{t('loan.loan__content')}</p>
         </div>
 
