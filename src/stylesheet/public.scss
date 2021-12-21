@@ -4868,4 +4868,72 @@ input[type='number'] {
       opacity: 1;
     }
   }
+  .market__detail__graph__DAI div div div div svg g {
+    // transform: scale(1.2) translate(-10%, -10%);
+    > g rect {
+      rx: 5;
+      ry: 5;
+      &:hover {
+        fill: #f9ae19;
+        stroke: transparent;
+        z-index: 99;
+        rx: 5;
+        ry: 5;
+      }
+    }
+    > g g g rect {
+      fill: #f9ae19;
+      stroke: transparent;
+      z-index: 99;
+      rx: 5;
+      ry: 5;
+    }
+    > g g circle {
+      stroke: transparent;
+      fill: #f9ae19;
+      r: 6;
+    }
+  }
+  .market__detail__graph__USDT div div div div svg g {
+    // transform: scale(1.2) translate(-10%, -10%);
+    > g rect {
+      rx: 5;
+      ry: 5;
+      &:hover {
+        fill: #26a17b;
+        stroke: transparent;
+        z-index: 99;
+        rx: 5;
+        ry: 5;
+      }
+    }
+    > g g g rect {
+      fill: #26a17b;
+      stroke: transparent;
+      z-index: 99;
+      rx: 5;
+      ry: 5;
+    }
+    > g g circle {
+      stroke: transparent;
+      fill: #26a17b;
+      r: 6;
+    }
+  }
+  .market__detail__graph__DAI {
+    .google-visualization-tooltip {
+      border: 1px solid #f9ae19 !important;
+    }
+  }
+  .market__detail__graph__USDT {
+    .google-visualization-tooltip {
+      border: 1px solid #26a17b !important;
+    }
+  }
+  .google-visualization-tooltip ul li > span:last-child {
+    color: #333333 !important;
+  }
+  .google-visualization-tooltip ul li:last-child::after {
+    color: #333333 !important;
+  }
 }
