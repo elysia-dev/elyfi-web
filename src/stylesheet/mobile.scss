@@ -7,7 +7,7 @@ $elysia-color: #00A7FF;
 $background-color: #FFFFFF;
 $gray-line: #F0F0F1;
 $gray-font-color: #888888;
-$loan-list-size: 315px;
+$loan-list-size: 150px;
 $navigation-margin-height: 100px;
 
 $governance-progress-00: #0099CC;
@@ -470,7 +470,284 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         }
       }
     }
+  } // main end
+
+  .deposit {
+    @include page-container;
+    &__title {
+      height: 250px;
+      > p {
+        padding-top: 100px;
+        font-size: 18px;
+      }
+      > h2 {
+        padding-top: 16px;
+        font-size: 30px;
+      }
+    }
+    &__table {
+      margin-bottom: 45px;
+      &__wrapper {
+        margin-top: 15px;
+      }
+      &__header {
+        padding: 10px 15px;
+        &__token-info {
+          height: 31px;
+          border-radius: 31px;
+          padding: 5px 7px;
+          min-width: 90px;
+          > img {
+            width: 21px;
+            height: 21px;
+          }
+          > p {
+            font-size: 13px;
+            margin-left: 13px;
+          }
+        }
+        &__data-grid {
+          display: flex;
+          flex-direction: column;
+          padding: 0px 15px;
+          border-bottom: 1px solid $gray-line;
+          > div {
+            width: 100%;
+            margin-bottom: 12px;
+            > p {
+              font-size: 12px;
+            }
+          }
+        }
+      }
+      &__body {
+        &__amount {
+          display: flex;
+          flex-direction: row; 
+          justify-content: space-between;
+          width: 100%;
+          &__button {
+            border-radius: 15px;
+            width: 130px;
+            height: 26px;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            > p {
+              font-size: 12px !important;
+            }
+          }
+          > div {
+            .amounts {
+              font-size: 12px;
+            }
+            > h2 {
+              font-size: 12px;
+              margin-bottom: 5px;
+              > span {
+                font-size: 12px;
+              }
+            }
+            > p {
+              font-size: 10px;
+            }
+          }
+          &__container {
+            flex-direction: column;
+          }
+          &__wrapper {
+            padding: 12px 15px 0px;
+            display: flex;
+            align-items: center;
+            flex-direction: column; 
+            
+            border-bottom: 1px solid $gray-line;
+            &.right {
+              border: none;
+            }
+            > div {
+              > h2 {
+                font-size: 12px;
+              }
+            }
+          }
+        }
+        &__loan-list {
+          padding: 12px 15px;
+          > div {
+            > h2 {
+              font-size: 12px;
+            }
+          }
+          &__more-button {
+            border-radius: 15px;
+            width: 130px;
+            height: 26px;
+            cursor: pointer;
+            margin: 0 auto 10px;
+            border: 0px;
+            box-shadow: 0px 0px 6px #00000029;
+            > a > p {
+              font-size: 12px;
+              line-height: 26px;
+            }
+          }
+        }
+      }
+    }
+    &__remote-control {
+      display: none;
+    }
+  } // deposit end
+
+  .detail {
+    @include page-container;
+
+    &__header {
+      margin-top: 20px;
+      margin-bottom: 75px;
+      > img { 
+        width: 42px;
+        height: 42px;
+      }
+      > h2 {
+        margin-top: 15px;
+        font-size: 25px;
+      }
+    }
+    &__data-wrapper {
+      padding: 19px 29px 0px 29px;
+      margin-bottom: 40px;
+      &__title {
+        padding-bottom: 13px;
+        > h2 {
+          font-size: 18px;
+        }
+      }
+      &__total {
+        > div {
+          padding-top: 15px;
+          padding-bottom: 9px;
+          &:first-child {
+            padding-right: 23px;
+          }
+          &:last-child {
+            padding-left: 23px;
+          }
+          > h2 {
+            font-size: 15px;
+          }
+        }
+      }
+      &__info {
+        > div {
+          padding-top: 35px;
+          padding-bottom: 35px;
+          &:first-child {
+            padding-right: 23px;
+            height: 235px;
+            > div {
+              margin-bottom: 30px;
+              &:last-child {
+                margin: 0;
+              }
+              > p {
+                font-size: 15px;
+              }
+            }
+          }
+          &:last-child {
+            padding-left: 23px;
+            height: 235px;
+          }
+        }
+        &__deposit {
+          &__wrapper {
+            > div {
+              margin-bottom: 30px;
+              > p {
+                font-size: 15px;
+              }
+            }
+          }
+          > div {
+            width: 13px;
+            height: 13px;
+            border-radius: 13px;
+            margin-right: 8px;
+          }
+          > p {
+            font-size: 15px;
+          }
+          &__utilization {
+            > h2 {
+              font-size: 15px;
+            }
+          }
+        }
+        &__circle-wrapper {
+          margin-left: 40px;
+        }
+      }
+    }
+    &__graph {
+      &__converter {
+        &__button {
+          width: 120px;
+          height: 40px;
+          > h2 {
+            font-size: 18px;
+          }
+        }
+      }
+    }
+  } // detail end
+
+
+  .component {
+    &__loan-list {
+      width: $loan-list-size;
+      &__container {
+        display: grid;
+        grid-template-columns: repeat(2, $loan-list-size);
+        grid-template-rows: 1fr;
+        justify-content: space-between;
+        margin-top: 15px;
+        margin-bottom: 20px;
+
+        gap: 17px;
+      }
+      &__image {
+        height: 112px;
+        > img {
+          height: 112px;
+        }
+      }
+      &__data {
+        padding: 7px 12px 5px;
+        > div {
+          > p {
+            font-size: 10px;
+          }
+        }
+      }
+    } // loan-list end
+    &__text-navigation {
+      padding-top: 50px;
+      font-size: 12px;
+      > p {
+        font-size: 12px;
+      }
+    } // text navigation end
   }
+
+  .reward-plan-button {
+    > a {
+      > p {
+        font-size: 12px;
+      }
+    }
+  }
+
   .elysia-logo {
     width: 106px;
     height: 25px;

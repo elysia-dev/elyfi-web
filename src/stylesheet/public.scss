@@ -646,28 +646,17 @@ input[type=number] {
   } // main end
 
   .deposit {
-    width: 1190px;
-    margin: 0 auto;
     position: relative;
     &__title {
-      height: 300px;
       background: no-repeat bottom;
       > p {
-        padding-top: 100px;
         text-align: center;
-        font-size: 25px;
       }
       > h2 {
-        padding-top: 16px;
         text-align: center;
-        font-size: 50px;
       }
     }
     &__table {
-      margin-bottom: 50px;
-      &__wrapper {
-        margin-top: 20px; 
-      }
       background-color: $background-color;
       border: 1px solid $gray-line;
       border-radius: 5px;
@@ -683,41 +672,22 @@ input[type=number] {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        padding: 20px 56px 20px 29px;
         &__token-info {
           display: flex;
           justify-content: left;
           flex-direction: row;
           align-items: center;
-
-          height: 60px;
-          border-radius: 31px;
-          padding: 10px 12px 10px;
-          min-width: 150px;
           box-shadow: 0px 0px 6px #00000029;
-          > img {
-            width: 42px;
-            height: 42px;
-          }
-          > p {
-            font-size: 20px;
-
-            margin-left: 20px;
-          }
         }
         &__data-grid {
-          width: 900px;
           display: grid;
           grid-template-columns: repeat(3,1fr);
           grid-template-rows: 1fr;
-          gap: 10px;
           justify-items: flex-end;
           > div {
             display: flex;
             justify-content: space-between;
-            width: 210px;
             > p {
-              font-size: 15px;
               &:first-child {
                 color: $gray-font-color;
               }
@@ -729,45 +699,28 @@ input[type=number] {
         }
       }
       &__body {
-        padding: 30px;
         &__amount {
           text-align: right;
-          > div:first-child {
+          &__button {
             background-color: #FFFFFF;
             box-shadow: 0px 0px 6px #00000029;
-            border-radius: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
-
-            width: 160px;
-            height: 30px;
-            margin-bottom: 20px;
             cursor: pointer;
             > p {
-              font-size: 15px;
               cursor: pointer;
             }
           }
           > div {
-            .amounts {
-              font-size: 20px;
-            }
             > h2 {
               color: $font-color;
-  
-              font-size: 20px;
-              margin-bottom: 5px;
               > span {
                 color: $font-color;
-    
-                font-size: 17px;
               }
             }
             > p {
               color: $gray-font-color;
-
-              font-size: 10px;
             }
           }
          
@@ -779,23 +732,14 @@ input[type=number] {
           }
           &__wrapper {
             flex: 1;
-            padding-top: 20px;
-            padding-bottom: 20px;
             display: flex;
             justify-content: space-between;
-            &.left {
-              padding-right: 25px;
-            }
             &.right {
               border-left: 1px solid $gray-line;
-              padding-left: 25px;
             }
-
             > div {
               > h2 {
                 color: $font-color;
-
-                font-size: 18px;
               }
             }
           }
@@ -804,9 +748,6 @@ input[type=number] {
           > div {
             > h2 {
               color: $font-color;
-
-              margin-top: 25px;
-              font-size: 18px;
             }
           }
           &__more-button {
@@ -815,12 +756,8 @@ input[type=number] {
             color: $font-color;
             border-radius: 5px;
             border: 1px solid $gray-line;
-
-            height: 61px;
-            line-height: 61px;
             cursor: pointer;
             > a > p {
-              font-size: 15px;
               cursor: pointer;
             }
           }
@@ -831,18 +768,14 @@ input[type=number] {
       box-shadow: 0px 0px 6px #00000029;
       border-radius: 5px;
       position: fixed;
-      width: 120px;
       &__wrapper {
-        width: 120px;
         position: absolute;
-        left: -150px;
       }
       > a > div {
         display: flex;
         flex-direction: column;
         align-items: center;
         border-top: 1px solid $gray-line;
-        padding: 10px 0px 14px;
         cursor: pointer;
         &:first-child {
           border: 0;
@@ -856,18 +789,13 @@ input[type=number] {
       }
       &__name {
         > p {
-          font-size: 14px;
           cursor: pointer;
         }
       }
       &__apy {
-        font-size: 15px;
-        line-height: 25px;
         cursor: pointer;
       }
       &__mining {
-        width: 91px;
-        height: 40px;
         border: 1px solid $gray-line;
         border-radius: 5px;
         text-align: center;
@@ -876,8 +804,6 @@ input[type=number] {
         justify-content: center;
         flex-direction: column;
         > p {
-          font-size: 10px;
-          line-height: 15px;
           color: $font-color;
           cursor: pointer;
           &:first-child {
@@ -1309,39 +1235,21 @@ input[type=number] {
   } // reward end
 
   .detail {
-    width: 1190px;
-    margin: 0 auto;
-    margin-top: $navigation-margin-height;
     &__header {
-      margin-top: 25px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      margin-bottom: 145px;
-      > img { 
-        width: 60px;
-        height: 60px;
-      }
       > h2 {
         color: $font-color;
-        margin-top: 15px;
-        font-size: 25px;
       }
     }
     &__data-wrapper {
       border-radius: 5px;
       box-shadow: 0px 0px 6px #00000029;
-      padding: 19px 29px 0px 29px;
-      margin-bottom: 40px;
       &__title {
-        padding-bottom: 13px;
-
         color: $elysia-color;
         border-bottom: 1px solid $gray-line;
-        > h2 {
-          font-size: 18px;
-        }
       }
       &__total {
         border-bottom: 1px solid $gray-line;
@@ -1353,19 +1261,11 @@ input[type=number] {
           display: flex;
           justify-content: space-between;
           flex: 1;
-          padding-top: 15px;
-          padding-bottom: 9px;
-          &:first-child {
-            padding-right: 23px;
-          }
           &:last-child {
-            padding-left: 23px;
             border-left: 1px solid $gray-line;
           }
           > h2 {
             color: $font-color;
-  
-            font-size: 15px;
           }
         }
       }
@@ -1376,33 +1276,23 @@ input[type=number] {
         justify-content: space-between;
         > div {
           flex: 1;
-          padding-top: 35px;
-          padding-bottom: 35px;
           &:first-child {
-            padding-right: 23px;
-            height: 235px;
             > div {
               display: flex;
               flex-direction: row;
               align-items: center;
               justify-content: space-between;
-              margin-bottom: 30px;
               &:last-child {
                 margin: 0;
-              }
-              > p {
-                font-size: 15px;
               }
             }
           }
           &:last-child {
-            padding-left: 23px;
             border-left: 1px solid $gray-line;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            height: 235px;
             > div {
               display: flex;
               flex-direction: column;
@@ -1429,22 +1319,12 @@ input[type=number] {
               justify-content: space-between;
               flex-direction: row;
               align-items: center;
-              margin-bottom: 30px;
               > p {
-                font-size: 15px;
-
                 color: $font-color;
               }
             }
           }
-          > div {
-            width: 13px;
-            height: 13px;
-            border-radius: 13px;
-            margin-right: 8px;
-          }
           > p {
-            font-size: 15px;
             color: $gray-font-color;
           }
           &__utilization {
@@ -1453,14 +1333,9 @@ input[type=number] {
             justify-content: space-between;
             align-items: center;
             > h2 {
-              font-size: 15px;
-
               color: $font-color
             }
           }
-        }
-        &__circle-wrapper {
-          margin-left: 40px;
         }
       }
     }
@@ -1472,9 +1347,7 @@ input[type=number] {
         align-items: center;
         border-bottom: 1px solid $gray-line;
         &__button {
-          width: 120px;
           text-align: center;
-          height: 40px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -1489,7 +1362,6 @@ input[type=number] {
             }
           }
           > h2 {
-            font-size: 18px;
             text-align: center;
             cursor: pointer;
           }
@@ -3702,28 +3574,14 @@ input[type=number] {
       border-radius: 5px;
       box-shadow: 0px 0px 6px #00000029;
       cursor: pointer;
-
-      width: $loan-list-size;
-      &__container {
-        display: grid;
-        grid-template-columns: repeat(3, $loan-list-size);
-        grid-template-rows: 1fr;
-        justify-content: space-between;
-        margin-top: 25px;
-        margin-bottom: 30px;
-
-        gap: 45px;
-      }
       &__image {
         height: 256px;
         > img {
           border-radius: 5px 5px 0px 0px;
-
           width: 100%;
         }
       }
       &__data {
-        padding: 15px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -3735,22 +3593,17 @@ input[type=number] {
             border-right: 1px solid $gray-line;
           }
           > p {
-            font-size: 15px;
             cursor: pointer;
           }
         }
       }
     } // loan-list end
     &__text-navigation {
-      padding-top: 30px;
       display: flex;
       align-content: center;
-
-      font-size: 15px;
       color: $gray-font-color;
       cursor: default;
       > p {
-        font-size: 15px;
         color: $gray-font-color;
         &.pointer {
           cursor: pointer;
@@ -3977,7 +3830,6 @@ input[type=number] {
     > a {
       display: inline-block;
       > p {
-        font-size: 15px;
         cursor: pointer;
       }
     }

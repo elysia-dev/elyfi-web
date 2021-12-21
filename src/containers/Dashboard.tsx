@@ -1,11 +1,9 @@
 import { useWeb3React } from '@web3-react/core';
 import ReserveData, { reserveTokenData } from 'src/core/data/reserves';
 import { useEffect, useContext, useState } from 'react';
-import { formatEther } from '@ethersproject/units';
 import {
   toPercent,
   toCompactForBignumber,
-  formatSixFracionDigit,
 } from 'src/utiles/formatters';
 import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
 import ReservesContext from 'src/contexts/ReservesContext';
@@ -16,11 +14,9 @@ import Skeleton from 'react-loading-skeleton';
 import { useQuery } from '@apollo/client';
 import { GetUser } from 'src/queries/__generated__/GetUser';
 import { GET_USER } from 'src/queries/userQueries';
-import ELFI from 'src/assets/images/ELFI.png';
 import { useTranslation } from 'react-i18next';
 import envs from 'src/core/envs';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
-import { Title } from 'src/components/Texts';
 import calcExpectedIncentive from 'src/utiles/calcExpectedIncentive';
 import moment from 'moment';
 import PriceContext from 'src/contexts/PriceContext';
@@ -38,7 +34,9 @@ import HeaderCircle from 'src/assets/images/title-circle.png'
 import IncentiveModal from 'src/containers/IncentiveModal';
 import useTvl from 'src/hooks/useTvl';
 import isWalletConnect from 'src/hooks/isWalletConnect';
-import ConnectWalletModal from './ConnectWalletModal';
+import ConnectWalletModal from 'src/containers/ConnectWalletModal';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import MediaQuery from 'src/enums/MediaQuery';
 
 const initialBalanceState = {
   loading: false,
@@ -98,6 +96,7 @@ const Dashboard: React.FunctionComponent = () => {
   const { value: tvl, loading: tvlLoading } = useTvl();
   const [connectWalletModalvisible, setConnectWalletModalvisible] = useState<boolean>(false);
   const walletConnect = isWalletConnect();
+  const { value: mediaQuery } = useMediaQueryType();
 
   useEffect(() => {
     const paramsData = reserves.find((_reserve) => reserveId === _reserve.id);
@@ -289,7 +288,7 @@ const Dashboard: React.FunctionComponent = () => {
       />
 
       <div className="deposit">
-        <div className="deposit__title" style={{ backgroundImage: `url(${HeaderCircle})` }}>
+        <div className="deposit__title" style={{ backgroundImage: mediaQuery === MediaQuery.PC ? `url(${HeaderCircle})` : "" }}>
           <p className="montserrat__bold">
             Total Value Locked
           </p>

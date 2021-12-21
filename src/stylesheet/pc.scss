@@ -370,6 +370,287 @@ $device-width: 1190px;
       }
     }
 
+    .deposit {
+      @include page-container;
+      &__title {
+        height: 300px;
+        > p {
+          padding-top: 100px;
+          font-size: 25px;
+        }
+        > h2 {
+          padding-top: 16px;
+          font-size: 50px;
+        }
+      }
+      &__table {
+        margin-bottom: 50px;
+        &__wrapper {
+          margin-top: 20px;
+        }
+        &__header {
+          padding: 20px 56px 20px 29px;
+          &__token-info {
+            height: 60px;
+            border-radius: 31px;
+            padding: 10px 12px 10px;
+            min-width: 150px;
+            > img {
+              width: 42px;
+              height: 42px;
+            }
+            > p {
+              font-size: 20px;
+  
+              margin-left: 20px;
+            }
+          }
+          &__data-grid {
+            width: 900px;
+            gap: 10px;
+            > div {
+              width: 210px;
+              > p {
+                font-size: 15px;
+              }
+            }
+          }
+        }
+        &__body {
+          padding: 30px;
+          &__amount {
+            &__button {
+              border-radius: 15px;
+              width: 160px;
+              height: 30px;
+              margin-bottom: 20px;
+              > p {
+                font-size: 15px !important;
+              }
+            }
+            > div {
+              .amounts {
+                font-size: 20px;
+              }
+              > h2 {
+                font-size: 20px;
+                margin-bottom: 5px;
+                > span {
+                  font-size: 17px;
+                }
+              }
+              > p {
+                font-size: 10px;
+              }
+            }
+            &__wrapper {
+              padding-top: 20px;
+              padding-bottom: 20px;
+              &.left {
+                padding-right: 25px;
+              }
+              &.right {
+                padding-left: 25px;
+              }
+              > div {
+                > h2 {
+                  font-size: 18px;
+                }
+              }
+            }
+          }
+          &__loan-list {
+            > div {
+              > h2 {
+                margin-top: 25px;
+                font-size: 18px;
+              }
+            }
+            &__more-button {
+              height: 61px;
+              line-height: 61px;
+              cursor: pointer;
+              > a > p {
+                font-size: 15px;
+              }
+            }
+          }
+        }
+      }
+      &__remote-control {
+        width: 120px;
+        &__wrapper {
+          width: 120px;
+          left: -150px;
+        }
+        > a > div {
+          padding: 10px 0px 14px;
+        }
+        &__name {
+          > p {
+            font-size: 14px;
+          }
+        }
+        &__apy {
+          font-size: 15px;
+          line-height: 25px;
+        }
+        &__mining {
+          width: 91px;
+          height: 40px;
+          > p {
+            font-size: 10px;
+            line-height: 15px;
+          }
+        }
+      }
+    } // deposit end
+
+    .detail {
+      @include page-container;
+
+      &__header {
+        margin-top: 25px;
+        margin-bottom: 145px;
+        > img { 
+          width: 60px;
+          height: 60px;
+        }
+        > h2 {
+          margin-top: 15px;
+          font-size: 25px;
+        }
+      }
+      &__data-wrapper {
+        padding: 19px 29px 0px 29px;
+        margin-bottom: 40px;
+        &__title {
+          padding-bottom: 13px;
+          > h2 {
+            font-size: 18px;
+          }
+        }
+        &__total {
+          > div {
+            padding-top: 15px;
+            padding-bottom: 9px;
+            &:first-child {
+              padding-right: 23px;
+            }
+            &:last-child {
+              padding-left: 23px;
+            }
+            > h2 {
+              font-size: 15px;
+            }
+          }
+        }
+        &__info {
+          > div {
+            padding-top: 35px;
+            padding-bottom: 35px;
+            &:first-child {
+              padding-right: 23px;
+              height: 235px;
+              > div {
+                margin-bottom: 30px;
+                &:last-child {
+                  margin: 0;
+                }
+                > p {
+                  font-size: 15px;
+                }
+              }
+            }
+            &:last-child {
+              padding-left: 23px;
+              height: 235px;
+            }
+          }
+          &__deposit {
+            &__wrapper {
+              > div {
+                margin-bottom: 30px;
+                > p {
+                  font-size: 15px;
+                }
+              }
+            }
+            > div {
+              width: 13px;
+              height: 13px;
+              border-radius: 13px;
+              margin-right: 8px;
+            }
+            > p {
+              font-size: 15px;
+            }
+            &__utilization {
+              > h2 {
+                font-size: 15px;
+              }
+            }
+          }
+          &__circle-wrapper {
+            margin-left: 40px;
+          }
+        }
+      }
+      &__graph {
+        &__converter {
+          &__button {
+            width: 120px;
+            height: 40px;
+            > h2 {
+              font-size: 18px;
+            }
+          }
+        }
+      }
+    } // detail end
+
+    .component {
+      &__loan-list {
+        width: $loan-list-size;
+        &__container {
+          display: grid;
+          grid-template-columns: repeat(3, $loan-list-size);
+          grid-template-rows: 1fr;
+          justify-content: space-between;
+          margin-top: 25px;
+          margin-bottom: 30px;
+          border: 0;
+          gap: 45px;
+        }
+        &__image {
+          height: 256px;
+        }
+        &__data {
+          padding: 15px;
+          > div {
+            > p {
+              font-size: 15px;
+            }
+          }
+        }
+      } // loan-list end
+      &__text-navigation {
+        padding-top: 30px;
+        font-size: 15px;
+        > p {
+          font-size: 15px;
+        }
+      } // text navigation end
+    }
+
+
+    .reward-plan-button {
+      > a {
+        > p {
+          font-size: 15px;
+        }
+      }
+    }
 
 
     .footer {
