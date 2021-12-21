@@ -294,15 +294,19 @@ const Navigation:React.FunctionComponent<{
           {setMediaQueryMetamask("pc")}
         </div>
         {hamburgerBar && (
-          navigationLink.map((data) => {
-            return (
-              <div>
-                <p>
-                  {data.i18nKeyword}
-                </p>
-              </div>
-            )
-          })
+          <div className="navigation__hamburger__content">
+          {
+            navigationLink.map((data) => {
+              return (
+                <div>
+                  <p>
+                    {data.i18nKeyword}
+                  </p>
+                </div>
+              )
+            })
+          }
+          </div>
         )}
       </nav>
       <div className="navigation__margin" />
