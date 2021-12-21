@@ -49,7 +49,7 @@ interface IProps {
 const v2Threshold = 2;
 
 const migratable = (staked: Token, round: number): boolean => {
-  if (round >= 3) return false;
+  if (round >= 5) return false;
   if (staked === Token.ELFI) {
     return (
       round >= 2 && moment().diff(stakingRoundTimes[round + 1].startedAt) > 0
@@ -350,6 +350,14 @@ const Staking: React.FunctionComponent<IProps> = ({
                 : t('staking.elfi.staking__content')}
             </p>
             <div className="staking__title__button">
+              {/* <a
+                href={
+                  stakedToken === Token.ELFI
+                    ? 'https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4'
+                    : '#'
+                }
+                target="_blank"
+                rel="noopener noreferrer"> */}
               {stakedToken === Token.ELFI && (
                 <img src={Uniswap} alt="Uniswap" />
               )}
@@ -358,6 +366,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                   ? t('staking.el.staking__content--button')
                   : t('staking.elfi.staking__content--button')}
               </p>
+              {/* </a> */}
             </div>
           </div>
           {stakedToken === Token.ELFI && <GovernanceGuideBox />}
