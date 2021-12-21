@@ -40,7 +40,6 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
   });
 
   const lpStakingHandler = async () => {
-    const tracker = initTxTracker('LpStakingModal', 'LpStaking', ``);
     try {
       await staking(
         stakingPoolAddress,
@@ -90,7 +89,7 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
         <ModalConverter
           handlerProps={stakingMode}
           setState={setStakingMode}
-          title={[t('staking.staking'), t('staking.unstaking')]}
+          title={[t('staking.staking')]}
         />
         {waiting ? (
           <LoadingIndicator />
