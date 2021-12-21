@@ -146,6 +146,9 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         }
       }
     }
+    &__margin {
+      margin-bottom: 30px;
+    }
   } // navigation end 
 
   .main {
@@ -471,6 +474,15 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   .elysia-logo {
     width: 106px;
     height: 25px;
+  }
+  .footer {
+    > div {
+      @include page-container;
+      > div {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
   }
 
 

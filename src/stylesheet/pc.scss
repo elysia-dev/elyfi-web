@@ -29,6 +29,9 @@ $device-width: 1190px;
         width: 24px;
         height: 24px;
       }
+      &__margin {
+        margin-bottom: 100px;
+      }
     }
     .main {
       @include page-container;
@@ -369,6 +372,10 @@ $device-width: 1190px;
 
 
 
-
+    .footer {
+      > div {
+        width: 1190px;
+      }
+    }
   }
 }

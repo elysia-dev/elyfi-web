@@ -305,7 +305,7 @@ const Navigation:React.FunctionComponent<{
           })
         )}
       </nav>
-      <div className="navigation__margin" style={{ marginBottom: 100 }} />
+      <div className="navigation__margin" />
     </>
   );
 };
