@@ -33,10 +33,10 @@ const TokenDeposit: FunctionComponent<Props> = ({
   const { latestPrice } = useContext(UniswapPoolContext);
   const miningDescription = [
     [
-      t('dashboard.mining_term'),
+      t('reward.mining_term'),
       `${startMoneyPool[index]} ~ ${moneyPoolEndedAt.format('yyyy.MM.DD')} KST`,
     ],
-    [t('dashboard.daily_mining'), '16,666.6667 ELFI'],
+    [t('reward.daily_mining'), '16,666.6667 ELFI'],
   ];
 
   return (
