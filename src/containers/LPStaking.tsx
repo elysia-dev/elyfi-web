@@ -30,6 +30,7 @@ import Skeleton from 'react-loading-skeleton';
 import CountUp from 'react-countup';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
+import Guide from 'src/components/Guide';
 
 function LPStaking(): JSX.Element {
   const { account, library } = useWeb3React();
@@ -333,115 +334,129 @@ function LPStaking(): JSX.Element {
             }}
           />
         </section>
-        <section className="staking__lp__staked">
-          <StakedLp
-            stakedPositions={stakedPositions.filter(
-              (position) => position.staked,
-            )}
-            setUnstakeTokenId={setUnstakeTokenId}
-            ethElfiStakedLiquidity={totalStakedLiquidity(envs.ethElfiPoolAddress)}
-            daiElfiStakedLiquidity={totalStakedLiquidity(envs.daiElfiPoolAddress)}
-            expectedReward={expectedReward}
-            totalExpectedReward={totalExpectedReward}
-          />
-        </section>
-        {stakedPositions.length > 0 || !account ? (
-          <section className="staking__lp__staked__reward">
-            <div className="staking__lp__staked__reward__total-liquidity">
-              <h2>
-                {t('lpstaking.staked_total_liquidity')}
-              </h2>
-              <h2 className="amount">
-                {toCompact(
-                  parseFloat(utils.formatEther(totalStakedLiquidity(envs.ethElfiPoolAddress))) *
-                    pricePerEthLiquidity +
-                    parseFloat(utils.formatEther(totalStakedLiquidity(envs.daiElfiPoolAddress))) *
-                      pricePerDaiLiquidity,
-                )}
-              </h2>
-            </div>
-            <div className="staking__lp__staked__reward__amount">
-              <h2>{t('lpstaking.staked_total_expected_reward')}</h2>
-              <div>
-                <CountUp
-                  className="bold"
-                  start={totalExpectedReward.beforeTotalElfi}
-                  end={totalExpectedReward.totalElfi}
-                  formattingFn={(number) => {
-                    return formatDecimalFracionDigit(number, 2);
-                  }}
-                  duration={1}
-                  decimals={4}
-                />
-                <h2 className="staking__lp__staked__reward__amount__unit">
-                  {Token.ELFI}
-                </h2>
-              </div>
-              <div>
-                <CountUp
-                  className="bold"
-                  start={totalExpectedReward.beforeTotalEth}
-                  end={totalExpectedReward.totalEth}
-                  formattingFn={(number) => {
-                    return formatDecimalFracionDigit(number, 2);
-                  }}
-                  duration={1}
-                  decimals={4}
-                />
-                <h2 className="staking__lp__staked__reward__amount__unit">
-                  {Token.ETH}
-                </h2>
-              </div>
-              <div>
-                <CountUp
-                  className="bold"
-                  start={totalExpectedReward.beforeTotalDai}
-                  end={totalExpectedReward.totalDai}
-                  formattingFn={(number) => {
-                    return formatDecimalFracionDigit(number, 2);
-                  }}
-                  duration={1}
-                  decimals={4}
-                />
-                <h2 className="staking__lp__staked__reward__amount__unit">
-                  {Token.DAI}
-                </h2>
-              </div>
-            </div>
+
+        <div className="staking__lp__staked__header">
+          <h2>
+            {t('lpstaking.staked_lp_token')}
+          </h2>
+          <Guide content={t('guide.staked_lp_token')} />
+        </div>
+        
+        <div className="staking__lp__staked__wrapper">
+          <section className="staking__lp__staked">
+            <StakedLp
+              stakedPositions={stakedPositions.filter(
+                (position) => position.staked,
+              )}
+              setUnstakeTokenId={setUnstakeTokenId}
+              ethElfiStakedLiquidity={totalStakedLiquidity(envs.ethElfiPoolAddress)}
+              daiElfiStakedLiquidity={totalStakedLiquidity(envs.daiElfiPoolAddress)}
+              expectedReward={expectedReward}
+              totalExpectedReward={totalExpectedReward}
+            />
           </section>
-        ) : (
-          <section className="staking__lp__staked__reward">
-            <div className="staking__lp__staked__reward__total-liquidity">
-              <h2>
-                {t('lpstaking.staked_total_liquidity')}
-              </h2>
-              <h2 className="amount">
-                -
-              </h2>
-            </div>
-            <div className="staking__lp__staked__reward__amount">
-              <h2>{t('lpstaking.staked_total_expected_reward')}</h2>
-              <div>
-                <span>-</span>
-                <h2 className="staking__lp__staked__reward__amount__unit">
-                  {Token.ELFI}
+          {stakedPositions.length > 0 || !account ? (
+            <section className="staking__lp__staked__reward">
+              <div className="staking__lp__staked__reward__total-liquidity">
+                <h2>
+                  {t('lpstaking.staked_total_liquidity')}
+                </h2>
+                <h2 className="amount">
+                  {toCompact(
+                    parseFloat(utils.formatEther(totalStakedLiquidity(envs.ethElfiPoolAddress))) *
+                      pricePerEthLiquidity +
+                      parseFloat(utils.formatEther(totalStakedLiquidity(envs.daiElfiPoolAddress))) *
+                        pricePerDaiLiquidity,
+                  )}
                 </h2>
               </div>
-              <div>
-                <span>-</span>
-                <h2 className="staking__lp__staked__reward__amount__unit">
-                  {Token.ETH}
+              <div className="staking__lp__staked__reward__amount">
+                <h2>{t('lpstaking.staked_total_expected_reward')}</h2>
+                <div className="staking__lp__staked__reward__amount__unit__wrapper">
+                  <div>
+                    <CountUp
+                      className="bold"
+                      start={totalExpectedReward.beforeTotalElfi}
+                      end={totalExpectedReward.totalElfi}
+                      formattingFn={(number) => {
+                        return formatDecimalFracionDigit(number, 2);
+                      }}
+                      duration={1}
+                      decimals={4}
+                    />
+                    <h2 className="staking__lp__staked__reward__amount__unit">
+                      {Token.ELFI}
+                    </h2>
+                  </div>
+                  <div>
+                    <CountUp
+                      className="bold"
+                      start={totalExpectedReward.beforeTotalEth}
+                      end={totalExpectedReward.totalEth}
+                      formattingFn={(number) => {
+                        return formatDecimalFracionDigit(number, 2);
+                      }}
+                      duration={1}
+                      decimals={4}
+                    />
+                    <h2 className="staking__lp__staked__reward__amount__unit">
+                      {Token.ETH}
+                    </h2>
+                  </div>
+                  <div>
+                    <CountUp
+                      className="bold"
+                      start={totalExpectedReward.beforeTotalDai}
+                      end={totalExpectedReward.totalDai}
+                      formattingFn={(number) => {
+                        return formatDecimalFracionDigit(number, 2);
+                      }}
+                      duration={1}
+                      decimals={4}
+                    />
+                    <h2 className="staking__lp__staked__reward__amount__unit">
+                      {Token.DAI}
+                    </h2>
+                  </div>
+                </div>
+              </div>
+            </section>
+          ) : (
+            <section className="staking__lp__staked__reward">
+              <div className="staking__lp__staked__reward__total-liquidity">
+                <h2>
+                  {t('lpstaking.staked_total_liquidity')}
+                </h2>
+                <h2 className="amount">
+                  -
                 </h2>
               </div>
-              <div>
-                <span>-</span>
-                <h2 className="staking__lp__staked__reward__amount__unit">
-                  {Token.DAI}
-                </h2>
+              <div className="staking__lp__staked__reward__amount">
+                <h2>{t('lpstaking.staked_total_expected_reward')}</h2>
+                <div className="staking__lp__staked__reward__amount__unit__wrapper">
+                  <div>
+                    <span>-</span>
+                    <h2 className="staking__lp__staked__reward__amount__unit">
+                      {Token.ELFI}
+                    </h2>
+                  </div>
+                  <div>
+                    <span>-</span>
+                    <h2 className="staking__lp__staked__reward__amount__unit">
+                      {Token.ETH}
+                    </h2>
+                  </div>
+                  <div>
+                    <span>-</span>
+                    <h2 className="staking__lp__staked__reward__amount__unit">
+                      {Token.DAI}
+                    </h2>
+                  </div>
+                </div>
               </div>
-            </div>
-          </section>
-        )}
+            </section>
+          )}
+        </div>
 
         <section className="staking__lp__reward">
           <Reward

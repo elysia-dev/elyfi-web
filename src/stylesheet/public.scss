@@ -1647,43 +1647,29 @@ input[type=number] {
   }// portfolio end
 
   .staking {
-    width: 1190px;
-    margin: 0 auto;
-    
     &__title {
-      margin-top: 250px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       > h2 {
-        font-size: 30px;
-        margin-bottom: 15px;
+        color: $font-color;
       }
       > p {
         text-align: center;
         color: $font-color;
-        line-height: 25px;
-        font-size: 15px;
       }
       &__button {
-        min-width: 220px;
-        min-height: 35px;
         background: #FFFFFF;
         box-shadow: 0px 0px 6px #00000029;
         cursor: pointer;
-        border-radius: 35px;
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        padding: 5px 23px;
-        margin-top: 30px;
-        margin-bottom: 100px;
         > p {
           cursor: pointer;
           color: $font-color;
-          font-size: 15px;
         }
       }
       &__content {
@@ -1691,13 +1677,9 @@ input[type=number] {
         flex-direction: row;
         justify-content: space-between;
         align-items: flex-end;
-        padding-bottom: 20px;
         border-bottom: 1px solid $elysia-color;
         > p {
-          font-size: 15px;
-          line-height: 25px;
           width: 100%;
-          flex: 4;
         }
         > div {
           flex: 1;
@@ -1707,32 +1689,21 @@ input[type=number] {
           flex-direction: row;
           align-items: center;
           justify-content: flex-start;
-
-          margin-bottom: 12px;
-          > img {
-            width: 37px;
-            height: 37px;
-          }
           > h2 {
-            font-size: 18px;
             color: $font-color;
-            margin-left: 10px;
           }
         }
       }
     }
     &__round {
       display: flex;
-      margin-top: 50px;
       $current-data-height: 110px;
       .token-amount {
         color: $sub-font-color;
-        margin-left: 5px;
       }
       &__border {
         border: 1px dotted $elysia-color;
         border-right: 0;
-        width: 27px;
         margin-top: calc(#{$current-data-height} / 2);
       }
       &__container {
@@ -1745,19 +1716,12 @@ input[type=number] {
           justify-content: space-around;
           height: 100%;
         }
-        border-radius: 15px;
         box-shadow: 0px 0px 6px #00000029;
-        cursor: pointer;
-        width: 210px;
-        height: 30px;
-        line-height: 30px;
-        padding: 0px 20px;
         cursor: pointer;
         > p {
           margin: 0;
           cursor: pointer;
           text-align: center;
-          font-size: 15px;
         }
         
         &.disable {
@@ -1772,14 +1736,12 @@ input[type=number] {
         }
       }
       &__current-data {
-        // box-shadow: 0px 0px 6px #00000029;
         border: 1px solid $gray-line;
         border-radius: 10px;
         box-sizing: border-box;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        padding: 26px 63px 25px 28px;
         height: $current-data-height;
         align-items: center;
         > div {
@@ -1789,28 +1751,23 @@ input[type=number] {
           height: 100%;
           > h2 {
             color: $font-color;
-            font-size: 15px;
           }
           > div {
             display: flex;
             justify-content: flex-start;
             > p {
               color: $gray-font-color;
-              font-size: 15px;
               strong {
                 color: $elysia-color;
-                font-size: 15px;
               }
             }
           }
           &:last-child {
             text-align: right;
             > p {
-              font-size: 15px;
               color: $sub-font-color;
             }
             > h2 {
-              font-size: 25px;
               color: $font-color;
             }
           }
@@ -1819,21 +1776,16 @@ input[type=number] {
 
       &__previous {
         &__wrapper {
-          width: 95%;
-          // box-shadow: 0px 0px 6px #00000029;
           border: 1px solid $gray-line;
           box-sizing: border-box;
           border-radius: 10px;
           display: flex;
           flex-direction: column;
-          margin: 45px 0 45px auto;
         }
         display: flex;
         justify-content: space-between;
         align-items: center;
         border-bottom: 1px solid #e6e6e6;
-        height: 135px;
-        padding: 14px 75px 17px 14px;
         &:last-child {
           border: 0px;
         }
@@ -1847,41 +1799,31 @@ input[type=number] {
           flex-direction: column;
           > h2 {
             color: $gray-font-color;
-            font-size: 15px;
-            margin: 21px 0 15px;
           }
           > p {
             color: $gray-font-color;
-            font-size: 12px;
-            line-height: 17px;
-            margin: 0 13px 17px;
           }
         }
         &__body {
           flex: 1;
-          margin: 0 20px;
           display: flex;
           flex-direction: column;
           justify-content: space-around;
           height: 100%;
-          margin: 0 15px 0 31px;
           > div {
             display: flex;
             justify-content: space-between;
             align-items: center;
             > p {
-              font-size: 15px;
               color: $font-color;
             }
             > h2 {
-              font-size: 20px;
               color: $font-color;
             }
           }
         }
         > div:first-child {
           display: flex;
-          width: 800px;
           height: 100%;
         }
       } // previous end
@@ -1890,10 +1832,7 @@ input[type=number] {
         box-sizing: border-box;
         display: flex;
         flex-direction: row;
-        // box-shadow: 0px 0px 6px #00000029;
         border: 1px solid $gray-line;
-        margin: 45px 0 0;
-        height: 180px;
         &__title {
           border-right: 1px solid #e6e6e6;
           display: flex;
@@ -1901,35 +1840,25 @@ input[type=number] {
           justify-content: center;
           align-items: center;
           text-align: center;
-          padding: 23px 28px 16px 28px;
           > div:first-child {
             > h2 {
-              font-size: 15px;
               color: $elysia-color;
-              margin-bottom: 15px;
             }
             > p {
-              font-size: 12px;
-              line-height: 17px;
               color: $font-color;
-              margin-bottom: 16px;
             }
           }
           > div:last-child {
-            width: 180px;
             border: 1px solid $gray-line;
             border-radius: 10px;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
             > p {
-              font-size: 15px;
               color: $font-color;
             }
             > h2 {
-              font-size: 20px;
               color: $font-color;
             }
           }
@@ -1943,8 +1872,6 @@ input[type=number] {
               border-right: 1px solid $gray-line;
             }
             > h2 {
-              margin: 14px 0px 14px 23px;
-              font-size: 15px;
               color: $font-color;
             }
             > div {
@@ -1953,10 +1880,6 @@ input[type=number] {
               flex-direction: column;
               > h2 {
                 text-align: right;
-                font-size: 25px;
-                margin-top: 25px;
-                margin-right: 25px;
-                margin-bottom: 21px;
                 color: $font-color;
               }
               > div {
@@ -1980,257 +1903,26 @@ input[type=number] {
         }
       }
     }
-    &__progress-bar {
-      margin: 0 auto;
-      height: 1px;
-      background-color: #f5f5f5;
-      position: relative;
-      width: 1100px;
-      &__wrapper {
-        padding: 70px 30px;
-      }
-      &__value {
-        width: 0%;
-        height: 1px;
-      }
-      &__button {
-        border: 1px solid #00bfff;
-        z-index: 2;
-        position: relative;
-        box-sizing: border-box;
-        box-shadow: 0px 0px 6px #00000029;
-        cursor: pointer;
-        transition: 0.2s all ease-in-out;
-        width: 20px;
-        height: 20px;
-        border-radius: 20px;
-        &:hover {
-          box-shadow: 0px 0px 6px #00bfff;
-        }
-
-        &.selected {
-          &.EL {
-            background-color: #00bfff !important;
-          }
-          &.ELFI {
-            background-color: #f9ae19 !important;
-          }
-          > div {
-            > p {
-              color: #333333 !important;
-            }
-          }
-        }
-        &.ended {
-          background-color: #ffffff;
-          border: 1px solid #000000;
-          &.EL {
-            border: 1px solid #00bfff !important;
-          }
-          &.ELFI {
-            border: 1px solid #f9ae19 !important;
-          }
-        }
-        &.now {
-          background-color: #ffffff;
-          border: 1px solid #000000;
-          &.EL {
-            border: 1px solid #00bfff !important;
-          }
-          &.ELFI {
-            border: 1px solid #f9ae19 !important;
-          }
-          > div {
-            > p {
-              color: #333333 !important;
-            }
-          }
-        }
-        &.waiting {
-          background-color: #f5f5f5;
-          border: 0;
-        }
-        > div {
-          position: absolute;
-          text-align: center;
-          width: 200px;
-          left: -90px;
-          top: 57px;
-          > p {
-            margin: 0;
-            font-size: 12px;
-            color: #b7b7b7;
-            &:last-child {
-              position: absolute;
-              width: 300px;
-              left: -50px;
-            }
-          }
-        }
-        &::after {
-          content: '';
-          width: 1px;
-          position: absolute;
-          background-color: #b7b7b7;
-          z-index: 1;
-          cursor: default;
-          height: 32px;
-          left: 9px;
-          top: 19px;
-        }
-        &__wrapper {
-          margin: 0 auto;
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          position: relative;
-          width: 1120px;
-          top: -10px;
-        }
-      }
-    }
-    &__button {
-      display: block;
-      box-shadow: 0px 0px 6px #00000029;
-      box-sizing: border-box;
-      color: #333333;
-      border: 1px solid #333333;
-      border-radius: 3px;
-      text-align: center;
-      cursor: pointer;
-      background: #ffffff;
-      width: 380px;
-      height: 30px;
-      margin: 16px auto 0;
-      > p {
-        margin: 0;
-        cursor: pointer;
-        line-height: 30px;
-        font-size: 15px;
-      }
-      &.disable {
-        box-shadow: none;
-        background-color: #b7b7b7;
-        border: none;
-        cursor: not-allowed;
-        > p {
-          cursor: not-allowed;
-          color: #ffffff;
-        }
-      }
-    }
-    &__value {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      margin: 10px 0;
-      &__reward {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        height: 100%;
-        justify-content: space-evenly;
-      }
-    }
-    &__content {
-      border-top: 1px solid #e6e6e6;
-      > p {
-        margin: 12px 0 0;
-        font-size: 12px;
-      }
-    }
-    &__infomation {
-      margin: 0 auto;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      width: 1130px;
-      height: 352px;
-      margin-top: 75px;
-    }
-    &__container {
-      box-shadow: 0px 0px 6px #00000029;
-      height: 100%;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      background-color: #f8f8f8;
-      border-radius: 10px;
-      width: 522px;
-      padding: 16px;
-      &__header {
-        border-bottom: 1px solid #e6e6e6;
-        padding-bottom: 6.5px;
-        > p {
-          margin: 0;
-        }
-      }
-      > div {
-        > h2 {
-          margin: 0;
-          text-align: right;
-          font-size: 25px;
-          > span {
-            font-size: 30px;
-          }
-          .colored {
-            font-size: 35px;
-            &.EL {
-              color: #00bfff;
-            }
-            &.ELFI {
-              color: #f9ae19;
-            }
-          }
-        }
-      }
-      &__wrapper {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: 23px;
-        > div:first-child {
-          height: 110px;
-        }
-        > div:last-child {
-          height: 220px;
-        }
-      }
-    }
+    
 
     &__lp {
       &__header {
-        margin-top: 200px;
         text-align: center;
         > h2 {
-          font-size: 30px;
           color: $font-color;
-          margin-bottom: 16px;
         }
         > p {
-          font-size: 15px;
           color: $font-color;
         }
         > div {
           display: flex;
           flex-direction: row;
           justify-content: space-evenly;
-          margin-top: 35px;
-          margin-bottom: 130px;
           > div {
-            width: 210px;
-            height: 47px;
             box-shadow: 0px 1px 6px #00000029;
-            border-radius: 24px;
             text-align: center;
             cursor: pointer;
             > p {
-              line-height: 47px;
-              font-size: 15px;
               color: $font-color;
               cursor: pointer;
             }
@@ -2247,8 +1939,6 @@ input[type=number] {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        margin-top: 10px;
-        gap: 25px;
         &__container {
           flex: 1;
         }
@@ -2257,27 +1947,18 @@ input[type=number] {
           flex-direction: row;
           justify-content: left;
           align-items: center;
-          padding: 20px 30px;
           box-shadow: 0px 0px 6px #00000029;
           border-radius: 5px;
           position: relative;
-          top: 2px;
-          z-index: 2;
           background: $background-color;
           > img {
-            width: 37px;
-            height: 37px;
             &.second-token {
               position: relative;
-              left: -5px;
-              border-radius: 37px;
               border: 1px solid $background-color;
             }
           }
           > h2 {
-            font-size: 18px;
             color: $font-color;
-            margin-left: 5px;
           }
         }
         &__body {
@@ -2285,7 +1966,6 @@ input[type=number] {
           border-radius: 0px 0px 5px 5px;
         }
         &__item-header {
-          padding: 2px 30px 4px;
           > div {
             display: flex;
             flex-direction: row;
@@ -2293,18 +1973,14 @@ input[type=number] {
             justify-content: space-between;
             border-bottom: 1px solid $gray-line;
             > div {
-              padding-top: 20px;
-              padding-bottom: 16px;
               display: flex;
               align-items: center;
               justify-content: center;
               > p {
-                font-size: 15px;
                 color: $font-color;
               }
             }
             > h2 { 
-              font-size: 20px;
               color: $font-color;
             }
             &:last-child { 
@@ -2313,7 +1989,6 @@ input[type=number] {
           }
         }
         &__receive-token {
-          padding: 25px 30px;
           display: flex;
           justify-content: space-between;
           flex-direction: column;
@@ -2323,7 +1998,6 @@ input[type=number] {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
             > div {
               display: flex;
               flex-direction: row;
@@ -2331,30 +2005,22 @@ input[type=number] {
             }
           }
           &__button {
-            width: 179px;
-            height: 30px;
             box-shadow: 0px 1px 6px #00000029;
-            border-radius: 15px;
-            line-height: 30px;
             text-align: center;
             cursor: pointer;
             background: #FFFFFF;
             > p {
               cursor: pointer;
               color: $font-color;
-
-              font-size: 15px;
             }
           }
           &__content {
             > p {
-              font-size: 15px;
               color: $sub-font-color;
             }
           }
         }
         &__staking {
-          padding: 20px 30px 34px;
           &__header {
             display: flex;
             flex-direction: row;
@@ -2366,19 +2032,13 @@ input[type=number] {
             }
           }
           &__button {
-            width: 179px;
-            height: 30px;
             box-shadow: 0px 1px 6px #00000029;
-            border-radius: 15px;
-            line-height: 30px;
             text-align: center;
             cursor: pointer;
             background: #FFFFFF;
             > p {
               cursor: pointer;
               color: $font-color;
-
-              font-size: 15px;
             }
             &.disable {
               background: $gray-line;
@@ -2390,37 +2050,29 @@ input[type=number] {
             }
           }
           &__value {
-            margin-top: 30px;
             text-align: right;
             > h2 {
-              font-size: 25px;
+              color: $font-color;
             }
           }
         }
         &__time-data {
           text-align: right;
-          margin-top: 15px;
-          font-size: 12px;
           color: $sub-font-color;
         }
       } // detail-box end
 
       &__staked {
-        margin-top: 86px;
         &__header {
           display: flex;
           align-items: center;
-          padding-bottom: 10px;
           border-bottom: 1px solid $elysia-color;
           > h2 {
-            font-size: 18px;
+            color: $font-color;
           }
         }
         &__table {
           border: 1px solid $gray-line;
-          border-radius: 10px 10px 0px 0px;
-          margin-top: 20px;
-          padding: 35px 30px 0px;
           &__header {
             display: flex;
             justify-content: space-between;
@@ -2431,9 +2083,7 @@ input[type=number] {
                 display: flex;
                 flex-direction: row;
                 text-align: center;
-                margin-bottom: 7px;
                 color: $font-color;
-                font-size: 15px;
                 > div {
                   &:nth-child(1) {
                     flex: 2;
@@ -2449,15 +2099,10 @@ input[type=number] {
                   }
                 }
               }
-              &--center {
-                width: 35px;
-              }
               &--right {
                 flex: 2;
                 text-align: center;
-                margin-bottom: 7px;
                 color: $font-color;
-                font-size: 15px;
               }
             }
           }
@@ -2466,20 +2111,14 @@ input[type=number] {
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
             &__button {
-              width: 179px;
-              height: 30px;
               box-shadow: 0px 1px 6px #00000029;
-              border-radius: 15px;
-              line-height: 30px;
               text-align: center;
               cursor: pointer;
               background: $background-color;
               > p {
                 cursor: pointer;
                 color: $font-color;
-                font-size: 15px;
               }
             }
             &--left {
@@ -2487,7 +2126,6 @@ input[type=number] {
               display: flex;
               justify-content: space-between;
               align-items: center;
-              padding: 21px 0px;
               border: 1px solid $gray-line;
               border-radius: 5px;
               > div {
@@ -2495,7 +2133,6 @@ input[type=number] {
                 justify-content: center;
                 align-items: center;
                 > h2 { 
-                  font-size: 15px;
                   color: $font-color;
                 }
                 &:nth-child(1) {
@@ -2510,12 +2147,10 @@ input[type=number] {
                 &:nth-child(4) {
                   flex: 4;
                   flex-direction: column;
-                  gap: 18px;
                 }
               }
             }
             &--center {
-              width: 35px;
               display: flex;
               justify-content: center;
               > div {
@@ -2531,29 +2166,20 @@ input[type=number] {
               display: flex;
               justify-content: space-between;
               flex-direction: column;
-              gap: 18px;
               border: 1px solid $gray-line;
               border-radius: 5px;
-              padding: 21px 0px 15px;
               > div {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
                 justify-content: space-between;
-                padding: 0px 15px;
               }
               &__image {
                 display: flex;
                 flex-direction: row;
                 justify-content: left;
-                gap: 8px;
                 align-items: center;
-                > img { 
-                  width: 30px;
-                  height: 30px;
-                }
                 > h2 { 
-                  font-size: 15px;
                   color: $font-color;
                 }
               }
@@ -2561,11 +2187,9 @@ input[type=number] {
                 display: flex;
                 flex-direction: row;
                 &__amount {
-                  font-size: 20px;
                   color: $font-color;
                 }
                 &__unit {
-                  font-size: 20px;
                   color: $gray-font-color;
                 }
               }
@@ -2575,9 +2199,7 @@ input[type=number] {
         &__reward {
           box-shadow: 0px 0px 6px #00000029;
           border-radius: 5px;
-          padding: 11px;
           position: relative;
-          top: -2px;
           display: flex;
           flex-direction: row;
           align-items: center;
@@ -2589,8 +2211,6 @@ input[type=number] {
             display: flex;
             border-right: 1px solid $gray-line;
             > h2 {
-              font-size: 17px;
-              margin: 15px 0px;
               color: $font-color;
               &:first-child {
                 color: $gray-font-color;
@@ -2608,7 +2228,6 @@ input[type=number] {
             flex-direction: row;
             align-items: center;
             > h2 {
-              font-size: 17px;
               color: $gray-font-color;
               &:first-child {
                 color: $gray-font-color;
@@ -2623,54 +2242,38 @@ input[type=number] {
               flex-direction: row;
               align-items: center;
               > span {
-                font-size: 17px;
                 color: $font-color;
               }
               > h2 {
-                font-size: 17px;
                 color: $gray-font-color;
-                margin-left: 5px;
               }
             }
           }
         }
       }
       &__reward {
-        margin-top: 73px;
         &__button {
-          width: 179px;
-          height: 30px;
           box-shadow: 0px 1px 6px #00000029;
-          border-radius: 15px;
-          line-height: 30px;
           text-align: center;
           cursor: pointer;
           background: $background-color;
           > p {
             cursor: pointer;
             color: $font-color;
-            font-size: 15px;
           }
           &__wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 31px 0px 21px;
           }
         }
         &__header {
           display: flex;
           align-items: center;
-          padding-bottom: 10px;
           border-bottom: 1px solid $elysia-color;
-          > h2 {
-            font-size: 18px;
-          }
         }
         &__content {
-          margin-top: 20px;
           border: 1px solid $gray-line;
-          border-radius: 10px;
           &__container {
             display: flex;
             flex-direction: row;
@@ -2680,7 +2283,6 @@ input[type=number] {
             }
           }
           &__wrapper {
-            padding: 26px 30px 27px 20px;
             border-right: 1px solid $gray-line;
             &:last-child {
               border: 0;
@@ -2692,11 +2294,9 @@ input[type=number] {
             justify-content: flex-end;
             align-items: flex-end;
             > h2 {
-              font-size: 20px;
+              color: $font-color;
               &:last-child {
-                font-size: 17px;
                 color: $gray-font-color;
-                margin-left: 5px;
               }
             }
           }
@@ -2706,22 +2306,13 @@ input[type=number] {
           flex-direction: row;
           justify-content: left;
           align-items: center;
-          margin-bottom: 17px;
-          > img {
-            width: 30px;
-            height: 30px;
-          }
           > h2 {
-            font-size: 20px;
-            margin-left: 8px;
             color: $font-color;
           }
         }
       }
     }
   } // staking end
-  
-
 
   .guide {
     margin: 0 auto;
@@ -3621,14 +3212,12 @@ input[type=number] {
     &::after {
       content: "%";
       color: $sub-font-color;
-      margin-left: 5px;
     }
   }
   .amount {
     &::before {
       content: "$";
       color: $sub-font-color;
-      margin-right: 5px;
     }
   }
 
