@@ -42,9 +42,9 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
         <img src={secondImg} alt="Token Icon" className="second-token" />
         <h2>{t('lpstaking.lp_token_staking_title', { token0, token1 })}</h2>
       </div>
-      <div className="staking__lp__detail-box__body">
-        {!isLoading ? (
-          <>
+      {!isLoading ? (
+        <>
+          <div className="staking__lp__detail-box__body">
             <section className="staking__lp__detail-box__item-header">
               <DetailBoxItemHeader
                 totalLiquidity={formatDecimalFracionDigit(totalLiquidity, 2)}
@@ -80,20 +80,20 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
                 round={round}
               />
             </section>
-            <p className="staking__lp__detail-box__time-data">
-              {moment
-                .unix(lpUnixTimestamp[round - 1].startedAt)
-                .format('YYYY-MM-DD HH:mm:ss')}{' '}
-              -{' '}
-              {moment
-                .unix(lpUnixTimestamp[round - 1].endedAt)
-                .format('YYYY-MM-DD HH:mm:ss')}
-            </p>
-          </>
-        ) : (
-          <Skeleton width={'100%'} height={550} />
-        )}
-      </div>
+          </div>
+          <p className="staking__lp__detail-box__time-data">
+            {moment
+              .unix(lpUnixTimestamp[round - 1].startedAt)
+              .format('YYYY-MM-DD HH:mm:ss')}{' '}
+            -{' '}
+            {moment
+              .unix(lpUnixTimestamp[round - 1].endedAt)
+              .format('YYYY-MM-DD HH:mm:ss')}
+          </p>
+        </>
+      ) : (
+        <Skeleton width={'100%'} height={550} />
+      )}
     </section>
   );
 };
