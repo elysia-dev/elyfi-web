@@ -95,7 +95,7 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
         ];
   return (
     <div className="reward__token__lp__container">
-      <div className="reward__token__array-handler">
+      {/* <div className="reward__token__array-handler">
         <div
           className={`reward__token__array-handler--left${
             token1 === Token.DAI
@@ -162,7 +162,7 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
           <i />
           <i />
         </div>
-      </div>
+      </div> */}
       <LpStakingHeader
         tvl={props.tvl}
         apr={props.apr}
@@ -232,6 +232,42 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
           miningDescription={miningDescription}
           unit={token1}
         />
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        {lpRoundDate.map((_, idx) => (
+          <div
+            onClick={() => {
+              setLpStakingRound({
+                ...lpStakingRound,
+                daiElfiRound:
+                  token1 === Token.DAI ? idx : lpStakingRound.daiElfiRound,
+                ethElfiRound:
+                  token1 === Token.DAI ? lpStakingRound.ethElfiRound : idx,
+              });
+            }}
+            style={{
+              width: 8,
+              height: 8,
+              borderRadius: 8,
+              backgroundColor:
+                token1 === Token.DAI
+                  ? idx === lpStakingRound.daiElfiRound
+                    ? '#646464'
+                    : '#E6E6E6'
+                  : idx === lpStakingRound.ethElfiRound
+                  ? '#646464'
+                  : '#E6E6E6',
+              cursor: 'pointer',
+              marginTop: 18,
+              marginRight: idx === lpRoundDate.length - 1 ? '' : 18,
+            }}
+          />
+        ))}
       </div>
     </div>
   );
