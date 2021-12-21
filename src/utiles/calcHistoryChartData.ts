@@ -138,10 +138,10 @@ const calcHistoryChartData = (
     return [
       moment(d.timestamp * 1000).format('MMMM DD'),
       parseInt(utils.formatUnits(d.selectedAmount, decimals), 10),
-      toCompact(d.calculatedAPY),
-      (d.calculatedAPY / divider) * base + base * 1.2,
       '$ ' +
         toCompact(parseInt(utils.formatUnits(d.selectedAmount, decimals), 10)),
+      (d.calculatedAPY / divider) * base + base * 1.2,
+      toCompact(d.calculatedAPY),
     ];
   });
 };
