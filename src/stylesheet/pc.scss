@@ -613,6 +613,34 @@ $device-width: 1190px;
       @include page-container;
       &__asset {
         width: 379px;
+        &__progress-bar {
+          height: 13px;
+          border-radius: 13px;
+          &::-webkit-progress-bar {
+            height: 13px;
+            border-radius: 13px;
+          }
+          &::-webkit-progress-value {
+            height: 13px;
+            border-radius: 13px;
+          }
+          &::-moz-progress-bar {
+            height: 13px;
+            border-radius: 13px;
+          }
+          &::-webkit-progress-bar {
+            border: 0;
+            border-radius: 13px;
+            background: #e6e6e6;
+          }
+          &::-webkit-progress-value {
+            border: 0;
+            border-radius: 13px;
+          }
+          &::-moz-progress-bar {
+            border: 0;
+          }
+        }
         > div {
           &:last-child {
             > div {

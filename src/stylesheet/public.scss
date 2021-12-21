@@ -40,8 +40,8 @@ $loan-list-size: 315px;
 $navigation-margin-height: 100px;
 
 $governance-progress-00: #0099CC;
-$governance-progress-01: #CC0000;
-$governance-progress-02: #888888;
+$governance-progress-01: #3D5299;
+$governance-progress-02: #707070;
 
 $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 
@@ -1378,8 +1378,6 @@ input[type=number] {
       &__progress-bar {
         width: 100%;
         color: $gray-line;
-        height: 13px;
-        border-radius: 13px;
         border: 0;
         &::-webkit-progress-value {
           background: $governance-progress-00;
@@ -1420,30 +1418,6 @@ input[type=number] {
             }
           }
         }
-        &::-webkit-progress-bar {
-          height: 13px;
-          border-radius: 13px;
-        }
-        &::-webkit-progress-value {
-          height: 13px;
-          border-radius: 13px;
-        }
-        &::-moz-progress-bar {
-          height: 13px;
-          border-radius: 13px;
-        }
-        &::-webkit-progress-bar {
-          border: 0;
-          border-radius: 13px;
-          background: #e6e6e6;
-        }
-        &::-webkit-progress-value {
-          border: 0;
-          border-radius: 13px;
-        }
-        &::-moz-progress-bar {
-          border: 0;
-        }
       }
       > div {
         > img {
@@ -1451,12 +1425,14 @@ input[type=number] {
         }
         &:last-child {
           > div {
+            display: flex;
             border-bottom: 1px solid $gray-line;
             > p {
               cursor: pointer;
               color: $font-color;
             }
             &:last-child {
+              display: block;
               padding: 0px 30px 20px;
               > div > h2 {
                 cursor: pointer;

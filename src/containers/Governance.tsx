@@ -105,12 +105,18 @@ const Governance = () => {
         <div>
           <div className="governance__asset__nap">
             <p>
-              NAP#: {data.nap}
+              NAP# :&nbsp;
+            </p>
+            <p>
+              {data.nap}
             </p>
           </div>
           <div className="governance__asset__status">
             <p>
-              {t("governance.status")}: {data.status}
+              {t("governance.status")} :&nbsp;
+            </p>
+            <p>
+              {data.status}
             </p>
           </div>
           <div>
@@ -142,12 +148,18 @@ const Governance = () => {
         <div>
           <div className="governance__nap">
             <p>
-              NAP#: {data.data.description}
+              NAP# :&nbsp;
+            </p>
+            <p>
+              {data.data.description}
             </p>
           </div>
           <div className="governance__status">
             <p>
-              {t("governance.status")}: {data.status}
+              {t("governance.status")} :&nbsp;
+            </p>
+            <p>
+              {data.status}
             </p>
           </div>
           <div>

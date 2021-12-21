@@ -7,7 +7,6 @@ $elysia-color: #00A7FF;
 $background-color: #FFFFFF;
 $gray-line: #F0F0F1;
 $gray-font-color: #888888;
-$loan-list-size: 150px;
 $navigation-margin-height: 100px;
 
 $governance-progress-00: #0099CC;
@@ -573,6 +572,12 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         }
         &__loan-list {
           padding: 12px 15px;
+          .component__loan-list__container {
+            grid-template-columns: repeat(2, 150px);
+            > div {
+              width: 150px;
+            }
+          }
           > div {
             > h2 {
               font-size: 12px;
@@ -682,7 +687,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           }
         }
         &__circle-wrapper {
-          justify-content: center;
+          justify-content: center !important;
         }
       }
     }
@@ -705,22 +710,56 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     $asset-width: 164px;
     &__asset {
       width: $asset-width;
+      &__progress-bar {
+        height: 6px;
+        border-radius: 6px;
+        &::-webkit-progress-bar {
+          height: 6px;
+          border-radius: 6px;
+        }
+        &::-webkit-progress-value {
+          height: 6px;
+          border-radius: 6px;
+        }
+        &::-moz-progress-bar {
+          height: 6px;
+          border-radius: 6px;
+        }
+        &::-webkit-progress-bar {
+          border: 0;
+          border-radius: 6px;
+          background: #e6e6e6;
+        }
+        &::-webkit-progress-value {
+          border: 0;
+          border-radius: 6px;
+        }
+        &::-moz-progress-bar {
+          border: 0;
+        }
+      }
       > div {
         > img {
           border-radius: 5px 5px 0 0;
         }
         &:last-child {
           > div {
+            justify-content: space-between;
             padding: 5px 11px;
             > p {
-              font-size: 1ppx;
+              font-size: 10px;
+              color: $font-color;
+              &:first-child {
+                color: $sub-font-color;
+              }
             }
             &:last-child {
-              padding: 0px 30px 20px;
+              padding: 0px 11px 17px;
               > div > h2 {
-                font-size: 15px;
-                line-height: 25px;
-                margin-top: 13px;
+                font-size: 10px;
+                line-height: 12px;
+                margin-top: 8px;
+                margin-bottom: -8px;
               }
             } 
           }
@@ -729,7 +768,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     }
     &__grid {
       margin-bottom: 125px;
-      grid-gap: 50px 25px;
+      grid-gap: 20px 25px;
       grid-template-columns: repeat(2, $asset-width);
     }
     &__header {
@@ -899,6 +938,8 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 
   .component {
     &__loan-list {
+      $loan-list-size: 164px;
+
       width: $loan-list-size;
       &__container {
         display: grid;
