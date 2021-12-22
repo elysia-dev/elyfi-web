@@ -231,6 +231,83 @@ const Navigation: React.FunctionComponent<{
     );
   };
 
+  const mobileHamburgerBar = () => {
+    return (
+      <div className="navigation__hamburger__content">
+      {
+        navigationLink.map((data) => {
+          return (
+            data.type === NavigationType.LNB ? (
+              <>
+                <div className="navigation__hamburger__lnb" onClick={() => {
+                  selectedLocalNavIndex === data.id ? 
+                    setSelectedLocalNavIndex(0) :
+                    setSelectedLocalNavIndex(data.id)
+                }}>
+                  <p>
+                    {t(data.i18nKeyword).toUpperCase()}
+                  </p>
+                  <div 
+                    style={{ 
+                      transform: selectedLocalNavIndex === data.id ? `rotate(-45deg)` : `rotate(135deg)`,
+                      top: selectedLocalNavIndex === data.id ? 3 : -3
+                    }}
+                  />
+                </div>
+                <div 
+                  className="navigation__hamburger__lnb__sub-navigation__container"
+                  style={{ display: selectedLocalNavIndex === data.id ? "block" : "none" }}  
+                >
+                  <div className="navigation__hamburger__lnb__sub-navigation__wrapper">
+                  {
+                    data.subNavigation!.map((_data) => {
+                      return (
+                        <div>
+                          <Link
+                            to={{
+                              pathname: _data.type === NavigationType.Link ?
+                                `/${lng + _data.location}` : 
+                                _data.location,
+                            }}
+                            target={_data.type === NavigationType.Href ? '_blank' : undefined}
+                            onClick={() => {
+                              setHamburgerBar(false);
+                            }}
+                          >
+                            <p>
+                              {t(_data.i18nKeyword).toUpperCase()}
+                            </p>
+                          </Link>
+                        </div>
+                      )
+                    })
+                  }
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div>
+                <Link
+                  to={{
+                    pathname: `/${lng + data.location}`
+                  }}
+                  onClick={() => {
+                    setHamburgerBar(false);
+                  }}
+                >
+                  <p>
+                    {t(data.i18nKeyword).toUpperCase()}
+                  </p>
+                </Link>
+              </div>
+            )
+          )
+        })
+      }
+      </div>
+    )
+  }
+
   useEffect(() => {
     function handleClickOutside(e: MouseEvent): void {
       if (
@@ -256,7 +333,8 @@ const Navigation: React.FunctionComponent<{
         className={`navigation`}
         style={{
           backgroundColor: scrollTop > 125 ? '#FFFFFF' : '#FFFFFF',
-          height: hamburgerBar ? '100vh' : 'auto',
+          height: hamburgerBar ? '100%' : 'auto',
+          
         }}
         ref={navigationRef}
         onMouseLeave={() => {
@@ -271,6 +349,7 @@ const Navigation: React.FunctionComponent<{
                 onMouseEnter={() => {
                   setGlobalNavHover(0);
                   setSelectedLocalNavIndex(0);
+                  setHamburgerBar(false);
                 }}>
                 <div className="logo-wrapper" style={{ cursor: 'pointer' }}>
                   <img
@@ -283,7 +362,7 @@ const Navigation: React.FunctionComponent<{
             </div>
             {setNavigationLink()}
             <div
-              className={`navigation__hamburger ${
+              className={`navigation__hamburger__button ${
                 hamburgerBar && 'active'
               } mobile-only`}
               onClick={() => {
@@ -297,19 +376,7 @@ const Navigation: React.FunctionComponent<{
           {setMediaQueryMetamask('pc')}
         </div>
         {hamburgerBar && (
-          <div className="navigation__hamburger__content">
-          {
-            navigationLink.map((data) => {
-              return (
-                <div>
-                  <p>
-                    {data.i18nKeyword}
-                  </p>
-                </div>
-              )
-            })
-          }
-          </div>
+          mobileHamburgerBar()
         )}
       </nav>
       <div className="navigation__margin" />

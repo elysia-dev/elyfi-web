@@ -28,49 +28,96 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   }
 
   .navigation {
+    overflow-y: scroll;
     &__hamburger {
-      cursor: pointer;
-      width: 25px;
-      height: 25px;
-      i {
-        border-radius: 2px;
-        content: '';
-        display: block;
-        width: 100%;
-        height: 2px;
-        background: $font-color;
+      &__content {
+        > div {
+          // padding: 33px 0px 36px;
+          height: 70px;
+          width: 360px;
+          margin: 0 auto;
+          border-bottom: 1px solid $gray-line;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          p {
+            font-size: 16px;
+            color: $font-color;
+          }
+        }
       }
-      i:nth-child(1) {
-        -webkit-animation: outT 0.8s backwards;
-        animation: outT 0.8s backwards;
-        -webkit-animation-direction: reverse;
-        animation-direction: reverse;
+      &__lnb {
+        > div {
+          width: 9px;
+          height: 9px;
+          border-top: 1px solid $font-color;
+          border-right: 1px solid $font-color;
+          top: -3px;
+          position: relative;
+          transition: all 0.3s ease-in-out;
+        }
+        &__sub-navigation {
+          &__container {
+            width: 100% !important;
+            margin: none !important;
+            background: $gray-line;
+            height: auto !important;
+          }
+          &__wrapper {
+            margin: 0px auto;
+            width: 360px;
+            padding: 13px 0;
+            > div {
+              padding: 15px 0;
+            }
+          }
+        }
       }
-      i:nth-child(2) {
-        margin: 5px 0;
-        -webkit-animation: outM 0.8s backwards;
-        animation: outM 0.8s backwards;
-        -webkit-animation-direction: reverse;
-        animation-direction: reverse;
-      }
-      i:nth-child(3) {
-        -webkit-animation: outBtm 0.8s backwards;
-        animation: outBtm 0.8s backwards;
-        -webkit-animation-direction: reverse;
-        animation-direction: reverse;
-      }
-      &.active {
+      &__button {
+        cursor: pointer;
+        width: 25px;
+        height: 25px;
+        i {
+          border-radius: 2px;
+          content: '';
+          display: block;
+          width: 100%;
+          height: 2px;
+          background: $font-color;
+        }
         i:nth-child(1) {
-          -webkit-animation: inT 0.8s forwards;
-          animation: inT 0.8s forwards;
+          -webkit-animation: outT 0.8s backwards;
+          animation: outT 0.8s backwards;
+          -webkit-animation-direction: reverse;
+          animation-direction: reverse;
         }
         i:nth-child(2) {
-          -webkit-animation: inM 0.8s forwards;
-          animation: inM 0.8s forwards;
+          margin: 5px 0;
+          -webkit-animation: outM 0.8s backwards;
+          animation: outM 0.8s backwards;
+          -webkit-animation-direction: reverse;
+          animation-direction: reverse;
         }
         i:nth-child(3) {
-          -webkit-animation: inBtm 0.8s forwards;
-          animation: inBtm 0.8s forwards;
+          -webkit-animation: outBtm 0.8s backwards;
+          animation: outBtm 0.8s backwards;
+          -webkit-animation-direction: reverse;
+          animation-direction: reverse;
+        }
+        &.active {
+          i:nth-child(1) {
+            -webkit-animation: inT 0.8s forwards;
+            animation: inT 0.8s forwards;
+          }
+          i:nth-child(2) {
+            -webkit-animation: inM 0.8s forwards;
+            animation: inM 0.8s forwards;
+          }
+          i:nth-child(3) {
+            -webkit-animation: inBtm 0.8s forwards;
+            animation: inBtm 0.8s forwards;
+          }
         }
       }
     }
@@ -922,6 +969,9 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           height: 250px;
           padding: 14px 16px;
           border-bottom: 1px solid $gray-line;
+          > div {
+            height: 244px !important;
+          }
         }
         &--right {
           padding: 20px 16px; 
