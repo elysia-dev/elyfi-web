@@ -1,6 +1,7 @@
 import { FunctionComponent, useMemo, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import GoogleMapReact from 'google-map-react';
+import TempAssets from 'src/assets/images/temp_assets.png';
 import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
 import ErrorPage from 'src/components/ErrorPage';
 import { useQuery } from '@apollo/client';
@@ -39,10 +40,17 @@ const PortfolioDetail: FunctionComponent = () => {
   const lat = parsedTokenId.collateralLatitude / 100000;
   const lng = parsedTokenId.collateralLongitude / 100000;
   const [address, setAddress] = useState('-');
-  const [contractImage, setContractImage] = useState({
-    hash: '',
-    link: '',
-  });
+  const [contractImage, setContractImage] = useState<
+    {
+      hash: string;
+      link: string;
+    }[]
+  >([
+    {
+      hash: '',
+      link: '',
+    },
+  ]);
   const tokenInfo = ReserveData.find(
     (reserve) => reserve.address === abToken?.reserve.id,
   );
@@ -65,20 +73,36 @@ const PortfolioDetail: FunctionComponent = () => {
   const loadContractImage = async (ipfs: string) => {
     try {
       const response = await Slate.fetctABTokenIpfs(ipfs);
-      const contractDoc = response.data.documents.find((doc) => doc.type === 1);
-
+      const contractDoc = response.data;
       if (contractDoc) {
-        setContractImage({
-          hash: contractDoc.hash,
-          link: contractDoc.link,
-        });
+        console.log(response);
+        setContractImage([
+          {
+            hash: contractDoc.documents[0].hash,
+            link: contractDoc.documents[0].link,
+          },
+          {
+            hash: contractDoc.documents[1].hash,
+            link: contractDoc.documents[1].link,
+          },
+          {
+            hash: contractDoc.documents[2].hash,
+            link: contractDoc.documents[2].link,
+          },
+          {
+            hash: contractDoc.images[0]?.hash,
+            link: contractDoc.images[0]?.link,
+          },
+        ]);
       }
     } catch (error) {
       console.error(error);
-      setContractImage({
-        hash: '',
-        link: '',
-      });
+      setContractImage([
+        {
+          hash: '',
+          link: '',
+        },
+      ]);
     }
   };
 
@@ -229,17 +253,25 @@ const PortfolioDetail: FunctionComponent = () => {
             {loading ? (
               <Skeleton height={900} />
             ) : (
-              <GoogleMapReact
-                bootstrapURLKeys={{
-                  key: process.env.REACT_APP_GOOGLE_MAP_API_KEY!,
+              <img
+                style={{
+                  width: 538.5,
+                  height: 526,
                 }}
-                defaultCenter={{
-                  lat,
-                  lng,
-                }}
-                defaultZoom={15}>
-                <Marker lat={lat} lng={lng} />
-              </GoogleMapReact>
+                src={contractImage[3]?.link || TempAssets}
+                alt={contractImage[3]?.link || TempAssets}
+              />
+              // <GoogleMapReact
+              //   bootstrapURLKeys={{
+              //     key: process.env.REACT_APP_GOOGLE_MAP_API_KEY!,
+              //   }}
+              //   defaultCenter={{
+              //     lat,
+              //     lng,
+              //   }}
+              //   defaultZoom={15}>
+              //   <Marker lat={lat} lng={lng} />
+              // </GoogleMapReact>
             )}
           </div>
           <div className="portfolio__collateral__data--right">
@@ -306,12 +338,36 @@ const PortfolioDetail: FunctionComponent = () => {
                   [t('loan.collateral_nft__address'), address, '', ''],
                   [
                     t('loan.collateral_nft__contract_image'),
-                    `${contractImage.hash.slice(
-                      0,
-                      12,
-                    )} ... ${contractImage.hash.slice(-12)}` || '-',
+                    contractImage[1]?.hash
+                      ? `${contractImage[1].hash.slice(
+                          0,
+                          12,
+                        )} ... ${contractImage[1].hash.slice(-12)}`
+                      : '-',
                     '',
-                    contractImage.link,
+                    contractImage[1]?.link,
+                  ],
+                  [
+                    '등기사항',
+                    contractImage[0]?.hash
+                      ? `${contractImage[0].hash.slice(
+                          0,
+                          12,
+                        )} ... ${contractImage[0].hash.slice(-12)}`
+                      : '-',
+                    '',
+                    contractImage[0]?.link,
+                  ],
+                  [
+                    '법인등기사항',
+                    contractImage[2]?.hash
+                      ? `${contractImage[2]?.hash.slice(
+                          0,
+                          12,
+                        )} ... ${contractImage[2]?.hash.slice(-12)}`
+                      : '-',
+                    '',
+                    contractImage[2]?.link,
                   ],
                 ].map((data) => {
                   return (
