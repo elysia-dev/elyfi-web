@@ -678,6 +678,231 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     }
   } // deposit end
 
+  .reward {
+    @include page-container;
+    &__progress-bar {
+      height: 13px;
+      border-radius: 13px;
+      margin-top: 5px;
+      &__wrapper {
+        margin-bottom: 12px;
+      }
+      &__content {
+        height: 21px;
+        top: 5px;
+        &__fill {
+          > p {
+            font-size: 10px;
+            margin-right: 3.5px;
+          }
+        }
+      }
+    }
+    &__token {
+      margin-top: 10px;
+      &__image-container {
+        > img {
+          width: 41px;
+          height: 41px;
+        }
+      }
+      > img {
+        width: 41px;
+        height: 41px;
+      }
+      > h2 {
+        margin-top: 9px;
+        font-size: 18px;
+      }
+      &__elfi {
+        width: 140px;
+        height: 26px;
+        border-radius: 15px;
+        margin-top: 10px;
+        margin-bottom: 54px;
+        > p {
+          font-size: 12px;
+          line-height: 26px;
+        }
+      }
+      &__container {
+        margin-top: 90px;
+      }
+      &__header {
+        padding: 15px;
+        > img {
+          width: 21px;
+          height: 21px;
+        }
+        > h2 {
+          font-size: 13px;
+          margin-left: 6px;
+        }
+      }
+      &__staking {
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+        > div {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          border: 0 !important;
+          > p {
+            font-size: 12px;
+          }
+          > div {
+            > h2 {
+              font-size: 12px;
+            }
+            > span {
+              margin-left: 3px;
+              font-size: 12px;
+            }
+          }
+        }
+      }
+      &__data {
+        flex-direction: column;
+        > div {
+          width: 100%;
+          padding: 15px 15px 25px;
+          border: none !important;
+          &:first-child {
+            border-bottom: 1px solid $gray-line !important;
+          }
+        }
+        &__content {
+          padding: 0px 0px 15px;
+          gap: 15px;
+          display: flex;
+          flex-direction: column;
+          > h2 {
+            font-size: 12px;
+          }
+          > div {
+            > p {
+              font-size: 12px;
+            }
+          }
+        }
+      }
+
+      @mixin arrowTransform($angle, $x: 0, $y: 0) {
+        i:first-child {
+          transform: translate($x, $y) rotate($angle);
+        }
+
+        i:last-child {
+          transform: translate($x, -$y) rotate(-$angle);
+        }
+      }
+
+      &__array-handler {
+        display: none;
+      }
+      &__lp {
+        &__container {
+          margin-top: 50px;
+          padding: 30px;
+        }
+        &__title {
+          padding-bottom: 27px;
+          > img {
+            width: 37px;
+            height: 37px;
+            &.last-token {
+              margin-left: -5px;
+              border-radius: 37px;
+              margin-right: 10px;
+            }
+          }
+          > h2 {
+            font-size: 18px;
+          }
+        }
+        &__content {
+          > div {
+            flex: 1;
+            padding-top: 25px;
+            padding-bottom: 25px;
+            > p {
+              font-size: 15px;
+            }
+            > h2 {
+              font-size: 20px;
+            }
+          }
+          &--left {
+            padding-right: 25px;
+          }
+          &--right {
+            padding-left: 25px;
+          }
+        }
+      }
+    }
+    &__token-deposit {
+      margin-bottom: 35px;
+      &__header {
+        padding: 15px;
+        flex-direction: column;
+        > div {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          margin-bottom: 11px;
+          > img {
+            width: 21px;
+            height: 21px;
+            margin-right: 6px;
+          }
+          > h2 {
+            font-size: 13px;
+            color: $font-color;
+          }
+        }
+        > p {
+          font-size: 12px;
+          line-height: 18px;
+          color: $sub-font-color;
+        }
+      }
+      &__apy {
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+        > div {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          > p {
+            font-size: 12px;
+            color: $sub-font-color;
+          }
+          > h2 {
+            font-size: 12px;
+            color: $font-color;
+          }
+        }
+      }
+      &__data {
+        flex-direction: column;
+        > div {
+          flex: 1;
+          padding: 15px;
+          width: 100%;
+          &:first-child {
+            border-bottom: 1px solid $gray-line;
+          }
+        }
+      }
+    }
+  } // reward end
+
   .detail {
     @include page-container;
 
@@ -1671,6 +1896,52 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         font-size: 12px;
       }
     } // text navigation end
+    &__progress-bar {
+      > div {
+        margin-bottom: 5px;
+        &:first-child {
+          > p {
+            font-size: 12px;
+          }
+        }
+        &:nth-child(2) {
+          > p {
+            font-size: 12px;
+            &:last-child {
+              font-size: 12px;
+              > span {
+                font-size: 12px;
+              }
+            }
+            > span {
+              font-size: 12px;
+            }
+          }
+        }
+      }
+      progress {
+        height: 6px;
+        border-radius: 13px;
+        margin-top: 5px;
+        &::-webkit-progress-bar {
+          border-radius: 6px;
+        }
+        &::-webkit-progress-value {
+          border-radius: 6px;
+        }
+      }
+    } // progress bar end
+    &__data-info {
+      padding: 15px;
+      gap: 15px;
+      display: flex;
+      flex-direction: column;
+      > div {
+        > p {
+          font-size: 12px;
+        }
+      }
+    } // data info end
   }
 
   .percent {

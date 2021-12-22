@@ -360,15 +360,14 @@ const RewardPlan: FunctionComponent = () => {
               staking={state.currentElfiLevel}
               unit={'DAI'}
               start={
-                amountData.beforeDaiRewardByElFiStakingPool[
-                  state.currentElfiLevel
-                ]
+                amountData.beforeDaiRewardByElFiStakingPool
               }
               end={
-                amountData.daiRewardByElFiStakingPool[state.currentElfiLevel]
+                amountData.daiRewardByElFiStakingPool
               }
               state={state}
               setState={setState}
+              OrdinalNumberConverter={ordinalNumberConverter}
             />
           </section>
         ) : stakingType === 'EL' ? (
@@ -385,9 +384,9 @@ const RewardPlan: FunctionComponent = () => {
               state={state}
               setState={setState}
               miningStart={
-                amountData.beforeMintedByElStakingPool[state.elStaking]
+                amountData.beforeMintedByElStakingPool
               }
-              miningEnd={amountData.mintedByElStakingPool[state.elStaking]}
+              miningEnd={amountData.mintedByElStakingPool}
               currentPhase={currentPhase}
               OrdinalNumberConverter={ordinalNumberConverter}
             />

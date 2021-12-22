@@ -10,7 +10,6 @@ import getAddressesByPool from 'src/core/utils/getAddressesByPool';
 import { StakedLpItemProps } from 'src/core/types/LpStakingTypeProps';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import Button from './Button';
 import { lpUnixTimestamp } from 'src/core/data/lpStakingTime';
 import moment from 'moment';
 import useLpMigration from 'src/hooks/useMigration';

@@ -506,6 +506,289 @@ $device-width: 1190px;
       }
     } // deposit end
 
+
+    .reward {
+      @include page-container;
+      &__progress-bar {
+        height: 13px;
+        border-radius: 13px;
+        margin-top: 5px;
+        &__wrapper {
+          margin-bottom: 12px;
+        }
+        &__content {
+          height: 29px;
+          top: 5px;
+          &__fill {
+            > p {
+              font-size: 10px;
+              margin-right: 3.5px;
+            }
+          }
+        }
+      }
+      &__token {
+        margin-top: 25px;
+        &__image-container {
+          > img {
+            width: 60px;
+            height: 60px;
+          }
+        }
+        > img {
+          width: 60px;
+          height: 60px;
+        }
+        > h2 {
+          margin-top: 15px;
+          font-size: 25px;
+        }
+        &__elfi {
+          width: 216px;
+          height: 30px;
+          border-radius: 15px;
+          margin-top: 24px;
+          margin-bottom: 90px;
+          > p {
+            font-size: 15px;
+            line-height: 30px;
+          }
+        }
+        &__container {
+          margin-top: 130px;
+          padding: 31px 29px 43px;
+        }
+        &__header {
+          padding-bottom: 27px;
+          > img {
+            width: 37px;
+            height: 37px;
+          }
+          > h2 {
+            font-size: 18px;
+            margin-left: 8px;
+          }
+        }
+        &__staking {
+          > div {
+            padding: 25px 0px 20px;
+            &:first-child {
+              padding-right: 25px;
+            }
+            &:last-child {
+              padding-left: 25px;
+            }
+            > p {
+              font-size: 15px;
+            }
+            > div {
+              > h2 {
+                font-size: 20px;
+              }
+              > span {
+                margin-left: 5px;
+                font-size: 20px;
+              }
+            }
+          }
+        }
+        &__data {
+          > div {
+            &:first-child {
+              padding-right: 25px;
+            }
+            &:last-child {
+              padding-left: 25px;
+            }
+          }
+          &__content {
+            padding: 25px 0px 12px;
+            > h2 {
+              font-size: 15px;
+            }
+            > div {
+              margin: 17px 0px;
+              > p {
+                font-size: 15px;
+              }
+            }
+          }
+        }
+  
+        @mixin arrowTransform($angle, $x: 0, $y: 0) {
+          i:first-child {
+            transform: translate($x, $y) rotate($angle);
+          }
+  
+          i:last-child {
+            transform: translate($x, -$y) rotate(-$angle);
+          }
+        }
+  
+        &__array-handler {
+          top: 360px;
+          > div {
+            margin: 10px;
+            width: 40px;
+            height: 40px;
+            transform: translate3d(0, 0, 0); // fixes flicker in webkit
+  
+            margin-top: -20px;
+            filter: drop-shadow(0 3px 0px #00000029);
+            -webkit-filter: drop-shadow(0 3px 0px #00000029);
+            > i {
+              position: absolute;
+              top: 40%;
+              left: 0;
+              width: 35px;
+              height: 1px;
+              border-radius: calc(1px / 2);
+              background: $elysia-color;
+  
+              transition: all 0.15s ease;
+            }
+          }
+          &--left {
+            left: -80px;
+  
+            @include arrowTransform(40deg, 0, -0px);
+  
+            &:hover {
+              @include arrowTransform(30deg, 0, 0px);
+            }
+            &:active {
+              @include arrowTransform(25deg, 0px, -0px);
+            }
+            &.disabled {
+              @include arrowTransform(0deg, -5px, 0);
+              &:hover {
+                @include arrowTransform(0deg, -5px, 0);
+              }
+            }
+          }
+          &--right {
+            right: -80px;
+            @include arrowTransform(40deg, 0, 0px);
+  
+            &:hover {
+              @include arrowTransform(30deg, 0, 0px);
+            }
+            &:active {
+              @include arrowTransform(25deg, 0px, 0px);
+            }
+            &.disabled {
+              @include arrowTransform(0deg, 5px, 0);
+  
+              &:hover {
+                @include arrowTransform(0deg, 5px, 0);
+              }
+            }
+          }
+          .disabled {
+            opacity: 0.3;
+            cursor: default;
+          }
+        }
+        &__lp {
+          &__container {
+            margin-top: 50px;
+            padding: 30px;
+          }
+          &__title {
+            padding-bottom: 27px;
+            > img {
+              width: 37px;
+              height: 37px;
+              &.last-token {
+                margin-left: -5px;
+                border-radius: 37px;
+                margin-right: 10px;
+              }
+            }
+            > h2 {
+              font-size: 18px;
+            }
+          }
+          &__content {
+            > div {
+              flex: 1;
+              padding-top: 25px;
+              padding-bottom: 25px;
+              > p {
+                font-size: 15px;
+              }
+              > h2 {
+                font-size: 20px;
+              }
+            }
+            &--left {
+              padding-right: 25px;
+            }
+            &--right {
+              padding-left: 25px;
+            }
+          }
+        }
+      }
+      &__token-deposit {
+        padding: 25px 30px 24px;
+        margin-bottom: 42px;
+        &__header {
+          padding-bottom: 18px;
+          > img {
+            width: 27px;
+            height: 27px;
+            margin-right: 8px;
+          }
+          > div {
+            > p {
+              &:first-child {
+                font-size: 18px;
+                margin-bottom: 10px;
+              }
+              &:last-child {
+                font-size: 15px;
+              }
+            }
+          }
+        }
+        &__apy {
+          > div {
+            flex: 1;
+            padding: 28px 0px 25px;
+            > div {
+              > p {
+                font-size: 15px;
+              }
+              > h2 {
+                font-size: 20px;
+                line-height: 35px;
+              }
+            }
+          }
+          &--left {
+            padding-right: 25px !important;
+          }
+          &--right {
+            padding-left: 25px !important;
+          }
+        }
+        &__data {
+          > div {
+            flex: 1;
+            padding: 21px 0px 18px;
+            &:first-child {
+              padding-right: 25px !important;
+            }
+            &:last-child {
+              padding-left: 25px !important;
+            }
+          }
+        }
+      }
+    } // reward end
+
+  
     .detail {
       @include page-container;
 
@@ -1332,6 +1615,50 @@ $device-width: 1190px;
           font-size: 15px;
         }
       } // text navigation end
+      &__progress-bar {
+        > div {
+          margin-bottom: 12px;
+          &:first-child {
+            > p {
+              font-size: 15px;
+            }
+          }
+          &:nth-child(2) {
+            > p {
+              font-size: 13px;
+              &:last-child {
+                font-size: 13px;
+                > span {
+                  font-size: 15px;
+                }
+              }
+              > span {
+                font-size: 15px;
+              }
+            }
+          }
+        }
+        progress {
+          height: 13px;
+          border-radius: 13px;
+          margin-top: 5px;
+          &::-webkit-progress-bar {
+            border-radius: 13px;
+          }
+          &::-webkit-progress-value {
+            border-radius: 13px;
+          }
+        }
+      } // progress bar end
+      &__data-info {
+        padding: 25px 0px 12px;
+        > div {
+          > p {
+            font-size: 15px;
+            margin-bottom: 10px;
+          }
+        }
+      } // data info end
     }
 
 

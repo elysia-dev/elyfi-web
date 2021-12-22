@@ -268,6 +268,7 @@
       "nth_ended": "{{nth}} round Completed",
       "nth_progress": "{{nth}} round In Progress",
       "nth": "{{nth}} round",
+      "nth--short": "{{nth}}",
       "nth_staking": "Staking APR on the {{nth}} round",
       "nth_staking_amount": "Staked Amount on the {{nth}} round",
       "staking_btn": "Stake | Unstake",
