@@ -31,7 +31,8 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     overflow-y: scroll;
     &__hamburger {
       &__content {
-        > div {
+        
+        > div, a>div {
           // padding: 33px 0px 36px;
           height: 70px;
           width: 360px;

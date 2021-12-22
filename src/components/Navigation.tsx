@@ -266,7 +266,6 @@ const Navigation: React.FunctionComponent<{
                     {
                       data.subNavigation!.map((_data) => {
                         return (
-                          <div>
                             <Link
                               to={{
                                 pathname: _data.type === NavigationType.Link ?
@@ -278,11 +277,12 @@ const Navigation: React.FunctionComponent<{
                                 setHamburgerBar(false);
                               }}
                             >
+                            <div>
                               <p>
                                 {t(_data.i18nKeyword).toUpperCase()}
                               </p>
-                            </Link>
-                          </div>
+                            </div>
+                          </Link>
                         )
                       })
                     }
@@ -290,20 +290,20 @@ const Navigation: React.FunctionComponent<{
                   </div>
                 </>
               ) : (
-                <div>
-                  <Link
-                    to={{
-                      pathname: `/${lng + data.location}`
-                    }}
-                    onClick={() => {
-                      setHamburgerBar(false);
-                    }}
-                  >
+                <Link
+                  to={{
+                    pathname: `/${lng + data.location}`
+                  }}
+                  onClick={() => {
+                    setHamburgerBar(false);
+                  }}
+                >
+                  <div>
                     <p>
                       {t(data.i18nKeyword).toUpperCase()}
                     </p>
-                  </Link>
-                </div>
+                  </div>
+                </Link>
               )
             )
           })
