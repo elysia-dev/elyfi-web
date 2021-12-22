@@ -19,8 +19,12 @@ const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
   const { txWaiting } = useContext(TxContext);
   const claim = useClaimReward();
 
-  const receiveRewardHandler = () => {
-    claim();
+  const receiveRewardHandler = async () => {
+    try {
+      await claim();
+    } catch (error) {
+      alert(error);
+    }
   };
 
   useEffect(() => {

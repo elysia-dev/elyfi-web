@@ -1,40 +1,49 @@
 import { FunctionComponent, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import envs from 'src/core/envs';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
-import ReserveData from 'src/core/data/reserves';
-import ELFIIcon from 'src/assets/images/elfi--icon.png';
+import { reserveTokenData } from 'src/core/data/reserves';
 import { toCompactForBignumber, toPercent } from 'src/utiles/formatters';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import { BigNumber } from 'ethers';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import { moneyPoolEndedAt } from 'src/core/data/moneypoolTimes';
+import Token from 'src/enums/Token';
 import RewardDetailInfo from './RewardDetailInfo';
 import SmallProgressBar from './SmallProgressBar';
 
 interface Props {
-  index: number;
   reserve: GetAllReserves_reserves;
-  startMoneyPool: string[];
-  totalMiningValue: number[];
-  beforeMintedMoneypool: number[];
-  mintedMoneypool: number[];
+  moneyPoolInfo: {
+    DAI: {
+      totalMiningValue: number;
+      startMoneyPool: string;
+    };
+    USDT: {
+      totalMiningValue: number;
+      startMoneyPool: string;
+    };
+  };
+  beforeMintedMoneypool: number;
+  mintedMoneypool: number;
 }
 
 const TokenDeposit: FunctionComponent<Props> = ({
-  index,
   reserve,
-  startMoneyPool,
-  totalMiningValue,
+  moneyPoolInfo,
   beforeMintedMoneypool,
   mintedMoneypool,
 }) => {
   const { t } = useTranslation();
-  const tokenInfo = ReserveData.find((datum) => datum.address === reserve.id);
+  const token = reserve.id === envs.daiAddress ? Token.DAI : Token.USDT;
   const { latestPrice } = useContext(UniswapPoolContext);
+  const totalMiningValue = moneyPoolInfo[token].totalMiningValue;
   const miningDescription = [
     [
       t('reward.mining_term'),
-      `${startMoneyPool[index]} ~ ${moneyPoolEndedAt.format('yyyy.MM.DD')} KST`,
+      `${moneyPoolInfo[token].startMoneyPool} ~ ${moneyPoolEndedAt.format(
+        'yyyy.MM.DD',
+      )} KST`,
     ],
     [t('reward.daily_mining'), '16,666.6667 ELFI'],
   ];
@@ -43,13 +52,17 @@ const TokenDeposit: FunctionComponent<Props> = ({
     <>
       <div className="reward__token-deposit">
         <div className="reward__token-deposit__header">
-          <img src={tokenInfo?.image} alt="Token image" />
+          <img src={reserveTokenData[token].image} alt="Token image" />
           <div>
             <p className="bold">
-              {t('dashboard.token_deposit', { Token: tokenInfo?.name })}
+              {t('dashboard.token_deposit', {
+                Token: reserveTokenData[token].name,
+              })}
             </p>
             <p>
-              {t('dashboard.token_deposit_content', { Token: tokenInfo?.name })}
+              {t('dashboard.token_deposit_content', {
+                Token: reserveTokenData[token].name,
+              })}
             </p>
           </div>
         </div>
@@ -66,7 +79,7 @@ const TokenDeposit: FunctionComponent<Props> = ({
                   calcMiningAPR(
                     latestPrice,
                     BigNumber.from(reserve.totalDeposit || 0),
-                    tokenInfo?.decimals,
+                    reserveTokenData[token].decimals,
                   ),
                 ) || 0}
               </h2>
@@ -79,7 +92,7 @@ const TokenDeposit: FunctionComponent<Props> = ({
                 $&nbsp;
                 {toCompactForBignumber(
                   reserve.totalDeposit || 0,
-                  tokenInfo?.decimals,
+                  reserveTokenData[token].decimals,
                 )}
               </h2>
             </div>
@@ -88,35 +101,27 @@ const TokenDeposit: FunctionComponent<Props> = ({
 
         <div className="reward__token-deposit__data">
           <SmallProgressBar
-            start={
-              beforeMintedMoneypool[index] <= 0
-                ? 0
-                : beforeMintedMoneypool[index]
-            }
-            end={mintedMoneypool[index] <= 0 ? 0 : mintedMoneypool[index]}
+            start={beforeMintedMoneypool}
+            end={mintedMoneypool <= 0 ? 0 : mintedMoneypool}
             rewardOrMining={'mining'}
-            totalMiningValue={totalMiningValue[index]
+            totalMiningValue={totalMiningValue
               .toString()
               .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-            max={totalMiningValue[index]}
+            max={totalMiningValue}
             unit={'ELFI'}
           />
           <RewardDetailInfo
-            start={
-              beforeMintedMoneypool[index] <= 0
-                ? 0
-                : beforeMintedMoneypool[index]
-            }
-            end={mintedMoneypool[index] <= 0 ? 0 : mintedMoneypool[index]}
+            start={beforeMintedMoneypool}
+            end={mintedMoneypool <= 0 ? 0 : mintedMoneypool}
             miningStart={
-              beforeMintedMoneypool[index] <= 0
+              beforeMintedMoneypool <= 0
                 ? 0
-                : totalMiningValue[index] - beforeMintedMoneypool[index]
+                : totalMiningValue - beforeMintedMoneypool
             }
             miningEnd={
-              mintedMoneypool[index] <= 0
-                ? totalMiningValue[index]
-                : totalMiningValue[index] - mintedMoneypool[index]
+              mintedMoneypool <= 0
+                ? totalMiningValue
+                : totalMiningValue - mintedMoneypool
             }
             miningDescription={miningDescription}
             unit={'ELFI'}

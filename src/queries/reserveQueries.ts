@@ -31,7 +31,10 @@ export const GET_ALL_RESERVES = gql`
         timestamp
         tokenId
       }
-      reserveHistory(orderBy: timestamp, timestamp: { gt: minimumTimestamp }) {
+      reserveHistory(
+        orderBy: timestamp
+        where: { timestamp_gt: $minimumTimestamp }
+      ) {
         id
         timestamp
         borrowAPY

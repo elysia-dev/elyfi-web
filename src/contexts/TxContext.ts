@@ -12,6 +12,7 @@ export type TxContextType = {
   txNonce: number;
   transaction: ContractTransaction | undefined;
   txHash: string | null | undefined;
+  error?: string;
 };
 
 export interface ITxContext extends TxContextType {
@@ -36,6 +37,7 @@ export const initialtxStatus = {
   txType: RecentActivityType.Idle,
   transaction: undefined,
   txHash: '',
+  error: '',
 };
 
 export const initialTxContext = {

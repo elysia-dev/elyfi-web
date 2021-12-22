@@ -1,4 +1,4 @@
-import { BigNumber, constants, utils } from 'ethers';
+import { BigNumber, constants, logger, utils } from 'ethers';
 import { useContext, useState, useEffect } from 'react';
 import ELFI from 'src/assets/images/ELFI.png';
 import { formatComma } from 'src/utiles/formatters';
@@ -87,9 +87,7 @@ const StakingModal: React.FunctionComponent<{
         <ModalConverter
           handlerProps={stakingMode}
           setState={setStakingMode}
-          title={
-            [t('staking.staking'), t('staking.unstaking')]
-          }
+          title={[t('staking.staking'), t('staking.unstaking')]}
         />
         {waiting ? (
           <LoadingIndicator />
@@ -99,9 +97,7 @@ const StakingModal: React.FunctionComponent<{
               <h2
                 className="modal__input__maximum"
                 onClick={() => {
-                  if (
-                    stakingMode ? balance.isZero() : stakedBalance.isZero()
-                  ) {
+                  if (stakingMode ? balance.isZero() : stakedBalance.isZero()) {
                     return;
                   }
                   setAmount({
@@ -135,10 +131,7 @@ const StakingModal: React.FunctionComponent<{
                     ['-', '+', 'e'].includes(e.key) && e.preventDefault();
                   }}
                   onChange={({ target }) => {
-                    target.value = target.value.replace(
-                      /(\.\d{18})\d+/g,
-                      '$1',
-                    );
+                    target.value = target.value.replace(/(\.\d{18})\d+/g, '$1');
 
                     setAmount({
                       value: target.value,
@@ -171,156 +164,155 @@ const StakingModal: React.FunctionComponent<{
               </div>
             </div>
 
-              <section>
-                {!stakingMode ? (
-                  <div
-                    className={`modal__button${
-                      amountLteZero || amountGtStakedBalance ? ' disable' : ''
-                    }`}
-                    onClick={() => {
-                      if (!account || amountLteZero || amountGtStakedBalance)
-                        return;
+            <section>
+              {!stakingMode ? (
+                <div
+                  className={`modal__button${
+                    amountLteZero || amountGtStakedBalance ? ' disable' : ''
+                  }`}
+                  onClick={() => {
+                    if (!account || amountLteZero || amountGtStakedBalance)
+                      return;
 
-                      const tracker = initTxTracker(
-                        'StakingModal',
-                        'Withdraw',
-                        `${amount.value} ${amount.max} ${stakedToken} ${round}round`,
-                      );
-                      tracker.clicked();
+                    const tracker = initTxTracker(
+                      'StakingModal',
+                      'Withdraw',
+                      `${amount.value} ${amount.max} ${stakedToken} ${round}round`,
+                    );
+                    tracker.clicked();
 
-                      stakingPool
-                        ?.withdraw(
-                          amount.max
-                            ? constants.MaxUint256
-                            : utils.parseEther(amount.value),
-                          (round >= 3 && stakedToken === Token.ELFI
-                            ? round - 2
-                            : round
-                          ).toString(),
-                        )
-                        .then((tx) => {
-                          setTransaction(
-                            tx,
-                            tracker,
-                            (stakedToken +
-                              'StakingWithdraw') as RecentActivityType,
-                            () => {
-                              closeHandler();
-                              transactionModal();
-                            },
-                            () => {
-                              refetch();
-                              afterTx();
-                            },
-                          );
-                        })
-                        .catch((e) => {
-                          failTransaction(tracker, closeHandler, e);
-                        });
-                    }}>
-                    <p>
-                      {amountGtStakedBalance
-                        ? t('staking.insufficient_balance')
-                        : t('staking.unstaking')}
-                    </p>
-                  </div>
-                ) : !allowanceLoading && allowance.gte(balance) ? (
-                  <div
-                    className={`modal__button${
-                      amountLteZero || amountGtBalance ? ' disable' : ''
-                    }`}
-                    onClick={() => {
-                      if (!account || amountLteZero || amountGtBalance) return;
-                      if (
-                        current.diff(stakingRoundTimes[round - 1].endedAt) > 0
-                      ) {
-                        endedModal();
-                        closeHandler();
-                        return;
-                      }
-
-                      const tracker = initTxTracker(
-                        'StakingModal',
-                        `Stake`,
-                        `${amount.value} ${amount.max} ${stakedToken} ${round}round`,
-                      );
-
-                      tracker.clicked();
-
-                      // setTxWaiting(true)
-
-                      stakingPool
-                        ?.stake(
-                          amount.max ? balance : utils.parseEther(amount.value),
-                          {
-                            gasLimit: 1000000,
+                    stakingPool
+                      ?.withdraw(
+                        amount.max
+                          ? constants.MaxUint256
+                          : utils.parseEther(amount.value),
+                        (round >= 3 && stakedToken === Token.ELFI
+                          ? round - 2
+                          : round
+                        ).toString(),
+                      )
+                      .then((tx) => {
+                        setTransaction(
+                          tx,
+                          tracker,
+                          (stakedToken +
+                            'StakingWithdraw') as RecentActivityType,
+                          () => {
+                            closeHandler();
+                            transactionModal();
                           },
-                        )
-                        .then((tx) => {
-                          setTransaction(
-                            tx,
-                            tracker,
-                            (stakedToken + 'Stake') as RecentActivityType,
-                            () => {
-                              closeHandler();
-                              transactionModal();
-                            },
-                            () => {
-                              refetch();
-                              afterTx();
-                            },
-                          );
-                        })
-                        .catch((e) => {
-                          failTransaction(tracker, closeHandler, e);
-                        });
-                    }}>
-                    <p>
-                      {amountGtBalance
-                        ? t('staking.insufficient_balance')
-                        : t('staking.staking')}
-                    </p>
-                  </div>
-                ) : (
-                  <div
-                    className={'modal__button'}
-                    onClick={() => {
-                      const tracker = initTxTracker(
-                        'StakingModal',
-                        `Approve`,
-                        `${stakedToken} ${round}round`,
-                      );
+                          () => {
+                            refetch();
+                            afterTx();
+                          },
+                        );
+                      })
+                      .catch((e) => {
+                        failTransaction(tracker, closeHandler, e);
+                      });
+                  }}>
+                  <p>
+                    {amountGtStakedBalance
+                      ? t('staking.insufficient_balance')
+                      : t('staking.unstaking')}
+                  </p>
+                </div>
+              ) : !allowanceLoading && allowance.gte(balance) ? (
+                <div
+                  className={`modal__button${
+                    amountLteZero || amountGtBalance ? ' disable' : ''
+                  }`}
+                  onClick={() => {
+                    if (!account || amountLteZero || amountGtBalance) return;
+                    if (
+                      current.diff(stakingRoundTimes[round - 1].endedAt) > 0
+                    ) {
+                      endedModal();
+                      closeHandler();
+                      return;
+                    }
 
-                      tracker.clicked();
+                    const tracker = initTxTracker(
+                      'StakingModal',
+                      `Stake`,
+                      `${amount.value} ${amount.max} ${stakedToken} ${round}round`,
+                    );
 
-                      contract
-                        .approve(stakingPool!.address, constants.MaxUint256)
-                        .then((tx) => {
-                          setTransaction(
-                            tx,
-                            tracker,
-                            RecentActivityType.Approve,
-                            () => {
-                              closeHandler();
-                              transactionModal();
-                            },
-                            () => {
-                              refetch();
-                              afterTx();
-                            },
-                          );
-                        })
-                        .catch((e) => {
-                          failTransaction(tracker, closeHandler, e);
-                        });
-                    }}>
-                    <p>
-                      {t('dashboard.protocol_allow', { tokenName: stakedToken })}
-                    </p>
-                  </div>
-                )}
+                    tracker.clicked();
 
-              </section>
+                    // setTxWaiting(true)
+
+                    stakingPool
+                      ?.stake(
+                        amount.max ? balance : utils.parseEther(amount.value),
+                        {
+                          gasLimit: 1000000,
+                        },
+                      )
+                      .then((tx) => {
+                        setTransaction(
+                          tx,
+                          tracker,
+                          (stakedToken + 'Stake') as RecentActivityType,
+                          () => {
+                            closeHandler();
+                            transactionModal();
+                          },
+                          () => {
+                            refetch();
+                            afterTx();
+                          },
+                        );
+                      })
+                      .catch((e) => {
+                        failTransaction(tracker, closeHandler, e);
+                      });
+                  }}>
+                  <p>
+                    {amountGtBalance
+                      ? t('staking.insufficient_balance')
+                      : t('staking.staking')}
+                  </p>
+                </div>
+              ) : (
+                <div
+                  className={'modal__button'}
+                  onClick={() => {
+                    const tracker = initTxTracker(
+                      'StakingModal',
+                      `Approve`,
+                      `${stakedToken} ${round}round`,
+                    );
+
+                    tracker.clicked();
+
+                    contract
+                      .approve(stakingPool!.address, constants.MaxUint256)
+                      .then((tx) => {
+                        setTransaction(
+                          tx,
+                          tracker,
+                          RecentActivityType.Approve,
+                          () => {
+                            closeHandler();
+                            transactionModal();
+                          },
+                          () => {
+                            refetch();
+                            afterTx();
+                          },
+                        );
+                      })
+                      .catch((e) => {
+                        failTransaction(tracker, closeHandler, e);
+                      });
+                  }}>
+                  <p>
+                    {t('dashboard.protocol_allow', { tokenName: stakedToken })}
+                  </p>
+                </div>
+              )}
+            </section>
           </div>
         )}
       </div>

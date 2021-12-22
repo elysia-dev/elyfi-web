@@ -71,7 +71,13 @@ const SmallProgressBar: FunctionComponent<Props> = (props) => {
           {` ${unit}`}
         </p>
         <p className="bold">
-          <span className="bold">{totalMiningValue}</span> {unit}
+          {totalMiningValue === 'TBD' ? (
+            <span className="bold">{totalMiningValue}</span>
+          ) : (
+            <>
+              <span className="bold">{totalMiningValue}</span> {unit}
+            </>
+          )}
         </p>
       </div>
       {props.stakingRoundFill ? (

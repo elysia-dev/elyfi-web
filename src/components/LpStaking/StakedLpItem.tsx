@@ -1,4 +1,4 @@
-import { FunctionComponent, Dispatch, SetStateAction } from 'react';
+import { FunctionComponent } from 'react';
 import { BigNumber, utils } from 'ethers';
 import CountUp from 'react-countup';
 import elfi from 'src/assets/images/ELFI.png';
@@ -11,9 +11,13 @@ import { StakedLpItemProps } from 'src/core/types/LpStakingTypeProps';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import Button from './Button';
+import { lpUnixTimestamp } from 'src/core/data/lpStakingTime';
+import moment from 'moment';
+import useLpMigration from 'src/hooks/useMigration';
 
 const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
-  const { position, setUnstakeTokenId, expectedReward, positionInfo } = props;
+  const { position, setUnstakeTokenId, expectedReward, positionInfo, round } =
+    props;
   const { t } = useTranslation();
   const { poolAddress, rewardTokenAddress } = getAddressesByPool(position);
   const {
@@ -27,6 +31,21 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
   const stakedLiquidity =
     parseFloat(utils.formatEther(position.liquidity)) * pricePerLiquidity;
   const unstake = useLpWithdraw();
+  const migration = useLpMigration();
+
+  const startedDate = moment
+    .unix(
+      lpUnixTimestamp[round === lpUnixTimestamp.length ? round - 1 : round]
+        .startedAt,
+    )
+    .format('YYYY.MM.DD hh:mm:ss Z');
+  const endedDate = moment
+    .unix(
+      lpUnixTimestamp[round === lpUnixTimestamp.length ? round - 1 : round]
+        .endedAt,
+    )
+    .format('YYYY.MM.DD hh:mm:ss Z');
+
   const unstakingHandler = async (position: {
     id: string;
     liquidity: BigNumber;
@@ -35,10 +54,25 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
     tokenId: number;
   }) => {
     try {
-      unstake(poolAddress, rewardTokenAddress, position.id);
+      await unstake(poolAddress, rewardTokenAddress, position.id, round);
       setUnstakeTokenId(position.tokenId);
     } catch (error) {
-      alert(error);
+      console.error(error);
+    }
+  };
+
+  const migrationHandler = async (position: {
+    id: string;
+    liquidity: BigNumber;
+    owner: string;
+    staked: boolean;
+    tokenId: number;
+  }) => {
+    try {
+      await migration(poolAddress, rewardTokenAddress, position.id, round);
+      setUnstakeTokenId(position.tokenId);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -75,6 +109,15 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
               </p>
             </div>
           </div>
+          {!(round === lpUnixTimestamp.length) &&
+            round - 1 === 0 &&
+            moment().isBetween(startedDate, endedDate) && (
+              <div
+                onClick={() => migrationHandler(position)}
+                className="staking__lp__staked__table__content__button">
+                <p>{t('staking.migration')}</p>
+              </div>
+            )}
         </div>
 
         <div className="staking__lp__staked__table__content--center" >

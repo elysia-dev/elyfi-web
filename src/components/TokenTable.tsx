@@ -17,7 +17,6 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import TableBodyAmount from 'src/components/TableBodyAmount';
 
-
 interface Props {
   tokenImage: string;
   tokenName: Token.DAI | Token.USDT;
@@ -55,7 +54,7 @@ const TokenTable: React.FC<Props> = ({
   setIncentiveModalVisible,
   setModalNumber,
   modalview,
-  id
+  id,
 }) => {
   const { data, loading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
   const { account } = useWeb3React();
@@ -81,8 +80,8 @@ const TokenTable: React.FC<Props> = ({
       <div className="deposit__table">
         <div className="deposit__table__ref" id={id} />
         <div className="deposit__table__header">
-          <div 
-            className="deposit__table__header__token-info" 
+          <div
+            className="deposit__table__header__token-info"
             style={{ cursor: 'pointer' }}
             onClick={() => {
               history.push({
@@ -90,8 +89,7 @@ const TokenTable: React.FC<Props> = ({
               });
             }}>
             <img src={tokenImage} alt="Token icon" />
-            <p className="bold"
-              style={{ cursor: 'pointer' }}>
+            <p className="bold" style={{ cursor: 'pointer' }}>
               {tokenName}
             </p>
           </div>
@@ -184,14 +182,14 @@ const TokenTable: React.FC<Props> = ({
               />
             </div>
           </div>
-          
+
           <div className="deposit__table__body__loan-list">
           {
             loading ? (
               <Skeleton width={mediaQuery === MediaQuery.PC ? 1148 : 360} height={768} />
             ) : (
               <div>
-                <h2>{t("dashboard.recent_loan")}</h2>
+                <h2>{t('dashboard.recent_loan')}</h2>
                 <div>
                   <AssetList
                     assetBondTokens={
@@ -210,14 +208,11 @@ const TokenTable: React.FC<Props> = ({
                 </div>
                 <div className="deposit__table__body__loan-list__more-button">
                   <a href={`/${lng}/deposits/${tokenName}`}>
-                    <p>
-                      {t("main.governance.view-more")}
-                    </p>
+                    <p>{t('main.governance.view-more')}</p>
                   </a>
                 </div>
               </div>
-            )
-          }
+            )}
           </div>
         </div>
       </div>

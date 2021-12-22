@@ -2,7 +2,7 @@ import { useWeb3React } from '@web3-react/core';
 import moment from 'moment';
 import { FunctionComponent } from 'react';
 import { useTranslation } from 'react-i18next';
-import lpStakingTime from 'src/core/data/lpStakingTime';
+import lpStakingTime, { lpRoundDate } from 'src/core/data/lpStakingTime';
 import { DetailBoxItemStakingProps } from 'src/core/types/LpStakingTypeProps';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
@@ -17,11 +17,12 @@ const DetailBoxItemStaking: FunctionComponent<DetailBoxItemStakingProps> = (
     tokens: { token0, token1 },
     totalStakedLiquidity,
     setModalAndSetStakeToken,
+    round,
   } = props;
   const { t } = useTranslation();
   const isStakingDate = moment().isBetween(
-    lpStakingTime.startedAt,
-    lpStakingTime.endedAt,
+    lpRoundDate[round - 1].startedAt,
+    lpRoundDate[round - 1].endedAt,
   );
   const { value: mediaQuery } = useMediaQueryType();
 
@@ -74,14 +75,11 @@ const DetailBoxItemStaking: FunctionComponent<DetailBoxItemStakingProps> = (
           </h2>
         </div>
         <div
-          onClick={() =>
-            isStakingDate && account && setModalAndSetStakeToken()
-          }
-          className={`staking__lp__detail-box__staking__button ${!isStakingDate ? "disable" : ""}`}
-        >
-          <p>
-            {t('staking.staking')}
-          </p>
+          onClick={() => isStakingDate && account && setModalAndSetStakeToken()}
+          className={`staking__lp__detail-box__staking__button ${
+            !isStakingDate || !account ? 'disable' : ''
+          }`}>
+          <p>{t('staking.staking')}</p>
         </div>
       </>
     )

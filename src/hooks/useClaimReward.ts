@@ -44,8 +44,9 @@ const useClaimReward: () => () => void = () => {
         () => {},
         () => {},
       );
-    } catch (error) {
-      alert('server error');
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(`${error.message}`);
     }
   };
 

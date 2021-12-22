@@ -33,13 +33,15 @@ const AppNavigator: React.FC = () => {
   const [hamburgerBar, setHamburgerBar] = useState(false);
   const setDarkMode = () => {
     setDarkModeActivated(!isDarkmodeActivated);
-    window.sessionStorage.getItem('@isDarkMode') === 'true' ?
-      window.sessionStorage.setItem('@isDarkMode', 'false') :
-      window.sessionStorage.setItem('@isDarkMode', 'true')
-  }
+    window.sessionStorage.getItem('@isDarkMode') === 'true'
+      ? window.sessionStorage.setItem('@isDarkMode', 'false')
+      : window.sessionStorage.setItem('@isDarkMode', 'true');
+  };
   useEffect(() => {
-    window.sessionStorage.getItem('@isDarkMode') === 'true' ? setDarkModeActivated(true) : setDarkModeActivated(false)
-  }, [])
+    window.sessionStorage.getItem('@isDarkMode') === 'true'
+      ? setDarkModeActivated(true)
+      : setDarkModeActivated(false);
+  }, []);
 
   const { value: mediaQuery } = useMediaQueryType();
 
@@ -67,66 +69,48 @@ const AppNavigator: React.FC = () => {
   return (
     <div
       className={
-        `elysia ${mediaQuery === MediaQuery.PC ? 'view-w' : mediaQuery === MediaQuery.Tablet ? 'view-t' : 'view-m'}`
+        `elysia ${
+          mediaQuery === MediaQuery.PC
+            ? 'view-w'
+            : mediaQuery === MediaQuery.Tablet
+            ? 'view-t'
+            : 'view-m'
+        }`
         // "elysia"
       }
       style={{
-        position: hamburgerBar ? "fixed": "initial"
-      }}
-      >
+        position: hamburgerBar ? 'fixed' : 'initial',
+      }}>
       <ScrollToTop />
       <Switch>
         <Route path="/:lng">
           <LanguageProvider>
-            <Navigation hamburgerBar={hamburgerBar} setHamburgerBar={setHamburgerBar} />
+            <Navigation
+              hamburgerBar={hamburgerBar}
+              setHamburgerBar={setHamburgerBar}
+            />
             {/* <DarkmodeModal 
               isDarkmode={isDarkmodeActivated}
               setDarkMode={() => setDarkMode()}
             /> */}
-            <Route
-              exact
-              path="/:lng/staking/LP"
-              component={LPStaking}
-            />
-            <Route
-              exact
-              path="/:lng/staking/EL"
-              component={StakingEL}
-            />
-            <Route
-              exact
-              path="/:lng/staking/ELFI"
-              component={StakingELFI}
-            />
-            <Route
-              exact
-              path="/:lng/dashboard"
-              component={
-                Dashboard
-              }
-            />
-            
-            <Route
-              exact
-              path="/:lng/governance"
-              component={
-                Governance
-              }
-            />
+            <Route exact path="/:lng/staking/LP" component={LPStaking} />
+            <Route exact path="/:lng/staking/EL" component={StakingEL} />
+            <Route exact path="/:lng/staking/ELFI" component={StakingELFI} />
+            <Route exact path="/:lng/dashboard" component={Dashboard} />
+
+            <Route exact path="/:lng/governance" component={Governance} />
             <Route
               exact
               path="/:lng/portfolio/:id"
               component={PortfolioDetail}
             />
-            <Route exact path="/:lng/rewardplan/:stakingType" component={RewardPlan} />
-            <Route exact path="/:lng/deposits/:id" component={MarketDetail} />
             <Route
               exact
-              path="/:lng"
-              component={
-                Main
-              }
+              path="/:lng/rewardplan/:stakingType"
+              component={RewardPlan}
             />
+            <Route exact path="/:lng/deposits/:id" component={MarketDetail} />
+            <Route exact path="/:lng" component={Main} />
             <Footer />
           </LanguageProvider>
         </Route>
