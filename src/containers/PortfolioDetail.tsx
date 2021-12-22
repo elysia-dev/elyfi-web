@@ -63,7 +63,6 @@ const PortfolioDetail: FunctionComponent = () => {
   ) => {
     setAddress(await reverseGeocoding(lat, lng, language));
   };
-
   useEffect(() => {
     if (!isLat(lat) || !isLng(lng)) return;
 
@@ -75,7 +74,6 @@ const PortfolioDetail: FunctionComponent = () => {
       const response = await Slate.fetctABTokenIpfs(ipfs);
       const contractDoc = response.data;
       if (contractDoc) {
-        console.log(response);
         setContractImage([
           {
             hash: contractDoc.documents[0].hash,
@@ -253,25 +251,32 @@ const PortfolioDetail: FunctionComponent = () => {
             {loading ? (
               <Skeleton height={900} />
             ) : (
-              <img
-                style={{
-                  width: 538.5,
-                  height: 526,
-                }}
-                src={contractImage[3]?.link || TempAssets}
-                alt={contractImage[3]?.link || TempAssets}
-              />
-              // <GoogleMapReact
-              //   bootstrapURLKeys={{
-              //     key: process.env.REACT_APP_GOOGLE_MAP_API_KEY!,
-              //   }}
-              //   defaultCenter={{
-              //     lat,
-              //     lng,
-              //   }}
-              //   defaultZoom={15}>
-              //   <Marker lat={lat} lng={lng} />
-              // </GoogleMapReact>
+              <>
+                <a
+                  href={`https://www.google.com/maps/@${lat},${lng},18.12z`}
+                  rel="noopener noreferer"
+                  target="_blank">
+                  <img
+                    style={{
+                      width: 538.5,
+                      height: 526,
+                    }}
+                    src={contractImage[3]?.link || TempAssets}
+                    alt={contractImage[3]?.link || TempAssets}
+                  />
+                </a>
+                {/* <GoogleMapReact
+                  bootstrapURLKeys={{
+                    key: process.env.REACT_APP_GOOGLE_MAP_API_KEY!,
+                  }}
+                  defaultCenter={{
+                    lat,
+                    lng,
+                  }}
+                  defaultZoom={15}>
+                  <Marker lat={lat} lng={lng} />
+                </GoogleMapReact> */}
+              </>
             )}
           </div>
           <div className="portfolio__collateral__data--right">
