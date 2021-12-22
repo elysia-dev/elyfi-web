@@ -52,30 +52,6 @@ const Governance = () => {
   };
 
   useEffect(() => {
-    getOnChainNAPDatas().then((res) => {
-      res === undefined
-        ? setOnChainLoading(false)
-        : res.map((data) => {
-            return setOnChainData((_data) => [
-              ..._data,
-              {
-                data: {
-                  description: data.data.description
-                    .match(/(?<=NAP).*(?=:)/)
-                    ?.toString(),
-                },
-                status: data.status,
-                totalVotesCast: data.totalVotesCast,
-                totalVotesCastAbstained: data.totalVotesCastAbstained,
-                totalVotesCastAgainst: data.totalVotesCastAgainst,
-                totalVotesCastInSupport: data.totalVotesCastInSupport,
-                id: data.id.match(/(?=).*(?=-proposal)/)?.toString(),
-              } as IProposals,
-            ]);
-          });
-      setOnChainLoading(false);
-    });
-
     getOffChainNAPTitles().then((title_res) => {
       title_res === undefined
         ? setOffChainLoading(false)
@@ -106,8 +82,31 @@ const Governance = () => {
               } as INapData,
             ]);
           });
-
       setOffChainLoading(false);
+    });
+
+    getOnChainNAPDatas().then((res) => {
+      res === undefined
+        ? setOnChainLoading(false)
+        : res.map((data) => {
+            return setOnChainData((_data) => [
+              ..._data,
+              {
+                data: {
+                  description: data.data.description
+                    .match(/(?<=NAP).*(?=:)/)
+                    ?.toString(),
+                },
+                status: data.status,
+                totalVotesCast: data.totalVotesCast,
+                totalVotesCastAbstained: data.totalVotesCastAbstained,
+                totalVotesCastAgainst: data.totalVotesCastAgainst,
+                totalVotesCastInSupport: data.totalVotesCastInSupport,
+                id: data.id.match(/(?=).*(?=-proposal)/)?.toString(),
+              } as IProposals,
+            ]);
+          });
+      setOnChainLoading(false);
     });
   }, []);
 
@@ -156,7 +155,13 @@ const Governance = () => {
           )
         }>
         <div>
-          <img src={TempAssets} />
+          <img
+            src={
+              offChainNapData.filter(
+                (offChainData) => offChainData.nap === data.data.description,
+              )[0]?.images || TempAssets
+            }
+          />
         </div>
         <div>
           <div className="governance__nap">
