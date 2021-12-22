@@ -110,16 +110,16 @@ const PortfolioDetail: FunctionComponent = () => {
   return (
     <div className="portfolio">
       <div className="component__text-navigation">
-        <p onClick={() => history.push(`/${lng}/dashboard`)} className="pointer">
+        <p
+          onClick={() => history.push(`/${lng}/dashboard`)}
+          className="pointer">
           {t('dashboard.deposit')}
         </p>
         &nbsp;&gt;&nbsp;
-        <p>
-          {t("loan.loan__info")}
-        </p>
+        <p>{t('loan.loan__info')}</p>
       </div>
       <div className="detail__header">
-        <h2>{t("loan.loan__info")}</h2>
+        <h2>{t('loan.loan__info')}</h2>
       </div>
       {loading ? (
         <Skeleton height={900} />
@@ -127,13 +127,13 @@ const PortfolioDetail: FunctionComponent = () => {
         <>
           <div className="portfolio__borrower">
             <h2 className="portfolio__borrower__title">
-              {t("loan.borrower__info")}
+              {t('loan.borrower__info')}
             </h2>
             <div className="portfolio__borrower__header">
               <img src={CollateralLogo} />
               <div>
-                <p>{t("loan.borrower")}</p>
-                <p>Elyloan Corp</p>
+                <p>{t('loan.borrower')}</p>
+                <p>Elyloan Inc</p>
               </div>
               <div>
                 <p>{t('loan.license_number')}</p>
@@ -141,7 +141,11 @@ const PortfolioDetail: FunctionComponent = () => {
               </div>
               <div>
                 <p>{t('loan.wallet_address')}</p>
-                <p onClick={() => AddressCopy("0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7")} className="link">
+                <p
+                  onClick={() =>
+                    AddressCopy('0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7')
+                  }
+                  className="link">
                   0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7
                 </p>
               </div>
@@ -155,19 +159,22 @@ const PortfolioDetail: FunctionComponent = () => {
                 <div>
                   <p>{t('loan.loan__status')}</p>
                   <p>
-                  {t(
-                    `words.${
-                      LoanStatus[toLoanStatus(abToken?.state as ABTokenState)]
-                    }`,
-                  )}
+                    {t(
+                      `words.${
+                        LoanStatus[toLoanStatus(abToken?.state as ABTokenState)]
+                      }`,
+                    )}
                   </p>
                 </div>
                 <div>
                   <p>{t('loan.receiving_address')}</p>
-                  <p 
-                    onClick={() => abToken?.borrower?.id ? AddressCopy(abToken?.borrower?.id) : undefined} 
-                    className={abToken?.borrower?.id ? "link" : ""} 
-                  >
+                  <p
+                    onClick={() =>
+                      abToken?.borrower?.id
+                        ? AddressCopy(abToken?.borrower?.id)
+                        : undefined
+                    }
+                    className={abToken?.borrower?.id ? 'link' : ''}>
                     {abToken?.borrower?.id || '-'}
                   </p>
                 </div>
@@ -186,10 +193,10 @@ const PortfolioDetail: FunctionComponent = () => {
                   <p>{t('loan.loan__date')}</p>
                   <p>
                     {abToken?.loanStartTimestamp
-                        ? moment(abToken.loanStartTimestamp * 1000).format(
-                            'YYYY.MM.DD',
-                          )
-                        : '-'}
+                      ? moment(abToken.loanStartTimestamp * 1000).format(
+                          'YYYY.MM.DD',
+                        )
+                      : '-'}
                   </p>
                 </div>
                 <div>
@@ -219,7 +226,7 @@ const PortfolioDetail: FunctionComponent = () => {
         <h2>{t('loan.collateral_nft__details')}</h2>
         <div className="portfolio__collateral__data">
           <div className="portfolio__collateral__data--left">
-          {loading ? (
+            {loading ? (
               <Skeleton height={900} />
             ) : (
               <GoogleMapReact
@@ -236,43 +243,94 @@ const PortfolioDetail: FunctionComponent = () => {
             )}
           </div>
           <div className="portfolio__collateral__data--right">
-          {loading ? (
-            <Skeleton height={900} />
-          ) : (
-            <>
-            {[
-              [t("loan.collateral_nft__type"), "ABToken", "", ""],
-              [t('loan.collateral_nft__abtoken_id'), `${abToken?.id.slice(0, 12)} ... ${abToken?.id.slice(-12)}`, "", `${envs.etherscan}/token/${tokenInfo.tokeninzer}?a=${abToken?.id}`],
-              [t('loan.collateral_nft__borrower'), "Elyloan Corp", "", ""],
-              [t('loan.collateral_nft__loan_product'), t(`words.${LoanProduct[parsedTokenId.productNumber as LoanProduct]}`), "", ""],
-              [t('loan.loan__borrowed'), toUsd(abToken?.principal || '0', tokenInfo.decimals), "", ""],
-              [t('loan.loan__interest_rate'), toPercent(abToken?.couponRate || '0'), "", ""],
-              [t('loan.collateral_nft__overdue_interest_rate'), toPercent(abToken?.delinquencyRate || '0'), "", ""],
-              [t('loan.maturity_date'), maturityFormmater(abToken), "", ""],
-              [t('loan.collateral_nft__maximum_amount'), toUsd(abToken?.debtCeiling || '0', tokenInfo.decimals), "", ""],
-              [t('loan.collateral_nft__loan_type'), t(`words.${CollateralCategory[parsedTokenId.collateralCategory as CollateralCategory]}`), "", ""],
-              [t('loan.collateral_nft__address'), address, "", ""],
-              [t('loan.collateral_nft__contract_image'), `${contractImage.hash.slice(0, 12)} ... ${contractImage.hash.slice(-12)}` || '-', "", contractImage.link]
-            ].map((data) => {
-              return (
-                <div>
-                  <p>{data[0]}</p>
-                  <p 
-                    onClick={() => {
-                      !!data[3] === true ? 
-                        window.open(data[3], '_blank'
-                      ) : 
-                      undefined
-                    }}
-                    className={!!data[3] === true ? "link" : ""}
-                  >
-                    {data[1]}
-                  </p>
-                </div>
-              )
-            })}
-            </>
-          )}
+            {loading ? (
+              <Skeleton height={900} />
+            ) : (
+              <>
+                {[
+                  [t('loan.collateral_nft__type'), 'ABToken', '', ''],
+                  [
+                    t('loan.collateral_nft__abtoken_id'),
+                    `${abToken?.id.slice(0, 12)} ... ${abToken?.id.slice(-12)}`,
+                    '',
+                    `${envs.etherscan}/token/${tokenInfo.tokeninzer}?a=${abToken?.id}`,
+                  ],
+                  [t('loan.collateral_nft__borrower'), 'Elyloan Corp', '', ''],
+                  [
+                    t('loan.collateral_nft__loan_product'),
+                    t(
+                      `words.${
+                        LoanProduct[parsedTokenId.productNumber as LoanProduct]
+                      }`,
+                    ),
+                    '',
+                    '',
+                  ],
+                  [
+                    t('loan.loan__borrowed'),
+                    toUsd(abToken?.principal || '0', tokenInfo.decimals),
+                    '',
+                    '',
+                  ],
+                  [
+                    t('loan.loan__interest_rate'),
+                    toPercent(abToken?.couponRate || '0'),
+                    '',
+                    '',
+                  ],
+                  [
+                    t('loan.collateral_nft__overdue_interest_rate'),
+                    toPercent(abToken?.delinquencyRate || '0'),
+                    '',
+                    '',
+                  ],
+                  [t('loan.maturity_date'), maturityFormmater(abToken), '', ''],
+                  [
+                    t('loan.collateral_nft__maximum_amount'),
+                    toUsd(abToken?.debtCeiling || '0', tokenInfo.decimals),
+                    '',
+                    '',
+                  ],
+                  [
+                    t('loan.collateral_nft__loan_type'),
+                    t(
+                      `words.${
+                        CollateralCategory[
+                          parsedTokenId.collateralCategory as CollateralCategory
+                        ]
+                      }`,
+                    ),
+                    '',
+                    '',
+                  ],
+                  [t('loan.collateral_nft__address'), address, '', ''],
+                  [
+                    t('loan.collateral_nft__contract_image'),
+                    `${contractImage.hash.slice(
+                      0,
+                      12,
+                    )} ... ${contractImage.hash.slice(-12)}` || '-',
+                    '',
+                    contractImage.link,
+                  ],
+                ].map((data) => {
+                  return (
+                    <div>
+                      <p>{data[0]}</p>
+                      <p
+                        onClick={() => {
+                          !!data[3] === true
+                            ? window.open(data[3], '_blank')
+                            : undefined;
+                        }}
+                        className={!!data[3] === true ? 'link' : ''}>
+                        {data[1]}
+                      </p>
+                    </div>
+                  );
+                })}
+              </>
+            )}
           </div>
         </div>
       </div>
