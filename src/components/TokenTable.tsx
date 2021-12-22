@@ -180,7 +180,14 @@ const TokenTable: React.FC<Props> = ({
               <Skeleton width={1148} height={768} />
             ) : (
               <div>
-                <h2>{t('dashboard.recent_loan')}</h2>
+                <div>
+                  <h2>{t('dashboard.recent_loan')}</h2>
+                  <Link to={`/${lng}/deposits/${tokenName}`}>
+                    <div>
+                      <p>자세히 보기</p>
+                    </div>
+                  </Link>
+                </div>
                 <div>
                   <AssetList
                     assetBondTokens={
@@ -197,7 +204,7 @@ const TokenTable: React.FC<Props> = ({
                     }
                   />
                 </div>
-                <div
+                {/* <div
                   className="deposit__table__body__loan-list__more-button"
                   style={{
                     display: !!list && list?.length > 3 ? 'block' : 'none',
@@ -205,7 +212,7 @@ const TokenTable: React.FC<Props> = ({
                   <a href={`/${lng}/deposits/${tokenName}`}>
                     <p>{t('main.governance.view-more')}</p>
                   </a>
-                </div>
+                </div> */}
               </div>
             )}
           </div>
