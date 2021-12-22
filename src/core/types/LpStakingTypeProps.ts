@@ -1,7 +1,8 @@
 import { BigNumber } from 'ethers';
 import { Dispatch, SetStateAction } from 'react';
 import Token from 'src/enums/Token';
-import Position, { TokenInfo } from './Position';
+import { Position as IPosition } from 'src/hooks/usePositions';
+import Position from './Position';
 import RewardTypes, { ExpectedRewardTypes } from './RewardTypes';
 
 export type tokenTypes = {
@@ -35,7 +36,7 @@ export type LpStakingModalProps = {
   closeHandler: () => void;
   token0: string;
   token1?: Token.DAI | Token.ETH;
-  unstakedPositions: TokenInfo[];
+  unstakedPositions: IPosition[];
   tokenImg: string;
   stakingPoolAddress: string;
   rewardTokenAddress: string;
