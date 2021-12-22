@@ -255,7 +255,7 @@ const PortfolioDetail: FunctionComponent = () => {
                     '',
                     `${envs.etherscan}/token/${tokenInfo.tokeninzer}?a=${abToken?.id}`,
                   ],
-                  [t('loan.collateral_nft__borrower'), 'Elyloan Corp', '', ''],
+                  [t('loan.collateral_nft__borrower'), 'Elyloan Inc', '', ''],
                   [
                     t('loan.collateral_nft__loan_product'),
                     t(
