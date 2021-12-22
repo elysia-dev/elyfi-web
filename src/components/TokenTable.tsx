@@ -14,7 +14,7 @@ import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
 import { useQuery } from '@apollo/client';
 import AssetList from 'src/containers/AssetList';
 import Token from 'src/enums/Token';
-import { useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 
 interface Props {
   tokenImage: string;
@@ -57,7 +57,7 @@ const TokenTable: React.FC<Props> = ({
 }) => {
   const { data, loading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
   const { account } = useWeb3React();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const tokenInfo = reserveTokenData[tokenName];
   const list = data?.assetBondTokens.filter((product) => {
     return product.reserve.id === reserveData?.id;
@@ -70,46 +70,47 @@ const TokenTable: React.FC<Props> = ({
     <>
       <div className="deposit__table">
         <div className="deposit__table__ref" id={id} />
-        <div className="deposit__table__header">
-          <div
-            className="deposit__table__header__token-info"
-            style={{ cursor: 'pointer' }}
-            onClick={() => {
-              history.push({
-                pathname: `/${lng}/deposits/${tokenName}`,
-              });
-            }}>
-            <img src={tokenImage} alt="Token icon" />
-            <p className="bold" style={{ cursor: 'pointer' }}>
-              {tokenName}
-            </p>
+        <Link
+          to={`/${lng}/deposits/${tokenInfo.name}`}
+          style={{
+            cursor: 'pointer',
+          }}>
+          <div className="deposit__table__header">
+            <div className="deposit__table__header__token-info">
+              <img src={tokenImage} alt="Token icon" />
+              <p className="bold" style={{ cursor: 'pointer' }}>
+                {tokenName}
+              </p>
+            </div>
+            <div className="deposit__table__header__data-grid">
+              <div />
+              {[
+                [
+                  t('dashboard.total_deposit'),
+                  toUsd(reserveData.totalDeposit, tokenInfo?.decimals),
+                ],
+                [
+                  t('dashboard.total_borrowed'),
+                  toUsd(reserveData.totalBorrow, tokenInfo?.decimals),
+                ],
+                [t('dashboard.token_mining_apr'), miningAPR || 0],
+                [t('dashboard.borrow_apy'), toPercent(reserveData.borrowAPY)],
+                [t('dashboard.deposit_apy'), depositAPY || 0],
+              ].map((data) => {
+                return skeletonLoading ? (
+                  <Skeleton width={120} />
+                ) : (
+                  <div>
+                    <p style={{ cursor: 'pointer' }}>{data[0]}</p>
+                    <p className="bold" style={{ cursor: 'pointer' }}>
+                      {data[1]}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div className="deposit__table__header__data-grid">
-            <div />
-            {[
-              [
-                t('dashboard.total_deposit'),
-                toUsd(reserveData.totalDeposit, tokenInfo?.decimals),
-              ],
-              [
-                t('dashboard.total_borrowed'),
-                toUsd(reserveData.totalBorrow, tokenInfo?.decimals),
-              ],
-              [t('dashboard.token_mining_apr'), miningAPR || 0],
-              [t('dashboard.borrow_apy'), toPercent(reserveData.borrowAPY)],
-              [t('dashboard.deposit_apy'), depositAPY || 0],
-            ].map((data) => {
-              return skeletonLoading ? (
-                <Skeleton width={120} />
-              ) : (
-                <div>
-                  <p>{data[0]}</p>
-                  <p className="bold">{data[1]}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        </Link>
 
         <div className="deposit__table__body">
           <div className="deposit__table__body__amount__container">
