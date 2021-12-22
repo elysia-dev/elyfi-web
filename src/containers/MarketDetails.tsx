@@ -310,12 +310,12 @@ function MarketDetail(): JSX.Element {
                   [
                     'Month',
                     graphConverter
-                      ? t('dashboard.borrow_apy')
-                      : t('dashboard.total_deposit--yield'),
-                    { role: 'tooltip', p: { html: true } },
-                    graphConverter
                       ? t('dashboard.total_borrowed')
                       : t('dashboard.total_deposit'),
+                    { role: 'tooltip', p: { html: true } },
+                    graphConverter
+                      ? t('dashboard.borrow_apy')
+                      : t('dashboard.total_deposit--yield'),
                     { role: 'tooltip', p: { html: true } },
                   ],
                   ...calcHistoryChartData(
