@@ -23,6 +23,11 @@
   src: url('../assets/fonts/SpoqaHanSansNeo-Medium.ttf') format('truetype');
   unicode-range: U+0030-0039 U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
 }
+@font-face {
+  font-family: 'Inter-Regular';
+  src: url('../assets/fonts/Inter-Regular.ttf') format('truetype');
+  unicode-range: U+0030-0039 U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
+}
 
 * {
   box-sizing: border-box;
@@ -799,11 +804,34 @@ input[type='number'] {
         }
         &__loan-list {
           > div {
-            > h2 {
-              color: $font-color;
+            > div:nth-child(1) {
+              display: flex;
+              justify-content: space-between;
 
-              margin-top: 25px;
-              font-size: 18px;
+              > h2 {
+                color: $font-color;
+
+                margin-top: 25px;
+                font-size: 18px;
+              }
+
+              > a > div {
+                background-color: #ffffff;
+                box-shadow: 0px 0px 6px #00000029;
+                border-radius: 15px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 25px;
+                width: 160px;
+                height: 30px;
+                cursor: pointer;
+                > p {
+                  color: #888888;
+                  font-size: 15px;
+                  cursor: pointer;
+                }
+              }
             }
           }
           &__more-button {
@@ -4205,14 +4233,14 @@ input[type='number'] {
       height: 25px;
       width: 2px;
       margin-left: 12.5px;
-      background-color: black;
+      background-color: #b7b7b7;
       transform: rotate(45deg);
       z-index: 1;
     }
     &--2 {
       height: 25px;
       width: 2px;
-      background-color: black;
+      background-color: #b7b7b7;
       transform: rotate(90deg);
       z-index: 2;
     }
@@ -4935,5 +4963,8 @@ input[type='number'] {
   }
   .google-visualization-tooltip ul li:last-child::after {
     color: #333333 !important;
+  }
+  textarea {
+    font-family: 'Inter-Regular';
   }
 }
