@@ -79,15 +79,16 @@ const TokenTable: React.FC<Props> = ({
     <>
       <div className="deposit__table">
         <div className="deposit__table__ref" id={id} />
-        <div className="deposit__table__header">
-          <div
-            className="deposit__table__header__token-info"
-            style={{ cursor: 'pointer' }}
-            onClick={() => {
-              history.push({
-                pathname: `/${lng}/deposits/${tokenName}`,
-              });
-            }}>
+        <div 
+          className="deposit__table__header"
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            history.push({
+              pathname: `/${lng}/deposits/${tokenName}`,
+            });
+          }}
+        >
+          <div className="deposit__table__header__token-info" >
             <img src={tokenImage} alt="Token icon" />
             <p className="bold" style={{ cursor: 'pointer' }}>
               {tokenName}

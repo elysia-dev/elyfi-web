@@ -19,6 +19,7 @@ $device-width: 1190px;
   margin: 0 auto; 
 }
 
+
 .view-w {
   .mobile-only {
     display: none;
@@ -61,10 +62,10 @@ $device-width: 1190px;
           margin-bottom: 55px;
           > p {
             &:first-child {
-              font-size: 50px;
+              font-size: 45px;
               margin-bottom: 35px;
               strong {
-                font-size: 50px;
+                font-size: 45px;
                 line-height: 80px;
               }
             }
@@ -74,7 +75,7 @@ $device-width: 1190px;
             }
           }
           > h2 {
-            font-size: 50px;
+            font-size: 45px;
           }
         }
         &__button {
