@@ -1582,7 +1582,353 @@ $device-width: 1190px;
       }
     } // staking end
     
+    .modal {
+      &__button {
+        width: 452px;
+        height: 47px;
+        border-radius: 5px;
+        margin: 30px auto;
+        line-height: 47px;
+        border-radius: 47px;
+        > p {
+          font-size: 18px;
+        }
+      }
+      &__container {
+        border-radius: 10px;
+        width: 514px;
+      }
+      &__header {
+        padding: 20px 30px;
+        &__image {
+          width: 41px;
+          height: 41px;
+          margin-right: 15px;
+          &--sub-token {
+            width: 41px;
+            height: 41px;
+            margin-left: -22px;
+            margin-right: 10px;
+          }
+        }
+        &__name {
+          font-size: 18px;
+        }
+      }
+      &__converter {
+        &__column {
+          flex: 1;
+          > h2 {
+            font-size: 15px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+          }
+          &.selected {
+            flex: 1;
+          }
+        }
+      }
+      &__input {
+        height: 144px;
+        padding: 0 20px;
+        &__maximum {
+          font-size: 20px;
+          margin-right: 15px;
+        }
+      }
+      &__deposit {
+        &__despositable-amount {
+          margin: 29px 26px 0;
+          padding-bottom: 30px;
+          > p {
+            font-size: 15px;
+          }
+          > div {
+            margin-top: 20px;
+            > h2 {
+              font-size: 15px;
+            }
+          }
+        }
+        &__despositable-value {
+          margin: 29px 26px 31px;
+  
+          > p {
+            margin-bottom: 16px;
+            font-size: 15px;
+          }
+          > div {
+            > h2 {
+              margin: 7.5px 0;
+              font-size: 15px;
+            }
+          }
+        }
+      }
+      &__withdraw {
+        &__withdrawalable {
+          &__amount {
+            margin: 29px 26px 0;
+            padding-bottom: 30px;
+          }
+          &__value {
+            margin: 29px 26px 31px;
+          }
+          &__content {
+            > h2 {
+              margin: 7.5px 0;
+              font-size: 15px;
+            }
+          }
+          &__title {
+            margin-bottom: 20px;
+            > p {
+              font-size: 15px;
+            }
+          }
+        }
+      }
+      &__confirm {
+        > img {
+          width: 50%;
+        }
+        > div {
+          > h2 {
+            margin-top: 50px;
+            margin-bottom: 30px;
+            font-size: 16px;
+          }
+        }
+      }
+      &__incentive {
+        &__body {
+          height: 140px;
+        }
+        &__value {
+          padding: 20px;
+          font-size: 50px;
+        }
+      }
+      &__account {
+        margin: 30px;
+        &__mainnet-info {
+          border-radius: 10px 10px 0 0;
+          padding: 14px 20px;
+          > div:first-child {
+            > p {
+              margin: 0 0 5px 0;
+            }
+            > div {
+              > div {
+                width: 14px;
+                height: 14px;
+                border-radius: 14px;
+                margin-right: 6px;
+              }
+            }
+          }
+          > div:last-child {
+            > p {
+              margin: 7px 29px;
+            }
+          }
+          &__button {
+            border-radius: 0 0 10px 10px;
+            > div {
+              > p {
+                margin: 10px;
+              }
+              &:first-child {
+                border-radius: 0 0 0 10px;
+              }
+            }
+            > a {
+              > div {
+                > p {
+                  margin: 10px;
+                }
+              }
+            }
+          }
+        }
+        &__status {
+          margin-top: 25px;
+          margin-bottom: 10px;
+          > a {
+            > div {
+              margin-top: 10px;
+              padding: 10px 20px;
+              > div {
+                > img {
+                  width: 24px;
+                  height: 24px;
+                  margin-right: 5px;
+                }
+              }
+            }
+          }
+        }
+      }
+  
+      &__staking {
+        &__container {
+          padding: 28px 27px 30px 26px;
+          > div {
+            > h2 {
+              font-size: 15px;
+              margin-top: 19px;
+            }
+          }
+        }
+      }
+  
+      &__migration {
+        &__wrapper {
+          padding: 15px 31px 26px;
+          > div {
+            > h2 {
+              font-size: 15px;
+              margin-bottom: 13px;
+            }
+          }
+        }
+        &__input {
+          height: 70px;
+          border-radius: 10px;
+          padding: 0 20px 0 20px;
+        }
+        &__popup {
+          &__info {
+            > h2 {
+              font-size: 15px;
+              margin-bottom: 13px;
+            }
+          }
+        }
+        .arrow-wrapper {
+          height: 55px;
+          margin: 15px 15px 0;
+          display: -webkit-flex;
+          display: flex;
+          -webkit-flex-direction: column;
+          flex-direction: column;
+          -webkit-align-items: center;
+          align-items: center;
+          -webkit-justify-content: flex-start;
+          justify-content: flex-start;
+          > .line {
+            height: 0;
+            width: 100%;
+            border: 1px dashed $elysia-color;
+          }
+          > .left-arrow {
+            width: 0;
+            height: 0;
+            border-right: 10px solid $elysia-color;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+          }
+          > .right-arrow {
+            width: 0;
+            height: 0;
+            border-left: 10px solid $elysia-color;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+          }
+        }
+        &__nth {
+          margin-top: 9px;
+          > img {
+            margin: 0 8px;
+          }
+          > p {
+            font-size: 12px;
+          }
+        }
+        &__content {
+          padding: 0px 31px 35px;
+          > p {
+            margin-top: 35px;
+            font-size: 15px;
+          }
+          > div {
+            > h2 {
+              margin-top: 20px;
+              font-size: 15px;
+            }
+          }
+        }
+      }
+      &__alert {
+        &__content {
+          > h2 {
+            font-size: 15px;
+            margin-top: 50px;
+            line-height: 25px;
+          }
+        }
+        &__wrapper {
+          padding: 21px 30px;
+          margin: 40px 0;
+          border-radius: 10px;
+          > p {
+            font-size: 15px;
+            margin-bottom: 10px;
+          }
+          > div {
+            > p {
+              font-size: 15px;
+            }
+          }
+        }
+      }
+      &__lp {
+        &__reward {
+          &__container {
+            > div {
+              margin: 0 30px;
+              > div {
+                padding: 20px 0px;
+                > img {
+                  width: 26px;
+                  height: 26px;
+                  margin-right: 10px;
+                }
+                > h2 {
+                  font-size: 18px;
+                }
+              }
+              > h2 {
+                font-size: 20px;
+                > span {
+                  font-size: 15px;
+                  margin-left: 5px;
+                }
+              }
+            }
+          }
+        }
+        &__staking {
+          &__undefined {
+            > h2 {
+              font-size: 15px;
+              padding: 100px 0;
+            }
+          }
+        }
+      }
+      &__connect {
+        &__content {
+          padding: 40px;
+          > p {
+            font-size: 15px;
+            line-height: 25px;
+          }
+        }
+      }
+    } // modal end
 
+    
     .component {
       &__loan-list {
         width: $loan-list-size;
@@ -1659,6 +2005,26 @@ $device-width: 1190px;
           }
         }
       } // data info end
+      &__popup-info {
+        margin-left: 5px;
+        width: 15px;
+        height: 15px;
+        margin-top: 3px;
+        &__hover-mark {
+          border-radius: 100%;
+          font-size: 12px;
+          line-height: 14px;
+        }
+        &__content {
+          top: 30px;
+          padding: 20px 25px;
+          border-radius: 6px;
+          > p {
+            font-size: 13px;
+            line-height: 20px;
+          }
+        }
+      }
     }
 
 

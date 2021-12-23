@@ -2273,18 +2273,11 @@ input[type='number'] {
     z-index: 999;
     overflow: hidden;
     &__button {
-      width: 452px;
-      height: 47px;
-      border-radius: 5px;
-      margin: 30px auto;
-      line-height: 47px;
-      border-radius: 47px;
       box-shadow: 0px 0px 6px #00000029;
       background: $elysia-color;
       text-align: center;
       cursor: pointer;
       > p {
-        font-size: 18px;
         color: #ffffff;
         cursor: pointer;
       }
@@ -2300,9 +2293,7 @@ input[type='number'] {
     }
     &__container {
       background-color: $background-color;
-      border-radius: 10px;
       position: fixed;
-      width: 514px;
       top: 50%;
       left: 50%;
       -webkit-transform: translate(-50%, -50%);
@@ -2314,22 +2305,13 @@ input[type='number'] {
       align-items: center;
       margin: 0 auto;
       border-bottom: 1px solid $gray-line;
-      padding: 20px 30px;
       &__image {
-        width: 41px;
-        height: 41px;
-        margin-right: 15px;
         &--sub-token {
-          width: 41px;
-          height: 41px;
-          margin-left: -22px;
           border: 1px solid #ffffff;
           border-radius: 100%;
-          margin-right: 10px;
         }
       }
       &__name {
-        font-size: 18px;
         color: $font-color;
       }
       &__content {
@@ -2348,9 +2330,6 @@ input[type='number'] {
         > h2 {
           color: #b7b7b7;
           cursor: pointer;
-          font-size: 15px;
-          margin-top: 15px;
-          margin-bottom: 15px;
         }
         &.selected {
           flex: 1;
@@ -2371,16 +2350,11 @@ input[type='number'] {
       justify-content: space-between;
       -webkit-align-items: center;
       align-items: center;
-
-      height: 144px;
-      padding: 0 20px;
       &__maximum {
-        font-size: 20px;
         color: $gray-font-color;
         display: flex;
         cursor: pointer;
         white-space: nowrap;
-        margin-right: 15px;
       }
       &__value {
         color: $font-color;
@@ -2392,7 +2366,7 @@ input[type='number'] {
           color: $font-color;
           width: 100%;
           float: right;
-          font-family: 'SpoqaHanSansNeo-Bold';
+          font-family: $bold;
           outline: 0;
           transition: all 0.3s linear;
         }
@@ -2401,13 +2375,10 @@ input[type='number'] {
     &__deposit {
       border-bottom: 2px solid $gray-line;
       &__despositable-amount {
-        margin: 29px 26px 0;
-        padding-bottom: 30px;
         -webkit-justify-content: space-between;
         justify-content: space-between;
         border-bottom: 1px solid #f0f0f1;
         > p {
-          font-size: 15px;
           color: $gray-font-color;
         }
         > div {
@@ -2417,19 +2388,13 @@ input[type='number'] {
           justify-content: space-between;
           -webkit-align-items: center;
           align-items: center;
-          margin-top: 20px;
           > h2 {
-            font-size: 15px;
             color: $font-color;
           }
         }
       }
       &__despositable-value {
-        margin: 29px 26px 31px;
-
         > p {
-          margin-bottom: 16px;
-          font-size: 15px;
           color: $gray-font-color;
         }
         > div {
@@ -2438,9 +2403,7 @@ input[type='number'] {
           -webkit-justify-content: space-between;
           justify-content: space-between;
           > h2 {
-            margin: 7.5px 0;
             color: $font-color;
-            font-size: 15px;
           }
         }
       }
@@ -2456,20 +2419,12 @@ input[type='number'] {
           -webkit-justify-content: space-between;
           justify-content: space-between;
           border-bottom: 1px solid $gray-line;
-
-          margin: 29px 26px 0;
-          padding-bottom: 30px;
-        }
-        &__value {
-          margin: 29px 26px 31px;
         }
         &__content {
           display: flex;
           flex-direction: row;
           justify-content: space-between;
           > h2 {
-            margin: 7.5px 0;
-            font-size: 15px;
             color: $font-color;
           }
         }
@@ -2478,9 +2433,7 @@ input[type='number'] {
           display: flex;
           -webkit-justify-content: space-between;
           justify-content: space-between;
-          margin-bottom: 20px;
           > p {
-            font-size: 15px;
             color: $gray-font-color;
           }
         }
@@ -2490,17 +2443,10 @@ input[type='number'] {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      margin: 30px;
       align-items: center;
-      > img {
-        width: 50%;
-      }
       > div {
         > h2 {
-          margin-top: 50px;
-          margin-bottom: 30px;
           color: $font-color;
-          font-size: 16px;
         }
         > p {
           color: $gray-font-color;
@@ -2510,7 +2456,6 @@ input[type='number'] {
     }
     &__incentive {
       &__body {
-        height: 140px;
         overflow-y: clip;
         background-color: $gray-line;
         display: flex;
@@ -2518,23 +2463,18 @@ input[type='number'] {
         align-items: center;
       }
       &__value {
-        padding: 20px;
         text-align: right;
         width: 100%;
-        font-size: 50px;
       }
     }
     &__account {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      margin: 30px;
       align-items: center;
       &__mainnet-info {
         width: 100%;
         border: 1px solid #e6e6e6;
-        border-radius: 10px 10px 0 0;
-        padding: 14px 20px;
         box-sizing: border-box;
         display: flex;
         flex-direction: row;
@@ -2543,20 +2483,12 @@ input[type='number'] {
         > div:first-child {
           > p {
             color: #b7b7b7;
-            margin: 0 0 5px 0;
           }
           > div {
             display: flex;
             align-items: center;
-            > p {
-              margin: 0;
-            }
             > div {
               background-color: #00bfff;
-              width: 14px;
-              height: 14px;
-              border-radius: 14px;
-              margin-right: 6px;
             }
           }
         }
@@ -2565,7 +2497,6 @@ input[type='number'] {
           border: 1px solid #646464;
           cursor: pointer;
           > p {
-            margin: 7px 29px;
             cursor: pointer;
           }
         }
@@ -2574,7 +2505,6 @@ input[type='number'] {
           display: flex;
           justify-content: space-between;
           border: 1px solid #e6e6e6;
-          border-radius: 0 0 10px 10px;
           border-top: 0px;
           box-sizing: border-box;
           color: #333333;
@@ -2586,13 +2516,11 @@ input[type='number'] {
             align-items: center;
             justify-content: center;
             > p {
-              margin: 10px;
               color: #636363;
               cursor: pointer;
             }
             &:first-child {
               background-color: #e6e6e6;
-              border-radius: 0 0 0 10px;
             }
           }
           > a {
@@ -2605,7 +2533,6 @@ input[type='number'] {
               align-items: center;
               justify-content: center;
               > p {
-                margin: 10px;
                 color: #636363;
                 cursor: pointer;
               }
@@ -2615,8 +2542,6 @@ input[type='number'] {
       }
       &__status {
         width: 100%;
-        margin-top: 25px;
-        margin-bottom: 10px;
         .disable {
           cursor: default;
           > div {
@@ -2631,11 +2556,9 @@ input[type='number'] {
           cursor: pointer;
           > div {
             border: 1px solid #e6e6e6;
-            margin-top: 10px;
             justify-content: space-between;
             display: flex;
             align-items: center;
-            padding: 10px 20px;
             > p {
               cursor: pointer;
             }
@@ -2645,11 +2568,6 @@ input[type='number'] {
               > p {
                 cursor: pointer;
               }
-              > img {
-                width: 24px;
-                height: 24px;
-                margin-right: 5px;
-              }
             }
           }
         }
@@ -2658,7 +2576,6 @@ input[type='number'] {
 
     &__staking {
       &__container {
-        padding: 28px 27px 30px 26px;
         border-bottom: 2px solid $gray-line;
         display: flex;
         flex-direction: column;
@@ -2667,8 +2584,7 @@ input[type='number'] {
           flex-direction: row;
           justify-content: space-between;
           > h2 {
-            font-size: 15px;
-            margin-top: 19px;
+            color: $font-color;
           }
         }
       }
@@ -2676,13 +2592,10 @@ input[type='number'] {
 
     &__migration {
       &__wrapper {
-        padding: 15px 31px 26px;
         border-bottom: 2px solid #f0f0f1;
         > div {
           > h2 {
-            font-size: 15px;
             color: $font-color;
-            margin-bottom: 13px;
           }
         }
       }
@@ -2691,9 +2604,6 @@ input[type='number'] {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 70px;
-        border-radius: 10px;
-        padding: 0 20px 0 20px;
         > p {
           > input {
             text-align: right;
@@ -2702,7 +2612,7 @@ input[type='number'] {
             background: none;
             color: #1c1c1c;
             float: right;
-            font-family: 'SpoqaHanSansNeo-Bold';
+            font-family: $bold;
             outline: 0;
             transition: all 0.3s linear;
           }
@@ -2713,63 +2623,22 @@ input[type='number'] {
           display: inline-flex;
           justify-content: left;
           > h2 {
-            font-size: 15px;
             color: $font-color;
-            margin-bottom: 13px;
           }
         }
       }
-      .arrow-wrapper {
-        height: 55px;
-        margin: 15px 15px 0;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-flex-direction: column;
-        flex-direction: column;
-        -webkit-align-items: center;
-        align-items: center;
-        -webkit-justify-content: flex-start;
-        justify-content: flex-start;
-        > .line {
-          height: 0;
-          width: 100%;
-          border: 1px dashed $elysia-color;
-        }
-        > .left-arrow {
-          width: 0;
-          height: 0;
-          border-right: 10px solid $elysia-color;
-          border-top: 5px solid transparent;
-          border-bottom: 5px solid transparent;
-        }
-        > .right-arrow {
-          width: 0;
-          height: 0;
-          border-left: 10px solid $elysia-color;
-          border-top: 5px solid transparent;
-          border-bottom: 5px solid transparent;
-        }
-      }
       &__nth {
-        margin-top: 9px;
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
         align-items: center;
-        > img {
-          margin: 0 8px;
-        }
         > p {
-          font-size: 12px;
           color: $gray-font-color;
         }
       }
       &__content {
-        padding: 0px 31px 35px;
         border-bottom: 2px solid $gray-line;
         > p {
-          margin-top: 35px;
-          font-size: 15px;
           color: $gray-font-color;
         }
         > div {
@@ -2778,36 +2647,10 @@ input[type='number'] {
           justify-content: space-between;
           align-items: center;
           > h2 {
-            margin-top: 20px;
-            font-size: 15px;
             color: $font-color;
           }
         }
       }
-      // &__alert {
-      //   width: 90%;
-      //   margin: 0 auto;
-      //   > p {
-      //     &:first-child {
-      //       text-align: center;
-      //     }
-      //   }
-      //   > div {
-      //     border: 1px solid #e6e6e6;
-      //     border-radius: 10px;
-      //     > p {
-      //       margin: 0;
-      //       margin-bottom: 8px;
-      //     }
-      //     > div {
-      //       display: flex;
-      //       justify-content: space-between;
-      //       > p {
-      //         margin: 0;
-      //       }
-      //     }
-      //   }
-      // }
     }
     &__alert {
       .modal__header {
@@ -2817,29 +2660,20 @@ input[type='number'] {
         width: 90%;
         margin: 0 auto;
         > h2 {
-          font-size: 15px;
-          margin-top: 50px;
           color: $font-color;
           text-align: center;
-          line-height: 25px;
         }
       }
       &__wrapper {
-        padding: 21px 30px;
-        margin: 40px 0;
         border: 1px solid #e6e6e6;
-        border-radius: 10px;
         > p {
-          font-size: 15px;
           color: $font-color;
-          margin-bottom: 10px;
         }
         > div {
           display: flex;
           flex-direction: row;
           justify-content: space-between;
           > p {
-            font-size: 15px;
             color: $font-color;
           }
         }
@@ -2854,7 +2688,6 @@ input[type='number'] {
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            margin: 0 30px;
             border-bottom: 1px solid $gray-line;
             &:last-child {
               border: 0;
@@ -2864,23 +2697,14 @@ input[type='number'] {
               flex-direction: row;
               justify-content: flex-start;
               align-items: center;
-              padding: 20px 0px;
-              > img {
-                width: 26px;
-                height: 26px;
-                margin-right: 10px;
-              }
               > h2 {
-                font-size: 18px;
+                color: $font-color;
               }
             }
             > h2 {
-              font-size: 20px;
               color: $font-color;
               > span {
-                font-size: 15px;
                 color: $gray-font-color;
-                margin-left: 5px;
               }
             }
           }
@@ -2892,10 +2716,8 @@ input[type='number'] {
         }
         &__undefined {
           > h2 {
-            font-size: 15px;
             color: $sub-font-color;
             text-align: center;
-            padding: 100px 0;
           }
         }
       }
@@ -2903,13 +2725,10 @@ input[type='number'] {
     &__connect {
       &__content {
         margin: 0 auto;
-        padding: 40px;
         text-align: center;
         border-bottom: 2px solid $gray-line;
         > p {
-          font-size: 15px;
           color: $font-color;
-          line-height: 25px;
         }
       }
     }
@@ -3017,31 +2836,18 @@ input[type='number'] {
     } // data info end
     &__popup-info {
       display: inline-flex;
-      margin-left: 5px;
-      width: 15px;
-      height: 15px;
       cursor: pointer;
-      margin-top: 3px;
       &__hover-mark {
         border-radius: 100%;
         border: 1px solid #333333;
-        font-size: 12px;
-        line-height: 14px;
         cursor: pointer;
         flex: 1;
         text-align: center;
       }
       &__content {
         position: absolute;
-        top: 30px;
         background: #ffffff;
-        padding: 20px 25px;
         box-shadow: 0px 0px 6px #00000029;
-        border-radius: 6px;
-        > p {
-          font-size: 13px;
-          line-height: 20px;
-        }
       }
     }
   } // component end
