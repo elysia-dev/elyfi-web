@@ -12,6 +12,7 @@ import { useTranslation, Trans } from 'react-i18next';
 import GovernanceGuideBox from 'src/components/GovernanceGuideBox';
 import { useParams, useHistory } from 'react-router-dom';
 import LanguageType from 'src/enums/LanguageType';
+import moment from 'moment';
 
 const Governance = () => {
   const [onChainLoading, setOnChainLoading] = useState(true);
@@ -80,10 +81,13 @@ const Governance = () => {
                       /(?<=a href=").*(?=" rel="noopener nofollow ugc">Collateral Image)/,
                     )
                     ?.toString() || '',
-                votes: getNATData.data.post_stream.posts[0].polls[0].options,
+                votes:
+                  getNATData.data.post_stream.posts[0].polls[0].options || '',
                 totalVoters:
-                  getNATData.data.post_stream.posts[0].polls[0].voters,
+                  getNATData.data.post_stream.posts[0].polls[0].voters || '',
                 link: `https://forum.elyfi.world/t/${getNATData.data.slug}`,
+                endedDate:
+                  getNATData.data.post_stream.posts[0].polls[0].close || '',
               } as INapData,
             ]);
           });
@@ -94,22 +98,25 @@ const Governance = () => {
       res === undefined
         ? setOnChainLoading(false)
         : res.map((data) => {
-            return setOnChainData((_data) => [
-              ..._data,
-              {
-                data: {
-                  description: data.data.description
-                    .match(/(?<=NAP).*(?=:)/)
-                    ?.toString(),
-                },
-                status: data.status,
-                totalVotesCast: data.totalVotesCast,
-                totalVotesCastAbstained: data.totalVotesCastAbstained,
-                totalVotesCastAgainst: data.totalVotesCastAgainst,
-                totalVotesCastInSupport: data.totalVotesCastInSupport,
-                id: data.id.match(/(?=).*(?=-proposal)/)?.toString(),
-              } as IProposals,
-            ]);
+            return setOnChainData((_data) => {
+              if (!(data.status === 'ACTIVE')) return [..._data];
+              return [
+                ..._data,
+                {
+                  data: {
+                    description: data.data.description
+                      .match(/(?<=NAP).*(?=:)/)
+                      ?.toString(),
+                  },
+                  status: data.status,
+                  totalVotesCast: data.totalVotesCast,
+                  totalVotesCastAbstained: data.totalVotesCastAbstained,
+                  totalVotesCastAgainst: data.totalVotesCastAgainst,
+                  totalVotesCastInSupport: data.totalVotesCastInSupport,
+                  id: data.id.match(/(?=).*(?=-proposal)/)?.toString(),
+                } as IProposals,
+              ];
+            });
           });
       setOnChainLoading(false);
     });
@@ -245,18 +252,28 @@ const Governance = () => {
         <div>
           <h3>
             {t('governance.data_verification', {
-              count: offChainNapData.length,
+              count: offChainNapData.filter((data) =>
+                moment().isBefore(data.endedDate),
+              ).length,
             })}
           </h3>
           <p>{t('governance.data_verification__content')}</p>
         </div>
         {offChainLoading ? (
           <Skeleton width={'100%'} height={600} />
-        ) : (
+        ) : offChainNapData.filter((data) => moment().isBefore(data.endedDate))
+            .length > 0 ? (
           <div className="governance__grid">
             {offChainNapData.map((data, index) => {
-              return offChainContainer(data);
+              if (data.endedDate && moment().isBefore(data.endedDate)) {
+                return offChainContainer(data);
+              }
+              return null;
             })}
+          </div>
+        ) : (
+          <div className="governance__validation zero">
+            <p>현재 진행중인 데이터 검증 투표가 있습니다.</p>
           </div>
         )}
       </section>
@@ -269,11 +286,15 @@ const Governance = () => {
         </div>
         {onChainLoading ? (
           <Skeleton width={'100%'} height={600} />
-        ) : (
+        ) : onChainData.length > 0 ? (
           <div className="governance__grid">
             {onChainData.map((data, index) => {
               return onChainConatainer(data);
             })}
+          </div>
+        ) : (
+          <div className="governance__onchain-vote zero">
+            <p>현재 진행중인 온체인 투표가 있습니다.</p>
           </div>
         )}
       </section>
