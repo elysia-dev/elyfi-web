@@ -18,6 +18,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 @mixin page-container {
   width: $device-width;
   margin: 0 auto;
+  padding-top: 100px;
 }
 
 .view-m {
@@ -225,7 +226,8 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   } // navigation end 
 
   .main {
-    @include page-container;
+    width: $device-width;
+    margin: 0 auto;
     &__image-wrapper {
       width: 340px;
       > img {
@@ -294,6 +296,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       flex-direction: column;
       > div {
         > h2 {
+          margin-top: 20vh;
           font-size: 23px;
           margin-bottom: 15px;
         }
@@ -360,7 +363,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       }
     }
     &__service {
-      margin-top: 40vh;
+      margin-top: 20vh;
       > h2 {
         font-size: 23px;
       }
@@ -469,9 +472,10 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       }
     }
     &__partners {
+      margin: 20vh 0;
       > div {
         width: 100%;
-        margin-top: 100px;
+        margin-top: 20vh;
         > h2 {
           font-size: 23px;
         }
@@ -548,9 +552,8 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   .deposit {
     @include page-container;
     &__title {
-      height: 250px;
+      height: 100px;
       > p {
-        padding-top: 100px;
         font-size: 18px;
       }
       > h2 {
@@ -905,14 +908,12 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     @include page-container;
 
     &__header {
-      margin-top: 20px;
       margin-bottom: 75px;
       > img { 
         width: 42px;
         height: 42px;
       }
       > h2 {
-        margin-top: 15px;
         font-size: 18px;
       }
     }
@@ -1003,7 +1004,6 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 
   .governance {
     @include page-container;
-    padding-top: 70px;
     $asset-width: 164px;
     &__asset {
       width: $asset-width;
@@ -2311,11 +2311,12 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       }
     } // loan-list end
     &__text-navigation {
-      padding-top: 50px;
-      font-size: 12px;
-      > p {
-        font-size: 12px;
-      }
+      display: none;
+      // padding-top: 50px;
+      // font-size: 12px;
+      // > p {
+      //   font-size: 12px;
+      // }
     } // text navigation end
     &__progress-bar {
       > div {
@@ -2409,8 +2410,10 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     height: 25px;
   }
   .footer {
+    margin-top: 80px;
     > div {
-      @include page-container;
+      width: $device-width;
+      margin: 0 auto;
       > div {
         width: 100%;
         justify-content: space-between;

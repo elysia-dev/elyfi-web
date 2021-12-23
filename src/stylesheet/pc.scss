@@ -61,7 +61,7 @@ $device-width: 1190px;
           margin-bottom: 55px;
           > p {
             &:first-child {
-              font-size: 35px;
+              font-size: 50px;
               margin-bottom: 35px;
               strong {
                 font-size: 50px;
@@ -425,6 +425,7 @@ $device-width: 1190px;
               height: 30px;
               margin-bottom: 20px;
               > p {
+                color: $font-color;
                 font-size: 15px !important;
               }
             }
