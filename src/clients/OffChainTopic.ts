@@ -24,6 +24,7 @@ export interface INapData {
   votes: IOffChainVote[];
   totalVoters: number;
   link: string;
+  endedDate: string;
 }
 
 export default class OffChainTopic {
