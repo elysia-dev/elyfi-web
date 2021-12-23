@@ -663,106 +663,217 @@ const Staking: React.FunctionComponent<IProps> = ({
                         (KST)
                       </p>
                     </div>
-                    <div>
-                      <p>APR</p>
-                      <h2 className="percent">
-                        {current.diff(stakingRoundTimes[4].startedAt) <= 0 ||
-                        roundData[4]?.apr.eq(constants.MaxUint256) ||
-                        current.diff(stakingRoundTimes[4].endedAt) >= 0
-                          ? '-'
-                          : toPercentWithoutSign(roundData[4].apr || 0)}
-                      </h2>
-                    </div>
+                    {
+                      mediaQuery === MediaQuery.PC && (
+                        <div>
+                          <p>APR</p>
+                          <h2 className="percent">
+                            {current.diff(stakingRoundTimes[4].startedAt) <= 0 ||
+                            roundData[4]?.apr.eq(constants.MaxUint256) ||
+                            current.diff(stakingRoundTimes[4].endedAt) >= 0
+                              ? '-'
+                              : toPercentWithoutSign(roundData[4].apr || 0)}
+                          </h2>
+                        </div>
+                      )
+                    }
                   </div>
                   <div className="staking__round__remaining-data__body">
-                    <div>
-                      <h2>{t('staking.staking_amount')}</h2>
-                      <div>
-                        <h2>
-                          {`${
-                            current.diff(stakingRoundTimes[4].startedAt) > 0
-                              ? formatCommaSmall(
-                                  roundData[4]?.accountPrincipal || '0',
-                                )
-                              : '-'
-                          }`}
-                          <span className="token-amount bold">
-                            {stakedToken}
-                          </span>
-                        </h2>
-                        <div
-                          className={`staking__round__button ${
-                            current.diff(stakingRoundTimes[4].startedAt) <= 0 ||
-                            !account
-                              ? ' disable'
-                              : ''
-                          }`}
-                          onClick={(e) => {
-                            if (
-                              current.diff(stakingRoundTimes[4].startedAt) <
-                                0 ||
-                              current.diff(stakingRoundTimes[4].endedAt) > 0 ||
-                              !account
-                            ) {
-                              return;
-                            }
-                            ReactGA.modalview(`${stakedToken}Staking`);
-                            setRoundModal(4);
-                            setModalValue(currentRound.accountPrincipal);
-                            setStakingModalVisible(true);
-                          }}>
-                          <p>{t('staking.staking_btn')}</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <h2>{t('staking.reward_amount')}</h2>
-                      <div>
-                        <h2>
-                          {expectedReward.before.isZero() ? (
-                            '-'
-                          ) : (
-                            <CountUp
-                              start={parseFloat(
-                                formatEther(expectedReward.before),
-                              )}
-                              end={parseFloat(
-                                formatEther(
-                                  expectedReward.before.isZero()
-                                    ? currentRound.accountReward
-                                    : expectedReward.value,
-                                ),
-                              )}
-                              formattingFn={(number) => {
-                                return formatSixFracionDigit(number);
-                              }}
-                              decimals={6}
-                              duration={1}
-                            />
-                          )}
-                          <span className="token-amount bold">
-                            {rewardToken}
-                          </span>
-                        </h2>
-                        <div
-                          className={`staking__round__button ${
-                            expectedReward.value.isZero() ? ' disable' : ''
-                          }`}
-                          onClick={(e) => {
-                            if (expectedReward.value.isZero()) {
-                              return;
-                            }
-                            ReactGA.modalview(`${stakedToken}StakingReward`);
+                    {
+                      mediaQuery === MediaQuery.PC ? (
+                        <>
+                          <div>
+                            <h2>{t('staking.staking_amount')}</h2>
+                            <div>
+                              <h2>
+                                {`${
+                                  current.diff(stakingRoundTimes[4].startedAt) > 0
+                                    ? formatCommaSmall(
+                                        roundData[4]?.accountPrincipal || '0',
+                                      )
+                                    : '-'
+                                }`}
+                                <span className="token-amount bold">
+                                  {stakedToken}
+                                </span>
+                              </h2>
+                              <div
+                                className={`staking__round__button ${
+                                  current.diff(stakingRoundTimes[4].startedAt) <= 0 ||
+                                  !account
+                                    ? ' disable'
+                                    : ''
+                                }`}
+                                onClick={(e) => {
+                                  if (
+                                    current.diff(stakingRoundTimes[4].startedAt) <
+                                      0 ||
+                                    current.diff(stakingRoundTimes[4].endedAt) > 0 ||
+                                    !account
+                                  ) {
+                                    return;
+                                  }
+                                  ReactGA.modalview(`${stakedToken}Staking`);
+                                  setRoundModal(4);
+                                  setModalValue(currentRound.accountPrincipal);
+                                  setStakingModalVisible(true);
+                                }}>
+                                <p>{t('staking.staking_btn')}</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                            <h2>{t('staking.reward_amount')}</h2>
+                            <div>
+                              <h2>
+                                {expectedReward.before.isZero() ? (
+                                  '-'
+                                ) : (
+                                  <CountUp
+                                    start={parseFloat(
+                                      formatEther(expectedReward.before),
+                                    )}
+                                    end={parseFloat(
+                                      formatEther(
+                                        expectedReward.before.isZero()
+                                          ? currentRound.accountReward
+                                          : expectedReward.value,
+                                      ),
+                                    )}
+                                    formattingFn={(number) => {
+                                      return formatSixFracionDigit(number);
+                                    }}
+                                    decimals={6}
+                                    duration={1}
+                                  />
+                                )}
+                                <span className="token-amount bold">
+                                  {rewardToken}
+                                </span>
+                              </h2>
+                              <div
+                                className={`staking__round__button ${
+                                  expectedReward.value.isZero() ? ' disable' : ''
+                                }`}
+                                onClick={(e) => {
+                                  if (expectedReward.value.isZero()) {
+                                    return;
+                                  }
+                                  ReactGA.modalview(`${stakedToken}StakingReward`);
 
-                            current.diff(stakingRoundTimes[4].startedAt) > 0 &&
-                              setRoundModal(4);
-                            setModalValue(expectedReward.value);
-                            setClaimStakingRewardModalVisible(true);
-                          }}>
-                          <p>{t('staking.claim_reward')}</p>
-                        </div>
-                      </div>
-                    </div>
+                                  current.diff(stakingRoundTimes[4].startedAt) > 0 &&
+                                    setRoundModal(4);
+                                  setModalValue(expectedReward.value);
+                                  setClaimStakingRewardModalVisible(true);
+                                }}>
+                                <p>{t('staking.claim_reward')}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div>
+                            <div>
+                              <p>APR</p>
+                              <h2 className="percent">
+                                {current.diff(stakingRoundTimes[4].startedAt) <= 0 ||
+                                roundData[4]?.apr.eq(constants.MaxUint256) ||
+                                current.diff(stakingRoundTimes[4].endedAt) >= 0
+                                  ? '-'
+                                  : toPercentWithoutSign(roundData[4].apr || 0)}
+                              </h2>
+                            </div>
+                            <div>
+                              <p>{t('staking.staking_amount')}</p>
+                              <h2>
+                                {`${
+                                  current.diff(stakingRoundTimes[4].startedAt) > 0
+                                    ? formatCommaSmall(
+                                        roundData[4]?.accountPrincipal || '0',
+                                      )
+                                    : '-'
+                                }`}
+                                <span className="token-amount bold">
+                                  {stakedToken}
+                                </span>
+                              </h2>
+                            </div>
+                            <div>
+                              <p>{t('staking.reward_amount')}</p>
+                              <h2>
+                                {expectedReward.before.isZero() ? (
+                                  '-'
+                                ) : (
+                                  <CountUp
+                                    start={parseFloat(
+                                      formatEther(expectedReward.before),
+                                    )}
+                                    end={parseFloat(
+                                      formatEther(
+                                        expectedReward.before.isZero()
+                                          ? currentRound.accountReward
+                                          : expectedReward.value,
+                                      ),
+                                    )}
+                                    formattingFn={(number) => {
+                                      return formatSixFracionDigit(number);
+                                    }}
+                                    decimals={6}
+                                    duration={1}
+                                  />
+                                )}
+                                <span className="token-amount bold">
+                                  {rewardToken}
+                                </span>
+                              </h2>
+                            </div>
+                          </div>
+                          <div>
+                            <div
+                              className={`staking__round__button ${
+                                current.diff(stakingRoundTimes[4].startedAt) <= 0 ||
+                                !account
+                                  ? ' disable'
+                                  : ''
+                              }`}
+                              onClick={(e) => {
+                                if (
+                                  current.diff(stakingRoundTimes[4].startedAt) <
+                                    0 ||
+                                  current.diff(stakingRoundTimes[4].endedAt) > 0 ||
+                                  !account
+                                ) {
+                                  return;
+                                }
+                                ReactGA.modalview(`${stakedToken}Staking`);
+                                setRoundModal(4);
+                                setModalValue(currentRound.accountPrincipal);
+                                setStakingModalVisible(true);
+                              }}>
+                              <p>{t('staking.staking_btn')}</p>
+                            </div>
+                            <div
+                              className={`staking__round__button ${
+                                expectedReward.value.isZero() ? ' disable' : ''
+                              }`}
+                              onClick={(e) => {
+                                if (expectedReward.value.isZero()) {
+                                  return;
+                                }
+                                ReactGA.modalview(`${stakedToken}StakingReward`);
+
+                                current.diff(stakingRoundTimes[4].startedAt) > 0 &&
+                                  setRoundModal(4);
+                                setModalValue(expectedReward.value);
+                                setClaimStakingRewardModalVisible(true);
+                              }}>
+                              <p>{t('staking.claim_reward')}</p>
+                            </div>
+                          </div>
+                        </>
+                      )
+                    }
                   </div>
                 </section>
               </div>

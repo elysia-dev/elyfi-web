@@ -131,7 +131,9 @@ const MainGraph = () => {
         <div className="main__service__graph--section01">
           <div className="main__service__graph--section01--01">
             <div className="main__service__graph--circle">
-              {t("main.graph.circle-content.3")}
+              <p>
+                {t("main.graph.circle-content.3")}
+              </p>
             </div>
             <div className="main__service__graph--section01--01--01">
               <div />
@@ -148,7 +150,9 @@ const MainGraph = () => {
               </div>
             </div>
             <div className="main__service__graph--circle">
-              {t("main.graph.circle-content.0")}
+              <p>
+                {t("main.graph.circle-content.0")}
+              </p>
             </div>
             <div className="main__service__graph--section01--01--02">
               <div />
@@ -162,7 +166,9 @@ const MainGraph = () => {
               </div>
             </div>
             <div className="main__service__graph--circle">
-              {t("main.graph.circle-content.1")}
+              <p>
+              { t("main.graph.circle-content.1")}
+              </p>
             </div>
           </div>
 
@@ -210,7 +216,9 @@ const MainGraph = () => {
             </div>
           </div>
           <div className="main__service__graph--circle">
-              {t("main.graph.circle-content.2")}
+            <p>
+            {t("main.graph.circle-content.2")}  
+            </p>
           </div>
         </div>
       </div>

@@ -31,6 +31,8 @@ import moment from 'moment';
 import { lpRoundDate, lpUnixTimestamp } from 'src/core/data/lpStakingTime';
 import getIncentiveId from 'src/utiles/getIncentive';
 import usePositions from 'src/hooks/usePositions';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import MediaQuery from 'src/enums/MediaQuery';
 
 function LPStaking(): JSX.Element {
   const { account, library } = useWeb3React();
@@ -104,6 +106,8 @@ function LPStaking(): JSX.Element {
     ethElfiliquidityForApr: '0',
     daiElfiliquidityForApr: '0',
   });
+
+  const { value: mediaQuery } = useMediaQueryType();
 
   const getRewardToRecive = useCallback(async () => {
     try {
@@ -351,7 +355,7 @@ function LPStaking(): JSX.Element {
                     className={index + 1 === round ? 'active' : ''}
                     onClick={() => setRound(index + 1)}>
                     <p>
-                      {t('staking.staking__nth', {
+                      {t(mediaQuery === MediaQuery.PC ? 'staking.staking__nth' : "staking.nth--short", {
                         nth: toOrdinalNumber(i18n.language, index + 1),
                       })}
                     </p>

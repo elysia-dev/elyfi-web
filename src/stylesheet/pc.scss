@@ -1486,6 +1486,7 @@ $device-width: 1190px;
               flex: 5;
               padding: 0px 20px 0px 44px;
               &__unit {
+                display: flex;
                 &__wrapper {
                   display: flex;
                   flex-direction: row;
@@ -1512,15 +1513,24 @@ $device-width: 1190px;
                 }
               }
               > h2 {
+                flex: 1;
                 font-size: 17px;
               }
               > div {
-                > span {
-                  font-size: 17px;
-                }
-                > h2 {
-                  font-size: 17px;
-                  margin-left: 5px;
+                display: flex;
+                flex: 2;
+                justify-content: space-around;
+                align-items: center;
+                > div {
+                  display: flex;
+                  align-items: center;
+                  > span {
+                    font-size: 17px;
+                  }
+                  > h2 {
+                    font-size: 17px;
+                    margin-left: 5px;
+                  }
                 }
               }
             }
