@@ -253,7 +253,7 @@ const PortfolioDetail: FunctionComponent = () => {
             ) : (
               <>
                 <a
-                  href={`https://www.google.com/maps/@${lat},${lng},18.12z`}
+                  href={`https://www.google.com/maps/place/${address}/@${lat},${lng},18.12z`}
                   rel="noopener noreferer"
                   target="_blank">
                   <img
