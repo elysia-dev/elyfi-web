@@ -136,7 +136,7 @@ const calcHistoryChartData = (
 
   return calculatedData.map((d, _x) => {
     return [
-      moment(d.timestamp * 1000).format('MMMM DD'),
+      moment(d.timestamp * 1000).format('YYYY.MM.DD'),
       parseInt(utils.formatUnits(d.selectedAmount, decimals), 10),
       '$ ' +
         toCompact(parseInt(utils.formatUnits(d.selectedAmount, decimals), 10)),
