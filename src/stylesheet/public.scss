@@ -999,7 +999,7 @@ input[type='number'] {
           border-bottom: 1px solid $gray-line;
           > img {
             &.last-token {
-              border: 1px solid #ffffff;
+              outline: 1px solid #ffffff;
             }
           }
           > h2 {

@@ -805,41 +805,39 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       }
       &__lp {
         &__container {
-          margin-top: 50px;
-          padding: 30px;
+          margin-top: 38px;
         }
         &__title {
-          padding-bottom: 27px;
+          padding: 15px;
           > img {
-            width: 37px;
-            height: 37px;
+            width: 21px;
+            height: 21px;
             &.last-token {
               margin-left: -5px;
               border-radius: 37px;
-              margin-right: 10px;
+              margin-right: 6px;
             }
           }
           > h2 {
-            font-size: 18px;
+            font-size: 13px;
           }
         }
         &__content {
           > div {
             flex: 1;
-            padding-top: 25px;
-            padding-bottom: 25px;
+            padding: 15px;
             > p {
-              font-size: 15px;
+              font-size: 12px;
             }
             > h2 {
-              font-size: 20px;
+              font-size: 12px;
             }
           }
           &--left {
-            padding-right: 25px;
+            padding-right: 12px !important;
           }
           &--right {
-            padding-left: 25px;
+            padding-left: 12px !important;
           }
         }
       }
