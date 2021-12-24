@@ -50,8 +50,6 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
   const { value: mediaQuery } = useMediaQueryType();
   const [currentSwipe, setCurrnetSwipe] = useState(props.staking);
 
-  console.log(currentSwipe)
-
   useEffect(() => {
     props.setState({
       elStaking: isDai ? props.state.elStaking : currentSwipe,

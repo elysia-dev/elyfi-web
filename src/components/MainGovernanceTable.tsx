@@ -77,7 +77,6 @@ const MainGovernanceTable: FunctionComponent<Props> = ({
         : res.map((data) => {
             const dates: Date = new Date(parseInt(data.timestamp, 10) * 1000);
             const getDataId = data.id.match(/(?=).*(?=-proposal)/)?.toString();
-            console.log(data.data.description.match(/NAP.*/)?.toString())
             return setOnChainData((_data) => [
               ..._data,
               {
