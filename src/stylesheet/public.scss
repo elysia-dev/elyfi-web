@@ -994,6 +994,9 @@ input[type='number'] {
           }
         }
         &__loan-list {
+          &__button {
+            @include hover__box-shadow; 
+          }
           > div {
             > div:nth-child(1) {
               display: flex;
@@ -2223,9 +2226,11 @@ input[type='number'] {
             &.disable {
               background: $gray-line;
               cursor: not-allowed;
+              pointer-events: none;
               > p {
                 color: $gray-font-color;
                 cursor: not-allowed;
+                pointer-events: none;
               }
             }
           }

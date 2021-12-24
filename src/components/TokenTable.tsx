@@ -184,7 +184,7 @@ const TokenTable: React.FC<Props> = ({
                 <div>
                   <h2>{t('dashboard.recent_loan')}</h2>
                   <Link to={`/${lng}/deposits/${tokenName}`}>
-                    <div>
+                    <div className="deposit__table__body__loan-list__button">
                       <p>{t('main.governance.view-more')}</p>
                     </div>
                   </Link>
