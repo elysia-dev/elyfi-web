@@ -810,8 +810,22 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             }
           }
           > div {
-            > h2 {
-              font-size: 12px;
+            > div {
+              > h2 {
+                font-size: 12px !important;
+                margin: 0 !important;
+              }
+              > a {
+                > div {
+                  margin: 0 !important;
+                  width: 130px !important;
+                  height: 26px !important;
+                  > p {
+                    font-size: 12px !important;
+                    color: $font-color !important;
+                  }
+                }
+              }
             }
           }
           &__more-button {
