@@ -67,7 +67,6 @@
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "ngrok": "^4.2.2",
-    "node-sass": "4.14.1",
     "prettier": "^2.4.1",
     "react": "^17.0.2",
     "react-countup": "^5.0.0",
@@ -108,6 +107,7 @@
     "@types/react-responsive": "^8.0.2",
     "@types/react-router-dom": "^5.1.7",
     "apollo": "^2.33.4",
-    "react-test-renderer": "^16.9.0"
+    "react-test-renderer": "^16.9.0",
+    "sass": "^1.45.1"
   }
 }
