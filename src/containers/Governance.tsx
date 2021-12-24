@@ -109,7 +109,6 @@ const Governance = () => {
       const getOnChainApis = await OnChainTopic.getOnChainTopicData();
       const getNAPCodes = getOnChainApis.data.data.proposals.filter((topic) => {
         return topic.data.description.startsWith('NAP');
-        // return topic.data.description.match(/(?<=NAP).*(?=:)/)?.toString()
       });
       return getNAPCodes || undefined;
     } catch (e) {
@@ -140,22 +139,19 @@ const Governance = () => {
             const getNATData = await OffChainTopic.getTopicResult(_res);
             const getHTMLStringData: string =
               getNATData.data.post_stream.posts[0].cooked.toString();
+            const regexNap = /NAP#: .*(?=<)/
             setOffChainNapData((napData) => [
               ...napData,
               {
                 id: _x,
                 nap:
-                  getHTMLStringData.match(/(?<=NAP#: ).*(?=<)/)?.toString() ||
+                  getHTMLStringData.match(regexNap)?.toString().substring(5) ||
                   '',
                 status:
-                  getHTMLStringData.match(/(?<=Status: ).*(?=<)/)?.toString() ||
+                  getHTMLStringData.match(/Status: .*(?=<)/) ||
                   '',
                 images:
-                  getHTMLStringData
-                    .match(
-                      /(?<=a href=").*(?=" rel="noopener nofollow ugc">Collateral Image)/,
-                    )
-                    ?.toString() || '',
+                  getHTMLStringData.match(/slate.textile.io.*(?=" rel="noopener nofollow ugc">Collateral Image)/)?.toString() || '',
                 votes:
                   getNATData.data.post_stream.posts[0].polls[0].options || '',
                 totalVoters:
@@ -180,7 +176,7 @@ const Governance = () => {
                 {
                   data: {
                     description: data.data.description
-                      .match(/(?<=NAP).*(?=:)/)
+                      .match(/NAP#: .*(?=<)/)
                       ?.toString(),
                   },
                   status: data.status,

@@ -58,6 +58,7 @@ $device-width: 1190px;
       &__title {
         height: calc(100vh - 100px);
         bottom: 50px;
+        justify-content: space-between;
         &__text-container {
           margin-bottom: 55px;
           > p {
@@ -474,7 +475,6 @@ $device-width: 1190px;
         &__table {
           width: $device-width;
           margin-top: 50px;
-          background: #ffffff;
           > hr {
             margin-top: 10px;
             margin-bottom: 10px;
