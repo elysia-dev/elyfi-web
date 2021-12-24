@@ -6,6 +6,7 @@ import envs from 'src/core/envs';
 const useMoneyPool = () => {
   const { library } = useWeb3React();
   const contract = useMemo(() => {
+    if (!library) return;
     return MoneyPool__factory.connect(
       envs.moneyPoolAddress,
       library.getSigner(),

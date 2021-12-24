@@ -1,7 +1,6 @@
-import { BigNumber } from 'ethers';
 import { FunctionComponent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Position, { TokenInfo } from 'src/core/types/Position';
+import { Position as IPosition } from 'src/hooks/usePositions';
 import SelectBoxItems from './SelectBoxItems';
 
 type Props = {
@@ -17,7 +16,7 @@ type Props = {
       selectBoxTitle: string;
     }>
   >;
-  unstakedPositions: TokenInfo[];
+  unstakedPositions: IPosition[];
 };
 
 const SelectBox: FunctionComponent<Props> = (props) => {

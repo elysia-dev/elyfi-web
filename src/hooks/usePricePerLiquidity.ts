@@ -1,6 +1,5 @@
 import { useContext, useMemo } from 'react';
 import PriceContext from 'src/contexts/PriceContext';
-import { toCompact } from 'src/utiles/formatters';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import { utils } from 'ethers';
 

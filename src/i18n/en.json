@@ -1,5 +1,90 @@
 {
   "translation": {
+    "main": {
+      "landing": {
+        "header__title": "<i>ELYFI</i> <strong>the first real estate collateralized,<br />decentralized lending protocol</strong>",
+        "header__content": "ELYFI provides digital asset loans by converting real estate bonds into NFTs and using it as collateral",
+        "button__deposit": "Deposit",
+        "button__view-more": "Learn more"
+      },
+      "section": [
+        {
+          "header": "<strong>Deposit digital assets and receive APR and additional rewards for securing loans</strong>",
+          "content": "By staking digital assets into the ELYFI money pool, participants earn interest on deposits.\nIn addition, ELFI governance tokens are distributed to provide incentives for securing the network.",
+          "button": "Check APR"
+        },
+        {
+          "header": "<strong>Depositors can obtain interest stably<br/>by depositing virtual assets in ELYFI backed by real estate-based tokens.</strong>",
+          "content": "The protocol operates stably with a system that secures real estate-based tokens with small fluctuations rather than virtual assets with high liquidation risk due to large fluctuations in value.",
+          "button": "Check collateral"
+        },
+        {
+          "header": "<strong>ELFI holders directly decide matters related<br/>to the operation of the protocol.</strong>",
+          "content": "It is reliable because matters related to the operation of the protocol such as loan execution and interest rates are decided by the votes of the holders.",
+          "button": "Check Governance"
+        }
+      ],
+      "advantages": {
+        "header": "Why <i>ELYFI</i>?",
+        "section": [
+          {
+            "header": "Stable interest",
+            "content": "Depositors can obtain stable interest because loans are made with real assets such as real estate-based loans as collateral."
+          },
+          {
+            "header": "Direct participation in decision-making",
+            "content": "ELFI token holders can directly participate in the forum or make decisions on important issues through voting."
+          },
+          {
+            "header": "High expected return",
+            "content": "High returns can be obtained by distributing protocol revenue and governance tokens."
+          },
+          {
+            "header": "Unlimited Deposits",
+            "content": "There is no limit on the amount of deposit, and even a small amount can be deposited in ELYFI"
+          },
+          {
+            "header": "No membership required",
+            "content": "There are no signup requirements, so anyone in the world can use it."
+          },
+          {
+            "header": "Transparent loan process",
+            "content": "Information on collateral and the loan process for virtual assets are transparently disclosed"
+          }
+        ]
+      },
+      "graph": {
+        "title": "What is <strong>ELYFI</strong>?",
+        "circle-content": [
+          "* Online investment-linked financial business entities",
+          "Lending Company",
+          "ELYFI",
+          "Property owner"
+        ],
+        "line-content": [
+          "Investment",
+          "Loan receivable & NFT collateral",
+          "Virtual asset loan",
+          "Loan agreement",
+          "Loan agreement"
+        ],
+        "investment-linked-financial": "* A company that intends to operate an online investment-linked financial business registered with the Financial Services Commission",
+        "investment-linked-financial--button": "Go to check list of registrars >"
+      },
+      "partners": {
+        "title": "ELFI Token Contract <strong>Audited</strong> by",
+        "lawfirm": "Legal support"
+      },
+      "governance": {
+        "title": "<strong>ELYFI</strong> Governance",
+        "data-verification": "Data verification",
+        "onchain-vote": "On-chain vote",
+        "table--title": "Title",
+        "table--date": "Date",
+        "view-more": "View more",
+        "view-more--disable": "Close"
+      }
+    },
     "words": {
       "MortgageLoans": "Mortgage Loans",
       "AuctionBalanceLoans": "Auction Balance Loans",
@@ -13,25 +98,53 @@
       "Default": "-"
     },
     "navigation": {
-      "dashboard": "DASHBOARD",
-      "real_assets": "Real Assets",
-      "partners": "PARTNERS",
+      "dashboard": "Deposits",
+      "governance": "governance",
+      "staking": "staking",
+      "docs": "docs",
+      "elyfi_docs": "elyfi docs",
+      "governance_docs": "governance docs",
+      "guide": "guide",
+      "uniswap_elfi": "Uniswap(ELFI)",
+
       "connect_wallet": "Connect Wallet",
       "disconnect": "Disconnect",
       "install_metamask": "Install Metamask",
+
       "deposit_withdraw": "Deposit/Withdraw",
       "ELStake": "EL Staking",
-      "ELFIStake": "ELFI Staking"
+      "ELFIStake": "ELFI Staking",
+      "LPStake": "LP Staking"
     },
     "dashboard": {
+      "token_mining_apr": "ELFI Mining APR",
+      "total_deposit": "Total Deposit",
+      "total_deposit--reward": "Total Deposit Yield",
+      "total_deposit--yield": "Total Deposit Yield",
+      "total_borrowed": "Total Borrowed",
+      "borrow_apy": "Borrow APY",
+      "deposit_apy": "Deposit APY",
+      "deposit_amount": "Deposit amount",
+      "deposit_amount--button": "Deposit | Withdraw",
+      "wallet_balance": "Wallet Balance",
+      "reward_amount": "Amount of rewards",
+      "claim_reward": "Claim rewards",
+      "recent_loan": "Recent Loans",
+      "reward_plan": "Reward plan",
+      "reward_plan--button": "Check out reward plan >",
+      "details": "Liquidity Details",
+      "total_depositor": "# of deposits",
+      "total_loans": "# of loans",
+      "available_liquidity": "Available Liquidity",
+      "utilization": "Utilization Rate",
+      "deposit": "Deposit",
+      "borrow": "Borrow",
+
       "deposits--header": "DEPOSITS",
       "asset": "Asset",
       "deposit_balance": "Deposit Balance",
-      "deposit_apy": "Deposit APY",
-      "wallet_balance": "Wallet Balance",
       "minted": "ELFI Token",
       "minted_balance": "ELFI Balance",
-      "deposit": "Deposit",
       "withdraw": "Withdraw",
       "max": "MAX",
       "deposit_available": "Deposit Available",
@@ -50,7 +163,193 @@
       "protocol_allow": "Allow the ELYFI Protocol to use your {{tokenName}}",
       "disable_content--1": "Connect your wallet to continue",
       "elfi_reward": "ELFI Reward",
-      "wallet_connect_content": "Connect Wallet"
+      "wallet_connect_content": "Connect Wallet",
+
+      "governance--header": "Participate in the <strong>ELYFI Governance</strong>",
+      "governance--content": "ELFI holders can participate in decentralized governance by staking their ELFI and receive a share of the protocol net profit when staking.",
+      "elyfi": "ELYFI",
+      "protocol_profit": "Protocol Net Profit",
+      "participate_governance": "Participate in the governance",
+      "elyfi_holder": "ELYFI Holder",
+      "title": "ELFI MINING PLAN & DAI PAYMENT PLAN",
+      "elfi_title": "ELFI MINING PLAN",
+      "current_mining--header": "Current Mining Volume",
+      "total_mining--header": "Total Mining Volume",
+      "token_deposit": "{{Token}} Deposit",
+      "token_deposit_content": "When {{Token}} tokens are deposited, ELFI tokens are mined as compensation for the liquidity supply to ELYFI.",
+      "current_mining": "Current Mined",
+      "total_mining": "Total Supply",
+      "elfi_amount": "ELFI Price: <strong>$ {{count}}</strong>",
+      "el_staking": "EL Staking",
+      "el_staking_content": "By staking EL tokens, ELFI tokens are mined. The 3rd and 4th staking has been extended to reduce the burden of fees.",
+      "staking": "Stake",
+      "dai_title": "DAI Reward Plan",
+      "current_reward": "Current Payment",
+      "total_reward": "Total Payment",
+      "elfi_staking": "ELFI Staking",
+      "elfi_staking_content": "DAI tokens are mined by staking ELFI tokens. The 3rd and 4th staking has been extended to reduce the burden of fees.",
+      "nth_current_reward": "Current Payment on the {{nth}} round",
+      "nth_total_reward": "Total Payment on the {{nth}} round",
+      "at_uniswap": "Buy ELFI on",
+      "buy_elfi": "",
+      "nth_staking": "Staking APR on the {{nth}} round",
+      "receive_lp_token": "Get {{token0}}-{{token1}} LP tokens",
+      "lp_token_staking": " {{token0}}-{{token1}} LP token staking",
+      "lp_token_staking_description": "Providing liquidity to the {{token0}}-{{token1}} pool in Uniswap V3 and staking the received {{token0}}-{{token1}} LP tokens will give you {{token0}} and {{token1}}",
+
+      "lp_token_reward_plan": "ELFI, ETH, DAI Reward plan"
+    },
+    "loan": {
+      "loan__title": "Loan List",
+      "loan__content": "List of loans that have passed in governance and executed as DAI in ELYFI.",
+      "loan__number": "Loan Number",
+      "loan__status": "Loan Status",
+      "loan__info": "Loan Details",
+      "loan__interest_rate": "Loan Interest Rate",
+      "loan__date": "Loan Date",
+      "loan__borrowed": "Borrowed",
+      "borrower": "Borrower",
+      "borrower__info": "Borrower info",
+      "license_number": "Business License Number",
+      "wallet_address": "Wallet Address",
+      "view-more": "View more",
+      "receiving_address": "Loan receiving wallet address",
+      "maturity_date": "Maturity Date",
+      "collateral_nft": "Collateral NFT",
+      "collateral_nft__details": "Collatrealized NFT Details",
+      "collateral_nft__type": "NFT Type",
+      "collateral_nft__abtoken_id": "ABToken ID",
+      "collateral_nft__borrower": "Lenders",
+      "collateral_nft__loan_product": "Loan Product",
+      "collateral_nft__overdue_interest_rate": "Overdue Interest Rate",
+      "collateral_nft__maximum_amount": "Maximum Pledge Amount",
+      "collateral_nft__loan_type": "Collateral Type",
+      "collateral_nft__address": "Collateral Address",
+      "collateral_nft__contract_image": "Contract Image"
+    },
+    "governance": {
+      "status": "Status",
+      "title": "ELYFI Governance",
+      "content": "ELYFI is a DeFi protocol operated by a decentralized organization(DAO).\nAny ELFI token holder can participate in the operation of ELYFI as a member of the DAO and receive a share of the protocol net profit when staking ELFI.",
+      "button--staking": "Go to stake ELFI",
+      "button--governance_faq": "Governance FAQ",
+      "graph": [
+        "ELYFI",
+        "Protocol Net Profit",
+        "Participate in the Governance",
+        "ELYFI Holder"
+      ],
+      "data_verification": "Data verification list ({{ count }} case)",
+      "data_verification_plural": "Data verification list ({{ count }} cases)",
+      "data_verification__content": "This is a list of proposals for which voting is in progress in off-chain governance(DAO).",
+      "on_chain_voting": "On-chain voting ({{ count }} case)",
+      "on_chain_voting_plural": "On-chain voting ({{ count }} cases)",
+      "on_chain_voting__content": "This is a list of proposals for which voting is in progress in on-chain governance(DAO).",
+      "loan_list": "Loan list ({{ count }} case)",
+      "loan_list_plural": "Loan list ({{ count }} cases)",
+      "loan_list__content": "List of loans that have passed in governance(DAO) and executed as DAI in ELYFI.",
+      "onchain_list_zero": "There are currently no on-chain votes in progress.",
+      "offchain_list_zero": "There are currently no data verification votes in progress.",
+      "forum_button": "Go to ELYFI Forum",
+      "onChain_tally_button": "Go to Tally"
+    },
+
+    "staking": {
+      "staking__token": "{{ token }} Staking",
+      "staking__notice": "{{ stakedToken }} Staking will be carried out in four separate sessions according to the {{ rewardToken }} mining plan.\nStaking {{ stakedToken }} tokens reward the {{ rewardToken }} tokens, and the staked {{ stakedToken }} tokens can be unstaken at any time.\n\n* In addition, {{ stakedToken }} tokens staked in the previous round and the rewarded {{ rewardToken }} tokens are not automatically sent to the next staking pool.",
+      "staking__nth": "{{ nth }} round staking",
+      "current_round_null": "There is no current rounds in progress.",
+      "staking__in_progress": "<strong>{{ nth }}</strong> round In Progress",
+      "el": {
+        "staking__content": "Stake EL tokens and get reward tokens, ELFI!",
+        "staking__content--button": "Go to EL tokens"
+      },
+      "elfi": {
+        "staking__content": "Stake ELFI tokens and get reward tokens and voting rights!\nELFI holders can participate in decentralized governance(DAO) by staking their ELFI and receive a distribution of protocol net profits when staking ELFI",
+        "staking__content--button": "Buy ELFI on Uniswap"
+      },
+      "receive_reward": "보상 수령",
+      "loacation_staking": "스테이킹",
+
+      "token_staking": "{{stakedToken}} Staking",
+      "token_staking--content": [
+        "{{stakedToken}} Staking will be carried out in four separate sessions according to the {{rewardToken}} mining plan.",
+        "Staking {{stakedToken}} tokens reward the {{rewardToken}} tokens, and the staked {{stakedToken}} tokens can be unstaken at any time.",
+        "In addition, {{stakedToken}} tokens staked in the previous round and the rewarded {{rewardToken}} tokens are not automatically sent to the next staking pool.",
+        "You can check detailed mining plan ",
+        "here",
+        "."
+      ],
+      "nth_period": "{{nth}} round period",
+      "nth_ended": "{{nth}} round Completed",
+      "nth_progress": "{{nth}} round In Progress",
+      "nth": "{{nth}} round",
+      "nth--short": "{{nth}}",
+      "nth_staking": "Staking APR on the {{nth}} round",
+      "nth_staking_amount": "Staked Amount on the {{nth}} round",
+      "staking_btn": "Stake | Unstake",
+      "nth_reward_amount": "Reward Amount on the {{nth}} round",
+      "claim_reward": "Claim rewards",
+      "staking": "Stake",
+      "unstaking": "Unstake",
+      "max": "MAX",
+      "available_staking_amount": "Available amount for staking",
+      "wallet_balance": "Wallet balance",
+      "insufficient_balance": "Insufficient Balance",
+      "nth_staking_round_ended": "{{nth}} round has ended.\nYou will be taken to the staking page.",
+      "ok": "OK",
+      "available_unstaking_amount": "Available amount for unstaking",
+      "available_claim_amount": "Available amount for claiming",
+      "accumulated_reward_amount": "Accumulated reward amount",
+      "unstaking_migration": "Unstake | Migration",
+      "popup_button": [
+        "For saving gas fees",
+        "Withdraw with ELFI tokens",
+        "Without withdrawing ELFI tokens",
+        "Transfer EL tokens only"
+      ],
+      "migration": "Migration",
+      "migration--content": "Migration' is a function that automatically transfers the staked amount excluding the unstaked amount to the current staking pool for staking. Because unstaking and migration are performed at the same time, you can save gas fees for using the Ethereum network.",
+      "migration_location": "Migration location",
+      "available_amount": "Available amount",
+      "reward_token_claim": "Reward tokens for claiming",
+      "elfi_token": "ELFI tokens",
+      "transfer": "Transfer",
+      "nth_ended_alert": "The {{nth}}th round has ended, and migration is not possible. Do you want to proceed?",
+      "all_ended_alert": "All of the rounds for staking are currently over and migration is not possible.",
+      "current_round": "Current round",
+      "staking_amount": "Staked Amount",
+      "reward_amount": "Accumulated reward amount",
+      "location_staking": "Staking",
+      "transaction_failed": "Transaction fail",
+      "error_description_one": "The requested transaction failed due to an error in Metamask. Please contact cs@elysia.land by copying the error code/message below.",
+      "error_description_two": "The requested transaction has failed. Please contact cs@elysia.land by copying the error code/message below.",
+      "error_code": "error code&message",
+      "error_code_copy": "copy"
+    },
+    "reward": {
+      "token_staking__reward_plan": "{{ token }} Staking Reward Plan",
+      "staking__nth": "{{ token }} <strong>{{ nth }} round</strong> Staking",
+      "staking__nth--apr": "Staking APR on the {{nth}} round",
+      "staking__nth--amount": "Staked Amount on the {{nth}} round",
+      "nth_mining": "{{nth}} round",
+      "reward_term": "Reward Period",
+      "daily_reward": "Daily Allocation",
+      "mining_term": "Mining Period",
+      "nth_total_mining": "Allocation on the {{nth}} round",
+      "daily_mining": "Daily Allocation",
+      "accumulated_reward": "Accumulated",
+      "accumulated_mining": "Accumulated",
+      "reward_limit": "Remaining",
+      "mining_limit": "Remaining",
+      "nth_reward": "{{nth}} round",
+      "apr": "APR",
+      "lp_token_total_liquidity": "Total liquidity",
+      "lp_token_staking": " {{token0}}-{{token1}} LP token staking",
+
+      "reward_plan": "Reward plan",
+      "deposit__reward_plan": "Deposit reward plan",
+      "elfi_price": "ELFI Price: <strong>$ {{count}}</strong>"
     },
     "portfolio": {
       "investment_status": "Loan Status",
@@ -134,59 +433,9 @@
       "available_borrow_limit": "가용 한도",
       "available_borrow_limit--content": "차입 한도 – 차입금"
     },
-    "staking": {
-      "token_staking": "{{stakedToken}} Staking",
-      "token_staking--content": [
-        "{{stakedToken}} Staking will be carried out in four separate sessions according to the {{rewardToken}} mining plan.",
-        "Staking {{stakedToken}} tokens reward the {{rewardToken}} tokens, and the staked {{stakedToken}} tokens can be unstaken at any time.",
-        "In addition, {{stakedToken}} tokens staked in the previous round and the rewarded {{rewardToken}} tokens are not automatically sent to the next staking pool.",
-        "You can check detailed mining plan ",
-        "here",
-        "."
-      ],
-      "nth_period": "{{nth}} round period",
-      "nth_ended": "{{nth}} round Completed",
-      "nth_progress": "{{nth}} round In Progress",
-      "nth": "{{nth}} round",
-      "nth_staking": "Staking APR on the {{nth}} round",
-      "nth_staking_amount": "Staked Amount on the {{nth}} round",
-      "staking_btn": "Stake | Unstake",
-      "nth_reward_amount": "Reward Amount on the {{nth}} round",
-      "claim_reward": "Claim rewards",
-      "staking": "Stake",
-      "unstaking": "Unstake",
-      "max": "MAX",
-      "available_staking_amount": "Available amount for staking",
-      "wallet_balance": "Wallet balance",
-      "insufficient_balance": "Insufficient Balance",
-      "nth_staking_round_ended": "{{nth}} round has ended.\nYou will be taken to the staking page.",
-      "ok": "OK",
-      "available_unstaking_amount": "Available amount for unstaking",
-      "available_claim_amount": "Available amount for claiming",
-      "accumulated_reward_amount": "Accumulated reward amount",
-      "unstaking_migration": "Unstake | Migration",
-      "popup_button": [
-        "For saving gas fees",
-        "Withdraw with ELFI tokens",
-        "Without withdrawing ELFI tokens",
-        "Transfer EL tokens only"
-      ],
-      "migration": "Migration",
-      "migration--content": "Migration' is a function that automatically transfers the staked amount excluding the unstaked amount to the current staking pool for staking. Because unstaking and migration are performed at the same time, you can save gas fees for using the Ethereum network.",
-      "migration_location": "Migration location",
-      "available_amount": "Available amount",
-      "reward_token_claim": "Reward tokens for claiming",
-      "elfi_token": "ELFI tokens",
-      "transfer": "Transfer",
-      "nth_ended_alert": "The {{nth}}th round has ended, and migration is not possible. Do you want to proceed?",
-      "all_ended_alert": "All of the rounds for staking are currently over and migration is not possible.",
-      "current_round": "Current round",
-      "staking_amount": "Staked Amount",
-      "reward_amount": "Accumulated reward amount",
-      "current_round_null": "There is no current rounds in progress."
-    },
     "lpstaking": {
       "lp_token_staking": "LP Token Staking",
+      "lp_token_staking__content": "Supply liquidity to the ELFI-ETH or ELFI-DAI pool and earn reward tokens!",
       "lp_token_staking_title": "{{token0}}-{{token1}} LP",
       "lp_token_staking_modal": "{{token0}}-{{token1}} LP Token",
       "lp_token_staked": "{{token0}}-{{token1}} LP Staked",
@@ -205,13 +454,6 @@
       "receive_reward": "Rewards receiving",
       "reward_amount": "Amount of rewards",
       "round_staking": "{{round}} round staking"
-    },
-    "mobile": {
-      "title": "COMING SOON!",
-      "content": [
-        "The mobile version will be released soon!",
-        "If you want to experience ELYFI,\nplease use the PC version!"
-      ]
     },
     "transaction": {
       "account": "Account",
@@ -233,6 +475,40 @@
       "ELFIClaim": "Claim reward",
       "Deposit": "Deposit",
       "Withdraw": "Withdraw"
+    },
+    "market": {
+      "total_size": "Total Market Size",
+      "token--header": "Pool",
+      "asset": "Asset",
+      "total_deposit": "Total Deposits",
+      "deposit_apy": "Deposit APY",
+      "total_borrowed": "Total Borrowed",
+      "borrow_apy": "Borrow APY",
+      "button": "Deposit | Withdraw",
+      "coming_soon": "Coming Soon!",
+      "info": "Details",
+      "total_deposit_yield": "Total Deposit Yield",
+      "deposit_info": "Combines Deposit APY and Mining APR",
+      "mining_apr": "Mining APR",
+      "details": "Liquidity Details",
+      "available_liquidity": "Available Liquidity",
+      "utilization": "Utilization Rate",
+      "depositors": "Number of Depositors",
+      "borrowers": "Number of Borrowers",
+      "deposit": "Deposit",
+      "borrow": "Borrow"
+    },
+    "modal": {
+      "connect_wallet": {
+        "title": "Start ELYFI",
+        "content": "A wallet connection is required to deposit/withdraw.\nDo you want to connect?",
+        "button": "Connect Wallet"
+      },
+      "connect_metamask": {
+        "title": "Start ELYFI",
+        "content": "A related function will be opened soon so that you can use deposit/withdrawal and staking on the mobile web page!",
+        "button": "Coming soon!"
+      }
     },
     "guide": {
       "apr": "APR is an abbreviation of Annual percentage rate, which means the ratio of the total compensation amount to the total liquidity.",

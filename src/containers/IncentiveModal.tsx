@@ -10,6 +10,7 @@ import RecentActivityType from 'src/enums/RecentActivityType';
 import ReservesContext from 'src/contexts/ReservesContext';
 import { IncentivePool__factory } from '@elysia-dev/contract-typechain';
 import CountUp from 'react-countup';
+import ModalHeader from 'src/components/ModalHeader';
 
 // Create deposit & withdraw
 const IncentiveModal: FunctionComponent<{
@@ -62,82 +63,45 @@ const IncentiveModal: FunctionComponent<{
           },
         );
       })
-      .catch((e) => {
-        failTransaction(tracker, onClose, e);
+      .catch((error) => {
+        failTransaction(tracker, onClose, error);
+        console.error(error);
       });
   };
 
   return (
     <div
-      className="modal modal--deposit"
-      style={{ display: visible ? 'block' : 'none' }}
-    >
-      <div
-        className="modal__container"
-        style={{
-          height:
-            window.sessionStorage.getItem('@MediaQuery') !== 'PC' ? 260 : 360,
-        }}
-      >
-        <div className="modal__header">
-          <div className="modal__header__token-info-wrapper">
-            <img
-              className="modal__header__image"
-              src={ElifyTokenImage}
-              alt="Token"
-            />
-            <div className="modal__header__name-wrapper">
-              <p className="modal__header__name bold">ELFI</p>
-            </div>
-          </div>
-          <div className="close-button" onClick={onClose}>
-            <div className="close-button--1">
-              <div className="close-button--2" />
-            </div>
-          </div>
-        </div>
+      className="modal modal__incentive"
+      style={{ display: visible ? 'block' : 'none' }}>
+      <div className="modal__container">
+        <ModalHeader
+          title={"ELFI"}
+          image={ElifyTokenImage}
+          onClose={onClose}
+        />
         <div className="modal__body">
           <div
-            className="modal__withdraw"
+            className="modal__incentive__body"
             style={{
-              height:
-                window.sessionStorage.getItem('@MediaQuery') !== 'PC'
-                  ? 130
-                  : 170,
-              minHeight: 0,
+              height: 140,
               overflowY: 'clip',
-            }}
-          >
-            <div className="modal__withdraw__value-wrapper">
-              <p></p>
-              <p
-                className="modal__withdraw__value bold"
-                style={{
-                  fontSize:
-                    window.sessionStorage.getItem('@MediaQuery') !== 'PC'
-                      ? 30
-                      : 60,
-                }}
-              >
-                <CountUp
-                  className="modal__withdraw__value bold"
-                  start={parseFloat(formatEther(balanceBefore))}
-                  end={parseFloat(formatEther(balanceAfter))}
-                  formattingFn={(number) => {
-                    return formatSixFracionDigit(number);
-                  }}
-                  decimals={6}
-                  duration={1}
-                />
-              </p>
-            </div>
+            }}>
+            <CountUp
+              className="modal__incentive__value bold"
+              start={parseFloat(formatEther(balanceBefore))}
+              end={parseFloat(formatEther(balanceAfter))}
+              formattingFn={(number) => {
+                return formatSixFracionDigit(number);
+              }}
+              decimals={6}
+              duration={1}
+            />
           </div>
           <div
             className="modal__button"
             onClick={() => {
               reqeustClaimIncentive();
-            }}
-          >
+            }}>
             <p>CLAIM REWARD</p>
           </div>
         </div>

@@ -1,18 +1,32 @@
-import WhiteLogo from 'src/assets/images/White-logo.png';
-import FooterBackgroundImg from 'src/assets/images/footer.png';
-import { LanguageConverter } from './LanguageConverter';
+import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
+import LanguageConverter from 'src/components/LanguageConverter';
+import Twitter from 'src/assets/images/twitter.png';
+import Telegram from 'src/assets/images/telegram.png';
+import Github from 'src/assets/images/github.png';
 
 const Footer = () => {
   return (
-    <footer
-      className="footer"
-      style={{ backgroundImage: `url(${FooterBackgroundImg})` }}>
-      <div className="footer__container">
-        <img className="footer__white-logo" src={WhiteLogo} alt="Elysia" />
-        <div className="footer__wrapper">
+    <footer className="footer">
+      <div>
+        <img className="footer__logo pc-only" src={ElysiaLogo} alt="Elysia" />
+        <div className="footer__right-container">
           <LanguageConverter />
+          <div className="footer__link">
+            {[
+              [Twitter, 'https://twitter.com/Elysia_HQ'],
+              [Telegram, 'https://t.me/elysia_official'],
+              [Github, 'https://github.com/elysia-dev'],
+            ].map((data) => {
+              return (
+                <a href={data[1]}>
+                  <img src={data[0]} />
+                </a>
+              );
+            })}
+          </div>
         </div>
       </div>
+      <h2>ⓒ 2021 | ELYFI | All rights reserved.</h2>
     </footer>
   );
 };

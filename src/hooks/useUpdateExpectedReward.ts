@@ -36,50 +36,55 @@ function useExpectedReward(): {
       ethIncentiveId: string;
     },
   ) => void;
+  isError: string;
 } {
-  const { library } = useWeb3React();
+  const { account, library } = useWeb3React();
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const [expectedReward, setExpectedReward] = useState<ExpectedRewardTypes[]>(
     [],
   );
-
-  const staker = new ethers.Contract(
-    envs.stakerAddress,
-    stakerABI,
-    library.getSigner(),
-  );
+  const [isError, setIsError] = useState('');
 
   const getReward = async (position: Position, round: number) => {
-    const isEthPoolAddress = isEthElfiPoolAddress(position);
-    const { poolAddress, rewardTokenAddress } = getAddressesByPool(position);
+    try {
+      const staker = new ethers.Contract(
+        envs.stakerAddress,
+        stakerABI,
+        library.getSigner(),
+      );
+      const isEthPoolAddress = isEthElfiPoolAddress(position);
+      const { poolAddress, rewardTokenAddress } = getAddressesByPool(position);
 
-    const rewardToken0 = await staker.getRewardInfo(
-      lpTokenValues(poolAddress, envs.governanceAddress, round - 1),
-      position.tokenId,
-    );
+      const rewardToken0 = await staker.getRewardInfo(
+        lpTokenValues(poolAddress, envs.governanceAddress, round - 1),
+        position.tokenId,
+      );
 
-    const rewardToken1 = await staker.getRewardInfo(
-      lpTokenValues(poolAddress, rewardTokenAddress, round - 1),
-      position.tokenId,
-    );
+      const rewardToken1 = await staker.getRewardInfo(
+        lpTokenValues(poolAddress, rewardTokenAddress, round - 1),
+        position.tokenId,
+      );
 
-    return {
-      beforeElfiReward: parseFloat(utils.formatEther(rewardToken0[0])),
-      elfiReward: parseFloat(utils.formatEther(rewardToken0[0])),
-      beforeEthReward: isEthPoolAddress
-        ? parseFloat(utils.formatEther(rewardToken1[0]))
-        : 0,
-      ethReward: isEthPoolAddress
-        ? parseFloat(utils.formatEther(rewardToken1[0]))
-        : 0,
-      beforeDaiReward: isEthPoolAddress
-        ? 0
-        : parseFloat(utils.formatEther(rewardToken1[0])),
-      daiReward: isEthPoolAddress
-        ? 0
-        : parseFloat(utils.formatEther(rewardToken1[0])),
-      tokenId: position.tokenId,
-    };
+      return {
+        beforeElfiReward: parseFloat(utils.formatEther(rewardToken0[0])),
+        elfiReward: parseFloat(utils.formatEther(rewardToken0[0])),
+        beforeEthReward: isEthPoolAddress
+          ? parseFloat(utils.formatEther(rewardToken1[0]))
+          : 0,
+        ethReward: isEthPoolAddress
+          ? parseFloat(utils.formatEther(rewardToken1[0]))
+          : 0,
+        beforeDaiReward: isEthPoolAddress
+          ? 0
+          : parseFloat(utils.formatEther(rewardToken1[0])),
+        daiReward: isEthPoolAddress
+          ? 0
+          : parseFloat(utils.formatEther(rewardToken1[0])),
+        tokenId: position.tokenId,
+      };
+    } catch (error) {
+      throw new Error(`${error}`);
+    }
   };
 
   const setExpecteReward = useCallback(
@@ -124,7 +129,7 @@ function useExpectedReward(): {
           console.error(error);
         });
     },
-    [expectedReward],
+    [expectedReward, account],
   );
 
   const updateExpectedReward = (
@@ -209,6 +214,7 @@ function useExpectedReward(): {
     setExpecteReward,
     expectedReward,
     updateExpectedReward,
+    isError,
   };
 }
 

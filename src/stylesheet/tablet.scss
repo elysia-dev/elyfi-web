@@ -25,34 +25,6 @@ $footer-height: 100px;
       width: 24px;
       height: 24px;
     }
-    &__alert {
-      &.mobile-only {
-        display: none;
-      }
-      height: 60px;
-      justify-content: space-between;
-      width: 100%;
-      > p {
-        width: $device-width;
-        font-size: 13px;
-      }
-      &__container {
-        width: $device-width;
-        margin: 0 auto;
-        > p {
-          margin-left: 10px;
-          width: 100%;
-          font-size: 10px;
-        }
-      }
-      &__wrapper {
-        width: 100px;
-        margin-right: 10px;
-        > a > p {
-          font-size: 10px;
-        }
-      }
-    }
     &__container {
       max-width: $device-width;
       padding: 8px 10px;

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import TransactinConfirm from 'src/assets/images/transaction_confirm.png';
+import ModalHeader from 'src/components/ModalHeader';
 
 const TransactionConfirmModal: React.FunctionComponent<{
   visible: boolean;
@@ -23,22 +24,14 @@ const TransactionConfirmModal: React.FunctionComponent<{
   return (
     <div className="modal" style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
-        <div className="modal__header">
-          <div className="modal__header__token-info-wrapper">
-            <div className="modal__header__name-wrapper">
-              <p className="modal__header__name spoqa__bold">ELYFI</p>
-            </div>
-          </div>
-          <div className="close-button" onClick={() => closeHandler()}>
-            <div className="close-button--1">
-              <div className="close-button--2" />
-            </div>
-          </div>
-        </div>
+        <ModalHeader
+          title={"ELYFI"}
+          onClose={() => closeHandler()}
+        />
         <div className="modal__confirm">
           <img src={TransactinConfirm} />
           <div>
-            <p className="spoqa__bold">{t('transaction.confirm')}</p>
+            <h2>{t('transaction.confirm')}</h2>
             <p>
               {t('transaction.nth_close', { nth: Math.floor(Time / 1000) })}
             </p>

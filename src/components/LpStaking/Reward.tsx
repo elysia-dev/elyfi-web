@@ -7,76 +7,70 @@ import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 import Token from 'src/enums/Token';
 import RewardTypes from 'src/core/types/RewardTypes';
 import { StakingTitleProps } from 'src/core/types/LpStakingTypeProps';
+import { useWeb3React } from '@web3-react/core';
 import Guide from '../Guide';
 import Button from './Button';
 
 const Reward: FunctionComponent<StakingTitleProps> = (props) => {
+  const { account } = useWeb3React();
   const { rewardToReceive, onHandler } = props;
   const { t } = useTranslation();
 
   return (
     <>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginTop: 110,
-        }}>
-        <div className="spoqa__bold">
+      <div className="staking__lp__reward__header">
+        <h2>
           {t('lpstaking.reward_amount')}
-          <Guide content={t('guide.receive_reward')} />
-        </div>
-        <div className="header_line" />
+        </h2>
+        <Guide content={t('guide.receive_reward')} />
       </div>
-      <div className="lp_reward_content_wrapper">
-        <div className="spoqa__bold lp_reward_content">
-          <div className="lp_token_wrapper">
-            <div>
+      <div className="staking__lp__reward__content">
+        <div className="staking__lp__reward__content__container">
+          <div className="staking__lp__reward__content__wrapper">
+            <div className="staking__lp__reward__image">
               <img src={elfi} alt={elfi} />
-              {Token.ELFI}
+              <h2>{Token.ELFI}</h2>
             </div>
-            <div
-              style={{
-                color: '#00BFFF',
-              }}>
-              {`${formatDecimalFracionDigit(rewardToReceive.elfiReward, 4)} `}
-              <div>{Token.ELFI}</div>
+            <div className="staking__lp__reward__content__amount">
+              <h2>
+                {`${formatDecimalFracionDigit(rewardToReceive.elfiReward, 4)} `}
+              </h2>
+              <h2>
+                {Token.ELFI}
+              </h2>
             </div>
           </div>
-          <div className="lp_token_wrapper">
-            <div>
+          <div className="staking__lp__reward__content__wrapper">
+            <div className="staking__lp__reward__image">
               <img src={eth} alt={eth} />
-              {Token.ETH}
+              <h2>{Token.ETH}</h2>
             </div>
-            <div
-              style={{
-                color: '#627EEA',
-              }}>
-              {`${formatDecimalFracionDigit(rewardToReceive.ethReward, 4)} `}
-              <div>{Token.ETH}</div>
+            <div className="staking__lp__reward__content__amount">
+              <h2>
+                {`${formatDecimalFracionDigit(rewardToReceive.ethReward, 4)} `}
+              </h2>
+              <h2>{Token.ETH}</h2>
             </div>
           </div>
-          <div className="lp_token_wrapper">
-            <div>
+          <div className="staking__lp__reward__content__wrapper">
+            <div className="staking__lp__reward__image">
               <img src={dai} alt={dai} />
-              {Token.DAI}
+              <h2>{Token.DAI}</h2>
             </div>
-            <div
-              style={{
-                color: '#FBC54E',
-              }}>
+            <div className="staking__lp__reward__content__amount">
+              <h2>
               {`${formatDecimalFracionDigit(rewardToReceive.daiReward, 4)} `}
-              <div>{Token.DAI}</div>
+              </h2>
+              <h2>{Token.DAI}</h2>
             </div>
           </div>
         </div>
-        <div
-          style={{
-            textAlign: 'center',
-            marginTop: 25,
-          }}>
-          <Button onHandler={onHandler} btnTitle={t('staking.claim_reward')} />
+        <div className="staking__lp__reward__button__wrapper">
+          <div onClick={() => account && onHandler()} className="staking__lp__reward__button">
+            <p>
+              {t('staking.claim_reward')}
+            </p>
+          </div>
         </div>
       </div>
     </>

@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { ethers } from 'ethers';
+import { ContractTransaction, ethers } from 'ethers';
 import envs from 'src/core/envs';
 import stakerABI from 'src/core/abi/StakerABI.json';
 import { useContext } from 'react';
@@ -11,14 +11,14 @@ const useClaimReward: () => () => void = () => {
   const { account, library } = useWeb3React();
   const { setTransaction } = useContext(TxContext);
   const initTxTracker = useTxTracking();
-  const staker = new ethers.Contract(
-    envs.stakerAddress,
-    stakerABI,
-    library.getSigner(),
-  );
   const iFace = new ethers.utils.Interface(stakerABI);
 
   const claim = async () => {
+    const staker = new ethers.Contract(
+      envs.stakerAddress,
+      stakerABI,
+      library.getSigner(),
+    );
     try {
       const elfi = iFace.encodeFunctionData('claimReward', [
         envs.governanceAddress,
@@ -44,8 +44,9 @@ const useClaimReward: () => () => void = () => {
         () => {},
         () => {},
       );
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      throw new Error(`${error.message}`);
     }
   };
 

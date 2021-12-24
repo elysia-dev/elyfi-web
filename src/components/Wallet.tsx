@@ -27,8 +27,8 @@ const Wallet = (props: any) => {
   useEffect(() => {
     setConnected(
       !!account &&
-        (envs.requiredNetwork === 'Ganache' ||
-          chainId === envs.requiredChainId),
+        (chainId === envs.requiredChainId ||
+          envs.requiredNetwork === 'ganache'),
     );
   }, [account, chainId]);
 

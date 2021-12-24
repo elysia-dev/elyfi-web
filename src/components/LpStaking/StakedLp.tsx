@@ -4,15 +4,14 @@ import { useTranslation } from 'react-i18next';
 import Token from 'src/enums/Token';
 import { formatDecimalFracionDigit, toCompact } from 'src/utiles/formatters';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
-import { utils } from 'ethers';
-import envs from 'src/core/envs';
+import { BigNumber, utils } from 'ethers';
 import StakedTokenProps from 'src/core/types/StakedTokenProps';
 import Skeleton from 'react-loading-skeleton';
 import CountUp from 'react-countup';
 import { isEthElfiPoolAddress } from 'src/core/utils/getAddressesByPool';
 import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
-import Guide from '../Guide';
+import Position from 'src/core/types/Position';
 import StakedLpItem from './StakedLpItem';
 
 const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
@@ -23,6 +22,7 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
     daiElfiStakedLiquidity,
     expectedReward,
     totalExpectedReward,
+    isError,
     round,
     isLoading,
   } = props;
@@ -32,45 +32,40 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
 
   return (
     <>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginTop: 79,
-        }}>
-        <div className="spoqa__bold">
-          {t('lpstaking.staked_lp_token')}
-          <Guide content={t('guide.staked_lp_token')} />
-        </div>
-        <div className="header_line" />
-      </div>
-      <div
-        style={{
-          paddingLeft: 29,
-          paddingRight: 30,
-          paddingBottom: 32,
-          paddingTop: 31,
-          marginTop: 18,
-          boxShadow: '0px 0px 6px #00000029',
-          border: '1px solid #E6E6E6',
-          borderRadius: 10,
-        }}>
-        {account ? (
+      <div className="staking__lp__staked__table">
+        {isError ? (
+          <div>
+            <div
+              className="spoqa__bold"
+              style={{
+                textAlign: 'center',
+                fontSize: 25,
+                color: '#646464',
+                paddingTop: 20,
+                paddingBottom: 20,
+              }}>
+              {'Server error'}
+            </div>
+          </div>
+        ) : account ? (
           <>
-            <div className="staked_lp_content">
-              <div>
-                <span>ID</span>
-                <span>{t('lpstaking.staked_lp_token_type')}</span>
-                <span>{t('lpstaking.liquidity')}</span>
-                <div> </div>
-              </div>
-              <div className="staked_lp_content_pc">
+            <div className="staking__lp__staked__table__header">
+              <div className="staking__lp__staked__table__header__container--left">
+                <div>
+                  <p>ID</p>
+                </div>
+                <div>
+                  <p>{t('lpstaking.staked_lp_token_type')}</p>
+                </div>
+                <div>
+                  <p>{t('lpstaking.liquidity')}</p>
+                </div>
                 <div />
               </div>
-              <span className="staked_lp_content_pc">
+              <div className="staking__lp__staked__table__header__container--center" />
+              <div className="staking__lp__staked__table__header__container--right">
                 {t('lpstaking.expected_reward')}
-              </span>
+              </div>
             </div>
             {!isLoading
               ? stakedPositions.map((position, idx) => {
@@ -124,70 +119,100 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
             </div>
           </div>
         )}
-        {stakedPositions.length > 0 ? (
-          <div className="spoqa__bold total_expected_reward">
-            <div>{t('lpstaking.staked_total_liquidity')}</div>
-            <div className="total_expected_reward_amount">
-              ${' '}
-              {toCompact(
-                parseFloat(utils.formatEther(ethElfiStakedLiquidity)) *
-                  pricePerEthLiquidity +
-                  parseFloat(utils.formatEther(daiElfiStakedLiquidity)) *
-                    pricePerDaiLiquidity,
-              )}
+        {stakedPositions.length > 0 || (!account && !isError) ? (
+          <section className="staking__lp__staked__reward">
+            <div className="staking__lp__staked__reward__total-liquidity">
+              <h2>{t('lpstaking.staked_total_liquidity')}</h2>
+              <h2 className="amount">
+                {toCompact(
+                  parseFloat(utils.formatEther(ethElfiStakedLiquidity)) *
+                    pricePerEthLiquidity +
+                    parseFloat(utils.formatEther(daiElfiStakedLiquidity)) *
+                      pricePerDaiLiquidity,
+                )}
+              </h2>
             </div>
-            <div />
-            <div>{t('lpstaking.staked_total_expected_reward')}</div>
-            <div className="total_expected_reward_amount">
-              <CountUp
-                className="spoqa__bold staked_lp_item_reward"
-                start={totalExpectedReward.beforeTotalElfi}
-                end={totalExpectedReward.totalElfi}
-                formattingFn={(number) => {
-                  return formatDecimalFracionDigit(number, 2);
-                }}
-                duration={1}
-                decimals={4}
-              />
-              {Token.ELFI}
+            <div className="staking__lp__staked__reward__amount">
+              <h2>{t('lpstaking.staked_total_expected_reward')}</h2>
+              <div>
+                <div>
+                  <CountUp
+                    className="bold"
+                    start={totalExpectedReward.beforeTotalElfi}
+                    end={totalExpectedReward.totalElfi}
+                    formattingFn={(number) => {
+                      return formatDecimalFracionDigit(number, 2);
+                    }}
+                    duration={1}
+                    decimals={4}
+                  />
+                  <h2 className="staking__lp__staked__reward__amount__unit">
+                    {Token.ELFI}
+                  </h2>
+                </div>
+                <div>
+                  <CountUp
+                    className="bold"
+                    start={totalExpectedReward.beforeTotalEth}
+                    end={totalExpectedReward.totalEth}
+                    formattingFn={(number) => {
+                      return formatDecimalFracionDigit(number, 2);
+                    }}
+                    duration={1}
+                    decimals={4}
+                  />
+                  <h2 className="staking__lp__staked__reward__amount__unit">
+                    {Token.ETH}
+                  </h2>
+                </div>
+                <div>
+                  <CountUp
+                    className="bold"
+                    start={totalExpectedReward.beforeTotalDai}
+                    end={totalExpectedReward.totalDai}
+                    formattingFn={(number) => {
+                      return formatDecimalFracionDigit(number, 2);
+                    }}
+                    duration={1}
+                    decimals={4}
+                  />
+                  <h2 className="staking__lp__staked__reward__amount__unit">
+                    {Token.DAI}
+                  </h2>
+                </div>
+              </div>
             </div>
-            <div className="total_expected_reward_amount">
-              <CountUp
-                className="spoqa__bold staked_lp_item_reward"
-                start={totalExpectedReward.beforeTotalEth}
-                end={totalExpectedReward.totalEth}
-                formattingFn={(number) => {
-                  return formatDecimalFracionDigit(number, 2);
-                }}
-                duration={1}
-                decimals={4}
-              />
-              {Token.ETH}
-            </div>
-            <div className="total_expected_reward_amount">
-              <CountUp
-                className="spoqa__bold staked_lp_item_reward"
-                start={totalExpectedReward.beforeTotalDai}
-                end={totalExpectedReward.totalDai}
-                formattingFn={(number) => {
-                  return formatDecimalFracionDigit(number, 2);
-                }}
-                duration={1}
-                decimals={4}
-              />
-              {Token.DAI}
-            </div>
-          </div>
+          </section>
         ) : (
-          <div className="spoqa__bold total_expected_reward">
-            <div>{t('lpstaking.staked_total_liquidity')}</div>
-            <div>$ -</div>
-            <div />
-            <div>{t('lpstaking.staked_total_expected_reward')}</div>
-            <div>- {Token.ELFI}</div>
-            <div>- {Token.ETH}</div>
-            <div>- {Token.DAI}</div>
-          </div>
+          <section className="staking__lp__staked__reward">
+            <div className="staking__lp__staked__reward__total-liquidity">
+              <h2>{t('lpstaking.staked_total_liquidity')}</h2>
+              <h2 className="amount">-</h2>
+            </div>
+            <div className="staking__lp__staked__reward__amount">
+              <h2>{t('lpstaking.staked_total_expected_reward')}</h2>
+              <div>
+                <div>
+                  <span>-</span>
+                  <h2 className="staking__lp__staked__reward__amount__unit">
+                    {Token.ELFI}
+                  </h2>
+                </div>
+                <div>
+                  <span>-</span>
+                  <h2 className="staking__lp__staked__reward__amount__unit">
+                    {Token.ETH}
+                  </h2>
+                </div>
+                <div>
+                  <span>-</span>
+                  <h2 className="staking__lp__staked__reward__amount__unit">
+                    {Token.DAI}
+                  </h2>
+                </div>
+              </div>
+            </div>
+          </section>
         )}
       </div>
     </>

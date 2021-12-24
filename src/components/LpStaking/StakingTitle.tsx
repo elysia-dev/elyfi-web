@@ -11,7 +11,7 @@ const StakingTitle: React.FunctionComponent<tokenTypes> = (props) => {
   const secondImg = token1 === Token.ETH ? eth : dai;
 
   return (
-    <div>
+    <div className="staking__lp__detail-box__header">
       <div
         style={{
           width: 584,
