@@ -50,10 +50,7 @@ const useTvl = (): { value: number; loading: boolean } => {
 
   const loadBalances = async () => {
     try {
-      const provider = new providers.InfuraProvider(
-        envs.requiredNetwork,
-        process.env.REACT_APP_INFURA_PROJECT_ID,
-      );
+      const provider = new providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC)
 
       const stakedElfiOnV1 = await ERC20__factory.connect(
         envs.governanceAddress,
