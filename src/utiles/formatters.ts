@@ -53,6 +53,12 @@ export const formatCommaSmall = (value: BigNumber) => {
   return formatSixFracionDigit(parseFloat(utils.formatEther(value)));
 };
 
+export const formatCommaSmallFourDisits = (value: number): string =>
+  new Intl.NumberFormat('en', {
+    minimumFractionDigits: 4,
+    maximumFractionDigits: 4,
+  }).format(value);
+
 export const toCompact = (value: number) =>
   new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 2,
@@ -67,9 +73,14 @@ export const toPercentWithoutSign = (value: any) =>
 export const toCompactForBignumber = (
   value: BigNumber | number,
   decimals?: number,
-) =>
+): string =>
   new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 2,
     notation: 'compact',
     compactDisplay: 'short',
   }).format(parseFloat(utils.formatUnits(value, decimals || 18)));
+
+export const toUsd = (value: any, decimals?: number): string =>
+  new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' }).format(
+    parseFloat(utils.formatUnits(value, decimals || 18)),
+  );

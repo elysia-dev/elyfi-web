@@ -4,7 +4,6 @@ import { Web3ReactProvider } from '@web3-react/core';
 import { ApolloProvider, InMemoryCache, ApolloClient } from '@apollo/client';
 import envs from 'src/core/envs';
 import { BrowserRouter as Router } from 'react-router-dom';
-import LanguageProvider from './providers/LanguageProvider';
 import getLibrary from './core/utils/getLibrary';
 import AppNavigator from './AppNavigator';
 import ReservesProvider from './providers/ReservesProvider';
@@ -27,17 +26,15 @@ const App: React.FC = () => {
     <ApolloProvider client={client}>
       <UniswapPoolProvider>
         <PriceProvider>
-          <LanguageProvider>
-            <Web3ReactProvider getLibrary={getLibrary}>
-              <ReservesProvider>
-                <TxProvider>
-                  <Router>
-                    <AppNavigator />
-                  </Router>
-                </TxProvider>
-              </ReservesProvider>
-            </Web3ReactProvider>
-          </LanguageProvider>
+          <Web3ReactProvider getLibrary={getLibrary}>
+            <ReservesProvider>
+              <TxProvider>
+                <Router>
+                  <AppNavigator />
+                </Router>
+              </TxProvider>
+            </ReservesProvider>
+          </Web3ReactProvider>
         </PriceProvider>
       </UniswapPoolProvider>
     </ApolloProvider>

@@ -6,6 +6,7 @@ import {
   formatCommaFillZero,
 } from 'src/utiles/formatters';
 import { IReserve } from 'src/core/data/reserves';
+import ModalButton from 'src/components/ModalButton';
 
 const WithdrawBody: React.FunctionComponent<{
   tokenInfo: IReserve;
@@ -35,8 +36,8 @@ const WithdrawBody: React.FunctionComponent<{
     return (
       <>
         <div className="modal__withdraw">
-          <div className="modal__withdraw__value-wrapper">
-            <p className="modal__withdraw__maximum bold" onClick={() => {
+          <div className="modal__input">
+            <h2 className="modal__input__maximum" onClick={() => {
               if (depositBalance.isZero()) {
                 return
               }
@@ -47,11 +48,11 @@ const WithdrawBody: React.FunctionComponent<{
             }}
             >
               {t("dashboard.max")}
-            </p>
-            <p className="modal__withdraw__value bold">
+            </h2>
+            <h2 className="modal__input__value">
               <input
                 type="number"
-                className="modal__text-input"
+                className="modal__input__value__amount"
                 placeholder="0"
                 value={amount.value}
                 style={{
@@ -73,61 +74,62 @@ const WithdrawBody: React.FunctionComponent<{
                   });
                 }}
               />
-            </p>
+            </h2>
           </div>
-          <div className="modal__withdraw__withdrawalable">
-            <div className="modal__withdraw__withdrawalable-amount-wrapper">
+          <div className="modal__withdraw__container">
+            <div className="modal__withdraw__withdrawalable__amount">
               <div className="modal__withdraw__withdrawalable__title">
-                <p className="spoqa__bold">{t('dashboard.withdraw_availble')}</p>
-                <p className="spoqa__bold">{`${formatCommaWithDigits(
-                  depositBalance.lte(liquidity) ? depositBalance : liquidity,
-                  4,
-                  tokenInfo.decimals,
-                )} ${tokenInfo.name}`}</p>
+                <p>{t('dashboard.withdraw_availble')}</p>
+                <p>
+                  {`${formatCommaWithDigits(
+                    depositBalance.lte(liquidity) ? depositBalance : liquidity,
+                    4,
+                    tokenInfo.decimals,
+                  )} ${tokenInfo.name}`}
+                </p>
               </div>
-              <div>
-                <p className="spoqa__bold">{t('dashboard.deposit_balance')}</p>
-                <p className="spoqa__bold">{`${formatCommaWithDigits(
+              <div className="modal__withdraw__withdrawalable__content">
+                <h2>{t('dashboard.deposit_balance')}</h2>
+                <h2>{`${formatCommaWithDigits(
                   depositBalance,
                   4,
                   tokenInfo.decimals,
-                )} ${tokenInfo.name}`}</p>
+                )} ${tokenInfo.name}`}</h2>
               </div>
-              <div>
-                <p className="spoqa__bold">
+              <div className="modal__withdraw__withdrawalable__content">
+                <h2>
                   {t('dashboard.reserves_elyfi', { tokenName: tokenInfo.name })}
-                </p>
-                <p className="spoqa__bold">{`${formatCommaWithDigits(
+                </h2>
+                <h2>{`${formatCommaWithDigits(
                   liquidity,
                   4,
                   tokenInfo.decimals,
-                )} ${tokenInfo.name}`}</p>
+                )} ${tokenInfo.name}`}</h2>
               </div>
             </div>
-            <div className="modal__withdraw__withdrawalable-value-wrapper">
+            <div className="modal__withdraw__withdrawalable__value">
               <div className="modal__withdraw__withdrawalable__title">
-                <p className="spoqa__bold">{t('dashboard.yield')}</p>
+                <p>{t('dashboard.yield')}</p>
               </div>
-              <div>
-                <p className="spoqa__bold">{t('dashboard.yield_produced')}</p>
-                <p className="spoqa__bold">{`${formatCommaFillZero(
+              <div className="modal__withdraw__withdrawalable__content">
+                <h2>{t('dashboard.yield_produced')}</h2>
+                <h2>{`${formatCommaFillZero(
                   yieldProduced,
                   tokenInfo.decimals,
-                )} ${tokenInfo.name}`}</p>
+                )} ${tokenInfo.name}`}</h2>
               </div>
-              <div>
-                <p className="spoqa__bold">{t('dashboard.accumulated')}</p>
-                <p className="spoqa__bold">{`${formatCommaFillZero(
+              <div className="modal__withdraw__withdrawalable__content">
+                <h2>{t('dashboard.accumulated')}</h2>
+                <h2>{`${formatCommaFillZero(
                   accumulatedYield,
                   tokenInfo.decimals,
-                )} ${tokenInfo.name}`}</p>
+                )} ${tokenInfo.name}`}</h2>
               </div>
             </div>
           </div>
         </div>
-        <div
-          className={`modal__button${amountGtBalance || amountLteZero ? '--disable' : ''
-            }`}
+        <ModalButton
+          className={`modal__button${amountGtBalance || amountLteZero ? ' disable' : ''}`}
           onClick={() => {
             if (!(amountLteZero || amountGtBalance)) {
               withdraw(
@@ -135,15 +137,13 @@ const WithdrawBody: React.FunctionComponent<{
                 amount.max,
               );
             }
-          }}>
-          <p>
-            {amountLteZero
-              ? t('dashboard.enter_amount')
-              : amountGtBalance
-                ? t('dashboard.insufficient_balance', { tokenName: tokenInfo.name })
-                : t('dashboard.withdraw')}
-          </p>
-        </div>
+          }}
+          content={amountLteZero
+            ? t('dashboard.enter_amount')
+            : amountGtBalance
+              ? t('dashboard.insufficient_balance', { tokenName: tokenInfo.name })
+              : t('dashboard.withdraw')}
+        />
       </>
     );
   };

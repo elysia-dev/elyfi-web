@@ -10,9 +10,14 @@ import moment from 'moment';
 import Token from 'src/enums/Token';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import { DetailBoxProps } from 'src/core/types/LpStakingTypeProps';
-import DetailBoxItemReceiveToken from './DetailBoxItemReceiveToken';
-import DetailBoxItemHeader from './DetailBoxItemHeader';
-import DetailBoxItemStaking from './DetailBoxItemStaking';
+import { useWeb3React } from '@web3-react/core';
+import DetailBoxItemReceiveToken from 'src/components/LpStaking/DetailBoxItemReceiveToken';
+import DetailBoxItemHeader from 'src/components/LpStaking/DetailBoxItemHeader';
+import DetailBoxItemStaking from 'src/components/LpStaking/DetailBoxItemStaking';
+import { useTranslation } from 'react-i18next';
+import elfi from 'src/assets/images/ELFI.png';
+import eth from 'src/assets/images/eth-color.png';
+import dai from 'src/assets/images/dai.png';
 
 const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
   const {
@@ -24,14 +29,23 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
     setModalAndSetStakeToken,
     round,
   } = props;
+  const { token0, token1 } = tokens;
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
+  const { account } = useWeb3React();
+  const { t } = useTranslation();
+  const secondImg = tokens.token1 === Token.ETH ? eth : dai;
 
   return (
-    <>
-      <div>
-        {!isLoading ? (
-          <>
-            <div className="lp_token_description">
+    <section className="staking__lp__detail-box__container">
+      <div className="staking__lp__detail-box__header">
+        <img src={elfi} alt="Token Icon" />
+        <img src={secondImg} alt="Token Icon" className="second-token" />
+        <h2>{t('lpstaking.lp_token_staking_title', { token0, token1 })}</h2>
+      </div>
+      {!isLoading ? (
+        <>
+          <div className="staking__lp__detail-box__body">
+            <section className="staking__lp__detail-box__item-header">
               <DetailBoxItemHeader
                 totalLiquidity={formatDecimalFracionDigit(totalLiquidity, 2)}
                 apr={
@@ -42,42 +56,45 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
                     ? apr
                     : '-'
                 }
-                token1={tokens.token1}
+                token1={token1}
               />
-              <DetailBoxItemReceiveToken
-                token0={tokens.token0}
-                token1={tokens.token1}
-              />
+            </section>
+            <section className="staking__lp__detail-box__receive-token">
+              <DetailBoxItemReceiveToken token0={token0} token1={token1} />
+            </section>
+            <section className="staking__lp__detail-box__staking">
               <DetailBoxItemStaking
                 tokens={tokens}
                 totalStakedLiquidity={
-                  formatDecimalFracionDigit(
-                    (tokens.token1 === Token.ETH
-                      ? pricePerEthLiquidity
-                      : pricePerDaiLiquidity) *
-                      parseFloat(utils.formatEther(totalStakedLiquidity)),
-                    2,
-                  ) || '0'
+                  account
+                    ? formatDecimalFracionDigit(
+                        (tokens.token1 === Token.ETH
+                          ? pricePerEthLiquidity
+                          : pricePerDaiLiquidity) *
+                          parseFloat(utils.formatEther(totalStakedLiquidity)),
+                        2,
+                      ) || '0'
+                    : '0'
                 }
                 setModalAndSetStakeToken={setModalAndSetStakeToken}
                 round={round}
               />
-            </div>
-            <div className="spoqa lp_token_date">
-              {moment
-                .unix(lpUnixTimestamp[round - 1].startedAt)
-                .format('YYYY-MM-DD HH:mm:ss')}{' '}
-              -{' '}
-              {moment
-                .unix(lpUnixTimestamp[round - 1].endedAt)
-                .format('YYYY-MM-DD HH:mm:ss')}
-            </div>
-          </>
-        ) : (
-          <Skeleton width={'100%'} height={550} />
-        )}
-      </div>
-    </>
+            </section>
+          </div>
+          <p className="staking__lp__detail-box__time-data">
+            {moment
+              .unix(lpUnixTimestamp[round - 1].startedAt)
+              .format('YYYY-MM-DD HH:mm:ss')}{' '}
+            -{' '}
+            {moment
+              .unix(lpUnixTimestamp[round - 1].endedAt)
+              .format('YYYY-MM-DD HH:mm:ss')}
+          </p>
+        </>
+      ) : (
+        <Skeleton width={'100%'} height={550} />
+      )}
+    </section>
   );
 };
 

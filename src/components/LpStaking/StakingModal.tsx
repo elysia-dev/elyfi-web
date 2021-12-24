@@ -7,6 +7,9 @@ import elfi from 'src/assets/images/ELFI.png';
 import SelectBox from 'src/components/SelectBox';
 import useLpStaking from 'src/hooks/useLpStaking';
 import { LpStakingModalProps } from 'src/core/types/LpStakingTypeProps';
+import useTxTracking from 'src/hooks/useTxTracking';
+import ModalHeader from '../ModalHeader';
+import ModalConverter from '../ModalConverter';
 
 const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
   const {
@@ -24,6 +27,7 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
   const [stakingMode, setStakingMode] = useState<boolean>(true);
   const { txWaiting } = useContext(TxContext);
   const { waiting } = useWatingTx();
+  const initTxTracker = useTxTracking();
   const staking = useLpStaking();
   const [selectedToken, setSelectedToken] = useState<{
     id: string;
@@ -37,9 +41,15 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
 
   const lpStakingHandler = async () => {
     try {
-      staking(stakingPoolAddress, rewardTokenAddress, selectedToken.id, round);
-    } catch (error) {
-      alert(error);
+      await staking(
+        stakingPoolAddress,
+        rewardTokenAddress,
+        selectedToken.id,
+        round,
+      );
+    } catch (error: any) {
+      closeHandler();
+      console.error(error);
     } finally {
       setSelectedToken({
         id: '',
@@ -56,108 +66,65 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
   }, [txWaiting]);
 
   return (
-    <div className="modal" style={{ display: visible ? 'block' : 'none' }}>
+    <div
+      className="modal modal__lp__staking"
+      style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
-        <div className="modal__header">
-          <div className="modal__header__token-info-wrapper">
-            <img
-              src={elfi}
-              alt={elfi}
-              style={{
-                width: 41,
-                height: 41,
-                zIndex: 5,
-              }}
-            />
-            <img
-              src={tokenImg}
-              alt={tokenImg}
-              style={{
-                width: 41,
-                height: 41,
-                marginLeft: -20,
-                marginRight: -6,
-              }}
-            />
-            <div className="modal__header__name-wrapper">
-              <p className="modal__header__name spoqa__bold">
-                {t('lpstaking.lp_token_staking_title', {
-                  token0,
-                  token1,
-                })}
-              </p>
-            </div>
-          </div>
-          <div
-            className="close-button"
-            onClick={() => {
-              closeHandler();
-              setSelectedToken({
-                id: '',
-                liquidity: '',
-                selectBoxTitle: t('lpstaking.lp_staking_modal_default'),
-              });
-            }}>
-            <div className="close-button--1">
-              <div className="close-button--2" />
-            </div>
-          </div>
-        </div>
-        <div className="modal__converter">
-          <div
-            className={`modal__converter__column${
-              stakingMode ? '--selected' : ''
-            }`}
-            onClick={() => {
-              setStakingMode(true);
-            }}>
-            <p className="bold">{t('staking.staking')}</p>
-          </div>
-        </div>
+        <ModalHeader
+          image={elfi}
+          subImage={tokenImg}
+          title={t('lpstaking.lp_token_staking_title', {
+            token0,
+            token1,
+          })}
+          onClose={() => {
+            closeHandler();
+            setSelectedToken({
+              id: '',
+              liquidity: '',
+              selectBoxTitle: t('lpstaking.lp_staking_modal_default'),
+            });
+          }}
+        />
+        <ModalConverter
+          handlerProps={stakingMode}
+          setState={setStakingMode}
+          title={[t('staking.staking')]}
+        />
         {waiting ? (
           <LoadingIndicator />
         ) : (
-          <div className="modal__body">
-            <div>
-              {unstakedPositions.length === 0 ? (
-                <div
-                  className="spoqa"
-                  style={{
-                    fontSize: 15,
-                    color: '#646464',
-                    textAlign: 'center',
-                    paddingTop: 91,
-                    paddingBottom: 91,
-                  }}>
-                  {t('lpstaking.no_lp_token')}
-                </div>
-              ) : (
-                <SelectBox
-                  selectedToken={selectedToken}
-                  setSelectedToken={setSelectedToken}
-                  unstakedPositions={unstakedPositions}
-                />
-              )}
-              <div
-                className={`modal__button${
-                  unstakedPositions.length === 0
-                    ? '--disable'
-                    : selectedToken.id
-                    ? ''
-                    : '--disable'
-                }`}
-                onClick={() =>
-                  unstakedPositions.length === 0
-                    ? ''
-                    : selectedToken.id
-                    ? lpStakingHandler()
-                    : ''
-                }>
-                <p>{t('staking.staking')}</p>
+          <div className="modal__lp__staking__body">
+            {unstakedPositions.length === 0 ? (
+              <div className="modal__lp__staking__undefined">
+                <h2>{t('lpstaking.no_lp_token')}</h2>
               </div>
-            </div>
+            ) : (
+              <SelectBox
+                selectedToken={selectedToken}
+                setSelectedToken={setSelectedToken}
+                unstakedPositions={unstakedPositions}
+              />
+            )}
           </div>
         )}
+        <div
+          className={`modal__button${
+            unstakedPositions.length === 0
+              ? ' disable'
+              : selectedToken.id
+              ? ''
+              : ' disable'
+          }`}
+          onClick={() =>
+            unstakedPositions.length === 0
+              ? ''
+              : selectedToken.id
+              ? lpStakingHandler()
+              : ''
+          }>
+          <p>{t('staking.staking')}</p>
+        </div>
       </div>
     </div>
   );

@@ -1,58 +1,42 @@
 import { useEffect, useState } from 'react';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import LanguageContext, {
-  initialLanguageContext,
-  ILanguageContext,
-} from '../contexts/LanguageContext';
+import getLocalLanauge from 'src/utiles/getLocalLanguage';
+import LanguageContext from '../contexts/LanguageContext';
 import LanguageType from '../enums/LanguageType';
-
 const LanguageProvider: React.FC = (props) => {
-  const [state, setState] = useState<ILanguageContext>(initialLanguageContext);
   const { i18n } = useTranslation();
+  const { lng } = useParams<{ lng: string }>();
+  const history = useHistory();
+  const location = useLocation();
 
   const setLanguage = (language: LanguageType) => {
     window.localStorage.setItem('@language', language);
+    history.push(`/${language}`);
+    const getPath = location.pathname.split('/')[2];
+    if (getPath === undefined) {
+      return history.push(`/${language}`);
+    }
     i18n.changeLanguage(language);
-    setState({
-      ...state,
-      language,
-    });
+    history.push(
+      `/${language + '/' + getPath + location.pathname.split(getPath)[1]}`,
+    );
   };
 
   useEffect(() => {
-    const language = window.localStorage.getItem('@language') as LanguageType;
-
-    if (language) {
-      i18n.changeLanguage(language);
-      setState({
-        ...state,
-        language,
-      });
+    if (
+      [LanguageType.EN, LanguageType.KO, LanguageType.ZHHANS].includes(
+        lng as LanguageType,
+      )
+    ) {
+      i18n.changeLanguage(lng);
     } else {
-      let localLanguage = LanguageType.EN;
-
-      const userLang = navigator.language;
-
-      if (userLang?.includes('ko')) {
-        localLanguage = LanguageType.KO;
-      }
-
-      if (userLang?.includes('zh')) {
-        localLanguage = LanguageType.ZHHANS;
-      }
-
-      i18n.changeLanguage(localLanguage);
-      setState({
-        ...state,
-        language: localLanguage,
-      });
+      history.replace(`/${getLocalLanauge()}`);
     }
-  }, []);
-
+  }, [lng]);
   return (
     <LanguageContext.Provider
       value={{
-        ...state,
         setLanguage,
       }}>
       {props.children}

@@ -5,7 +5,7 @@ import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 
 const ELFI_AMOUNT_PER_POOL = 300000;
 const DAI_AMOUNT_PER_POOL = 25000;
-const ETH_AMOUNT_PER_POOL = 5.507; // FIXME
+const ETH_AMOUNT_PER_POOL = 6.437; // FIXME
 const DAYS = 40;
 
 const useLpApr = () => {

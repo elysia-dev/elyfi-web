@@ -1,26 +1,18 @@
 import { useWeb3React } from '@web3-react/core';
-import ReserveData from 'src/core/data/reserves';
+import ReserveData, { reserveTokenData } from 'src/core/data/reserves';
 import { useEffect, useContext, useState } from 'react';
-import { formatEther } from '@ethersproject/units';
-import {
-  toPercent,
-  toCompactForBignumber,
-  formatSixFracionDigit,
-} from 'src/utiles/formatters';
+import { toPercent, toCompactForBignumber } from 'src/utiles/formatters';
 import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
 import ReservesContext from 'src/contexts/ReservesContext';
 import { BigNumber, constants } from 'ethers';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { useHistory, useLocation } from 'react-router-dom';
-import Skeleton from 'react-loading-skeleton';
 import { useQuery } from '@apollo/client';
 import { GetUser } from 'src/queries/__generated__/GetUser';
 import { GET_USER } from 'src/queries/userQueries';
-import ELFI from 'src/assets/images/ELFI.png';
 import { useTranslation } from 'react-i18next';
 import envs from 'src/core/envs';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
-import { Title } from 'src/components/Texts';
 import calcExpectedIncentive from 'src/utiles/calcExpectedIncentive';
 import moment from 'moment';
 import PriceContext from 'src/contexts/PriceContext';
@@ -29,14 +21,21 @@ import {
   IncentivePool__factory,
 } from '@elysia-dev/contract-typechain';
 import ReactGA from 'react-ga';
-import Header from 'src/components/Header';
 import TokenTable from 'src/components/TokenTable';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
 import CountUp from 'react-countup';
-import IncentiveModal from './IncentiveModal';
+import Token from 'src/enums/Token';
+import HeaderCircle from 'src/assets/images/title-circle.png';
+import IncentiveModal from 'src/containers/IncentiveModal';
+import useTvl from 'src/hooks/useTvl';
+import isWalletConnect from 'src/hooks/isWalletConnect';
+import ConnectWalletModal from 'src/containers/ConnectWalletModal';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import MediaQuery from 'src/enums/MediaQuery';
+import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 
 const initialBalanceState = {
-  loading: true,
+  loading: false,
   value: constants.Zero,
   incentive: constants.Zero,
   expectedIncentiveBefore: constants.Zero,
@@ -44,15 +43,18 @@ const initialBalanceState = {
   deposit: constants.Zero,
   updatedAt: moment().unix(),
 };
+const usdFormatter = new Intl.NumberFormat('en', {
+  style: 'currency',
+  currency: 'USD',
+});
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
   const location = useLocation();
   const history = useHistory();
   const { reserves, refetch: refetchReserve } = useContext(ReservesContext);
-  const { elfiPrice, daiPrice, tetherPrice } = useContext(PriceContext);
+  const { elfiPrice } = useContext(PriceContext);
   const reserveId = new URLSearchParams(location.search).get('reserveId');
-
   const [reserve, setReserve] = useState<GetAllReserves_reserves | undefined>(
     reserves.find((reserve) => reserveId === reserve.id),
   );
@@ -60,7 +62,7 @@ const Dashboard: React.FunctionComponent = () => {
   const [balances, setBalances] = useState<
     {
       loading: boolean;
-      tokenName: string;
+      tokenName: Token.DAI | Token.USDT;
       value: BigNumber;
       incentive: BigNumber;
       expectedIncentiveBefore: BigNumber;
@@ -69,22 +71,30 @@ const Dashboard: React.FunctionComponent = () => {
       updatedAt: number;
     }[]
   >(
-    ReserveData.map((reserve) => {
+    reserves.map((reserve) => {
       return {
         ...initialBalanceState,
-        tokenName: reserve.name,
+        tokenName: reserve.id === envs.daiAddress ? Token.DAI : Token.USDT,
       };
     }),
   );
-  const [incentiveModalVisible, setIncentiveModalVisible] = useState<boolean>(
-    false,
-  );
+  const [incentiveModalVisible, setIncentiveModalVisible] =
+    useState<boolean>(false);
   const { data: userConnection, refetch: refetchUserData } = useQuery<GetUser>(
     GET_USER,
     { variables: { id: account?.toLocaleLowerCase() } },
   );
   const [transactionModal, setTransactionModal] = useState(false);
   const [selectedModalNumber, setModalNumber] = useState(0);
+  const [selectedModalToken, setModalToken] = useState<Token.DAI | Token.USDT>(
+    Token.DAI,
+  );
+  const { value: tvl, loading: tvlLoading } = useTvl();
+  const [prevTvl, setPrevTvl] = useState(0);
+  const [connectWalletModalvisible, setConnectWalletModalvisible] =
+    useState<boolean>(false);
+  const walletConnect = isWalletConnect();
+  const { value: mediaQuery } = useMediaQueryType();
 
   useEffect(() => {
     const paramsData = reserves.find((_reserve) => reserveId === _reserve.id);
@@ -99,47 +109,54 @@ const Dashboard: React.FunctionComponent = () => {
     reserve: GetAllReserves_reserves,
     account: string,
   ) => {
-    const incentive = await IncentivePool__factory.connect(
-      reserve.incentivePool.id,
-      library.getSigner(),
-    ).getUserIncentive(account);
+    try {
+      const incentive = await IncentivePool__factory.connect(
+        reserve.incentivePool.id,
+        library.getSigner(),
+      ).getUserIncentive(account);
 
-    return {
-      value: await ERC20__factory.connect(reserve.id, library).balanceOf(
-        account,
-      ),
-      incentive,
-      expectedIncentiveBefore: incentive,
-      expectedIncentiveAfter: incentive,
-      governance: await ERC20__factory.connect(
-        envs.governanceAddress,
-        library,
-      ).balanceOf(account),
-      deposit: await ERC20__factory.connect(
-        reserve.lToken.id,
-        library,
-      ).balanceOf(account),
-    };
+      return {
+        value: await ERC20__factory.connect(reserve.id, library).balanceOf(
+          account,
+        ),
+        incentive,
+        expectedIncentiveBefore: incentive,
+        expectedIncentiveAfter: incentive,
+        governance: await ERC20__factory.connect(
+          envs.governanceAddress,
+          library,
+        ).balanceOf(account),
+        deposit: await ERC20__factory.connect(
+          reserve.lToken.id,
+          library,
+        ).balanceOf(account),
+      };
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const loadBalance = async (index: number) => {
     if (!account) return;
+    try {
+      refetchReserve();
+      refetchUserData();
 
-    refetchReserve();
-    refetchUserData();
-
-    setBalances(
-      await Promise.all(
-        balances.map(async (data, _index) => {
-          if (_index !== index) return data;
-          return {
-            ...data,
-            ...(await fetchBalanceFrom(reserves[index], account)),
-            updatedAt: moment().unix(),
-          };
-        }),
-      ),
-    );
+      setBalances(
+        await Promise.all(
+          balances.map(async (data, _index) => {
+            if (_index !== index) return data;
+            return {
+              ...data,
+              ...(await fetchBalanceFrom(reserves[index], account)),
+              updatedAt: moment().unix(),
+            };
+          }),
+        ),
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const loadBalances = async () => {
@@ -150,7 +167,6 @@ const Dashboard: React.FunctionComponent = () => {
     try {
       refetchReserve();
       refetchUserData();
-
       setBalances(
         await Promise.all(
           reserves.map(async (reserve, index) => {
@@ -163,8 +179,8 @@ const Dashboard: React.FunctionComponent = () => {
           }),
         ),
       );
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.error(error);
       setBalances(
         balances.map((data) => {
           return {
@@ -182,8 +198,10 @@ const Dashboard: React.FunctionComponent = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
+      setPrevTvl(tvlLoading ? 0 : tvl);
       setBalances(
         balances.map((balance, index) => {
+          if (index > 1) return { ...balance };
           return {
             ...balance,
             expectedIncentiveBefore: balance.expectedIncentiveAfter,
@@ -206,7 +224,23 @@ const Dashboard: React.FunctionComponent = () => {
     return () => {
       clearInterval(interval);
     };
-  });
+  }, [tvl, balances]);
+
+  const remoteControlScroll = (ref: string) => {
+    const element = document.getElementById(ref);
+
+    const offset = 338;
+
+    const bodyRect = document.body.getBoundingClientRect().top;
+    const elementRect = element!.getBoundingClientRect().top;
+    const elementPosition = elementRect - bodyRect;
+    const offsetPosition = elementPosition - offset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth',
+    });
+  };
 
   return (
     <>
@@ -214,8 +248,8 @@ const Dashboard: React.FunctionComponent = () => {
         <DepositOrWithdrawModal
           reserve={reserve}
           userData={userConnection?.user}
-          tokenName={ReserveData[selectedModalNumber].name}
-          tokenImage={ReserveData[selectedModalNumber].image}
+          tokenName={reserveTokenData[selectedModalToken].name}
+          tokenImage={reserveTokenData[selectedModalToken].image}
           visible={!!reserve}
           onClose={() => {
             const queryParams = new URLSearchParams(location.search);
@@ -252,210 +286,120 @@ const Dashboard: React.FunctionComponent = () => {
           setTransactionModal(false);
         }}
       />
-      <Header title={t('navigation.deposit_withdraw').toUpperCase()} />
+      <ConnectWalletModal
+        visible={connectWalletModalvisible}
+        onClose={() => {
+          setConnectWalletModalvisible(false);
+        }}
+      />
 
-      <section className="tokens">
-        <Title label={t('dashboard.deposits--header')} />
-        <div className="tokens__table__wrapper">
-          <table className="tokens__table">
-            <thead className="tokens__table__header pc-only">
-              <tr>
-                {[
-                  t('dashboard.asset'),
-                  t('dashboard.deposit_balance'),
-                  t('dashboard.deposit_apy'),
-                  t('dashboard.wallet_balance'),
-                ].map((key, index) => {
-                  return (
-                    <th key={index} style={{ width: index === 0 ? 150 : 228 }}>
-                      <p className="tokens__table__header__column">{key}</p>
-                    </th>
-                  );
-                })}
-              </tr>
-            </thead>
-            <tbody className="tokens__table-body">
-              {balances.map((balance, index) => {
+      <div className="deposit">
+        <div
+          className="deposit__title"
+          style={{
+            backgroundImage:
+              mediaQuery === MediaQuery.PC ? `url(${HeaderCircle})` : '',
+          }}>
+          <p className="montserrat__bold">Total Value Locked</p>
+          <CountUp
+            start={prevTvl}
+            end={tvlLoading ? 0.0 : tvl}
+            formattingFn={(number) => usdFormatter.format(number)}
+            decimals={4}
+            duration={2}
+            delay={0}>
+            {({ countUpRef }) => <h2 className="blue" ref={countUpRef} />}
+          </CountUp>
+        </div>
+        <RewardPlanButton stakingType={'deposit'} />
+        <div className="deposit__table__wrapper">
+          <div className="deposit__remote-control__wrapper">
+            <div className="deposit__remote-control">
+              {balances.map((data, index) => {
                 return (
-                  <>
-                    <TokenTable
-                      key={index}
-                      index={index}
-                      onClick={(e: any) => {
-                        e.preventDefault();
-                        setReserve(reserves[index]);
-                        setModalNumber(index);
-                        ReactGA.modalview('DepositOrWithdraw');
-                      }}
-                      tokenName={ReserveData[index].name}
-                      tokenImage={ReserveData[index].image}
-                      depositBalance={toCompactForBignumber(
-                        balance.deposit || constants.Zero,
-                        ReserveData[index].decimals,
-                      )}
-                      depositBalanceDivValue={toCompactForBignumber(
-                        balance.deposit.mul(
-                          Math.round(index === 0 ? daiPrice : tetherPrice),
-                        ) || constants.Zero,
-                        ReserveData[index].decimals,
-                      )}
-                      depositAPY={toPercent(reserves[index].depositAPY)}
-                      miningAPR={toPercent(
-                        calcMiningAPR(
-                          elfiPrice,
-                          BigNumber.from(reserves[index].totalDeposit),
-                          ReserveData[index].decimals,
-                        ) || '0',
-                      )}
-                      walletBalance={toCompactForBignumber(
-                        balance.value || constants.Zero,
-                        ReserveData[index].decimals,
-                      )}
-                      walletBalanceDivValue={toCompactForBignumber(
-                        balance.value.mul(
-                          Math.round(index === 0 ? daiPrice : tetherPrice),
-                        ) || constants.Zero,
-                        ReserveData[index].decimals,
-                      )}
-                      isDisable={!reserves[index]}
-                      skeletonLoading={balance.loading}
-                    />
-
-                    {/* mobile only */}
-                    <div className="tokens__table__minted mobile-only">
-                      <p>▼</p>
-                      <div
-                        className="content"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setIncentiveModalVisible(true);
-                          ReactGA.modalview('Incentive');
-                        }}>
-                        <div>
-                          <img src={ELFI} alt="Token" />
-                          <p className="spoqa__bold">
-                            {t('dashboard.minted_balance')}
-                          </p>
-                        </div>
-
-                        {balance.loading ? (
-                          <Skeleton width={50} />
-                        ) : (
-                          <div>
-                            <p className="spoqa__bold">
-                              <CountUp
-                                className="spoqa__bold"
-                                start={parseFloat(
-                                  formatEther(balance.expectedIncentiveBefore),
-                                )}
-                                end={parseFloat(
-                                  formatEther(balance.expectedIncentiveAfter),
-                                )}
-                                formattingFn={(number) => {
-                                  return formatSixFracionDigit(number);
-                                }}
-                                decimals={6}
-                                duration={1}
-                              />
-                            </p>
-                            <p className="spoqa div-balance">
-                              <CountUp
-                                className="spoqa div-balance"
-                                start={
-                                  parseFloat(
-                                    formatEther(
-                                      balance.expectedIncentiveBefore,
-                                    ),
-                                  ) * elfiPrice
-                                }
-                                end={
-                                  parseFloat(
-                                    formatEther(balance.expectedIncentiveAfter),
-                                  ) * elfiPrice
-                                }
-                                formattingFn={(number) => {
-                                  return '$ ' + formatSixFracionDigit(number);
-                                }}
-                                decimals={6}
-                                duration={1}
-                              />
-                            </p>
-                          </div>
-                        )}
+                  <a onClick={() => remoteControlScroll(`table-${index}`)}>
+                    <div>
+                      <div className="deposit__remote-control__images">
+                        <img src={reserveTokenData[data.tokenName].image} />
+                      </div>
+                      <div className="deposit__remote-control__name">
+                        <p className="montserrat">{data.tokenName}</p>
+                      </div>
+                      <p className="deposit__remote-control__apy bold">
+                        {toPercent(reserves[index].depositAPY)}
+                      </p>
+                      <div className="deposit__remote-control__mining">
+                        <p>{t('dashboard.token_mining_apr')}</p>
+                        <p>
+                          {toPercent(
+                            calcMiningAPR(
+                              elfiPrice,
+                              BigNumber.from(reserves[index].totalDeposit),
+                              reserveTokenData[data.tokenName].decimals,
+                            ) || '0',
+                          )}
+                        </p>
                       </div>
                     </div>
-                  </>
-                );
-              })}
-            </tbody>
-          </table>
-          <div className="tokens__table__minted pc-only">
-            <p>{t('dashboard.minted_balance')}</p>
-            <div>
-              {balances.map((balance, index) => {
-                return (
-                  <div>
-                    <p>▶</p>
-                    <div
-                      className="content"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setIncentiveModalVisible(true);
-                        setModalNumber(index);
-                        ReactGA.modalview('Incentive');
-                      }}>
-                      <img src={ELFI} alt="Token" />
-                      {balance.loading ? (
-                        <Skeleton width={50} />
-                      ) : (
-                        <div>
-                          <p className="spoqa__bold">
-                            <CountUp
-                              className="spoqa__bold"
-                              start={parseFloat(
-                                formatEther(balance.expectedIncentiveBefore),
-                              )}
-                              end={parseFloat(
-                                formatEther(balance.expectedIncentiveAfter),
-                              )}
-                              formattingFn={(number) => {
-                                return formatSixFracionDigit(number);
-                              }}
-                              decimals={6}
-                              duration={1}
-                            />
-                          </p>
-                          <p className="spoqa div-balance">
-                            <CountUp
-                              className="spoqa div-balance"
-                              start={
-                                parseFloat(
-                                  formatEther(balance.expectedIncentiveBefore),
-                                ) * elfiPrice
-                              }
-                              end={
-                                parseFloat(
-                                  formatEther(balance.expectedIncentiveAfter),
-                                ) * elfiPrice
-                              }
-                              formattingFn={(number) => {
-                                return '$ ' + formatSixFracionDigit(number);
-                              }}
-                              decimals={6}
-                              duration={1}
-                            />
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                  </a>
                 );
               })}
             </div>
           </div>
+          {/* remote control end */}
+
+          {balances.map((balance, index) => {
+            return (
+              <>
+                <TokenTable
+                  key={index}
+                  index={index}
+                  id={`table-${index}`}
+                  onClick={(e: any) => {
+                    walletConnect === false
+                      ? setConnectWalletModalvisible(true)
+                      : (e.preventDefault(),
+                        setReserve(reserves[index]),
+                        setModalNumber(index),
+                        setModalToken(balance.tokenName),
+                        ReactGA.modalview('DepositOrWithdraw'));
+                  }}
+                  tokenName={balance.tokenName}
+                  tokenImage={reserveTokenData[balance.tokenName].image}
+                  depositBalance={toCompactForBignumber(
+                    balance.deposit || constants.Zero,
+                    reserveTokenData[balance.tokenName].decimals,
+                  )}
+                  depositAPY={toPercent(reserves[index].depositAPY)}
+                  miningAPR={toPercent(
+                    calcMiningAPR(
+                      elfiPrice,
+                      BigNumber.from(reserves[index].totalDeposit),
+                      reserveTokenData[balance.tokenName].decimals,
+                    ) || '0',
+                  )}
+                  walletBalance={toCompactForBignumber(
+                    balance.value || constants.Zero,
+                    reserveTokenData[balance.tokenName].decimals,
+                  )}
+                  isDisable={!reserves[index]}
+                  skeletonLoading={balance.loading}
+                  reserveData={reserves[index]}
+                  expectedIncentiveBefore={balance.expectedIncentiveBefore}
+                  expectedIncentiveAfter={balance.expectedIncentiveAfter}
+                  setIncentiveModalVisible={() => {
+                    walletConnect === false
+                      ? setConnectWalletModalvisible(true)
+                      : setIncentiveModalVisible(true);
+                  }}
+                  setModalNumber={() => setModalNumber(index)}
+                  modalview={() => ReactGA.modalview('Incentive')}
+                />
+              </>
+            );
+          })}
         </div>
-        <div style={{ height: 100 }} />
-      </section>
+      </div>
     </>
   );
 };

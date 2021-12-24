@@ -18,6 +18,10 @@ i18n
     interpolation: {
       escapeValue: false,
     },
+    react: {
+      transSupportBasicHtmlNodes: true,
+      transKeepBasicHtmlNodesFor: ['strong', "p", "br", "i"],
+    },
   });
 
 export default i18n;

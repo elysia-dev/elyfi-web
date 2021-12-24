@@ -7,6 +7,7 @@ import TxContext, {
 } from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import { useWeb3React } from '@web3-react/core';
+import ethersJsErrors from 'src/utiles/ethersJsErrors';
 
 const clearLocalStorage = () => {
   window.localStorage.removeItem('@txHash');
@@ -26,19 +27,30 @@ const TxProvider: React.FunctionComponent = (props) => {
   };
 
   const initTransaction = (txStatus: TxStatus, txWaiting: boolean) => {
-    setState({ ...state, txStatus, txWaiting });
+    setState({ ...state, txStatus, txWaiting, error: '' });
   };
 
-  const failTransaction = (tracker: any, onEvent: () => void, e: any) => {
+  const failTransaction = (tracker: any, onEvent: () => void, error: any) => {
     onEvent();
     tracker.canceled();
+
     setState({
       ...state,
       txStatus: TxStatus.FAIL,
       txWaiting: false,
+      error: Number(error.code)
+        ? error.message
+        : ethersJsErrors.includes(error.code)
+        ? error.code
+        : JSON.parse(
+            '{' +
+              error.message.substring(
+                error.message.indexOf('"message"'),
+                error.message.lastIndexOf('}'),
+              ),
+          ).message,
     });
     clearLocalStorage();
-    console.log(e);
   };
 
   const setTransaction = (
@@ -75,12 +87,13 @@ const TxProvider: React.FunctionComponent = (props) => {
           txType: type,
         });
       })
-      .catch(() => {
+      .catch((error) => {
         setState({
           ...state,
           txStatus: TxStatus.FAIL,
           txWaiting: false,
           txType: type,
+          error,
         });
       })
       .finally(() => {
@@ -137,7 +150,7 @@ const TxProvider: React.FunctionComponent = (props) => {
         })
         .catch((e: any) => {
           initTransaction(TxStatus.FAIL, false);
-          console.log(e);
+          console.error(`Transaction is falid`);
         })
         .finally(() => {
           clearLocalStorage();

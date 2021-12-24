@@ -17,7 +17,7 @@ function Guide(props: Props) {
         height: 15,
         borderRadius: 15,
         textAlign: 'center',
-        lineHeight: 1.2,
+        lineHeight: 0.8,
         marginLeft: 11,
         fontSize: 15.5,
         color: '#4C4D72',
@@ -39,6 +39,7 @@ function Guide(props: Props) {
             background: '#fff',
             boxShadow: '0 0 6px rgb(0 0 0/16%)',
             zIndex: 99,
+            lineHeight: 1.5,
             textAlign: 'left',
           }}>
           {props.content}

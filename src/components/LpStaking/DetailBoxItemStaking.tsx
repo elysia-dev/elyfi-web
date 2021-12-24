@@ -1,14 +1,18 @@
+import { useWeb3React } from '@web3-react/core';
 import moment from 'moment';
 import { FunctionComponent } from 'react';
 import { useTranslation } from 'react-i18next';
 import lpStakingTime, { lpRoundDate } from 'src/core/data/lpStakingTime';
 import { DetailBoxItemStakingProps } from 'src/core/types/LpStakingTypeProps';
+import MediaQuery from 'src/enums/MediaQuery';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import Guide from '../Guide';
 import Button from './Button';
 
 const DetailBoxItemStaking: FunctionComponent<DetailBoxItemStakingProps> = (
   props,
 ) => {
+  const { account } = useWeb3React();
   const {
     tokens: { token0, token1 },
     totalStakedLiquidity,
@@ -20,62 +24,65 @@ const DetailBoxItemStaking: FunctionComponent<DetailBoxItemStakingProps> = (
     lpRoundDate[round - 1].startedAt,
     lpRoundDate[round - 1].endedAt,
   );
+  const { value: mediaQuery } = useMediaQueryType();
 
   return (
-    <>
-      <div
-        style={{
-          padding: '19px 25px 22px 29px',
-        }}>
-        <div
-          className="spoqa__bold"
-          style={{
-            paddingBottom: 7,
-            fontSize: 17,
-          }}>
-          {t('lpstaking.lp_token_staked', {
-            token0,
-            token1,
-          })}
-          <Guide content={t('guide.staked_total_amount')} />
-        </div>
-        <div
-          className="spoqa__bold"
-          style={{
-            textAlign: 'right',
-            paddingTop: 19,
-            paddingBottom: 30,
-            fontSize: 30,
-            display: 'flex',
-            alignItems: 'center',
-          }}>
-          <span
-            className="spoqa__bold"
-            style={{
-              fontSize: 25,
-              marginLeft: 'auto',
-              marginRight: 3,
-            }}>
-            {`$ `}
-          </span>
-          {totalStakedLiquidity}
-        </div>
-        <div
-          style={{
-            textAlign: 'center',
-          }}>
-          <Button
-            btnTitle={t('staking.staking')}
-            onHandler={() => isStakingDate && setModalAndSetStakeToken()}
-            disabledBtn={
-              isStakingDate
-                ? undefined
-                : { background: '#f8f8f8', color: '#949494' }
+    mediaQuery === MediaQuery.PC ? (
+      <>
+        <div className="staking__lp__detail-box__staking__header">
+          <div>
+            <p>
+            {t('lpstaking.lp_token_staked', {
+              token0,
+              token1,
+            })}
+            </p>
+            <Guide content={t('guide.staked_total_amount')} />
+          </div>
+          <div
+            onClick={() =>
+              isStakingDate && account && setModalAndSetStakeToken()
             }
-          />
+            className={`staking__lp__detail-box__staking__button ${!isStakingDate ? "disable" : ""}`}
+          >
+            <p>
+              {t('staking.staking')}
+            </p>
+          </div>
         </div>
-      </div>
-    </>
+        <div className="staking__lp__detail-box__staking__value">
+          <h2 className="amount">
+          {account ? totalStakedLiquidity : 0}
+          </h2>
+        </div>
+      </>
+    ) : (
+      <>
+        <div className="staking__lp__detail-box__staking__header">
+          <div>
+            <p>
+            {t('lpstaking.lp_token_staked', {
+              token0,
+              token1,
+            })}
+            </p>
+            <Guide content={t('guide.staked_total_amount')} />
+          </div>
+        </div>
+        <div className="staking__lp__detail-box__staking__value">
+          <h2 className="amount">
+          {account ? totalStakedLiquidity : 0}
+          </h2>
+        </div>
+        <div
+          onClick={() => isStakingDate && account && setModalAndSetStakeToken()}
+          className={`staking__lp__detail-box__staking__button ${
+            !isStakingDate || !account ? 'disable' : ''
+          }`}>
+          <p>{t('staking.staking')}</p>
+        </div>
+      </>
+    )
   );
 };
 

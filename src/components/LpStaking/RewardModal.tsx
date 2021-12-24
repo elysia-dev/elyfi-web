@@ -8,6 +8,7 @@ import dai from 'src/assets/images/dai.png';
 import { formatSixFracionDigit } from 'src/utiles/formatters';
 import useClaimReward from 'src/hooks/useClaimReward';
 import { LpRewardModalProps } from 'src/core/types/RewardTypes';
+import ModalHeader from '../ModalHeader';
 
 const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
   visible,
@@ -18,8 +19,12 @@ const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
   const { txWaiting } = useContext(TxContext);
   const claim = useClaimReward();
 
-  const receiveRewardHandler = () => {
-    claim();
+  const receiveRewardHandler = async () => {
+    try {
+      await claim();
+    } catch (error) {
+      alert(error);
+    }
   };
 
   useEffect(() => {
@@ -29,60 +34,51 @@ const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
   }, [txWaiting]);
 
   return (
-    <div className="modal" style={{ display: visible ? 'block' : 'none' }}>
+    <div className="modal modal__lp__reward" style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
-        <div className="modal__header">
-          <div className="modal__header__token-info-wrapper">
-            <div className="modal__header__name-wrapper">
-              <p className="modal__header__name spoqa__bold">
-                {t('lpstaking.receive_reward')}
-              </p>
-            </div>
-          </div>
-          <div
-            className="close-button"
-            onClick={() => {
-              closeHandler();
-            }}>
-            <div className="close-button--1">
-              <div className="close-button--2" />
-            </div>
-          </div>
-        </div>
-        <div className="lptoken_reward_Modal_body">
-          <div className="spoqa__bold">
+        <ModalHeader
+          title={t('lpstaking.receive_reward')}
+          onClose={() => closeHandler()}
+        />
+        <div className="modal__lp__reward__container">
+          <div>
             <div>
               <img src={elfi} />
-              {Token.ELFI}
+              <h2>
+                {Token.ELFI}
+              </h2>
             </div>
-            <div className="lp_reward_elfi">
+            <h2>
               {formatSixFracionDigit(rewardToReceive.elfiReward)}
-              <div>{Token.ELFI}</div>
-            </div>
+              <span className="bold">
+                {Token.ELFI}
+              </span>
+            </h2>
           </div>
-          <div className="spoqa__bold">
+          
+          <div>
             <div>
               <img src={eth} />
-              {Token.ETH}
+              <h2>
+                {Token.ETH}
+              </h2>
             </div>
-            <div className="lp_reward_eth">
+            <h2>
               {formatSixFracionDigit(rewardToReceive.ethReward)}
-              <div>{Token.ETH}</div>
-            </div>
+              <span className="bold">{Token.ETH}</span>
+            </h2>
           </div>
-          <div
-            className="spoqa__bold"
-            style={{
-              marginBottom: 0,
-            }}>
+          <div>
             <div>
               <img src={dai} />
-              {Token.DAI}
+              <h2>
+                {Token.DAI}
+              </h2>
             </div>
-            <div className="lp_reward_dai">
+            <h2>
               {formatSixFracionDigit(rewardToReceive.daiReward)}
-              <div>{Token.DAI}</div>
-            </div>
+              <span>{Token.DAI}</span>
+            </h2>
           </div>
         </div>
         <div>
