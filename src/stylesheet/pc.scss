@@ -1,14 +1,14 @@
 $font-color: #333333;
 $sub-font-color: #646464;
-$elysia-color: #00A7FF;
-$background-color: #FFFFFF;
-$gray-line: #F0F0F1;
+$elysia-color: #00a7ff;
+$background-color: #ffffff;
+$gray-line: #f0f0f1;
 $gray-font-color: #888888;
 $loan-list-size: 315px;
 $navigation-margin-height: 100px;
 
-$governance-progress-00: #0099CC;
-$governance-progress-01: #CC0000;
+$governance-progress-00: #0099cc;
+$governance-progress-01: #cc0000;
 $governance-progress-02: #888888;
 
 $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
@@ -16,10 +16,11 @@ $device-width: 1190px;
 
 @mixin page-container {
   width: $device-width;
-  margin: 0 auto; 
+  margin: 0 auto;
 }
 
 .view-w {
+  background: none;
   .mobile-only {
     display: none;
   }
@@ -138,6 +139,7 @@ $device-width: 1190px;
         }
         &__container {
           margin-top: 130px;
+          margin-bottom: 130px;
           > div {
             width: 500px;
             margin-bottom: 110px;
@@ -159,7 +161,6 @@ $device-width: 1190px;
         }
       }
       &__service {
-
         &__graph {
           &--circle {
             display: flex;
@@ -180,9 +181,11 @@ $device-width: 1190px;
           &--section01 {
             display: flex;
             height: 200px;
-            &--01, &--03, &--05 {
+            &--01,
+            &--03,
+            &--05 {
               > div {
-                background-color: #FFFFFF;
+                background-color: #ffffff;
                 border: 1px solid $elysia-color;
                 width: 200px;
                 height: 200px;
@@ -240,8 +243,8 @@ $device-width: 1190px;
                 > div {
                   flex: 2;
                   height: 100%;
-                  &:nth-child(3) { 
-                    flex: .5;
+                  &:nth-child(3) {
+                    flex: 0.5;
                   }
                   &:last-child {
                     // border-left: 1px dashed $elysia-color;
@@ -255,7 +258,7 @@ $device-width: 1190px;
               }
               &--02 {
                 > div {
-                  background-color: #FFFFFF;
+                  background-color: #ffffff;
                   border: 1px solid $elysia-color;
                   width: 200px;
                   height: 200px;
@@ -313,14 +316,13 @@ $device-width: 1190px;
         }
         &__lawfirm {
           display: grid;
-          grid-template-columns: repeat(3,1fr);
+          grid-template-columns: repeat(3, 1fr);
           grid-template-rows: 1fr;
           width: 100%;
           gap: 30px 20px;
           align-items: flex-start;
           justify-items: center;
           margin-top: 80px;
-          
         }
       }
       &__governance {
@@ -330,6 +332,7 @@ $device-width: 1190px;
         &__table {
           width: $device-width;
           margin-top: 50px;
+          background: #ffffff;
           > hr {
             margin-top: 10px;
             margin-bottom: 10px;
@@ -369,8 +372,6 @@ $device-width: 1190px;
         }
       }
     }
-
-
 
     .footer {
       > div {
