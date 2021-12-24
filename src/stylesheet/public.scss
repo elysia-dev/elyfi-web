@@ -164,6 +164,9 @@ span {
         background-color: #f0f0f1;
       }
     }
+    &__address {
+      display: inline-flex;
+    }
     &__wallet {
       display: inline-flex;
       background: #00bfff 0% 0%;
