@@ -185,14 +185,14 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
           <div className="reward__token__data">
             <SmallProgressBar
               start={
-                firstTokenValue.start[currentSwipe] <= 0
+                firstTokenValue.start[selectedRound] <= 0
                   ? 0
-                  : firstTokenValue.start[currentSwipe]
+                  : firstTokenValue.start[selectedRound]
               }
               end={
-                firstTokenValue.end[currentSwipe] <= 0
+                firstTokenValue.end[selectedRound] <= 0
                   ? 0
-                  : firstTokenValue.end[currentSwipe]
+                  : firstTokenValue.end[selectedRound]
               }
               rewardOrMining={'mining'}
               totalMiningValue={firstTokenValue.total
@@ -203,24 +203,24 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
             />
             <RewardDetailInfo
               start={
-                firstTokenValue.start[currentSwipe] <= 0
+                firstTokenValue.start[selectedRound] <= 0
                   ? 0
-                  : firstTokenValue.start[currentSwipe]
+                  : firstTokenValue.start[selectedRound]
               }
               end={
-                firstTokenValue.end[currentSwipe] <= 0
+                firstTokenValue.end[selectedRound] <= 0
                   ? 0
-                  : firstTokenValue.end[currentSwipe]
+                  : firstTokenValue.end[selectedRound]
               }
               miningStart={
-                firstTokenValue.start[currentSwipe] <= 0
+                firstTokenValue.start[selectedRound] <= 0
                   ? 0
-                  : firstTokenValue.total - firstTokenValue.start[currentSwipe]
+                  : firstTokenValue.total - firstTokenValue.start[selectedRound]
               }
               miningEnd={
-                firstTokenValue.end[currentSwipe] <= 0
+                firstTokenValue.end[selectedRound] <= 0
                   ? 0
-                  : firstTokenValue.total - firstTokenValue.end[currentSwipe]
+                  : firstTokenValue.total - firstTokenValue.end[selectedRound]
               }
               miningDescription={miningElfiDescription}
               unit={token0}
@@ -229,14 +229,14 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
           <div className="reward__token__data">
             <SmallProgressBar
               start={
-                secondTokenValue.start[currentSwipe] <= 0
+                secondTokenValue.start[selectedRound] <= 0
                   ? 0
-                  : secondTokenValue.start[currentSwipe]
+                  : secondTokenValue.start[selectedRound]
               }
               end={
-                secondTokenValue.end[currentSwipe] <= 0
+                secondTokenValue.end[selectedRound] <= 0
                   ? 0
-                  : secondTokenValue.end[currentSwipe]
+                  : secondTokenValue.end[selectedRound]
               }
               rewardOrMining={'reward'}
               totalMiningValue={
@@ -255,25 +255,25 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
             />
             <RewardDetailInfo
               start={
-                secondTokenValue.start[currentSwipe] <= 0
+                secondTokenValue.start[selectedRound] <= 0
                   ? 0
-                  : secondTokenValue.start[currentSwipe]
+                  : secondTokenValue.start[selectedRound]
               }
               end={
-                secondTokenValue.end[currentSwipe] <= 0
+                secondTokenValue.end[selectedRound] <= 0
                   ? 0
-                  : secondTokenValue.end[currentSwipe]
+                  : secondTokenValue.end[selectedRound]
               }
               miningStart={
-                secondTokenValue.start[currentSwipe] <= 0
+                secondTokenValue.start[selectedRound] <= 0
                   ? 0
                   : secondTokenValue.total -
-                    secondTokenValue.start[currentSwipe]
+                    secondTokenValue.start[selectedRound]
               }
               miningEnd={
-                secondTokenValue.end[currentSwipe] <= 0
+                secondTokenValue.end[selectedRound] <= 0
                   ? 0
-                  : secondTokenValue.total - secondTokenValue.end[currentSwipe]
+                  : secondTokenValue.total - secondTokenValue.end[selectedRound]
               }
               miningDescription={miningDescription}
               unit={token1}
