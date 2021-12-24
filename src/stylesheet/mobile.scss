@@ -3,15 +3,15 @@ $footer-height: 100px;
 
 $font-color: #333333;
 $sub-font-color: #646464;
-$elysia-color: #00A7FF;
-$background-color: #FFFFFF;
-$gray-line: #F0F0F1;
+$elysia-color: #00a7ff;
+$background-color: #ffffff;
+$gray-line: #f0f0f1;
 $gray-font-color: #888888;
 $loan-list-size: 315px;
 $navigation-margin-height: 100px;
 
-$governance-progress-00: #0099CC;
-$governance-progress-01: #CC0000;
+$governance-progress-00: #0099cc;
+$governance-progress-01: #cc0000;
 $governance-progress-02: #888888;
 
 $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
@@ -22,6 +22,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 }
 
 .view-m {
+  background: none;
   min-width: #{$device-width};
   min-height: calc(100vh - #{$footer-height});
   .pc-only {
@@ -149,7 +150,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     &__margin {
       margin-bottom: 30px;
     }
-  } // navigation end 
+  } // navigation end
 
   .main {
     @include page-container;
@@ -228,7 +229,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           > p {
             font-size: 23px;
             line-height: 32px;
-            strong { 
+            strong {
               font-size: 23px;
             }
           }
@@ -238,7 +239,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         margin-top: 25px;
         font-size: 12px !important;
         line-height: 20px !important;
-        margin-bottom: 20px;  
+        margin-bottom: 20px;
       }
       &__image-container {
         > img {
@@ -331,10 +332,12 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
                 height: 50px;
               }
             }
-            &--01, &--02 {
+            &--01,
+            &--02 {
               > div {
-                flex: .5;
-                &:first-child, &:last-child {
+                flex: 0.5;
+                &:first-child,
+                &:last-child {
                   flex: 2;
                   display: flex;
                   align-items: center;
@@ -380,8 +383,9 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           &--01 {
             display: flex;
             > div {
-              flex: .5;
-              &:first-child, &:last-child {
+              flex: 0.5;
+              &:first-child,
+              &:last-child {
                 flex: 2;
                 display: flex;
                 align-items: center;
@@ -484,7 +488,6 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       }
     }
   }
-
 
   // .header {
   //   min-width: 360px;
