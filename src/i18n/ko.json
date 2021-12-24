@@ -250,7 +250,9 @@
       "loan_list_plural": "대출리스트 ({{ count }} 건)",
       "loan_list__content": "거버넌스(DAO)에서 통과해서 엘리파이에 DAI로 실행된 대출 리스트입니다.",
       "onchain_list_zero": "현재 진행중인 온체인 투표가 없습니다.",
-      "offchain_list_zero": "현재 진행중인 데이터 검증 투표가 없습니다."
+      "offchain_list_zero": "현재 진행중인 데이터 검증 투표가 없습니다.",
+      "forum_button": "ELYFI 포럼으로 이동하기",
+      "onChain_tally_button": "Tally로 이동하기"
     },
     "staking": {
       "staking__token": "{{ token }} 스테이킹",

@@ -249,7 +249,9 @@
       "loan_list_plural": "Loan list ({{ count }} cases)",
       "loan_list__content": "List of loans that have passed in governance(DAO) and executed as DAI in ELYFI.",
       "onchain_list_zero": "There are currently no on-chain votes in progress.",
-      "offchain_list_zero": "There are currently no data verification votes in progress."
+      "offchain_list_zero": "There are currently no data verification votes in progress.",
+      "forum_button": "Go to ELYFI Forum",
+      "onChain_tally_button": "Go to Tally"
     },
 
     "staking": {
