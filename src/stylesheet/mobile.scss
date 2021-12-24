@@ -1448,8 +1448,10 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         padding: 5px 10px;
         margin-top: 15px;
         margin-bottom: 100px;
-        > p {
-          font-size: 12px;
+        > a { 
+          > p {
+            font-size: 12px;
+          }
         }
       }
       &__content {
