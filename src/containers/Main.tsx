@@ -381,11 +381,7 @@ const Main = () => {
       />
       <div className="main root-container">
         <section className="main__title main__section">
-          <div
-            onMouseMove={(e) => {
-              console.log(e.pageY);
-            }}
-            className="main__title__container">
+          <div className="main__title__container">
             <div className="main__title__text-container">
               <p>
                 <Trans i18nKey="main.landing.header__title" />
