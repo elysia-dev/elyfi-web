@@ -54,10 +54,12 @@ const useStakingRoundData = (
       });
 
       // ELFI 스테이킹풀의 경우 3 round부터 v2로 바뀜
-      let currentRound = round + 1;
+      let currentRound = round;
       if (round >= 2 && stakedToken === Token.ELFI) currentRound -= 2;
       try {
-        const res = await stakingPool.getPoolData(currentRound);
+        const res = await stakingPool.getPoolData(
+          (currentRound + 1).toString(),
+        );
 
         setState({
           totalPrincipal: res.totalPrincipal,
