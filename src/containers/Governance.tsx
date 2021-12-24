@@ -359,7 +359,21 @@ const Governance = () => {
                 ).length,
               })}
             </h3>
-            <p>{t('governance.data_verification__content')}</p>
+            <div>
+              <p>{t('governance.data_verification__content')}</p>
+              <a
+                href="https://forum.elyfi.world/"
+                target="_blank"
+                rel="noopener noreferer">
+                <div
+                  className="deposit__table__body__amount__button"
+                  style={{
+                    width: 230,
+                  }}>
+                  <p>{t('governance.forum_button')}</p>
+                </div>
+              </a>
+            </div>
           </div>
           {offChainLoading ? (
             <Skeleton width={'100%'} height={600} />
@@ -385,7 +399,21 @@ const Governance = () => {
             <h3>
               {t('governance.on_chain_voting', { count: onChainData.length })}
             </h3>
-            <p>{t('governance.on_chain_voting__content')}</p>
+            <div>
+              <p>{t('governance.on_chain_voting__content')}</p>
+              <a
+                href="https://www.withtally.com/governance/elyfi"
+                target="_blank"
+                rel="noopener noreferer">
+                <div
+                  className="deposit__table__body__amount__button"
+                  style={{
+                    width: 230,
+                  }}>
+                  <p>{t('governance.onChain_tally_button')}</p>
+                </div>
+              </a>
+            </div>
           </div>
           {onChainLoading ? (
             <Skeleton width={'100%'} height={600} />
