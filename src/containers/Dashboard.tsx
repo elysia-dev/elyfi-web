@@ -1,10 +1,7 @@
 import { useWeb3React } from '@web3-react/core';
 import ReserveData, { reserveTokenData } from 'src/core/data/reserves';
 import { useEffect, useContext, useState } from 'react';
-import {
-  toPercent,
-  toCompactForBignumber,
-} from 'src/utiles/formatters';
+import { toPercent, toCompactForBignumber } from 'src/utiles/formatters';
 import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
 import ReservesContext from 'src/contexts/ReservesContext';
 import { BigNumber, constants } from 'ethers';
@@ -201,7 +198,7 @@ const Dashboard: React.FunctionComponent = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setPrevTvl(tvl);
+      setPrevTvl(tvlLoading ? 0 : tvl);
       setBalances(
         balances.map((balance, index) => {
           if (index > 1) return { ...balance };
@@ -297,13 +294,16 @@ const Dashboard: React.FunctionComponent = () => {
       />
 
       <div className="deposit">
-        <div className="deposit__title" style={{ backgroundImage: mediaQuery === MediaQuery.PC ? `url(${HeaderCircle})` : "" }}>
-          <p className="montserrat__bold">
-            Total Value Locked
-          </p>
+        <div
+          className="deposit__title"
+          style={{
+            backgroundImage:
+              mediaQuery === MediaQuery.PC ? `url(${HeaderCircle})` : '',
+          }}>
+          <p className="montserrat__bold">Total Value Locked</p>
           <CountUp
             start={prevTvl}
-            end={tvl}
+            end={tvlLoading ? 0.0 : tvl}
             formattingFn={(number) => usdFormatter.format(number)}
             decimals={4}
             duration={2}
