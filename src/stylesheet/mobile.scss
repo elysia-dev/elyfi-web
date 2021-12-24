@@ -294,6 +294,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     }
     &__content {
       flex-direction: column;
+      width: $device-width;
       > div {
         > h2 {
           margin-top: 20vh;
@@ -317,13 +318,162 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         margin-bottom: 20px;  
       }
       &__image-container {
-        > img {
-          width: $device-width;
+        height: 500px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        &--01 {
+          &--01 {
+            top: 100px;
+            position: relative;
+            $pit-height: 292px;
+            > img {
+              object-fit: scale-down;
+            }
+            .pit {
+              width: $device-width;
+              height: $pit-height;
+              top: calc(#{$pit-height} / 2 * -1);
+              position: absolute;
+            }
+            .bottom {
+              width: $device-width;
+              position: relative;
+              z-index: 3;
+            }
+          }
+          .token-low {
+            width: $device-width;
+            position: relative;
+            z-index: 2;
+            margin-bottom: -60px;
+            animation-duration: 15s;
+            animation-name: DownFade--mobile;
+            animation-iteration-count: infinite;
+  
+          }
+          .token-many {
+            position: relative;
+            z-index: 2;
+            margin-top: -210px;
+            animation-duration: 15s;
+            animation-name: UpFade--mobile;
+            animation-iteration-count: infinite;
+            width: $device-width;
+          }
+        }
+        &--02 {
+          position: relative;
+          .asset-image {
+            width: $device-width;
+          }
+          .coin {
+            position: absolute;
+            top: 40px;
+            left: 30px;
+            animation-duration: 6s;
+            animation-name: floatingImage;
+            animation-iteration-count: infinite;
+            width: 120px;
+          }
+          .pit {
+            position: absolute;
+            bottom: -35px;
+            left: -20px;
+          }
+        }
+        &--03 {
+          position: relative;
+          .governance--image {
+            width: $device-width;
+          }
+          > div {
+            position: absolute;
+            right: 0;
+            top: -100px;
+            .paper--o {
+              left: 0px;
+              position: relative;
+              z-index: 2;
+              animation-delay: 1s;
+              animation-duration: 6s;
+              animation-name: floatingImage;
+              animation-iteration-count: infinite;
+              width: 60px;
+            }
+            .paper--x {
+              top: 20px;
+              position: relative;
+              z-index: 3;
+              animation-duration: 6s;
+              animation-name: floatingImage;
+              animation-iteration-count: infinite;
+              width: 60px;
+            }
+          }
+          .pit {
+            position: absolute;
+            right: 0;
+            width: 130px;
+          }
+        }
+      }
+      @keyframes floatingImage {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(40px);
+        }
+      }
+      @keyframes DownFade--mobile {
+        0% {
+          transform: translateY(0px);
+          opacity: 0.0;
+        }
+        10% {
+          transform: translateY(40px);
+          opacity: 1;
+        }
+        30% {
+          transform: translateY(362px);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(362px);
+        }
+      }
+      @keyframes UpFade--mobile {
+        0% {
+          transform: translateY(80px);
+          opacity: 1;
+        }
+        30% {
+          transform: translateY(80px);
+        }
+        60% {
+          transform: translateY(-200px);
+        }
+        70% {
+          transform: translateY(-190px);
+        }
+        80% {
+          transform: translateY(-200px);
+        }
+        90% {
+          transform: translateY(-190px);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-200px);
+          opacity: 0.0;
         }
       }
       &__button {
         width: $device-width;
         height: 50px;
+        position: relative;
+        z-index: 4;
         > p {
           line-height: 50px;
           font-size: 15px;
@@ -1083,24 +1233,31 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       }
     }
     &__elyfi-graph {
-      padding: 30px;
-      margin-bottom: 80px;
+      padding: 10px;
+      margin-bottom: 50px;
       > div {
         &:first-child {
           > div {
             border-radius: 15px;
-            height: 50px;
+            height: 30px;
             > p {
-              line-height: 50px;
+              line-height: 30px;
+              font-size: 12px;
             }
           }
+        }
+        > div {
+          > p {
+            font-size: 12px; 
+           }
         }
         &:last-child {
           > div {
             border-radius: 15px;
-            height: 50px;
+            height: 30px;
             > p {
-              line-height: 50px;
+              line-height: 30px;
+              font-size: 12px;
             }
           }
         }

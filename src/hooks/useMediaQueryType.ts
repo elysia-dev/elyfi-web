@@ -6,11 +6,12 @@ const useMediaQueryType = (): { value: MediaQuery } => {
   const isPc = useMediaQuery({
     query: '(min-width: 1190px)',
   });
-  const isTablet = useMediaQuery({
-    query: '(min-width: 768px) and (max-width: 1189px)',
-  });
+  const isTablet = false;
+  // useMediaQuery({
+  //   // query: '(min-width: 768px) and (max-width: 1189px)',
+  // });
   const isMobile = useMediaQuery({
-    query: '(max-width: 767px)',
+    query: '(max-width: 1189px)',
   });
 
   const setMediaQuery = () => {

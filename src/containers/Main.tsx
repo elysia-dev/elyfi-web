@@ -21,6 +21,7 @@ import { useTranslation, Trans } from 'react-i18next';
 import MainContent from 'src/components/MainContent';
 import MainGraph from 'src/components/MainGraph';
 import LanguageType from 'src/enums/LanguageType';
+import MainAnimation from 'src/components/MainAnimation';
 
 const Main = () => {
   const { t } = useTranslation();
@@ -28,15 +29,15 @@ const Main = () => {
   const { lng } = useParams<{ lng: string }>();
   const sectionEvent = [
     {
-      image: AssetDom,
+      image: MainAnimation(0),
       link: `/${lng}/rewardplan/deposit`,
     },
     {
-      image: AssetDom,
+      image: MainAnimation(1),
       link: `/${lng}/dashboard`,
     },
     {
-      image: AssetDom,
+      image: MainAnimation(2),
       link: `/${lng}/governance`,
     },
   ];
@@ -90,6 +91,7 @@ const Main = () => {
       {sectionEvent.map((_data, _index) => {
         return <MainContent index={_index} data={_data} />;
       })}
+
       <section className="main__advantages main__section">
         <h2>
           <Trans i18nKey={'main.advantages.header'} />

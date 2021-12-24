@@ -7,7 +7,7 @@ import MediaQuery from 'src/enums/MediaQuery';
 const MainContent: React.FunctionComponent<{
   index: number,
   data: {
-    image: string,
+    image: () => JSX.Element,
     link: string
   }
 }> = ({ index, data }) => {
@@ -17,13 +17,12 @@ const MainContent: React.FunctionComponent<{
 
   const { value: mediaQuery } = useMediaQueryType();
 
-
   return (
     <div className="main__section">
       {
         (!(index % 2) && mediaQuery !== MediaQuery.Mobile) ? (
           <div className="main__content__image-container">
-            <img src={data.image} /> 
+            {data.image()}
           </div>
         ) : 
           <></>
@@ -46,7 +45,7 @@ const MainContent: React.FunctionComponent<{
           {
             mediaQuery === MediaQuery.Mobile && (
               <div className="main__content__image-container">
-                <img src={data.image} /> 
+                {data.image()}
               </div>
             )
           }
@@ -60,7 +59,7 @@ const MainContent: React.FunctionComponent<{
       {
         (index % 2 && mediaQuery !== MediaQuery.Mobile)? (
           <div className="main__content__image-container">
-            <img src={data.image} /> 
+            {data.image()}
           </div>
         ) : 
           <></>

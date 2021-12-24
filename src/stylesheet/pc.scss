@@ -41,7 +41,7 @@ $device-width: 1190px;
         .dom {
           top: -50px;
           z-index: 1;
-          animation: floating alternate 10s ease-in-out infinite;
+          animation: floating alternate 4s ease-in-out infinite;
         }
         .pit {
           top: 200px;
@@ -98,11 +98,153 @@ $device-width: 1190px;
         flex: 2;
         &__image-container {
           flex: 1;
+          height: 800px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          &--01 {
+            &--01 {
+              top: 100px;
+              position: relative;
+              $pit-height: 292px;
+              > img {
+                object-fit: none;
+              }
+              .pit {
+                height: $pit-height;
+                top: calc(#{$pit-height} / 2 * -1);
+                position: absolute;
+              }
+              .bottom {
+                position: relative;
+                z-index: 3;
+              }
+            }
+            .token-low {
+              position: relative;
+              z-index: 2;
+              margin-bottom: -60px;
+              animation-duration: 15s;
+              animation-name: DownFade;
+              animation-iteration-count: infinite;
+              width: 513px;
+    
+            }
+            .token-many {
+              position: relative;
+              z-index: 2;
+              margin-top: -210px;
+              animation-duration: 15s;
+              animation-name: UpFade;
+              animation-iteration-count: infinite;
+              width: 513px;
+            }
+          }
+          &--02 {
+            position: relative;
+            .coin {
+              position: absolute;
+              top: 100px;
+              left: 10px;
+              animation-duration: 6s;
+              animation-name: floatingImage;
+              animation-iteration-count: infinite;
+            }
+            .pit {
+              position: absolute;
+              bottom: -35px;
+              left: -20px;
+            }
+          }
+          &--03 {
+            position: relative;
+            .governance--image {
+              width: 515px;
+            }
+            > div {
+              position: absolute;
+              right: 0;
+              top: -150px;
+              .paper--o {
+                left: 50px;
+                position: relative;
+                z-index: 2;
+                animation-delay: 1s;
+                animation-duration: 6s;
+                animation-name: floatingImage;
+                animation-iteration-count: infinite;
+              }
+              .paper--x {
+                top: 20px;
+                position: relative;
+                z-index: 3;
+                animation-duration: 6s;
+                animation-name: floatingImage;
+                animation-iteration-count: infinite;
+              }
+            }
+            .pit {
+              position: absolute;
+              right: 0;
+            }
+          }
         }
+          @keyframes floatingImage {
+            0% {
+              transform: translateY(0px);
+            }
+            50% {
+              transform: translateY(40px);
+            }
+          }
+          @keyframes DownFade {
+            0% {
+              transform: translateY(0px);
+              opacity: 0.0;
+            }
+            10% {
+              transform: translateY(40px);
+              opacity: 1;
+            }
+            30% {
+              transform: translateY(500px);
+              opacity: 1;
+            }
+            100% {
+              transform: translateY(500px);
+            }
+          }
+          @keyframes UpFade {
+            0% {
+              transform: translateY(0px);
+              opacity: 1;
+            }
+            30% {
+              transform: translateY(0px);
+            }
+            60% {
+              transform: translateY(-400px);
+            }
+            70% {
+              transform: translateY(-380px);
+            }
+            80% {
+              transform: translateY(-400px);
+            }
+            90% {
+              transform: translateY(-380px);
+              opacity: 1;
+            }
+            100% {
+              transform: translateY(-400px);
+              opacity: 0.0;
+            }
+          }
         > div {
           &:first-child {
             > h2 {
               font-size: 40px;
+              margin-left: 25px;
               margin-right: 25px;
             }
           }
