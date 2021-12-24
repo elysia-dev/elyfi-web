@@ -18,7 +18,7 @@
   "ethElfiPoolAddress": "0xc311faebe8802f9cfc91284016d1de9537ec66b7",
   "lpTokenStakingStartTime": 1636106400,
   "lpTokenStakingEndTime": 1639562400,
-  "stakerSubgraphURL": "https://api.studio.thegraph.com/query/862/lp-staking/v0.0.1",
+  "stakerSubgraphURL": "https://api.studio.thegraph.com/query/862/lp-staking-elyfi/v0.0.8",
   "lpTokenPoolSubgraphURL": "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3",
   "refundedAddress": "0x23b062F33ed93EE8C8e658e609dbd80797DFdA89",
   "appURI": "https://app.elyfi.world",
