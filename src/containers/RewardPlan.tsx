@@ -1,12 +1,14 @@
 import { constants, utils } from 'ethers';
 import moment from 'moment';
 import envs from 'src/core/envs';
+import wave from 'src/assets/images/wave_elyfi.png';
 import {
   FunctionComponent,
   useCallback,
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
@@ -55,6 +57,7 @@ const RewardPlan: FunctionComponent = () => {
   const { stakingType } = useParams<{ stakingType: string }>();
   const history = useHistory();
   const { latestPrice, ethPool, daiPool } = useContext(UniswapPoolContext);
+  const tokenRef = useRef<HTMLParagraphElement>(null);
   const { ethPrice } = useContext(PriceContext);
   const { reserves } = useContext(ReservesContext);
   const current = moment();
@@ -178,7 +181,6 @@ const RewardPlan: FunctionComponent = () => {
     });
   };
 
-
   // total value of the steak in the pool.
   const calcTotalStakedLpToken = useCallback(() => {
     const daiElfiPoolTotalLiquidity =
@@ -264,7 +266,22 @@ const RewardPlan: FunctionComponent = () => {
 
   return (
     <>
-      <div className="reward">
+      <img
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: tokenRef.current
+            ? stakingType === 'LP'
+              ? tokenRef.current?.offsetTop + 120
+              : tokenRef.current?.offsetTop + 180
+            : 0,
+          width: '100%',
+          zIndex: -1,
+        }}
+        src={wave}
+        alt={wave}
+      />
+      <div ref={tokenRef} className="reward">
         {stakingType === 'deposit' ? (
           <div className="component__text-navigation">
             <p onClick={() => onClickHandler()} className="pointer">
@@ -310,8 +327,7 @@ const RewardPlan: FunctionComponent = () => {
               token0={'ELFI'}
               firstTokenValue={{
                 total: ELFI_REWARD_PER_POOL,
-                start:
-                  amountData.beforeElfiRewardByLp,
+                start: amountData.beforeElfiRewardByLp,
                 end: amountData.elfiRewardByLp,
               }}
               token1={'ETH'}
@@ -320,17 +336,14 @@ const RewardPlan: FunctionComponent = () => {
                   lpStakingRound.ethElfiRound === 1
                     ? ETH_REWARD_PER_POOL_2
                     : ETH_REWARD_PER_POOL,
-                start:
-                  amountData.beforeEthRewardByLp,
+                start: amountData.beforeEthRewardByLp,
                 end: amountData.ethRewardByLp,
               }}
               currentRound={currentPhase}
               selectedRound={lpStakingRound.ethElfiRound}
               lpStakingRound={lpStakingRound}
               setLpStakingRound={setLpStakingRound}
-              ethReward={
-                [ETH_REWARD_PER_POOL, ETH_REWARD_PER_POOL_2]
-              }
+              ethReward={[ETH_REWARD_PER_POOL, ETH_REWARD_PER_POOL_2]}
             />
             <LpStakingBox
               index={1}
@@ -339,15 +352,13 @@ const RewardPlan: FunctionComponent = () => {
               token0={'ELFI'}
               firstTokenValue={{
                 total: ELFI_REWARD_PER_POOL,
-                start:
-                  amountData.beforeElfiRewardByLp,
+                start: amountData.beforeElfiRewardByLp,
                 end: amountData.elfiRewardByLp,
               }}
               token1={'DAI'}
               secondTokenValue={{
                 total: DAI_REWARD_PER_POOL,
-                start:
-                  amountData.beforeDaiRewardByLp,
+                start: amountData.beforeDaiRewardByLp,
                 end: amountData.daiRewardByLp,
               }}
               currentRound={currentPhase}
@@ -365,12 +376,8 @@ const RewardPlan: FunctionComponent = () => {
               poolPrincipal={elfiPoolPrincipal}
               staking={state.currentElfiLevel}
               unit={'DAI'}
-              start={
-                amountData.beforeDaiRewardByElFiStakingPool
-              }
-              end={
-                amountData.daiRewardByElFiStakingPool
-              }
+              start={amountData.beforeDaiRewardByElFiStakingPool}
+              end={amountData.daiRewardByElFiStakingPool}
               state={state}
               setState={setState}
               OrdinalNumberConverter={ordinalNumberConverter}
@@ -389,9 +396,7 @@ const RewardPlan: FunctionComponent = () => {
               end={totalMintedByElStakingPool}
               state={state}
               setState={setState}
-              miningStart={
-                amountData.beforeMintedByElStakingPool
-              }
+              miningStart={amountData.beforeMintedByElStakingPool}
               miningEnd={amountData.mintedByElStakingPool}
               currentPhase={currentPhase}
               OrdinalNumberConverter={ordinalNumberConverter}

@@ -1,9 +1,10 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants, ethers, utils } from 'ethers';
-import { useEffect, useContext, useState, useCallback } from 'react';
+import { useEffect, useContext, useState, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from 'src/components/Header';
 import PriceContext from 'src/contexts/PriceContext';
+import wave from 'src/assets/images/wave_elyfi.png';
 import envs from 'src/core/envs';
 import StakedLp from 'src/components/LpStaking/StakedLp';
 import StakerSubgraph, { IPoolPosition } from 'src/clients/StakerSubgraph';
@@ -41,6 +42,7 @@ function LPStaking(): JSX.Element {
   const { elfiPrice } = useContext(PriceContext);
   const { ethPool, daiPool } = useContext(UniswapPoolContext);
   const { ethPrice, daiPrice } = useContext(PriceContext);
+  const tokenRef = useRef<HTMLParagraphElement>(null);
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const { setExpecteReward, expectedReward, updateExpectedReward, isError } =
     useUpdateExpectedReward();
@@ -327,9 +329,13 @@ function LPStaking(): JSX.Element {
         token1={stakeToken}
         unstakedPositions={positions.filter((position) => {
           const token0 = envs.governanceAddress;
-          const token1 = stakeToken === Token.ETH ? envs.wEthAddress : envs.daiAddress;
+          const token1 =
+            stakeToken === Token.ETH ? envs.wEthAddress : envs.daiAddress;
 
-          return position.token0.toLowerCase() === token0.toLowerCase() && position.token1.toLowerCase() === token1.toLowerCase()
+          return (
+            position.token0.toLowerCase() === token0.toLowerCase() &&
+            position.token1.toLowerCase() === token1.toLowerCase()
+          );
         })}
         tokenImg={stakeToken === Token.ETH ? eth : dai}
         stakingPoolAddress={
@@ -342,11 +348,22 @@ function LPStaking(): JSX.Element {
         }
         round={round}
       />
+      <img
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: tokenRef.current ? tokenRef.current?.offsetTop + 50 : 300,
+          width: '100%',
+          zIndex: -1,
+        }}
+        src={wave}
+        alt={wave}
+      />
       <section className="staking">
         <div className="staking__lp__header">
           <h2>{t('lpstaking.lp_token_staking')}</h2>
           <p>{t('lpstaking.lp_token_staking__content')}</p>
-          <div>
+          <div ref={tokenRef}>
             {Array(3)
               .fill(0)
               .map((_x, index) => {
@@ -355,9 +372,14 @@ function LPStaking(): JSX.Element {
                     className={index + 1 === round ? 'active' : ''}
                     onClick={() => setRound(index + 1)}>
                     <p>
-                      {t(mediaQuery === MediaQuery.PC ? 'staking.staking__nth' : "staking.nth--short", {
-                        nth: toOrdinalNumber(i18n.language, index + 1),
-                      })}
+                      {t(
+                        mediaQuery === MediaQuery.PC
+                          ? 'staking.staking__nth'
+                          : 'staking.nth--short',
+                        {
+                          nth: toOrdinalNumber(i18n.language, index + 1),
+                        },
+                      )}
                     </p>
                   </div>
                 );

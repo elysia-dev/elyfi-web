@@ -1,11 +1,13 @@
 import { useHistory, useParams } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { reserveTokenData } from 'src/core/data/reserves';
 
 import { toUsd, toPercent } from 'src/utiles/formatters';
 import { BigNumber, constants } from 'ethers';
 import { Chart } from 'react-google-charts';
 
+import waveDai from 'src/assets/images/wave_dai.png';
+import waveUSDT from 'src/assets/images/wave_usdt.png';
 import ErrorPage from 'src/components/ErrorPage';
 import ReservesContext from 'src/contexts/ReservesContext';
 import { useTranslation } from 'react-i18next';
@@ -59,6 +61,7 @@ function MarketDetail(): JSX.Element {
   const [mouseHover, setMouseHover] = useState(false);
   const [graphConverter, setGraphConverter] = useState(false);
   const [transactionModal, setTransactionModal] = useState(false);
+  const tokenRef = useRef<HTMLParagraphElement>(null);
   const { reserves } = useContext(ReservesContext);
   const { latestPrice, poolDayData } = useContext(UniswapPoolContext);
   const { lng, id } = useParams<{ lng: string; id: Token.DAI | Token.USDT }>();
@@ -176,6 +179,18 @@ function MarketDetail(): JSX.Element {
 
   return (
     <>
+      <img
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: tokenRef.current?.offsetTop || 230,
+          width: '100%',
+          zIndex: -1,
+        }}
+        src={id === Token.DAI ? waveDai : waveUSDT}
+        alt={id === Token.DAI ? waveDai : waveUSDT}
+      />
+
       <TransactionConfirmModal
         visible={transactionModal}
         closeHandler={() => {
@@ -194,7 +209,7 @@ function MarketDetail(): JSX.Element {
         </div>
         <div className="detail__header">
           <img src={tokenInfo?.image} alt="Token image" />
-          <h2>{tokenInfo?.name.toLocaleUpperCase()}</h2>
+          <h2 ref={tokenRef}>{tokenInfo?.name.toLocaleUpperCase()}</h2>
         </div>
         <div className="detail__container">
           <MarketDetailsBody
