@@ -27,7 +27,7 @@ const MainGraph = () => {
             </div>
             <div className="main__service__graph__line-wrapper">
             {
-              animationLine(6, "left")
+              animationLine(8, "left")
             }
             </div>
             <div />
@@ -45,15 +45,21 @@ const MainGraph = () => {
             </p>
             <div className="main__service__graph__line-wrapper">
             {
-              animationLine(8, "right")
+              animationLine(11, "right")
             }
             </div>
             <div>
 
             </div>
-            <div className="main__service__graph__line-wrapper">
+            <div className="main__service__graph__line-wrapper"
+              style={{
+                position: "relative",
+                left: -11,
+                top: -3
+              }}
+            >
             {
-              animationLine(8, "left")
+              animationLine(11, "left")
             }
             </div>
             <p>
@@ -72,7 +78,11 @@ const MainGraph = () => {
           <div className="main__service__graph--section02--01">
             <div className="main__service__graph--section02--01--01">
               <div></div>
-              <div className="main__service__graph__line-wrapper">
+              <div className="main__service__graph__line-wrapper"
+                style={{
+                  position: "relative",
+                  top: 8
+                }}>
               {
                 animationLine(2, "up")
               }
@@ -104,13 +114,13 @@ const MainGraph = () => {
               <div />
               <div className="main__service__graph__line-wrapper">
               {
-                animationLine(4, "up")
+                animationLine(5, "up")
               }
               </div>
             </div>
             <div className="main__service__graph__line-wrapper">
               {
-                animationLine(8, "left")
+                animationLine(11, "left")
               }
             </div>
             <div>
@@ -131,7 +141,9 @@ const MainGraph = () => {
         <div className="main__service__graph--section01">
           <div className="main__service__graph--section01--01">
             <div className="main__service__graph--circle">
-              {t("main.graph.circle-content.3")}
+              <p>
+                {t("main.graph.circle-content.3")}
+              </p>
             </div>
             <div className="main__service__graph--section01--01--01">
               <div />
@@ -148,7 +160,9 @@ const MainGraph = () => {
               </div>
             </div>
             <div className="main__service__graph--circle">
-              {t("main.graph.circle-content.0")}
+              <p>
+                {t("main.graph.circle-content.0")}
+              </p>
             </div>
             <div className="main__service__graph--section01--01--02">
               <div />
@@ -162,7 +176,9 @@ const MainGraph = () => {
               </div>
             </div>
             <div className="main__service__graph--circle">
-              {t("main.graph.circle-content.1")}
+              <p>
+              { t("main.graph.circle-content.1")}
+              </p>
             </div>
           </div>
 
@@ -173,14 +189,19 @@ const MainGraph = () => {
               }
               <div className="scroll-arrow temp">
                 {
-                  Array(30).fill(0).map((_x) => {
+                  Array(57).fill(0).map((_x) => {
                     return <span className="arrow--00" />
                   })
                 }
               </div>
+              <div style={{
+                position: "relative",
+                top: -9
+              }}>
               {
                 animationLine(1, "left")
               }
+              </div>
             </div>
             <div className="main__service__graph--section01--02--01">
               <p>
@@ -210,7 +231,9 @@ const MainGraph = () => {
             </div>
           </div>
           <div className="main__service__graph--circle">
-              {t("main.graph.circle-content.2")}
+            <p>
+            {t("main.graph.circle-content.2")}  
+            </p>
           </div>
         </div>
       </div>

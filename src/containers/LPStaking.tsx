@@ -26,9 +26,13 @@ import dai from 'src/assets/images/dai.png';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
+import Guide from 'src/components/Guide';
 import moment from 'moment';
 import { lpRoundDate, lpUnixTimestamp } from 'src/core/data/lpStakingTime';
 import getIncentiveId from 'src/utiles/getIncentive';
+import usePositions from 'src/hooks/usePositions';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import MediaQuery from 'src/enums/MediaQuery';
 
 function LPStaking(): JSX.Element {
   const { account, library } = useWeb3React();
@@ -44,7 +48,7 @@ function LPStaking(): JSX.Element {
   const [stakingVisibleModal, setStakingVisibleModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [stakedPositions, setStakedPositions] = useState<Position[]>([]);
-  const [unstakedPositions, setUnstakedPositions] = useState<TokenInfo[]>([]);
+  const { positions, fetchPositions } = usePositions(account);
   const [stakeToken, setStakeToken] = useState<Token.DAI | Token.ETH>();
   const [totalStakedPositions, setTotalStakedPositions] = useState<
     IPoolPosition | undefined
@@ -103,6 +107,8 @@ function LPStaking(): JSX.Element {
     daiElfiliquidityForApr: '0',
   });
 
+  const { value: mediaQuery } = useMediaQueryType();
+
   const getRewardToRecive = useCallback(async () => {
     try {
       if (!account) {
@@ -160,17 +166,6 @@ function LPStaking(): JSX.Element {
         console.error(`${error}`);
       });
   }, [stakedPositions, account, incentiveIds]);
-
-  const getWithoutStakePositions = useCallback(() => {
-    if (!account) return;
-    LpTokenPoolSubgraph.getPositionsByOwner(account!)
-      .then((res) => {
-        setUnstakedPositions(res.data.data.positions);
-      })
-      .catch((error) => {
-        console.error(`${error}`);
-      });
-  }, [unstakedPositions, account]);
 
   const getAllStakedPositions = useCallback(() => {
     setIsLoading(true);
@@ -252,7 +247,7 @@ function LPStaking(): JSX.Element {
 
   useEffect(() => {
     if (txWaiting) return;
-    getWithoutStakePositions();
+    fetchPositions();
     getRewardToRecive();
     getAllStakedPositions();
   }, [txWaiting, account]);
@@ -330,12 +325,11 @@ function LPStaking(): JSX.Element {
         closeHandler={() => setStakingVisibleModal(false)}
         token0={Token.ELFI}
         token1={stakeToken}
-        unstakedPositions={unstakedPositions.filter((lpToken) => {
-          const poolAddress =
-            stakeToken === Token.ETH
-              ? envs.ethElfiPoolAddress.toLowerCase()
-              : envs.daiElfiPoolAddress.toLowerCase();
-          return lpToken.pool.id.toLowerCase() === poolAddress;
+        unstakedPositions={positions.filter((position) => {
+          const token0 = envs.governanceAddress;
+          const token1 = stakeToken === Token.ETH ? envs.wEthAddress : envs.daiAddress;
+
+          return position.token0.toLowerCase() === token0.toLowerCase() && position.token1.toLowerCase() === token1.toLowerCase()
         })}
         tokenImg={stakeToken === Token.ETH ? eth : dai}
         stakingPoolAddress={
@@ -361,7 +355,7 @@ function LPStaking(): JSX.Element {
                     className={index + 1 === round ? 'active' : ''}
                     onClick={() => setRound(index + 1)}>
                     <p>
-                      {t('staking.staking__nth', {
+                      {t(mediaQuery === MediaQuery.PC ? 'staking.staking__nth' : "staking.nth--short", {
                         nth: toOrdinalNumber(i18n.language, index + 1),
                       })}
                     </p>

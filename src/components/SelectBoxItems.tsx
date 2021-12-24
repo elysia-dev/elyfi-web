@@ -1,14 +1,13 @@
-import { BigNumber, utils } from 'ethers';
-import { FunctionComponent, useContext } from 'react';
+import { utils } from 'ethers';
+import { FunctionComponent } from 'react';
 import { useTranslation } from 'react-i18next';
-import PriceContext from 'src/contexts/PriceContext';
 import envs from 'src/core/envs';
-import { TokenInfo } from 'src/core/types/Position';
+import { Position as IPosition } from 'src/hooks/usePositions';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 
 type Props = {
-  position: TokenInfo;
+  position: IPosition;
   index: number;
   setSelectedToken: React.Dispatch<
     React.SetStateAction<{
@@ -25,7 +24,7 @@ const SelectBoxItems: FunctionComponent<Props> = (props) => {
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const { t } = useTranslation();
   const poolPrice =
-    position.pool.id.toLowerCase() === envs.ethElfiPoolAddress.toLowerCase()
+    position.token1.toLowerCase() === envs.wEthAddress.toLowerCase()
       ? pricePerEthLiquidity
       : pricePerDaiLiquidity;
   const liquidity =
@@ -46,7 +45,7 @@ const SelectBoxItems: FunctionComponent<Props> = (props) => {
       }}
       onClick={() => {
         setSelectedToken({
-          id: position.id.toString(),
+          id: position.tokenId.toString(),
           liquidity: formatDecimalFracionDigit(
             parseFloat(utils.formatEther(position.liquidity)) * poolPrice,
             2,
@@ -65,7 +64,7 @@ const SelectBoxItems: FunctionComponent<Props> = (props) => {
             fontSize: 13,
             height: 47,
           }}>
-          <div style={{ marginRight: 25 }}>ID : {position.id}</div>
+          <div style={{ marginRight: 25 }}>ID : {position.tokenId}</div>
           <div className="spoqa__bold" style={{ color: '#B7B7B7' }}>
             |
           </div>

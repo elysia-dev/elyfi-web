@@ -9,6 +9,8 @@ import { BigNumber } from 'ethers';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import { moneyPoolEndedAt } from 'src/core/data/moneypoolTimes';
 import Token from 'src/enums/Token';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import MediaQuery from 'src/enums/MediaQuery';
 import RewardDetailInfo from './RewardDetailInfo';
 import SmallProgressBar from './SmallProgressBar';
 
@@ -38,6 +40,7 @@ const TokenDeposit: FunctionComponent<Props> = ({
   const token = reserve.id === envs.daiAddress ? Token.DAI : Token.USDT;
   const { latestPrice } = useContext(UniswapPoolContext);
   const totalMiningValue = moneyPoolInfo[token].totalMiningValue;
+  const { value: mediaQuery } = useMediaQueryType();
   const miningDescription = [
     [
       t('reward.mining_term'),
@@ -52,51 +55,109 @@ const TokenDeposit: FunctionComponent<Props> = ({
     <>
       <div className="reward__token-deposit">
         <div className="reward__token-deposit__header">
-          <img src={reserveTokenData[token].image} alt="Token image" />
-          <div>
-            <p className="bold">
-              {t('dashboard.token_deposit', {
-                Token: reserveTokenData[token].name,
-              })}
-            </p>
-            <p>
-              {t('dashboard.token_deposit_content', {
-                Token: reserveTokenData[token].name,
-              })}
-            </p>
-          </div>
+          {
+            mediaQuery === MediaQuery.PC ? (
+              <>
+                <img src={reserveTokenData[token].image} alt="Token image" />
+                <div>
+                  <p className="bold">
+                    {t('dashboard.token_deposit', {
+                      Token: reserveTokenData[token].name,
+                    })}
+                  </p>
+                  <p>
+                    {t('dashboard.token_deposit_content', {
+                      Token: reserveTokenData[token].name,
+                    })}
+                  </p>
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <img src={reserveTokenData[token].image} alt="Token image" />
+                  <h2>
+                    {t('dashboard.token_deposit', {
+                      Token: reserveTokenData[token].name,
+                    })}
+                  </h2>
+                </div>
+                <p>
+                  {t('dashboard.token_deposit_content', {
+                    Token: reserveTokenData[token].name,
+                  })}
+                </p>
+              </>
+            )
+          }
         </div>
         <div className="reward__token-deposit__apy">
-          <div className="reward__token-deposit__apy--left">
-            <div>
-              <p>{t('dashboard.deposit_apy')}</p>
-              <h2>{toPercent(reserve.depositAPY)}</h2>
-            </div>
-            <div>
-              <p>{t('dashboard.token_mining_apr')}</p>
-              <h2>
-                {toPercent(
-                  calcMiningAPR(
-                    latestPrice,
-                    BigNumber.from(reserve.totalDeposit || 0),
-                    reserveTokenData[token].decimals,
-                  ),
-                ) || 0}
-              </h2>
-            </div>
-          </div>
-          <div className="reward__token-deposit__apy--right">
-            <div>
-              <p>{t('dashboard.total_deposit')}</p>
-              <h2>
-                $&nbsp;
-                {toCompactForBignumber(
-                  reserve.totalDeposit || 0,
-                  reserveTokenData[token].decimals,
-                )}
-              </h2>
-            </div>
-          </div>
+          {
+            mediaQuery === MediaQuery.PC ? (
+              <>
+                <div className="reward__token-deposit__apy--left">
+                  <div>
+                    <p>{t('dashboard.deposit_apy')}</p>
+                    <h2>{toPercent(reserve.depositAPY)}</h2>
+                  </div>
+                  <div>
+                    <p>{t('dashboard.token_mining_apr')}</p>
+                    <h2>
+                      {toPercent(
+                        calcMiningAPR(
+                          latestPrice,
+                          BigNumber.from(reserve.totalDeposit || 0),
+                          reserveTokenData[token].decimals,
+                        ),
+                      ) || 0}
+                    </h2>
+                  </div>
+                </div>
+                <div className="reward__token-deposit__apy--right">
+                  <div>
+                    <p>{t('dashboard.total_deposit')}</p>
+                    <h2>
+                      $&nbsp;
+                      {toCompactForBignumber(
+                        reserve.totalDeposit || 0,
+                        reserveTokenData[token].decimals,
+                      )}
+                    </h2>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <p>{t('dashboard.deposit_apy')}</p>
+                  <h2>{toPercent(reserve.depositAPY)}</h2>
+                </div>
+                <div>
+                  <p>{t('dashboard.token_mining_apr')}</p>
+                  <h2>
+                    {toPercent(
+                      calcMiningAPR(
+                        latestPrice,
+                        BigNumber.from(reserve.totalDeposit || 0),
+                        reserveTokenData[token].decimals,
+                      ),
+                    ) || 0}
+                  </h2>
+                </div>
+                <div>
+                  <p>{t('dashboard.total_deposit')}</p>
+                  <h2>
+                    $&nbsp;
+                    {toCompactForBignumber(
+                      reserve.totalDeposit || 0,
+                      reserveTokenData[token].decimals,
+                    )}
+                  </h2>
+                </div>
+              </>
+            )
+          }
+          
         </div>
 
         <div className="reward__token-deposit__data">

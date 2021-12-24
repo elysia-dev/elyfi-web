@@ -168,7 +168,8 @@ const PortfolioDetail: FunctionComponent = () => {
                     AddressCopy('0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7')
                   }
                   className="link">
-                  0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7
+                  {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(0, 12)}{' '}
+                  ... {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(-12)}
                 </p>
               </div>
             </div>
@@ -197,7 +198,12 @@ const PortfolioDetail: FunctionComponent = () => {
                         : undefined
                     }
                     className={abToken?.borrower?.id ? 'link' : ''}>
-                    {abToken?.borrower?.id || '-'}
+                    {!!abToken?.borrower?.id === true
+                      ? `${abToken?.borrower?.id.slice(
+                          0,
+                          12,
+                        )} ... ${abToken?.borrower?.id.slice(-12)}`
+                      : '-'}
                   </p>
                 </div>
                 <div>

@@ -1,6 +1,4 @@
-import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import ELFIIcon from 'src/assets/images/elfi--icon.png';
 import Skeleton from 'react-loading-skeleton';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { formatSixFracionDigit, toPercent, toUsd } from 'src/utiles/formatters';
@@ -15,6 +13,9 @@ import { useQuery } from '@apollo/client';
 import AssetList from 'src/containers/AssetList';
 import Token from 'src/enums/Token';
 import { Link, useHistory, useParams } from 'react-router-dom';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import MediaQuery from 'src/enums/MediaQuery';
+import TableBodyAmount from 'src/components/TableBodyAmount';
 
 interface Props {
   tokenImage: string;
@@ -63,121 +64,121 @@ const TokenTable: React.FC<Props> = ({
     return product.reserve.id === reserveData?.id;
   });
   const history = useHistory();
-
   const { lng } = useParams<{ lng: string }>();
+  const { value: mediaQuery } = useMediaQueryType();
+
+  const tableData = [
+    [
+      t('dashboard.total_deposit'),
+      toUsd(reserveData.totalDeposit, tokenInfo?.decimals),
+    ],
+    [
+      t('dashboard.total_borrowed'),
+      toUsd(reserveData.totalBorrow, tokenInfo?.decimals),
+    ],
+    [t('dashboard.token_mining_apr'), miningAPR || 0],
+    [t('dashboard.deposit_apy'), depositAPY || 0],
+    [t('dashboard.borrow_apy'), toPercent(reserveData.borrowAPY)],
+  ];
 
   return (
     <>
       <div className="deposit__table">
         <div className="deposit__table__ref" id={id} />
-        <Link
-          to={`/${lng}/deposits/${tokenInfo.name}`}
-          style={{
-            cursor: 'pointer',
+        <div
+          className="deposit__table__header"
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            history.push({
+              pathname: `/${lng}/deposits/${tokenName}`,
+            });
           }}>
-          <div className="deposit__table__header">
-            <div className="deposit__table__header__token-info">
-              <img src={tokenImage} alt="Token icon" />
-              <p className="bold" style={{ cursor: 'pointer' }}>
-                {tokenName}
-              </p>
-            </div>
+          <div className="deposit__table__header__token-info">
+            <img src={tokenImage} alt="Token icon" />
+            <p className="bold" style={{ cursor: 'pointer' }}>
+              {tokenName}
+            </p>
+          </div>
+          {mediaQuery === MediaQuery.PC && (
             <div className="deposit__table__header__data-grid">
               <div />
-              {[
-                [
-                  t('dashboard.total_deposit'),
-                  toUsd(reserveData.totalDeposit, tokenInfo?.decimals),
-                ],
-                [
-                  t('dashboard.total_borrowed'),
-                  toUsd(reserveData.totalBorrow, tokenInfo?.decimals),
-                ],
-                [t('dashboard.token_mining_apr'), miningAPR || 0],
-                [t('dashboard.borrow_apy'), toPercent(reserveData.borrowAPY)],
-                [t('dashboard.deposit_apy'), depositAPY || 0],
-              ].map((data) => {
+              {tableData.map((data) => {
                 return skeletonLoading ? (
                   <Skeleton width={120} />
                 ) : (
                   <div>
-                    <p style={{ cursor: 'pointer' }}>{data[0]}</p>
-                    <p className="bold" style={{ cursor: 'pointer' }}>
-                      {data[1]}
-                    </p>
+                    <p>{data[0]}</p>
+                    <p className="bold">{data[1]}</p>
                   </div>
                 );
               })}
             </div>
-          </div>
-        </Link>
-
+          )}
+        </div>
         <div className="deposit__table__body">
           <div className="deposit__table__body__amount__container">
+            {mediaQuery === MediaQuery.Mobile && (
+              <div className="deposit__table__header__data-grid">
+                <div />
+                {tableData.map((data) => {
+                  return skeletonLoading ? (
+                    <Skeleton width={120} />
+                  ) : (
+                    <div>
+                      <p>{data[0]}</p>
+                      <p className="bold">{data[1]}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
             <div className="deposit__table__body__amount__wrapper left">
-              <div>
-                <h2>{t('dashboard.deposit_amount')}</h2>
-              </div>
-              <div className="deposit__table__body__amount">
-                <div onClick={!isDisable ? onClick : undefined}>
-                  <p>{t('dashboard.deposit_amount--button')}</p>
-                </div>
-                <div>
-                  <h2>
-                    {account ? depositBalance : '-'}
-                    <span className="bold">&nbsp;{tokenInfo?.name}</span>
-                  </h2>
-                  <p>
-                    {account
-                      ? `${t('dashboard.wallet_balance')} : ` +
-                        walletBalance +
-                        ' ' +
-                        tokenInfo.name
-                      : ''}
-                  </p>
-                </div>
-              </div>
+              <TableBodyAmount
+                header={t('dashboard.deposit_amount')}
+                buttonEvent={!isDisable ? onClick : undefined}
+                buttonContent={t('dashboard.deposit_amount--button')}
+                value={account ? depositBalance! : '-'}
+                tokenName={tokenInfo?.name}
+                walletBalance={account ? walletBalance : undefined}
+              />
             </div>
             <div className="deposit__table__body__amount__wrapper right">
-              <div>
-                <h2>{t('dashboard.reward_amount')}</h2>
-              </div>
-              <div className="deposit__table__body__amount">
-                <div
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setIncentiveModalVisible();
-                    setModalNumber();
-                    modalview();
-                  }}>
-                  <p>{t('dashboard.claim_reward')}</p>
-                </div>
-                <div>
-                  <h2>
-                    {account ? (
-                      <CountUp
-                        className="bold amounts"
-                        start={parseFloat(formatEther(expectedIncentiveBefore))}
-                        end={parseFloat(formatEther(expectedIncentiveAfter))}
-                        formattingFn={(number) => {
-                          return formatSixFracionDigit(number);
-                        }}
-                        decimals={6}
-                        duration={1}
-                      />
-                    ) : (
-                      '-'
-                    )}
-                    <span className="bold">&nbsp;ELFI</span>
-                  </h2>
-                </div>
-              </div>
+              <TableBodyAmount
+                header={t('dashboard.reward_amount')}
+                buttonEvent={(e) => {
+                  e.preventDefault();
+                  setIncentiveModalVisible();
+                  setModalNumber();
+                  modalview();
+                }}
+                buttonContent={t('dashboard.claim_reward')}
+                value={
+                  account ? (
+                    <CountUp
+                      className="bold amounts"
+                      start={parseFloat(formatEther(expectedIncentiveBefore))}
+                      end={parseFloat(formatEther(expectedIncentiveAfter))}
+                      formattingFn={(number) => {
+                        return formatSixFracionDigit(number);
+                      }}
+                      decimals={6}
+                      duration={1}
+                    />
+                  ) : (
+                    '-'
+                  )
+                }
+                tokenName={'ELFI'}
+              />
             </div>
           </div>
 
           <div className="deposit__table__body__loan-list">
             {loading ? (
-              <Skeleton width={1148} height={768} />
+              <Skeleton
+                width={mediaQuery === MediaQuery.PC ? 1148 : 360}
+                height={768}
+              />
             ) : (
               <div>
                 <div>
@@ -200,7 +201,7 @@ const TokenTable: React.FC<Props> = ({
                             ? 1
                             : -1;
                         })
-                        .slice(0, 3) || []
+                        .slice(0, mediaQuery === MediaQuery.PC ? 3 : 2) || []
                     }
                   />
                 </div>

@@ -207,12 +207,12 @@ const Governance = () => {
         </div>
         <div>
           <div className="governance__asset__nap">
-            <p>NAP#: {data.nap}</p>
+            <p>NAP# :&nbsp;</p>
+            <p>{data.nap}</p>
           </div>
           <div className="governance__asset__status">
-            <p>
-              {t('governance.status')}&nbsp; : &nbsp;{data.status}
-            </p>
+            <p>{t('governance.status')} :&nbsp;</p>
+            <p>{data.status}</p>
           </div>
           <div>
             {data.votes.map((vote, _x) => {
@@ -252,12 +252,12 @@ const Governance = () => {
         </div>
         <div>
           <div className="governance__nap">
-            <p>NAP#: {data.data.description}</p>
+            <p>NAP# :&nbsp;</p>
+            <p>{data.data.description}</p>
           </div>
           <div className="governance__status">
-            <p>
-              {t('governance.status')}&nbsp; : &nbsp;{data.status}
-            </p>
+            <p>{t('governance.status')} :&nbsp;</p>
+            <p>{data.status}</p>
           </div>
           <div>
             <div>

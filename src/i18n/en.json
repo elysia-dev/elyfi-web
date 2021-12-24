@@ -2,24 +2,24 @@
   "translation": {
     "main": {
       "landing": {
-        "header__title": "<i>ELYFI</i>, a DeFi providing virtual asset loans<br /><strong>with real estate-based NFT as collateral</strong>",
-        "header__content": "ELYFI is a lending protocol for virtual asset loans using NFTs created by tokenizing real estate-based loan bonds.",
-        "button__deposit": "Go to deposit",
+        "header__title": "<i>ELYFI</i> <strong>the first real estate collateralized,<br />decentralized lending protocol</strong>",
+        "header__content": "ELYFI provides digital asset loans by converting real estate bonds into NFTs and using it as collateral",
+        "button__deposit": "Deposit",
         "button__view-more": "Learn more"
       },
       "section": [
         {
-          "header": "When depositing virtual assets,<br/><strong>depositors can receive interest and ELFI tokens as rewards</strong>",
-          "content": "When you deposit virtual assets, you can receive deposit interest as well as governance tokens (ELFI).\nIn addition, when staking ELFI, you can also receive a distribution of the protocol’s profits.",
-          "button": "Check interest rates"
+          "header": "<strong>Deposit digital assets and receive APR and additional rewards for securing loans</strong>",
+          "content": "By staking digital assets into the ELYFI money pool, participants earn interest on deposits.\nIn addition, ELFI governance tokens are distributed to provide incentives for securing the network.",
+          "button": "Check APR"
         },
         {
-          "header": "Depositors can obtain interest stably<br/><strong>by depositing virtual assets in ELYFI backed by real estate-based tokens.</strong>",
+          "header": "<strong>Depositors can obtain interest stably<br/>by depositing virtual assets in ELYFI backed by real estate-based tokens.</strong>",
           "content": "The protocol operates stably with a system that secures real estate-based tokens with small fluctuations rather than virtual assets with high liquidation risk due to large fluctuations in value.",
           "button": "Check collateral"
         },
         {
-          "header": "ELFI holders directly decide matters related<br/><strong>to the operation of the protocol.</strong>",
+          "header": "<strong>ELFI holders directly decide matters related<br/>to the operation of the protocol.</strong>",
           "content": "It is reliable because matters related to the operation of the protocol such as loan execution and interest rates are decided by the votes of the holders.",
           "button": "Check Governance"
         }
@@ -98,7 +98,7 @@
       "Default": "-"
     },
     "navigation": {
-      "dashboard": "DASHBOARD",
+      "dashboard": "Deposits",
       "governance": "governance",
       "staking": "staking",
       "docs": "docs",
@@ -280,6 +280,7 @@
       "nth_ended": "{{nth}} round Completed",
       "nth_progress": "{{nth}} round In Progress",
       "nth": "{{nth}} round",
+      "nth--short": "{{nth}}",
       "nth_staking": "Staking APR on the {{nth}} round",
       "nth_staking_amount": "Staked Amount on the {{nth}} round",
       "staking_btn": "Stake | Unstake",

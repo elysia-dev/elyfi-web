@@ -178,6 +178,7 @@ const RewardPlan: FunctionComponent = () => {
     });
   };
 
+
   // total value of the steak in the pool.
   const calcTotalStakedLpToken = useCallback(() => {
     const daiElfiPoolTotalLiquidity =
@@ -310,8 +311,8 @@ const RewardPlan: FunctionComponent = () => {
               firstTokenValue={{
                 total: ELFI_REWARD_PER_POOL,
                 start:
-                  amountData.beforeElfiRewardByLp[lpStakingRound.ethElfiRound],
-                end: amountData.elfiRewardByLp[lpStakingRound.ethElfiRound],
+                  amountData.beforeElfiRewardByLp,
+                end: amountData.elfiRewardByLp,
               }}
               token1={'ETH'}
               secondTokenValue={{
@@ -320,13 +321,16 @@ const RewardPlan: FunctionComponent = () => {
                     ? ETH_REWARD_PER_POOL_2
                     : ETH_REWARD_PER_POOL,
                 start:
-                  amountData.beforeEthRewardByLp[lpStakingRound.ethElfiRound],
-                end: amountData.ethRewardByLp[lpStakingRound.ethElfiRound],
+                  amountData.beforeEthRewardByLp,
+                end: amountData.ethRewardByLp,
               }}
               currentRound={currentPhase}
-              selectedRound={lpStakingRound.daiElfiRound}
+              selectedRound={lpStakingRound.ethElfiRound}
               lpStakingRound={lpStakingRound}
               setLpStakingRound={setLpStakingRound}
+              ethReward={
+                [ETH_REWARD_PER_POOL, ETH_REWARD_PER_POOL_2]
+              }
             />
             <LpStakingBox
               index={1}
@@ -336,15 +340,15 @@ const RewardPlan: FunctionComponent = () => {
               firstTokenValue={{
                 total: ELFI_REWARD_PER_POOL,
                 start:
-                  amountData.beforeElfiRewardByLp[lpStakingRound.daiElfiRound],
-                end: amountData.elfiRewardByLp[lpStakingRound.daiElfiRound],
+                  amountData.beforeElfiRewardByLp,
+                end: amountData.elfiRewardByLp,
               }}
               token1={'DAI'}
               secondTokenValue={{
                 total: DAI_REWARD_PER_POOL,
                 start:
-                  amountData.beforeDaiRewardByLp[lpStakingRound.daiElfiRound],
-                end: amountData.daiRewardByLp[lpStakingRound.daiElfiRound],
+                  amountData.beforeDaiRewardByLp,
+                end: amountData.daiRewardByLp,
               }}
               currentRound={currentPhase}
               selectedRound={lpStakingRound.daiElfiRound}
@@ -362,15 +366,14 @@ const RewardPlan: FunctionComponent = () => {
               staking={state.currentElfiLevel}
               unit={'DAI'}
               start={
-                amountData.beforeDaiRewardByElFiStakingPool[
-                  state.currentElfiLevel
-                ]
+                amountData.beforeDaiRewardByElFiStakingPool
               }
               end={
-                amountData.daiRewardByElFiStakingPool[state.currentElfiLevel]
+                amountData.daiRewardByElFiStakingPool
               }
               state={state}
               setState={setState}
+              OrdinalNumberConverter={ordinalNumberConverter}
             />
           </section>
         ) : stakingType === 'EL' ? (
@@ -387,9 +390,9 @@ const RewardPlan: FunctionComponent = () => {
               state={state}
               setState={setState}
               miningStart={
-                amountData.beforeMintedByElStakingPool[state.elStaking]
+                amountData.beforeMintedByElStakingPool
               }
-              miningEnd={amountData.mintedByElStakingPool[state.elStaking]}
+              miningEnd={amountData.mintedByElStakingPool}
               currentPhase={currentPhase}
               OrdinalNumberConverter={ordinalNumberConverter}
             />

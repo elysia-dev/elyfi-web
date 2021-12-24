@@ -98,7 +98,7 @@
       "Default": "-"
     },
     "navigation": {
-      "dashboard": "대시보드",
+      "dashboard": "예치",
       "governance": "거버넌스",
       "staking": "스테이킹",
       "docs": "문서",
@@ -271,6 +271,7 @@
       "nth_ended": "{{nth}}차 완료",
       "nth_progress": "{{nth}}차 진행중",
       "nth": "{{nth}}차",
+      "nth--short": "{{nth}}차",
       "nth_staking": "{{nth}}차 스테이킹 APR",
       "nth_staking_amount": "{{nth}}차 스테이킹 수량",
       "staking_btn": "스테이킹 | 언스테이킹",

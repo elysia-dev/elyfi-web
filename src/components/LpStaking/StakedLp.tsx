@@ -12,7 +12,6 @@ import { isEthElfiPoolAddress } from 'src/core/utils/getAddressesByPool';
 import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
 import Position from 'src/core/types/Position';
-import Guide from '../Guide';
 import StakedLpItem from './StakedLpItem';
 
 const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
@@ -33,10 +32,6 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
 
   return (
     <>
-      <div className="staking__lp__staked__header">
-        <h2>{t('lpstaking.staked_lp_token')}</h2>
-        <Guide content={t('guide.staked_lp_token')} />
-      </div>
       <div className="staking__lp__staked__table">
         {isError ? (
           <div>
@@ -140,49 +135,51 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
             <div className="staking__lp__staked__reward__amount">
               <h2>{t('lpstaking.staked_total_expected_reward')}</h2>
               <div>
-                <CountUp
-                  className="bold"
-                  start={totalExpectedReward.beforeTotalElfi}
-                  end={totalExpectedReward.totalElfi}
-                  formattingFn={(number) => {
-                    return formatDecimalFracionDigit(number, 2);
-                  }}
-                  duration={1}
-                  decimals={4}
-                />
-                <h2 className="staking__lp__staked__reward__amount__unit">
-                  {Token.ELFI}
-                </h2>
-              </div>
-              <div>
-                <CountUp
-                  className="bold"
-                  start={totalExpectedReward.beforeTotalEth}
-                  end={totalExpectedReward.totalEth}
-                  formattingFn={(number) => {
-                    return formatDecimalFracionDigit(number, 2);
-                  }}
-                  duration={1}
-                  decimals={4}
-                />
-                <h2 className="staking__lp__staked__reward__amount__unit">
-                  {Token.ETH}
-                </h2>
-              </div>
-              <div>
-                <CountUp
-                  className="bold"
-                  start={totalExpectedReward.beforeTotalDai}
-                  end={totalExpectedReward.totalDai}
-                  formattingFn={(number) => {
-                    return formatDecimalFracionDigit(number, 2);
-                  }}
-                  duration={1}
-                  decimals={4}
-                />
-                <h2 className="staking__lp__staked__reward__amount__unit">
-                  {Token.DAI}
-                </h2>
+                <div>
+                  <CountUp
+                    className="bold"
+                    start={totalExpectedReward.beforeTotalElfi}
+                    end={totalExpectedReward.totalElfi}
+                    formattingFn={(number) => {
+                      return formatDecimalFracionDigit(number, 2);
+                    }}
+                    duration={1}
+                    decimals={4}
+                  />
+                  <h2 className="staking__lp__staked__reward__amount__unit">
+                    {Token.ELFI}
+                  </h2>
+                </div>
+                <div>
+                  <CountUp
+                    className="bold"
+                    start={totalExpectedReward.beforeTotalEth}
+                    end={totalExpectedReward.totalEth}
+                    formattingFn={(number) => {
+                      return formatDecimalFracionDigit(number, 2);
+                    }}
+                    duration={1}
+                    decimals={4}
+                  />
+                  <h2 className="staking__lp__staked__reward__amount__unit">
+                    {Token.ETH}
+                  </h2>
+                </div>
+                <div>
+                  <CountUp
+                    className="bold"
+                    start={totalExpectedReward.beforeTotalDai}
+                    end={totalExpectedReward.totalDai}
+                    formattingFn={(number) => {
+                      return formatDecimalFracionDigit(number, 2);
+                    }}
+                    duration={1}
+                    decimals={4}
+                  />
+                  <h2 className="staking__lp__staked__reward__amount__unit">
+                    {Token.DAI}
+                  </h2>
+                </div>
               </div>
             </div>
           </section>
@@ -195,22 +192,24 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
             <div className="staking__lp__staked__reward__amount">
               <h2>{t('lpstaking.staked_total_expected_reward')}</h2>
               <div>
-                <span>-</span>
-                <h2 className="staking__lp__staked__reward__amount__unit">
-                  {Token.ELFI}
-                </h2>
-              </div>
-              <div>
-                <span>-</span>
-                <h2 className="staking__lp__staked__reward__amount__unit">
-                  {Token.ETH}
-                </h2>
-              </div>
-              <div>
-                <span>-</span>
-                <h2 className="staking__lp__staked__reward__amount__unit">
-                  {Token.DAI}
-                </h2>
+                <div>
+                  <span>-</span>
+                  <h2 className="staking__lp__staked__reward__amount__unit">
+                    {Token.ELFI}
+                  </h2>
+                </div>
+                <div>
+                  <span>-</span>
+                  <h2 className="staking__lp__staked__reward__amount__unit">
+                    {Token.ETH}
+                  </h2>
+                </div>
+                <div>
+                  <span>-</span>
+                  <h2 className="staking__lp__staked__reward__amount__unit">
+                    {Token.DAI}
+                  </h2>
+                </div>
               </div>
             </div>
           </section>
