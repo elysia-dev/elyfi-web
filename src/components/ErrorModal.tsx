@@ -1,5 +1,6 @@
 import { utils } from 'ethers';
 import { FunctionComponent, useContext, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import TxContext from 'src/contexts/TxContext';
 import TxStatus from 'src/enums/TxStatus';
 import ethersJsErrors from 'src/utiles/ethersJsErrors';
@@ -9,6 +10,7 @@ type Props = {
 };
 
 const ErrorModal: FunctionComponent<Props> = ({ error }) => {
+  const { t } = useTranslation();
   const errorDescription = useRef<HTMLTextAreaElement>(null);
   const totalHeight = document.documentElement.scrollHeight;
   const { initTransaction } = useContext(TxContext);
@@ -60,7 +62,7 @@ const ErrorModal: FunctionComponent<Props> = ({ error }) => {
               fontSize: 18,
               color: '#333333',
             }}>
-            트랜잭션 실패
+            {t('staking.transaction_failed')}
           </div>
           <div className="close-button" onClick={() => onCloseHandler()}>
             <div className="close-button--1">
@@ -75,8 +77,8 @@ const ErrorModal: FunctionComponent<Props> = ({ error }) => {
             fontSize: 15,
           }}>
           {ethersJsErrors.includes(error)
-            ? ' 요청하신 트랜잭션이 실패했습니다. 아래 에러 코드/메시지를 복사하여 cs@elysia.land로 문의주세요.'
-            : '메타마스크에서 발생한 에러로 인해 요청하신 트랜잭션이실패했습니다. \n 아래 에러 코드/메시지를 복사하여 cs@elysia.land로 문의주세요.'}
+            ? t('staking.error_description_one')
+            : t('staking.error_description_two')}
         </div>
         <div
           style={{
@@ -88,7 +90,7 @@ const ErrorModal: FunctionComponent<Props> = ({ error }) => {
             style={{
               marginBottom: 10,
             }}>
-            에러 코드&메시지
+            {t('staking.error_code')}
           </div>
           <div
             style={{
@@ -120,7 +122,7 @@ const ErrorModal: FunctionComponent<Props> = ({ error }) => {
           }}
           className={`modal__button`}
           onClick={() => errorCopy()}>
-          <p>복사하기</p>
+          <p>{t('staking.error_code_copy')}</p>
         </div>
       </div>
     </>
