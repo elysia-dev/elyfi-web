@@ -10,11 +10,13 @@ import moment from 'moment';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+
+const minimumTimestamp = moment().subtract(35, 'days').unix()
 const ReservesProvider: React.FC = (props) => {
   const { loading, data, error, refetch } = useQuery<GetAllReserves>(
     GET_ALL_RESERVES,
     {
-      variables: { minimumTimestamp: moment().subtract(35, 'days').unix() },
+      variables: { minimumTimestamp },
     },
   );
 
