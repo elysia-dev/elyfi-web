@@ -23,6 +23,11 @@
   src: url('../assets/fonts/SpoqaHanSansNeo-Medium.ttf') format('truetype');
   unicode-range: U+0030-0039 U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
 }
+@font-face {
+  font-family: 'Inter-Regular';
+  src: url('../assets/fonts/Inter-Regular.ttf') format('truetype');
+  unicode-range: U+0030-0039 U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
+}
 
 * {
   box-sizing: border-box;
@@ -39,8 +44,8 @@ $gray-font-color: #888888;
 $loan-list-size: 315px;
 $navigation-margin-height: 100px;
 
-$governance-progress-00: #0099CC;
-$governance-progress-01: #3D5299;
+$governance-progress-00: #0099cc;
+$governance-progress-01: #3d5299;
 $governance-progress-02: #707070;
 
 $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
@@ -48,7 +53,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 @mixin hover__soft-background {
   transition: all 0.2s ease;
   &:hover {
-    box-shadow: 0px 0px 6px #00A7FF66; 
+    box-shadow: 0px 0px 6px #00a7ff66;
     transition: all 0.2s ease;
   }
 }
@@ -58,7 +63,12 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   transition: all 0.2s ease;
   > p {
     border-bottom: 0px;
-    background: linear-gradient(to right, $elysia-color, $elysia-color 50%, $font-color 50%);
+    background: linear-gradient(
+      to right,
+      $elysia-color,
+      $elysia-color 50%,
+      $font-color 50%
+    );
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -66,21 +76,21 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     background-position: 100%;
     transition: background-position 275ms ease;
     text-decoration: none;
-    transition: all .4s ease;
+    transition: all 0.4s ease;
   }
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0px 0px 15px #00A7FF66;
+    box-shadow: 0px 0px 15px #00a7ff66;
     transition: all 0.2s ease;
     > p {
       transform: translateY(-3px);
-      transition: all .4s ease;
+      transition: all 0.4s ease;
       background-position: 0 100%;
     }
   }
   &:active {
     transform: translateY(-1px);
-    box-shadow: 0px 0px 5px #00A7FF66;
+    box-shadow: 0px 0px 5px #00a7ff66;
   }
 }
 @mixin hover__box-shadow--white {
@@ -88,7 +98,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   transition: all 0.2s ease;
   > p {
     border-bottom: 0px;
-    background: linear-gradient(to right, #f0f0f1 , #f0f0f1 50%, #ffffff 50%);
+    background: linear-gradient(to right, #f0f0f1, #f0f0f1 50%, #ffffff 50%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -96,22 +106,22 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     background-position: 100%;
     transition: background-position 275ms ease;
     text-decoration: none;
-    transition: all .4s ease;
+    transition: all 0.4s ease;
   }
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0px 0px 15px #00A7FF66;
+    box-shadow: 0px 0px 15px #00a7ff66;
     transition: all 0.2s ease;
     > p {
       transform: translateY(-3px);
       font-weight: 800;
-      transition: all .4s ease;
+      transition: all 0.4s ease;
       background-position: 0 100%;
     }
   }
   &:active {
     transform: translateY(-1px);
-    box-shadow: 0px 0px 5px #00A7FF66;
+    box-shadow: 0px 0px 5px #00a7ff66;
   }
 }
 
@@ -217,6 +227,10 @@ input[type='number'] {
             color: $font-color;
             font-size: 15px;
           }
+          > p:hover {
+            color: #00ace6;
+            font-weight: bold;
+          }
         }
       }
       > a > p {
@@ -238,6 +252,11 @@ input[type='number'] {
       justify-content: left;
       align-items: center;
       width: 100%;
+    }
+    &__link:hover {
+      > div:first-child {
+        font-weight: bold;
+      }
     }
     &__link {
       display: inline;
@@ -363,7 +382,7 @@ input[type='number'] {
         text-align: right;
         position: relative;
         cursor: pointer;
-        border: 2px solid #E6E6E6;
+        border: 2px solid #e6e6e6;
 
         &.FAIL {
           box-shadow: 0px 0px 6px #ff1d1d81;
@@ -500,8 +519,8 @@ input[type='number'] {
       &__button {
         display: flex;
         > div {
-          &:first-child{
-            @include hover__box-shadow--white
+          &:first-child {
+            @include hover__box-shadow--white;
           }
           @include hover__box-shadow;
           cursor: pointer;
@@ -883,9 +902,9 @@ input[type='number'] {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        transition:  all 0.5s ease;
+        transition: all 0.5s ease;
         &:hover {
-          box-shadow: 0px 0px 14px #00A7FF66;
+          box-shadow: 0px 0px 14px #00a7ff66;
           transition: all 0.5s ease;
         }
         &__token-info {
@@ -919,7 +938,7 @@ input[type='number'] {
           text-align: right;
           &__button {
             @include hover__box-shadow;
-            background-color: #FFFFFF;
+            background-color: #ffffff;
             box-shadow: 0px 0px 6px #00000029;
             display: flex;
             justify-content: center;
@@ -963,8 +982,34 @@ input[type='number'] {
         }
         &__loan-list {
           > div {
-            > h2 {
-              color: $font-color;
+            > div:nth-child(1) {
+              display: flex;
+              justify-content: space-between;
+
+              > h2 {
+                color: $font-color;
+
+                margin-top: 25px;
+                font-size: 18px;
+              }
+
+              > a > div {
+                background-color: #ffffff;
+                box-shadow: 0px 0px 6px #00000029;
+                border-radius: 15px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 25px;
+                width: 160px;
+                height: 30px;
+                cursor: pointer;
+                > p {
+                  color: #888888;
+                  font-size: 15px;
+                  cursor: pointer;
+                }
+              }
             }
           }
           &__more-button {
@@ -976,7 +1021,7 @@ input[type='number'] {
             cursor: pointer;
             transition: all 0.2s ease;
             &:hover {
-              box-shadow: 0px 0px 6px #00A7FF66; 
+              box-shadow: 0px 0px 6px #00a7ff66;
               transition: all 0.2s ease;
             }
             > a > p {
@@ -1419,7 +1464,7 @@ input[type='number'] {
             justify-content: space-between;
             align-items: center;
             > h2 {
-              color: $font-color
+              color: $font-color;
             }
           }
         }
@@ -1464,7 +1509,7 @@ input[type='number'] {
       transition: all 0.3s ease;
       &:hover {
         transform: translateY(-7px);
-        box-shadow: 0px 0px 15px #00A7FF66;
+        box-shadow: 0px 0px 15px #00a7ff66;
         transition: all 0.3s ease;
       }
       &__progress-bar {
@@ -1615,6 +1660,10 @@ input[type='number'] {
     &__content {
       text-align: center;
       &__button {
+        margin: 0px 40px;
+        width: 183px;
+
+        // temp
         cursor: pointer;
         @include hover__box-shadow;
         box-shadow: 0px 0px 6px #00000029;
@@ -1628,11 +1677,24 @@ input[type='number'] {
         }
       }
     }
+    .zero {
+      width: 100%;
+      height: 280px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #ffffff;
+      border: 1px solid #e6e6e6;
+      > p {
+        color: #707070;
+        font-size: 15px;
+      }
+    }
   } // governance end
   .loan {
     > div {
       border-bottom: 1px solid $gray-line;
-      > h2 { 
+      > h2 {
         color: $font-color;
       }
       > p {
@@ -1726,7 +1788,7 @@ input[type='number'] {
               margin: 0;
             }
             > p {
-              &:first-child { 
+              &:first-child {
                 color: $gray-font-color;
               }
               &:last-child {
@@ -1753,7 +1815,7 @@ input[type='number'] {
         color: $font-color;
       }
       &__button {
-        background: #FFFFFF;
+        background: #ffffff;
         @include hover__box-shadow;
         box-shadow: 0px 0px 6px #00000029;
         cursor: pointer;
@@ -1999,7 +2061,6 @@ input[type='number'] {
         }
       }
     }
-    
 
     &__lp {
       &__header {
@@ -2077,7 +2138,7 @@ input[type='number'] {
                 color: $font-color;
               }
             }
-            > h2 { 
+            > h2 {
               color: $font-color;
             }
             &:last-child {
@@ -2231,7 +2292,7 @@ input[type='number'] {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                > h2 { 
+                > h2 {
                   color: $font-color;
                 }
                 &:nth-child(1) {
@@ -2278,7 +2339,7 @@ input[type='number'] {
                 flex-direction: row;
                 justify-content: left;
                 align-items: center;
-                > h2 { 
+                > h2 {
                   color: $font-color;
                 }
               }
@@ -2984,7 +3045,7 @@ input[type='number'] {
       transition: all 0.3s ease;
       &:hover {
         transform: translateY(-7px);
-        box-shadow: 0px 0px 15px #00A7FF66;
+        box-shadow: 0px 0px 15px #00a7ff66;
         transition: all 0.3s ease;
       }
       &__image {
@@ -3121,9 +3182,10 @@ input[type='number'] {
     align-items: center;
     justify-content: space-evenly;
     > h2 {
+      font-family: 'SpoqaHanSansNeo';
       color: $font-color;
-
-      font-size: 18px;
+      font-weight: normal;
+      font-size: 13px;
     }
     > div {
       margin: 0 auto;
@@ -3448,14 +3510,14 @@ input[type='number'] {
       height: 25px;
       width: 2px;
       margin-left: 12.5px;
-      background-color: black;
+      background-color: #b7b7b7;
       transform: rotate(45deg);
       z-index: 1;
     }
     &--2 {
       height: 25px;
       width: 2px;
-      background-color: black;
+      background-color: #b7b7b7;
       transform: rotate(90deg);
       z-index: 2;
     }
@@ -4110,5 +4172,87 @@ input[type='number'] {
     100% {
       opacity: 1;
     }
+  }
+  .market__detail__graph__DAI div div div div svg g {
+    // transform: scale(1.2) translate(-10%, -10%);
+    > g rect {
+      rx: 5;
+      ry: 5;
+      &:hover {
+        fill: #f9ae19;
+        stroke: transparent;
+        z-index: 99;
+        rx: 5;
+        ry: 5;
+      }
+    }
+    > g g g rect {
+      fill: #f9ae19;
+      stroke: transparent;
+      z-index: 99;
+      rx: 5;
+      ry: 5;
+    }
+    > g g circle {
+      stroke: transparent;
+      fill: #f9ae19;
+      r: 6;
+    }
+  }
+  .market__detail__graph__USDT div div div div svg g {
+    // transform: scale(1.2) translate(-10%, -10%);
+    > g rect {
+      rx: 5;
+      ry: 5;
+      &:hover {
+        fill: #26a17b;
+        stroke: transparent;
+        z-index: 99;
+        rx: 5;
+        ry: 5;
+      }
+    }
+    > g g g rect {
+      fill: #26a17b;
+      stroke: transparent;
+      z-index: 99;
+      rx: 5;
+      ry: 5;
+    }
+    > g g circle {
+      stroke: transparent;
+      fill: #26a17b;
+      r: 6;
+    }
+  }
+  .market__detail__graph__DAI {
+    .google-visualization-tooltip {
+      border: 1px solid #f9ae19 !important;
+    }
+  }
+  .market__detail__graph__USDT {
+    .google-visualization-tooltip {
+      border: 1px solid #26a17b !important;
+    }
+  }
+  .google-visualization-tooltip ul li > span:last-child {
+    color: #333333 !important;
+  }
+  .google-visualization-tooltip ul li:last-child::after {
+    color: #333333 !important;
+  }
+  textarea {
+    font-family: 'Inter-Regular';
+  }
+  .down_arrow {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-left: 3px;
+    margin-bottom: 5px;
+    border-top: 2px solid #333333;
+    border-right: 2px solid #333333;
+    transform: rotate(135deg);
   }
 }

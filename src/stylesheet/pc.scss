@@ -1,14 +1,14 @@
 $font-color: #333333;
 $sub-font-color: #646464;
-$elysia-color: #00A7FF;
-$background-color: #FFFFFF;
-$gray-line: #F0F0F1;
+$elysia-color: #00a7ff;
+$background-color: #ffffff;
+$gray-line: #f0f0f1;
 $gray-font-color: #888888;
 $loan-list-size: 315px;
 $navigation-margin-height: 100px;
 
-$governance-progress-00: #0099CC;
-$governance-progress-01: #CC0000;
+$governance-progress-00: #0099cc;
+$governance-progress-01: #cc0000;
 $governance-progress-02: #888888;
 
 $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
@@ -16,11 +16,11 @@ $device-width: 1190px;
 
 @mixin page-container {
   width: $device-width;
-  margin: 0 auto; 
+  margin: 0 auto;
 }
 
-
 .view-w {
+  background: none;
   .mobile-only {
     display: none;
   }
@@ -281,6 +281,7 @@ $device-width: 1190px;
         }
         &__container {
           margin-top: 130px;
+          margin-bottom: 130px;
           > div {
             width: 500px;
             margin-bottom: 110px;
@@ -302,7 +303,6 @@ $device-width: 1190px;
         }
       }
       &__service {
-
         &__graph {
           &--circle {
             display: flex;
@@ -323,9 +323,11 @@ $device-width: 1190px;
           &--section01 {
             display: flex;
             height: 200px;
-            &--01, &--03, &--05 {
+            &--01,
+            &--03,
+            &--05 {
               > div {
-                background-color: #FFFFFF;
+                background-color: #ffffff;
                 border: 1px solid $elysia-color;
                 width: 200px;
                 height: 200px;
@@ -383,8 +385,8 @@ $device-width: 1190px;
                 > div {
                   flex: 2;
                   height: 100%;
-                  &:nth-child(3) { 
-                    flex: .5;
+                  &:nth-child(3) {
+                    flex: 0.5;
                   }
                   &:last-child {
                     // border-left: 1px dashed $elysia-color;
@@ -398,7 +400,7 @@ $device-width: 1190px;
               }
               &--02 {
                 > div {
-                  background-color: #FFFFFF;
+                  background-color: #ffffff;
                   border: 1px solid $elysia-color;
                   width: 200px;
                   height: 200px;
@@ -456,14 +458,13 @@ $device-width: 1190px;
         }
         &__lawfirm {
           display: grid;
-          grid-template-columns: repeat(3,1fr);
+          grid-template-columns: repeat(3, 1fr);
           grid-template-rows: 1fr;
           width: 100%;
           gap: 30px 20px;
           align-items: flex-start;
           justify-items: center;
           margin-top: 80px;
-          
         }
       }
       &__governance {
@@ -473,6 +474,7 @@ $device-width: 1190px;
         &__table {
           width: $device-width;
           margin-top: 50px;
+          background: #ffffff;
           > hr {
             margin-top: 10px;
             margin-bottom: 10px;
@@ -544,7 +546,7 @@ $device-width: 1190px;
             }
             > p {
               font-size: 20px;
-  
+
               margin-left: 20px;
             }
           }
@@ -649,7 +651,6 @@ $device-width: 1190px;
         }
       }
     } // deposit end
-
 
     .reward {
       @include page-container;
@@ -758,17 +759,17 @@ $device-width: 1190px;
             }
           }
         }
-  
+
         @mixin arrowTransform($angle, $x: 0, $y: 0) {
           i:first-child {
             transform: translate($x, $y) rotate($angle);
           }
-  
+
           i:last-child {
             transform: translate($x, -$y) rotate(-$angle);
           }
         }
-  
+
         &__array-handler {
           top: 360px;
           > div {
@@ -776,7 +777,7 @@ $device-width: 1190px;
             width: 40px;
             height: 40px;
             transform: translate3d(0, 0, 0); // fixes flicker in webkit
-  
+
             margin-top: -20px;
             filter: drop-shadow(0 3px 0px #00000029);
             -webkit-filter: drop-shadow(0 3px 0px #00000029);
@@ -788,15 +789,15 @@ $device-width: 1190px;
               height: 1px;
               border-radius: calc(1px / 2);
               background: $elysia-color;
-  
+
               transition: all 0.15s ease;
             }
           }
           &--left {
             left: -80px;
-  
+
             @include arrowTransform(40deg, 0, -0px);
-  
+
             &:hover {
               @include arrowTransform(30deg, 0, 0px);
             }
@@ -813,7 +814,7 @@ $device-width: 1190px;
           &--right {
             right: -80px;
             @include arrowTransform(40deg, 0, 0px);
-  
+
             &:hover {
               @include arrowTransform(30deg, 0, 0px);
             }
@@ -822,7 +823,7 @@ $device-width: 1190px;
             }
             &.disabled {
               @include arrowTransform(0deg, 5px, 0);
-  
+
               &:hover {
                 @include arrowTransform(0deg, 5px, 0);
               }
@@ -932,14 +933,13 @@ $device-width: 1190px;
       }
     } // reward end
 
-  
     .detail {
       @include page-container;
 
       &__header {
         margin-top: 25px;
         margin-bottom: 145px;
-        > img { 
+        > img {
           width: 60px;
           height: 60px;
         }
@@ -1071,7 +1071,7 @@ $device-width: 1190px;
         > div {
           &:last-child {
             > div {
-              padding: 10px 30px; 
+              padding: 10px 30px;
               > p {
                 font-size: 15px;
               }
@@ -1082,7 +1082,7 @@ $device-width: 1190px;
                   line-height: 25px;
                   margin-top: 13px;
                 }
-              } 
+              }
             }
           }
         }
@@ -1090,7 +1090,7 @@ $device-width: 1190px;
       &__grid {
         margin-bottom: 125px;
         grid-gap: 50px 25px;
-        grid-template-columns: repeat(3,1fr);
+        grid-template-columns: repeat(3, 1fr);
       }
       &__header {
         > div:first-child {
@@ -1144,7 +1144,7 @@ $device-width: 1190px;
       > div {
         margin-bottom: 25px;
         padding-bottom: 15px;
-        > h2 { 
+        > h2 {
           font-size: 18px;
           margin-bottom: 15px;
         }
@@ -1223,7 +1223,7 @@ $device-width: 1190px;
           }
         }
       }
-    }// portfolio end
+    } // portfolio end
 
     .staking {
       @include page-container;
@@ -1318,7 +1318,7 @@ $device-width: 1190px;
             }
           }
         } // current-data end
-  
+
         &__previous {
           &__wrapper {
             width: 95%;
@@ -1402,7 +1402,7 @@ $device-width: 1190px;
           }
         }
       }
-      
+
       &__lp {
         &__header {
           margin-top: 200px;
@@ -1460,7 +1460,7 @@ $device-width: 1190px;
                   font-size: 15px;
                 }
               }
-              > h2 { 
+              > h2 {
                 font-size: 20px;
               }
             }
@@ -1508,7 +1508,7 @@ $device-width: 1190px;
             font-size: 12px;
           }
         } // detail-box end
-  
+
         &__staked {
           &__header {
             margin-top: 86px;
@@ -1567,7 +1567,7 @@ $device-width: 1190px;
                 flex: 5;
                 padding: 21px 0px;
                 > div {
-                  > h2 { 
+                  > h2 {
                     font-size: 15px;
                   }
                   &:nth-child(1) {
@@ -1597,11 +1597,11 @@ $device-width: 1190px;
                 }
                 &__image {
                   gap: 8px;
-                  > img { 
+                  > img {
                     width: 30px;
                     height: 30px;
                   }
-                  > h2 { 
+                  > h2 {
                     font-size: 15px;
                   }
                 }
@@ -1735,7 +1735,7 @@ $device-width: 1190px;
         }
       }
     } // staking end
-    
+
     .modal {
       &__button {
         width: 452px;
@@ -1806,7 +1806,7 @@ $device-width: 1190px;
         }
         &__despositable-value {
           margin: 29px 26px 31px;
-  
+
           > p {
             margin-bottom: 16px;
             font-size: 15px;
@@ -1923,7 +1923,7 @@ $device-width: 1190px;
           }
         }
       }
-  
+
       &__staking {
         &__container {
           padding: 28px 27px 30px 26px;
@@ -1935,7 +1935,7 @@ $device-width: 1190px;
           }
         }
       }
-  
+
       &__migration {
         &__wrapper {
           padding: 15px 31px 26px;
@@ -2082,7 +2082,6 @@ $device-width: 1190px;
       }
     } // modal end
 
-    
     .component {
       &__loan-list {
         width: $loan-list-size;
@@ -2181,7 +2180,6 @@ $device-width: 1190px;
       }
     }
 
-
     .percent {
       &::after {
         margin-left: 5px;
@@ -2193,7 +2191,6 @@ $device-width: 1190px;
       }
     }
 
-
     .reward-plan-button {
       > a {
         > p {
@@ -2201,7 +2198,6 @@ $device-width: 1190px;
         }
       }
     }
-
 
     .footer {
       > div {

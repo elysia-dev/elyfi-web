@@ -141,16 +141,23 @@ const Navigation: React.FunctionComponent<{
           style={{
             color: scrollTop > 125 ? '#000000' : '#000000',
           }}>
-          {t(_data.i18nKeyword).toUpperCase()}
           <div
-            className={`navigation__link__under-line${
-              isBold(_index) ? ' hover' : ' blur'
-            }`}
             style={{
-              opacity: isBold(_index) ? 1 : 0,
-              width: isBold(_index) ? '100%' : 0,
-              left: isBold(_index) ? 0 : -20,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
             }}>
+            <div
+              style={{
+                marginRight: 8,
+              }}>
+              {t(_data.i18nKeyword).toUpperCase()}
+            </div>
+            {![t('navigation.dashboard'), t('navigation.governance')].includes(
+              t(_data.i18nKeyword).toUpperCase(),
+            ) && <div className="down_arrow" />}
+          </div>
+          <div>
             <div
               className="navigation__bottom"
               ref={localNavigationRef}

@@ -11,68 +11,17 @@ const DetailBoxItemReceiveToken: FunctionComponent<tokenTypes> = (props) => {
   const { t } = useTranslation();
   const { value: mediaQuery } = useMediaQueryType();
 
-  return (
-    mediaQuery === MediaQuery.PC ? (
-      <>
-        <div className="staking__lp__detail-box__receive-token__header">
-          <div>
-            <p>
+  return mediaQuery === MediaQuery.PC ? (
+    <>
+      <div className="staking__lp__detail-box__receive-token__header">
+        <div>
+          <p>
             {t('lpstaking.lp_token_staking_modal', {
               token0,
               token1,
             })}
-            </p>
-            <Guide content={t('guide.create_liquidity')} />
-          </div>
-          <a
-            className="staking__lp__detail-box__receive-token__button"
-            target="_blank"
-            rel="noopener noreferrer"
-            href={
-              token1 === 'ETH'
-                ? `https://app.uniswap.org/#/add/${envs.governanceAddress}/${envs.wEthAddress}`
-                : `https://app.uniswap.org/#/add/${envs.governanceAddress}/${envs.daiAddress}`
-            }>
-            <p>
-              {t('lpstaking.receive_lp_token')}
-            </p>
-          </a>
-        </div>
-        <div className="staking__lp__detail-box__receive-token__content">
-          <p>
-            <Trans
-              i18nKey="lpstaking.receive_lp_token_content"
-              values={{
-                token0,
-                token1,
-              }}
-            />
           </p>
-        </div>
-      </>
-    ) : (
-      <>
-        <div className="staking__lp__detail-box__receive-token__header">
-          <div>
-            <p>
-            {t('lpstaking.lp_token_staking_modal', {
-              token0,
-              token1,
-            })}
-            </p>
-            <Guide content={t('guide.create_liquidity')} />
-          </div>
-        </div>
-        <div className="staking__lp__detail-box__receive-token__content">
-          <p>
-            <Trans
-              i18nKey="lpstaking.receive_lp_token_content"
-              values={{
-                token0,
-                token1,
-              }}
-            />
-          </p>
+          <Guide content={t('guide.create_liquidity')} />
         </div>
         <a
           className="staking__lp__detail-box__receive-token__button"
@@ -83,12 +32,57 @@ const DetailBoxItemReceiveToken: FunctionComponent<tokenTypes> = (props) => {
               ? `https://app.uniswap.org/#/add/${envs.governanceAddress}/${envs.wEthAddress}`
               : `https://app.uniswap.org/#/add/${envs.governanceAddress}/${envs.daiAddress}`
           }>
-          <p>
-            {t('lpstaking.receive_lp_token')}
-          </p>
+          <p>{t('lpstaking.receive_lp_token')}</p>
         </a>
-      </>
-    )
+      </div>
+      <div className="staking__lp__detail-box__receive-token__content">
+        <p>
+          <Trans
+            i18nKey="lpstaking.receive_lp_token_content"
+            values={{
+              token0,
+              token1,
+            }}
+          />
+        </p>
+      </div>
+    </>
+  ) : (
+    <>
+      <div className="staking__lp__detail-box__receive-token__header">
+        <div>
+          <p>
+            {t('lpstaking.lp_token_staking_modal', {
+              token0,
+              token1,
+            })}
+          </p>
+          <Guide content={t('guide.create_liquidity')} />
+        </div>
+      </div>
+      <div className="staking__lp__detail-box__receive-token__content">
+        <p>
+          <Trans
+            i18nKey="lpstaking.receive_lp_token_content"
+            values={{
+              token0,
+              token1,
+            }}
+          />
+        </p>
+      </div>
+      <a
+        className="staking__lp__detail-box__receive-token__button"
+        target="_blank"
+        rel="noopener noreferrer"
+        href={
+          token1 === 'ETH'
+            ? `https://app.uniswap.org/#/add/${envs.governanceAddress}/${envs.wEthAddress}`
+            : `https://app.uniswap.org/#/add/${envs.governanceAddress}/${envs.daiAddress}`
+        }>
+        <p>{t('lpstaking.receive_lp_token')}</p>
+      </a>
+    </>
   );
 };
 

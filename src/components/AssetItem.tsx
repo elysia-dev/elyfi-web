@@ -75,9 +75,7 @@ const AssetItem: FunctionComponent<{
       </div>
       <div className="component__loan-list__data">
         <div>
-          <p>
-            {toPercent(abToken.interestRate || '0')}
-          </p>
+          <p>{toPercent(abToken.interestRate || '0')}</p>
         </div>
         <div>
           <p className="bold">

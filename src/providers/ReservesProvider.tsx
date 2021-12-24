@@ -14,7 +14,7 @@ const ReservesProvider: React.FC = (props) => {
   const { loading, data, error, refetch } = useQuery<GetAllReserves>(
     GET_ALL_RESERVES,
     {
-      variables: { minimumTimestamp: moment().subtract(7, 'days').unix() },
+      variables: { minimumTimestamp: moment().subtract(35, 'days').unix() },
     },
   );
 

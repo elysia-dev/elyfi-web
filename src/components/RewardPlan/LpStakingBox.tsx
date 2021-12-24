@@ -11,7 +11,7 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
 import SwiperCore, { Pagination } from 'swiper';
 import 'swiper/modules/pagination/pagination.scss';
-import 'swiper/swiper.scss'
+import 'swiper/swiper.scss';
 import LpStakingHeader from './LpStakingHeader';
 import RewardDetailInfo from './RewardDetailInfo';
 import SmallProgressBar from './SmallProgressBar';
@@ -44,7 +44,7 @@ type Props = {
       ethElfiRound: number;
     }>
   >;
-  ethReward?: number[]
+  ethReward?: number[];
 };
 
 const format = 'yyyy.MM.DD HH:mm:ss';
@@ -106,7 +106,7 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
         ];
   return (
     <div className="reward__token__lp__container">
-      <div className="reward__token__array-handler">
+      {/* <div className="reward__token__array-handler">
         <div
           className={`reward__token__array-handler--left${
             token1 === Token.DAI
@@ -173,194 +173,252 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
           <i />
           <i />
         </div>
-      </div>
+      </div> */}
       <LpStakingHeader
         tvl={props.tvl}
         apr={props.apr}
         token0={token0}
         token1={token1}
       />
-      {
-        mediaQuery === MediaQuery.PC ? (
-          <>
-            <div className="reward__token__data">
-              <SmallProgressBar
-                start={firstTokenValue.start[currentSwipe] <= 0 ? 0 : firstTokenValue.start[currentSwipe]}
-                end={firstTokenValue.end[currentSwipe] <= 0 ? 0 : firstTokenValue.end[currentSwipe]}
-                rewardOrMining={'mining'}
-                totalMiningValue={firstTokenValue.total
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                max={firstTokenValue.total}
-                unit={token0}
-              />
-              <RewardDetailInfo
-                start={firstTokenValue.start[currentSwipe] <= 0 ? 0 : firstTokenValue.start[currentSwipe]}
-                end={firstTokenValue.end[currentSwipe] <= 0 ? 0 : firstTokenValue.end[currentSwipe]}
-                miningStart={
-                  firstTokenValue.start[currentSwipe] <= 0
-                    ? 0
-                    : firstTokenValue.total - firstTokenValue.start[currentSwipe]
-                }
-                miningEnd={
-                  firstTokenValue.end[currentSwipe] <= 0
-                    ? 0
-                    : firstTokenValue.total - firstTokenValue.end[currentSwipe]
-                }
-                miningDescription={miningElfiDescription}
-                unit={token0}
-              />
-            </div>
-            <div className="reward__token__data">
-              <SmallProgressBar
-                start={secondTokenValue.start[currentSwipe] <= 0 ? 0 : secondTokenValue.start[currentSwipe]}
-                end={secondTokenValue.end[currentSwipe] <= 0 ? 0 : secondTokenValue.end[currentSwipe]}
-                rewardOrMining={'reward'}
-                totalMiningValue={
-                  token1 === Token.DAI
-                    ? secondTokenValue.total
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                    : lpStakingRound.ethElfiRound >= 2
-                    ? 'TBD'
-                    : secondTokenValue.total
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                }
-                max={secondTokenValue.total}
-                unit={token1}
-              />
-              <RewardDetailInfo
-                start={secondTokenValue.start[currentSwipe] <= 0 ? 0 : secondTokenValue.start[currentSwipe]}
-                end={secondTokenValue.end[currentSwipe] <= 0 ? 0 : secondTokenValue.end[currentSwipe]}
-                miningStart={
-                  secondTokenValue.start[currentSwipe] <= 0
-                    ? 0
-                    : secondTokenValue.total - secondTokenValue.start[currentSwipe]
-                }
-                miningEnd={
-                  secondTokenValue.end[currentSwipe] <= 0
-                    ? 0
-                    : secondTokenValue.total - secondTokenValue.end[currentSwipe]
-                }
-                miningDescription={miningDescription}
-                unit={token1}
-              />
-            </div>
-          </>
-        ) : (
-          <Swiper 
-            className="component__swiper"
-            spaceBetween={100}
-            loop={false}
-            slidesPerView={1}
-            pagination={{ clickable: true }}
-            onSlideChange={(slides) => setCurrnetSwipe(slides.realIndex)}
-            initialSlide={currentSwipe}
-          >
-          {  
-            lpRoundDate.map((_x, index) => {
-              return (
-                <SwiperSlide key={`slide-${index}`}>
-                  <div className="reward__token__data">
-                    <SmallProgressBar
-                      start={firstTokenValue.start[index] <= 0 ? 0 : firstTokenValue.start[index]}
-                      end={firstTokenValue.end[index] <= 0 ? 0 : firstTokenValue.end[index]}
-                      rewardOrMining={'mining'}
-                      totalMiningValue={firstTokenValue.total
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                      max={firstTokenValue.total}
-                      unit={token0}
-                    />
-                    <RewardDetailInfo
-                      start={firstTokenValue.start[index] <= 0 ? 0 : firstTokenValue.start[index]}
-                      end={firstTokenValue.end[index] <= 0 ? 0 : firstTokenValue.end[index]}
-                      miningStart={
-                        firstTokenValue.start[index] <= 0
-                          ? 0
-                          : firstTokenValue.total - firstTokenValue.start[index]
-                      }
-                      miningEnd={
-                        firstTokenValue.end[index] <= 0
-                          ? 0
-                          : firstTokenValue.total - firstTokenValue.end[index]
-                      }
-                      miningDescription={miningElfiDescription}
-                      unit={token0}
-                    />
-                  </div>
-                  <div className="reward__token__data">
-                    <SmallProgressBar
-                      start={secondTokenValue.start[index] <= 0 ? 0 : secondTokenValue.start[index]}
-                      end={secondTokenValue.end[index] <= 0 ? 0 : secondTokenValue.end[index]}
-                      rewardOrMining={'reward'}
-                      totalMiningValue={
-                        token1 === Token.DAI
-                          ? (
-                              props.ethReward ? 
-                                (index === 0 ? 
-                                  props.ethReward[0] : 
-                                  props.ethReward[1]
-                                ) :
-                                secondTokenValue.total
-                            ).toString()
+      {mediaQuery === MediaQuery.PC ? (
+        <>
+          <div className="reward__token__data">
+            <SmallProgressBar
+              start={
+                firstTokenValue.start[currentSwipe] <= 0
+                  ? 0
+                  : firstTokenValue.start[currentSwipe]
+              }
+              end={
+                firstTokenValue.end[currentSwipe] <= 0
+                  ? 0
+                  : firstTokenValue.end[currentSwipe]
+              }
+              rewardOrMining={'mining'}
+              totalMiningValue={firstTokenValue.total
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              max={firstTokenValue.total}
+              unit={token0}
+            />
+            <RewardDetailInfo
+              start={
+                firstTokenValue.start[currentSwipe] <= 0
+                  ? 0
+                  : firstTokenValue.start[currentSwipe]
+              }
+              end={
+                firstTokenValue.end[currentSwipe] <= 0
+                  ? 0
+                  : firstTokenValue.end[currentSwipe]
+              }
+              miningStart={
+                firstTokenValue.start[currentSwipe] <= 0
+                  ? 0
+                  : firstTokenValue.total - firstTokenValue.start[currentSwipe]
+              }
+              miningEnd={
+                firstTokenValue.end[currentSwipe] <= 0
+                  ? 0
+                  : firstTokenValue.total - firstTokenValue.end[currentSwipe]
+              }
+              miningDescription={miningElfiDescription}
+              unit={token0}
+            />
+          </div>
+          <div className="reward__token__data">
+            <SmallProgressBar
+              start={
+                secondTokenValue.start[currentSwipe] <= 0
+                  ? 0
+                  : secondTokenValue.start[currentSwipe]
+              }
+              end={
+                secondTokenValue.end[currentSwipe] <= 0
+                  ? 0
+                  : secondTokenValue.end[currentSwipe]
+              }
+              rewardOrMining={'reward'}
+              totalMiningValue={
+                token1 === Token.DAI
+                  ? secondTokenValue.total
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                  : lpStakingRound.ethElfiRound >= 2
+                  ? 'TBD'
+                  : secondTokenValue.total
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+              }
+              max={secondTokenValue.total}
+              unit={token1}
+            />
+            <RewardDetailInfo
+              start={
+                secondTokenValue.start[currentSwipe] <= 0
+                  ? 0
+                  : secondTokenValue.start[currentSwipe]
+              }
+              end={
+                secondTokenValue.end[currentSwipe] <= 0
+                  ? 0
+                  : secondTokenValue.end[currentSwipe]
+              }
+              miningStart={
+                secondTokenValue.start[currentSwipe] <= 0
+                  ? 0
+                  : secondTokenValue.total -
+                    secondTokenValue.start[currentSwipe]
+              }
+              miningEnd={
+                secondTokenValue.end[currentSwipe] <= 0
+                  ? 0
+                  : secondTokenValue.total - secondTokenValue.end[currentSwipe]
+              }
+              miningDescription={miningDescription}
+              unit={token1}
+            />
+          </div>
+        </>
+      ) : (
+        <Swiper
+          className="component__swiper"
+          spaceBetween={100}
+          loop={false}
+          slidesPerView={1}
+          pagination={{ clickable: true }}
+          onSlideChange={(slides) => setCurrnetSwipe(slides.realIndex)}
+          initialSlide={currentSwipe}>
+          {lpRoundDate.map((_x, index) => {
+            return (
+              <SwiperSlide key={`slide-${index}`}>
+                <div className="reward__token__data">
+                  <SmallProgressBar
+                    start={
+                      firstTokenValue.start[index] <= 0
+                        ? 0
+                        : firstTokenValue.start[index]
+                    }
+                    end={
+                      firstTokenValue.end[index] <= 0
+                        ? 0
+                        : firstTokenValue.end[index]
+                    }
+                    rewardOrMining={'mining'}
+                    totalMiningValue={firstTokenValue.total
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    max={firstTokenValue.total}
+                    unit={token0}
+                  />
+                  <RewardDetailInfo
+                    start={
+                      firstTokenValue.start[index] <= 0
+                        ? 0
+                        : firstTokenValue.start[index]
+                    }
+                    end={
+                      firstTokenValue.end[index] <= 0
+                        ? 0
+                        : firstTokenValue.end[index]
+                    }
+                    miningStart={
+                      firstTokenValue.start[index] <= 0
+                        ? 0
+                        : firstTokenValue.total - firstTokenValue.start[index]
+                    }
+                    miningEnd={
+                      firstTokenValue.end[index] <= 0
+                        ? 0
+                        : firstTokenValue.total - firstTokenValue.end[index]
+                    }
+                    miningDescription={miningElfiDescription}
+                    unit={token0}
+                  />
+                </div>
+                <div className="reward__token__data">
+                  <SmallProgressBar
+                    start={
+                      secondTokenValue.start[index] <= 0
+                        ? 0
+                        : secondTokenValue.start[index]
+                    }
+                    end={
+                      secondTokenValue.end[index] <= 0
+                        ? 0
+                        : secondTokenValue.end[index]
+                    }
+                    rewardOrMining={'reward'}
+                    totalMiningValue={
+                      token1 === Token.DAI
+                        ? (props.ethReward
+                            ? index === 0
+                              ? props.ethReward[0]
+                              : props.ethReward[1]
+                            : secondTokenValue.total
+                          )
+                            .toString()
                             .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                          : lpStakingRound.ethElfiRound >= 2
-                          ? 'TBD'
-                          : (props.ethReward ? 
-                              (index === 0 ? 
-                                props.ethReward[0] : 
-                                props.ethReward[1]
-                              ) :
-                              secondTokenValue.total)
-                              .toString()
-                              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                      }
-                      max={
-                        props.ethReward ? 
-                          (index === 0 ? 
-                            props.ethReward[0] : 
-                            props.ethReward[1]
-                          ) :
-                          secondTokenValue.total
-                        }
-                      unit={token1}
-                    />
-                    <RewardDetailInfo
-                      start={secondTokenValue.start[index] <= 0 ? 0 : secondTokenValue.start[index]}
-                      end={secondTokenValue.end[index] <= 0 ? 0 : secondTokenValue.end[index]}
-                      miningStart={
-                        secondTokenValue.start[index] <= 0
-                          ? 0
-                          : (props.ethReward ? 
-                              (index === 0 ? 
-                                props.ethReward[0] : 
-                                props.ethReward[1]
-                              ) :
-                              secondTokenValue.total) - secondTokenValue.start[index]
-                      }
-                      miningEnd={
-                        secondTokenValue.end[index] <= 0
-                          ? 0
-                          : (props.ethReward ? 
-                              (index === 0 ? 
-                                props.ethReward[0] : 
-                                props.ethReward[1]
-                              ) :
-                              secondTokenValue.total) - secondTokenValue.end[index]
-                      }
-                      miningDescription={miningDescription}
-                      unit={token1}
-                    />
-                  </div>
-                </SwiperSlide>
-              )
-            })
-          }
-          </Swiper>
-        )
-      }
+                        : lpStakingRound.ethElfiRound >= 2
+                        ? 'TBD'
+                        : (props.ethReward
+                            ? index === 0
+                              ? props.ethReward[0]
+                              : props.ethReward[1]
+                            : secondTokenValue.total
+                          )
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                    }
+                    max={
+                      props.ethReward
+                        ? index === 0
+                          ? props.ethReward[0]
+                          : props.ethReward[1]
+                        : secondTokenValue.total
+                    }
+                    unit={token1}
+                  />
+                  <RewardDetailInfo
+                    start={
+                      secondTokenValue.start[index] <= 0
+                        ? 0
+                        : secondTokenValue.start[index]
+                    }
+                    end={
+                      secondTokenValue.end[index] <= 0
+                        ? 0
+                        : secondTokenValue.end[index]
+                    }
+                    miningStart={
+                      secondTokenValue.start[index] <= 0
+                        ? 0
+                        : (props.ethReward
+                            ? index === 0
+                              ? props.ethReward[0]
+                              : props.ethReward[1]
+                            : secondTokenValue.total) -
+                          secondTokenValue.start[index]
+                    }
+                    miningEnd={
+                      secondTokenValue.end[index] <= 0
+                        ? 0
+                        : (props.ethReward
+                            ? index === 0
+                              ? props.ethReward[0]
+                              : props.ethReward[1]
+                            : secondTokenValue.total) -
+                          secondTokenValue.end[index]
+                    }
+                    miningDescription={miningDescription}
+                    unit={token1}
+                  />
+                </div>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+      )}
     </div>
   );
 };

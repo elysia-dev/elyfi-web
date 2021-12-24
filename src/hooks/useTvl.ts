@@ -10,8 +10,11 @@ import ReserveData from 'src/core/data/reserves';
 
 const useTvl = (): { value: number; loading: boolean } => {
   const { reserves } = useContext(ReservesContext);
-  const { totalValueLockedToken0, totalValueLockedToken1, latestPrice: elfiPrice } =
-    useContext(UniswapPoolContext);
+  const {
+    totalValueLockedToken0,
+    totalValueLockedToken1,
+    latestPrice: elfiPrice,
+  } = useContext(UniswapPoolContext);
   const { elPrice } = useContext(PriceContext);
 
   const [state, setState] = useState({
@@ -36,7 +39,14 @@ const useTvl = (): { value: number; loading: boolean } => {
       parseInt(formatEther(state.stakedEl), 10) * elPrice +
       parseInt(formatEther(state.stakedElfi), 10) * elfiPrice
     );
-  }, [state, reserves, elPrice, elfiPrice, totalValueLockedToken0, totalValueLockedToken1]);
+  }, [
+    state,
+    reserves,
+    elPrice,
+    elfiPrice,
+    totalValueLockedToken0,
+    totalValueLockedToken1,
+  ]);
 
   const loadBalances = async () => {
     try {

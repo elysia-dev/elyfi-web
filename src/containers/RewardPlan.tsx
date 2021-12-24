@@ -270,14 +270,16 @@ const RewardPlan: FunctionComponent = () => {
             <p onClick={() => onClickHandler()} className="pointer">
               {t('dashboard.deposit')}
             </p>
-            &nbsp;&gt;&nbsp;
+            &nbsp;&nbsp;&gt;&nbsp;&nbsp;
             <p>{t('reward.reward_plan')}</p>
           </div>
         ) : (
           <div className="component__text-navigation">
             {`${t('staking.location_staking')} > `}
-            <p onClick={() => onClickHandler()}>
+            <p onClick={() => onClickHandler()} className="pointer">
+              &nbsp;&nbsp;
               {t('staking.token_staking', { stakedToken: stakingType })}
+              &nbsp;&nbsp;
             </p>
             {` > ${t('reward.reward_plan')}`}
           </div>

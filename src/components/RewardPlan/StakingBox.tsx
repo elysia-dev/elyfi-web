@@ -72,7 +72,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
           })}
         </h2>
       </div>
-      <div className="reward__token__array-handler">
+      {/* <div className="reward__token__array-handler">
         <div
           className={`reward__token__array-handler--left${
             props.staking === 0 ? ' disabled' : ''
@@ -107,7 +107,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
           <i />
           <i />
         </div>
-      </div>
+      </div> */}
       <div className="reward__token__container">
         <StakingBoxHeader
           nth={props.nth}
@@ -190,6 +190,40 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
               </Swiper>
             )
           }
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          {stakingRoundTimes.map((_, idx) => (
+            <div
+              key={idx}
+              onClick={() => {
+                props.setState({
+                  ...props.state,
+                  currentElfiLevel: isDai ? idx : props.state.currentElfiLevel,
+                  elStaking: isDai ? props.state.elStaking : idx,
+                });
+              }}
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: 8,
+                backgroundColor: isDai
+                  ? idx === props.state.currentElfiLevel
+                    ? '#646464'
+                    : '#E6E6E6'
+                  : idx === props.state.elStaking
+                  ? '#646464'
+                  : '#E6E6E6',
+                cursor: 'pointer',
+                marginTop: 18,
+                marginRight: idx === stakingRoundTimes.length - 1 ? '' : 18,
+              }}
+            />
+          ))}
         </div>
       </div>
     </>

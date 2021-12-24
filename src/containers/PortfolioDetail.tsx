@@ -1,6 +1,7 @@
 import { FunctionComponent, useMemo, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import GoogleMapReact from 'google-map-react';
+import TempAssets from 'src/assets/images/temp_assets.png';
 import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
 import ErrorPage from 'src/components/ErrorPage';
 import { useQuery } from '@apollo/client';
@@ -39,10 +40,17 @@ const PortfolioDetail: FunctionComponent = () => {
   const lat = parsedTokenId.collateralLatitude / 100000;
   const lng = parsedTokenId.collateralLongitude / 100000;
   const [address, setAddress] = useState('-');
-  const [contractImage, setContractImage] = useState({
-    hash: '',
-    link: '',
-  });
+  const [contractImage, setContractImage] = useState<
+    {
+      hash: string;
+      link: string;
+    }[]
+  >([
+    {
+      hash: '',
+      link: '',
+    },
+  ]);
   const tokenInfo = ReserveData.find(
     (reserve) => reserve.address === abToken?.reserve.id,
   );
@@ -55,7 +63,6 @@ const PortfolioDetail: FunctionComponent = () => {
   ) => {
     setAddress(await reverseGeocoding(lat, lng, language));
   };
-
   useEffect(() => {
     if (!isLat(lat) || !isLng(lng)) return;
 
@@ -65,20 +72,35 @@ const PortfolioDetail: FunctionComponent = () => {
   const loadContractImage = async (ipfs: string) => {
     try {
       const response = await Slate.fetctABTokenIpfs(ipfs);
-      const contractDoc = response.data.documents.find((doc) => doc.type === 1);
-
+      const contractDoc = response.data;
       if (contractDoc) {
-        setContractImage({
-          hash: contractDoc.hash,
-          link: contractDoc.link,
-        });
+        setContractImage([
+          {
+            hash: contractDoc.documents[0].hash,
+            link: contractDoc.documents[0].link,
+          },
+          {
+            hash: contractDoc.documents[1].hash,
+            link: contractDoc.documents[1].link,
+          },
+          {
+            hash: contractDoc.documents[2].hash,
+            link: contractDoc.documents[2].link,
+          },
+          {
+            hash: contractDoc.images[0]?.hash,
+            link: contractDoc.images[0]?.link,
+          },
+        ]);
       }
     } catch (error) {
       console.error(error);
-      setContractImage({
-        hash: '',
-        link: '',
-      });
+      setContractImage([
+        {
+          hash: '',
+          link: '',
+        },
+      ]);
     }
   };
 
@@ -110,16 +132,16 @@ const PortfolioDetail: FunctionComponent = () => {
   return (
     <div className="portfolio">
       <div className="component__text-navigation">
-        <p onClick={() => history.push(`/${lng}/dashboard`)} className="pointer">
+        <p
+          onClick={() => history.push(`/${lng}/dashboard`)}
+          className="pointer">
           {t('dashboard.deposit')}
         </p>
         &nbsp;&gt;&nbsp;
-        <p>
-          {t("loan.loan__info")}
-        </p>
+        <p>{t('loan.loan__info')}</p>
       </div>
       <div className="detail__header">
-        <h2>{t("loan.loan__info")}</h2>
+        <h2>{t('loan.loan__info')}</h2>
       </div>
       {loading ? (
         <Skeleton height={900} />
@@ -127,13 +149,13 @@ const PortfolioDetail: FunctionComponent = () => {
         <>
           <div className="portfolio__borrower">
             <h2 className="portfolio__borrower__title">
-              {t("loan.borrower__info")}
+              {t('loan.borrower__info')}
             </h2>
             <div className="portfolio__borrower__header">
               <img src={CollateralLogo} />
               <div>
-                <p>{t("loan.borrower")}</p>
-                <p>Elyloan Corp</p>
+                <p>{t('loan.borrower')}</p>
+                <p>Elyloan Inc</p>
               </div>
               <div>
                 <p>{t('loan.license_number')}</p>
@@ -141,8 +163,13 @@ const PortfolioDetail: FunctionComponent = () => {
               </div>
               <div>
                 <p>{t('loan.wallet_address')}</p>
-                <p onClick={() => AddressCopy("0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7")} className="link">
-                  {"0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7".slice(0, 12)} ... {"0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7".slice(-12)}
+                <p
+                  onClick={() =>
+                    AddressCopy('0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7')
+                  }
+                  className="link">
+                  {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(0, 12)}{' '}
+                  ... {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(-12)}
                 </p>
               </div>
             </div>
@@ -155,20 +182,28 @@ const PortfolioDetail: FunctionComponent = () => {
                 <div>
                   <p>{t('loan.loan__status')}</p>
                   <p>
-                  {t(
-                    `words.${
-                      LoanStatus[toLoanStatus(abToken?.state as ABTokenState)]
-                    }`,
-                  )}
+                    {t(
+                      `words.${
+                        LoanStatus[toLoanStatus(abToken?.state as ABTokenState)]
+                      }`,
+                    )}
                   </p>
                 </div>
                 <div>
                   <p>{t('loan.receiving_address')}</p>
-                  <p 
-                    onClick={() => abToken?.borrower?.id ? AddressCopy(abToken?.borrower?.id) : undefined} 
-                    className={abToken?.borrower?.id ? "link" : ""} 
-                  >
-                    {!!abToken?.borrower?.id === true ? (`${abToken?.borrower?.id.slice(0, 12)} ... ${abToken?.borrower?.id.slice(-12)}`) : '-'}
+                  <p
+                    onClick={() =>
+                      abToken?.borrower?.id
+                        ? AddressCopy(abToken?.borrower?.id)
+                        : undefined
+                    }
+                    className={abToken?.borrower?.id ? 'link' : ''}>
+                    {!!abToken?.borrower?.id === true
+                      ? `${abToken?.borrower?.id.slice(
+                          0,
+                          12,
+                        )} ... ${abToken?.borrower?.id.slice(-12)}`
+                      : '-'}
                   </p>
                 </div>
                 <div>
@@ -186,10 +221,10 @@ const PortfolioDetail: FunctionComponent = () => {
                   <p>{t('loan.loan__date')}</p>
                   <p>
                     {abToken?.loanStartTimestamp
-                        ? moment(abToken.loanStartTimestamp * 1000).format(
-                            'YYYY.MM.DD',
-                          )
-                        : '-'}
+                      ? moment(abToken.loanStartTimestamp * 1000).format(
+                          'YYYY.MM.DD',
+                        )
+                      : '-'}
                   </p>
                 </div>
                 <div>
@@ -219,60 +254,150 @@ const PortfolioDetail: FunctionComponent = () => {
         <h2>{t('loan.collateral_nft__details')}</h2>
         <div className="portfolio__collateral__data">
           <div className="portfolio__collateral__data--left">
-          {loading ? (
+            {loading ? (
               <Skeleton height={900} />
             ) : (
-              <GoogleMapReact
-                bootstrapURLKeys={{
-                  key: process.env.REACT_APP_GOOGLE_MAP_API_KEY!,
-                }}
-                defaultCenter={{
-                  lat,
-                  lng,
-                }}
-                defaultZoom={15}>
-                <Marker lat={lat} lng={lng} />
-              </GoogleMapReact>
+              <>
+                <a
+                  href={`https://www.google.com/maps/place/${address}/@${lat},${lng},18.12z`}
+                  rel="noopener noreferer"
+                  target="_blank">
+                  <img
+                    style={{
+                      width: 538.5,
+                      height: 526,
+                    }}
+                    src={contractImage[3]?.link || TempAssets}
+                    alt={contractImage[3]?.link || TempAssets}
+                  />
+                </a>
+                {/* <GoogleMapReact
+                  bootstrapURLKeys={{
+                    key: process.env.REACT_APP_GOOGLE_MAP_API_KEY!,
+                  }}
+                  defaultCenter={{
+                    lat,
+                    lng,
+                  }}
+                  defaultZoom={15}>
+                  <Marker lat={lat} lng={lng} />
+                </GoogleMapReact> */}
+              </>
             )}
           </div>
           <div className="portfolio__collateral__data--right">
-          {loading ? (
-            <Skeleton height={900} />
-          ) : (
-            <>
-            {[
-              [t("loan.collateral_nft__type"), "ABToken", "", ""],
-              [t('loan.collateral_nft__abtoken_id'), `${abToken?.id.slice(0, 12)} ... ${abToken?.id.slice(-12)}`, "", `${envs.etherscan}/token/${tokenInfo.tokeninzer}?a=${abToken?.id}`],
-              [t('loan.collateral_nft__borrower'), "Elyloan Corp", "", ""],
-              [t('loan.collateral_nft__loan_product'), t(`words.${LoanProduct[parsedTokenId.productNumber as LoanProduct]}`), "", ""],
-              [t('loan.loan__borrowed'), toUsd(abToken?.principal || '0', tokenInfo.decimals), "", ""],
-              [t('loan.loan__interest_rate'), toPercent(abToken?.couponRate || '0'), "", ""],
-              [t('loan.collateral_nft__overdue_interest_rate'), toPercent(abToken?.delinquencyRate || '0'), "", ""],
-              [t('loan.maturity_date'), maturityFormmater(abToken), "", ""],
-              [t('loan.collateral_nft__maximum_amount'), toUsd(abToken?.debtCeiling || '0', tokenInfo.decimals), "", ""],
-              [t('loan.collateral_nft__loan_type'), t(`words.${CollateralCategory[parsedTokenId.collateralCategory as CollateralCategory]}`), "", ""],
-              [t('loan.collateral_nft__address'), address, "", ""],
-              [t('loan.collateral_nft__contract_image'), `${contractImage.hash.slice(0, 12)} ... ${contractImage.hash.slice(-12)}` || '-', "", contractImage.link]
-            ].map((data) => {
-              return (
-                <div>
-                  <p>{data[0]}</p>
-                  <p 
-                    onClick={() => {
-                      !!data[3] === true ? 
-                        window.open(data[3], '_blank'
-                      ) : 
-                      undefined
-                    }}
-                    className={!!data[3] === true ? "link" : ""}
-                  >
-                    {data[1]}
-                  </p>
-                </div>
-              )
-            })}
-            </>
-          )}
+            {loading ? (
+              <Skeleton height={900} />
+            ) : (
+              <>
+                {[
+                  [t('loan.collateral_nft__type'), 'ABToken', '', ''],
+                  [
+                    t('loan.collateral_nft__abtoken_id'),
+                    `${abToken?.id.slice(0, 12)} ... ${abToken?.id.slice(-12)}`,
+                    '',
+                    `${envs.etherscan}/token/${tokenInfo.tokeninzer}?a=${abToken?.id}`,
+                  ],
+                  [t('loan.collateral_nft__borrower'), 'Elyloan Inc', '', ''],
+                  [
+                    t('loan.collateral_nft__loan_product'),
+                    t(
+                      `words.${
+                        LoanProduct[parsedTokenId.productNumber as LoanProduct]
+                      }`,
+                    ),
+                    '',
+                    '',
+                  ],
+                  [
+                    t('loan.loan__borrowed'),
+                    toUsd(abToken?.principal || '0', tokenInfo.decimals),
+                    '',
+                    '',
+                  ],
+                  [
+                    t('loan.loan__interest_rate'),
+                    toPercent(abToken?.couponRate || '0'),
+                    '',
+                    '',
+                  ],
+                  [
+                    t('loan.collateral_nft__overdue_interest_rate'),
+                    toPercent(abToken?.delinquencyRate || '0'),
+                    '',
+                    '',
+                  ],
+                  [t('loan.maturity_date'), maturityFormmater(abToken), '', ''],
+                  [
+                    t('loan.collateral_nft__maximum_amount'),
+                    toUsd(abToken?.debtCeiling || '0', tokenInfo.decimals),
+                    '',
+                    '',
+                  ],
+                  [
+                    t('loan.collateral_nft__loan_type'),
+                    t(
+                      `words.${
+                        CollateralCategory[
+                          parsedTokenId.collateralCategory as CollateralCategory
+                        ]
+                      }`,
+                    ),
+                    '',
+                    '',
+                  ],
+                  [t('loan.collateral_nft__address'), address, '', ''],
+                  [
+                    t('loan.collateral_nft__contract_image'),
+                    contractImage[1]?.hash
+                      ? `${contractImage[1].hash.slice(
+                          0,
+                          12,
+                        )} ... ${contractImage[1].hash.slice(-12)}`
+                      : '-',
+                    '',
+                    contractImage[1]?.link,
+                  ],
+                  [
+                    '등기사항',
+                    contractImage[0]?.hash
+                      ? `${contractImage[0].hash.slice(
+                          0,
+                          12,
+                        )} ... ${contractImage[0].hash.slice(-12)}`
+                      : '-',
+                    '',
+                    contractImage[0]?.link,
+                  ],
+                  [
+                    '법인등기사항',
+                    contractImage[2]?.hash
+                      ? `${contractImage[2]?.hash.slice(
+                          0,
+                          12,
+                        )} ... ${contractImage[2]?.hash.slice(-12)}`
+                      : '-',
+                    '',
+                    contractImage[2]?.link,
+                  ],
+                ].map((data) => {
+                  return (
+                    <div>
+                      <p>{data[0]}</p>
+                      <p
+                        onClick={() => {
+                          !!data[3] === true
+                            ? window.open(data[3], '_blank')
+                            : undefined;
+                        }}
+                        className={!!data[3] === true ? 'link' : ''}>
+                        {data[1]}
+                      </p>
+                    </div>
+                  );
+                })}
+              </>
+            )}
           </div>
         </div>
       </div>
