@@ -1,6 +1,7 @@
 {
   "moneyPoolAddress": "0xa93008fD32EB24E488DDAA6C0aA152559fDa9E8c",
   "governanceAddress": "0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4",
+  "testStableAddress": "0x73e839d53FB65eb954B04Ea0cC0e2e11aAB936F7",
   "elStakingPoolAddress": "0xd804e198d25a1920522ca0094a670184a9c972d7",
   "elfyStakingPoolAddress": "0xb41bcd480fbd986331eeed516c52e447b50dacb4",
   "elfyV2StakingPoolAddress": "0xCD668B44C7Cf3B63722D5cE5F655De68dD8f2750",
@@ -16,8 +17,6 @@
   "wEthAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
   "daiElfiPoolAddress": "0xbde484db131bd2ae80e44a57f865c1dfebb7e31f",
   "ethElfiPoolAddress": "0xc311faebe8802f9cfc91284016d1de9537ec66b7",
-  "lpTokenStakingStartTime": 1636106400,
-  "lpTokenStakingEndTime": 1639562400,
   "stakerSubgraphURL": "https://api.studio.thegraph.com/query/862/lp-staking-elyfi/v0.0.8",
   "lpTokenPoolSubgraphURL": "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3",
   "refundedAddress": "0x23b062F33ed93EE8C8e658e609dbd80797DFdA89",

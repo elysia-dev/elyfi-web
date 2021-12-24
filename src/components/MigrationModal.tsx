@@ -314,6 +314,7 @@ const MigrationModal: React.FunctionComponent<{
                 );
               })
               .catch((e) => {
+                console.error(e);
                 failTransaction(tracker, closeHandler, e);
               });
           }}>

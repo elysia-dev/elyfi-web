@@ -9,7 +9,6 @@ const calcAPR = (
   minedPerDay: BigNumber,
   minedPrice: number,
 ): BigNumber => {
-  console.log(staked);
   if (staked.isZero() || stakedPrice === 0) {
     // APR is infinite
     return constants.MaxUint256;

@@ -11,7 +11,7 @@ const DisableWalletPage = () => {
   const route = useRouteMatch();
 
   const CopiedWallet = () => {
-    return active && chainId === envs.requiredChainId ? (
+    return active && (envs.requiredNetwork === 'Ganache' || chainId === envs.requiredChainId) ? (
       <div
         style={{
           border: '2px solid #00BFFF',
