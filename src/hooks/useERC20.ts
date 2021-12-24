@@ -9,10 +9,7 @@ const useERC20 = (address: string) => {
     if (!library) {
       return ERC20__factory.connect(
         address,
-        new providers.InfuraProvider(
-          'mainnet',
-          process.env.REACT_APP_INFURA_PROJECT_ID,
-        ),
+        new providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC)
       );
     }
     return ERC20__factory.connect(address, library.getSigner());

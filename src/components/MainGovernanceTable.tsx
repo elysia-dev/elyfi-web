@@ -48,7 +48,6 @@ const MainGovernanceTable: FunctionComponent<Props> = ({
       const getOnChainApis = await OnChainTopic.getOnChainTopicData();
       const getNAPCodes = getOnChainApis.data.data.proposals.filter((topic) => {
         return topic.data.description.startsWith('NAP');
-        // return topic.data.description.match(/(?<=NAP).*(?=:)/)?.toString()
       });
       return getNAPCodes || undefined;
     } catch (e) {
@@ -82,7 +81,7 @@ const MainGovernanceTable: FunctionComponent<Props> = ({
               ..._data,
               {
                 title:
-                  data.data.description.match(/(?=NAP).*(?<=)/)?.toString() ||
+                  data.data.description.match(/NAP.*/)?.toString() ||
                   '',
                 created_at: dates,
                 link: `https://www.withtally.com/governance/elyfi/proposal/${getDataId}`,

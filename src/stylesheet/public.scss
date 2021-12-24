@@ -215,6 +215,13 @@ input[type='number'] {
         padding: 20px 15px;
         border-bottom: 1px solid $gray-line;
         cursor: pointer;
+        &:hover { 
+          background: $gray-line;
+          > div > p {
+            color: $elysia-color;
+            font-weight: bold;
+          }
+        }
         > div {
           display: flex;
           flex-direction: row;
@@ -227,10 +234,7 @@ input[type='number'] {
             color: $font-color;
             font-size: 15px;
           }
-          > p:hover {
-            color: #00ace6;
-            font-weight: bold;
-          }
+          
         }
       }
       > a > p {
@@ -741,6 +745,11 @@ input[type='number'] {
       }
     }
     &__service {
+      &__graph {
+        &--circle {
+          word-break: keep-all;
+        }
+      }
       flex-direction: column;
       justify-content: space-around;
       align-items: flex-start;
@@ -816,6 +825,7 @@ input[type='number'] {
         justify-content: space-between;
         align-items: center;
         &__button {
+          background: $background-color;
           flex: 1;
           border-radius: 10px;
           border: 1px solid $elysia-color;
@@ -837,6 +847,7 @@ input[type='number'] {
       &__content {
         border-radius: 18px;
         border: 1px solid $gray-line;
+        background: $background-color;
         > div {
           display: flex;
           flex-direction: row;
@@ -853,6 +864,9 @@ input[type='number'] {
       &__body {
         border-bottom: 1px solid $gray-line;
         cursor: pointer;
+        &:hover {
+          background: $gray-line;
+        } 
         &:last-child {
           border: 0;
         }
@@ -1043,6 +1057,9 @@ input[type='number'] {
         align-items: center;
         border-top: 1px solid $gray-line;
         cursor: pointer;
+        &:hover {
+          background: $gray-line;
+        }
         &:first-child {
           border: 0;
         }
@@ -1595,6 +1612,7 @@ input[type='number'] {
       flex-direction: row;
       justify-content: space-around;
       align-items: center;
+      background: $background-color;
       &__arrow-container {
         display: flex;
         flex-direction: column;
@@ -1662,6 +1680,7 @@ input[type='number'] {
       &__button {
         margin: 0px 40px;
         width: 183px;
+        background: $background-color;
 
         // temp
         cursor: pointer;

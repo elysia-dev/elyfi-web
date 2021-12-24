@@ -1226,9 +1226,23 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       > div:first-child {
         padding-bottom: 10px;
         margin-bottom: 15px;
-        > h3 {
-          font-size: 13px;
-          color: $font-color;
+        margin-top: 20px;
+        
+        > div {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          > div {
+            margin: 0;
+          }
+          > h3 {
+            font-size: 13px;
+            color: $font-color;
+          }
+          >a>div {
+            margin: 0;
+          }
         }
         > p {
           font-size: 12px;
@@ -1276,6 +1290,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         border-radius: 30px;
         padding: 5px;
         flex: 1;
+        margin: 0;
         > p {
           font-size: 12px;
           color: $font-color;
@@ -1380,8 +1395,10 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           height: 250px;
           padding: 14px 16px;
           border-bottom: 1px solid $gray-line;
-          > div {
-            height: 244px !important;
+          > a > img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: scale-down;
           }
         }
         &--right {

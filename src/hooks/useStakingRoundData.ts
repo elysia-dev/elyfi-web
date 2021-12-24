@@ -29,11 +29,8 @@ const useStakingRoundData = (
         ? envs.elStakingPoolAddress
         : round <= 1
         ? envs.elfyStakingPoolAddress
-        : envs.elfyV2StakingPoolAddress,
-      new providers.InfuraProvider(
-        'mainnet',
-        process.env.REACT_APP_INFURA_PROJECT_ID,
-      ) as any,
+          : envs.elfyV2StakingPoolAddress,
+      new providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC)
     );
   }, [stakedToken, round]);
 
