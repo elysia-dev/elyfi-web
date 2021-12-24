@@ -129,7 +129,6 @@ $device-width: 1190px;
               animation-name: DownFade;
               animation-iteration-count: infinite;
               width: 513px;
-    
             }
             .token-many {
               position: relative;
@@ -190,57 +189,57 @@ $device-width: 1190px;
             }
           }
         }
-          @keyframes floatingImage {
-            0% {
-              transform: translateY(0px);
-            }
-            50% {
-              transform: translateY(40px);
-            }
+        @keyframes floatingImage {
+          0% {
+            transform: translateY(0px);
           }
-          @keyframes DownFade {
-            0% {
-              transform: translateY(0px);
-              opacity: 0.0;
-            }
-            10% {
-              transform: translateY(40px);
-              opacity: 1;
-            }
-            30% {
-              transform: translateY(500px);
-              opacity: 1;
-            }
-            100% {
-              transform: translateY(500px);
-            }
+          50% {
+            transform: translateY(40px);
           }
-          @keyframes UpFade {
-            0% {
-              transform: translateY(0px);
-              opacity: 1;
-            }
-            30% {
-              transform: translateY(0px);
-            }
-            60% {
-              transform: translateY(-400px);
-            }
-            70% {
-              transform: translateY(-380px);
-            }
-            80% {
-              transform: translateY(-400px);
-            }
-            90% {
-              transform: translateY(-380px);
-              opacity: 1;
-            }
-            100% {
-              transform: translateY(-400px);
-              opacity: 0.0;
-            }
+        }
+        @keyframes DownFade {
+          0% {
+            transform: translateY(0px);
+            opacity: 0;
           }
+          10% {
+            transform: translateY(40px);
+            opacity: 1;
+          }
+          30% {
+            transform: translateY(500px);
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(500px);
+          }
+        }
+        @keyframes UpFade {
+          0% {
+            transform: translateY(0px);
+            opacity: 1;
+          }
+          30% {
+            transform: translateY(0px);
+          }
+          60% {
+            transform: translateY(-400px);
+          }
+          70% {
+            transform: translateY(-380px);
+          }
+          80% {
+            transform: translateY(-400px);
+          }
+          90% {
+            transform: translateY(-380px);
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(-400px);
+            opacity: 0;
+          }
+        }
         > div {
           &:first-child {
             > h2 {
@@ -1096,6 +1095,14 @@ $device-width: 1190px;
         > div:first-child {
           padding-bottom: 20px;
           margin-bottom: 20px;
+
+          > div {
+            display: flex;
+            justify-content: space-between;
+            > a > div {
+              margin: 0;
+            }
+          }
         }
       }
       &__elyfi-graph {

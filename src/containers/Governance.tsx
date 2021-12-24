@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import TempAssets from 'src/assets/images/temp_assets.png';
+import wave from 'src/assets/images/wave_elyfi.png';
 import OffChainTopic, { INapData } from 'src/clients/OffChainTopic';
 import Skeleton from 'react-loading-skeleton';
 import { IProposals, OnChainTopic } from 'src/clients/OnChainTopic';
@@ -42,63 +43,59 @@ const Governance = () => {
     };
   }, []);
 
-  const draw = () => {
-    const dpr = window.devicePixelRatio;
-    const canvas: HTMLCanvasElement | null = canvasRef.current;
-    if (!governanceRef.current) return;
-    const governanceYValue = governanceRef.current.offsetTop;
-    if (!canvas) return;
-    canvas.width = document.body.clientWidth * dpr;
-    canvas.height = document.body.clientHeight * 1.9;
-    const browserWidth = document.body.clientWidth;
-    const browserHeight = document.body.clientHeight / 1.2;
-    const context = canvas.getContext('2d');
-    if (!context) return;
-    context.scale(dpr, dpr);
-    context.strokeStyle = '#00BFFF';
-    context.beginPath();
-    context.moveTo(0, governanceYValue * 1.2);
-    context.bezierCurveTo(
-      browserWidth * 0.3,
-      governanceYValue * 1.333,
-      browserWidth / 1.5,
-      governanceYValue * 1.1025,
-      browserWidth,
-      governanceYValue * 1.077,
-    );
-    context.stroke();
+  // const draw = () => {
+  //   const dpr = window.devicePixelRatio;
+  //   const canvas: HTMLCanvasElement | null = canvasRef.current;
+  //   if (!governanceRef.current) return;
+  //   const governanceYValue = governanceRef.current.offsetTop;
+  //   if (!canvas) return;
+  //   canvas.width = window.innerWidth * dpr;
+  //   canvas.height = document.body.clientHeight * dpr;
+  //   const browserWidth = document.body.clientWidth;
+  //   const browserHeight = document.body.clientHeight / 1.27 + 500;
+  //   const context = canvas.getContext('2d');
+  //   if (!context) return;
+  //   context.scale(dpr, dpr);
+  //   context.strokeStyle = '#00BFFF';
+  //   context.beginPath();
+  //   context.moveTo(0, governanceYValue * 1.2);
+  //   context.bezierCurveTo(
+  //     browserWidth * 0.3,
+  //     governanceYValue * 1.333,
+  //     browserWidth / 1.5,
+  //     governanceYValue * 1.1025,
+  //     browserWidth,
+  //     governanceYValue * 1.077,
+  //   );
+  //   context.stroke();
 
-    context.fillStyle = 'rgba(247, 251, 255, 1)';
-    context.beginPath();
-    context.moveTo(0, governanceYValue * 1.25);
-    context.bezierCurveTo(
-      browserWidth * 0.3,
-      governanceYValue * 1.333,
-      browserWidth / 1.5,
-      governanceYValue * 1.077,
-      browserWidth,
-      governanceYValue * 1.1025,
-    );
-    context.lineTo(browserWidth, browserHeight);
-    context.bezierCurveTo(
-      browserWidth * 0.3,
-      browserHeight * 0.98,
-      browserWidth / 2,
-      browserHeight * 1.04,
-      0,
-      browserHeight * 0.99,
-    );
-    context.fill();
-    context.stroke();
+  //   context.fillStyle = 'rgba(247, 251, 255, 1)';
+  //   context.beginPath();
+  //   context.moveTo(0, governanceYValue * 1.25);
+  //   context.bezierCurveTo(
+  //     browserWidth * 0.3,
+  //     governanceYValue * 1.333,
+  //     browserWidth / 1.5,
+  //     governanceYValue * 1.077,
+  //     browserWidth,
+  //     governanceYValue * 1.1025,
+  //   );
+  //   context.lineTo(browserWidth, browserHeight);
+  //   context.bezierCurveTo(
+  //     browserWidth * 0.3,
+  //     browserHeight * 0.98,
+  //     browserWidth / 2,
+  //     browserHeight * 1.04,
+  //     0,
+  //     browserHeight * 0.99,
+  //   );
+  //   context.fill();
+  //   context.stroke();
 
-    // context.fillStyle = "#ffffff";
-    // context.moveTo(browserWidth / 3.2 + 10, yValue * 1.685);
-    // context.arc(browserWidth / 3.2, yValue * 1.685, 10, 0, Math.PI * 2, true);
-  };
-
-  useEffect(() => {
-    draw();
-  }, [innerHeight, innerWidth]);
+  //   // context.fillStyle = "#ffffff";
+  //   // context.moveTo(browserWidth / 3.2 + 10, yValue * 1.685);
+  //   // context.arc(browserWidth / 3.2, yValue * 1.685, 10, 0, Math.PI * 2, true);
+  // };
 
   const viewMoreHandler = useCallback(() => {
     setPageNumber((prev) => prev + 1);
@@ -294,7 +291,7 @@ const Governance = () => {
 
   return (
     <>
-      <canvas
+      {/* <canvas
         ref={canvasRef}
         style={{
           position: 'absolute',
@@ -303,8 +300,19 @@ const Governance = () => {
           left: 0,
           zIndex: -1,
         }}
+      /> */}
+      <img
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: governanceRef.current?.offsetTop,
+          width: '100%',
+          zIndex: -1,
+        }}
+        src={wave}
+        alt={wave}
       />
-
+      ;
       <div className="governance">
         <section
           className="governance__content"
@@ -347,7 +355,21 @@ const Governance = () => {
                 ).length,
               })}
             </h3>
-            <p>{t('governance.data_verification__content')}</p>
+            <div>
+              <p>{t('governance.data_verification__content')}</p>
+              <a
+                href="https://forum.elyfi.world/"
+                target="_blank"
+                rel="noopener noreferer">
+                <div
+                  className="deposit__table__body__amount__button"
+                  style={{
+                    width: 230,
+                  }}>
+                  <p>{t('governance.forum_button')}</p>
+                </div>
+              </a>
+            </div>
           </div>
           {offChainLoading ? (
             <Skeleton width={'100%'} height={600} />
@@ -364,7 +386,7 @@ const Governance = () => {
             </div>
           ) : (
             <div className="governance__validation zero">
-              <p>현재 진행중인 데이터 검증 투표가 있습니다.</p>
+              <p>{t('governance.offchain_list_zero')}</p>
             </div>
           )}
         </section>
@@ -373,7 +395,21 @@ const Governance = () => {
             <h3>
               {t('governance.on_chain_voting', { count: onChainData.length })}
             </h3>
-            <p>{t('governance.on_chain_voting__content')}</p>
+            <div>
+              <p>{t('governance.on_chain_voting__content')}</p>
+              <a
+                href="https://www.withtally.com/governance/elyfi"
+                target="_blank"
+                rel="noopener noreferer">
+                <div
+                  className="deposit__table__body__amount__button"
+                  style={{
+                    width: 230,
+                  }}>
+                  <p>{t('governance.onChain_tally_button')}</p>
+                </div>
+              </a>
+            </div>
           </div>
           {onChainLoading ? (
             <Skeleton width={'100%'} height={600} />
@@ -385,7 +421,7 @@ const Governance = () => {
             </div>
           ) : (
             <div className="governance__onchain-vote zero">
-              <p>현재 진행중인 온체인 투표가 있습니다.</p>
+              <p>{t('governance.onchain_list_zero')}</p>
             </div>
           )}
         </section>

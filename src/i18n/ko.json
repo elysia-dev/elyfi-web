@@ -248,7 +248,11 @@
       "on_chain_voting__content": "온체인 거버넌스(DAO)에서 투표가 진행중인 제안서 리스트 입니다.",
       "loan_list": "대출리스트 ({{ count }} 건)",
       "loan_list_plural": "대출리스트 ({{ count }} 건)",
-      "loan_list__content": "거버넌스(DAO)에서 통과해서 엘리파이에 DAI로 실행된 대출 리스트입니다."
+      "loan_list__content": "거버넌스(DAO)에서 통과해서 엘리파이에 DAI로 실행된 대출 리스트입니다.",
+      "onchain_list_zero": "현재 진행중인 온체인 투표가 없습니다.",
+      "offchain_list_zero": "현재 진행중인 데이터 검증 투표가 없습니다.",
+      "forum_button": "ELYFI 포럼으로 이동하기",
+      "onChain_tally_button": "Tally로 이동하기"
     },
     "staking": {
       "staking__token": "{{ token }} 스테이킹",
@@ -306,7 +310,12 @@
       "all_ended_alert": "현재 모든 회차의 스테이킹 기간이 종료되어 마이그레이션이 불가능합니다.",
       "current_round": "현재 진행중인 회차",
       "receive_reward": "보상 수령",
-      "loacation_staking": "스테이킹"
+      "loacation_staking": "스테이킹",
+      "transaction_failed": "트랜잭션 실패",
+      "error_description_one": "요청하신 트랜잭션이 실패했습니다. 아래 에러 코드/메시지를 복사하여 cs@elysia.land로 문의주세요.",
+      "error_description_two": "메타마스크에서 발생한 에러로 인해 요청하신 트랜잭션이실패했습니다. \n 아래 에러 코드/메시지를 복사하여 cs@elysia.land로 문의주세요.",
+      "error_code": "에러 코드&메시지",
+      "error_code_copy": "복사하기"
     },
     "reward": {
       "token_staking__reward_plan": "{{ token }} 스테이킹 보상 플랜",

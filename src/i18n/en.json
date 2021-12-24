@@ -247,7 +247,11 @@
       "on_chain_voting__content": "This is a list of proposals for which voting is in progress in on-chain governance(DAO).",
       "loan_list": "Loan list ({{ count }} case)",
       "loan_list_plural": "Loan list ({{ count }} cases)",
-      "loan_list__content": "List of loans that have passed in governance(DAO) and executed as DAI in ELYFI."
+      "loan_list__content": "List of loans that have passed in governance(DAO) and executed as DAI in ELYFI.",
+      "onchain_list_zero": "There are currently no on-chain votes in progress.",
+      "offchain_list_zero": "There are currently no data verification votes in progress.",
+      "forum_button": "Go to ELYFI Forum",
+      "onChain_tally_button": "Go to Tally"
     },
 
     "staking": {
@@ -316,7 +320,12 @@
       "current_round": "Current round",
       "staking_amount": "Staked Amount",
       "reward_amount": "Accumulated reward amount",
-      "location_staking": "Staking"
+      "location_staking": "Staking",
+      "transaction_failed": "Transaction fail",
+      "error_description_one": "The requested transaction failed due to an error in Metamask. Please contact cs@elysia.land by copying the error code/message below.",
+      "error_description_two": "The requested transaction has failed. Please contact cs@elysia.land by copying the error code/message below.",
+      "error_code": "error code&message",
+      "error_code_copy": "copy"
     },
     "reward": {
       "token_staking__reward_plan": "{{ token }} Staking Reward Plan",

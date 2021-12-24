@@ -583,7 +583,6 @@ input[type='number'] {
             animation-name: DownFade;
             animation-iteration-count: infinite;
             width: 513px;
-  
           }
           .token-many {
             position: relative;
@@ -655,7 +654,7 @@ input[type='number'] {
       @keyframes DownFade {
         0% {
           transform: translateY(0px);
-          opacity: 0.0;
+          opacity: 0;
         }
         10% {
           transform: translateY(40px);
@@ -692,7 +691,7 @@ input[type='number'] {
         }
         100% {
           transform: translateY(-400px);
-          opacity: 0.0;
+          opacity: 0;
         }
       }
       > div {
