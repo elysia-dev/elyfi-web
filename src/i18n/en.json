@@ -502,6 +502,11 @@
         "title": "Start ELYFI",
         "content": "A wallet connection is required to deposit/withdraw.\nDo you want to connect?",
         "button": "Connect Wallet"
+      },
+      "connect_metamask": {
+        "title": "Start ELYFI",
+        "content": "A related function will be opened soon so that you can use deposit/withdrawal and staking on the mobile web page!",
+        "button": "Coming soon!"
       }
     },
     "guide": {
