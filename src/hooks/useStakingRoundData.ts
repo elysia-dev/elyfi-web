@@ -29,8 +29,8 @@ const useStakingRoundData = (
         ? envs.elStakingPoolAddress
         : round <= 1
         ? envs.elfyStakingPoolAddress
-          : envs.elfyV2StakingPoolAddress,
-      new providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC)
+        : envs.elfyV2StakingPoolAddress,
+      new providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC),
     );
   }, [stakedToken, round]);
 
@@ -54,9 +54,7 @@ const useStakingRoundData = (
       let currentRound = round;
       if (round >= 2 && stakedToken === Token.ELFI) currentRound -= 2;
       try {
-        const res = await stakingPool.getPoolData(
-          (currentRound + 1).toString(),
-        );
+        const res = await stakingPool.getPoolData(currentRound.toString());
 
         setState({
           totalPrincipal: res.totalPrincipal,
