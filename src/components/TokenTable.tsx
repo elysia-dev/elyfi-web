@@ -176,7 +176,7 @@ const TokenTable: React.FC<Props> = ({
           <div className="deposit__table__body__loan-list">
             {loading ? (
               <Skeleton
-                width={mediaQuery === MediaQuery.PC ? 1148 : 360}
+                width={mediaQuery === MediaQuery.PC ? 1148 : 340}
                 height={768}
               />
             ) : (
