@@ -1612,6 +1612,7 @@ input[type='number'] {
       flex-direction: row;
       justify-content: space-around;
       align-items: center;
+      background: $background-color;
       &__arrow-container {
         display: flex;
         flex-direction: column;

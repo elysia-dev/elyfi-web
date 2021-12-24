@@ -17,6 +17,7 @@ $device-width: 1190px;
 @mixin page-container {
   width: $device-width;
   margin: 0 auto;
+  padding-top: 200px;
 }
 
 .view-w {
@@ -31,11 +32,13 @@ $device-width: 1190px;
         height: 24px;
       }
       &__margin {
-        margin-bottom: 100px;
+        margin-bottom: 1px;
       }
     }
     .main {
-      @include page-container;
+      width: $device-width;
+      margin: 0 auto;
+      margin-top: 100px;
       &__image-wrapper {
         width: 515px;
         .dom {
@@ -516,6 +519,7 @@ $device-width: 1190px;
 
     .deposit {
       @include page-container;
+      padding-top: 100px;
       &__title {
         height: 300px;
         > p {
@@ -653,6 +657,7 @@ $device-width: 1190px;
 
     .reward {
       @include page-container;
+      padding-top: 100px;
       &__progress-bar {
         height: 13px;
         border-radius: 13px;
@@ -1412,7 +1417,6 @@ $device-width: 1190px;
 
       &__lp {
         &__header {
-          margin-top: 200px;
           > h2 {
             font-size: 30px;
             margin-bottom: 16px;
