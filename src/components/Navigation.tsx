@@ -153,8 +153,8 @@ const Navigation: React.FunctionComponent<{
               }}>
               {t(_data.i18nKeyword).toUpperCase()}
             </div>
-            {![t('navigation.dashboard'), t('navigation.governance')].includes(
-              t(_data.i18nKeyword).toUpperCase(),
+            {!['navigation.dashboard', 'navigation.governance'].includes(
+              _data.i18nKeyword.toLowerCase(),
             ) && <div className="down_arrow" />}
           </div>
           <div>
@@ -245,102 +245,95 @@ const Navigation: React.FunctionComponent<{
   const mobileHamburgerBar = () => {
     return (
       <div className="navigation__hamburger__content">
-        {
-          navigationLink.map((data) => {
-            return (
-              data.type === NavigationType.LNB ? (
-                <>
-                  <div className="navigation__hamburger__lnb" onClick={() => {
-                    selectedLocalNavIndex === data.id ? 
-                      setSelectedLocalNavIndex(0) :
-                      setSelectedLocalNavIndex(data.id)
-                  }}>
-                    <p>
-                      {t(data.i18nKeyword).toUpperCase()}
-                    </p>
-                    <div 
-                      style={{ 
-                        transform: selectedLocalNavIndex === data.id ? `rotate(-45deg)` : `rotate(135deg)`,
-                        top: selectedLocalNavIndex === data.id ? 3 : -3
-                      }}
-                    />
-                  </div>
-                  <div 
-                    className="navigation__hamburger__lnb__sub-navigation__container"
-                    style={{ display: selectedLocalNavIndex === data.id ? "block" : "none" }}  
-                  >
-                    <div className="navigation__hamburger__lnb__sub-navigation__wrapper">
-                    {
-                      data.subNavigation!.map((_data) => {
-                        return (
-                            <Link
-                              to={{
-                                pathname: _data.type === NavigationType.Link ?
-                                  `/${lng + _data.location}` : 
-                                  _data.location,
-                              }}
-                              target={_data.type === NavigationType.Href ? '_blank' : undefined}
-                              onClick={() => {
-                                setHamburgerBar(false);
-                              }}
-                            >
-                            <div>
-                              <p>
-                                {t(_data.i18nKeyword).toUpperCase()}
-                              </p>
-                            </div>
-                          </Link>
-                        )
-                      })
-                    }
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <Link
-                  to={{
-                    pathname: `/${lng + data.location}`
+        {navigationLink.map((data) => {
+          return data.type === NavigationType.LNB ? (
+            <>
+              <div
+                className="navigation__hamburger__lnb"
+                onClick={() => {
+                  selectedLocalNavIndex === data.id
+                    ? setSelectedLocalNavIndex(0)
+                    : setSelectedLocalNavIndex(data.id);
+                }}>
+                <p>{t(data.i18nKeyword).toUpperCase()}</p>
+                <div
+                  style={{
+                    transform:
+                      selectedLocalNavIndex === data.id
+                        ? `rotate(-45deg)`
+                        : `rotate(135deg)`,
+                    top: selectedLocalNavIndex === data.id ? 3 : -3,
                   }}
-                  onClick={() => {
-                    setHamburgerBar(false);
-                  }}
-                >
-                  <div>
-                    <p>
-                      {t(data.i18nKeyword).toUpperCase()}
-                    </p>
-                  </div>
-                </Link>
-              )
-            )
-          })
-        }
+                />
+              </div>
+              <div
+                className="navigation__hamburger__lnb__sub-navigation__container"
+                style={{
+                  display: selectedLocalNavIndex === data.id ? 'block' : 'none',
+                }}>
+                <div className="navigation__hamburger__lnb__sub-navigation__wrapper">
+                  {data.subNavigation!.map((_data) => {
+                    return (
+                      <Link
+                        to={{
+                          pathname:
+                            _data.type === NavigationType.Link
+                              ? `/${lng + _data.location}`
+                              : _data.location,
+                        }}
+                        target={
+                          _data.type === NavigationType.Href
+                            ? '_blank'
+                            : undefined
+                        }
+                        onClick={() => {
+                          setHamburgerBar(false);
+                        }}>
+                        <div>
+                          <p>{t(_data.i18nKeyword).toUpperCase()}</p>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            </>
+          ) : (
+            <Link
+              to={{
+                pathname: `/${lng + data.location}`,
+              }}
+              onClick={() => {
+                setHamburgerBar(false);
+              }}>
+              <div>
+                <p>{t(data.i18nKeyword).toUpperCase()}</p>
+              </div>
+            </Link>
+          );
+        })}
         <section className="navigation__hamburger__footer">
           <div className="navigation__hamburger__footer__lang">
-            <p 
+            <p
               className={lng === LanguageType.KO ? `active` : ``}
               onClick={() => {
-                setLanguage(LanguageType.KO)
-              }}
-            >
+                setLanguage(LanguageType.KO);
+              }}>
               KOR
             </p>
-            <p 
+            <p
               className={lng === LanguageType.EN ? `active` : ``}
               onClick={() => {
-                setLanguage(LanguageType.EN)
-              }}  
-            >
+                setLanguage(LanguageType.EN);
+              }}>
               ENG
             </p>
           </div>
-          <div>
-          {setMediaQueryMetamask('mobile')}
-          </div>
+          <div>{setMediaQueryMetamask('mobile')}</div>
         </section>
       </div>
-    )
-  }
+    );
+  };
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent): void {
@@ -368,7 +361,6 @@ const Navigation: React.FunctionComponent<{
         style={{
           backgroundColor: scrollTop > 125 ? '#FFFFFF' : '#FFFFFF',
           height: hamburgerBar ? '100%' : 'auto',
-          
         }}
         ref={navigationRef}
         onMouseLeave={() => {
@@ -409,9 +401,7 @@ const Navigation: React.FunctionComponent<{
           </div>
           {setMediaQueryMetamask('pc')}
         </div>
-        {hamburgerBar && (
-          mobileHamburgerBar()
-        )}
+        {hamburgerBar && mobileHamburgerBar()}
       </nav>
       <div className="navigation__margin" />
     </>
