@@ -14,6 +14,8 @@ import GovernanceGuideBox from 'src/components/GovernanceGuideBox';
 import { useParams, useHistory } from 'react-router-dom';
 import LanguageType from 'src/enums/LanguageType';
 import moment from 'moment';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import MediaQuery from 'src/enums/MediaQuery';
 
 const Governance = () => {
   const [onChainLoading, setOnChainLoading] = useState(true);
@@ -42,6 +44,8 @@ const Governance = () => {
       window.removeEventListener('resize', getInnerValue);
     };
   }, []);
+
+  const { value: mediaQuery } = useMediaQueryType()
 
   // const draw = () => {
   //   const dpr = window.devicePixelRatio;
@@ -347,30 +351,62 @@ const Governance = () => {
         </section>
         <GovernanceGuideBox />
         <section className="governance__validation governance__header">
-          <div>
-            <h3>
-              {t('governance.data_verification', {
-                count: offChainNapData.filter((data) =>
-                  moment().isBefore(data.endedDate),
-                ).length,
-              })}
-            </h3>
-            <div>
-              <p>{t('governance.data_verification__content')}</p>
-              <a
-                href="https://forum.elyfi.world/"
-                target="_blank"
-                rel="noopener noreferer">
-                <div
-                  className="deposit__table__body__amount__button"
-                  style={{
-                    width: 230,
-                  }}>
-                  <p>{t('governance.forum_button')}</p>
+          {
+            mediaQuery === MediaQuery.PC ? (
+              <div>
+                <h3>
+                  {t('governance.data_verification', {
+                    count: offChainNapData.filter((data) =>
+                      moment().isBefore(data.endedDate),
+                    ).length,
+                  })}
+                </h3>
+                <div>
+                  <p>{t('governance.data_verification__content')}</p>
+                  <a
+                    href="https://forum.elyfi.world/"
+                    target="_blank"
+                    rel="noopener noreferer">
+                    <div
+                      className="deposit__table__body__amount__button"
+                      style={{
+                        width: 230,
+                      }}>
+                      <p>{t('governance.forum_button')}</p>
+                    </div>
+                  </a>
                 </div>
-              </a>
-            </div>
-          </div>
+              </div>
+            ) : (
+              <div>
+                <div>
+                  <h3>
+                    {t('governance.data_verification', {
+                      count: offChainNapData.filter((data) =>
+                        moment().isBefore(data.endedDate),
+                      ).length,
+                    })}
+                  </h3>
+                  <a
+                    href="https://forum.elyfi.world/"
+                    target="_blank"
+                    rel="noopener noreferer">
+                    <div
+                      className="deposit__table__body__amount__button"
+                      style={{
+                        width: 150,
+                      }}>
+                      <p>{t('governance.forum_button')}</p>
+                    </div>
+                  </a>
+                </div>
+                <div>
+                  <p>{t('governance.data_verification__content')}</p>
+                </div>
+              </div>
+            )
+          }
+          
           {offChainLoading ? (
             <Skeleton width={'100%'} height={600} />
           ) : offChainNapData.filter((data) =>
@@ -391,26 +427,54 @@ const Governance = () => {
           )}
         </section>
         <section className="governance__onchain-vote governance__header">
-          <div>
-            <h3>
-              {t('governance.on_chain_voting', { count: onChainData.length })}
-            </h3>
-            <div>
-              <p>{t('governance.on_chain_voting__content')}</p>
-              <a
-                href="https://www.withtally.com/governance/elyfi"
-                target="_blank"
-                rel="noopener noreferer">
-                <div
-                  className="deposit__table__body__amount__button"
-                  style={{
-                    width: 230,
-                  }}>
-                  <p>{t('governance.onChain_tally_button')}</p>
+        {
+            mediaQuery === MediaQuery.PC ? (
+              <div>
+                <h3>
+                  {t('governance.on_chain_voting', { count: onChainData.length })}
+                </h3>
+                <div>
+                  <p>{t('governance.on_chain_voting__content')}</p>
+                  <a
+                    href="https://www.withtally.com/governance/elyfi"
+                    target="_blank"
+                    rel="noopener noreferer">
+                    <div
+                      className="deposit__table__body__amount__button"
+                      style={{
+                        width: 230,
+                      }}>
+                      <p>{t('governance.onChain_tally_button')}</p>
+                    </div>
+                  </a>
                 </div>
-              </a>
-            </div>
-          </div>
+              </div>
+            ) : (
+              <div>
+                <div>
+                  <h3>
+                    {t('governance.on_chain_voting', { count: onChainData.length })}
+                  </h3>
+                  <a
+                    href="https://www.withtally.com/governance/elyfi"
+                    target="_blank"
+                    rel="noopener noreferer">
+                    <div
+                      className="deposit__table__body__amount__button"
+                      style={{
+                        width: 230,
+                      }}>
+                      <p>{t('governance.onChain_tally_button')}</p>
+                    </div>
+                  </a>
+                </div>
+                <div>
+                  <p>{t('governance.data_verification__content')}</p>
+                </div>
+              </div>
+            )
+          }
+          
           {onChainLoading ? (
             <Skeleton width={'100%'} height={600} />
           ) : onChainData.length > 0 ? (
