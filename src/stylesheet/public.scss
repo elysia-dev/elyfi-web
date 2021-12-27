@@ -39,6 +39,7 @@
 $font-color: #333333;
 $sub-font-color: #646464;
 $elysia-color: #00BFFF;
+$el-color: #3679B5;
 $background-color: #ffffff;
 $gray-line: #f0f0f1;
 $gray-font-color: #888888;
@@ -1172,6 +1173,11 @@ input[type='number'] {
         border-bottom: 1px solid $gray-line;
         > h2 {
           color: $font-color;
+          &.el {
+            > strong {
+              color: $el-color;
+            }
+          }
           strong {
             color: $elysia-color;
           }
