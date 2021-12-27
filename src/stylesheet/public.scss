@@ -332,20 +332,10 @@ input[type='number'] {
       }
     }
     &__wallet {
-      display: inline-flex;
-      background: #00bfff 0% 0%;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-
-      width: 147px;
-      height: 37px;
-      border-radius: 5px;
-      margin-left: 50px;
       > div {
         justify-content: center;
       }
-      // animation: glow 1.5s linear infinite alternate;
+      animation: glow 1.5s linear infinite alternate;
       &__wrapper {
         display: flex;
         justify-content: space-between;

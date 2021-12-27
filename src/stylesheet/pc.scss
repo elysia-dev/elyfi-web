@@ -6,6 +6,7 @@ $gray-line: #f0f0f1;
 $gray-font-color: #888888;
 $loan-list-size: 315px;
 $navigation-margin-height: 100px;
+$elysia-color--deep: #0099CB;
 
 $governance-progress-00: #0099cc;
 $governance-progress-01: #cc0000;
@@ -33,6 +34,22 @@ $device-width: 1190px;
       }
       &__margin {
         margin-bottom: 1px;
+      }
+      &__wallet {
+        display: inline-flex;
+        background: $background-color;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        border: 1px solid $elysia-color--deep;
+
+        width: 147px;
+        height: 37px;
+        border-radius: 20px;
+        margin-left: 50px;
+        &__status {
+          color: $elysia-color--deep;
+        }
       }
     }
     .main {
