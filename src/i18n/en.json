@@ -14,13 +14,13 @@
           "button": "Check APR"
         },
         {
-          "header": "<strong>Depositors can obtain interest stably<br/>by depositing virtual assets in ELYFI backed by real estate-based tokens.</strong>",
-          "content": "The protocol operates stably with a system that secures real estate-based tokens with small fluctuations rather than virtual assets with high liquidation risk due to large fluctuations in value.",
+          "header": "<strong>ELYFI facilitates real estate backed NFTs so that digital asset loans can be more efficient</strong>",
+          "content": "The protocol provides opportunity for borrowers and lenders who are looking to avoid volatility and liquidation risk crypto lending markets.",
           "button": "Check collateral"
         },
         {
-          "header": "<strong>ELFI holders directly decide matters related<br/>to the operation of the protocol.</strong>",
-          "content": "It is reliable because matters related to the operation of the protocol such as loan execution and interest rates are decided by the votes of the holders.",
+          "header": "<strong>ELFI holders decide matters related to the protocol</strong>",
+          "content": "Important decisions such as loan executions and interest rate are voted by the community through on-chain and off-chain governance.",
           "button": "Check Governance"
         }
       ],
