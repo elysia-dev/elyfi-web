@@ -10,7 +10,7 @@ import MediaQuery from 'src/enums/MediaQuery';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
 import SwiperCore, { Pagination } from 'swiper';
 import 'swiper/modules/pagination/pagination.scss';
-import 'swiper/swiper.scss'
+import 'swiper/swiper.scss';
 import { useLocation } from 'react-router-dom';
 import SmallProgressBar from './SmallProgressBar';
 import StakingBoxHeader from './StakingBoxHeader';
@@ -53,11 +53,9 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
   useEffect(() => {
     props.setState({
       elStaking: isDai ? props.state.elStaking : currentSwipe,
-      currentElfiLevel: isDai
-        ? currentSwipe
-        : props.state.currentElfiLevel,
-    })
-  }, [currentSwipe])
+      currentElfiLevel: isDai ? currentSwipe : props.state.currentElfiLevel,
+    });
+  }, [currentSwipe]);
 
   SwiperCore.use([Pagination]);
   return (
@@ -117,8 +115,16 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
         />
         <div className="reward__token__data">
           <SmallProgressBar
-            start={typeof props.start === 'number' ? props.start : props.start[props.staking]}
-            end={typeof props.end === 'number' ? props.end : props.end[props.staking]}
+            start={
+              typeof props.start === 'number'
+                ? props.start
+                : props.start[props.staking]
+            }
+            end={
+              typeof props.end === 'number'
+                ? props.end
+                : props.end[props.staking]
+            }
             rewardOrMining={rewardOrMining}
             totalMiningValue={
               isDai
@@ -135,59 +141,92 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
                 nth={props.nth}
                 staking={props.staking}
                 unit={props.unit}
-                end={typeof props.end === 'number' ? props.end : props.end[props.staking]}
+                end={
+                  typeof props.end === 'number'
+                    ? props.end
+                    : props.end[props.staking]
+                }
                 currentPhase={props.currentPhase}
                 OrdinalNumberConverter={props.OrdinalNumberConverter}
               />
             }
           />
-          { 
-            mediaQuery === MediaQuery.PC ? (
+          {/* {!(mediaQuery === MediaQuery.PC) ? (
+            <>
               <StakingDetailInfo
                 nth={props.nth}
                 isDai={props.unit === 'DAI'}
                 staking={props.staking}
                 unit={props.unit}
-                start={typeof props.start === 'number' ? props.start : props.start[props.staking]}
-                end={typeof props.end === 'number' ? props.end : props.end[props.staking]}
+                start={
+                  typeof props.start === 'number'
+                    ? props.start
+                    : props.start[props.staking]
+                }
+                end={
+                  typeof props.end === 'number'
+                    ? props.end
+                    : props.end[props.staking]
+                }
                 state={props.state}
                 setState={props.setState}
-                miningStart={typeof props.miningStart !== 'undefined' ? props.miningStart[props.staking] : undefined}
-                miningEnd={typeof props.miningEnd !== 'undefined' ? props.miningEnd[props.staking] : undefined}
-              />
-            ) : (
-              <Swiper 
-                className="component__swiper"
-                spaceBetween={100}
-                loop={false}
-                slidesPerView={1}
-                pagination={{ clickable: true }}
-                onSlideChange={(slides) => setCurrnetSwipe(slides.realIndex)}
-                initialSlide={currentSwipe}
-              >
-                {
-                  stakingRoundTimes.map((_x, index) => {
-                    return (
-                      <SwiperSlide key={`slide-${index}`}>
-                        <StakingDetailInfo
-                          nth={props.OrdinalNumberConverter(index + 1)}
-                          isDai={props.unit === 'DAI'}
-                          staking={index}
-                          unit={props.unit}
-                          start={typeof props.start === 'number' ? props.start : props.start[index]}
-                          end={typeof props.end === 'number' ? props.end : props.end[index]}
-                          state={props.state}
-                          setState={props.setState}
-                          miningStart={typeof props.miningStart !== 'undefined' ? props.miningStart[index] : undefined}
-                          miningEnd={typeof props.miningEnd !== 'undefined' ? props.miningEnd[index] : undefined}
-                        />
-                      </SwiperSlide>
-                    )
-                  })
+                miningStart={
+                  typeof props.miningStart !== 'undefined'
+                    ? props.miningStart[props.staking]
+                    : undefined
                 }
-              </Swiper>
-            )
-          }
+                miningEnd={
+                  typeof props.miningEnd !== 'undefined'
+                    ? props.miningEnd[props.staking]
+                    : undefined
+                }
+              />
+            </>
+          ) : ( */}
+          <Swiper
+            className="component__swiper"
+            spaceBetween={100}
+            loop={false}
+            slidesPerView={1}
+            pagination={{ clickable: true }}
+            onSlideChange={(slides) => setCurrnetSwipe(slides.realIndex)}
+            initialSlide={currentSwipe}>
+            {stakingRoundTimes.map((_x, index) => {
+              return (
+                <SwiperSlide key={`slide-${index}`}>
+                  <StakingDetailInfo
+                    nth={props.OrdinalNumberConverter(index + 1)}
+                    isDai={props.unit === 'DAI'}
+                    staking={index}
+                    unit={props.unit}
+                    start={
+                      typeof props.start === 'number'
+                        ? props.start
+                        : props.start[index]
+                    }
+                    end={
+                      typeof props.end === 'number'
+                        ? props.end
+                        : props.end[index]
+                    }
+                    state={props.state}
+                    setState={props.setState}
+                    miningStart={
+                      typeof props.miningStart !== 'undefined'
+                        ? props.miningStart[index]
+                        : undefined
+                    }
+                    miningEnd={
+                      typeof props.miningEnd !== 'undefined'
+                        ? props.miningEnd[index]
+                        : undefined
+                    }
+                  />
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+          {/* )} */}
         </div>
       </div>
     </>
