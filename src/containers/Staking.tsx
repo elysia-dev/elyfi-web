@@ -86,12 +86,12 @@ const Staking: React.FunctionComponent<IProps> = ({
   });
 
   const { apr: elPoolApr } = useStakingRoundData(
-    state.selectPhase,
+    state.selectPhase - 1,
     Token.EL,
     Token.ELFI,
   );
   const { apr: elfiPoolApr } = useStakingRoundData(
-    state.selectPhase,
+    state.selectPhase - 1,
     Token.ELFI,
     Token.DAI,
   );
@@ -134,7 +134,7 @@ const Staking: React.FunctionComponent<IProps> = ({
   }, [roundData]);
 
   const { value: mediaQuery } = useMediaQueryType();
-  const { lng } = useParams<{ lng : string }>();
+  const { lng } = useParams<{ lng: string }>();
 
   const fetchRoundData = async (account: string | null | undefined) => {
     try {
@@ -370,9 +370,9 @@ const Staking: React.FunctionComponent<IProps> = ({
                 href={
                   stakedToken === Token.ELFI
                     ? 'https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4'
-                    : lng === LanguageType.KO ? 
-                      "https://coinmarketcap.com/ko/currencies/elysia/markets/" 
-                      : "https://coinmarketcap.com/currencies/elysia/markets/"
+                    : lng === LanguageType.KO
+                    ? 'https://coinmarketcap.com/ko/currencies/elysia/markets/'
+                    : 'https://coinmarketcap.com/currencies/elysia/markets/'
                 }
                 target="_blank"
                 rel="noopener noreferrer"
