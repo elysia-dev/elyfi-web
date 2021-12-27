@@ -87,12 +87,13 @@ const Wallet = (props: any) => {
             )}
             <div className="navigation__address">
               {connected && (
-                <Davatar
-                  size={20}
-                  style={{ marginRight: 5 }}
-                  address={account || ''}
-                  generatedAvatarType="jazzicon"
-                />
+                <div className="navigation__davatar">
+                  <Davatar
+                    size={18}
+                    address={account || ''}
+                    generatedAvatarType="jazzicon"
+                  />
+                </div>
               )}
               <p
                 className={`navigation__wallet__status${
