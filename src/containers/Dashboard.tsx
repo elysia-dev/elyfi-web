@@ -33,6 +33,7 @@ import ConnectWalletModal from 'src/containers/ConnectWalletModal';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
+import { useMediaQuery } from 'react-responsive';
 
 const initialBalanceState = {
   loading: false,
@@ -47,6 +48,7 @@ const usdFormatter = new Intl.NumberFormat('en', {
   style: 'currency',
   currency: 'USD',
 });
+
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
@@ -95,6 +97,10 @@ const Dashboard: React.FunctionComponent = () => {
     useState<boolean>(false);
   const walletConnect = isWalletConnect();
   const { value: mediaQuery } = useMediaQueryType();
+
+  const isEnoughWide = useMediaQuery({
+    query: '(min-width: 1439px)',
+  });
 
   useEffect(() => {
     const paramsData = reserves.find((_reserve) => reserveId === _reserve.id);
@@ -313,40 +319,43 @@ const Dashboard: React.FunctionComponent = () => {
         </div>
         <RewardPlanButton stakingType={'deposit'} />
         <div className="deposit__table__wrapper">
-          <div className="deposit__remote-control__wrapper">
-            <div className="deposit__remote-control">
-              {balances.map((data, index) => {
-                return (
-                  <a onClick={() => remoteControlScroll(`table-${index}`)}>
-                    <div>
-                      <div className="deposit__remote-control__images">
-                        <img src={reserveTokenData[data.tokenName].image} />
-                      </div>
-                      <div className="deposit__remote-control__name">
-                        <p className="montserrat">{data.tokenName}</p>
-                      </div>
-                      <p className="deposit__remote-control__apy bold">
-                        {toPercent(reserves[index].depositAPY)}
-                      </p>
-                      <div className="deposit__remote-control__mining">
-                        <p>{t('dashboard.token_mining_apr')}</p>
-                        <p>
-                          {toPercent(
-                            calcMiningAPR(
-                              elfiPrice,
-                              BigNumber.from(reserves[index].totalDeposit),
-                              reserveTokenData[data.tokenName].decimals,
-                            ) || '0',
-                          )}
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                );
-              })}
-            </div>
-          </div>
-          {/* remote control end */}
+          {
+            isEnoughWide && (
+              <div className="deposit__remote-control__wrapper">
+                <div className="deposit__remote-control">
+                  {balances.map((data, index) => {
+                    return (
+                      <a onClick={() => remoteControlScroll(`table-${index}`)}>
+                        <div>
+                          <div className="deposit__remote-control__images">
+                            <img src={reserveTokenData[data.tokenName].image} />
+                          </div>
+                          <div className="deposit__remote-control__name">
+                            <p className="montserrat">{data.tokenName}</p>
+                          </div>
+                          <p className="deposit__remote-control__apy bold">
+                            {toPercent(reserves[index].depositAPY)}
+                          </p>
+                          <div className="deposit__remote-control__mining">
+                            <p>{t('dashboard.token_mining_apr')}</p>
+                            <p>
+                              {toPercent(
+                                calcMiningAPR(
+                                  elfiPrice,
+                                  BigNumber.from(reserves[index].totalDeposit),
+                                  reserveTokenData[data.tokenName].decimals,
+                                ) || '0',
+                              )}
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+            )
+          }
 
           {balances.map((balance, index) => {
             return (
