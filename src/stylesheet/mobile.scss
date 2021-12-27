@@ -106,6 +106,9 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         cursor: pointer;
         width: 25px;
         height: 25px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         i {
           border-radius: 2px;
           content: '';
@@ -2615,6 +2618,10 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   .elysia-logo {
     width: 106px;
     height: 25px;
+  }
+
+  .logo-wrapper {
+    height: 40px;
   }
   .footer {
     margin-top: 80px;
