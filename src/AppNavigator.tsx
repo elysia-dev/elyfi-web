@@ -31,6 +31,7 @@ import MediaQuery from 'src/enums/MediaQuery';
 const AppNavigator: React.FC = () => {
   const [isDarkmodeActivated, setDarkModeActivated] = useState(false);
   const [hamburgerBar, setHamburgerBar] = useState(false);
+  const [mainNetwork, setMainNetwork] = useState(false);
   const setDarkMode = () => {
     setDarkModeActivated(!isDarkmodeActivated);
     window.sessionStorage.getItem('@isDarkMode') === 'true'
@@ -88,6 +89,8 @@ const AppNavigator: React.FC = () => {
             <Navigation
               hamburgerBar={hamburgerBar}
               setHamburgerBar={setHamburgerBar}
+              mainNetwork={mainNetwork}
+              setMainNetwork={setMainNetwork}
             />
             {/* <DarkmodeModal 
               isDarkmode={isDarkmodeActivated}

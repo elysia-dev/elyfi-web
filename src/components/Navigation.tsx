@@ -18,6 +18,14 @@ import LanguageType from 'src/enums/LanguageType';
 import reactGA from 'react-ga';
 import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
+
+import ELFIButton from 'src/assets/images/navigation__elfi.png';
+import ETHButton from 'src/assets/images/navigation__eth.png';
+import BSCButton from 'src/assets/images/navigation__bsc.png';
+
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import MediaQuery from 'src/enums/MediaQuery';
+
 import ErrorModal from './ErrorModal';
 
 const InitialNavigation: INavigation[] = [
@@ -32,7 +40,9 @@ const InitialNavigation: INavigation[] = [
 const Navigation: React.FunctionComponent<{
   hamburgerBar: boolean;
   setHamburgerBar: (value: React.SetStateAction<boolean>) => void;
-}> = ({ hamburgerBar, setHamburgerBar }) => {
+  mainNetwork: boolean;
+  setMainNetwork: (value: React.SetStateAction<boolean>) => void;
+}> = ({ hamburgerBar, setHamburgerBar, mainNetwork, setMainNetwork }) => {
   // Hover Value
   const [globalNavHover, setGlobalNavHover] = useState(0);
 
@@ -44,6 +54,7 @@ const Navigation: React.FunctionComponent<{
   const { t } = useTranslation();
   const { txStatus, error } = useContext(TxContext);
   const { lng } = useParams<{ lng: string }>();
+  const { value: mediaQuery } = useMediaQueryType();
 
   const location = useLocation();
 
@@ -355,6 +366,41 @@ const Navigation: React.FunctionComponent<{
     );
   };
 
+  const mainnetSwitcher = () => {
+    return (
+      <div className="navigation__mainnet__container">
+        {
+          mediaQuery === MediaQuery.PC && (
+            <img src={ELFIButton} className="navigation__metamask-add-el-button" />
+          )
+        }
+        <div className="navigation__mainnet__wrapper">
+          <div className="navigation__mainnet__current" onClick={() => {
+            setMainNetwork(!mainNetwork)
+          }}>
+            <img src={ETHButton} />
+            <h2>
+              Ethereum
+            </h2>
+          </div>
+          <div className="navigation__mainnet__change-network__wrapper" style={{
+            display: mainNetwork === true ? "flex" : 'none'
+          }}>
+            <p>
+              Change Network
+            </p>
+            <div className="navigation__mainnet__change-network">
+              <img src={BSCButton} />
+              <h2>
+                BSC
+              </h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   useEffect(() => {
     function handleClickOutside(e: MouseEvent): void {
       if (
@@ -362,6 +408,7 @@ const Navigation: React.FunctionComponent<{
         !navigationRef.current.contains(e.target as Node)
       ) {
         initialNavigationState();
+        setMainNetwork(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -381,6 +428,7 @@ const Navigation: React.FunctionComponent<{
         style={{
           backgroundColor: scrollTop > 125 ? '#FFFFFF' : '#FFFFFF',
           height: hamburgerBar ? '100%' : 'auto',
+          overflowY: !mainNetwork ? "scroll" : hamburgerBar ? "scroll" : "initial"
         }}
         ref={navigationRef}
         onMouseLeave={() => {
@@ -407,6 +455,9 @@ const Navigation: React.FunctionComponent<{
               </Link>
             </div>
             {setNavigationLink()}
+            {mediaQuery === MediaQuery.Mobile && (
+              mainnetSwitcher()
+            )}
             <div
               className={`navigation__hamburger__button ${
                 hamburgerBar && 'active'
@@ -419,7 +470,12 @@ const Navigation: React.FunctionComponent<{
               <i />
             </div>
           </div>
-          {setMediaQueryMetamask('pc')}
+          <div className="navigation__mainnet">
+            {mediaQuery === MediaQuery.PC && (
+              mainnetSwitcher()
+            )}
+            {setMediaQueryMetamask('pc')}
+          </div>
         </div>
         {hamburgerBar && mobileHamburgerBar()}
       </nav>
