@@ -54,7 +54,9 @@ const useStakingRoundData = (
       let currentRound = round;
       if (round >= 2 && stakedToken === Token.ELFI) currentRound -= 2;
       try {
-        const res = await stakingPool.getPoolData(currentRound.toString());
+        const res = await stakingPool.getPoolData(
+          (currentRound + 1).toString(),
+        );
 
         setState({
           totalPrincipal: res.totalPrincipal,
