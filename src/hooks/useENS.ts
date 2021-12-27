@@ -9,7 +9,7 @@ export const useENS = (address: string | null | undefined): ReturnType => {
   useEffect(() => {
     async function resolveENS() {
       if (address && ethers.utils.isAddress(address)) {
-        const provider = providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC)
+        const provider = new providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC)
         const ensName = await provider.lookupAddress(address);
         if (ensName) setENSName(ensName);
       }
