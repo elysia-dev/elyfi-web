@@ -54,16 +54,16 @@ const Main = () => {
     },
   ];
 
-  const test = () => {
+  const resizeBrowser = () => {
     setInnerWidth(window.innerWidth);
     setInnerHeight(window.innerHeight);
   };
 
   useEffect(() => {
-    window.addEventListener('resize', test);
+    window.addEventListener('resize', resizeBrowser);
 
     return () => {
-      window.removeEventListener('resize', test);
+      window.removeEventListener('resize', resizeBrowser);
     };
   }, []);
 
@@ -88,7 +88,7 @@ const Main = () => {
     if (!canvas) return;
     canvas.width = window.innerWidth * dpr;
     canvas.height = document.body.clientHeight * dpr;
-    const browserWidth = document.body.clientWidth;
+    const browserWidth = canvas.width / 2;
     const context = canvas.getContext('2d');
     if (!context) return;
     context.scale(dpr, dpr);
@@ -292,29 +292,7 @@ const Main = () => {
       browserWidth,
       governanceY * 0.9708,
     );
-    // context.lineTo(browserWidth, governanceBottomY * 1.0141);
-    // context.bezierCurveTo(
-    //   browserWidth / 2,
-    //   governanceBottomY * 1.0317,
-    //   browserWidth / 2,
-    //   governanceBottomY * 0.997,
-    //   0,
-    //   governanceBottomY * 1.025,
-    // );
-    // context.fill();
     context.stroke();
-
-    // context.beginPath();
-    // context.moveTo(0, governanceBottomY * 1.0263);
-    // context.bezierCurveTo(
-    //   browserWidth / 2.7,
-    //   governanceBottomY * 0.9993,
-    //   browserWidth / 1.7,
-    //   governanceBottomY * 1.0292,
-    //   browserWidth,
-    //   governanceBottomY * 1.0182,
-    // );
-    // context.stroke();
 
     // circle
     context.fillStyle = '#ffffff';
@@ -338,28 +316,7 @@ const Main = () => {
       Math.PI * 2,
       true,
     );
-
-    // context.moveTo(browserWidth / 7 + 5, governanceBottomY * 1.0181);
-    // context.arc(
-    //   browserWidth / 7,
-    //   governanceBottomY * 1.0181,
-    //   5,
-    //   0,
-    //   Math.PI * 2,
-    //   true,
-    // );
-
-    // context.moveTo(browserWidth / 1.6 + 10, governanceBottomY * 1.0187);
-    // context.arc(
-    //   browserWidth / 1.6,
-    //   governanceBottomY * 1.0187,
-    //   10,
-    //   0,
-    //   Math.PI * 2,
-    //   true,
-    // );
-
-    // context.fill();
+    context.fill();
     context.stroke();
   };
 
