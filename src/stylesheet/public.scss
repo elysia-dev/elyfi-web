@@ -33,11 +33,12 @@
   box-sizing: border-box;
   word-spacing: -0.3px;
   letter-spacing: -0.3px;
+  word-break: keep-all;
 }
 
 $font-color: #333333;
 $sub-font-color: #646464;
-$elysia-color: #00a7ff;
+$elysia-color: #00BFFF;
 $background-color: #ffffff;
 $gray-line: #f0f0f1;
 $gray-font-color: #888888;
@@ -1152,7 +1153,6 @@ input[type='number'] {
         justify-content: center;
         > img {
           position: relative;
-          border: 1px solid $background-color;
           border-radius: 100%;
         }
       }
@@ -2153,7 +2153,6 @@ input[type='number'] {
           > img {
             &.second-token {
               position: relative;
-              border: 1px solid $background-color;
             }
           }
           > h2 {
@@ -2652,7 +2651,6 @@ input[type='number'] {
       border-bottom: 1px solid $gray-line;
       &__image {
         &--sub-token {
-          border: 1px solid #ffffff;
           border-radius: 100%;
         }
       }
