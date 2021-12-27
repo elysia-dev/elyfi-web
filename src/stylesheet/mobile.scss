@@ -181,6 +181,12 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       }
     }
     &__wallet {
+      display: inline-flex;
+      background: #00bfff 0% 0%;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      margin-left: 50px;
       width: 100%;
       height: 50px;
       border-radius: 28px;
