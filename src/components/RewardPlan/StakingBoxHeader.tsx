@@ -28,7 +28,7 @@ const StakingBoxHeader: FunctionComponent<Props> = (props) => {
     <>
       <div className="reward__token__header">
         <img src={tokenImg} />
-        <h2>
+        <h2 className={`reward__token__header__token ${tokenName === "EL" ? "el" : ""}`}>
           <Trans
             i18nKey={'reward.staking__nth'}
             values={{
