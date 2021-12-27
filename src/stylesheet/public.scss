@@ -963,6 +963,14 @@ input[type='number'] {
             justify-content: center;
             align-items: center;
             cursor: pointer;
+            position: relative;
+            &::after {
+              content: "";
+              width: 100%;
+              height: 100%;
+              position: absolute;
+              border-radius: 50px;
+            }
             > p {
               cursor: pointer;
             }
@@ -1637,7 +1645,7 @@ input[type='number'] {
           > .line {
             height: 0;
             width: 100%;
-            border: 1px dashed $elysia-color;
+            border-bottom: 1px dashed $elysia-color;
           }
           > .left-arrow {
             width: 0;
@@ -3245,6 +3253,16 @@ input[type='number'] {
         justify-content: center;
         cursor: pointer;
         margin-left: 25px;
+        transition: all 0.2s ease;
+        &:hover {
+          transform: translateY(-3px);
+          box-shadow: 0px 0px 15px #00a7ff66;
+          transition: all 0.2s ease;
+        }
+        &:active {
+          transform: translateY(-1px);
+          box-shadow: 0px 0px 5px #00a7ff66;
+        }
       }
     }
     &__lang {
@@ -3255,8 +3273,18 @@ input[type='number'] {
       justify-content: center;
       border-radius: 20px;
 
+      transition: all 0.2s ease;
       width: 101px;
       height: 38px;
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0px 0px 15px #00a7ff66;
+        transition: all 0.2s ease;
+      }
+      &:active {
+        transform: translateY(-1px);
+        box-shadow: 0px 0px 5px #00a7ff66;
+      }
       &__wrapper {
         display: flex;
         width: 82px;
@@ -4206,6 +4234,55 @@ input[type='number'] {
     }
     100% {
       opacity: 1;
+    }
+  }
+
+  @keyframes ripple {
+    0% {
+      box-shadow: 
+        0 0 6px #00000029,
+        0 0 1px #00000029,
+        0 0 0 0px rgba($elysia-color, .3),
+        0 0 0 0px rgba($elysia-color, .3),
+    }
+    100% {
+      box-shadow: 
+      0 0 6px #00000029,
+      0 0 6px #00000029,
+      0 0 3px 20px rgba($elysia-color, .0),
+      0 0 3px 30px rgba($elysia-color, .0),
+    }
+  }
+  @-webkit-keyframes ripple {
+    0% {
+      -webkit-box-shadow: 
+        0 0 8px  #1c1c1c29,
+        0 0 0px  #ffffff,
+        0 0 10px  #1c1c1c29,
+    }
+    15% {
+      -webkit-box-shadow: 
+        0 0 2px  #1c1c1c29,
+        0 0 0px  #ffffff,
+        0 0 10px  #1c1c1c29,
+    }
+    50% {
+      -webkit-box-shadow: 
+        0 0 4px  #1c1c1c29,
+        0 0 0px  #ffffff,
+        0 0 10px  #1c1c1c29,
+    }
+    95% {
+      -webkit-box-shadow: 
+        0 0 10px  #1c1c1c29,
+        0 0 0px  #ffffff,
+        0 0 10px  #1c1c1c29,
+    }
+    100% {
+      -webkit-box-shadow: 
+        0 0 10px  #1c1c1c29,
+        0 0 0px  #ffffff,
+        0 0 10px  #1c1c1c29,
     }
   }
   .market__detail__graph__DAI div div div div svg g {
