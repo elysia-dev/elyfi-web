@@ -1,10 +1,15 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import LanguageType from 'src/enums/LanguageType';
+import PortfolioInfoKor from 'src/assets/images/portfolio_info--kor.png';
+import PortfolioInfoEng from 'src/assets/images/portfolio_info--eng.png';
 
 type Props = {
   content: string;
 };
 
 function Guide(props: Props) {
+  const { t, i18n } = useTranslation();
   const [isBoxVisible, setIsBoxVisible] = useState(false);
 
   return (
@@ -12,14 +17,14 @@ function Guide(props: Props) {
       style={{
         position: 'relative',
         display: 'inline-block',
-        border: '1px solid #4C4D72',
+        border: '1.5px solid #4C4D72',
         width: 15,
         height: 15,
         borderRadius: 15,
         textAlign: 'center',
-        lineHeight: 0.8,
+        lineHeight: 1,
         marginLeft: 11,
-        fontSize: 15.5,
+        fontSize: 13,
         color: '#4C4D72',
       }}
       onMouseEnter={(e) => {
@@ -33,8 +38,8 @@ function Guide(props: Props) {
         <div
           style={{
             position: 'absolute',
-            width: 330,
-            left: -10,
+            width: props.content === 'ABToken' ? 'auto' : '330px',
+            left: props.content === 'ABToken' ? '-200px' : '0px',
             padding: '5px 15px',
             background: '#fff',
             boxShadow: '0 0 6px rgb(0 0 0/16%)',
@@ -42,7 +47,33 @@ function Guide(props: Props) {
             lineHeight: 1.5,
             textAlign: 'left',
           }}>
-          {props.content}
+          {props.content === 'ABToken' ? (
+            <div className="portfolio__info__details__content">
+              <b className="spoqa__bold">{t('portfolio.abtoken_title')}</b>
+              <p>{t('portfolio.abtoken_content')}</p>
+              <div className="portfolio__info__details__image">
+                {i18n.language === LanguageType.KO ? (
+                  <img
+                    src={PortfolioInfoKor}
+                    style={{
+                      width: '330px',
+                      marginTop: '10px',
+                    }}
+                  />
+                ) : (
+                  <img
+                    src={PortfolioInfoEng}
+                    style={{
+                      width: '330px',
+                      marginTop: '10px',
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+          ) : (
+            props.content
+          )}
         </div>
       )}
     </div>
