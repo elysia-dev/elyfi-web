@@ -414,7 +414,9 @@
         "Meaning a non-fungible token(NFT) used as a collateral to get loans from ELYFI",
         "Meaning a loan instrument (such as mortgage) in a contract between a lending company and a property owner.",
         "Meaning a collateral (such as apartments) in a contract between a lending company and a property owner."
-      ]
+      ],
+      "Real_estate_registration_information": "Real estate registration information",
+      "Certified_corporate_registration": "Certified corporate registration"
     },
     "partners": {
       "collateral_provider": "담보법인",
