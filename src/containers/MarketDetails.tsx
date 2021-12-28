@@ -4,7 +4,7 @@ import { reserveTokenData } from 'src/core/data/reserves';
 
 import { toUsd, toPercent } from 'src/utiles/formatters';
 import { BigNumber, constants } from 'ethers';
-import { Chart } from 'react-google-charts';
+import Chart from 'react-google-charts';
 
 import waveDai from 'src/assets/images/wave_dai.png';
 import waveUSDT from 'src/assets/images/wave_usdt.png';
@@ -26,6 +26,7 @@ import Token from 'src/enums/Token';
 import moment from 'moment';
 import Loan from 'src/containers/Loan';
 import MarketDetailsBody from 'src/components/MarketDetailsBody';
+import styled from 'styled-components';
 
 const initialBalanceState = {
   loading: true,
@@ -56,9 +57,17 @@ const tokenColorData: ITokencolor[] = [
   },
 ];
 
+const ChartComponent = styled(Chart)`
+  .google-visualization-tooltip {
+    position: absolute !important;
+    top: 30px !important;
+    /* left: ${(props) => props.theme.xValue}px !important; */
+  }
+`;
+
 function MarketDetail(): JSX.Element {
   const { account, library } = useWeb3React();
-  const [mouseHover, setMouseHover] = useState(false);
+  const [mouseHover, setMouseHover] = useState(0);
   const [graphConverter, setGraphConverter] = useState(false);
   const [transactionModal, setTransactionModal] = useState(false);
   const tokenRef = useRef<HTMLParagraphElement>(null);
@@ -249,10 +258,28 @@ function MarketDetail(): JSX.Element {
               </div>
             </div>
             <div className={`market__detail__graph__${id}`}>
-              <Chart
+              <ChartComponent
+                // theme={{
+                //   xValue: mouseHover / 1.455,
+                // }}
                 height={'500px'}
                 chartType="ComboChart"
                 loader={<div>Loading Chart</div>}
+                // chartEvents={[
+                //   {
+                //     eventName: 'select',
+                //     callback: ({ chartWrapper, google }) => {
+                //       console.log(chartWrapper.getChart().getSelection());
+                //       google.visualization.events.addListener(
+                //         chartWrapper,
+                //         'select',
+                //         (e) => {
+                //           console.log(e);
+                //         },
+                //       );
+                //     },
+                //   },
+                // ]}
                 data={[
                   [
                     'Month',
@@ -280,6 +307,7 @@ function MarketDetail(): JSX.Element {
                     width: '700px',
                     height: '400px',
                   },
+
                   backgroundColor: 'transparent',
                   tooltip: {
                     textStyle: {
