@@ -60,8 +60,9 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
     lpStakingRound,
     setLpStakingRound,
   } = props;
+
   const { t } = useTranslation();
-  const [currentSwipe, setCurrnetSwipe] = useState(0);
+  const [currentSwipe, setCurrnetSwipe] = useState(selectedRound);
   const { value: mediaQuery } = useMediaQueryType();
 
   SwiperCore.use([Pagination]);
@@ -69,9 +70,9 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
   const miningElfiDescription = [
     [
       t('reward.mining_term'),
-      `${lpStakingStartedAt.format(format)} ~ ${lpStakingEndedAt.format(
-        format,
-      )} KST`,
+      `${lpRoundDate[selectedRound].startedAt.format(format)} ~ ${lpRoundDate[
+        selectedRound
+      ].endedAt.format(format)} KST`,
     ],
     [t('reward.daily_mining'), '7,500 ELFI'],
   ];
@@ -80,9 +81,9 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
       ? [
           [
             t('reward.reward_term'),
-            `${lpStakingStartedAt.format(format)} ~ ${lpStakingEndedAt.format(
+            `${lpRoundDate[selectedRound].startedAt.format(
               format,
-            )} KST`,
+            )} ~ ${lpRoundDate[selectedRound].endedAt.format(format)} KST`,
           ],
           [
             t('reward.daily_reward'),
@@ -98,233 +99,45 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
       : [
           [
             t('reward.reward_term'),
-            `${lpStakingStartedAt.format(format)} ~ ${lpStakingEndedAt.format(
+            `${lpRoundDate[selectedRound].startedAt.format(
               format,
-            )} KST`,
+            )} ~ ${lpRoundDate[selectedRound].endedAt.format(format)} KST`,
           ],
           [t('reward.daily_reward'), '625 DAI'],
         ];
   return (
-    <div className="reward__token__lp__container">
-      {/* <div className="reward__token__array-handler">
-        <div
-          className={`reward__token__array-handler--left${
-            token1 === Token.DAI
-              ? lpStakingRound.daiElfiRound === 0
-                ? ' disabled'
-                : ''
-              : lpStakingRound.ethElfiRound === 0
-              ? ' disabled'
-              : ''
-          }`}
-          onClick={() => {
-            setLpStakingRound({
-              ...lpStakingRound,
-              daiElfiRound:
-                token1 === Token.DAI
-                  ? lpStakingRound.daiElfiRound === 0
-                    ? lpStakingRound.daiElfiRound
-                    : lpStakingRound.daiElfiRound - 1
-                  : lpStakingRound.daiElfiRound,
-              ethElfiRound:
-                token1 === Token.DAI
-                  ? lpStakingRound.ethElfiRound
-                  : lpStakingRound.ethElfiRound === 0
-                  ? lpStakingRound.ethElfiRound
-                  : lpStakingRound.ethElfiRound - 1,
-            });
-          }}
-          style={{
-            top: -90,
-          }}>
-          <i />
-          <i />
-        </div>
-        <div
-          className={`reward__token__array-handler--right${
-            token1 === Token.DAI
-              ? lpStakingRound.daiElfiRound === lpRoundDate.length - 1
-                ? ' disabled'
-                : ''
-              : lpStakingRound.ethElfiRound === lpRoundDate.length - 1
-              ? ' disabled'
-              : ''
-          }`}
-          onClick={() => {
-            setLpStakingRound({
-              ...lpStakingRound,
-              daiElfiRound:
-                token1 === Token.DAI
-                  ? lpStakingRound.daiElfiRound === lpRoundDate.length - 1
-                    ? lpStakingRound.daiElfiRound
-                    : lpStakingRound.daiElfiRound + 1
-                  : lpStakingRound.daiElfiRound,
-              ethElfiRound:
-                token1 === Token.DAI
-                  ? lpStakingRound.ethElfiRound
-                  : lpStakingRound.ethElfiRound === lpRoundDate.length - 1
-                  ? lpStakingRound.ethElfiRound
-                  : lpStakingRound.ethElfiRound + 1,
-            });
-          }}
-          style={{
-            top: -90,
-          }}>
-          <i />
-          <i />
-        </div>
-      </div> */}
-      <LpStakingHeader
-        tvl={props.tvl}
-        apr={props.apr}
-        token0={token0}
-        token1={token1}
-      />
-      {mediaQuery === MediaQuery.PC ? (
-        <>
-          <div className="reward__token__data">
-            <SmallProgressBar
-              start={
-                firstTokenValue.start[selectedRound] <= 0
-                  ? 0
-                  : firstTokenValue.start[selectedRound]
-              }
-              end={
-                firstTokenValue.end[selectedRound] <= 0
-                  ? 0
-                  : firstTokenValue.end[selectedRound]
-              }
-              rewardOrMining={'mining'}
-              totalMiningValue={firstTokenValue.total
-                .toString()
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-              max={firstTokenValue.total}
-              unit={token0}
-            />
-            <RewardDetailInfo
-              start={
-                firstTokenValue.start[selectedRound] <= 0
-                  ? 0
-                  : firstTokenValue.start[selectedRound]
-              }
-              end={
-                firstTokenValue.end[selectedRound] <= 0
-                  ? 0
-                  : firstTokenValue.end[selectedRound]
-              }
-              miningStart={
-                firstTokenValue.start[selectedRound] <= 0
-                  ? 0
-                  : firstTokenValue.total - firstTokenValue.start[selectedRound]
-              }
-              miningEnd={
-                firstTokenValue.end[selectedRound] <= 0
-                  ? 0
-                  : firstTokenValue.total - firstTokenValue.end[selectedRound]
-              }
-              miningDescription={miningElfiDescription}
-              unit={token0}
-            />
-          </div>
-          <div className="reward__token__data">
-            <SmallProgressBar
-              start={
-                secondTokenValue.start[selectedRound] <= 0
-                  ? 0
-                  : secondTokenValue.start[selectedRound]
-              }
-              end={
-                secondTokenValue.end[selectedRound] <= 0
-                  ? 0
-                  : secondTokenValue.end[selectedRound]
-              }
-              rewardOrMining={'reward'}
-              totalMiningValue={
-                token1 === Token.DAI
-                  ? secondTokenValue.total
-                      .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                  : lpStakingRound.ethElfiRound >= 2
-                  ? 'TBD'
-                  : secondTokenValue.total
-                      .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-              }
-              max={secondTokenValue.total}
-              unit={token1}
-            />
-            <RewardDetailInfo
-              start={
-                secondTokenValue.start[selectedRound] <= 0
-                  ? 0
-                  : secondTokenValue.start[selectedRound]
-              }
-              end={
-                secondTokenValue.end[selectedRound] <= 0
-                  ? 0
-                  : secondTokenValue.end[selectedRound]
-              }
-              miningStart={
-                secondTokenValue.start[selectedRound] <= 0
-                  ? 0
-                  : secondTokenValue.total -
-                    secondTokenValue.start[selectedRound]
-              }
-              miningEnd={
-                secondTokenValue.end[selectedRound] <= 0
-                  ? 0
-                  : secondTokenValue.total - secondTokenValue.end[selectedRound]
-              }
-              miningDescription={miningDescription}
-              unit={token1}
-            />
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            {lpRoundDate.map((_, idx) => (
-              <div
-                onClick={() => {
-                  setLpStakingRound({
-                    ...lpStakingRound,
-                    daiElfiRound:
-                      token1 === Token.DAI ? idx : lpStakingRound.daiElfiRound,
-                    ethElfiRound:
-                      token1 === Token.DAI ? lpStakingRound.ethElfiRound : idx,
-                  });
-                }}
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: 8,
-                  backgroundColor:
-                    token1 === Token.DAI
-                      ? idx === lpStakingRound.daiElfiRound
-                        ? '#646464'
-                        : '#E6E6E6'
-                      : idx === lpStakingRound.ethElfiRound
-                      ? '#646464'
-                      : '#E6E6E6',
-                  cursor: 'pointer',
-                  marginTop: 18,
-                  marginRight: idx === lpRoundDate.length - 1 ? '' : 18,
-                }}
-              />
-            ))}
-          </div>
-        </>
-      ) : (
+    <>
+      <div className="reward__token__lp__container">
+        <LpStakingHeader
+          tvl={props.tvl}
+          apr={props.apr}
+          token0={token0}
+          token1={token1}
+        />
         <Swiper
           className="component__swiper"
           spaceBetween={100}
           loop={false}
           slidesPerView={1}
           pagination={{ clickable: true }}
-          onSlideChange={(slides) => setCurrnetSwipe(slides.realIndex)}
-          initialSlide={currentSwipe}>
+          onSlideChange={(slides) => {
+            setLpStakingRound({
+              ...lpStakingRound,
+              daiElfiRound:
+                token1 === Token.DAI
+                  ? slides.realIndex
+                  : lpStakingRound.daiElfiRound,
+              ethElfiRound:
+                token1 === Token.DAI
+                  ? lpStakingRound.ethElfiRound
+                  : slides.realIndex,
+            });
+            setCurrnetSwipe(slides.realIndex);
+          }}
+          initialSlide={currentSwipe}
+          style={{
+            height: mediaQuery === 'PC' ? '335px' : undefined,
+          }}>
           {lpRoundDate.map((_x, index) => {
             return (
               <SwiperSlide key={`slide-${index}`}>
@@ -454,8 +267,8 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
             );
           })}
         </Swiper>
-      )}
-    </div>
+      </div>
+    </>
   );
 };
 

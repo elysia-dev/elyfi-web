@@ -68,42 +68,6 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
           })}
         </h2>
       </div>
-      {/* <div className="reward__token__array-handler">
-        <div
-          className={`reward__token__array-handler--left${
-            props.staking === 0 ? ' disabled' : ''
-          }`}
-          onClick={() => {
-            props.staking > 0 &&
-              props.setState({
-                ...props.state,
-                elStaking: isDai ? props.state.elStaking : props.staking - 1,
-                currentElfiLevel: isDai
-                  ? props.staking - 1
-                  : props.state.currentElfiLevel,
-              });
-          }}>
-          <i />
-          <i />
-        </div>
-        <div
-          className={`reward__token__array-handler--right${
-            props.staking >= stakingRoundTimes.length - 1 ? ' disabled' : ''
-          }`}
-          onClick={() => {
-            props.staking < stakingRoundTimes.length - 1 &&
-              props.setState({
-                ...props.state,
-                elStaking: isDai ? props.state.elStaking : props.staking + 1,
-                currentElfiLevel: isDai
-                  ? props.staking + 1
-                  : props.state.currentElfiLevel,
-              });
-          }}>
-          <i />
-          <i />
-        </div>
-      </div> */}
       <div className="reward__token__container">
         <StakingBoxHeader
           nth={props.nth}
@@ -113,87 +77,66 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
           staking={props.staking}
           unit={props.unit}
         />
-        <div className="reward__token__data">
-          <SmallProgressBar
-            start={
-              typeof props.start === 'number'
-                ? props.start
-                : props.start[props.staking]
-            }
-            end={
-              typeof props.end === 'number'
-                ? props.end
-                : props.end[props.staking]
-            }
-            rewardOrMining={rewardOrMining}
-            totalMiningValue={
-              isDai
-                ? props.staking > 1
-                  ? '50,000'
-                  : '25,000'
-                : (5000000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-            }
-            max={isDai ? (props.staking > 1 ? 50000 : 25000) : 5000000}
-            unit={props.unit}
-            nth={props.nth}
-            stakingRoundFill={
-              <StakingProgressFill
-                nth={props.nth}
-                staking={props.staking}
-                unit={props.unit}
-                end={
-                  typeof props.end === 'number'
-                    ? props.end
-                    : props.end[props.staking]
-                }
-                currentPhase={props.currentPhase}
-                OrdinalNumberConverter={props.OrdinalNumberConverter}
-              />
-            }
-          />
-          {/* {!(mediaQuery === MediaQuery.PC) ? (
-            <>
-              <StakingDetailInfo
-                nth={props.nth}
-                isDai={props.unit === 'DAI'}
-                staking={props.staking}
-                unit={props.unit}
-                start={
-                  typeof props.start === 'number'
-                    ? props.start
-                    : props.start[props.staking]
-                }
-                end={
-                  typeof props.end === 'number'
-                    ? props.end
-                    : props.end[props.staking]
-                }
-                state={props.state}
-                setState={props.setState}
-                miningStart={
-                  typeof props.miningStart !== 'undefined'
-                    ? props.miningStart[props.staking]
-                    : undefined
-                }
-                miningEnd={
-                  typeof props.miningEnd !== 'undefined'
-                    ? props.miningEnd[props.staking]
-                    : undefined
-                }
-              />
-            </>
-          ) : ( */}
-          <Swiper
-            className="component__swiper"
-            spaceBetween={100}
-            loop={false}
-            slidesPerView={1}
-            pagination={{ clickable: true }}
-            onSlideChange={(slides) => setCurrnetSwipe(slides.realIndex)}
-            initialSlide={currentSwipe}>
-            {stakingRoundTimes.map((_x, index) => {
-              return (
-                <SwiperSlide key={`slide-${index}`}>
+
+        <Swiper
+          className="component__swiper"
+          spaceBetween={100}
+          loop={false}
+          slidesPerView={1}
+          pagination={{ clickable: true }}
+          onSlideChange={(slides) => setCurrnetSwipe(slides.realIndex)}
+          initialSlide={currentSwipe}
+          style={{
+            height:
+              mediaQuery === 'PC'
+                ? props.unit === Token.DAI
+                  ? '240px'
+                  : '280px'
+                : undefined,
+          }}>
+          {stakingRoundTimes.map((_x, index) => {
+            return (
+              <SwiperSlide key={`slide-${index}`}>
+                <div className="reward__token__data">
+                  <SmallProgressBar
+                    start={
+                      typeof props.start === 'number'
+                        ? props.start
+                        : props.start[props.staking]
+                    }
+                    end={
+                      typeof props.end === 'number'
+                        ? props.end
+                        : props.end[props.staking]
+                    }
+                    rewardOrMining={rewardOrMining}
+                    totalMiningValue={
+                      isDai
+                        ? props.staking > 1
+                          ? '50,000'
+                          : '25,000'
+                        : (5000000)
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                    }
+                    max={isDai ? (props.staking > 1 ? 50000 : 25000) : 5000000}
+                    unit={props.unit}
+                    nth={props.nth}
+                    stakingRoundFill={
+                      <StakingProgressFill
+                        nth={props.nth}
+                        staking={props.staking}
+                        unit={props.unit}
+                        end={
+                          typeof props.end === 'number'
+                            ? props.end
+                            : props.end[props.staking]
+                        }
+                        currentPhase={props.currentPhase}
+                        OrdinalNumberConverter={props.OrdinalNumberConverter}
+                      />
+                    }
+                  />
                   <StakingDetailInfo
                     nth={props.OrdinalNumberConverter(index + 1)}
                     isDai={props.unit === 'DAI'}
@@ -222,12 +165,12 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
                         : undefined
                     }
                   />
-                </SwiperSlide>
-              );
-            })}
-          </Swiper>
-          {/* )} */}
-        </div>
+                </div>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+        {/* )} */}
       </div>
     </>
   );
