@@ -200,10 +200,6 @@ input[type='number'] {
     z-index: 900;
     border-bottom: 1px solid $gray-line;
     transition: all 0.5s ease-in-out;
-    &__status {
-      width: 24px;
-      height: 24px;
-    }
     &__bottom {
       position: absolute;
       display: flex;
@@ -340,7 +336,7 @@ input[type='number'] {
       animation: glow 1.5s linear infinite alternate;
       &__wrapper {
         display: flex;
-        justify-content: space-between;
+        justify-content: center ;
         align-items: center;
         width: 100%;
       }
@@ -354,91 +350,7 @@ input[type='number'] {
           text-align: right;
           margin: 0;
           cursor: pointer;
-
-          margin-right: 12px;
           font-size: 15px;
-        }
-      }
-      &__mainnet {
-        margin: 0;
-        color: $font-color;
-        text-align: right;
-        cursor: pointer;
-
-        font-size: 15px;
-        margin-right: 12px;
-      }
-      &--connected {
-        width: 205px;
-        height: 54px;
-        margin-left: 30px;
-        display: inline-flex;
-        border-radius: 5px;
-        opacity: 1;
-        align-items: center;
-        justify-content: flex-end;
-        text-align: right;
-        position: relative;
-        cursor: pointer;
-        border: 2px solid #e6e6e6;
-
-        &.FAIL {
-          box-shadow: 0px 0px 6px #ff1d1d81;
-          border: 2px solid #ff1d1d;
-        }
-        &.PENDING {
-          box-shadow: 0px 0px 6px #f5f5f581;
-          border: 2px solid #f5f5f5;
-          color: #00bfff;
-          box-shadow: inset 0 0 0 1px rgba(#00bfff, 0.5);
-
-          &::before,
-          &::after {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            content: '';
-            z-index: -1;
-            margin: -1 * 0.05 * 100%;
-            box-shadow: inset 0 0 0 2px;
-            animation: clipMe 4s linear infinite;
-          }
-          &::before {
-            animation-delay: 4s * -0.5;
-          }
-          @keyframes clipMe {
-            0%,
-            100% {
-              clip: rect(0px, 205px * 1.1, 2px, 0px);
-            }
-            25% {
-              clip: rect(0px, 2px, 67px * 1.1, 0px);
-            }
-            50% {
-              clip: rect(67px * 1.1 - 2px, 205px * 1.1, 67px * 1.1, 0px);
-            }
-            75% {
-              clip: rect(0px, 205px * 1.1, 67px * 1.1, 205px * 1.1);
-            }
-          }
-          .loader {
-            left: 15px;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            position: relative;
-            -webkit-animation: load5 1.1s infinite ease;
-            animation: load5 1.1s infinite ease;
-            -webkit-transform: translateZ(0);
-            -ms-transform: translateZ(0);
-            transform: translateZ(0);
-          }
-        }
-        &.CONFIRM {
-          box-shadow: 0px 0px 6px #23eb1b81;
-          border: 2px solid #23eb1b;
         }
       }
       &__sub-menu {
@@ -718,11 +630,11 @@ input[type='number'] {
           transform: translateY(0px);
           opacity: 0;
         }
-        10% {
+        3% {
           transform: translateY(40px);
           opacity: 1;
         }
-        30% {
+        7% {
           transform: translateY(500px);
           opacity: 1;
         }
