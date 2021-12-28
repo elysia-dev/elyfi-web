@@ -28,10 +28,6 @@ $device-width: 1190px;
   }
   &.elysia {
     .navigation {
-      &__status {
-        width: 24px;
-        height: 24px;
-      }
       &__margin {
         margin-bottom: 1px;
       }
@@ -49,6 +45,79 @@ $device-width: 1190px;
         margin-left: 50px;
         &__status {
           color: $elysia-color--deep;
+        }
+        &--connected {
+          width: 170px;
+          height: 48px;
+          margin-left: 30px;
+          display: inline-flex;
+          border-radius: 5px;
+          background: $background-color;
+          align-items: center;
+          justify-content: flex-end;
+          text-align: right;
+          position: relative;
+          cursor: pointer;
+          border: 1px solid $gray-line;
+  
+          &.FAIL {
+            box-shadow: 0px 0px 6px #ff1d1d81;
+            border: 2px solid #ff1d1d;
+          }
+          &.PENDING {
+            box-shadow: 0px 0px 6px #f5f5f581;
+            border: 2px solid #f5f5f5;
+            color: #00bfff;
+            box-shadow: inset 0 0 0 1px rgba(#00bfff, 0.5);
+  
+            &::before,
+            &::after {
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              content: '';
+              z-index: -1;
+              margin: -1 * 0.05 * 100%;
+              box-shadow: inset 0 0 0 2px;
+              animation: clipMe 4s linear infinite;
+            }
+            &::before {
+              animation-delay: 4s * -0.5;
+            }
+            @keyframes clipMe {
+              0%,
+              100% {
+                clip: rect(0px, 205px * 1.1, 2px, 0px);
+              }
+              25% {
+                clip: rect(0px, 2px, 67px * 1.1, 0px);
+              }
+              50% {
+                clip: rect(67px * 1.1 - 2px, 205px * 1.1, 67px * 1.1, 0px);
+              }
+              75% {
+                clip: rect(0px, 205px * 1.1, 67px * 1.1, 205px * 1.1);
+              }
+            }
+            .loader {
+              left: 15px;
+              width: 6px;
+              height: 6px;
+              border-radius: 50%;
+              position: relative;
+              -webkit-animation: load5 1.1s infinite ease;
+              animation: load5 1.1s infinite ease;
+              -webkit-transform: translateZ(0);
+              -ms-transform: translateZ(0);
+              transform: translateZ(0);
+            }
+          }
+          &.CONFIRM {
+            box-shadow: 0px 0px 6px #23eb1b81;
+            border: 2px solid #23eb1b;
+          }
         }
       }
     }
@@ -330,6 +399,40 @@ $device-width: 1190px;
             justify-content: center;
             padding: 20px;
             text-align: center;
+            &.circle_01 {
+              transform: scale(1.1);
+              background: #F7FBFF;
+            }
+            &.circle_02 {
+              background: #F7FBFF;
+            }
+            &.circle_03 {
+              transform: scale(1.25);
+              position: relative;
+              background: #F7FBFF;
+              > div {
+                &:first-child {
+                  width: 21px;
+                  height: 21px;
+                  position: absolute;
+                  border: 1px solid $elysia-color;
+                  border-radius: 100%;
+                  right: 8px;
+                  top: 30px;
+                  background: #ffffff;
+                }
+                &:last-child {
+                  width: 13px;
+                  height: 13px;
+                  position: absolute;
+                  border: 1px solid #00BFFF;
+                  border-radius: 100%;
+                  right: 0;
+                  top: 18px;
+                  background: #ffffff;
+                }
+              }
+            }
             > p {
               font-size: 20px;
               color: $font-color;

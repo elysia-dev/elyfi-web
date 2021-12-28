@@ -51,32 +51,32 @@ const Wallet = (props: any) => {
           }
         }}>
         <div className="navigation__wallet__wrapper">
-          <img
-            style={{
-              display: !connected
-                ? 'none'
-                : txStatus !== TxStatus.PENDING
-                ? 'block'
-                : 'none',
-            }}
-            src={
-              txWaiting === undefined
-                ? Idle
-                : txStatus === TxStatus.FAIL
-                ? Fail
-                : txStatus === TxStatus.CONFIRM
-                ? Confirm
-                : Idle
-            }
-            alt="status"
-            className="navigation__status"
-          />
-          <div
-            className="loader"
-            style={{
-              display: txStatus === TxStatus.PENDING ? 'block' : 'none',
-            }}
-          />
+            {/* <img
+              style={{
+                display: !connected
+                  ? 'none'
+                  : txStatus !== TxStatus.PENDING
+                  ? 'block'
+                  : 'none',
+              }}
+              src={
+                txWaiting === undefined
+                  ? Idle
+                  : txStatus === TxStatus.FAIL
+                  ? Fail
+                  : txStatus === TxStatus.CONFIRM
+                  ? Confirm
+                  : Idle
+              }
+              alt="status"
+              className="navigation__status"
+            />
+            <div
+              className="loader"
+              style={{
+                display: txStatus === TxStatus.PENDING ? 'block' : 'none',
+              }}
+            /> */}
           <div>
             {connected && (
               <p className="navigation__wallet__mainnet">
