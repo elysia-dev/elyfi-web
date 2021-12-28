@@ -19,12 +19,9 @@ import reactGA from 'react-ga';
 import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
 
-import ELFIButton from 'src/assets/images/navigation__elfi.png';
-import ETHButton from 'src/assets/images/navigation__eth.png';
-import BSCButton from 'src/assets/images/navigation__bsc.png';
-
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
+import MainnetSwitch from 'src/components/MainnetSwitch';
 
 import ErrorModal from './ErrorModal';
 
@@ -366,40 +363,6 @@ const Navigation: React.FunctionComponent<{
     );
   };
 
-  const mainnetSwitcher = () => {
-    return (
-      <div className="navigation__mainnet__container">
-        {
-          mediaQuery === MediaQuery.PC && (
-            <img src={ELFIButton} className="navigation__metamask-add-el-button" />
-          )
-        }
-        <div className="navigation__mainnet__wrapper">
-          <div className="navigation__mainnet__current" onClick={() => {
-            setMainNetwork(!mainNetwork)
-          }}>
-            <img src={ETHButton} />
-            <h2>
-              Ethereum
-            </h2>
-          </div>
-          <div className="navigation__mainnet__change-network__wrapper" style={{
-            display: mainNetwork === true ? "flex" : 'none'
-          }}>
-            <p>
-              Change Network
-            </p>
-            <div className="navigation__mainnet__change-network">
-              <img src={BSCButton} />
-              <h2>
-                BSC
-              </h2>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent): void {
@@ -456,7 +419,10 @@ const Navigation: React.FunctionComponent<{
             </div>
             {setNavigationLink()}
             {mediaQuery === MediaQuery.Mobile && (
-              mainnetSwitcher()
+              <MainnetSwitch 
+                mainNetwork={mainNetwork}
+                setMainNetwork={setMainNetwork}
+              />
             )}
             <div
               className={`navigation__hamburger__button ${
@@ -472,7 +438,10 @@ const Navigation: React.FunctionComponent<{
           </div>
           <div className="navigation__mainnet">
             {mediaQuery === MediaQuery.PC && (
-              mainnetSwitcher()
+              <MainnetSwitch
+                mainNetwork={mainNetwork}
+                setMainNetwork={setMainNetwork}
+              />
             )}
             {setMediaQueryMetamask('pc')}
           </div>
