@@ -408,7 +408,7 @@ const Navigation: React.FunctionComponent<{
         style={{
           backgroundColor: scrollTop > 125 ? '#FFFFFF' : '#FFFFFF',
           height: hamburgerBar ? '100%' : 'auto',
-          overflowY: !mainNetwork ? "scroll" : hamburgerBar ? "scroll" : "initial"
+          overflowY: mediaQuery === MediaQuery.PC ? "initial" : !mainNetwork ? "scroll" : hamburgerBar ? "scroll" : "initial"
         }}
         ref={navigationRef}
         onMouseLeave={() => {
