@@ -62,7 +62,7 @@ $device-width: 1190px;
   
           &.FAIL {
             box-shadow: 0px 0px 6px #ff1d1d81;
-            border: 2px solid #ff1d1d;
+            border: 1px solid #ff1d1d;
           }
           &.PENDING {
             box-shadow: 0px 0px 6px #f5f5f581;
@@ -116,7 +116,7 @@ $device-width: 1190px;
           }
           &.CONFIRM {
             box-shadow: 0px 0px 6px #23eb1b81;
-            border: 2px solid #23eb1b;
+            border: 1px solid #23eb1b;
           }
         }
       }
