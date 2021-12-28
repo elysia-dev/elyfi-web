@@ -1,5 +1,5 @@
 import { BigNumber, utils } from 'ethers';
-import { useState } from 'react';
+import { LegacyRef, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatCommaWithDigits } from 'src/utiles/formatters';
 import { IReserve } from 'src/core/data/reserves';
@@ -23,6 +23,7 @@ const DepositBody: React.FunctionComponent<{
   deposit,
 }) => {
   const [amount, setAmount] = useState({ value: '', max: false });
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const amountGtBalance =
     !amount.max &&
@@ -30,6 +31,17 @@ const DepositBody: React.FunctionComponent<{
   const amountLteZero = !amount.value || parseFloat(amount.value) <= 0;
 
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (!inputRef.current) return;
+    inputRef.current.addEventListener('wheel', (e) => {
+      e.preventDefault();
+    });
+
+    inputRef.current.removeEventListener('wheel', (e) => {
+      e.preventDefault();
+    });
+  }, []);
 
   return (
     <>
@@ -50,6 +62,7 @@ const DepositBody: React.FunctionComponent<{
           </h2>
           <h2 className="modal__input__value">
             <input
+              ref={inputRef}
               type="number"
               className="modal__input__value__amount"
               placeholder="0"
