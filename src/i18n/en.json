@@ -262,7 +262,7 @@
       "staking__in_progress": "<strong>{{ nth }}</strong> round In Progress",
       "el": {
         "staking__content": "Stake EL tokens and get reward tokens, ELFI!",
-        "staking__content--button": "Go to EL tokens"
+        "staking__content--button": "Go to buy EL tokens"
       },
       "elfi": {
         "staking__content": "Stake ELFI tokens and get reward tokens and voting rights!\nELFI holders can participate in decentralized governance(DAO) by staking their ELFI and receive a distribution of protocol net profits when staking ELFI",
@@ -319,7 +319,7 @@
       "all_ended_alert": "All of the rounds for staking are currently over and migration is not possible.",
       "current_round": "Current round",
       "staking_amount": "Staked Amount",
-      "reward_amount": "Accumulated reward amount",
+      "reward_amount": "Amount of rewards",
       "location_staking": "Staking",
       "transaction_failed": "Transaction fail",
       "error_description_one": "The requested transaction failed due to an error in Metamask. Please contact cs@elysia.land by copying the error code/message below.",
