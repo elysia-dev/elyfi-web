@@ -179,7 +179,7 @@ const Governance = () => {
                 {
                   data: {
                     description: data.data.description
-                      .match(/NAP#: .*(?=<)/)
+                      .match(/\d.*(?!NAP)(?=:)/)
                       ?.toString(),
                   },
                   status: data.status,
@@ -243,9 +243,12 @@ const Governance = () => {
         <div>
           <img
             src={
-              offChainNapData.filter(
-                (offChainData) => offChainData.nap === data.data.description,
-              )[0]?.images || TempAssets
+              'https://' +
+                offChainNapData.filter((offChainData) => {
+                  return (
+                    offChainData.nap.substring(1) === data.data.description
+                  );
+                })[0]?.images || TempAssets
             }
           />
         </div>
