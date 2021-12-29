@@ -19,7 +19,10 @@ import TokenDeposit from 'src/components/RewardPlan/TokenDeposit';
 import PriceContext from 'src/contexts/PriceContext';
 import ReservesContext from 'src/contexts/ReservesContext';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
-import { moneyPoolStartedAt } from 'src/core/data/moneypoolTimes';
+import {
+  daiMoneyPoolTime,
+  moneyPoolStartedAt,
+} from 'src/core/data/moneypoolTimes';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import {
   DAIPerDayOnELFIStakingPool,
@@ -72,6 +75,12 @@ const RewardPlan: FunctionComponent = () => {
       .length;
   }, [current]);
 
+  const depositCurrentPhase = useMemo(() => {
+    return daiMoneyPoolTime.findIndex((round) =>
+      current.isBetween(round.startedAt, round.endedAt),
+    );
+  }, [current]);
+
   const onClickHandler = () => {
     history.goBack();
   };
@@ -84,6 +93,11 @@ const RewardPlan: FunctionComponent = () => {
   const [lpStakingRound, setLpStakingRound] = useState({
     daiElfiRound: lpCurrentPhase - 1,
     ethElfiRound: lpCurrentPhase - 1,
+  });
+
+  const [depositRound, setDepositRound] = useState({
+    daiRound: depositCurrentPhase === -1 ? 0 : depositCurrentPhase,
+    tetherRound: depositCurrentPhase === -1 ? 0 : depositCurrentPhase,
   });
 
   const [totalStakedPositions, setTotalStakedPositions] = useState<
@@ -122,13 +136,13 @@ const RewardPlan: FunctionComponent = () => {
     daiRewardByElFiStakingPool: calcMintedAmounts(
       parseFloat(utils.formatEther(DAIPerDayOnELFIStakingPool)),
     ),
-    beforeMintedByDaiMoneypool: 0,
+    beforeMintedByDaiMoneypool: [0, 0],
     mintedByDaiMoneypool: calcMintedByDaiMoneypool(),
     beforeTetherRewardByElFiStakingPool: [0, 0, 0],
     tetherRewardByElFiStakingPool: calcMintedAmounts(
       parseFloat(utils.formatEther(TETHERPerDayOnELFIStakingPool)),
     ),
-    beforeMintedByTetherMoneypool: 0,
+    beforeMintedByTetherMoneypool: [0, 0],
     mintedByTetherMoneypool: calcMintedByTetherMoneypool(),
     beforeElfiRewardByLp: [0, 0, 0],
     elfiRewardByLp: calcElfiRewardByLp(),
@@ -426,11 +440,14 @@ const RewardPlan: FunctionComponent = () => {
                     reserve={reserve}
                     moneyPoolInfo={moneyPoolInfo}
                     beforeMintedMoneypool={
-                      beforeMintedMoneypool[token].beforeMintedToken <= 0
-                        ? 0
-                        : beforeMintedMoneypool[token].beforeMintedToken
+                      beforeMintedMoneypool[token].beforeMintedToken
+                      // beforeMintedMoneypool[token].beforeMintedToken <= 0
+                      //   ? 0
+                      //   : beforeMintedMoneypool[token].beforeMintedToken
                     }
                     mintedMoneypool={mintedMoneypool[token].mintedToken}
+                    depositRound={depositRound}
+                    setDepositRound={setDepositRound}
                   />
                 );
               })}
