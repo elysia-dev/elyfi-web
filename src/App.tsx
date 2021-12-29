@@ -1,10 +1,8 @@
 import './i18n';
 
-import { Web3ReactProvider } from '@web3-react/core';
 import { ApolloProvider, InMemoryCache, ApolloClient } from '@apollo/client';
 import envs from 'src/core/envs';
 import { BrowserRouter as Router } from 'react-router-dom';
-import getLibrary from './core/utils/getLibrary';
 import AppNavigator from './AppNavigator';
 import ReservesProvider from './providers/ReservesProvider';
 import PriceProvider from './providers/PriceProvider';
@@ -29,17 +27,15 @@ const App: React.FC = () => {
       <UniswapPoolProvider>
         <PriceProvider>
           <Web3Provider>
-            <Web3ReactProvider getLibrary={getLibrary}>
-              <ReservesProvider>
+            <ReservesProvider>
+              <MainnetProvider>
                 <TxProvider>
-                <MainnetProvider>
                   <Router>
                     <AppNavigator />
                   </Router>
-                </MainnetProvider>
                 </TxProvider>
-              </ReservesProvider>
-            </Web3ReactProvider>
+              </MainnetProvider>
+            </ReservesProvider>
           </Web3Provider>
         </PriceProvider>
       </UniswapPoolProvider>
