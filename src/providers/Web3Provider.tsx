@@ -17,16 +17,18 @@ interface Web3State {
 }
 
 const web3Modal = new Web3Modal({
-  network: "mainnet", // optional
   cacheProvider: true, // optional
   providerOptions: {
     walletconnect: {
       package: WalletConnectProvider,
 			options: {
+        chainId: 1,
         infuraId: process.env.REACT_APP_INFURA_ID,
-				1: process.env.REACT_APP_JSON_RPC_ENDPOINT,
-				56: "https://bsc-dataseed.binance.org/",
-				97: "https://data-seed-prebsc-1-s1.binance.org:8545/",
+        rpc: {
+          1: process.env.NODE_ENV === "development" ? "https://elyfi-test.elyfi.world:8545" : process.env.REACT_APP_JSON_RPC_ENDPOINT,
+          56: "https://bsc-dataseed.binance.org/",
+          97: "https://data-seed-prebsc-1-s1.binance.org:8545/",
+        },
 				qrcodeModalOptions: {
 					mobileLinks: [
 						"rainbow",
@@ -38,7 +40,12 @@ const web3Modal = new Web3Modal({
 					],
 					desktopLinks: [
 						"encrypted ink",
-					]
+					],
+          supportedChainIds: [
+            1,
+            56,
+            97,
+          ]
 				}
       }
     }
