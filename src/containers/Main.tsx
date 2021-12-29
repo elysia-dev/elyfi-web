@@ -83,7 +83,7 @@ const Main = () => {
     if (!governancePageY.current) return;
     const governanceY = governancePageY.current.offsetTop;
     if (!governancePageBottomY.current) return;
-    const governanceBottomY = governancePageBottomY.current.offsetTop;
+    const governanceBottomY = governancePageY.current.offsetHeight;
 
     if (!canvas) return;
     canvas.width = document.body.clientWidth * dpr;
@@ -292,8 +292,34 @@ const Main = () => {
       browserWidth,
       governanceY * 0.9708,
     );
+    context.lineTo(
+      browserWidth,
+      governanceY * 0.9708 + governanceBottomY + 220,
+    );
+    context.bezierCurveTo(
+      browserWidth / 2,
+      governanceY * 0.9708 + governanceBottomY + 110,
+      browserWidth / 1.7,
+      governanceY * 0.9708 + governanceBottomY + 280,
+      0,
+      governanceY * 0.9708 + governanceBottomY + 280,
+    );
+    // context.lineTo(0, governanceY * 0.9708 + governanceBottomY + 220);
+    context.fill();
     context.stroke();
 
+    context.beginPath();
+    context.moveTo(0, governanceY * 0.9708 + governanceBottomY + 290);
+    context.bezierCurveTo(
+      browserWidth / 2,
+      governanceY * 0.9708 + governanceBottomY + 290,
+      browserWidth / 1.7,
+      governanceY * 0.9708 + governanceBottomY + 100,
+      browserWidth,
+      governanceY * 0.9708 + governanceBottomY + 240,
+    );
+
+    context.stroke();
     // circle
     context.fillStyle = '#ffffff';
     context.beginPath();
@@ -316,6 +342,33 @@ const Main = () => {
       Math.PI * 2,
       true,
     );
+
+    context.moveTo(
+      browserWidth / 2.5 + 10,
+      governanceY * 0.9708 + governanceBottomY + 243,
+    );
+    context.arc(
+      browserWidth / 2.5,
+      governanceY * 0.9708 + governanceBottomY + 243,
+      10,
+      0,
+      Math.PI * 2,
+      true,
+    );
+
+    context.moveTo(
+      browserWidth / 2.6 + 5,
+      governanceY * 0.9708 + governanceBottomY + 256,
+    );
+    context.arc(
+      browserWidth / 2.6,
+      governanceY * 0.9708 + governanceBottomY + 256,
+      5,
+      0,
+      Math.PI * 2,
+      true,
+    );
+
     context.fill();
     context.stroke();
   };
