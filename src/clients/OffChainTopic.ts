@@ -32,9 +32,9 @@ const baseURL =
 
 export default class OffChainTopic {
   static getTopicList = async (): Promise<AxiosResponse<TopicList>> => {
-    return axios.get(`${baseURL}/c/nap/10.json`);
+    return axios.get(`${baseURL}c/nap/10.json`);
   };
   static getTopicResult = async (topicID: number): Promise<AxiosResponse> => {
-    return axios.get(`${baseURL}/t/${topicID}.json`);
+    return axios.get(`${baseURL}t/${topicID}.json`);
   };
 }
