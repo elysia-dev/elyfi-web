@@ -3,7 +3,6 @@ import Skeleton from 'react-loading-skeleton';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { formatSixFracionDigit, toPercent, toUsd } from 'src/utiles/formatters';
 import { reserveTokenData } from 'src/core/data/reserves';
-import { useWeb3React } from '@web3-react/core';
 import CountUp from 'react-countup';
 import { formatEther } from '@ethersproject/units';
 import { BigNumber } from 'ethers';
@@ -16,6 +15,8 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import TableBodyAmount from 'src/components/TableBodyAmount';
+import { useContext } from 'react';
+import { Web3Context } from 'src/providers/Web3Provider';
 
 interface Props {
   tokenImage: string;
@@ -57,7 +58,7 @@ const TokenTable: React.FC<Props> = ({
   id,
 }) => {
   const { data, loading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
-  const { account } = useWeb3React();
+  const { account } = useContext(Web3Context);
   const { t, i18n } = useTranslation();
   const tokenInfo = reserveTokenData[tokenName];
   const list = data?.assetBondTokens.filter((product) => {

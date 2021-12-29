@@ -1,4 +1,3 @@
-import { useWeb3React } from '@web3-react/core';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import mainnetConverter from 'src/utiles/mainnetConverter';
@@ -11,13 +10,14 @@ import envs from 'src/core/envs';
 import TxStatus from 'src/enums/TxStatus';
 import { reserveTokenData } from 'src/core/data/reserves';
 import ELFI from 'src/assets/images/ELFI.png'
+import { Web3Context } from 'src/providers/Web3Provider';
 import ModalHeader from './ModalHeader';
 
 const AccountModal: React.FunctionComponent<{
   visible: boolean;
   closeHandler: () => void;
 }> = ({ visible, closeHandler }) => {
-  const { account, deactivate, chainId } = useWeb3React();
+  const { account, deactivate, chainId } = useContext(Web3Context);
   const { t } = useTranslation();
   const { reset, txHash, txStatus, txType } = useContext(TxContext);
 

@@ -1,4 +1,3 @@
-import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
 import envs from 'src/core/envs';
 import stakerABI from 'src/core/abi/StakerABI.json';
@@ -7,6 +6,7 @@ import { useContext } from 'react';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import { lpTokenValues } from 'src/utiles/lpTokenValues';
+import { Web3Context } from 'src/providers/Web3Provider';
 import useTxTracking from './useTxTracking';
 
 const useLpMigration: () => (
@@ -15,13 +15,13 @@ const useLpMigration: () => (
   tokenId: string,
   round: number,
 ) => void = () => {
-  const { account, library } = useWeb3React();
+  const { provider } = useContext(Web3Context);
   const { setTransaction } = useContext(TxContext);
   const initTxTracker = useTxTracking();
   const staker = new ethers.Contract(
     envs.stakerAddress,
     stakerABI,
-    library.getSigner(),
+    provider?.getSigner(),
   );
   const iFace = new ethers.utils.Interface(stakerABI);
 

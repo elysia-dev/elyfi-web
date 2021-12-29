@@ -16,7 +16,6 @@ import calcHistoryChartData from 'src/utiles/calcHistoryChartData';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import envs from 'src/core/envs';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
-import { useWeb3React } from '@web3-react/core';
 import {
   ERC20__factory,
   IncentivePool__factory,
@@ -26,6 +25,7 @@ import Token from 'src/enums/Token';
 import moment from 'moment';
 import Loan from 'src/containers/Loan';
 import MarketDetailsBody from 'src/components/MarketDetailsBody';
+import { Web3Context } from 'src/providers/Web3Provider';
 
 const initialBalanceState = {
   loading: true,
@@ -57,7 +57,7 @@ const tokenColorData: ITokencolor[] = [
 ];
 
 function MarketDetail(): JSX.Element {
-  const { account, library } = useWeb3React();
+  const { account, provider } = useContext(Web3Context);
   const [mouseHover, setMouseHover] = useState(false);
   const [graphConverter, setGraphConverter] = useState(false);
   const [transactionModal, setTransactionModal] = useState(false);
@@ -92,12 +92,14 @@ function MarketDetail(): JSX.Element {
     reserve: GetAllReserves_reserves,
     account: string,
   ) => {
+    if(!provider) return;
+
     const incentive = await IncentivePool__factory.connect(
       reserve.incentivePool.id,
-      library.getSigner(),
+      provider.getSigner(),
     ).getUserIncentive(account);
     return {
-      value: await ERC20__factory.connect(reserve.id, library).balanceOf(
+      value: await ERC20__factory.connect(reserve.id, provider).balanceOf(
         account,
       ),
       incentive,
@@ -105,11 +107,11 @@ function MarketDetail(): JSX.Element {
       expectedIncentiveAfter: incentive,
       governance: await ERC20__factory.connect(
         envs.governanceAddress,
-        library,
+        provider,
       ).balanceOf(account),
       deposit: await ERC20__factory.connect(
         reserve.lToken.id,
-        library,
+        provider,
       ).balanceOf(account),
     };
   };

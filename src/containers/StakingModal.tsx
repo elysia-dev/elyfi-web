@@ -6,7 +6,6 @@ import envs from 'src/core/envs';
 import { useTranslation } from 'react-i18next';
 import useWatingTx from 'src/hooks/useWaitingTx';
 import LoadingIndicator from 'src/components/LoadingIndicator';
-import { useWeb3React } from '@web3-react/core';
 import Token from 'src/enums/Token';
 import moment from 'moment';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
@@ -19,6 +18,7 @@ import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ModalHeader from 'src/components/ModalHeader';
 import ModalConverter from 'src/components/ModalConverter';
+import { Web3Context } from 'src/providers/Web3Provider';
 
 const StakingModal: React.FunctionComponent<{
   visible: boolean;
@@ -44,7 +44,7 @@ const StakingModal: React.FunctionComponent<{
   transactionModal,
 }) => {
   const { t, i18n } = useTranslation();
-  const { account } = useWeb3React();
+  const { account } = useContext(Web3Context);
   const [stakingMode, setStakingMode] = useState<boolean>(true);
   const [amount, setAmount] = useState({ value: '', max: false });
   const current = moment();

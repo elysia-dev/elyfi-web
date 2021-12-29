@@ -1,4 +1,3 @@
-import { useWeb3React } from '@web3-react/core';
 import { ContractTransaction, ethers } from 'ethers';
 import envs from 'src/core/envs';
 import stakerABI from 'src/core/abi/StakerABI.json';
@@ -6,6 +5,7 @@ import { useContext } from 'react';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import { lpTokenValues } from 'src/utiles/lpTokenValues';
+import { Web3Context } from 'src/providers/Web3Provider';
 import useTxTracking from './useTxTracking';
 
 const useLpWithdraw: () => (
@@ -14,7 +14,7 @@ const useLpWithdraw: () => (
   tokenId: string,
   round: number,
 ) => void = () => {
-  const { account, library } = useWeb3React();
+  const { account, provider } = useContext(Web3Context);
   const { setTransaction } = useContext(TxContext);
   const initTxTracker = useTxTracking();
   const iFace = new ethers.utils.Interface(stakerABI);
@@ -29,7 +29,7 @@ const useLpWithdraw: () => (
       const staker = new ethers.Contract(
         envs.stakerAddress,
         stakerABI,
-        library.getSigner(),
+        provider?.getSigner(),
       );
       const elfiUnstake = iFace.encodeFunctionData('unstakeToken', [
         lpTokenValues(poolAddress, envs.governanceAddress, round - 1),

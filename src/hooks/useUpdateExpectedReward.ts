@@ -1,8 +1,7 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { ethers, utils } from 'ethers';
 import envs from 'src/core/envs';
 import stakerABI from 'src/core/abi/StakerABI.json';
-import { useWeb3React } from '@web3-react/core';
 import Position from 'src/core/types/Position';
 import { lpTokenValues } from 'src/utiles/lpTokenValues';
 import {
@@ -15,6 +14,7 @@ import getAddressesByPool, {
   isEthElfiPoolAddress,
 } from 'src/core/utils/getAddressesByPool';
 import { ExpectedRewardTypes } from 'src/core/types/RewardTypes';
+import { Web3Context } from 'src/providers/Web3Provider';
 import usePricePerLiquidity from './usePricePerLiquidity';
 
 function useExpectedReward(): {
@@ -38,7 +38,7 @@ function useExpectedReward(): {
   ) => void;
   isError: string;
 } {
-  const { account, library } = useWeb3React();
+  const { account, provider } = useContext(Web3Context);
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const [expectedReward, setExpectedReward] = useState<ExpectedRewardTypes[]>(
     [],
@@ -50,7 +50,7 @@ function useExpectedReward(): {
       const staker = new ethers.Contract(
         envs.stakerAddress,
         stakerABI,
-        library.getSigner(),
+        provider?.getSigner(),
       );
       const isEthPoolAddress = isEthElfiPoolAddress(position);
       const { poolAddress, rewardTokenAddress } = getAddressesByPool(position);

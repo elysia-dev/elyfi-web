@@ -1,4 +1,3 @@
-import { useWeb3React } from '@web3-react/core';
 import ReserveData, { reserveTokenData } from 'src/core/data/reserves';
 import { useEffect, useContext, useState } from 'react';
 import { toPercent, toCompactForBignumber } from 'src/utiles/formatters';
@@ -34,6 +33,7 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 import { useMediaQuery } from 'react-responsive';
+import { Web3Context } from 'src/providers/Web3Provider';
 
 const initialBalanceState = {
   loading: false,
@@ -51,7 +51,7 @@ const usdFormatter = new Intl.NumberFormat('en', {
 
 
 const Dashboard: React.FunctionComponent = () => {
-  const { account, library } = useWeb3React();
+  const { account, provider } = useContext(Web3Context);
   const location = useLocation();
   const history = useHistory();
   const { reserves, refetch: refetchReserve } = useContext(ReservesContext);
@@ -115,14 +115,16 @@ const Dashboard: React.FunctionComponent = () => {
     reserve: GetAllReserves_reserves,
     account: string,
   ) => {
+    if(!provider) return;
+
     try {
       const incentive = await IncentivePool__factory.connect(
         reserve.incentivePool.id,
-        library.getSigner(),
+        provider.getSigner(),
       ).getUserIncentive(account);
 
       return {
-        value: await ERC20__factory.connect(reserve.id, library).balanceOf(
+        value: await ERC20__factory.connect(reserve.id, provider).balanceOf(
           account,
         ),
         incentive,
@@ -130,11 +132,11 @@ const Dashboard: React.FunctionComponent = () => {
         expectedIncentiveAfter: incentive,
         governance: await ERC20__factory.connect(
           envs.governanceAddress,
-          library,
+          provider,
         ).balanceOf(account),
         deposit: await ERC20__factory.connect(
           reserve.lToken.id,
-          library,
+          provider,
         ).balanceOf(account),
       };
     } catch (error) {

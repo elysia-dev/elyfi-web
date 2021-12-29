@@ -3,7 +3,6 @@ import { useState, useContext, useMemo } from 'react';
 import ELFI from 'src/assets/images/ELFI.png';
 import { formatComma } from 'src/utiles/formatters';
 import { useTranslation } from 'react-i18next';
-import { useWeb3React } from '@web3-react/core';
 import Token from 'src/enums/Token';
 import ArrowUp from 'src/assets/images/arrow-up.png';
 import ArrowDown from 'src/assets/images/arrow-down.png';
@@ -17,6 +16,7 @@ import useWaitingTx from 'src/hooks/useWaitingTx';
 import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
+import { Web3Context } from 'src/providers/Web3Provider';
 import LoadingIndicator from './LoadingIndicator';
 import ModalHeader from './ModalHeader';
 import Popupinfo from './PopupInfo';
@@ -44,7 +44,7 @@ const MigrationModal: React.FunctionComponent<{
 }) => {
   const current = moment();
   const { t, i18n } = useTranslation();
-  const { account } = useWeb3React();
+  const { account } = useContext(Web3Context);
   const [state, setState] = useState({
     withdrawAmount: '',
     migrationAmount: '',

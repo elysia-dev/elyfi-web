@@ -1,18 +1,17 @@
-import { useWeb3React } from '@web3-react/core';
 import moment from 'moment';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import lpStakingTime, { lpRoundDate } from 'src/core/data/lpStakingTime';
 import { DetailBoxItemStakingProps } from 'src/core/types/LpStakingTypeProps';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import { Web3Context } from 'src/providers/Web3Provider';
 import Guide from '../Guide';
-import Button from './Button';
 
 const DetailBoxItemStaking: FunctionComponent<DetailBoxItemStakingProps> = (
   props,
 ) => {
-  const { account } = useWeb3React();
+  const { account } = useContext(Web3Context);
   const {
     tokens: { token0, token1 },
     totalStakedLiquidity,

@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useContext } from 'react';
 import { utils } from 'ethers';
 import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 import Skeleton from 'react-loading-skeleton';
@@ -10,7 +10,6 @@ import moment from 'moment';
 import Token from 'src/enums/Token';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import { DetailBoxProps } from 'src/core/types/LpStakingTypeProps';
-import { useWeb3React } from '@web3-react/core';
 import DetailBoxItemReceiveToken from 'src/components/LpStaking/DetailBoxItemReceiveToken';
 import DetailBoxItemHeader from 'src/components/LpStaking/DetailBoxItemHeader';
 import DetailBoxItemStaking from 'src/components/LpStaking/DetailBoxItemStaking';
@@ -18,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import elfi from 'src/assets/images/ELFI.png';
 import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
+import { Web3Context } from 'src/providers/Web3Provider';
 
 const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
   const {
@@ -31,7 +31,7 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
   } = props;
   const { token0, token1 } = tokens;
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
-  const { account } = useWeb3React();
+  const { account } = useContext(Web3Context);
   const { t } = useTranslation();
   const secondImg = tokens.token1 === Token.ETH ? eth : dai;
 

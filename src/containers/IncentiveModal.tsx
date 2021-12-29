@@ -1,4 +1,3 @@
-import { useWeb3React } from '@web3-react/core';
 import { BigNumber } from 'ethers';
 import { FunctionComponent, useContext } from 'react';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
@@ -11,6 +10,7 @@ import ReservesContext from 'src/contexts/ReservesContext';
 import { IncentivePool__factory } from '@elysia-dev/contract-typechain';
 import CountUp from 'react-countup';
 import ModalHeader from 'src/components/ModalHeader';
+import { Web3Context } from 'src/providers/Web3Provider';
 
 // Create deposit & withdraw
 const IncentiveModal: FunctionComponent<{
@@ -30,13 +30,13 @@ const IncentiveModal: FunctionComponent<{
   afterTx,
   transactionModal,
 }) => {
-  const { account, library } = useWeb3React();
+  const { account, provider } = useContext(Web3Context);
   const initTxTracker = useTxTracking();
   const { reserves } = useContext(ReservesContext);
   const { setTransaction, failTransaction } = useContext(TxContext);
 
   const reqeustClaimIncentive = async () => {
-    if (!account) return;
+    if (!account || !provider) return;
 
     const tracker = initTxTracker(
       'IncentiveModal',
@@ -46,7 +46,7 @@ const IncentiveModal: FunctionComponent<{
 
     tracker.clicked();
 
-    IncentivePool__factory.connect(incentivePoolAddress, library.getSigner())
+    IncentivePool__factory.connect(incentivePoolAddress, provider.getSigner())
       .claimIncentive()
       .then((tx) => {
         tracker.created();

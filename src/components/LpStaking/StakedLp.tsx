@@ -1,5 +1,4 @@
-import { useWeb3React } from '@web3-react/core';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import Token from 'src/enums/Token';
 import { formatDecimalFracionDigit, toCompact } from 'src/utiles/formatters';
@@ -12,6 +11,7 @@ import { isEthElfiPoolAddress } from 'src/core/utils/getAddressesByPool';
 import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
 import Position from 'src/core/types/Position';
+import { Web3Context } from 'src/providers/Web3Provider';
 import StakedLpItem from './StakedLpItem';
 
 const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
@@ -26,7 +26,7 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
     round,
     isLoading,
   } = props;
-  const { account } = useWeb3React();
+  const { account } = useContext(Web3Context);
   const { t } = useTranslation();
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
 

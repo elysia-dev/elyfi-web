@@ -1,4 +1,3 @@
-import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants, ethers, utils } from 'ethers';
 import { useEffect, useContext, useState, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -34,9 +33,10 @@ import getIncentiveId from 'src/utiles/getIncentive';
 import usePositions from 'src/hooks/usePositions';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
+import { Web3Context } from 'src/providers/Web3Provider';
 
 function LPStaking(): JSX.Element {
-  const { account, library } = useWeb3React();
+  const { account, provider } = useContext(Web3Context);
   const { t, i18n } = useTranslation();
   const { txType, txWaiting } = useContext(TxContext);
   const { elfiPrice } = useContext(PriceContext);
@@ -125,7 +125,7 @@ function LPStaking(): JSX.Element {
       const staker = new ethers.Contract(
         envs.stakerAddress,
         stakerABI,
-        library.getSigner(),
+        provider?.getSigner(),
       );
 
       setRewardToRecive({

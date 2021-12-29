@@ -1,19 +1,18 @@
 import { useState, useEffect, useRef, useContext } from 'react';
-import { useWeb3React } from '@web3-react/core';
-import InjectedConnector from 'src/core/connectors/injectedConnector';
 import mainnetConverter from 'src/utiles/mainnetConverter';
 import { useTranslation } from 'react-i18next';
 import Idle from 'src/assets/images/status__idle.png';
 import Confirm from 'src/assets/images/status__confirm.png';
 import Fail from 'src/assets/images/status__fail.png';
 import TxContext from 'src/contexts/TxContext';
+import { Web3Context } from 'src/providers/Web3Provider';
 
 import envs from 'src/core/envs';
 import TxStatus from 'src/enums/TxStatus';
 import AccountModal from './AccountModal';
 
 const Wallet = (props: any) => {
-  const { account, activate, active, chainId } = useWeb3React();
+  const { account, activate, active, chainId } = useContext(Web3Context);
   const [connected, setConnected] = useState<boolean>(false);
   const { t } = useTranslation();
   const [modal, setModal] = useState(false);
@@ -39,7 +38,7 @@ const Wallet = (props: any) => {
         ref={WalletRef}
         onClick={() => {
           if (!active) {
-            activate(InjectedConnector).then(() => {
+            activate().then(() => {
               window.sessionStorage.setItem('@connect', 'true');
             });
           }

@@ -1,15 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
-import { useWeb3React } from '@web3-react/core';
 import ScrollToTop from 'src/hooks/ScrollToTop';
 import usePageTracking from 'src/hooks/usePageTracking';
-import InjectedConnector from 'src/core/connectors/injectedConnector';
-import envs from 'src/core/envs';
 
 import Dashboard from 'src/containers/Dashboard';
 import { StakingEL, StakingELFI } from 'src/containers/Staking';
 import Main from 'src/containers/Main';
-import Guide from 'src/containers/Guide';
 import Governance from 'src/containers/Governance';
 
 import 'src/stylesheet/public.scss';
@@ -27,6 +23,7 @@ import MarketDetail from 'src/containers/MarketDetails';
 import PortfolioDetail from 'src/containers/PortfolioDetail';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
+import { Web3Context } from './providers/Web3Provider';
 
 const AppNavigator: React.FC = () => {
   const [isDarkmodeActivated, setDarkModeActivated] = useState(false);
@@ -46,12 +43,12 @@ const AppNavigator: React.FC = () => {
 
   const { value: mediaQuery } = useMediaQueryType();
 
-  const { active, chainId, deactivate, activate } = useWeb3React();
+  const { deactivate, activate } = useContext(Web3Context);
   usePageTracking();
 
   useEffect(() => {
     if (window.sessionStorage.getItem('@connect') === 'true') {
-      activate(InjectedConnector);
+      activate();
     } else {
       deactivate();
     }

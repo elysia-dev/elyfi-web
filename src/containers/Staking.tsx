@@ -2,7 +2,6 @@ import elfi from 'src/assets/images/ELFI.png';
 import wave from 'src/assets/images/wave_elyfi.png';
 import el from 'src/assets/images/el.png';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { useWeb3React } from '@web3-react/core';
 import { constants } from 'ethers';
 import Skeleton from 'react-loading-skeleton';
 import {
@@ -42,6 +41,7 @@ import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import { useParams } from 'react-router-dom';
+import { Web3Context } from 'src/providers/Web3Provider';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI;
@@ -67,7 +67,7 @@ const Staking: React.FunctionComponent<IProps> = ({
 }) => {
   const { t, i18n } = useTranslation();
   const current = moment();
-  const { account } = useWeb3React();
+  const { account } = useContext(Web3Context);
   const { elPrice, elfiPrice } = useContext(PriceContext);
   const tokenRef = useRef<HTMLParagraphElement>(null);
   const stakingPool = useStakingPool(stakedToken);

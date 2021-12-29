@@ -1,4 +1,3 @@
-import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
 import envs from 'src/core/envs';
 import positionABI from 'src/core/abi/NonfungiblePositionManager.json';
@@ -6,6 +5,7 @@ import { lpTokenValues } from 'src/utiles/lpTokenValues';
 import { useContext } from 'react';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
+import { Web3Context } from 'src/providers/Web3Provider';
 import useTxTracking from './useTxTracking';
 
 const useLpStaking: () => (
@@ -14,7 +14,7 @@ const useLpStaking: () => (
   tokenId: string,
   round: number,
 ) => void = () => {
-  const { account, library } = useWeb3React();
+  const { account, provider } = useContext(Web3Context);
   const { setTransaction } = useContext(TxContext);
   const initTxTracker = useTxTracking();
 
@@ -24,6 +24,8 @@ const useLpStaking: () => (
     tokenId: string,
     round: number,
   ) => {
+    if (!provider) return;
+
     try {
       const encode = new ethers.utils.AbiCoder().encode(
         ['tuple(address,address,uint256,uint256,address)[]'],
@@ -38,7 +40,7 @@ const useLpStaking: () => (
       const contract = new ethers.Contract(
         envs.nonFungiblePositionAddress,
         positionABI,
-        library.getSigner(),
+        provider.getSigner(),
       );
 
       const res = await contract[

@@ -1,4 +1,3 @@
-import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants, utils } from 'ethers';
 import {
   useContext,
@@ -26,6 +25,7 @@ import RecentActivityType from 'src/enums/RecentActivityType';
 import ReserveData from 'src/core/data/reserves';
 import ModalHeader from 'src/components/ModalHeader';
 import ModalConverter from 'src/components/ModalConverter';
+import { Web3Context } from 'src/providers/Web3Provider';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
 
@@ -52,7 +52,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   afterTx,
   transactionModal,
 }) => {
-  const { account } = useWeb3React();
+  const { account, provider } = useContext(Web3Context);
   const { elfiPrice } = useContext(PriceContext);
   const [selected, select] = useState<boolean>(true);
   const {
@@ -117,7 +117,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   }, [accumulatedYield, reserve, userData]);
 
   const increateAllowance = async () => {
-    if (!account) return;
+    if (!account || !provider) return;
     const tracker = initTxTracker(
       'DepositOrWithdrawalModal',
       'Approve',
@@ -127,6 +127,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     tracker.clicked();
 
     reserveERC20
+      .connect(provider.getSigner())
       .approve(envs.moneyPoolAddress, constants.MaxUint256)
       .then((tx) => {
         setTransaction(

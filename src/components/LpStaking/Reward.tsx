@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useContext } from 'react';
 import elfi from 'src/assets/images/ELFI.png';
 import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
@@ -7,12 +7,12 @@ import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 import Token from 'src/enums/Token';
 import RewardTypes from 'src/core/types/RewardTypes';
 import { StakingTitleProps } from 'src/core/types/LpStakingTypeProps';
-import { useWeb3React } from '@web3-react/core';
+import { Web3Context } from 'src/providers/Web3Provider';
 import Guide from '../Guide';
 import Button from './Button';
 
 const Reward: FunctionComponent<StakingTitleProps> = (props) => {
-  const { account } = useWeb3React();
+  const { account } = useContext(Web3Context);
   const { rewardToReceive, onHandler } = props;
   const { t } = useTranslation();
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ContractTransaction } from 'ethers';
 import TxStatus from 'src/enums/TxStatus';
 import TxContext, {
@@ -6,8 +6,8 @@ import TxContext, {
   ITxContext,
 } from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
-import { useWeb3React } from '@web3-react/core';
 import ethersJsErrors from 'src/utiles/ethersJsErrors';
+import { Web3Context } from './Web3Provider';
 
 const clearLocalStorage = () => {
   window.localStorage.removeItem('@txHash');
@@ -17,7 +17,7 @@ const clearLocalStorage = () => {
 };
 
 const TxProvider: React.FunctionComponent = (props) => {
-  const { library } = useWeb3React();
+  const { provider } = useContext(Web3Context);
   const [state, setState] = useState<ITxContext>(initialTxContext);
 
   const reset = () => {
@@ -118,7 +118,7 @@ const TxProvider: React.FunctionComponent = (props) => {
     );
     const txType = window.localStorage.getItem('@txType') as RecentActivityType;
 
-    if (library && connected !== 'false' && txHash) {
+    if (provider && connected !== 'false' && txHash) {
       setState({
         ...state,
         txHash,
@@ -128,7 +128,7 @@ const TxProvider: React.FunctionComponent = (props) => {
         txType,
       });
 
-      library
+      provider
         .waitForTransaction(txHash)
         .then((res: any) => {
           if (res && res.status === 1) {
@@ -164,7 +164,7 @@ const TxProvider: React.FunctionComponent = (props) => {
           }, 5000);
         });
     }
-  }, [library]);
+  }, [provider]);
 
   return (
     <TxContext.Provider

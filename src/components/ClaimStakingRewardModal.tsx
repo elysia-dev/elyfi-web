@@ -1,4 +1,3 @@
-import { useWeb3React } from '@web3-react/core';
 import { BigNumber, utils } from 'ethers';
 import { FunctionComponent, useContext } from 'react';
 import LoadingIndicator from 'src/components/LoadingIndicator';
@@ -15,6 +14,7 @@ import RecentActivityType from 'src/enums/RecentActivityType';
 import RoundData from 'src/core/types/RoundData';
 import CountUp from 'react-countup';
 import { formatEther } from '@ethersproject/units';
+import { Web3Context } from 'src/providers/Web3Provider';
 import ModalHeader from './ModalHeader';
 
 const ClaimStakingRewardModal: FunctionComponent<{
@@ -43,7 +43,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
   afterTx,
   transactionModal,
 }) => {
-  const { account } = useWeb3React();
+  const { account } = useContext(Web3Context);
   const stakingPool = useStakingPool(stakedToken, round >= 3);
   const { waiting } = useWatingTx();
   const { t } = useTranslation();

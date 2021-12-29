@@ -1,12 +1,12 @@
-import { useWeb3React } from '@web3-react/core';
-import InjectedConnector from 'src/core/connectors/injectedConnector';
 import MainBackground from 'src/assets/images/main-background.png';
 import { useTranslation } from 'react-i18next';
 import envs from 'src/core/envs';
 import { useRouteMatch } from 'react-router-dom';
+import { useContext } from 'react';
+import { Web3Context } from 'src/providers/Web3Provider';
 
 const DisableWalletPage = () => {
-  const { activate, active, chainId } = useWeb3React();
+  const { activate, active, chainId } = useContext(Web3Context);
   const { t } = useTranslation();
   const route = useRouteMatch();
 
@@ -29,7 +29,7 @@ const DisableWalletPage = () => {
       <div
         className={`navigation__wallet`}
         onClick={() => {
-          activate(InjectedConnector).then(() => {
+          activate().then(() => {
             window.sessionStorage.setItem('@connect', 'true');
           });
         }}
