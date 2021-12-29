@@ -29,7 +29,6 @@ export interface INapData {
 
 const baseURL =
   process.env.NODE_ENV === 'development' ? '/' : 'https://forum.elyfi.world/';
-axios.defaults.withCredentials = true;
 
 export default class OffChainTopic {
   static getTopicList = async (): Promise<AxiosResponse<TopicList>> => {
