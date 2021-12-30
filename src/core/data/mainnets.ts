@@ -1,12 +1,8 @@
 import ETH from 'src/assets/images/navigation__eth.png';
 import BSC from 'src/assets/images/navigation__bsc.png';
 import MainnetType from 'src/enums/MainnetType';
+import { IMainnetContextTypes } from 'src/contexts/MainnetContext'
 
-export interface IMainnetTypes {
-  type: MainnetType,
-  name: string,
-  image: string
-}
 export interface IMainnet {
   symbol: string,
   type: MainnetType,
@@ -27,7 +23,7 @@ export interface IMainnet {
   }
 }
 
-export const mainnetTypes: IMainnetTypes[] = [
+export const mainnetTypes: IMainnetContextTypes[] = [
   {
     type: MainnetType.Ethereum,
     name: "Ethereum",

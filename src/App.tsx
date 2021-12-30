@@ -15,6 +15,7 @@ import 'src/stylesheet/tablet.scss';
 import 'src/stylesheet/mobile.scss';
 import TxProvider from './providers/TxProvider';
 import UniswapPoolProvider from './providers/UniswapPoolProvider';
+import MainnetProvider from './providers/MainnetProvider';
 
 const client = new ApolloClient({
   uri: envs.subgraphURI,
@@ -29,9 +30,11 @@ const App: React.FC = () => {
           <Web3ReactProvider getLibrary={getLibrary}>
             <ReservesProvider>
               <TxProvider>
-                <Router>
-                  <AppNavigator />
-                </Router>
+                <MainnetProvider>
+                  <Router>
+                    <AppNavigator />
+                  </Router>
+                </MainnetProvider>
               </TxProvider>
             </ReservesProvider>
           </Web3ReactProvider>
