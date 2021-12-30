@@ -67,6 +67,8 @@ const ChartComponent = styled(Chart)`
 
 function MarketDetail(): JSX.Element {
   const { account, library } = useWeb3React();
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
   const [mouseHover, setMouseHover] = useState(0);
   const [graphConverter, setGraphConverter] = useState(false);
   const [transactionModal, setTransactionModal] = useState(false);
@@ -122,6 +124,93 @@ function MarketDetail(): JSX.Element {
       ).balanceOf(account),
     };
   };
+
+  const draw = () => {
+    const dpr = window.devicePixelRatio;
+    const canvas: HTMLCanvasElement | null = canvasRef.current;
+
+    if (!headerRef.current) return;
+    const headerY = headerRef.current.offsetTop;
+    console.log(dpr);
+    if (!canvas) return;
+    canvas.width = document.body.clientWidth * dpr;
+    canvas.height = document.body.clientHeight * dpr;
+    const browserWidth = canvas.width / dpr + 40;
+    // dpr === 1
+    //   ? canvas.width + 40
+    //   : dpr === 3
+    //   ? canvas.width /  + 40
+    //   : canvas.width / 2 + 40;
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) return;
+    ctx.scale(dpr, dpr);
+
+    ctx.strokeStyle = id === Token.DAI ? '#F9AE19' : '#26A17B';
+    ctx.beginPath();
+    ctx.moveTo(0, headerY * 1.5);
+    ctx.bezierCurveTo(
+      browserWidth / 5,
+      headerY * 1.2,
+      browserWidth / 5,
+      headerY * 1.6,
+      browserWidth / 2,
+      headerY * 1.55,
+    );
+    ctx.bezierCurveTo(
+      browserWidth / 1.2,
+      headerY * 1.5,
+      browserWidth / 1.3,
+      headerY * 1.15,
+      browserWidth,
+      headerY * 1.5,
+    );
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, headerY * 1.6);
+    ctx.bezierCurveTo(
+      browserWidth / 5,
+      headerY * 1.07,
+      browserWidth / 5,
+      headerY * 1.7,
+      browserWidth / 2,
+      headerY * 1.6,
+    );
+    ctx.bezierCurveTo(
+      browserWidth / 1.2,
+      headerY * 1.45,
+      browserWidth / 1.3,
+      headerY * 1.15,
+      browserWidth,
+      headerY * 1.6,
+    );
+    ctx.stroke();
+
+    // circle
+    ctx.beginPath();
+    ctx.fillStyle = '#ffffff';
+    ctx.moveTo(browserWidth / 7 + 10, headerY * 1.39);
+    ctx.arc(browserWidth / 7, headerY * 1.39, 10, 0, Math.PI * 2);
+
+    ctx.moveTo(browserWidth / 7.8 + 5, headerY * 1.43);
+    ctx.arc(browserWidth / 7.8, headerY * 1.43, 5, 0, Math.PI * 2);
+
+    ctx.moveTo(browserWidth / 3 + 10, headerY * 1.52);
+    ctx.arc(browserWidth / 3, headerY * 1.52, 10, 0, Math.PI * 2);
+
+    ctx.moveTo(browserWidth / 1.5 + 10, headerY * 1.49);
+    ctx.arc(browserWidth / 1.5, headerY * 1.49, 10, 0, Math.PI * 2);
+
+    ctx.moveTo(browserWidth / 1.46 + 5, headerY * 1.475);
+    ctx.arc(browserWidth / 1.46, headerY * 1.475, 5, 0, Math.PI * 2);
+
+    ctx.moveTo(browserWidth / 1.18 + 10, headerY * 1.36);
+    ctx.arc(browserWidth / 1.18, headerY * 1.36, 10, 0, Math.PI * 2);
+
+    ctx.fill();
+
+    ctx.stroke();
+  };
   const loadBalance = async () => {
     if (!account) return;
 
@@ -167,6 +256,15 @@ function MarketDetail(): JSX.Element {
   };
 
   useEffect(() => {
+    window.addEventListener('resize', () => draw());
+
+    return () => {
+      window.removeEventListener('resize', () => draw());
+    };
+  }, []);
+
+  useEffect(() => {
+    draw();
     loadBalances();
   }, [account]);
 
@@ -188,18 +286,16 @@ function MarketDetail(): JSX.Element {
 
   return (
     <>
-      <img
+      <canvas
+        ref={canvasRef}
         style={{
           position: 'absolute',
-          left: 0,
-          top: tokenRef.current?.offsetTop || 230,
           width: '100%',
+          top: 0,
+          left: 0,
           zIndex: -1,
         }}
-        src={id === Token.DAI ? waveDai : waveUSDT}
-        alt={id === Token.DAI ? waveDai : waveUSDT}
       />
-
       <TransactionConfirmModal
         visible={transactionModal}
         closeHandler={() => {
@@ -216,7 +312,7 @@ function MarketDetail(): JSX.Element {
           &nbsp;&gt;&nbsp;
           <p>{t('dashboard.reward_plan')}</p>
         </div>
-        <div className="detail__header">
+        <div ref={headerRef} className="detail__header">
           <img src={tokenInfo?.image} alt="Token image" />
           <h2 ref={tokenRef}>{tokenInfo?.name.toLocaleUpperCase()}</h2>
         </div>
