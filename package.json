@@ -30,7 +30,6 @@
       }
     ]
   },
-  "proxy": "https://forum.elyfi.world/",
   "browserslist": {
     "production": [
       ">0.2%",
