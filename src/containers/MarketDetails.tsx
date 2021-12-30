@@ -214,7 +214,7 @@ function MarketDetail(): JSX.Element {
       <div className="detail">
         <div className="component__text-navigation">
           <p
-            onClick={() => history.push(`/${lng}/dashboard`)}
+            onClick={() => history.push(`/${lng}/deposit`)}
             className="pointer">
             {t('dashboard.deposit')}
           </p>
