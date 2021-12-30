@@ -6,8 +6,9 @@ import ELFIButton from 'src/assets/images/navigation__elfi.png';
 import ETHButton from 'src/assets/images/navigation__eth.png';
 import BSCButton from 'src/assets/images/navigation__bsc.png';
 import { useWeb3React } from '@web3-react/core';
-import { IMainnet, mainnets } from 'src/core/data/mainnets';
-import { useMemo } from "react";
+import { IMainnet, IMainnetTypes, mainnets, mainnetTypes } from 'src/core/data/mainnets';
+import { useEffect, useMemo, useState } from "react";
+import MainnetType from 'src/enums/MainnetType';
 
 
 const MainnetSwitch: React.FunctionComponent<{
@@ -15,14 +16,35 @@ const MainnetSwitch: React.FunctionComponent<{
   setMainNetwork: (value: React.SetStateAction<boolean>) => void;
 }> = ({ mainNetwork, setMainNetwork }) => {
   const { active, chainId } = useWeb3React();
+  const { value: mediaQuery } = useMediaQueryType();
+  const [currentMainnet, setCurrentMainnet] = useState<{
+    name: string,
+    image: string,
+    type: MainnetType
+  }>({
+    name: chainId === envs.bscMainnetChainId ? "BSC" : "Ethereum",
+    image: chainId === envs.bscMainnetChainId ? BSCButton : ETHButton,
+    type: chainId === envs.bscMainnetChainId ? MainnetType.BSC : MainnetType.Ethereum
+  })
 
-  const currnetChain = useMemo(() => {
+  const currentChain = useMemo(() => {
     return mainnets.find((mainnet) => {
       return mainnet.chainId === chainId
     })
   }, [chainId])
 
-  const { value: mediaQuery } = useMediaQueryType();
+  useEffect(() => {
+    currentChain !== undefined ? (
+      setCurrentMainnet({
+        ...currentMainnet,
+        name: currentChain.name,
+        image: currentChain.image,
+        type: currentChain.type
+      })
+    ) : (
+      console.log("Error!")
+    )
+  }, [chainId])
 
   const addELFIToken = async () => {
     const tokenAddress = envs.governanceAddress;
@@ -48,33 +70,41 @@ const MainnetSwitch: React.FunctionComponent<{
     }
   }
 
-  const changeMainnet = async (mainnet: IMainnet) => {
+  const changeMainnet = async (mainnet: IMainnetTypes) => {
+    const getChainData = mainnets.find((data) => {
+      return data.chainId === (mainnet.type === MainnetType.Ethereum ? envs.requiredChainId : envs.bscMainnetChainId)
+    })
+    console.log(getChainData)
     try {
       await window.ethereum?.request({
         method: "wallet_switchEthereumChain",
         params: [
           {
-            chainId: mainnet.chainHexId,
+            chainId: getChainData!.chainHexId,
           }
         ]
       })
     } catch (e) {
       if (e.code === 4902) {
         try {
-          await window.ethereum?.request({
-            method: 'wallet_addEthereumChain',
-            params: [
-              {
-                chainId: mainnet.addParams.chainId,
-                chainName: mainnet.addParams.chainName,
-                nativeCurrency: mainnet.addParams.nativeCurrency,
-                blockExplorerUrls: mainnet.addParams.blockExplorerUrls,
-                rpcUrls: mainnet.addParams.rpcUrls,
-              },
-            ],
-          });
-        } catch (addError) {
-          console.error(addError);
+          getChainData ? (
+            await window.ethereum?.request({
+              method: 'wallet_addEthereumChain',
+              params: [
+                {
+                  chainId: getChainData.addParams.chainId,
+                  chainName: getChainData.addParams.chainName,
+                  nativeCurrency: getChainData.addParams.nativeCurrency,
+                  blockExplorerUrls: getChainData.addParams.blockExplorerUrls,
+                  rpcUrls: getChainData.addParams.rpcUrls,
+                },
+              ],
+            })
+          ) : (
+            console.log("undefined mainnet!!")
+          )
+        } catch (_e) {
+          console.error(_e);
         }
       }
       console.log(e)
@@ -85,16 +115,21 @@ const MainnetSwitch: React.FunctionComponent<{
     <div className="navigation__mainnet__container">
       {
         mediaQuery === MediaQuery.PC && (
-          <img src={ELFIButton} className="navigation__metamask-add-el-button" onClick={() => addELFIToken()}/>
+          <img 
+            src={ELFIButton} 
+            className="navigation__metamask-add-el-button" 
+            onClick={() => addELFIToken()}
+            title="메타마스크에 ELFI 토큰 추가하기"
+          />
         )
       }
       <div className="navigation__mainnet__wrapper">
         <div className="navigation__mainnet__current" onClick={() => {
           setMainNetwork(!mainNetwork)
         }}>
-          <img src={currnetChain?.image || ELFIButton} />
+          <img src={currentMainnet.image} />
           <h2>
-            {currnetChain?.name || ""}
+            {currentMainnet.name}
           </h2>
         </div>
         <div className="navigation__mainnet__change-network__wrapper" style={{
@@ -104,26 +139,34 @@ const MainnetSwitch: React.FunctionComponent<{
             Change Network
           </p>
           {
-            mainnets.map((mainnet, index) => {
-              if (mainnet.chainId === currnetChain?.chainId) return;
-              return (
-                <div 
-                  key={index}
-                  className="navigation__mainnet__change-network" 
-                  onClick={() => {
-                    changeMainnet(mainnet).then(() => {
-                      setMainNetwork(false)
-                    })
-                  }}
-                >
-                  <img src={mainnet.image} />
-                  <h2>
-                    {
-                      mainnet.name
-                    }
-                  </h2>
-                </div>
-              )
+            Object.keys(MainnetType).map((type) => {
+              if (type !== currentMainnet.type) return;
+              return mainnetTypes.map((types, index) => {
+                if (types.type === currentMainnet.type) return;
+                return (
+                  <div 
+                    key={index}
+                    className="navigation__mainnet__change-network" 
+                    onClick={() => {
+                      active ? (
+                        changeMainnet(types).then(() => {
+                          setMainNetwork(false)
+                        })
+                      ) : (
+                        setMainNetwork(false),
+                        setCurrentMainnet(types)
+                      )
+                    }}
+                  >
+                    <img src={types.image} />
+                    <h2>
+                      {
+                        types.name
+                      }
+                    </h2>
+                  </div>
+                )
+              })
             })
           }
         </div>
