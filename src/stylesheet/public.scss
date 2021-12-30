@@ -215,7 +215,7 @@ input[type='number'] {
         padding: 20px 15px;
         border-bottom: 1px solid $gray-line;
         cursor: pointer;
-        &:hover { 
+        &:hover {
           background: $gray-line;
           > div > p {
             color: $elysia-color;
@@ -234,7 +234,6 @@ input[type='number'] {
             color: $font-color;
             font-size: 15px;
           }
-          
         }
       }
       > a > p {
@@ -866,7 +865,7 @@ input[type='number'] {
         cursor: pointer;
         &:hover {
           background: $gray-line;
-        } 
+        }
         &:last-child {
           border: 0;
         }
@@ -897,6 +896,33 @@ input[type='number'] {
       }
       > h2 {
         text-align: center;
+      }
+      &__round {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        > div:first-child {
+          margin-right: 20px;
+        }
+        > div:last-child {
+          margin-left: 20px;
+        }
+        > div {
+          box-shadow: 0px 1px 6px #00000029;
+          text-align: center;
+          cursor: pointer;
+          @include hover__soft-background;
+          > p {
+            color: $font-color;
+            cursor: pointer;
+          }
+          &.active {
+            border: 1px solid $elysia-color;
+            > p {
+              font-family: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
+            }
+          }
+        }
       }
     }
     &__table {
@@ -995,7 +1021,7 @@ input[type='number'] {
         }
         &__loan-list {
           &__button {
-            @include hover__box-shadow; 
+            @include hover__box-shadow;
           }
           > div {
             > div:nth-child(1) {
@@ -1393,6 +1419,61 @@ input[type='number'] {
       align-items: center;
       > h2 {
         color: $font-color;
+      }
+      .DAI {
+        > div {
+          box-shadow: 0px 1px 6px #00000029;
+          text-align: center;
+          cursor: pointer;
+          @include hover__soft-background;
+          &:hover {
+            box-shadow: 0px 0px 6px #f9ae18;
+            transition: all 0.2s ease;
+          }
+          > p {
+            color: $font-color;
+            cursor: pointer;
+          }
+          &.active {
+            border: 1px solid #f9ae18;
+            > p {
+              font-family: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
+            }
+          }
+        }
+      }
+      .USDT {
+        > div {
+          box-shadow: 0px 1px 6px #00000029;
+          text-align: center;
+          cursor: pointer;
+          @include hover__soft-background;
+          &:hover {
+            box-shadow: 0px 0px 6px #26a17b;
+            transition: all 0.2s ease;
+          }
+          > p {
+            color: $font-color;
+            cursor: pointer;
+          }
+          &.active {
+            border: 1px solid #26a17b;
+            > p {
+              font-family: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
+            }
+          }
+        }
+      }
+      &__round {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        > div:first-child {
+          margin-right: 20px;
+        }
+        > div:last-child {
+          margin-left: 20px;
+        }
       }
     }
     &__data-wrapper {

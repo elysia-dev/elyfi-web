@@ -522,6 +522,7 @@ $device-width: 1190px;
       padding-top: 100px;
       &__title {
         height: 300px;
+        margin-bottom: 45px;
         > p {
           padding-top: 100px;
           font-size: 25px;
@@ -529,6 +530,30 @@ $device-width: 1190px;
         > h2 {
           padding-top: 16px;
           font-size: 50px;
+        }
+        &__round {
+          margin-top: 35px;
+          margin-bottom: 130px;
+          > div:first-child {
+            margin-left: 130px;
+          }
+          > div:last-child {
+            margin-right: 130px;
+          }
+          > div {
+            width: 210px;
+            height: 66px;
+            border-radius: 33px;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            > p {
+              line-height: 26px;
+              font-size: 15px;
+            }
+          }
         }
       }
       &__table {
@@ -939,10 +964,10 @@ $device-width: 1190px;
 
     .detail {
       @include page-container;
-
+      padding-top: 80px;
       &__header {
         margin-top: 25px;
-        margin-bottom: 145px;
+        margin-bottom: 90px;
         > img {
           width: 60px;
           height: 60px;
@@ -950,6 +975,29 @@ $device-width: 1190px;
         > h2 {
           margin-top: 15px;
           font-size: 25px;
+        }
+        &__round {
+          margin-top: 35px;
+          > div:first-child {
+            margin-left: 130px;
+          }
+          > div:last-child {
+            margin-right: 130px;
+          }
+          > div {
+            width: 210px;
+            height: 66px;
+            border-radius: 33px;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            > p {
+              line-height: 26px;
+              font-size: 15px;
+            }
+          }
         }
       }
       &__data-wrapper {
