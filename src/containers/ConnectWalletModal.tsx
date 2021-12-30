@@ -21,32 +21,20 @@ const ConnectWalletModal: React.FunctionComponent<{
         <div className="modal__connect__content">
           <p>{t('modal.connect_wallet.content')}</p>
         </div>
-        {/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent,
-        ) ? (
-          <div
-            className={`modal__button`}
-            style={{
-              background: '#BFBFBF',
-            }}>
-            <p>Comming Soon!</p>
-          </div>
-        ) : (
-          <div
-            className={`modal__button`}
-              onClick={() => {
-                activate().then(() => {
-                  window.sessionStorage.setItem('@connect', 'true');
-                  onClose();
-                })
-              }}>
-              <p>
-                {
-               t('modal.connect_wallet.button')
-              }
-            </p>
-          </div>
-        )}
+        <div
+          className={`modal__button`}
+          onClick={() => {
+            activate().then(() => {
+              window.sessionStorage.setItem('@connect', 'true');
+              onClose();
+            })
+          }}>
+          <p>
+            {
+              t('modal.connect_wallet.button')
+            }
+          </p>
+        </div>
       </div>
     </div>
   );
