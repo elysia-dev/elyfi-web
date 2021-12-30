@@ -34,18 +34,16 @@ const ConnectWalletModal: React.FunctionComponent<{
         ) : (
           <div
             className={`modal__button`}
-            onClick={() => {
-              window.ethereum?.isMetaMask
-                ? activate().then(() => {
-                    window.sessionStorage.setItem('@connect', 'true');
-                    onClose();
-                  })
-                : window.open('https://metamask.io/download.html');
-            }}>
-            <p>
-              {window.ethereum?.isMetaMask
-                ? t('modal.connect_wallet.button')
-                : t('navigation.install_metamask')}
+              onClick={() => {
+                activate().then(() => {
+                  window.sessionStorage.setItem('@connect', 'true');
+                  onClose();
+                })
+              }}>
+              <p>
+                {
+               t('modal.connect_wallet.button')
+              }
             </p>
           </div>
         )}

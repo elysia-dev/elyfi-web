@@ -3,7 +3,6 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
 import NavigationType from 'src/enums/NavigationType';
 import Wallet from 'src/components/Wallet';
-import InstallMetamask from 'src/components/InstallMetamask';
 import {
   INavigation,
   ISubNavigation,
@@ -106,7 +105,7 @@ const Navigation: React.FunctionComponent<{
           setGlobalNavHover(0);
           setSelectedLocalNavIndex(0);
         }}>
-        {window.ethereum?.isMetaMask ? <Wallet /> : <InstallMetamask />}
+        <Wallet />
       </div>
     );
   };

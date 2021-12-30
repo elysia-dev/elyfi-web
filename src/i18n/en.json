@@ -107,11 +107,8 @@
       "governance_docs": "governance docs",
       "guide": "guide",
       "uniswap_elfi": "Uniswap(ELFI)",
-
       "connect_wallet": "Connect Wallet",
       "disconnect": "Disconnect",
-      "install_metamask": "Install Metamask",
-
       "deposit_withdraw": "Deposit/Withdraw",
       "ELStake": "EL Staking",
       "ELFIStake": "ELFI Staking",
@@ -509,11 +506,6 @@
         "title": "Start ELYFI",
         "content": "A wallet connection is required to deposit/withdraw.\nDo you want to connect?",
         "button": "Connect Wallet"
-      },
-      "connect_metamask": {
-        "title": "Start ELYFI",
-        "content": "A related function will be opened soon so that you can use deposit/withdrawal and staking on the mobile web page!",
-        "button": "Coming soon!"
       }
     },
     "guide": {
