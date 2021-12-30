@@ -243,12 +243,16 @@ const Governance = () => {
         <div>
           <img
             src={
-              'https://' +
-                offChainNapData.filter((offChainData) => {
-                  return (
-                    offChainData.nap.substring(1) === data.data.description
-                  );
-                })[0]?.images || TempAssets
+              offChainNapData.filter((offChainData) => {
+                return offChainData.nap.substring(1) === data.data.description;
+              })[0]?.images
+                ? 'https://' +
+                  offChainNapData.filter((offChainData) => {
+                    return (
+                      offChainData.nap.substring(1) === data.data.description
+                    );
+                  })[0]?.images
+                : TempAssets
             }
           />
         </div>
