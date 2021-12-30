@@ -33,6 +33,7 @@ import ConnectWalletModal from 'src/containers/ConnectWalletModal';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
+import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 
 const initialBalanceState = {
   loading: false,
@@ -58,7 +59,8 @@ const Dashboard: React.FunctionComponent = () => {
   const [reserve, setReserve] = useState<GetAllReserves_reserves | undefined>(
     reserves.find((reserve) => reserveId === reserve.id),
   );
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [round, setRound] = useState(1);
   const [balances, setBalances] = useState<
     {
       loading: boolean;
@@ -310,6 +312,35 @@ const Dashboard: React.FunctionComponent = () => {
             delay={0}>
             {({ countUpRef }) => <h2 className="blue" ref={countUpRef} />}
           </CountUp>
+          <div>
+            <div className="deposit__title__round">
+              {Array(2)
+                .fill(0)
+                .map((_x, index) => {
+                  return (
+                    <div
+                      className={index + 1 === round ? 'active' : ''}
+                      onClick={() => setRound(index + 1)}>
+                      <p>
+                        {t(
+                          mediaQuery === MediaQuery.PC
+                            ? 'staking.nth--short'
+                            : 'staking.nth--short',
+                          {
+                            nth: toOrdinalNumber(i18n.language, index + 1),
+                          },
+                        )}
+                      </p>
+                      <p>
+                        {index === 0
+                          ? `(~ 2022.01.11 KST)`
+                          : `(2022.01.11 KST ~)`}
+                      </p>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
         </div>
         <RewardPlanButton stakingType={'deposit'} />
         <div className="deposit__table__wrapper">

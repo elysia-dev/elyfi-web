@@ -27,6 +27,9 @@ import moment from 'moment';
 import Loan from 'src/containers/Loan';
 import MarketDetailsBody from 'src/components/MarketDetailsBody';
 import styled from 'styled-components';
+import MediaQuery from 'src/enums/MediaQuery';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 
 const initialBalanceState = {
   loading: true,
@@ -75,9 +78,11 @@ function MarketDetail(): JSX.Element {
   const { latestPrice, poolDayData } = useContext(UniswapPoolContext);
   const { lng, id } = useParams<{ lng: string; id: Token.DAI | Token.USDT }>();
   const history = useHistory();
+  const { value: mediaQuery } = useMediaQueryType();
   const tokenInfo = reserveTokenData[id];
   const data = reserves.find((reserve) => reserve.id === tokenInfo.address);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [round, setRound] = useState(0);
 
   const selectToken = tokenColorData.find((color) => {
     return color.name === id;
@@ -219,6 +224,36 @@ function MarketDetail(): JSX.Element {
         <div className="detail__header">
           <img src={tokenInfo?.image} alt="Token image" />
           <h2 ref={tokenRef}>{tokenInfo?.name.toLocaleUpperCase()}</h2>
+          <div>
+            <div
+              className={`detail__header__round ${tokenInfo?.name.toLocaleUpperCase()}`}>
+              {Array(2)
+                .fill(0)
+                .map((_x, index) => {
+                  return (
+                    <div
+                      className={index + 1 === round ? 'active' : ''}
+                      onClick={() => setRound(index + 1)}>
+                      <p>
+                        {t(
+                          mediaQuery === MediaQuery.PC
+                            ? 'staking.nth--short'
+                            : 'staking.nth--short',
+                          {
+                            nth: toOrdinalNumber(i18n.language, index + 1),
+                          },
+                        )}
+                      </p>
+                      <p>
+                        {index === 0
+                          ? `(~ 2022.01.11 KST)`
+                          : `(2022.01.11 KST ~)`}
+                      </p>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
         </div>
         <div className="detail__container">
           <MarketDetailsBody
