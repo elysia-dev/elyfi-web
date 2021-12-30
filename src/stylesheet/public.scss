@@ -215,7 +215,7 @@ input[type='number'] {
         padding: 20px 15px;
         border-bottom: 1px solid $gray-line;
         cursor: pointer;
-        &:hover { 
+        &:hover {
           background: $gray-line;
           > div > p {
             color: $elysia-color;
@@ -234,7 +234,6 @@ input[type='number'] {
             color: $font-color;
             font-size: 15px;
           }
-          
         }
       }
       > a > p {
@@ -872,7 +871,7 @@ input[type='number'] {
         cursor: pointer;
         &:hover {
           background: $gray-line;
-        } 
+        }
         &:last-child {
           border: 0;
         }
@@ -888,6 +887,7 @@ input[type='number'] {
         cursor: pointer;
         @include hover__soft-background;
         > p {
+          background-color: #ffffff;
           cursor: pointer;
         }
       }
@@ -1001,7 +1001,7 @@ input[type='number'] {
         }
         &__loan-list {
           &__button {
-            @include hover__box-shadow; 
+            @include hover__box-shadow;
           }
           > div {
             > div:nth-child(1) {

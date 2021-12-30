@@ -30,7 +30,6 @@
       }
     ]
   },
-  "proxy": "https://forum.elyfi.world/",
   "browserslist": {
     "production": [
       ">0.2%",
@@ -64,6 +63,7 @@
     "ethers": "5.4.0",
     "google-map-react": "2.1.10",
     "gsap": "^3.8.0",
+    "http-proxy-middleware": "^2.0.1",
     "i18next": "^20.2.1",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",

@@ -705,7 +705,7 @@ $device-width: 1190px;
         }
         &__container {
           margin-top: 130px;
-          padding: 31px 29px 43px;
+          padding: 31px 29px 15px;
         }
         &__header {
           padding-bottom: 27px;
@@ -841,7 +841,7 @@ $device-width: 1190px;
         &__lp {
           &__container {
             margin-top: 50px;
-            padding: 30px;
+            padding: 30px 30px 20px;
           }
           &__title {
             padding-bottom: 27px;
@@ -2228,5 +2228,8 @@ $device-width: 1190px;
     margin-top: 32px;
     box-shadow: 0px 1px 6px #00000029;
     border-radius: 5px;
+  }
+  .swiper-pagination-horizontal {
+    bottom: 0px !important;
   }
 }

@@ -23,10 +23,12 @@ import isLat from 'src/utiles/isLat';
 import reverseGeocoding from 'src/utiles/reverseGeocoding';
 import LanguageType from 'src/enums/LanguageType';
 import CollateralLogo from 'src/assets/images/ELYFI.png';
+import locationMark from 'src/assets/images/locationMark.png';
 import Slate from 'src/clients/Slate';
 import maturityFormmater from 'src/utiles/maturityFormmater';
 import ReserveData from 'src/core/data/reserves';
 import envs from 'src/core/envs';
+import Guide from 'src/components/Guide';
 
 const PortfolioDetail: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
@@ -176,25 +178,39 @@ const PortfolioDetail: FunctionComponent = () => {
                 </div>
                 <div>
                   <p>{t('loan.wallet_address')}</p>
-                  <p
-                    onClick={() =>
-                      AddressCopy('0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7')
-                    }
-                    className="link">
-                    {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(0, 12)}{' '}
-                    ...{' '}
-                    {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(-12)}
-                  </p>
+                  <a
+                    href="https://etherscan.io/address/0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7"
+                    target="_blank"
+                    rel="noopener noreferer">
+                    <p className="link">
+                      {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(
+                        0,
+                        12,
+                      )}{' '}
+                      ...{' '}
+                      {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(-12)}
+                    </p>
+                  </a>
                 </div>
               </div>
               <div className="portfolio__borrower__data">
                 <div className="portfolio__borrower__data--left">
                   <div>
-                    <p>{t('loan.loan__number')}</p>
+                    <p>
+                      {t('loan.loan__number')}{' '}
+                      <Guide content={t('portfolio.infomation_popup.0')} />
+                    </p>
                     <p>{parsedTokenId.nonce}</p>
                   </div>
                   <div>
-                    <p>{t('loan.loan__status')}</p>
+                    <p>
+                      {t('loan.loan__status')}
+                      <Guide
+                        content={`${t('portfolio.infomation_popup.1')} \n ${t(
+                          'portfolio.infomation_popup.3',
+                        )} \n ${t('portfolio.infomation_popup.5')}`}
+                      />
+                    </p>
                     <p>
                       {t(
                         `words.${
@@ -207,20 +223,19 @@ const PortfolioDetail: FunctionComponent = () => {
                   </div>
                   <div>
                     <p>{t('loan.receiving_address')}</p>
-                    <p
-                      onClick={() =>
-                        abToken?.borrower?.id
-                          ? AddressCopy(abToken?.borrower?.id)
-                          : undefined
-                      }
-                      className={abToken?.borrower?.id ? 'link' : ''}>
-                      {!!abToken?.borrower?.id === true
-                        ? `${abToken?.borrower?.id.slice(
-                            0,
-                            12,
-                          )} ... ${abToken?.borrower?.id.slice(-12)}`
-                        : '-'}
-                    </p>
+                    <a
+                      href="https://etherscan.io/address/0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7"
+                      target="_blank"
+                      rel="noopener noreferer">
+                      <p className={abToken?.borrower?.id ? 'link' : ''}>
+                        {!!abToken?.borrower?.id === true
+                          ? `${abToken?.borrower?.id.slice(
+                              0,
+                              12,
+                            )} ... ${abToken?.borrower?.id.slice(-12)}`
+                          : '-'}
+                      </p>
+                    </a>
                   </div>
                   <div>
                     <p>{t('loan.loan__borrowed')}</p>
@@ -250,7 +265,10 @@ const PortfolioDetail: FunctionComponent = () => {
                     <p>{maturityFormmater(abToken)}</p>
                   </div>
                   <div>
-                    <p>{t('loan.collateral_nft')}</p>
+                    <p>
+                      {t('loan.collateral_nft')}{' '}
+                      <Guide content={t('portfolio.infomation_popup.7')} />
+                    </p>
                     <p
                       title={abToken?.id}
                       className="link"
@@ -279,7 +297,10 @@ const PortfolioDetail: FunctionComponent = () => {
                   <a
                     href={`https://www.google.com/maps/place/${address}/@${lat},${lng},18.12z`}
                     rel="noopener noreferer"
-                    target="_blank">
+                    target="_blank"
+                    style={{
+                      cursor: 'pointer',
+                    }}>
                     <img
                       style={{
                         width: 538.5,
@@ -373,7 +394,7 @@ const PortfolioDetail: FunctionComponent = () => {
                       '',
                       '',
                     ],
-                    [t('loan.collateral_nft__address'), address, '', ''],
+                    [t('loan.collateral_nft__address'), address, 'true', ''],
                     [
                       t('loan.collateral_nft__contract_image'),
                       contractImage[1]?.hash
@@ -386,7 +407,7 @@ const PortfolioDetail: FunctionComponent = () => {
                       contractImage[1]?.link,
                     ],
                     [
-                      '등기사항',
+                      t('portfolio.Real_estate_registration_information'),
                       contractImage[0]?.hash
                         ? `${contractImage[0].hash.slice(
                             0,
@@ -397,7 +418,7 @@ const PortfolioDetail: FunctionComponent = () => {
                       contractImage[0]?.link,
                     ],
                     [
-                      '법인등기사항',
+                      t('portfolio.Certified_corporate_registration'),
                       contractImage[2]?.hash
                         ? `${contractImage[2]?.hash.slice(
                             0,
@@ -410,7 +431,24 @@ const PortfolioDetail: FunctionComponent = () => {
                   ].map((data) => {
                     return (
                       <div>
-                        <p>{data[0]}</p>
+                        <p>
+                          {data[0] ===
+                          t('loan.collateral_nft__loan_product') ? (
+                            <>
+                              {data[0]}
+                              <Guide
+                                content={t('portfolio.infomation_popup.8')}
+                              />
+                            </>
+                          ) : data[1] === 'ABToken' ? (
+                            <>
+                              {data[0]}
+                              <Guide content={'ABToken'} />
+                            </>
+                          ) : (
+                            data[0]
+                          )}
+                        </p>
                         <p
                           onClick={() => {
                             !!data[3] === true
@@ -418,7 +456,36 @@ const PortfolioDetail: FunctionComponent = () => {
                               : undefined;
                           }}
                           className={!!data[3] === true ? 'link' : ''}>
-                          {data[1]}
+                          {data[2] ? (
+                            <>
+                              <a
+                                href={`https://www.google.com/maps/place/${address}/@${lat},${lng},18.12z`}
+                                rel="noopener noreferer"
+                                target="_blank"
+                                style={{
+                                  cursor: 'pointer',
+                                }}>
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                  }}>
+                                  <img
+                                    src={locationMark}
+                                    alt={locationMark}
+                                    style={{
+                                      width: 23.5,
+                                      height: 23.5,
+                                    }}
+                                  />
+                                  {data[1]}
+                                </div>
+                              </a>
+                            </>
+                          ) : (
+                            data[1]
+                          )}
                         </p>
                       </div>
                     );

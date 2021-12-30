@@ -7,12 +7,12 @@ export type PriceContextType = {
   daiPrice: number;
   ethPrice: number;
   elfiDaiPool: {
-    liquidity: number,
-    price: number
+    liquidity: number;
+    price: number;
   };
   elfiEthPool: {
-    liquidity: number,
-    price: number
+    liquidity: number;
+    price: number;
   };
   loading: boolean;
   error: boolean;
@@ -26,7 +26,7 @@ export const initialPriceContext = {
   ethPrice: 0,
   elfiDaiPool: {
     liquidity: 0,
-    price: 0
+    price: 0,
   },
   elfiEthPool: {
     liquidity: 0,

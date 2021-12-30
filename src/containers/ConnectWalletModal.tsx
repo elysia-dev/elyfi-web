@@ -18,36 +18,44 @@ const ConnectWalletModal: React.FunctionComponent<{
           title={t('modal.connect_wallet.title')}
           onClose={onClose}
         />
-        <div className="modal__connect__content">
-          <p>{t('modal.connect_wallet.content')}</p>
-        </div>
+
         {/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
           navigator.userAgent,
         ) ? (
-          <div
-            className={`modal__button`}
-            style={{
-              background: '#BFBFBF',
-            }}>
-            <p>Comming Soon!</p>
-          </div>
+          <>
+            <div className="modal__connect__content">
+              <p>{t('connect_metamask.content')}</p>
+            </div>
+            <div
+              className={`modal__button`}
+              style={{
+                background: '#BFBFBF',
+              }}>
+              <p>{t('connect_metamask.button')}</p>
+            </div>
+          </>
         ) : (
-          <div
-            className={`modal__button`}
-            onClick={() => {
-              window.ethereum?.isMetaMask
-                ? activate(InjectedConnector).then(() => {
-                    window.sessionStorage.setItem('@connect', 'true');
-                    onClose();
-                  })
-                : window.open('https://metamask.io/download.html');
-            }}>
-            <p>
-              {window.ethereum?.isMetaMask
-                ? t('modal.connect_wallet.button')
-                : t('navigation.install_metamask')}
-            </p>
-          </div>
+          <>
+            <div className="modal__connect__content">
+              <p>{t('modal.connect_wallet.content')}</p>
+            </div>
+            <div
+              className={`modal__button`}
+              onClick={() => {
+                window.ethereum?.isMetaMask
+                  ? activate(InjectedConnector).then(() => {
+                      window.sessionStorage.setItem('@connect', 'true');
+                      onClose();
+                    })
+                  : window.open('https://metamask.io/download.html');
+              }}>
+              <p>
+                {window.ethereum?.isMetaMask
+                  ? t('modal.connect_wallet.button')
+                  : t('navigation.install_metamask')}
+              </p>
+            </div>
+          </>
         )}
       </div>
     </div>

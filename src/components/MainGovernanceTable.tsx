@@ -80,16 +80,13 @@ const MainGovernanceTable: FunctionComponent<Props> = ({
             return setOnChainData((_data) => [
               ..._data,
               {
-                title:
-                  data.data.description.match(/NAP.*/)?.toString() ||
-                  '',
+                title: data.data.description.match(/NAP.*/)?.toString() || '',
                 created_at: dates,
                 link: `https://www.withtally.com/governance/elyfi/proposal/${getDataId}`,
               },
             ]);
           });
       setOnChainLoading(false);
-      setLoading(false);
     });
 
     getOffChainNAPTitles().then((title_res) => {
@@ -109,12 +106,13 @@ const MainGovernanceTable: FunctionComponent<Props> = ({
           });
 
       setOffChainLoading(false);
+      setLoading(false);
     });
   }, []);
 
   return (
-    <div className="main__governance main__section">
-      <h2 ref={governancePageY}>
+    <div ref={governancePageY} className="main__governance main__section">
+      <h2>
         <Trans i18nKey="main.governance.title" />
       </h2>
       <div className="main__governance__table">

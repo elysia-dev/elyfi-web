@@ -45,7 +45,7 @@ const Governance = () => {
     };
   }, []);
 
-  const { value: mediaQuery } = useMediaQueryType()
+  const { value: mediaQuery } = useMediaQueryType();
 
   // const draw = () => {
   //   const dpr = window.devicePixelRatio;
@@ -140,7 +140,7 @@ const Governance = () => {
             const getNATData = await OffChainTopic.getTopicResult(_res);
             const getHTMLStringData: string =
               getNATData.data.post_stream.posts[0].cooked.toString();
-            const regexNap = /NAP#: .*(?=<)/
+            const regexNap = /NAP#: .*(?=<)/;
             setOffChainNapData((napData) => [
               ...napData,
               {
@@ -148,11 +148,13 @@ const Governance = () => {
                 nap:
                   getHTMLStringData.match(regexNap)?.toString().substring(5) ||
                   '',
-                status:
-                  getHTMLStringData.match(/Status: .*(?=<)/) ||
-                  '',
+                status: getHTMLStringData.match(/Status: .*(?=<)/) || '',
                 images:
-                  getHTMLStringData.match(/slate.textile.io.*(?=" rel="noopener nofollow ugc">Collateral Image)/)?.toString() || '',
+                  getHTMLStringData
+                    .match(
+                      /slate.textile.io.*(?=" rel="noopener nofollow ugc">Collateral Image)/,
+                    )
+                    ?.toString() || '',
                 votes:
                   getNATData.data.post_stream.posts[0].polls[0].options || '',
                 totalVoters:
@@ -177,7 +179,7 @@ const Governance = () => {
                 {
                   data: {
                     description: data.data.description
-                      .match(/NAP#: .*(?=<)/)
+                      .match(/\d.*(?!NAP)(?=:)/)
                       ?.toString(),
                   },
                   status: data.status,
@@ -200,7 +202,7 @@ const Governance = () => {
         className="governance__validation__assets governance__asset"
         onClick={() => window.open(data.link)}>
         <div>
-          <img src={data.images} />
+          <img src={`https://${data.images}`} />
         </div>
         <div>
           <div className="governance__asset__nap">
@@ -241,9 +243,16 @@ const Governance = () => {
         <div>
           <img
             src={
-              offChainNapData.filter(
-                (offChainData) => offChainData.nap === data.data.description,
-              )[0]?.images || TempAssets
+              offChainNapData.filter((offChainData) => {
+                return offChainData.nap.substring(1) === data.data.description;
+              })[0]?.images
+                ? 'https://' +
+                  offChainNapData.filter((offChainData) => {
+                    return (
+                      offChainData.nap.substring(1) === data.data.description
+                    );
+                  })[0]?.images
+                : TempAssets
             }
           />
         </div>
@@ -351,8 +360,33 @@ const Governance = () => {
         </section>
         <GovernanceGuideBox />
         <section className="governance__validation governance__header">
-          {
-            mediaQuery === MediaQuery.PC ? (
+          {mediaQuery === MediaQuery.PC ? (
+            <div>
+              <h3>
+                {t('governance.data_verification', {
+                  count: offChainNapData.filter((data) => {
+                    return moment().isBefore(data.endedDate);
+                  }).length,
+                })}
+              </h3>
+              <div>
+                <p>{t('governance.data_verification__content')}</p>
+                <a
+                  href="https://forum.elyfi.world/"
+                  target="_blank"
+                  rel="noopener noreferer">
+                  <div
+                    className="deposit__table__body__amount__button"
+                    style={{
+                      width: 230,
+                    }}>
+                    <p>{t('governance.forum_button')}</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          ) : (
+            <div>
               <div>
                 <h3>
                   {t('governance.data_verification', {
@@ -361,52 +395,25 @@ const Governance = () => {
                     ).length,
                   })}
                 </h3>
-                <div>
-                  <p>{t('governance.data_verification__content')}</p>
-                  <a
-                    href="https://forum.elyfi.world/"
-                    target="_blank"
-                    rel="noopener noreferer">
-                    <div
-                      className="deposit__table__body__amount__button"
-                      style={{
-                        width: 230,
-                      }}>
-                      <p>{t('governance.forum_button')}</p>
-                    </div>
-                  </a>
-                </div>
+                <a
+                  href="https://forum.elyfi.world/"
+                  target="_blank"
+                  rel="noopener noreferer">
+                  <div
+                    className="deposit__table__body__amount__button"
+                    style={{
+                      width: 150,
+                    }}>
+                    <p>{t('governance.forum_button')}</p>
+                  </div>
+                </a>
               </div>
-            ) : (
               <div>
-                <div>
-                  <h3>
-                    {t('governance.data_verification', {
-                      count: offChainNapData.filter((data) =>
-                        moment().isBefore(data.endedDate),
-                      ).length,
-                    })}
-                  </h3>
-                  <a
-                    href="https://forum.elyfi.world/"
-                    target="_blank"
-                    rel="noopener noreferer">
-                    <div
-                      className="deposit__table__body__amount__button"
-                      style={{
-                        width: 150,
-                      }}>
-                      <p>{t('governance.forum_button')}</p>
-                    </div>
-                  </a>
-                </div>
-                <div>
-                  <p>{t('governance.data_verification__content')}</p>
-                </div>
+                <p>{t('governance.data_verification__content')}</p>
               </div>
-            )
-          }
-          
+            </div>
+          )}
+
           {offChainLoading ? (
             <Skeleton width={'100%'} height={600} />
           ) : offChainNapData.filter((data) =>
@@ -427,54 +434,54 @@ const Governance = () => {
           )}
         </section>
         <section className="governance__onchain-vote governance__header">
-        {
-            mediaQuery === MediaQuery.PC ? (
+          {mediaQuery === MediaQuery.PC ? (
+            <div>
+              <h3>
+                {t('governance.on_chain_voting', { count: onChainData.length })}
+              </h3>
+              <div>
+                <p>{t('governance.on_chain_voting__content')}</p>
+                <a
+                  href="https://www.withtally.com/governance/elyfi"
+                  target="_blank"
+                  rel="noopener noreferer">
+                  <div
+                    className="deposit__table__body__amount__button"
+                    style={{
+                      width: 230,
+                    }}>
+                    <p>{t('governance.onChain_tally_button')}</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          ) : (
+            <div>
               <div>
                 <h3>
-                  {t('governance.on_chain_voting', { count: onChainData.length })}
+                  {t('governance.on_chain_voting', {
+                    count: onChainData.length,
+                  })}
                 </h3>
-                <div>
-                  <p>{t('governance.on_chain_voting__content')}</p>
-                  <a
-                    href="https://www.withtally.com/governance/elyfi"
-                    target="_blank"
-                    rel="noopener noreferer">
-                    <div
-                      className="deposit__table__body__amount__button"
-                      style={{
-                        width: 230,
-                      }}>
-                      <p>{t('governance.onChain_tally_button')}</p>
-                    </div>
-                  </a>
-                </div>
+                <a
+                  href="https://www.withtally.com/governance/elyfi"
+                  target="_blank"
+                  rel="noopener noreferer">
+                  <div
+                    className="deposit__table__body__amount__button"
+                    style={{
+                      width: 150,
+                    }}>
+                    <p>{t('governance.onChain_tally_button')}</p>
+                  </div>
+                </a>
               </div>
-            ) : (
               <div>
-                <div>
-                  <h3>
-                    {t('governance.on_chain_voting', { count: onChainData.length })}
-                  </h3>
-                  <a
-                    href="https://www.withtally.com/governance/elyfi"
-                    target="_blank"
-                    rel="noopener noreferer">
-                    <div
-                      className="deposit__table__body__amount__button"
-                      style={{
-                        width: 150,
-                      }}>
-                      <p>{t('governance.onChain_tally_button')}</p>
-                    </div>
-                  </a>
-                </div>
-                <div>
-                  <p>{t('governance.data_verification__content')}</p>
-                </div>
+                <p>{t('governance.data_verification__content')}</p>
               </div>
-            )
-          }
-          
+            </div>
+          )}
+
           {onChainLoading ? (
             <Skeleton width={'100%'} height={600} />
           ) : onChainData.length > 0 ? (

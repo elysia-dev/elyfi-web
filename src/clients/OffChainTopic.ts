@@ -29,9 +29,9 @@ export interface INapData {
 
 export default class OffChainTopic {
   static getTopicList = async (): Promise<AxiosResponse<TopicList>> => {
-    return axios.get('/c/nap/10.json');
+    return axios.get(`/proxy/c/nap/10.json`);
   };
   static getTopicResult = async (topicID: number): Promise<AxiosResponse> => {
-    return axios.get(`/t/${topicID}.json`);
+    return axios.get(`/proxy/t/${topicID}.json`);
   };
 }
