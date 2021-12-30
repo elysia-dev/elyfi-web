@@ -27,7 +27,8 @@ export interface INapData {
   endedDate: string;
 }
 
-const baseURL = process.env.NODE_ENV === 'development' ? '/' : '/';
+const baseURL =
+  process.env.NODE_ENV === 'development' ? '/' : 'https://forum.elyfi.world/';
 
 export default class OffChainTopic {
   static getTopicList = async (): Promise<AxiosResponse<TopicList>> => {
