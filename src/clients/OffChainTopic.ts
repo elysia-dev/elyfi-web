@@ -27,14 +27,11 @@ export interface INapData {
   endedDate: string;
 }
 
-const baseURL =
-  process.env.NODE_ENV === 'development' ? '/' : 'https://forum.elyfi.world/';
-
 export default class OffChainTopic {
   static getTopicList = async (): Promise<AxiosResponse<TopicList>> => {
-    return axios.get(`${baseURL}c/nap/10.json`);
+    return axios.get(`/proxy/c/nap/10.json`);
   };
   static getTopicResult = async (topicID: number): Promise<AxiosResponse> => {
-    return axios.get(`${baseURL}t/${topicID}.json`);
+    return axios.get(`/proxy/t/${topicID}.json`);
   };
 }
