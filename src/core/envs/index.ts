@@ -29,6 +29,7 @@ interface EnvironmentVariables {
   etherscan: string;
   daiTokenizerAddress: string;
   usdtTokeninzerAddress: string;
+  bscMainnetChainId: number;
 }
 
 const vars =
