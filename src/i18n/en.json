@@ -103,6 +103,7 @@
       "staking": "staking",
       "docs": "docs",
       "elyfi_docs": "elyfi docs",
+      "elyfi_guide": "ELYFI Guide",
       "governance_docs": "governance docs",
       "guide": "guide",
       "uniswap_elfi": "Uniswap(ELFI)",
@@ -114,7 +115,12 @@
       "deposit_withdraw": "Deposit/Withdraw",
       "ELStake": "EL Staking",
       "ELFIStake": "ELFI Staking",
-      "LPStake": "LP Staking"
+      "LPStake": "LP Staking",
+      "link": {
+        "docs": "https://elysia.gitbook.io/elysia.finance/v/eng/",
+        "guide": "https://elysia.gitbook.io/elyfi-user-guide/",
+        "governance_docs": "https://elysia.gitbook.io/elyfi-user-guide/governance"
+      }
     },
     "dashboard": {
       "token_mining_apr": "ELFI Mining APR",
