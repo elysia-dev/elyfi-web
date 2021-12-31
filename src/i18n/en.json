@@ -103,6 +103,7 @@
       "staking": "staking",
       "docs": "docs",
       "elyfi_docs": "elyfi docs",
+      "elyfi_guide": "ELYFI Guide",
       "governance_docs": "governance docs",
       "guide": "guide",
       "uniswap_elfi": "Uniswap(ELFI)",
@@ -115,7 +116,6 @@
       "ELStake": "EL Staking",
       "ELFIStake": "ELFI Staking",
       "LPStake": "LP Staking",
-      "elyfi_guide": "ELYFI Guide",
       "link": {
         "docs": "https://elysia.gitbook.io/elysia.finance/v/eng/",
         "guide": "https://elysia.gitbook.io/elyfi-user-guide/",
