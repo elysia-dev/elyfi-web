@@ -9,6 +9,8 @@ import NewTab from 'src/assets/images/new_tab.png';
 import Copy from 'src/assets/images/copy.png';
 import envs from 'src/core/envs';
 import TxStatus from 'src/enums/TxStatus';
+import { reserveTokenData } from 'src/core/data/reserves';
+import ELFI from 'src/assets/images/ELFI.png'
 import ModalHeader from './ModalHeader';
 
 const AccountModal: React.FunctionComponent<{
@@ -18,6 +20,13 @@ const AccountModal: React.FunctionComponent<{
   const { account, deactivate, chainId } = useWeb3React();
   const { t } = useTranslation();
   const { reset, txHash, txStatus, txType } = useContext(TxContext);
+
+  const tokenDataArray: string[][] = [
+    [ELFI, "ELFI", "18", envs.governanceAddress],
+    [reserveTokenData.EL.image, reserveTokenData.EL.name, reserveTokenData.EL.decimals.toString(), reserveTokenData.EL.address],
+    [reserveTokenData.DAI.image, reserveTokenData.DAI.name, reserveTokenData.DAI.decimals.toString(), reserveTokenData.DAI.address],
+    [reserveTokenData.USDT.image, reserveTokenData.USDT.name, reserveTokenData.USDT.decimals.toString(), reserveTokenData.USDT.address],
+  ]
 
   const AddressCopy = (data: string) => {
     if (!document.queryCommandSupported('copy')) {
@@ -31,6 +40,25 @@ const AccountModal: React.FunctionComponent<{
     document.body.removeChild(area);
     alert('Copied!!');
   };
+  
+  const addELFIToken = async (data: string[]) => {
+    try {
+      await window.ethereum?.request({
+        method: 'wallet_watchAsset',
+        params: {
+          type: 'ERC20',
+          options: {
+            address: data[3],
+            symbol: data[1],
+            decimals: data[2],
+            image: data[0],
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div
@@ -76,7 +104,25 @@ const AccountModal: React.FunctionComponent<{
               </div>
             </a>
           </div>
-
+          <div className="modal__account__add-tokens">
+            <h2>
+              토큰 불러오기
+            </h2>
+            <div>
+              {
+                tokenDataArray.map((data, index) => {
+                  return (
+                    <div key={index} onClick={() => addELFIToken(data)}>
+                      <img src={data[0]} />
+                      <p>
+                        {data[1]}
+                      </p>
+                    </div>
+                  )
+                })
+              }
+            </div>
+          </div>
           <div className="modal__account__status">
             <p className="modal__header__name spoqa__bold">
               {t('transaction.activity__title')}
