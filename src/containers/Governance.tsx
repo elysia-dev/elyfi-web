@@ -394,7 +394,7 @@ const Governance = () => {
                     <div
                       className="deposit__table__body__amount__button"
                       style={{
-                        width: 150,
+                        width: 135,
                       }}>
                       <p>{t('governance.forum_button')}</p>
                     </div>
@@ -462,7 +462,7 @@ const Governance = () => {
                     <div
                       className="deposit__table__body__amount__button"
                       style={{
-                        width: 150,
+                        width: 135,
                       }}>
                       <p>{t('governance.onChain_tally_button')}</p>
                     </div>
