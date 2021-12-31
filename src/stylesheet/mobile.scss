@@ -1,4 +1,4 @@
-$device-width: 360px;
+$device-width: 320px;
 $footer-height: 100px;
 
 $font-color: #333333;
@@ -37,7 +37,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         a > div {
           // padding: 33px 0px 36px;
           height: 70px;
-          width: 360px;
+          width: $device-width;
           margin: 0 auto;
           border-bottom: 1px solid $gray-line;
           display: flex;
@@ -69,7 +69,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           }
           &__wrapper {
             margin: 0px auto;
-            width: 360px;
+            width: $device-width;
             padding: 13px 0;
             > div {
               padding: 15px 0;
@@ -78,7 +78,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         }
       }
       &__footer {
-        width: 360px;
+        width: $device-width;
         margin: 30px auto;
         display: flex;
         flex-direction: column;
@@ -308,9 +308,9 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     width: $device-width;
     margin: 0 auto;
     &__image-wrapper {
-      width: 340px;
+      width: 310px;
       > img {
-        width: 340px;
+        width: 310px;
       }
       .dom {
         top: -50px;
@@ -426,7 +426,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             width: $device-width;
             position: relative;
             z-index: 2;
-            margin-bottom: -60px;
+            margin-bottom: -25px;
             animation-duration: 15s;
             animation-name: DownFade--mobile;
             animation-iteration-count: infinite;
@@ -601,6 +601,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         flex-direction: column;
         align-items: center;
         margin: 60px 0;
+        transform: scale(.85);
         .scroll-arrow {
           position: initial;
         }
@@ -924,9 +925,9 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         &__loan-list {
           padding: 12px 15px;
           .component__loan-list__container {
-            grid-template-columns: repeat(2, 150px);
+            grid-template-columns: repeat(2, 135px);
             > div {
-              width: 150px;
+              width: 135px;
             }
           }
           > div {
@@ -1292,7 +1293,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 
   .governance {
     @include page-container;
-    $asset-width: 164px;
+    $asset-width: 150px;
     &__asset {
       width: $asset-width;
       &__progress-bar {
@@ -1623,7 +1624,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           padding: 0 16px 18px 16px;
         }
         border-radius: 15px;
-        width: 152px;
+        width: 138px;
         height: 26px;
         line-height: 26px;
         padding: 0px;
@@ -1825,7 +1826,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           margin-top: 15px;
           margin-bottom: 70px;
           > div {
-            width: 104px;
+            width: 80px;
             height: 26px;
             border-radius: 15px;
             > p {
@@ -2229,8 +2230,8 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     &__container {
       border-radius: 20px;
       // width: 95vw;
-      width: 360px;
-      min-width: 360px;
+      width: $device-width;
+      min-width: $device-width;
     }
     &__header {
       padding: 10px 12px;
@@ -2376,7 +2377,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         }
         > div:last-child {
           border-radius: 20px;
-          width: 150px;
+          width: 100px;
           height: 30px;
           border: 1px solid $gray-line;
           box-shadow: 0px 0px 3px #00000011;
@@ -2609,7 +2610,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 
   .component {
     &__loan-list {
-      $loan-list-size: 164px;
+      $loan-list-size: 150px;
 
       width: $loan-list-size;
       &__container {
@@ -2815,12 +2816,12 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   }
 
   // .header {
-  //   min-width: 360px;
-  //   height: 360px;
+  //   min-width: $device-width;
+  //   height: $device-width;
   //   &__title {
   //     font-size: 20px;
   //     &__wrapper {
-  //       width: 360px;
+  //       width: $device-width;
   //       bottom: 42px;
   //     }
   //   }
@@ -2833,7 +2834,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   //   background-repeat: no-repeat;
   //   &__title {
   //     &-wrapper {
-  //       width: 360px;
+  //       width: $device-width;
   //       bottom: 42px;
   //     }
   //     &-text {
@@ -2860,7 +2861,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   // }
 
   // .tokens {
-  //   width: 360px;
+  //   width: $device-width;
   //   padding-bottom: 100px;
   //   &__container {
   //     margin-top: 85px;
@@ -3026,13 +3027,13 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   //   }
   // }
   // .staking {
-  //   width: 360px;
+  //   width: $device-width;
   //   margin: 100px auto;
   //   &__sign {
   //     font-size: 10px !important;
   //   }
   //   &__round {
-  //     width: 360px;
+  //     width: $device-width;
   //     margin-top: 50px;
   //     &__border {
   //       width: 27px;
@@ -3040,7 +3041,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   //     }
   //     &__container {
   //       flex: 1;
-  //       width: 360px;
+  //       width: $device-width;
   //     }
   //     &__remaining-data {
   //       margin: 45px 0;
@@ -3288,7 +3289,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   //     }
   //   }
   //   &__infomation {
-  //     width: 360px;
+  //     width: $device-width;
   //     margin-top: 75px;
   //     flex-direction: column;
   //     > :nth-child(2) {
@@ -3325,7 +3326,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   //       }
   //     }
   //     &__wrapper {
-  //       width: 360px;
+  //       width: $device-width;
   //       padding: 10px;
   //       box-shadow: 0px 0px 6px #00000029;
   //       gap: 23px;
@@ -3425,7 +3426,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   //     // height: 95vh;
   //     border-radius: 0px;
   //     margin: auto;
-  //     min-width: 360px;
+  //     min-width: $device-width;
   //     overflow-y: initial !important;
   //     top: 50%;
   //     left: 50%;
@@ -3724,13 +3725,13 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   // .footer {
   //   padding-top: 25px;
   //   padding-bottom: 25px;
-  //   min-width: 360px;
+  //   min-width: $device-width;
   //   &__content {
   //     font-size: 15px;
   //     top: 14px;
   //   }
   //   &__container {
-  //     width: 360px;
+  //     width: $device-width;
   //   }
   //   &__white-logo {
   //     width: 100px;

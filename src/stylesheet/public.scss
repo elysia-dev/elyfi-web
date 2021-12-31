@@ -211,7 +211,7 @@ input[type='number'] {
       border: 1px solid #e6e6e6;
       border-radius: 5px;
       &__link {
-        width: 170px;
+        min-width: 196px;
         padding: 20px 15px;
         border-bottom: 1px solid $gray-line;
         cursor: pointer;
@@ -226,6 +226,7 @@ input[type='number'] {
           display: flex;
           flex-direction: row;
           align-items: center;
+          justify-content: space-between;
           > img {
             margin-left: 10px;
           }

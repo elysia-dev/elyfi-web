@@ -383,6 +383,30 @@ const Governance = () => {
               </div>
               <div>
                 <p>{t('governance.data_verification__content')}</p>
+                <div>
+                  <h3>
+                    {t('governance.data_verification', {
+                      count: offChainNapData.filter((data) =>
+                        moment().isBefore(data.endedDate),
+                      ).length,
+                    })}
+                  </h3>
+                  <a
+                    href="https://forum.elyfi.world/"
+                    target="_blank"
+                    rel="noopener noreferer">
+                    <div
+                      className="deposit__table__body__amount__button"
+                      style={{
+                        width: 135,
+                      }}>
+                      <p>{t('governance.forum_button')}</p>
+                    </div>
+                  </a>
+                </div>
+                <div>
+                  <p>{t('governance.data_verification__content')}</p>
+                </div>
               </div>
             </div>
           )}
@@ -451,6 +475,26 @@ const Governance = () => {
               </div>
               <div>
                 <p>{t('governance.data_verification__content')}</p>
+                <div>
+                  <h3>
+                    {t('governance.on_chain_voting', { count: onChainData.length })}
+                  </h3>
+                  <a
+                    href="https://www.withtally.com/governance/elyfi"
+                    target="_blank"
+                    rel="noopener noreferer">
+                    <div
+                      className="deposit__table__body__amount__button"
+                      style={{
+                        width: 135,
+                      }}>
+                      <p>{t('governance.onChain_tally_button')}</p>
+                    </div>
+                  </a>
+                </div>
+                <div>
+                  <p>{t('governance.data_verification__content')}</p>
+                </div>
               </div>
             </div>
           )}
