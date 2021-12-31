@@ -112,7 +112,7 @@ const Navigation: React.FunctionComponent<{
         to={{
           pathname: !isExternalLink
             ? `/${lng + _data.location}`
-            : _data.location,
+            : t(_data.location),
         }}
         target={isExternalLink ? '_blank' : undefined}
         onMouseEnter={() => {
@@ -198,7 +198,12 @@ const Navigation: React.FunctionComponent<{
   ) => {
     return (
       <Link
-        to={!isExternalLink ? `/${lng + _data.location}` : _data.location}
+        to={{
+          pathname:
+          _data.type === NavigationType.Link
+            ? `/${lng + _data.location}`
+            : t(_data.location),
+        }}
         target={isExternalLink ? '_blank' : undefined}
         onMouseEnter={() => {
           setGlobalNavHover(_index + 1);
@@ -279,7 +284,7 @@ const Navigation: React.FunctionComponent<{
                           pathname:
                             _data.type === NavigationType.Link
                               ? `/${lng + _data.location}`
-                              : _data.location,
+                              : t(_data.location),
                         }}
                         target={
                           _data.type === NavigationType.Href

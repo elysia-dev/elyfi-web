@@ -114,7 +114,13 @@
       "deposit_withdraw": "예치/출금",
       "ELStake": "EL 스테이킹",
       "ELFIStake": "ELFI 스테이킹",
-      "LPStake": "LP 스테이킹"
+      "LPStake": "LP 스테이킹",
+      "elyfi_guide": "ELYFI 가이드",
+      "link": {
+        "docs": "https://elysia.gitbook.io/elysia.finance/",
+        "guide": "https://elysia.gitbook.io/elyfi-user-guide/v/korean-2/",
+        "governance_docs": "https://elysia.gitbook.io/elyfi-user-guide/v/korean-2/governance"
+      }
     },
     "dashboard": {
       "token_mining_apr": "ELFI 채굴 APR",
