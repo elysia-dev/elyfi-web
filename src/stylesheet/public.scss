@@ -1837,6 +1837,7 @@ input[type='number'] {
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      padding-top: 80px;
       > h2 {
         color: $font-color;
       }
@@ -2095,6 +2096,7 @@ input[type='number'] {
     &__lp {
       &__header {
         text-align: center;
+        margin-top: 80px;
         > h2 {
           color: $font-color;
         }

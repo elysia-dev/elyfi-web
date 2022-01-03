@@ -17,7 +17,7 @@ $device-width: 1190px;
 @mixin page-container {
   width: $device-width;
   margin: 0 auto;
-  padding-top: 200px;
+  padding-top: 100px;
 }
 
 .view-w {
@@ -840,7 +840,7 @@ $device-width: 1190px;
         }
         &__lp {
           &__container {
-            margin-top: 50px;
+            margin-top: 110px;
             padding: 30px 30px 20px;
           }
           &__title {
