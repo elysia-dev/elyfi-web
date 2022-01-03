@@ -1,5 +1,5 @@
 import { ApolloQueryResult, OperationVariables } from '@apollo/client';
-import { createContext } from 'react';
+import { createContext, Dispatch, SetStateAction } from 'react';
 import {
   GetAllReserves,
   GetAllReserves_reserves,
@@ -7,16 +7,19 @@ import {
 
 export type ReservesContextBase = {
   reserves: GetAllReserves_reserves[];
+  round: number;
 };
 
 export interface ITokenContext extends ReservesContextBase {
   refetch: (
     variables?: Partial<OperationVariables> | undefined,
   ) => Promise<ApolloQueryResult<GetAllReserves>>;
+  setRound: Dispatch<SetStateAction<number>>;
 }
 
 export const initialReservesContextBase: ReservesContextBase = {
   reserves: [],
+  round: 1,
 };
 
 export const initialReservesContext: ITokenContext = {
@@ -24,6 +27,7 @@ export const initialReservesContext: ITokenContext = {
   refetch: async () => {
     return {} as ApolloQueryResult<GetAllReserves>;
   },
+  setRound: () => {},
 };
 
 const ReservesContext = createContext<ITokenContext>(initialReservesContext);
