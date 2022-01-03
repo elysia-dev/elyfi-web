@@ -88,7 +88,7 @@ const Main = () => {
     if (!canvas) return;
     canvas.width = document.body.clientWidth * dpr;
     canvas.height = document.body.clientHeight * dpr;
-    const browserWidth = dpr === 1 ? canvas.width + 40 : canvas.width / 2 + 40;
+    const browserWidth = canvas.width / dpr + 40;
     const context = canvas.getContext('2d');
     if (!context) return;
     context.scale(dpr, dpr);
