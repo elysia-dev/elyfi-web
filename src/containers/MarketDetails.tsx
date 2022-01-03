@@ -6,8 +6,6 @@ import { toUsd, toPercent } from 'src/utiles/formatters';
 import { BigNumber, constants } from 'ethers';
 import Chart from 'react-google-charts';
 
-import waveDai from 'src/assets/images/wave_dai.png';
-import waveUSDT from 'src/assets/images/wave_usdt.png';
 import ErrorPage from 'src/components/ErrorPage';
 import ReservesContext from 'src/contexts/ReservesContext';
 import { useTranslation } from 'react-i18next';
@@ -130,7 +128,7 @@ function MarketDetail(): JSX.Element {
     const canvas: HTMLCanvasElement | null = canvasRef.current;
 
     if (!headerRef.current) return;
-    const headerY = headerRef.current.offsetTop;
+    const headerY = headerRef.current.offsetTop + 30;
     if (!canvas) return;
     canvas.width = document.body.clientWidth * dpr;
     canvas.height = document.body.clientHeight * dpr;
@@ -300,7 +298,7 @@ function MarketDetail(): JSX.Element {
       <div className="detail">
         <div className="component__text-navigation">
           <p
-            onClick={() => history.push(`/${lng}/dashboard`)}
+            onClick={() => history.push(`/${lng}/deposit`)}
             className="pointer">
             {t('dashboard.deposit')}
           </p>

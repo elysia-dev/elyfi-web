@@ -400,7 +400,7 @@ const Main = () => {
             </div>
             <div className="main__title__button pc-only">
               <div
-                onClick={() => History.push({ pathname: `/${lng}/dashboard` })}>
+                onClick={() => History.push({ pathname: `/${lng}/deposit` })}>
                 <p ref={mainHeaderY}> {t('main.landing.button__deposit')}</p>
               </div>
               <div
