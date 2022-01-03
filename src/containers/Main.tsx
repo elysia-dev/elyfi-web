@@ -46,7 +46,7 @@ const Main = () => {
     },
     {
       image: MainAnimation(1),
-      link: `/${lng}/dashboard`,
+      link: `/${lng}/deposit`,
     },
     {
       image: MainAnimation(2),
@@ -420,8 +420,7 @@ const Main = () => {
             <img src={Pit} className="pit" />
           </div>
           <div className="main__title__button mobile-only">
-            <div
-              onClick={() => History.push({ pathname: `/${lng}/dashboard` })}>
+            <div onClick={() => History.push({ pathname: `/${lng}/deposit` })}>
               <p ref={mainHeaderMoblieY}>{t('main.landing.button__deposit')}</p>
             </div>
             <div
