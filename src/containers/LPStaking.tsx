@@ -42,7 +42,8 @@ function LPStaking(): JSX.Element {
   const { elfiPrice } = useContext(PriceContext);
   const { ethPool, daiPool } = useContext(UniswapPoolContext);
   const { ethPrice, daiPrice } = useContext(PriceContext);
-  const tokenRef = useRef<HTMLParagraphElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const { setExpecteReward, expectedReward, updateExpectedReward, isError } =
     useUpdateExpectedReward();
@@ -237,6 +238,96 @@ function LPStaking(): JSX.Element {
     return totalLiquidity;
   };
 
+  const draw = () => {
+    const dpr = window.devicePixelRatio;
+    const canvas: HTMLCanvasElement | null = canvasRef.current;
+
+    if (!headerRef.current) return;
+    const headerY =
+      headerRef.current.offsetTop +
+      (document.body.clientWidth > 1190 ? 90 : 15);
+    if (!canvas) return;
+    canvas.width = document.body.clientWidth * dpr;
+    canvas.height = document.body.clientHeight * dpr;
+    const browserWidth = canvas.width / dpr + 40;
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) return;
+    ctx.scale(dpr, dpr);
+
+    ctx.strokeStyle = '#00BFFF';
+    ctx.beginPath();
+    ctx.moveTo(0, headerY * 1.5);
+    ctx.bezierCurveTo(
+      browserWidth / 5,
+      headerY * 1.2,
+      browserWidth / 5,
+      headerY * 1.6,
+      browserWidth / 2,
+      headerY * 1.55,
+    );
+    ctx.bezierCurveTo(
+      browserWidth / 1.2,
+      headerY * 1.5,
+      browserWidth / 1.3,
+      headerY * 1.15,
+      browserWidth,
+      headerY * 1.5,
+    );
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, headerY * 1.6);
+    ctx.bezierCurveTo(
+      browserWidth / 5,
+      headerY * 1.07,
+      browserWidth / 5,
+      headerY * 1.7,
+      browserWidth / 2,
+      headerY * 1.6,
+    );
+    ctx.bezierCurveTo(
+      browserWidth / 1.2,
+      headerY * 1.45,
+      browserWidth / 1.3,
+      headerY * 1.15,
+      browserWidth,
+      headerY * 1.6,
+    );
+    ctx.stroke();
+
+    // circle
+    ctx.strokeStyle = '#F9AE19';
+    ctx.beginPath();
+    ctx.fillStyle = '#ffffff';
+    ctx.moveTo(browserWidth / 7 + 10, headerY * 1.39);
+    ctx.arc(browserWidth / 7, headerY * 1.39, 10, 0, Math.PI * 2);
+
+    ctx.moveTo(browserWidth / 3 + 10, headerY * 1.52);
+    ctx.arc(browserWidth / 3, headerY * 1.52, 10, 0, Math.PI * 2);
+
+    ctx.moveTo(browserWidth / 1.46 + 5, headerY * 1.475);
+    ctx.arc(browserWidth / 1.46, headerY * 1.475, 5, 0, Math.PI * 2);
+
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.strokeStyle = '#627EEA';
+    ctx.moveTo(browserWidth / 7.8 + 5, headerY * 1.43);
+    ctx.arc(browserWidth / 7.8, headerY * 1.43, 5, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.moveTo(browserWidth / 1.5 + 10, headerY * 1.49);
+    ctx.arc(browserWidth / 1.5, headerY * 1.49, 10, 0, Math.PI * 2);
+
+    ctx.moveTo(browserWidth / 1.18 + 10, headerY * 1.36);
+    ctx.arc(browserWidth / 1.18, headerY * 1.36, 10, 0, Math.PI * 2);
+
+    ctx.fill();
+
+    ctx.stroke();
+  };
+
   useEffect(() => {
     if (
       (txType === RecentActivityType.Deposit && !txWaiting) ||
@@ -315,8 +406,27 @@ function LPStaking(): JSX.Element {
     }
   }, [expectedReward, account]);
 
+  useEffect(() => {
+    draw();
+    window.addEventListener('resize', () => draw());
+
+    return () => {
+      window.removeEventListener('resize', () => draw());
+    };
+  }, []);
+
   return (
     <>
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'absolute',
+          width: '100%',
+          top: 0,
+          left: 0,
+          zIndex: -1,
+        }}
+      />
       <RewardModal
         visible={rewardVisibleModal}
         closeHandler={() => setRewardVisibleModal(false)}
@@ -348,22 +458,12 @@ function LPStaking(): JSX.Element {
         }
         round={round}
       />
-      <img
-        style={{
-          position: 'absolute',
-          left: 0,
-          top: tokenRef.current ? tokenRef.current?.offsetTop + 50 : 300,
-          width: '100%',
-          zIndex: -1,
-        }}
-        src={wave}
-        alt={wave}
-      />
+
       <section className="staking">
-        <div className="staking__lp__header">
+        <div ref={headerRef} className="staking__lp__header">
           <h2>{t('lpstaking.lp_token_staking')}</h2>
           <p>{t('lpstaking.lp_token_staking__content')}</p>
-          <div ref={tokenRef}>
+          <div>
             {Array(3)
               .fill(0)
               .map((_x, index) => {

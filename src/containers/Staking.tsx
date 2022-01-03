@@ -69,7 +69,8 @@ const Staking: React.FunctionComponent<IProps> = ({
   const current = moment();
   const { account } = useWeb3React();
   const { elPrice, elfiPrice } = useContext(PriceContext);
-  const tokenRef = useRef<HTMLParagraphElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
   const stakingPool = useStakingPool(stakedToken);
   const stakingPoolV2 = useStakingPool(Token.ELFI, true);
 
@@ -135,6 +136,95 @@ const Staking: React.FunctionComponent<IProps> = ({
 
   const { value: mediaQuery } = useMediaQueryType();
   const { lng } = useParams<{ lng: string }>();
+
+  const draw = () => {
+    const dpr = window.devicePixelRatio;
+    const canvas: HTMLCanvasElement | null = canvasRef.current;
+
+    if (!headerRef.current) return;
+    const headerY =
+      headerRef.current.offsetTop +
+      (stakedToken === Token.EL
+        ? document.body.clientWidth > 1190
+          ? 125
+          : 90
+        : document.body.clientWidth > 1190
+        ? 164
+        : 150);
+    if (!canvas) return;
+    canvas.width = document.body.clientWidth * dpr;
+    canvas.height = document.body.clientHeight * dpr;
+    const browserWidth = canvas.width / dpr + 40;
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) return;
+    ctx.scale(dpr, dpr);
+
+    ctx.strokeStyle = stakedToken === Token.EL ? '#3679B5' : '#00BFFF';
+    ctx.beginPath();
+    ctx.moveTo(0, headerY * 1.5);
+    ctx.bezierCurveTo(
+      browserWidth / 5,
+      headerY * 1.2,
+      browserWidth / 5,
+      headerY * 1.6,
+      browserWidth / 2,
+      headerY * 1.55,
+    );
+    ctx.bezierCurveTo(
+      browserWidth / 1.2,
+      headerY * 1.5,
+      browserWidth / 1.3,
+      headerY * 1.15,
+      browserWidth,
+      headerY * 1.5,
+    );
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, headerY * 1.6);
+    ctx.bezierCurveTo(
+      browserWidth / 5,
+      headerY * 1.07,
+      browserWidth / 5,
+      headerY * 1.7,
+      browserWidth / 2,
+      headerY * 1.6,
+    );
+    ctx.bezierCurveTo(
+      browserWidth / 1.2,
+      headerY * 1.45,
+      browserWidth / 1.3,
+      headerY * 1.15,
+      browserWidth,
+      headerY * 1.6,
+    );
+    ctx.stroke();
+
+    // circle
+    ctx.beginPath();
+    ctx.fillStyle = '#ffffff';
+    ctx.moveTo(browserWidth / 7 + 10, headerY * 1.39);
+    ctx.arc(browserWidth / 7, headerY * 1.39, 10, 0, Math.PI * 2);
+
+    ctx.moveTo(browserWidth / 7.8 + 5, headerY * 1.43);
+    ctx.arc(browserWidth / 7.8, headerY * 1.43, 5, 0, Math.PI * 2);
+
+    ctx.moveTo(browserWidth / 3 + 10, headerY * 1.52);
+    ctx.arc(browserWidth / 3, headerY * 1.52, 10, 0, Math.PI * 2);
+
+    ctx.moveTo(browserWidth / 1.5 + 10, headerY * 1.49);
+    ctx.arc(browserWidth / 1.5, headerY * 1.49, 10, 0, Math.PI * 2);
+
+    ctx.moveTo(browserWidth / 1.46 + 5, headerY * 1.475);
+    ctx.arc(browserWidth / 1.46, headerY * 1.475, 5, 0, Math.PI * 2);
+
+    ctx.moveTo(browserWidth / 1.18 + 10, headerY * 1.36);
+    ctx.arc(browserWidth / 1.18, headerY * 1.36, 10, 0, Math.PI * 2);
+
+    ctx.fill();
+
+    ctx.stroke();
+  };
 
   const fetchRoundData = async (account: string | null | undefined) => {
     try {
@@ -254,8 +344,27 @@ const Staking: React.FunctionComponent<IProps> = ({
     setState({ ...state, txWaiting: isWaiting });
   };
 
+  useEffect(() => {
+    draw();
+    window.addEventListener('resize', () => draw());
+
+    return () => {
+      window.removeEventListener('resize', () => draw());
+    };
+  }, []);
+
   return (
     <>
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'absolute',
+          width: '100%',
+          top: 0,
+          left: 0,
+          zIndex: -1,
+        }}
+      />
       <TransactionConfirmModal
         visible={transactionModal}
         closeHandler={() => {
@@ -341,7 +450,7 @@ const Staking: React.FunctionComponent<IProps> = ({
         }}
         round={selectModalRound + 1}
       />
-      <img
+      {/* <img
         style={{
           position: 'absolute',
           left: 0,
@@ -351,10 +460,10 @@ const Staking: React.FunctionComponent<IProps> = ({
         }}
         src={wave}
         alt={wave}
-      />
+      /> */}
       <section className="staking">
         <section>
-          <div className="staking__title">
+          <div ref={headerRef} className="staking__title">
             <h2>
               {t('staking.staking__token', {
                 token: stakedToken.toUpperCase(),
@@ -365,7 +474,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                 ? t('staking.el.staking__content')
                 : t('staking.elfi.staking__content')}
             </p>
-            <div ref={tokenRef} className="staking__title__button">
+            <div className="staking__title__button">
               <a
                 href={
                   stakedToken === Token.ELFI

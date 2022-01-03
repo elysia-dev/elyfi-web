@@ -57,7 +57,8 @@ const RewardPlan: FunctionComponent = () => {
   const { stakingType } = useParams<{ stakingType: string }>();
   const history = useHistory();
   const { latestPrice, ethPool, daiPool } = useContext(UniswapPoolContext);
-  const tokenRef = useRef<HTMLParagraphElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
   const { ethPrice } = useContext(PriceContext);
   const { reserves } = useContext(ReservesContext);
   const current = moment();
@@ -172,6 +173,106 @@ const RewardPlan: FunctionComponent = () => {
     return amountData.mintedByElStakingPool.reduce((res, cur) => res + cur, 0);
   }, [amountData.mintedByElStakingPool]);
 
+  const draw = () => {
+    const dpr = window.devicePixelRatio;
+    const canvas: HTMLCanvasElement | null = canvasRef.current;
+
+    if (!headerRef.current) return;
+    const headerY =
+      headerRef.current.offsetTop +
+      (document.body.clientWidth > 1190 ? 200 : 120);
+    if (!canvas) return;
+    canvas.width = document.body.clientWidth * dpr;
+    canvas.height = document.body.clientHeight * dpr;
+    const browserWidth = canvas.width / dpr + 40;
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) return;
+    ctx.scale(dpr, dpr);
+
+    ctx.strokeStyle = stakingType === Token.EL ? '#3679B5' : '#00BFFF';
+    ctx.beginPath();
+    ctx.moveTo(0, headerY * 1.5);
+    ctx.bezierCurveTo(
+      browserWidth / 5,
+      headerY * 1.2,
+      browserWidth / 5,
+      headerY * 1.6,
+      browserWidth / 2,
+      headerY * 1.55,
+    );
+    ctx.bezierCurveTo(
+      browserWidth / 1.2,
+      headerY * 1.5,
+      browserWidth / 1.3,
+      headerY * 1.15,
+      browserWidth,
+      headerY * 1.5,
+    );
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, headerY * 1.6);
+    ctx.bezierCurveTo(
+      browserWidth / 5,
+      headerY * 1.07,
+      browserWidth / 5,
+      headerY * 1.7,
+      browserWidth / 2,
+      headerY * 1.6,
+    );
+    ctx.bezierCurveTo(
+      browserWidth / 1.2,
+      headerY * 1.45,
+      browserWidth / 1.3,
+      headerY * 1.15,
+      browserWidth,
+      headerY * 1.6,
+    );
+    ctx.stroke();
+
+    // circle
+    ctx.strokeStyle =
+      stakingType === Token.EL
+        ? '#3679B5'
+        : stakingType === 'LP'
+        ? '#F9AE19'
+        : '#00BFFF';
+    ctx.beginPath();
+    ctx.fillStyle = '#ffffff';
+    ctx.moveTo(browserWidth / 7 + 10, headerY * 1.39);
+    ctx.arc(browserWidth / 7, headerY * 1.39, 10, 0, Math.PI * 2);
+
+    ctx.moveTo(browserWidth / 3 + 10, headerY * 1.52);
+    ctx.arc(browserWidth / 3, headerY * 1.52, 10, 0, Math.PI * 2);
+
+    ctx.moveTo(browserWidth / 1.46 + 5, headerY * 1.475);
+    ctx.arc(browserWidth / 1.46, headerY * 1.475, 5, 0, Math.PI * 2);
+
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.strokeStyle =
+      stakingType === Token.EL
+        ? '#3679B5'
+        : stakingType === 'LP'
+        ? '#627EEA'
+        : '#00BFFF';
+    ctx.moveTo(browserWidth / 7.8 + 5, headerY * 1.43);
+    ctx.arc(browserWidth / 7.8, headerY * 1.43, 5, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.moveTo(browserWidth / 1.5 + 10, headerY * 1.49);
+    ctx.arc(browserWidth / 1.5, headerY * 1.49, 10, 0, Math.PI * 2);
+
+    ctx.moveTo(browserWidth / 1.18 + 10, headerY * 1.36);
+    ctx.arc(browserWidth / 1.18, headerY * 1.36, 10, 0, Math.PI * 2);
+
+    ctx.fill();
+
+    ctx.stroke();
+  };
+
   const getAllStakedPositions = () => {
     StakerSubgraph.getIncentivesWithPositionsByPoolId(
       envs.ethElfiPoolAddress,
@@ -264,24 +365,28 @@ const RewardPlan: FunctionComponent = () => {
     };
   }, [amountData]);
 
+  useEffect(() => {
+    draw();
+    window.addEventListener('resize', () => draw());
+
+    return () => {
+      window.removeEventListener('resize', () => draw());
+    };
+  }, []);
+
   return (
     <>
-      <img
+      <canvas
+        ref={canvasRef}
         style={{
           position: 'absolute',
-          left: 0,
-          top: tokenRef.current
-            ? stakingType === 'LP'
-              ? tokenRef.current?.offsetTop + 120
-              : tokenRef.current?.offsetTop + 180
-            : 0,
           width: '100%',
+          top: 0,
+          left: 0,
           zIndex: -1,
         }}
-        src={wave}
-        alt={wave}
       />
-      <div ref={tokenRef} className="reward">
+      <div ref={headerRef} className="reward">
         {stakingType === 'deposit' ? (
           <div className="component__text-navigation">
             <p onClick={() => onClickHandler()} className="pointer">

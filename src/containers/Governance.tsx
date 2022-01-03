@@ -35,7 +35,7 @@ const Governance = () => {
     const canvas: HTMLCanvasElement | null = canvasRef.current;
 
     if (!headerRef.current) return;
-    const headerY = headerRef.current.offsetTop + 50;
+    const headerY = headerRef.current.offsetTop + 80;
     if (!canvas) return;
     canvas.width = document.body.clientWidth * dpr;
     canvas.height = document.body.clientHeight * dpr;
