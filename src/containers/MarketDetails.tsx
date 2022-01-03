@@ -131,16 +131,10 @@ function MarketDetail(): JSX.Element {
 
     if (!headerRef.current) return;
     const headerY = headerRef.current.offsetTop;
-    console.log(dpr);
     if (!canvas) return;
     canvas.width = document.body.clientWidth * dpr;
     canvas.height = document.body.clientHeight * dpr;
     const browserWidth = canvas.width / dpr + 40;
-    // dpr === 1
-    //   ? canvas.width + 40
-    //   : dpr === 3
-    //   ? canvas.width /  + 40
-    //   : canvas.width / 2 + 40;
     const ctx = canvas.getContext('2d');
 
     if (!ctx) return;
@@ -211,6 +205,7 @@ function MarketDetail(): JSX.Element {
 
     ctx.stroke();
   };
+
   const loadBalance = async () => {
     if (!account) return;
 
