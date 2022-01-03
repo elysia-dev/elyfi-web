@@ -59,7 +59,6 @@ const ChartComponent = styled(Chart)`
   .google-visualization-tooltip {
     position: absolute !important;
     top: 30px !important;
-    /* left: ${(props) => props.theme.xValue}px !important; */
   }
 `;
 
@@ -348,27 +347,9 @@ function MarketDetail(): JSX.Element {
             </div>
             <div className={`market__detail__graph__${id}`}>
               <ChartComponent
-                // theme={{
-                //   xValue: mouseHover / 1.455,
-                // }}
                 height={'500px'}
                 chartType="ComboChart"
                 loader={<div>Loading Chart</div>}
-                // chartEvents={[
-                //   {
-                //     eventName: 'select',
-                //     callback: ({ chartWrapper, google }) => {
-                //       console.log(chartWrapper.getChart().getSelection());
-                //       google.visualization.events.addListener(
-                //         chartWrapper,
-                //         'select',
-                //         (e) => {
-                //           console.log(e);
-                //         },
-                //       );
-                //     },
-                //   },
-                // ]}
                 data={[
                   [
                     'Month',
