@@ -53,14 +53,18 @@ const Dashboard: React.FunctionComponent = () => {
   const { account, library } = useWeb3React();
   const location = useLocation();
   const history = useHistory();
-  const { reserves, refetch: refetchReserve } = useContext(ReservesContext);
+  const {
+    reserves,
+    refetch: refetchReserve,
+    round,
+    setRound,
+  } = useContext(ReservesContext);
   const { elfiPrice } = useContext(PriceContext);
   const reserveId = new URLSearchParams(location.search).get('reserveId');
   const [reserve, setReserve] = useState<GetAllReserves_reserves | undefined>(
     reserves.find((reserve) => reserveId === reserve.id),
   );
   const { t, i18n } = useTranslation();
-  const [round, setRound] = useState(1);
   const [balances, setBalances] = useState<
     {
       loading: boolean;

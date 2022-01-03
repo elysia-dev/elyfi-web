@@ -74,7 +74,7 @@ function MarketDetail(): JSX.Element {
   const [graphConverter, setGraphConverter] = useState(false);
   const [transactionModal, setTransactionModal] = useState(false);
   const tokenRef = useRef<HTMLParagraphElement>(null);
-  const { reserves } = useContext(ReservesContext);
+  const { reserves, round, setRound } = useContext(ReservesContext);
   const { latestPrice, poolDayData } = useContext(UniswapPoolContext);
   const { lng, id } = useParams<{ lng: string; id: Token.DAI | Token.USDT }>();
   const history = useHistory();
@@ -82,7 +82,6 @@ function MarketDetail(): JSX.Element {
   const tokenInfo = reserveTokenData[id];
   const data = reserves.find((reserve) => reserve.id === tokenInfo.address);
   const { t, i18n } = useTranslation();
-  const [round, setRound] = useState(0);
 
   const selectToken = tokenColorData.find((color) => {
     return color.name === id;
