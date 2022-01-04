@@ -6,27 +6,25 @@ import {
 } from 'src/queries/__generated__/GetAllReserves';
 
 export type ReservesContextBase = {
-  reserves: GetAllReserves_reserves[];
+  reserves1st: GetAllReserves_reserves[];
+  reserves2nd: GetAllReserves_reserves[];
   round: number;
 };
 
 export interface ITokenContext extends ReservesContextBase {
-  refetch: (
-    variables?: Partial<OperationVariables> | undefined,
-  ) => Promise<ApolloQueryResult<GetAllReserves>>;
+  refetch: () => Promise<void>;
   setRound: Dispatch<SetStateAction<number>>;
 }
 
 export const initialReservesContextBase: ReservesContextBase = {
-  reserves: [],
+  reserves1st: [],
+  reserves2nd: [],
   round: 1,
 };
 
 export const initialReservesContext: ITokenContext = {
   ...initialReservesContextBase,
-  refetch: async () => {
-    return {} as ApolloQueryResult<GetAllReserves>;
-  },
+  refetch: async () => {},
   setRound: () => {},
 };
 
