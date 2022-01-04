@@ -899,6 +899,120 @@ const Staking: React.FunctionComponent<IProps> = ({
                     )}
                   </div>
                 </section>
+
+                <section>
+                  <section className="staking__round__remaining-data waiting">
+                    {
+                      // eslint-disable-next-line array-callback-return
+                      roundData.map((item, index) => {
+                        if (current.diff(item.startedAt) < 0) {
+                          return (
+                            <>
+                              <div className="staking__round__remaining-data__title">
+                                <div>
+                                  <h2>
+                                    {t('staking.nth', {
+                                      nth: toOrdinalNumber(i18n.language, index + 1),
+                                    })}
+                                  </h2>
+                                  <p>
+                                    {stakingRoundTimes[index].startedAt.format(
+                                      'YYYY.MM.DD HH:mm:ss',
+                                    )}
+                                    <br />
+                                    ~&nbsp;
+                                    {stakingRoundTimes[index].endedAt.format(
+                                      'YYYY.MM.DD HH:mm:ss',
+                                    )}{' '}
+                                    (KST)
+                                  </p>
+                                </div>
+                                {mediaQuery === MediaQuery.PC && (
+                                  <div>
+                                    <h2 className="percent">
+                                      -
+                                    </h2>
+                                  </div>
+                                )}
+                              </div>
+                              <div className="staking__round__remaining-data__body">
+                                {mediaQuery === MediaQuery.PC ? (
+                                  <>
+                                    <div>
+                                      <h2>{t('staking.staking_amount')}</h2>
+                                      <div>
+                                        <h2>
+                                          -
+                                          <span className="token-amount bold">
+                                            {stakedToken}
+                                          </span>
+                                        </h2>
+                                        <div className={`staking__round__button disable`}>
+                                          <p>{t('staking.staking_btn')}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <h2>{t('staking.reward_amount')}</h2>
+                                      <div>
+                                        <h2>
+                                          -
+                                          <span className="token-amount bold">
+                                            {rewardToken}
+                                          </span>
+                                        </h2>
+                                        <div className={`staking__round__button disable`} >
+                                          <p>{t('staking.claim_reward')}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    <div>
+                                      <div>
+                                        <p>APR</p>
+                                        <h2 className="percent">
+                                          -
+                                        </h2>
+                                      </div>
+                                      <div>
+                                        <p>{t('staking.staking_amount')}</p>
+                                        <h2>
+                                          -
+                                          <span className="token-amount bold">
+                                            {stakedToken}
+                                          </span>
+                                        </h2>
+                                      </div>
+                                      <div>
+                                        <p>{t('staking.reward_amount')}</p>
+                                        <h2>
+                                          -
+                                          <span className="token-amount bold">
+                                            {rewardToken}
+                                          </span>
+                                        </h2>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <div className={`staking__round__button disable`}>
+                                        <p>{t('staking.staking_btn')}</p>
+                                      </div>
+                                      <div className={`staking__round__button disable`}>
+                                        <p>{t('staking.claim_reward')}</p>
+                                      </div>
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+                            </>
+                          );
+                        }
+                      })
+                    }
+                  </section>
+                </section>
               </div>
             </section>
           </>

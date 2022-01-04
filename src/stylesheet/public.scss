@@ -2081,12 +2081,13 @@ input[type='number'] {
         background-color: #f8f8f8;
         .staking__round__remaining-data__title {
           > div:first-child {
-            > p {
+            > p, h2 {
               color: #888888;
             }
           }
           > div:last-child {
             background-color: #ffffff;
+            justify-content: flex-end;
           }
         }
       }

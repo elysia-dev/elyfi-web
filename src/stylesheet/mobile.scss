@@ -1562,7 +1562,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         flex-direction: column;
         margin: 10px 0;
         border: 1px solid $gray-line !important;
-        border-radius: 5px;
+        border-radius: 10px;
         &__wrapper {
           width: 100%;
           border: none;
@@ -1675,6 +1675,20 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             > h2 {
               font-size: 12px;
             }
+          }
+        }
+      }
+      .waiting {
+        background-color: #f8f8f8;
+        .staking__round__remaining-data__title {
+          > div:first-child {
+            > p, h2 {
+              color: #888888 !important;
+            }
+          }
+          > div:last-child {
+            background-color: #f8f8f8;
+            justify-content: flex-end;
           }
         }
       }
