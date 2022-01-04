@@ -17,11 +17,13 @@ import MediaQuery from 'src/enums/MediaQuery';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
 import SwiperCore, { Pagination } from 'swiper';
 import moment from 'moment';
+import ReservesContext from 'src/contexts/ReservesContext';
 import RewardDetailInfo from './RewardDetailInfo';
 import SmallProgressBar from './SmallProgressBar';
 
 interface Props {
   reserve: GetAllReserves_reserves;
+  idx: number;
   moneyPoolInfo: {
     DAI: {
       totalMiningValue: number;
@@ -47,6 +49,7 @@ interface Props {
 }
 
 const TokenDeposit: FunctionComponent<Props> = ({
+  idx,
   reserve,
   moneyPoolInfo,
   beforeMintedMoneypool,
@@ -59,6 +62,8 @@ const TokenDeposit: FunctionComponent<Props> = ({
   const { latestPrice } = useContext(UniswapPoolContext);
   const totalMiningValue = moneyPoolInfo[token].totalMiningValue;
   const { value: mediaQuery } = useMediaQueryType();
+  const { reserves2nd } = useContext(ReservesContext);
+  const moneyPoolInfo2st = reserves2nd[idx];
   SwiperCore.use([Pagination]);
   const miningDescription = [
     [
@@ -147,7 +152,13 @@ const TokenDeposit: FunctionComponent<Props> = ({
                       <div className="reward__token-deposit__apy--left">
                         <div>
                           <p>{t('dashboard.deposit_apy')}</p>
-                          <h2>{toPercent(reserve.depositAPY)}</h2>
+                          <h2>
+                            {toPercent(
+                              index === 0
+                                ? reserve.depositAPY
+                                : moneyPoolInfo2st.depositAPY,
+                            )}
+                          </h2>
                         </div>
                         <div>
                           <p>{t('dashboard.token_mining_apr')}</p>
@@ -155,7 +166,11 @@ const TokenDeposit: FunctionComponent<Props> = ({
                             {toPercent(
                               calcMiningAPR(
                                 latestPrice,
-                                BigNumber.from(reserve.totalDeposit || 0),
+                                BigNumber.from(
+                                  (index === 0
+                                    ? reserve.totalDeposit
+                                    : moneyPoolInfo2st.totalDeposit) || 0,
+                                ),
                                 reserveTokenData[token].decimals,
                               ),
                             ) || 0}
@@ -168,7 +183,9 @@ const TokenDeposit: FunctionComponent<Props> = ({
                           <h2>
                             $&nbsp;
                             {toCompactForBignumber(
-                              reserve.totalDeposit || 0,
+                              (index === 0
+                                ? reserve.totalDeposit
+                                : moneyPoolInfo2st.totalDeposit) || 0,
                               reserveTokenData[token].decimals,
                             )}
                           </h2>
@@ -179,7 +196,13 @@ const TokenDeposit: FunctionComponent<Props> = ({
                     <>
                       <div>
                         <p>{t('dashboard.deposit_apy')}</p>
-                        <h2>{toPercent(reserve.depositAPY)}</h2>
+                        <h2>
+                          {toPercent(
+                            index === 0
+                              ? reserve.depositAPY
+                              : moneyPoolInfo2st.depositAPY,
+                          )}
+                        </h2>
                       </div>
                       <div>
                         <p>{t('dashboard.token_mining_apr')}</p>
@@ -187,7 +210,11 @@ const TokenDeposit: FunctionComponent<Props> = ({
                           {toPercent(
                             calcMiningAPR(
                               latestPrice,
-                              BigNumber.from(reserve.totalDeposit || 0),
+                              BigNumber.from(
+                                (index === 0
+                                  ? reserve.totalDeposit
+                                  : moneyPoolInfo2st.totalDeposit) || 0,
+                              ),
                               reserveTokenData[token].decimals,
                             ),
                           ) || 0}
@@ -198,7 +225,9 @@ const TokenDeposit: FunctionComponent<Props> = ({
                         <h2>
                           $&nbsp;
                           {toCompactForBignumber(
-                            reserve.totalDeposit || 0,
+                            (index === 0
+                              ? reserve.totalDeposit
+                              : moneyPoolInfo2st.totalDeposit) || 0,
                             reserveTokenData[token].decimals,
                           )}
                         </h2>
