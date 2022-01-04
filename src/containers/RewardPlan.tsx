@@ -62,7 +62,7 @@ const RewardPlan: FunctionComponent = () => {
   const { latestPrice, ethPool, daiPool } = useContext(UniswapPoolContext);
   const tokenRef = useRef<HTMLParagraphElement>(null);
   const { ethPrice } = useContext(PriceContext);
-  const { reserves } = useContext(ReservesContext);
+  const { reserves1st } = useContext(ReservesContext);
   const current = moment();
   const currentPhase = useMemo(() => {
     return stakingRoundTimes.filter(
@@ -431,12 +431,13 @@ const RewardPlan: FunctionComponent = () => {
               </div>
             </div>
             <section className="reward__container">
-              {reserves.map((reserve, index) => {
+              {reserves1st.map((reserve, index) => {
                 const token =
                   reserve.id === envs.daiAddress ? Token.DAI : Token.USDT;
                 return (
                   <TokenDeposit
                     key={index}
+                    idx={index}
                     reserve={reserve}
                     moneyPoolInfo={moneyPoolInfo}
                     beforeMintedMoneypool={
