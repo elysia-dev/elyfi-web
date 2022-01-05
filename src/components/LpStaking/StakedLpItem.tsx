@@ -1,18 +1,27 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useContext } from 'react';
 import { BigNumber, utils } from 'ethers';
 import CountUp from 'react-countup';
 import elfi from 'src/assets/images/ELFI.png';
 import { formatDecimalFracionDigit, toCompact } from 'src/utiles/formatters';
 import Token from 'src/enums/Token';
 import { useTranslation } from 'react-i18next';
-import useLpWithdraw from 'src/hooks/useLpWithdraw';
 import getAddressesByPool from 'src/core/utils/getAddressesByPool';
 import { StakedLpItemProps } from 'src/core/types/LpStakingTypeProps';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import { lpUnixTimestamp } from 'src/core/data/lpStakingTime';
 import moment from 'moment';
-import useLpMigration from 'src/hooks/useMigration';
+import { useWeb3React } from '@web3-react/core';
+import { ethers } from '@elysia-dev/contract-typechain/node_modules/ethers';
+import envs from 'src/core/envs';
+import stakerABI from 'src/core/abi/StakerABI.json';
+import TxContext from 'src/contexts/TxContext';
+import { lpTokenValues } from 'src/utiles/lpTokenValues';
+import RecentActivityType from 'src/enums/RecentActivityType';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
+import ModalViewType from 'src/enums/ModalViewType';
+import TransactionType from 'src/enums/TransactionType';
+import ElyfiVersions from 'src/enums/ElyfiVersions';
 
 const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
   const { position, setUnstakeTokenId, expectedReward, positionInfo, round } =
@@ -29,8 +38,105 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
   } = positionInfo();
   const stakedLiquidity =
     parseFloat(utils.formatEther(position.liquidity)) * pricePerLiquidity;
-  const unstake = useLpWithdraw();
-  const migration = useLpMigration();
+  const { account, library, chainId } = useWeb3React();
+  const { setTransaction } = useContext(TxContext);
+  const staker = new ethers.Contract(
+    envs.stakerAddress,
+    stakerABI,
+    library.getSigner(),
+  );
+  const iFace = new ethers.utils.Interface(stakerABI);
+
+  const unstake = async (
+    poolAddress: string,
+    rewardTokenAddress: string,
+    tokenId: string,
+    round: number,
+  ) => {
+    try {
+      const res = await staker.multicall([
+        iFace.encodeFunctionData('unstakeToken', [
+          lpTokenValues(poolAddress, envs.governanceAddress, round - 1),
+          tokenId,
+        ]),
+        iFace.encodeFunctionData('unstakeToken', [
+          lpTokenValues(poolAddress, rewardTokenAddress, round - 1),
+          tokenId,
+        ]),
+        iFace.encodeFunctionData('withdrawToken', [
+          tokenId,
+          account,
+          '0x',
+        ]),
+      ]);
+      setTransaction(
+        res,
+        buildEventEmitter(
+          ModalViewType.LPStakingModal,
+          TransactionType.Unstake,
+          JSON.stringify({
+            version: ElyfiVersions.V1,
+            chainId,
+            address: account,
+            tokenId,
+          })
+        ),
+        'Withdraw' as RecentActivityType,
+        () => {},
+        () => {},
+      );
+    } catch (error: any) {
+      throw new Error(`${error.message}`);
+    }
+  };
+
+  const migration = async (
+    poolAddress: string,
+    rewardTokenAddress: string,
+    tokenId: string,
+    round: number,
+  ) => {
+    try {
+      const res = await staker.multicall([
+        iFace.encodeFunctionData('unstakeToken', [
+          lpTokenValues(poolAddress, envs.governanceAddress, round - 1),
+          tokenId,
+        ]),
+        iFace.encodeFunctionData('unstakeToken', [
+          lpTokenValues(poolAddress, rewardTokenAddress, round - 1),
+          tokenId,
+        ]),
+        iFace.encodeFunctionData('stakeToken', [
+          lpTokenValues(poolAddress, envs.governanceAddress, round),
+          tokenId,
+        ]),
+        iFace.encodeFunctionData('stakeToken', [
+          lpTokenValues(poolAddress, rewardTokenAddress, round),
+          tokenId,
+        ]),
+      ]);
+
+      setTransaction(
+        res,
+        buildEventEmitter(
+          ModalViewType.LPStakingModal,
+          TransactionType.Migrate,
+          JSON.stringify({
+            version: ElyfiVersions.V1,
+            chainId,
+            address: account,
+            tokenId,
+          })
+        ),
+        'LPMigration' as RecentActivityType,
+        () => {},
+        () => {},
+      );
+    } catch (error) {
+      console.error(error);
+      // throw Error(error);
+    }
+  };
 
   const startedDate = moment
     .unix(
