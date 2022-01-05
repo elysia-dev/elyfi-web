@@ -32,7 +32,8 @@ const IncentiveModal: FunctionComponent<{
 }) => {
   const { account, library } = useWeb3React();
   const initTxTracker = useTxTracking();
-  const { reserves } = useContext(ReservesContext);
+  const { reserves1st, reserves2nd, round } = useContext(ReservesContext);
+  const reserves = round === 1 ? reserves1st : reserves2nd;
   const { setTransaction, failTransaction } = useContext(TxContext);
 
   const reqeustClaimIncentive = async () => {
@@ -74,11 +75,7 @@ const IncentiveModal: FunctionComponent<{
       className="modal modal__incentive"
       style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
-        <ModalHeader
-          title={"ELFI"}
-          image={ElifyTokenImage}
-          onClose={onClose}
-        />
+        <ModalHeader title={'ELFI'} image={ElifyTokenImage} onClose={onClose} />
         <div className="modal__body">
           <div
             className="modal__incentive__body"
