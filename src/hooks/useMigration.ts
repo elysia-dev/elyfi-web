@@ -7,7 +7,7 @@ import { useContext } from 'react';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import { lpTokenValues } from 'src/utiles/lpTokenValues';
-import useTxTracking from './useTxTracking';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
 
 const useLpMigration: () => (
   poolAddress: string,
@@ -17,7 +17,6 @@ const useLpMigration: () => (
 ) => void = () => {
   const { account, library } = useWeb3React();
   const { setTransaction } = useContext(TxContext);
-  const initTxTracker = useTxTracking();
   const staker = new ethers.Contract(
     envs.stakerAddress,
     stakerABI,
@@ -57,10 +56,10 @@ const useLpMigration: () => (
         stakeGovernance,
         stakeToken,
       ]);
-      const tracker = initTxTracker('LpMigration', 'migration', ``);
+      const emitter = buildEventEmitter('LpMigration', 'migration', ``);
       setTransaction(
         res,
-        tracker,
+        emitter,
         'LPMigration' as RecentActivityType,
         () => {},
         () => {},

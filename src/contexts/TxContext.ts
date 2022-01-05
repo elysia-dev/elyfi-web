@@ -18,13 +18,13 @@ export type TxContextType = {
 export interface ITxContext extends TxContextType {
   setTransaction: (
     tx: any,
-    tracker: any,
+    emitter: any,
     type: RecentActivityType,
     pending: () => void,
     callback: () => void,
   ) => void;
   initTransaction: (txStatus: TxStatus, txWaiting: boolean) => void;
-  failTransaction: (tracker: any, onEvent: () => void, e: any) => void;
+  failTransaction: (emitter: any, onEvent: () => void, e: any) => void;
   reset: () => void;
 }
 
@@ -44,13 +44,13 @@ export const initialTxContext = {
   ...initialtxStatus,
   setTransaction: (
     tx: any,
-    tracker: any,
+    emitter: any,
     type: RecentActivityType,
     pending: () => void,
     callback: () => void,
   ) => {},
   initTransaction: (txStatus: TxStatus, txWaiting: boolean) => {},
-  failTransaction: (tracker: any, onEvent: () => void, e: any) => {},
+  failTransaction: (emitter: any, onEvent: () => void, e: any) => {},
   reset: () => {},
 };
 

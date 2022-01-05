@@ -6,7 +6,7 @@ import { useContext } from 'react';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import { lpTokenValues } from 'src/utiles/lpTokenValues';
-import useTxTracking from './useTxTracking';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
 
 const useLpWithdraw: () => (
   poolAddress: string,
@@ -16,7 +16,6 @@ const useLpWithdraw: () => (
 ) => void = () => {
   const { account, library } = useWeb3React();
   const { setTransaction } = useContext(TxContext);
-  const initTxTracker = useTxTracking();
   const iFace = new ethers.utils.Interface(stakerABI);
 
   const unstake = async (
@@ -49,10 +48,10 @@ const useLpWithdraw: () => (
         rewardUnstake,
         withdraw,
       ]);
-      const tracker = initTxTracker('LpUnstaking', 'unstaking', ``);
+      const emitter = buildEventEmitter('LpUnstaking', 'unstaking', ``);
       setTransaction(
         res,
-        tracker,
+        emitter,
         'Withdraw' as RecentActivityType,
         () => {},
         () => {},

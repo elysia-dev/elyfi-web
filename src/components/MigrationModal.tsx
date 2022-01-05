@@ -14,9 +14,9 @@ import useStakingPool from 'src/hooks/useStakingPool';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import { formatEther, parseEther } from 'ethers/lib/utils';
 import useWaitingTx from 'src/hooks/useWaitingTx';
-import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
 import LoadingIndicator from './LoadingIndicator';
 import ModalHeader from './ModalHeader';
 import Popupinfo from './PopupInfo';
@@ -54,7 +54,6 @@ const MigrationModal: React.FunctionComponent<{
   const [mouseHover, setMouseHover] = useState(false);
   const stakingPool = useStakingPool(stakedToken, round >= 3);
   const { waiting, wait } = useWaitingTx();
-  const initTxTracker = useTxTracking();
   const { setTransaction, failTransaction } = useContext(TxContext);
 
   const amountGtStakedBalance =
@@ -275,7 +274,7 @@ const MigrationModal: React.FunctionComponent<{
             )
               return;
 
-            const tracker = initTxTracker(
+            const emitter = buildEventEmitter(
               'MigrationModal',
               'Migrate',
               `${state.migrationAmount} ${formatEther(
@@ -283,7 +282,7 @@ const MigrationModal: React.FunctionComponent<{
               )} ${stakedToken} ${round}round`,
             );
 
-            tracker.clicked();
+            emitter.clicked();
 
             // TRICKY
             // ELFI V2 StakingPool need round - 2 value
@@ -302,7 +301,7 @@ const MigrationModal: React.FunctionComponent<{
               .then((tx) => {
                 setTransaction(
                   tx,
-                  tracker,
+                  emitter,
                   (stakedToken + 'Migration') as RecentActivityType,
                   () => {
                     transactionModal();
@@ -315,7 +314,7 @@ const MigrationModal: React.FunctionComponent<{
               })
               .catch((e) => {
                 console.error(e);
-                failTransaction(tracker, closeHandler, e);
+                failTransaction(emitter, closeHandler, e);
               });
           }}>
           <p>

@@ -13,12 +13,12 @@ import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import useStakingPool from 'src/hooks/useStakingPool';
 import useERC20Info from 'src/hooks/useERC20Info';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
-import useTxTracking from 'src/hooks/useTxTracking';
 import txStatus from 'src/enums/TxStatus';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ModalHeader from 'src/components/ModalHeader';
 import ModalConverter from 'src/components/ModalConverter';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
 
 const StakingModal: React.FunctionComponent<{
   visible: boolean;
@@ -67,7 +67,6 @@ const StakingModal: React.FunctionComponent<{
     !amount.max && utils.parseEther(amount.value || '0').gt(balance);
   const amountGtStakedBalance =
     !amount.max && utils.parseEther(amount.value || '0').gt(stakedBalance);
-  const initTxTracker = useTxTracking();
 
   useEffect(() => {
     setAmount({
@@ -174,12 +173,12 @@ const StakingModal: React.FunctionComponent<{
                     if (!account || amountLteZero || amountGtStakedBalance)
                       return;
 
-                    const tracker = initTxTracker(
+                    const emitter = buildEventEmitter(
                       'StakingModal',
                       'Withdraw',
                       `${amount.value} ${amount.max} ${stakedToken} ${round}round`,
                     );
-                    tracker.clicked();
+                    emitter.clicked();
 
                     stakingPool
                       ?.withdraw(
@@ -194,7 +193,7 @@ const StakingModal: React.FunctionComponent<{
                       .then((tx) => {
                         setTransaction(
                           tx,
-                          tracker,
+                          emitter,
                           (stakedToken +
                             'StakingWithdraw') as RecentActivityType,
                           () => {
@@ -208,7 +207,7 @@ const StakingModal: React.FunctionComponent<{
                         );
                       })
                       .catch((e) => {
-                        failTransaction(tracker, closeHandler, e);
+                        failTransaction(emitter, closeHandler, e);
                       });
                   }}>
                   <p>
@@ -232,13 +231,13 @@ const StakingModal: React.FunctionComponent<{
                       return;
                     }
 
-                    const tracker = initTxTracker(
+                    const emitter = buildEventEmitter(
                       'StakingModal',
                       `Stake`,
                       `${amount.value} ${amount.max} ${stakedToken} ${round}round`,
                     );
 
-                    tracker.clicked();
+                    emitter.clicked();
 
                     // setTxWaiting(true)
 
@@ -252,7 +251,7 @@ const StakingModal: React.FunctionComponent<{
                       .then((tx) => {
                         setTransaction(
                           tx,
-                          tracker,
+                          emitter,
                           (stakedToken + 'Stake') as RecentActivityType,
                           () => {
                             closeHandler();
@@ -265,7 +264,7 @@ const StakingModal: React.FunctionComponent<{
                         );
                       })
                       .catch((e) => {
-                        failTransaction(tracker, closeHandler, e);
+                        failTransaction(emitter, closeHandler, e);
                       });
                   }}>
                   <p>
@@ -278,20 +277,20 @@ const StakingModal: React.FunctionComponent<{
                 <div
                   className={'modal__button'}
                   onClick={() => {
-                    const tracker = initTxTracker(
+                    const emitter = buildEventEmitter(
                       'StakingModal',
                       `Approve`,
                       `${stakedToken} ${round}round`,
                     );
 
-                    tracker.clicked();
+                    emitter.clicked();
 
                     contract
                       .approve(stakingPool!.address, constants.MaxUint256)
                       .then((tx) => {
                         setTransaction(
                           tx,
-                          tracker,
+                          emitter,
                           RecentActivityType.Approve,
                           () => {
                             closeHandler();
@@ -304,7 +303,7 @@ const StakingModal: React.FunctionComponent<{
                         );
                       })
                       .catch((e) => {
-                        failTransaction(tracker, closeHandler, e);
+                        failTransaction(emitter, closeHandler, e);
                       });
                   }}>
                   <p>

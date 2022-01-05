@@ -5,12 +5,11 @@ import stakerABI from 'src/core/abi/StakerABI.json';
 import { useContext } from 'react';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
-import useTxTracking from './useTxTracking';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
 
 const useClaimReward: () => () => void = () => {
   const { account, library } = useWeb3React();
   const { setTransaction } = useContext(TxContext);
-  const initTxTracker = useTxTracking();
   const iFace = new ethers.utils.Interface(stakerABI);
 
   const claim = async () => {
@@ -36,10 +35,10 @@ const useClaimReward: () => () => void = () => {
         0,
       ]);
       const res = await staker.multicall([elfi, dai, eth]);
-      const tracker = initTxTracker('LpStakingModal', 'ClaimReward', ``);
+      const emitter = buildEventEmitter('LpStakingModal', 'ClaimReward', ``);
       setTransaction(
         res,
-        tracker,
+        emitter,
         'Claim' as RecentActivityType,
         () => {},
         () => {},

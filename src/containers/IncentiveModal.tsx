@@ -4,13 +4,13 @@ import { FunctionComponent, useContext } from 'react';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
 import { formatCommaSmall, formatSixFracionDigit } from 'src/utiles/formatters';
 import { formatEther } from 'ethers/lib/utils';
-import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ReservesContext from 'src/contexts/ReservesContext';
 import { IncentivePool__factory } from '@elysia-dev/contract-typechain';
 import CountUp from 'react-countup';
 import ModalHeader from 'src/components/ModalHeader';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
 
 // Create deposit & withdraw
 const IncentiveModal: FunctionComponent<{
@@ -31,28 +31,27 @@ const IncentiveModal: FunctionComponent<{
   transactionModal,
 }) => {
   const { account, library } = useWeb3React();
-  const initTxTracker = useTxTracking();
   const { reserves } = useContext(ReservesContext);
   const { setTransaction, failTransaction } = useContext(TxContext);
 
   const reqeustClaimIncentive = async () => {
     if (!account) return;
 
-    const tracker = initTxTracker(
+    const emitter = buildEventEmitter(
       'IncentiveModal',
       'Claim',
       `${formatEther(balanceAfter)} ${reserves[0].incentivePool.id}`,
     );
 
-    tracker.clicked();
+    emitter.clicked();
 
     IncentivePool__factory.connect(incentivePoolAddress, library.getSigner())
       .claimIncentive()
       .then((tx) => {
-        tracker.created();
+        emitter.created();
         setTransaction(
           tx,
-          tracker,
+          emitter,
           RecentActivityType.Claim,
           () => {
             transactionModal();
@@ -64,7 +63,7 @@ const IncentiveModal: FunctionComponent<{
         );
       })
       .catch((error) => {
-        failTransaction(tracker, onClose, error);
+        failTransaction(emitter, onClose, error);
         console.error(error);
       });
   };

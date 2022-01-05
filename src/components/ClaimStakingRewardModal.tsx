@@ -9,12 +9,12 @@ import Token from 'src/enums/Token';
 import { useTranslation } from 'react-i18next';
 import useStakingPool from 'src/hooks/useStakingPool';
 import useWatingTx from 'src/hooks/useWaitingTx';
-import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import RoundData from 'src/core/types/RoundData';
 import CountUp from 'react-countup';
 import { formatEther } from '@ethersproject/units';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
 import ModalHeader from './ModalHeader';
 
 const ClaimStakingRewardModal: FunctionComponent<{
@@ -47,7 +47,6 @@ const ClaimStakingRewardModal: FunctionComponent<{
   const stakingPool = useStakingPool(stakedToken, round >= 3);
   const { waiting } = useWatingTx();
   const { t } = useTranslation();
-  const initTxTracker = useTxTracking();
   const { setTransaction, failTransaction } = useContext(TxContext);
 
   return (
@@ -103,7 +102,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
                 onClick={() => {
                   if (!account) return;
 
-                  const tracker = initTxTracker(
+                  const emitter = buildEventEmitter(
                     'ClaimStakingRewardModal',
                     'Claim',
                     `${utils.formatEther(
@@ -111,7 +110,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
                     )} ${stakedToken} ${round}round`,
                   );
 
-                  tracker.clicked();
+                  emitter.clicked();
 
                   // TRICKY
                   // ELFI V2 StakingPool need round - 2 value
@@ -125,7 +124,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
                     .then((tx) => {
                       setTransaction(
                         tx,
-                        tracker,
+                        emitter,
                         (stakedToken + 'Claim') as RecentActivityType,
                         () => {
                           transactionModal();
@@ -137,7 +136,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
                       );
                     })
                     .catch((e) => {
-                      failTransaction(tracker, closeHandler, e);
+                      failTransaction(emitter, closeHandler, e);
                     });
                 }}>
                 <p>{t('staking.claim_reward')}</p>
