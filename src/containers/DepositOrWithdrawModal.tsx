@@ -26,6 +26,8 @@ import RecentActivityType from 'src/enums/RecentActivityType';
 import ReserveData from 'src/core/data/reserves';
 import ModalHeader from 'src/components/ModalHeader';
 import ModalConverter from 'src/components/ModalConverter';
+import moment from 'moment';
+import { daiMoneyPoolTime } from 'src/core/data/moneypoolTimes';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
 
@@ -40,6 +42,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   onClose: () => void;
   afterTx: () => Promise<void>;
   transactionModal: () => void;
+  round: number;
 }> = ({
   tokenName,
   visible,
@@ -51,16 +54,20 @@ const DepositOrWithdrawModal: FunctionComponent<{
   onClose,
   afterTx,
   transactionModal,
+  round,
 }) => {
   const { account } = useWeb3React();
   const { elfiPrice } = useContext(PriceContext);
-  const [selected, select] = useState<boolean>(true);
+  const moneyPoolAddress =
+    round === 1 ? envs.moneyPoolAddress1st : envs.moneyPoolAddress2nd;
+  const isEndedRound = moment().isBefore(daiMoneyPoolTime[round - 1].endedAt);
+  const [selected, select] = useState<boolean>(isEndedRound);
   const {
     allowance,
     loading,
     contract: reserveERC20,
     refetch,
-  } = useERC20Info(reserve.id, envs.moneyPoolAddress);
+  } = useERC20Info(reserve.id, moneyPoolAddress);
   const [liquidity, setLiquidity] = useState<{
     value: BigNumber;
     loaded: boolean;
@@ -127,7 +134,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     tracker.clicked();
 
     reserveERC20
-      .approve(envs.moneyPoolAddress, constants.MaxUint256)
+      .approve(moneyPoolAddress, constants.MaxUint256)
       .then((tx) => {
         setTransaction(
           tx,
@@ -252,17 +259,12 @@ const DepositOrWithdrawModal: FunctionComponent<{
       className="modal modal--deposit"
       style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
-        <ModalHeader
-          image={tokenImage}
-          title={tokenName}
-          onClose={onClose}
-        />
+        <ModalHeader image={tokenImage} title={tokenName} onClose={onClose} />
         <ModalConverter
           handlerProps={selected}
           setState={select}
-          title={
-            [t('dashboard.deposit'), t('dashboard.withdraw')]
-          }
+          title={[t('dashboard.deposit'), t('dashboard.withdraw')]}
+          isEndedRound={isEndedRound}
         />
         {waiting ? (
           <LoadingIndicator />
