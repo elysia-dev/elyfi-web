@@ -34,6 +34,8 @@ import getIncentiveId from 'src/utiles/getIncentive';
 import usePositions from 'src/hooks/usePositions';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
+import ReactGA from 'react-ga';
+import ModalViewType from 'src/enums/ModalViewType';
 
 function LPStaking(): JSX.Element {
   const { account, library } = useWeb3React();
@@ -399,6 +401,7 @@ function LPStaking(): JSX.Element {
             isLoading={isLoading}
             setModalAndSetStakeToken={() => {
               setStakingVisibleModal(true);
+              ReactGA.modalview(Token.ETH + ModalViewType.StakingOrUnstakingModal);
               setStakeToken(Token.ETH);
             }}
             round={round}
@@ -414,6 +417,7 @@ function LPStaking(): JSX.Element {
             isLoading={isLoading}
             setModalAndSetStakeToken={() => {
               setStakingVisibleModal(true);
+              ReactGA.modalview(Token.DAI + ModalViewType.StakingOrUnstakingModal);
               setStakeToken(Token.DAI);
             }}
             round={round}
@@ -442,7 +446,10 @@ function LPStaking(): JSX.Element {
         <section className="staking__lp__reward">
           <Reward
             rewardToReceive={rewardToReceive}
-            onHandler={() => setRewardVisibleModal(true)}
+            onHandler={() => {
+              setRewardVisibleModal(true)
+              ReactGA.modalview(ModalViewType.LPStakingIncentiveModal)
+            }}
           />
         </section>
       </section>

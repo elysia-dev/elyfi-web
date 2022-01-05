@@ -42,6 +42,7 @@ import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import { useParams } from 'react-router-dom';
+import ModalViewType from 'src/enums/ModalViewType';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI;
@@ -614,9 +615,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   }
 
                                   if (migratable(stakedToken, index)) {
-                                    ReactGA.modalview(
-                                      `${stakedToken}Migration`,
-                                    );
+                                    ReactGA.modalview(stakedToken + ModalViewType.MigrationOrUnstakingModal);
                                     setRoundModal(index);
                                     setModalValue(item.accountPrincipal);
                                     return setMigrationModalVisible(true);
@@ -626,7 +625,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                       stakingRoundTimes[index].startedAt,
                                     ) > 0
                                   ) {
-                                    ReactGA.modalview(`${stakedToken}Staking`);
+                                    ReactGA.modalview(stakedToken + ModalViewType.StakingOrUnstakingModal);
                                     setRoundModal(index);
                                     setModalValue(item.accountPrincipal);
                                     setStakingModalVisible(true);
@@ -646,9 +645,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   if (item.accountReward.isZero()) {
                                     return;
                                   }
-                                  ReactGA.modalview(
-                                    `${stakedToken}StakingReward`,
-                                  );
+                                  ReactGA.modalview(stakedToken + ModalViewType.StakingIncentiveModal);
                                   current.diff(
                                     stakingRoundTimes[index].startedAt,
                                   ) > 0 && setRoundModal(index);
@@ -733,7 +730,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                 ) {
                                   return;
                                 }
-                                ReactGA.modalview(`${stakedToken}Staking`);
+                                ReactGA.modalview(stakedToken + ModalViewType.StakingOrUnstakingModal);
                                 setRoundModal(4);
                                 setModalValue(currentRound.accountPrincipal);
                                 setStakingModalVisible(true);
@@ -779,9 +776,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                 if (expectedReward.value.isZero()) {
                                   return;
                                 }
-                                ReactGA.modalview(
-                                  `${stakedToken}StakingReward`,
-                                );
+                                ReactGA.modalview(stakedToken + ModalViewType.StakingIncentiveModal);
 
                                 current.diff(stakingRoundTimes[4].startedAt) >
                                   0 && setRoundModal(4);
@@ -870,7 +865,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                               ) {
                                 return;
                               }
-                              ReactGA.modalview(`${stakedToken}Staking`);
+                              ReactGA.modalview(stakedToken + ModalViewType.StakingOrUnstakingModal);
                               setRoundModal(4);
                               setModalValue(currentRound.accountPrincipal);
                               setStakingModalVisible(true);
@@ -885,7 +880,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                               if (expectedReward.value.isZero()) {
                                 return;
                               }
-                              ReactGA.modalview(`${stakedToken}StakingReward`);
+                              ReactGA.modalview(stakedToken + ModalViewType.StakingIncentiveModal);
 
                               current.diff(stakingRoundTimes[4].startedAt) >
                                 0 && setRoundModal(4);
