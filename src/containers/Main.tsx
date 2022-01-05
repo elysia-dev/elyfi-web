@@ -82,8 +82,6 @@ const Main = () => {
     const auditY = auditPageY.current.offsetTop;
     if (!governancePageY.current) return;
     const governanceY = governancePageY.current.offsetTop;
-    if (!governancePageBottomY.current) return;
-    const governanceBottomY = governancePageBottomY.current.offsetTop;
 
     if (!canvas) return;
     canvas.width = document.body.clientWidth * dpr;
