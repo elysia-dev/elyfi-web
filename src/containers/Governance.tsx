@@ -237,7 +237,7 @@ const Governance = () => {
               />
             </div>
             <div>
-              <h2>Againest</h2>
+              <h2>Against</h2>
               <progress
                 className="governance__asset__progress-bar index-1"
                 value={parseFloat(
