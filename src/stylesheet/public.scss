@@ -986,6 +986,17 @@ input[type='number'] {
             > p {
               cursor: pointer;
             }
+            &.disable {
+              pointer-events: none;
+              border: 0px;
+              cursor: not-allowed;
+              background-color: $gray-line;
+              box-shadow: none;
+              > p {
+                cursor: not-allowed;
+                color: $gray-font-color;
+              }
+            }
           }
           > div {
             > h2 {
