@@ -54,11 +54,13 @@ const Dashboard: React.FunctionComponent = () => {
   const location = useLocation();
   const history = useHistory();
   const {
-    reserves,
+    reserves1st,
+    reserves2nd,
     refetch: refetchReserve,
     round,
     setRound,
   } = useContext(ReservesContext);
+  const reserves = round === 1 ? reserves1st : reserves2nd;
   const { elfiPrice } = useContext(PriceContext);
   const reserveId = new URLSearchParams(location.search).get('reserveId');
   const [reserve, setReserve] = useState<GetAllReserves_reserves | undefined>(
@@ -145,7 +147,7 @@ const Dashboard: React.FunctionComponent = () => {
   const loadBalance = async (index: number) => {
     if (!account) return;
     try {
-      refetchReserve();
+      // refetchReserve();
       refetchUserData();
 
       setBalances(
@@ -171,7 +173,7 @@ const Dashboard: React.FunctionComponent = () => {
     }
 
     try {
-      refetchReserve();
+      // refetchReserve();
       refetchUserData();
       setBalances(
         await Promise.all(
@@ -200,7 +202,7 @@ const Dashboard: React.FunctionComponent = () => {
 
   useEffect(() => {
     loadBalances();
-  }, [account]);
+  }, [account, reserves]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -273,6 +275,7 @@ const Dashboard: React.FunctionComponent = () => {
           depositBalance={BigNumber.from(balances[selectedModalNumber].deposit)}
           afterTx={() => loadBalance(selectedModalNumber)}
           transactionModal={() => setTransactionModal(true)}
+          round={round}
         />
       )}
       <IncentiveModal
