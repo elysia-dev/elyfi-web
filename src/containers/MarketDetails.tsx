@@ -129,7 +129,9 @@ function MarketDetail(): JSX.Element {
     const canvas: HTMLCanvasElement | null = canvasRef.current;
 
     if (!headerRef.current) return;
-    const headerY = headerRef.current.offsetTop + 30;
+    const headerY =
+      headerRef.current.offsetTop +
+      (document.body.clientWidth > 1190 ? 30 : 10);
     if (!canvas) return;
     canvas.width = document.body.clientWidth * dpr;
     canvas.height = document.body.clientHeight * dpr;
