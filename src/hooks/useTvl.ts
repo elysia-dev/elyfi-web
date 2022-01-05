@@ -9,7 +9,8 @@ import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import ReserveData from 'src/core/data/reserves';
 
 const useTvl = (): { value: number; loading: boolean } => {
-  const { reserves } = useContext(ReservesContext);
+  const { reserves1st, reserves2nd, round } = useContext(ReservesContext);
+  const reserves = round === 1 ? reserves1st : reserves2nd;
   const {
     totalValueLockedToken0,
     totalValueLockedToken1,
@@ -24,8 +25,8 @@ const useTvl = (): { value: number; loading: boolean } => {
   });
 
   const tvl = useMemo(() => {
-    return (
-      reserves.reduce((res, cur) => {
+    const round1 =
+      reserves1st.reduce((res, cur) => {
         const tokenInfo = ReserveData.find((datum) => datum.address === cur.id);
         return (
           res +
@@ -37,8 +38,19 @@ const useTvl = (): { value: number; loading: boolean } => {
       totalValueLockedToken0 * elfiPrice +
       totalValueLockedToken1 +
       parseInt(formatEther(state.stakedEl), 10) * elPrice +
-      parseInt(formatEther(state.stakedElfi), 10) * elfiPrice
-    );
+      parseInt(formatEther(state.stakedElfi), 10) * elfiPrice;
+
+    const round2 = reserves2nd.reduce((res, cur) => {
+      const tokenInfo = ReserveData.find((datum) => datum.address === cur.id);
+      return (
+        res +
+        parseFloat(
+          formatUnits(BigNumber.from(cur.totalDeposit), tokenInfo?.decimals),
+        )
+      );
+    }, 0);
+
+    return round1 + round2;
   }, [
     state,
     reserves,
@@ -50,7 +62,9 @@ const useTvl = (): { value: number; loading: boolean } => {
 
   const loadBalances = async () => {
     try {
-      const provider = new providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC)
+      const provider = new providers.JsonRpcProvider(
+        process.env.REACT_APP_JSON_RPC,
+      );
 
       const stakedElfiOnV1 = await ERC20__factory.connect(
         envs.governanceAddress,
