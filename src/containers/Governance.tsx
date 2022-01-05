@@ -16,6 +16,8 @@ import LanguageType from 'src/enums/LanguageType';
 import moment from 'moment';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
+import DrawWave from 'src/utiles/drawWave';
+import TokenColors from 'src/enums/TokenColors';
 
 const Governance = () => {
   const [onChainLoading, setOnChainLoading] = useState(true);
@@ -45,70 +47,7 @@ const Governance = () => {
     if (!ctx) return;
     ctx.scale(dpr, dpr);
 
-    ctx.strokeStyle = '#00BFFF';
-    ctx.beginPath();
-    ctx.moveTo(0, headerY * 1.5);
-    ctx.bezierCurveTo(
-      browserWidth / 5,
-      headerY * 1.2,
-      browserWidth / 5,
-      headerY * 1.6,
-      browserWidth / 2,
-      headerY * 1.55,
-    );
-    ctx.bezierCurveTo(
-      browserWidth / 1.2,
-      headerY * 1.5,
-      browserWidth / 1.3,
-      headerY * 1.15,
-      browserWidth,
-      headerY * 1.5,
-    );
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(0, headerY * 1.6);
-    ctx.bezierCurveTo(
-      browserWidth / 5,
-      headerY * 1.07,
-      browserWidth / 5,
-      headerY * 1.7,
-      browserWidth / 2,
-      headerY * 1.6,
-    );
-    ctx.bezierCurveTo(
-      browserWidth / 1.2,
-      headerY * 1.45,
-      browserWidth / 1.3,
-      headerY * 1.15,
-      browserWidth,
-      headerY * 1.6,
-    );
-    ctx.stroke();
-
-    // circle
-    ctx.beginPath();
-    ctx.fillStyle = '#ffffff';
-    ctx.moveTo(browserWidth / 7 + 10, headerY * 1.39);
-    ctx.arc(browserWidth / 7, headerY * 1.39, 10, 0, Math.PI * 2);
-
-    ctx.moveTo(browserWidth / 7.8 + 5, headerY * 1.43);
-    ctx.arc(browserWidth / 7.8, headerY * 1.43, 5, 0, Math.PI * 2);
-
-    ctx.moveTo(browserWidth / 3 + 10, headerY * 1.52);
-    ctx.arc(browserWidth / 3, headerY * 1.52, 10, 0, Math.PI * 2);
-
-    ctx.moveTo(browserWidth / 1.5 + 10, headerY * 1.49);
-    ctx.arc(browserWidth / 1.5, headerY * 1.49, 10, 0, Math.PI * 2);
-
-    ctx.moveTo(browserWidth / 1.46 + 5, headerY * 1.475);
-    ctx.arc(browserWidth / 1.46, headerY * 1.475, 5, 0, Math.PI * 2);
-
-    ctx.moveTo(browserWidth / 1.18 + 10, headerY * 1.36);
-    ctx.arc(browserWidth / 1.18, headerY * 1.36, 10, 0, Math.PI * 2);
-
-    ctx.fill();
-
-    ctx.stroke();
+    new DrawWave(ctx, browserWidth).drawOnPages(headerY, TokenColors.ELFI);
   };
 
   const { value: mediaQuery } = useMediaQueryType();

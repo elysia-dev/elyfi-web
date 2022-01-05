@@ -25,6 +25,8 @@ import moment from 'moment';
 import Loan from 'src/containers/Loan';
 import MarketDetailsBody from 'src/components/MarketDetailsBody';
 import styled from 'styled-components';
+import DrawWave from 'src/utiles/drawWave';
+import TokenColors from 'src/enums/TokenColors';
 
 const initialBalanceState = {
   loading: true,
@@ -136,71 +138,10 @@ function MarketDetail(): JSX.Element {
 
     if (!ctx) return;
     ctx.scale(dpr, dpr);
-
-    ctx.strokeStyle = id === Token.DAI ? '#F9AE19' : '#26A17B';
-    ctx.beginPath();
-    ctx.moveTo(0, headerY * 1.5);
-    ctx.bezierCurveTo(
-      browserWidth / 5,
-      headerY * 1.2,
-      browserWidth / 5,
-      headerY * 1.6,
-      browserWidth / 2,
-      headerY * 1.55,
+    new DrawWave(ctx, browserWidth).drawOnPages(
+      headerY,
+      id === Token.DAI ? TokenColors.DAI : TokenColors.USDT,
     );
-    ctx.bezierCurveTo(
-      browserWidth / 1.2,
-      headerY * 1.5,
-      browserWidth / 1.3,
-      headerY * 1.15,
-      browserWidth,
-      headerY * 1.5,
-    );
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(0, headerY * 1.6);
-    ctx.bezierCurveTo(
-      browserWidth / 5,
-      headerY * 1.07,
-      browserWidth / 5,
-      headerY * 1.7,
-      browserWidth / 2,
-      headerY * 1.6,
-    );
-    ctx.bezierCurveTo(
-      browserWidth / 1.2,
-      headerY * 1.45,
-      browserWidth / 1.3,
-      headerY * 1.15,
-      browserWidth,
-      headerY * 1.6,
-    );
-    ctx.stroke();
-
-    // circle
-    ctx.beginPath();
-    ctx.fillStyle = '#ffffff';
-    ctx.moveTo(browserWidth / 7 + 10, headerY * 1.39);
-    ctx.arc(browserWidth / 7, headerY * 1.39, 10, 0, Math.PI * 2);
-
-    ctx.moveTo(browserWidth / 7.8 + 5, headerY * 1.43);
-    ctx.arc(browserWidth / 7.8, headerY * 1.43, 5, 0, Math.PI * 2);
-
-    ctx.moveTo(browserWidth / 3 + 10, headerY * 1.52);
-    ctx.arc(browserWidth / 3, headerY * 1.52, 10, 0, Math.PI * 2);
-
-    ctx.moveTo(browserWidth / 1.5 + 10, headerY * 1.49);
-    ctx.arc(browserWidth / 1.5, headerY * 1.49, 10, 0, Math.PI * 2);
-
-    ctx.moveTo(browserWidth / 1.46 + 5, headerY * 1.475);
-    ctx.arc(browserWidth / 1.46, headerY * 1.475, 5, 0, Math.PI * 2);
-
-    ctx.moveTo(browserWidth / 1.18 + 10, headerY * 1.36);
-    ctx.arc(browserWidth / 1.18, headerY * 1.36, 10, 0, Math.PI * 2);
-
-    ctx.fill();
-
-    ctx.stroke();
   };
 
   const loadBalance = async () => {
