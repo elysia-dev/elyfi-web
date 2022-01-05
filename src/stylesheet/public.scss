@@ -4289,4 +4289,13 @@ input[type='number'] {
     border-right: 2px solid #333333;
     transform: rotate(135deg);
   }
+
+  .error {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9997;
+  }
 }
