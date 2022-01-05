@@ -201,7 +201,7 @@
     },
     "loan": {
       "loan__title": "Loan List",
-      "loan__content": "List of loans that have passed in governance and executed as DAI in ELYFI.",
+      "loan__content": "Loans executed in Money Pool according to the decision of the Governance (DAO).",
       "loan__number": "Loan Number",
       "loan__status": "Loan Status",
       "loan__info": "Loan Details",
@@ -247,7 +247,7 @@
       "on_chain_voting__content": "This is a list of proposals for which voting is in progress in on-chain governance(DAO).",
       "loan_list": "Loan list ({{ count }} case)",
       "loan_list_plural": "Loan list ({{ count }} cases)",
-      "loan_list__content": "List of loans that have passed in governance(DAO) and executed as DAI in ELYFI.",
+      "loan_list__content": "Loans executed in DAI Money Pool according to the decision of the Governance (DAO).",
       "onchain_list_zero": "There are currently no on-chain votes in progress.",
       "offchain_list_zero": "There are currently no data verification votes in progress.",
       "forum_button": "Go to ELYFI Forum",
