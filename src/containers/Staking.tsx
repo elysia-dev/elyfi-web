@@ -283,6 +283,11 @@ const Staking: React.FunctionComponent<IProps> = ({
             roundData[selectModalRound]?.accountReward) ||
           constants.Zero
         }
+        stakingBalance={
+          loading
+            ? constants.Zero
+            : roundData[selectModalRound].accountPrincipal
+        }
         currentRound={currentRound}
         round={selectModalRound + 1}
         closeHandler={() => setClaimStakingRewardModalVisible(false)}

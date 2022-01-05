@@ -278,6 +278,7 @@ const Dashboard: React.FunctionComponent = () => {
         balanceBefore={balances[selectedModalNumber].expectedIncentiveBefore}
         balanceAfter={balances[selectedModalNumber].expectedIncentiveAfter}
         incentivePoolAddress={reserves[selectedModalNumber].incentivePool.id}
+        tokenName={balances[selectedModalNumber].tokenName}
         afterTx={() => loadBalance(selectedModalNumber)}
         transactionModal={() => setTransactionModal(true)}
       />

@@ -1,4 +1,4 @@
-import { useWeb3React } from '@web3-react/core';
+import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { BigNumber, utils } from 'ethers';
 import { FunctionComponent, useContext } from 'react';
 import LoadingIndicator from 'src/components/LoadingIndicator';
@@ -15,6 +15,9 @@ import RoundData from 'src/core/types/RoundData';
 import CountUp from 'react-countup';
 import { formatEther } from '@ethersproject/units';
 import buildEventEmitter from 'src/utiles/buildEventEmitter';
+import TransactionType from 'src/enums/TransactionType';
+import ModalViewType from 'src/enums/ModalViewType';
+import ElyfiVersions from 'src/enums/ElyfiVersions';
 import ModalHeader from './ModalHeader';
 
 const ClaimStakingRewardModal: FunctionComponent<{
@@ -25,6 +28,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
     value: BigNumber;
   };
   endedBalance: BigNumber;
+  stakingBalance: BigNumber;
   currentRound: RoundData;
   visible: boolean;
   round: number;
@@ -34,6 +38,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
 }> = ({
   visible,
   stakedToken,
+  stakingBalance,
   token,
   balance,
   endedBalance,
@@ -43,7 +48,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
   afterTx,
   transactionModal,
 }) => {
-  const { account } = useWeb3React();
+  const { account, chainId } = useWeb3React();
   const stakingPool = useStakingPool(stakedToken, round >= 3);
   const { waiting } = useWatingTx();
   const { t } = useTranslation();
@@ -103,11 +108,17 @@ const ClaimStakingRewardModal: FunctionComponent<{
                   if (!account) return;
 
                   const emitter = buildEventEmitter(
-                    'ClaimStakingRewardModal',
-                    'Claim',
-                    `${utils.formatEther(
-                      (balance?.value || endedBalance)!,
-                    )} ${stakedToken} ${round}round`,
+                    ModalViewType.StakingIncentiveModal,
+                    TransactionType.Claim,
+                    JSON.stringify({
+                      version: ElyfiVersions.V1,
+                      chainId,
+                      address: account,
+                      stakingType: stakedToken,
+                      stakingAmount: utils.formatEther(stakingBalance),
+                      incentiveAmount: utils.formatEther(balance?.value || endedBalance),
+                      round,
+                    })
                   );
 
                   emitter.clicked();

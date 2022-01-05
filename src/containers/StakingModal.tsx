@@ -19,6 +19,9 @@ import RecentActivityType from 'src/enums/RecentActivityType';
 import ModalHeader from 'src/components/ModalHeader';
 import ModalConverter from 'src/components/ModalConverter';
 import buildEventEmitter from 'src/utiles/buildEventEmitter';
+import ModalViewType from 'src/enums/ModalViewType';
+import TransactionType from 'src/enums/TransactionType';
+import ElyfiVersions from 'src/enums/ElyfiVersions';
 
 const StakingModal: React.FunctionComponent<{
   visible: boolean;
@@ -44,7 +47,7 @@ const StakingModal: React.FunctionComponent<{
   transactionModal,
 }) => {
   const { t, i18n } = useTranslation();
-  const { account } = useWeb3React();
+  const { account, chainId } = useWeb3React();
   const [stakingMode, setStakingMode] = useState<boolean>(true);
   const [amount, setAmount] = useState({ value: '', max: false });
   const current = moment();
@@ -174,10 +177,19 @@ const StakingModal: React.FunctionComponent<{
                       return;
 
                     const emitter = buildEventEmitter(
-                      'StakingModal',
-                      'Withdraw',
-                      `${amount.value} ${amount.max} ${stakedToken} ${round}round`,
+                      ModalViewType.StakingOrUnstakingModal,
+                      TransactionType.Unstake,
+                      JSON.stringify({
+                        version: ElyfiVersions.V1,
+                        chainId,
+                        address: account,
+                        stakingType: stakedToken,
+                        round,
+                        unstakingAmount: utils.formatEther(amount.value),
+                        maxOrNot: amount.max,
+                      })
                     );
+
                     emitter.clicked();
 
                     stakingPool
@@ -232,9 +244,17 @@ const StakingModal: React.FunctionComponent<{
                     }
 
                     const emitter = buildEventEmitter(
-                      'StakingModal',
-                      `Stake`,
-                      `${amount.value} ${amount.max} ${stakedToken} ${round}round`,
+                      ModalViewType.StakingOrUnstakingModal,
+                      TransactionType.Stake,
+                      JSON.stringify({
+                        version: ElyfiVersions.V1,
+                        chainId,
+                        address: account,
+                        stakingType: stakedToken,
+                        round,
+                        unstakingAmount: utils.formatEther(amount.value),
+                        maxOrNot: amount.max,
+                      })
                     );
 
                     emitter.clicked();
@@ -278,9 +298,15 @@ const StakingModal: React.FunctionComponent<{
                   className={'modal__button'}
                   onClick={() => {
                     const emitter = buildEventEmitter(
-                      'StakingModal',
-                      `Approve`,
-                      `${stakedToken} ${round}round`,
+                      ModalViewType.StakingOrUnstakingModal,
+                      TransactionType.Approve,
+                      JSON.stringify({
+                        version: ElyfiVersions.V1,
+                        chainId,
+                        address: account,
+                        stakingType: stakedToken,
+                        round,
+                      })
                     );
 
                     emitter.clicked();

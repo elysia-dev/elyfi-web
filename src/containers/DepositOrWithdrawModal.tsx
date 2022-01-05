@@ -26,6 +26,9 @@ import ReserveData from 'src/core/data/reserves';
 import ModalHeader from 'src/components/ModalHeader';
 import ModalConverter from 'src/components/ModalConverter';
 import buildEventEmitter from 'src/utiles/buildEventEmitter';
+import ModalViewType from 'src/enums/ModalViewType';
+import TransactionType from 'src/enums/TransactionType';
+import ElyfiVersions from 'src/enums/ElyfiVersions';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
 
@@ -52,7 +55,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   afterTx,
   transactionModal,
 }) => {
-  const { account } = useWeb3React();
+  const { account, chainId } = useWeb3React();
   const { elfiPrice } = useContext(PriceContext);
   const [selected, select] = useState<boolean>(true);
   const {
@@ -118,9 +121,14 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const increateAllowance = async () => {
     if (!account) return;
     const emitter = buildEventEmitter(
-      'DepositOrWithdrawalModal',
-      'Approve',
-      `${reserve.id}`,
+      ModalViewType.DepositOrWithdrawModal,
+      TransactionType.Approve,
+      JSON.stringify({
+        version: ElyfiVersions.V1,
+        chainId,
+        address: account,
+        moneypoolType: tokenName,
+      })
     );
 
     emitter.clicked();
@@ -150,10 +158,17 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const requestDeposit = async (amount: BigNumber, max: boolean) => {
     if (!account) return;
 
-    const emitter = buildEventEmitter(
-      'DepositOrWithdrawalModal',
-      'Deposit',
-      `${utils.formatUnits(amount, tokenInfo?.decimals)} ${reserve.id}`,
+    const emitter =  buildEventEmitter(
+      ModalViewType.DepositOrWithdrawModal,
+      TransactionType.Deposit,
+      JSON.stringify({
+        version: ElyfiVersions.V1,
+        chainId,
+        address: account,
+        moneypoolType: tokenName,
+        depositAmount: utils.formatUnits(amount, tokenInfo?.decimals),
+        maxOrNot: max,
+      })
     );
 
     emitter.clicked();
@@ -184,9 +199,16 @@ const DepositOrWithdrawModal: FunctionComponent<{
     if (!account) return;
 
     const emitter = buildEventEmitter(
-      'DepositOrWithdrawalModal',
-      'Withdraw',
-      `${utils.formatUnits(amount, tokenInfo?.decimals)} ${max} ${reserve.id}`,
+      ModalViewType.DepositOrWithdrawModal,
+      TransactionType.Withdraw,
+      JSON.stringify({
+        version: ElyfiVersions.V1,
+        chainId,
+        address: account,
+        moneypoolType: tokenName,
+        withdrawalAmount: utils.formatUnits(amount, tokenInfo?.decimals),
+        maxOrNot: max
+      })
     );
 
     emitter.clicked();

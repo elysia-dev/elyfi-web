@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import { FunctionComponent, useContext } from 'react';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
 import { formatCommaSmall, formatSixFracionDigit } from 'src/utiles/formatters';
@@ -11,6 +11,10 @@ import { IncentivePool__factory } from '@elysia-dev/contract-typechain';
 import CountUp from 'react-countup';
 import ModalHeader from 'src/components/ModalHeader';
 import buildEventEmitter from 'src/utiles/buildEventEmitter';
+import ReserveData from 'src/core/data/reserves';
+import ModalViewType from 'src/enums/ModalViewType';
+import TransactionType from 'src/enums/TransactionType';
+import ElyfiVersions from 'src/enums/ElyfiVersions';
 
 // Create deposit & withdraw
 const IncentiveModal: FunctionComponent<{
@@ -18,6 +22,7 @@ const IncentiveModal: FunctionComponent<{
   balanceAfter: BigNumber;
   visible: boolean;
   incentivePoolAddress: string;
+  tokenName: string;
   onClose: () => void;
   afterTx: () => Promise<void>;
   transactionModal: () => void;
@@ -26,11 +31,12 @@ const IncentiveModal: FunctionComponent<{
   balanceBefore,
   balanceAfter,
   incentivePoolAddress,
+  tokenName,
   onClose,
   afterTx,
   transactionModal,
 }) => {
-  const { account, library } = useWeb3React();
+  const { account, library, chainId } = useWeb3React();
   const { reserves } = useContext(ReservesContext);
   const { setTransaction, failTransaction } = useContext(TxContext);
 
@@ -38,9 +44,15 @@ const IncentiveModal: FunctionComponent<{
     if (!account) return;
 
     const emitter = buildEventEmitter(
-      'IncentiveModal',
-      'Claim',
-      `${formatEther(balanceAfter)} ${reserves[0].incentivePool.id}`,
+      ModalViewType.IncentiveModal,
+      TransactionType.Claim,
+      JSON.stringify({
+        version: ElyfiVersions.V1,
+        chainId,
+        address: account,
+        moneypoolType: tokenName,
+        incentiveAmount: utils.formatEther(balanceAfter),
+      })
     );
 
     emitter.clicked();
