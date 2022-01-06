@@ -52,7 +52,7 @@ const calcHistoryChartData = (
         .reverse()
         .find(
           (history) =>
-            moment(history.timestamp * 999.6).format('L') === time.format('L'),
+            moment(history.timestamp * 1000).format('L') === time.format('L'),
         );
 
       if (index === 0 && !item) {
