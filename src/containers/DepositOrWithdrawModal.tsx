@@ -58,8 +58,6 @@ const DepositOrWithdrawModal: FunctionComponent<{
 }) => {
   const { account } = useWeb3React();
   const { elfiPrice } = useContext(PriceContext);
-  const moneyPoolAddress =
-    round === 1 ? envs.moneyPoolAddress1st : envs.moneyPoolAddress2nd;
   const isEndedRound = moment().isBefore(daiMoneyPoolTime[round - 1].endedAt);
   const [selected, select] = useState<boolean>(isEndedRound);
   const {
@@ -67,7 +65,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     loading,
     contract: reserveERC20,
     refetch,
-  } = useERC20Info(reserve.id, moneyPoolAddress);
+  } = useERC20Info(reserve.id, envs.moneyPoolAddress);
   const [liquidity, setLiquidity] = useState<{
     value: BigNumber;
     loaded: boolean;
@@ -134,7 +132,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     tracker.clicked();
 
     reserveERC20
-      .approve(moneyPoolAddress, constants.MaxUint256)
+      .approve(envs.moneyPoolAddress, constants.MaxUint256)
       .then((tx) => {
         setTransaction(
           tx,
@@ -264,7 +262,6 @@ const DepositOrWithdrawModal: FunctionComponent<{
           handlerProps={selected}
           setState={select}
           title={[t('dashboard.deposit'), t('dashboard.withdraw')]}
-          isEndedRound={isEndedRound}
         />
         {waiting ? (
           <LoadingIndicator />

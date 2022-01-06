@@ -90,7 +90,6 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
           handlerProps={stakingMode}
           setState={setStakingMode}
           title={[t('staking.staking')]}
-          isEndedRound={true}
         />
         {waiting ? (
           <LoadingIndicator />

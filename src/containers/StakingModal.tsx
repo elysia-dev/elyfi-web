@@ -88,7 +88,6 @@ const StakingModal: React.FunctionComponent<{
           handlerProps={stakingMode}
           setState={setStakingMode}
           title={[t('staking.staking'), t('staking.unstaking')]}
-          isEndedRound={true}
         />
         {waiting ? (
           <LoadingIndicator />

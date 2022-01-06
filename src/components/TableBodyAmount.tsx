@@ -24,9 +24,6 @@ const TableBodyAmount: React.FunctionComponent<{
   const { t } = useTranslation();
   const { value: mediaQuery } = useMediaQueryType();
   const { round } = useContext(ReservesContext);
-  const isStartedRound = moment().isAfter(
-    daiMoneyPoolTime[round - 1].startedAt,
-  );
 
   return mediaQuery === MediaQuery.PC ? (
     <>
@@ -36,9 +33,7 @@ const TableBodyAmount: React.FunctionComponent<{
       <div className="deposit__table__body__amount">
         <div
           onClick={buttonEvent}
-          className={`deposit__table__body__amount__button ${
-            isStartedRound ? '' : 'disable'
-          }`}>
+          className="deposit__table__body__amount__button">
           <p>{buttonContent}</p>
         </div>
         <div>
@@ -80,9 +75,7 @@ const TableBodyAmount: React.FunctionComponent<{
       </div>
       <div
         onClick={buttonEvent}
-        className={`deposit__table__body__amount__button ${
-          isStartedRound ? '' : 'disable'
-        }`}>
+        className="deposit__table__body__amount__button">
         <p>{buttonContent}</p>
       </div>
     </>
