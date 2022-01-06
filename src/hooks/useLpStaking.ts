@@ -6,7 +6,7 @@ import { lpTokenValues } from 'src/utiles/lpTokenValues';
 import { useContext } from 'react';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
-import useTxTracking from './useTxTracking';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
 
 const useLpStaking: () => (
   stakingPoolAdress: string,
@@ -16,7 +16,6 @@ const useLpStaking: () => (
 ) => void = () => {
   const { account, library } = useWeb3React();
   const { setTransaction } = useContext(TxContext);
-  const initTxTracker = useTxTracking();
 
   const staking = async (
     stakingPoolAdress: string,
@@ -46,10 +45,10 @@ const useLpStaking: () => (
       ](account, envs.stakerAddress, tokenId, encode, {
         gasLimit: 300000,
       });
-      const tracker = initTxTracker('LpStakingModal', 'LpStaking', ``);
+      const emitter = buildEventEmitter('LpStakingModal', 'LpStaking', ``);
       setTransaction(
         res,
-        tracker,
+        emitter,
         'Deposit' as RecentActivityType,
         () => {},
         () => {},

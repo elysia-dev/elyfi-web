@@ -7,7 +7,6 @@ import elfi from 'src/assets/images/ELFI.png';
 import SelectBox from 'src/components/SelectBox';
 import useLpStaking from 'src/hooks/useLpStaking';
 import { LpStakingModalProps } from 'src/core/types/LpStakingTypeProps';
-import useTxTracking from 'src/hooks/useTxTracking';
 import ModalHeader from '../ModalHeader';
 import ModalConverter from '../ModalConverter';
 
@@ -27,7 +26,6 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
   const [stakingMode, setStakingMode] = useState<boolean>(true);
   const { txWaiting } = useContext(TxContext);
   const { waiting } = useWatingTx();
-  const initTxTracker = useTxTracking();
   const staking = useLpStaking();
   const [selectedToken, setSelectedToken] = useState<{
     id: string;

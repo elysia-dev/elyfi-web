@@ -22,6 +22,9 @@ import MainContent from 'src/components/MainContent';
 import MainGraph from 'src/components/MainGraph';
 import LanguageType from 'src/enums/LanguageType';
 import MainAnimation from 'src/components/MainAnimation';
+import reactGA from 'react-ga';
+import PageEventType from 'src/enums/PageEventType';
+import ButtonEventType from 'src/enums/ButtonEventType';
 import { contextType } from 'google-map-react';
 import DrawWave from 'src/utiles/drawWave';
 
@@ -41,14 +44,32 @@ const Main = () => {
     {
       image: MainAnimation(0),
       link: `/${lng}/rewardplan/deposit`,
+      ga: () => {
+        reactGA.event({
+          category: PageEventType.MoveToInternalPage,
+          action: ButtonEventType.CheckInterestRateButton,
+        })
+      }
     },
     {
       image: MainAnimation(1),
       link: `/${lng}/deposit`,
+      ga: () => {
+        reactGA.event({
+          category: PageEventType.MoveToInternalPage,
+          action: ButtonEventType.CheckCollateralButton,
+        })
+      }
     },
     {
       image: MainAnimation(2),
       link: `/${lng}/governance`,
+      ga: () => {
+        reactGA.event({
+          category: PageEventType.MoveToInternalPage,
+          action: ButtonEventType.CheckGovernanceButton,
+        })
+      }
     },
   ];
 
@@ -114,17 +135,27 @@ const Main = () => {
             </div>
             <div className="main__title__button pc-only">
               <div
-                onClick={() => History.push({ pathname: `/${lng}/deposit` })}>
+                onClick={() => {
+                  reactGA.event({
+                    category: PageEventType.MoveToInternalPage,
+                    action: ButtonEventType.DepositButton,
+                  })
+                  History.push({ pathname: `/${lng}/deposit` })
+                }}>
                 <p ref={mainHeaderY}> {t('main.landing.button__deposit')}</p>
               </div>
               <div
-                onClick={() =>
+                onClick={() =>{
+                  reactGA.event({
+                    category: PageEventType.MoveToExternalPage,
+                    action: ButtonEventType.LearnMoreButton,
+                  })
                   window.open(
                     lng === LanguageType.KO
                       ? 'https://elysia.gitbook.io/elysia.finance/'
                       : 'https://elysia.gitbook.io/elysia.finance/v/eng',
                   )
-                }>
+                }}>
                 <p>{t('main.landing.button__view-more')}</p>
               </div>
             </div>
@@ -134,17 +165,29 @@ const Main = () => {
             <img src={Pit} className="pit" />
           </div>
           <div className="main__title__button mobile-only">
-            <div onClick={() => History.push({ pathname: `/${lng}/deposit` })}>
+            <div
+              onClick={() => {
+                reactGA.event({
+                  category: PageEventType.MoveToInternalPage,
+                  action: ButtonEventType.DepositButton,
+                })
+                History.push({ pathname: `/${lng}/deposit` })
+              }}>
               <p ref={mainHeaderMoblieY}>{t('main.landing.button__deposit')}</p>
             </div>
             <div
-              onClick={() =>
+              onClick={() => {
+                reactGA.event({
+                  category: PageEventType.MoveToExternalPage,
+                  action: ButtonEventType.LearnMoreButton,
+                })
                 window.open(
                   lng === LanguageType.KO
                     ? 'https://elysia.gitbook.io/elysia.finance/'
                     : 'https://elysia.gitbook.io/elysia.finance/v/eng',
                 )
-              }>
+              }}
+            >
               <p>{t('main.landing.button__view-more')}</p>
             </div>
           </div>

@@ -14,9 +14,12 @@ import useStakingPool from 'src/hooks/useStakingPool';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import { formatEther, parseEther } from 'ethers/lib/utils';
 import useWaitingTx from 'src/hooks/useWaitingTx';
-import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
+import ModalViewType from 'src/enums/ModalViewType';
+import TransactionType from 'src/enums/TransactionType';
+import ElyfiVersions from 'src/enums/ElyfiVersions';
 import LoadingIndicator from './LoadingIndicator';
 import ModalHeader from './ModalHeader';
 import Popupinfo from './PopupInfo';
@@ -44,7 +47,7 @@ const MigrationModal: React.FunctionComponent<{
 }) => {
   const current = moment();
   const { t, i18n } = useTranslation();
-  const { account } = useWeb3React();
+  const { account, chainId } = useWeb3React();
   const [state, setState] = useState({
     withdrawAmount: '',
     migrationAmount: '',
@@ -54,7 +57,6 @@ const MigrationModal: React.FunctionComponent<{
   const [mouseHover, setMouseHover] = useState(false);
   const stakingPool = useStakingPool(stakedToken, round >= 3);
   const { waiting, wait } = useWaitingTx();
-  const initTxTracker = useTxTracking();
   const { setTransaction, failTransaction } = useContext(TxContext);
 
   const amountGtStakedBalance =
@@ -275,15 +277,22 @@ const MigrationModal: React.FunctionComponent<{
             )
               return;
 
-            const tracker = initTxTracker(
-              'MigrationModal',
-              'Migrate',
-              `${state.migrationAmount} ${formatEther(
-                stakedBalance,
-              )} ${stakedToken} ${round}round`,
+            const emitter = buildEventEmitter(
+              ModalViewType.MigrationOrUnstakingModal,
+              TransactionType.Migrate,
+              JSON.stringify({
+                version: ElyfiVersions.V1,
+                chainId,
+                address: account,
+                stakingType: stakedToken,
+                round,
+                migrationAmount: utils.formatEther(state.migrationAmount || '0'),
+                unstakingAmount: utils.formatEther(state.withdrawAmount || '0'),
+                incentiveAmount: utils.formatEther(rewardBalance),
+              })
             );
 
-            tracker.clicked();
+            emitter.clicked();
 
             // TRICKY
             // ELFI V2 StakingPool need round - 2 value
@@ -302,7 +311,7 @@ const MigrationModal: React.FunctionComponent<{
               .then((tx) => {
                 setTransaction(
                   tx,
-                  tracker,
+                  emitter,
                   (stakedToken + 'Migration') as RecentActivityType,
                   () => {
                     transactionModal();
@@ -315,7 +324,7 @@ const MigrationModal: React.FunctionComponent<{
               })
               .catch((e) => {
                 console.error(e);
-                failTransaction(tracker, closeHandler, e);
+                failTransaction(emitter, closeHandler, e);
               });
           }}>
           <p>

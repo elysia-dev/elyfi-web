@@ -15,6 +15,9 @@ import TxStatus from 'src/enums/TxStatus';
 import TxContext from 'src/contexts/TxContext';
 import LanguageContext from 'src/contexts/LanguageContext';
 import LanguageType from 'src/enums/LanguageType';
+import reactGA from 'react-ga';
+import PageEventType from 'src/enums/PageEventType';
+import ButtonEventType from 'src/enums/ButtonEventType';
 import ErrorModal from './ErrorModal';
 
 const InitialNavigation: INavigation[] = [
@@ -211,6 +214,12 @@ const Navigation: React.FunctionComponent<{
           setSelectedLocalNavIndex(0);
         }}
         onClick={() => {
+          if (_index === 0) {
+            reactGA.event({
+              category: PageEventType.MoveToInternalPage,
+              action: ButtonEventType.DepositButtonOnTop,
+            })
+          }
           initialNavigationState();
         }}>
         {globalNavInnerContainer(_data as INavigation, _index)}
@@ -277,7 +286,7 @@ const Navigation: React.FunctionComponent<{
                   display: selectedLocalNavIndex === data.id ? 'block' : 'none',
                 }}>
                 <div className="navigation__hamburger__lnb__sub-navigation__wrapper">
-                  {data.subNavigation!.map((_data) => {
+                  {data.subNavigation!.map((_data, index) => {
                     return (
                       <Link
                         to={{
@@ -292,6 +301,12 @@ const Navigation: React.FunctionComponent<{
                             : undefined
                         }
                         onClick={() => {
+                          if (index === 0) {
+                            reactGA.event({
+                              category: PageEventType.MoveToInternalPage,
+                              action: ButtonEventType.DepositButtonOnTop,
+                            })
+                          }
                           setHamburgerBar(false);
                         }}>
                         <div>

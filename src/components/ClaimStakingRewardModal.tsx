@@ -1,4 +1,4 @@
-import { useWeb3React } from '@web3-react/core';
+import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { BigNumber, utils } from 'ethers';
 import { FunctionComponent, useContext } from 'react';
 import LoadingIndicator from 'src/components/LoadingIndicator';
@@ -9,12 +9,15 @@ import Token from 'src/enums/Token';
 import { useTranslation } from 'react-i18next';
 import useStakingPool from 'src/hooks/useStakingPool';
 import useWatingTx from 'src/hooks/useWaitingTx';
-import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import RoundData from 'src/core/types/RoundData';
 import CountUp from 'react-countup';
 import { formatEther } from '@ethersproject/units';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
+import TransactionType from 'src/enums/TransactionType';
+import ModalViewType from 'src/enums/ModalViewType';
+import ElyfiVersions from 'src/enums/ElyfiVersions';
 import ModalHeader from './ModalHeader';
 
 const ClaimStakingRewardModal: FunctionComponent<{
@@ -25,6 +28,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
     value: BigNumber;
   };
   endedBalance: BigNumber;
+  stakingBalance: BigNumber;
   currentRound: RoundData;
   visible: boolean;
   round: number;
@@ -34,6 +38,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
 }> = ({
   visible,
   stakedToken,
+  stakingBalance,
   token,
   balance,
   endedBalance,
@@ -43,11 +48,10 @@ const ClaimStakingRewardModal: FunctionComponent<{
   afterTx,
   transactionModal,
 }) => {
-  const { account } = useWeb3React();
+  const { account, chainId } = useWeb3React();
   const stakingPool = useStakingPool(stakedToken, round >= 3);
   const { waiting } = useWatingTx();
   const { t } = useTranslation();
-  const initTxTracker = useTxTracking();
   const { setTransaction, failTransaction } = useContext(TxContext);
 
   return (
@@ -103,15 +107,21 @@ const ClaimStakingRewardModal: FunctionComponent<{
                 onClick={() => {
                   if (!account) return;
 
-                  const tracker = initTxTracker(
-                    'ClaimStakingRewardModal',
-                    'Claim',
-                    `${utils.formatEther(
-                      (balance?.value || endedBalance)!,
-                    )} ${stakedToken} ${round}round`,
+                  const emitter = buildEventEmitter(
+                    ModalViewType.StakingIncentiveModal,
+                    TransactionType.Claim,
+                    JSON.stringify({
+                      version: ElyfiVersions.V1,
+                      chainId,
+                      address: account,
+                      stakingType: stakedToken,
+                      stakingAmount: utils.formatEther(stakingBalance),
+                      incentiveAmount: utils.formatEther(balance?.value || endedBalance),
+                      round,
+                    })
                   );
 
-                  tracker.clicked();
+                  emitter.clicked();
 
                   // TRICKY
                   // ELFI V2 StakingPool need round - 2 value
@@ -125,7 +135,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
                     .then((tx) => {
                       setTransaction(
                         tx,
-                        tracker,
+                        emitter,
                         (stakedToken + 'Claim') as RecentActivityType,
                         () => {
                           transactionModal();
@@ -137,7 +147,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
                       );
                     })
                     .catch((e) => {
-                      failTransaction(tracker, closeHandler, e);
+                      failTransaction(emitter, closeHandler, e);
                     });
                 }}>
                 <p>{t('staking.claim_reward')}</p>

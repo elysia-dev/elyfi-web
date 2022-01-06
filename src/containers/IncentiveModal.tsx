@@ -1,16 +1,20 @@
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import { FunctionComponent, useContext } from 'react';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
 import { formatCommaSmall, formatSixFracionDigit } from 'src/utiles/formatters';
 import { formatEther } from 'ethers/lib/utils';
-import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ReservesContext from 'src/contexts/ReservesContext';
 import { IncentivePool__factory } from '@elysia-dev/contract-typechain';
 import CountUp from 'react-countup';
 import ModalHeader from 'src/components/ModalHeader';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
+import ReserveData from 'src/core/data/reserves';
+import ModalViewType from 'src/enums/ModalViewType';
+import TransactionType from 'src/enums/TransactionType';
+import ElyfiVersions from 'src/enums/ElyfiVersions';
 
 // Create deposit & withdraw
 const IncentiveModal: FunctionComponent<{
@@ -18,6 +22,7 @@ const IncentiveModal: FunctionComponent<{
   balanceAfter: BigNumber;
   visible: boolean;
   incentivePoolAddress: string;
+  tokenName: string;
   onClose: () => void;
   afterTx: () => Promise<void>;
   transactionModal: () => void;
@@ -26,33 +31,39 @@ const IncentiveModal: FunctionComponent<{
   balanceBefore,
   balanceAfter,
   incentivePoolAddress,
+  tokenName,
   onClose,
   afterTx,
   transactionModal,
 }) => {
-  const { account, library } = useWeb3React();
-  const initTxTracker = useTxTracking();
+  const { account, library, chainId } = useWeb3React();
   const { reserves } = useContext(ReservesContext);
   const { setTransaction, failTransaction } = useContext(TxContext);
 
   const reqeustClaimIncentive = async () => {
     if (!account) return;
 
-    const tracker = initTxTracker(
-      'IncentiveModal',
-      'Claim',
-      `${formatEther(balanceAfter)} ${reserves[0].incentivePool.id}`,
+    const emitter = buildEventEmitter(
+      ModalViewType.IncentiveModal,
+      TransactionType.Claim,
+      JSON.stringify({
+        version: ElyfiVersions.V1,
+        chainId,
+        address: account,
+        moneypoolType: tokenName,
+        incentiveAmount: utils.formatEther(balanceAfter),
+      })
     );
 
-    tracker.clicked();
+    emitter.clicked();
 
     IncentivePool__factory.connect(incentivePoolAddress, library.getSigner())
       .claimIncentive()
       .then((tx) => {
-        tracker.created();
+        emitter.created();
         setTransaction(
           tx,
-          tracker,
+          emitter,
           RecentActivityType.Claim,
           () => {
             transactionModal();
@@ -64,7 +75,7 @@ const IncentiveModal: FunctionComponent<{
         );
       })
       .catch((error) => {
-        failTransaction(tracker, onClose, error);
+        failTransaction(emitter, onClose, error);
         console.error(error);
       });
   };

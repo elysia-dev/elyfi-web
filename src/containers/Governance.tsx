@@ -16,6 +16,9 @@ import LanguageType from 'src/enums/LanguageType';
 import moment from 'moment';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
+import reactGA from 'react-ga';
+import PageEventType from 'src/enums/PageEventType';
+import ButtonEventType from 'src/enums/ButtonEventType';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
 
@@ -160,7 +163,13 @@ const Governance = () => {
     return (
       <div
         className="governance__validation__assets governance__asset"
-        onClick={() => window.open(data.link)}>
+        onClick={() => {
+          reactGA.event({
+            category: PageEventType.MoveToExternalPage,
+            action: ButtonEventType.OffChainVoteButtonOnGovernance,
+          })
+          window.open(data.link)
+        }}>
         <div>
           <img src={`https://${data.images}`} />
         </div>
@@ -195,11 +204,15 @@ const Governance = () => {
     return (
       <div
         className="governance__onchain-vote__assets governance__asset"
-        onClick={() =>
+        onClick={() =>{
+          reactGA.event({
+            category: PageEventType.MoveToExternalPage,
+            action: ButtonEventType.OnChainVoteButtonOnGovernance,
+          })
           window.open(
             `https://www.withtally.com/governance/elyfi/proposal/${data.id}`,
           )
-        }>
+        }}>
         <div>
           <img
             src={
