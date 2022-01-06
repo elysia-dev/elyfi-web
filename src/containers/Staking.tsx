@@ -43,6 +43,8 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import { useParams } from 'react-router-dom';
 import ModalViewType from 'src/enums/ModalViewType';
+import DrawWave from 'src/utiles/drawWave';
+import TokenColors from 'src/enums/TokenColors';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI;
@@ -70,7 +72,8 @@ const Staking: React.FunctionComponent<IProps> = ({
   const current = moment();
   const { account } = useWeb3React();
   const { elPrice, elfiPrice } = useContext(PriceContext);
-  const tokenRef = useRef<HTMLParagraphElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
   const stakingPool = useStakingPool(stakedToken);
   const stakingPoolV2 = useStakingPool(Token.ELFI, true);
 
@@ -136,6 +139,35 @@ const Staking: React.FunctionComponent<IProps> = ({
 
   const { value: mediaQuery } = useMediaQueryType();
   const { lng } = useParams<{ lng: string }>();
+
+  const draw = () => {
+    const dpr = window.devicePixelRatio;
+    const canvas: HTMLCanvasElement | null = canvasRef.current;
+
+    if (!headerRef.current) return;
+    const headerY =
+      headerRef.current.offsetTop +
+      (stakedToken === Token.EL
+        ? document.body.clientWidth > 1190
+          ? 125
+          : 90
+        : document.body.clientWidth > 1190
+        ? 164
+        : 150);
+    if (!canvas) return;
+    canvas.width = document.body.clientWidth * dpr;
+    canvas.height = document.body.clientHeight * dpr;
+    const browserWidth = canvas.width / dpr + 40;
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) return;
+    ctx.scale(dpr, dpr);
+
+    new DrawWave(ctx, browserWidth).drawOnPages(
+      headerY,
+      stakedToken === Token.EL ? TokenColors.EL : TokenColors.ELFI,
+    );
+  };
 
   const fetchRoundData = async (account: string | null | undefined) => {
     try {
@@ -255,8 +287,27 @@ const Staking: React.FunctionComponent<IProps> = ({
     setState({ ...state, txWaiting: isWaiting });
   };
 
+  useEffect(() => {
+    draw();
+    window.addEventListener('resize', () => draw());
+
+    return () => {
+      window.removeEventListener('resize', () => draw());
+    };
+  }, []);
+
   return (
     <>
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'absolute',
+          width: '100%',
+          top: 0,
+          left: 0,
+          zIndex: -1,
+        }}
+      />
       <TransactionConfirmModal
         visible={transactionModal}
         closeHandler={() => {
@@ -347,7 +398,7 @@ const Staking: React.FunctionComponent<IProps> = ({
         }}
         round={selectModalRound + 1}
       />
-      <img
+      {/* <img
         style={{
           position: 'absolute',
           left: 0,
@@ -357,10 +408,10 @@ const Staking: React.FunctionComponent<IProps> = ({
         }}
         src={wave}
         alt={wave}
-      />
+      /> */}
       <section className="staking">
         <section>
-          <div className="staking__title">
+          <div ref={headerRef} className="staking__title">
             <h2>
               {t('staking.staking__token', {
                 token: stakedToken.toUpperCase(),
@@ -371,7 +422,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                 ? t('staking.el.staking__content')
                 : t('staking.elfi.staking__content')}
             </p>
-            <div ref={tokenRef} className="staking__title__button">
+            <div className="staking__title__button">
               <a
                 href={
                   stakedToken === Token.ELFI

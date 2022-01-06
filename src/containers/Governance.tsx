@@ -19,15 +19,15 @@ import MediaQuery from 'src/enums/MediaQuery';
 import reactGA from 'react-ga';
 import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
+import DrawWave from 'src/utiles/drawWave';
+import TokenColors from 'src/enums/TokenColors';
 
 const Governance = () => {
   const [onChainLoading, setOnChainLoading] = useState(true);
   const [offChainLoading, setOffChainLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const governanceRef = useRef<HTMLParagraphElement>(null);
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-  const [innerHeight, setInnerHeight] = useState(window.innerHeight);
+  const headerRef = useRef<HTMLDivElement>(null);
   const [onChainData, setOnChainData] = useState<IProposals[]>([]);
   const [offChainNapData, setOffChainNapData] = useState<INapData[]>([]);
   const { data, loading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
@@ -35,74 +35,25 @@ const Governance = () => {
   const History = useHistory();
   const { lng } = useParams<{ lng: string }>();
 
-  const getInnerValue = () => {
-    setInnerWidth(window.innerWidth);
-    setInnerHeight(window.innerHeight);
+  const draw = () => {
+    const dpr = window.devicePixelRatio;
+    const canvas: HTMLCanvasElement | null = canvasRef.current;
+
+    if (!headerRef.current) return;
+    const headerY = headerRef.current.offsetTop + 80;
+    if (!canvas) return;
+    canvas.width = document.body.clientWidth * dpr;
+    canvas.height = document.body.clientHeight * dpr;
+    const browserWidth = canvas.width / dpr + 40;
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) return;
+    ctx.scale(dpr, dpr);
+
+    new DrawWave(ctx, browserWidth).drawOnPages(headerY, TokenColors.ELFI);
   };
 
-  useEffect(() => {
-    window.addEventListener('resize', getInnerValue);
-
-    return () => {
-      window.removeEventListener('resize', getInnerValue);
-    };
-  }, []);
-
   const { value: mediaQuery } = useMediaQueryType();
-
-  // const draw = () => {
-  //   const dpr = window.devicePixelRatio;
-  //   const canvas: HTMLCanvasElement | null = canvasRef.current;
-  //   if (!governanceRef.current) return;
-  //   const governanceYValue = governanceRef.current.offsetTop;
-  //   if (!canvas) return;
-  //   canvas.width = window.innerWidth * dpr;
-  //   canvas.height = document.body.clientHeight * dpr;
-  //   const browserWidth = document.body.clientWidth;
-  //   const browserHeight = document.body.clientHeight / 1.27 + 500;
-  //   const context = canvas.getContext('2d');
-  //   if (!context) return;
-  //   context.scale(dpr, dpr);
-  //   context.strokeStyle = '#00BFFF';
-  //   context.beginPath();
-  //   context.moveTo(0, governanceYValue * 1.2);
-  //   context.bezierCurveTo(
-  //     browserWidth * 0.3,
-  //     governanceYValue * 1.333,
-  //     browserWidth / 1.5,
-  //     governanceYValue * 1.1025,
-  //     browserWidth,
-  //     governanceYValue * 1.077,
-  //   );
-  //   context.stroke();
-
-  //   context.fillStyle = 'rgba(247, 251, 255, 1)';
-  //   context.beginPath();
-  //   context.moveTo(0, governanceYValue * 1.25);
-  //   context.bezierCurveTo(
-  //     browserWidth * 0.3,
-  //     governanceYValue * 1.333,
-  //     browserWidth / 1.5,
-  //     governanceYValue * 1.077,
-  //     browserWidth,
-  //     governanceYValue * 1.1025,
-  //   );
-  //   context.lineTo(browserWidth, browserHeight);
-  //   context.bezierCurveTo(
-  //     browserWidth * 0.3,
-  //     browserHeight * 0.98,
-  //     browserWidth / 2,
-  //     browserHeight * 1.04,
-  //     0,
-  //     browserHeight * 0.99,
-  //   );
-  //   context.fill();
-  //   context.stroke();
-
-  //   // context.fillStyle = "#ffffff";
-  //   // context.moveTo(browserWidth / 3.2 + 10, yValue * 1.685);
-  //   // context.arc(browserWidth / 3.2, yValue * 1.685, 10, 0, Math.PI * 2, true);
-  // };
 
   const viewMoreHandler = useCallback(() => {
     setPageNumber((prev) => prev + 1);
@@ -199,6 +150,15 @@ const Governance = () => {
     });
   }, []);
 
+  useEffect(() => {
+    draw();
+    window.addEventListener('resize', () => draw());
+
+    return () => {
+      window.removeEventListener('resize', () => draw());
+    };
+  }, []);
+
   const offChainContainer = (data: INapData) => {
     return (
       <div
@@ -290,7 +250,7 @@ const Governance = () => {
               />
             </div>
             <div>
-              <h2>Againest</h2>
+              <h2>Against</h2>
               <progress
                 className="governance__asset__progress-bar index-1"
                 value={parseFloat(
@@ -317,7 +277,7 @@ const Governance = () => {
 
   return (
     <>
-      {/* <canvas
+      <canvas
         ref={canvasRef}
         style={{
           position: 'absolute',
@@ -326,8 +286,8 @@ const Governance = () => {
           left: 0,
           zIndex: -1,
         }}
-      /> */}
-      <img
+      />
+      {/* <img
         style={{
           position: 'absolute',
           left: 0,
@@ -337,10 +297,11 @@ const Governance = () => {
         }}
         src={wave}
         alt={wave}
-      />
+      /> */}
       ;
       <div className="governance">
         <section
+          ref={headerRef}
           className="governance__content"
           style={{
             marginBottom: 100,
@@ -358,7 +319,6 @@ const Governance = () => {
               <p>{t('governance.button--staking')}</p>
             </div>
             <div
-              ref={governanceRef}
               className="governance__content__button"
               onClick={() =>
                 window.open(

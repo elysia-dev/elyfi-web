@@ -6,8 +6,6 @@ import { toUsd, toPercent } from 'src/utiles/formatters';
 import { BigNumber, constants } from 'ethers';
 import Chart from 'react-google-charts';
 
-import waveDai from 'src/assets/images/wave_dai.png';
-import waveUSDT from 'src/assets/images/wave_usdt.png';
 import ErrorPage from 'src/components/ErrorPage';
 import ReservesContext from 'src/contexts/ReservesContext';
 import { useTranslation } from 'react-i18next';
@@ -27,6 +25,8 @@ import moment from 'moment';
 import Loan from 'src/containers/Loan';
 import MarketDetailsBody from 'src/components/MarketDetailsBody';
 import styled from 'styled-components';
+import DrawWave from 'src/utiles/drawWave';
+import TokenColors from 'src/enums/TokenColors';
 
 const initialBalanceState = {
   loading: true,
@@ -61,12 +61,13 @@ const ChartComponent = styled(Chart)`
   .google-visualization-tooltip {
     position: absolute !important;
     top: 30px !important;
-    /* left: ${(props) => props.theme.xValue}px !important; */
   }
 `;
 
 function MarketDetail(): JSX.Element {
   const { account, library } = useWeb3React();
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
   const [mouseHover, setMouseHover] = useState(0);
   const [graphConverter, setGraphConverter] = useState(false);
   const [transactionModal, setTransactionModal] = useState(false);
@@ -122,6 +123,29 @@ function MarketDetail(): JSX.Element {
       ).balanceOf(account),
     };
   };
+
+  const draw = () => {
+    const dpr = window.devicePixelRatio;
+    const canvas: HTMLCanvasElement | null = canvasRef.current;
+
+    if (!headerRef.current) return;
+    const headerY =
+      headerRef.current.offsetTop +
+      (document.body.clientWidth > 1190 ? 30 : 10);
+    if (!canvas) return;
+    canvas.width = document.body.clientWidth * dpr;
+    canvas.height = document.body.clientHeight * dpr;
+    const browserWidth = canvas.width / dpr + 40;
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) return;
+    ctx.scale(dpr, dpr);
+    new DrawWave(ctx, browserWidth).drawOnPages(
+      headerY,
+      id === Token.DAI ? TokenColors.DAI : TokenColors.USDT,
+    );
+  };
+
   const loadBalance = async () => {
     if (!account) return;
 
@@ -167,6 +191,15 @@ function MarketDetail(): JSX.Element {
   };
 
   useEffect(() => {
+    window.addEventListener('resize', () => draw());
+
+    return () => {
+      window.removeEventListener('resize', () => draw());
+    };
+  }, []);
+
+  useEffect(() => {
+    draw();
     loadBalances();
   }, [account]);
 
@@ -188,18 +221,16 @@ function MarketDetail(): JSX.Element {
 
   return (
     <>
-      <img
+      <canvas
+        ref={canvasRef}
         style={{
           position: 'absolute',
-          left: 0,
-          top: tokenRef.current?.offsetTop || 230,
           width: '100%',
+          top: 0,
+          left: 0,
           zIndex: -1,
         }}
-        src={id === Token.DAI ? waveDai : waveUSDT}
-        alt={id === Token.DAI ? waveDai : waveUSDT}
       />
-
       <TransactionConfirmModal
         visible={transactionModal}
         closeHandler={() => {
@@ -209,14 +240,14 @@ function MarketDetail(): JSX.Element {
       <div className="detail">
         <div className="component__text-navigation">
           <p
-            onClick={() => history.push(`/${lng}/dashboard`)}
+            onClick={() => history.push(`/${lng}/deposit`)}
             className="pointer">
             {t('dashboard.deposit')}
           </p>
           &nbsp;&gt;&nbsp;
           <p>{t('dashboard.reward_plan')}</p>
         </div>
-        <div className="detail__header">
+        <div ref={headerRef} className="detail__header">
           <img src={tokenInfo?.image} alt="Token image" />
           <h2 ref={tokenRef}>{tokenInfo?.name.toLocaleUpperCase()}</h2>
         </div>
@@ -259,27 +290,9 @@ function MarketDetail(): JSX.Element {
             </div>
             <div className={`market__detail__graph__${id}`}>
               <ChartComponent
-                // theme={{
-                //   xValue: mouseHover / 1.455,
-                // }}
                 height={'500px'}
                 chartType="ComboChart"
                 loader={<div>Loading Chart</div>}
-                // chartEvents={[
-                //   {
-                //     eventName: 'select',
-                //     callback: ({ chartWrapper, google }) => {
-                //       console.log(chartWrapper.getChart().getSelection());
-                //       google.visualization.events.addListener(
-                //         chartWrapper,
-                //         'select',
-                //         (e) => {
-                //           console.log(e);
-                //         },
-                //       );
-                //     },
-                //   },
-                // ]}
                 data={[
                   [
                     'Month',

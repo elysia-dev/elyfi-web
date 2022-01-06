@@ -33,8 +33,8 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     overflow-y: scroll;
     &__hamburger {
       &__content {
-        
-        > div, a>div {
+        > div,
+        a > div {
           // padding: 33px 0px 36px;
           height: 70px;
           width: 360px;
@@ -352,7 +352,6 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             animation-duration: 15s;
             animation-name: DownFade--mobile;
             animation-iteration-count: infinite;
-  
           }
           .token-many {
             position: relative;
@@ -431,7 +430,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       @keyframes DownFade--mobile {
         0% {
           transform: translateY(0px);
-          opacity: 0.0;
+          opacity: 0;
         }
         10% {
           transform: translateY(40px);
@@ -468,7 +467,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         }
         100% {
           transform: translateY(-200px);
-          opacity: 0.0;
+          opacity: 0;
         }
       }
       &__button {
@@ -754,7 +753,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       &__body {
         &__amount {
           display: flex;
-          flex-direction: row; 
+          flex-direction: row;
           justify-content: space-between;
           width: 100%;
           &__button {
@@ -789,8 +788,8 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             padding: 12px 15px 0px;
             display: flex;
             align-items: center;
-            flex-direction: column; 
-            
+            flex-direction: column;
+
             border-bottom: 1px solid $gray-line;
             &.right {
               border: none;
@@ -977,7 +976,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       }
       &__lp {
         &__container {
-          margin-top: 38px;
+          margin-top: 70px;
         }
         &__title {
           padding: 15px;
@@ -1078,7 +1077,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 
     &__header {
       margin-bottom: 75px;
-      > img { 
+      > img {
         width: 42px;
         height: 42px;
       }
@@ -1227,7 +1226,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
                 margin-top: 8px;
                 margin-bottom: -8px;
               }
-            } 
+            }
           }
         }
       }
@@ -1242,7 +1241,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         padding-bottom: 10px;
         margin-bottom: 15px;
         margin-top: 20px;
-        
+
         > div {
           display: flex;
           flex-direction: row;
@@ -1255,7 +1254,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             font-size: 13px;
             color: $font-color;
           }
-          >a>div {
+          > a > div {
             margin: 0;
           }
         }
@@ -1281,8 +1280,8 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         }
         > div {
           > p {
-            font-size: 12px; 
-           }
+            font-size: 12px;
+          }
         }
         &:last-child {
           > div {
@@ -1327,7 +1326,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     > div {
       margin-bottom: 20px;
       padding-bottom: 10px;
-      > h2 { 
+      > h2 {
         font-size: 13px;
         margin-bottom: 10px;
       }
@@ -1373,7 +1372,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         > div {
           padding: 0 14px;
           display: flex;
-          flex-direction:column;
+          flex-direction: column;
           gap: 12px;
           &:first-child {
             padding-top: 20px;
@@ -1417,7 +1416,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           }
         }
         &--right {
-          padding: 20px 16px; 
+          padding: 20px 16px;
           border: none;
           > div {
             margin-bottom: 12px;
@@ -1428,7 +1427,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         }
       }
     }
-  }// portfolio end
+  } // portfolio end
 
   .staking {
     @include page-container;
@@ -1448,7 +1447,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         padding: 5px 10px;
         margin-top: 15px;
         margin-bottom: 100px;
-        > a { 
+        > a {
           > p {
             font-size: 12px;
           }
@@ -1670,7 +1669,6 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             > p {
               font-size: 12px;
               color: $gray-font-color;
-              
             }
             > h2 {
               font-size: 12px;
@@ -1693,7 +1691,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         }
       }
     }
-    
+
     &__lp {
       &__header {
         > h2 {
@@ -1745,7 +1743,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           padding: 12px 15px 11px;
           gap: 12px;
           display: flex;
-          flex-direction: column  ;
+          flex-direction: column;
           > div {
             border: none;
             > div {
@@ -1753,7 +1751,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
                 font-size: 12px;
               }
             }
-            > h2 { 
+            > h2 {
               font-size: 12px;
             }
           }
@@ -1899,7 +1897,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
                 flex-direction: row !important;
                 justify-content: space-between;
                 width: 100%;
-                > h2 { 
+                > h2 {
                   font-size: 12px;
                   color: $font-color;
                 }
@@ -1957,11 +1955,11 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
               }
               &__image {
                 gap: 8px;
-                > img { 
+                > img {
                   width: 21px;
                   height: 21px;
                 }
-                > h2 { 
+                > h2 {
                   font-size: 13px;
                 }
               }
@@ -1997,7 +1995,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             &__unit {
               font-size: 12px;
               color: $sub-font-color;
-              margin-left: 3px; 
+              margin-left: 3px;
               &__wrapper {
                 flex-direction: column !important;
                 gap: 12px;
@@ -2096,7 +2094,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 
   .modal {
     .close-button {
-      transform: scale(.7);
+      transform: scale(0.7);
     }
     &__button {
       width: 90%;
@@ -2119,11 +2117,11 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       &__image {
         width: 24px;
         height: 24px;
-        margin-right: 10px;    
+        margin-right: 10px;
         &--sub-token {
           width: 24px;
           height: 24px;
-          margin-right: 10px;  
+          margin-right: 10px;
           margin-left: -6px;
         }
       }
@@ -2367,7 +2365,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       }
       .arrow-wrapper {
         height: 55px;
-        transform: scale(.5);
+        transform: scale(0.5);
         margin: -5px 0 -30px;
         display: -webkit-flex;
         display: flex;
@@ -2400,7 +2398,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       &__nth {
         margin-top: 6px;
         > img {
-          transform: scale(.7);
+          transform: scale(0.7);
         }
         > p {
           font-size: 10px;
@@ -2631,6 +2629,64 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     > h2 {
       font-size: 12px;
       color: $sub-font-color;
+    }
+  }
+  .error {
+    &__container {
+      border: 1px solid #ffffff;
+      width: 300px;
+      height: 445.5px;
+      border-radius: 10px;
+      background: #ffffff;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      padding-bottom: 31px;
+
+      &__header {
+        display: flex;
+        justify-content: space-between;
+        padding: 29.25px 31px 20.25px 28px;
+        > div:first-child {
+          font-size: 18px;
+          color: #333333;
+        }
+      }
+
+      &__inquiry {
+        padding: 33.25px 37.25px 30.75px 38.75px;
+        font-size: 15px;
+      }
+
+      &__description {
+        background: #f0f0f1;
+        padding: 18px 31.25px 21px 27.75px;
+
+        > div:first-child {
+          margin-bottom: 10px;
+        }
+        > div:nth-child(2) {
+          display: flex;
+          > div {
+            width: 100%;
+
+            textarea {
+              resize: none;
+              width: 100%;
+              height: 88px;
+              text-align: left;
+              padding: 20px;
+              border: 1px solid #e6e6e6;
+              border-radius: 5px;
+            }
+          }
+        }
+      }
+      > div:last-child {
+        margin: 8px auto;
+      }
     }
   }
 
