@@ -319,35 +319,6 @@ const Dashboard: React.FunctionComponent = () => {
             delay={0}>
             {({ countUpRef }) => <h2 className="blue" ref={countUpRef} />}
           </CountUp>
-          <div>
-            <div className="deposit__title__round">
-              {Array(2)
-                .fill(0)
-                .map((_x, index) => {
-                  return (
-                    <div
-                      className={index + 1 === round ? 'active' : ''}
-                      onClick={() => setRound(index + 1)}>
-                      <p>
-                        {t(
-                          mediaQuery === MediaQuery.PC
-                            ? 'staking.nth--short'
-                            : 'staking.nth--short',
-                          {
-                            nth: toOrdinalNumber(i18n.language, index + 1),
-                          },
-                        )}
-                      </p>
-                      <p>
-                        {index === 0
-                          ? `(~ 2022.01.11 KST)`
-                          : `(2022.01.11 KST ~)`}
-                      </p>
-                    </div>
-                  );
-                })}
-            </div>
-          </div>
         </div>
         <RewardPlanButton stakingType={'deposit'} />
         <div className="deposit__table__wrapper">
