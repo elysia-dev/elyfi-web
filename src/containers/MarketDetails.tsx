@@ -74,9 +74,7 @@ function MarketDetail(): JSX.Element {
   const [graphConverter, setGraphConverter] = useState(false);
   const [transactionModal, setTransactionModal] = useState(false);
   const tokenRef = useRef<HTMLParagraphElement>(null);
-  const { reserves1st, reserves2nd, round, setRound } =
-    useContext(ReservesContext);
-  const reserves = round === 1 ? reserves1st : reserves2nd;
+  const { reserves } = useContext(ReservesContext);
   const { latestPrice, poolDayData } = useContext(UniswapPoolContext);
   const { lng, id } = useParams<{ lng: string; id: Token.DAI | Token.USDT }>();
   const history = useHistory();
@@ -225,7 +223,7 @@ function MarketDetail(): JSX.Element {
         <div className="detail__header">
           <img src={tokenInfo?.image} alt="Token image" />
           <h2 ref={tokenRef}>{tokenInfo?.name.toLocaleUpperCase()}</h2>
-          <div>
+          {/* <div>
             <div
               className={`detail__header__round ${tokenInfo?.name.toLocaleUpperCase()}`}>
               {Array(2)
@@ -254,7 +252,7 @@ function MarketDetail(): JSX.Element {
                   );
                 })}
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="detail__container">
           <MarketDetailsBody
@@ -295,27 +293,9 @@ function MarketDetail(): JSX.Element {
             </div>
             <div className={`market__detail__graph__${id}`}>
               <ChartComponent
-                // theme={{
-                //   xValue: mouseHover / 1.455,
-                // }}
                 height={'500px'}
                 chartType="ComboChart"
                 loader={<div>Loading Chart</div>}
-                // chartEvents={[
-                //   {
-                //     eventName: 'select',
-                //     callback: ({ chartWrapper, google }) => {
-                //       console.log(chartWrapper.getChart().getSelection());
-                //       google.visualization.events.addListener(
-                //         chartWrapper,
-                //         'select',
-                //         (e) => {
-                //           console.log(e);
-                //         },
-                //       );
-                //     },
-                //   },
-                // ]}
                 data={[
                   [
                     'Month',

@@ -32,8 +32,7 @@ const IncentiveModal: FunctionComponent<{
 }) => {
   const { account, library } = useWeb3React();
   const initTxTracker = useTxTracking();
-  const { reserves1st, reserves2nd, round } = useContext(ReservesContext);
-  const reserves = round === 1 ? reserves1st : reserves2nd;
+  const { reserves } = useContext(ReservesContext);
   const { setTransaction, failTransaction } = useContext(TxContext);
 
   const reqeustClaimIncentive = async () => {

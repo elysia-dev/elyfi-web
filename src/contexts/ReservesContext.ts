@@ -6,8 +6,7 @@ import {
 } from 'src/queries/__generated__/GetAllReserves';
 
 export type ReservesContextBase = {
-  reserves1st: GetAllReserves_reserves[];
-  reserves2nd: GetAllReserves_reserves[];
+  reserves: GetAllReserves_reserves[];
   round: number;
 };
 
@@ -17,8 +16,7 @@ export interface ITokenContext extends ReservesContextBase {
 }
 
 export const initialReservesContextBase: ReservesContextBase = {
-  reserves1st: [],
-  reserves2nd: [],
+  reserves: [],
   round: 1,
 };
 

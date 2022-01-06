@@ -6,11 +6,10 @@ import ReservesContext from 'src/contexts/ReservesContext';
 
 const useMoneyPool = () => {
   const { library } = useWeb3React();
-  const { round } = useContext(ReservesContext);
   const contract = useMemo(() => {
     if (!library) return;
     return MoneyPool__factory.connect(
-      round === 1 ? envs.moneyPoolAddress1st : envs.moneyPoolAddress1st,
+      envs.moneyPoolAddress,
       library.getSigner(),
     );
   }, [library]);

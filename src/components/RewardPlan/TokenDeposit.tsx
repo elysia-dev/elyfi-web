@@ -62,8 +62,8 @@ const TokenDeposit: FunctionComponent<Props> = ({
   const { latestPrice } = useContext(UniswapPoolContext);
   const totalMiningValue = moneyPoolInfo[token].totalMiningValue;
   const { value: mediaQuery } = useMediaQueryType();
-  const { reserves2nd } = useContext(ReservesContext);
-  const moneyPoolInfo2st = reserves2nd[idx];
+  const { reserves } = useContext(ReservesContext);
+  const moneyPoolInfo2st = reserves[idx];
   SwiperCore.use([Pagination]);
   const miningDescription = [
     [

@@ -54,13 +54,11 @@ const Dashboard: React.FunctionComponent = () => {
   const location = useLocation();
   const history = useHistory();
   const {
-    reserves1st,
-    reserves2nd,
+    reserves,
     refetch: refetchReserve,
     round,
     setRound,
   } = useContext(ReservesContext);
-  const reserves = round === 1 ? reserves1st : reserves2nd;
   const { elfiPrice } = useContext(PriceContext);
   const reserveId = new URLSearchParams(location.search).get('reserveId');
   const [reserve, setReserve] = useState<GetAllReserves_reserves | undefined>(

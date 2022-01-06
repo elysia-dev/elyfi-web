@@ -2,8 +2,7 @@ import testVars from './test.json';
 import prodVars from './prod.json';
 
 interface EnvironmentVariables {
-  moneyPoolAddress1st: string;
-  moneyPoolAddress2nd: string;
+  moneyPoolAddress: string;
   governanceAddress: string;
   testStableAddress: string;
   elStakingPoolAddress: string;
