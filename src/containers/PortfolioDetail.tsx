@@ -148,7 +148,7 @@ const PortfolioDetail: FunctionComponent = () => {
       <div className="portfolio">
         <div className="component__text-navigation">
           <p
-            onClick={() => history.push(`/${lng}/dashboard`)}
+            onClick={() => history.push(`/${language}/deposit`)}
             className="pointer">
             {t('dashboard.deposit')}
           </p>

@@ -1,7 +1,10 @@
 import { BigNumber, utils } from 'ethers';
 import { LegacyRef, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { formatCommaWithDigits } from 'src/utiles/formatters';
+import {
+  formatCommaWithDigits,
+  formatSixFracionDigit,
+} from 'src/utiles/formatters';
 import { IReserve } from 'src/core/data/reserves';
 import ModalButton from 'src/components/ModalButton';
 
@@ -54,7 +57,9 @@ const DepositBody: React.FunctionComponent<{
                 return;
               }
               setAmount({
-                value: formatCommaWithDigits(balance, 4, tokenInfo.decimals),
+                value: parseFloat(
+                  utils.formatUnits(balance, tokenInfo.decimals || 18),
+                ).toString(),
                 max: true,
               });
             }}>
@@ -66,10 +71,9 @@ const DepositBody: React.FunctionComponent<{
               type="number"
               className="modal__input__value__amount"
               placeholder="0"
-              value={
-                // Intl.NumberFormat('en').format(parseFloat(amount))
-                amount.value
-              }
+              value={parseFloat(
+                amount.value.substring(0, amount.value.indexOf('.') + 9),
+              )}
               style={{
                 fontSize:
                   amount.value.length < 8

@@ -23,6 +23,7 @@ import MainGraph from 'src/components/MainGraph';
 import LanguageType from 'src/enums/LanguageType';
 import MainAnimation from 'src/components/MainAnimation';
 import { contextType } from 'google-map-react';
+import DrawWave from 'src/utiles/drawWave';
 
 const Main = () => {
   const { t } = useTranslation();
@@ -34,11 +35,8 @@ const Main = () => {
   const auditPageY = useRef<HTMLParagraphElement>(null);
   const governancePageY = useRef<HTMLParagraphElement>(null);
   const governancePageBottomY = useRef<HTMLParagraphElement>(null);
-  const [loading, setLoading] = useState(true);
   const History = useHistory();
   const { lng } = useParams<{ lng: string }>();
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-  const [innerHeight, setInnerHeight] = useState(window.innerHeight);
   const sectionEvent = [
     {
       image: MainAnimation(0),
@@ -46,7 +44,7 @@ const Main = () => {
     },
     {
       image: MainAnimation(1),
-      link: `/${lng}/dashboard`,
+      link: `/${lng}/deposit`,
     },
     {
       image: MainAnimation(2),
@@ -54,328 +52,44 @@ const Main = () => {
     },
   ];
 
-  const resizeBrowser = () => {
-    setInnerWidth(window.innerWidth);
-    setInnerHeight(window.innerHeight);
-  };
-
-  useEffect(() => {
-    window.addEventListener('resize', resizeBrowser);
-
-    return () => {
-      window.removeEventListener('resize', resizeBrowser);
-    };
-  }, []);
-
   const draw = () => {
     const dpr = window.devicePixelRatio;
     const canvas: HTMLCanvasElement | null = mainCanvasRef.current;
-    if (!mainHeaderY.current) return;
-    const headerY = mainHeaderY.current.offsetTop;
-    if (!mainHeaderMoblieY.current) return;
-    const mainMoblieY = mainHeaderMoblieY.current.offsetTop;
-    if (!guideY.current) return;
-    const guidePageY = guideY.current?.offsetTop;
-    if (!serviceGraphPageY.current) return;
-    const serviceGraphY = serviceGraphPageY.current.offsetTop;
-    if (!auditPageY.current) return;
-    const auditY = auditPageY.current.offsetTop;
-    if (!governancePageY.current) return;
-    const governanceY = governancePageY.current.offsetTop;
-    if (!governancePageBottomY.current) return;
-    const governanceBottomY = governancePageY.current.offsetHeight;
-
+    if (
+      !mainHeaderY.current ||
+      !mainHeaderMoblieY.current ||
+      !guideY.current ||
+      !serviceGraphPageY.current ||
+      !auditPageY.current ||
+      !governancePageY.current ||
+      !governancePageBottomY.current
+    )
+      return;
     if (!canvas) return;
     canvas.width = document.body.clientWidth * dpr;
     canvas.height = document.body.clientHeight * dpr;
-    const browserWidth = dpr === 1 ? canvas.width + 40 : canvas.width / 2 + 40;
-    const context = canvas.getContext('2d');
-    if (!context) return;
-    context.scale(dpr, dpr);
-    context.strokeStyle = '#00BFFF';
-    const yValue = browserWidth > 1190 ? headerY : mainMoblieY / 1.12;
-    context.beginPath();
-    context.moveTo(0, yValue * 1.6);
-    context.bezierCurveTo(
-      browserWidth / 2,
-      // 970,
-      yValue * 1.885,
-      browserWidth / 1.5,
-      yValue * 1.145,
-      browserWidth,
-      yValue * 1.398,
+    const browserWidth = canvas.width / dpr + 40;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.scale(dpr, dpr);
+    new DrawWave(ctx, browserWidth).drawOnMain(
+      mainHeaderY.current,
+      mainHeaderMoblieY.current,
+      guideY.current,
+      serviceGraphPageY.current,
+      auditPageY.current,
+      governancePageY.current,
     );
-    context.moveTo(0, yValue * 1.631);
-    context.bezierCurveTo(
-      browserWidth / 1.5,
-      yValue * 1.897,
-      browserWidth / 1.7,
-      yValue * 1.139,
-      browserWidth,
-      yValue * 1.417,
-    );
-    context.stroke();
-
-    context.fillStyle = '#ffffff';
-    context.beginPath();
-    context.moveTo(browserWidth / 3.2 + 10, yValue * 1.685);
-    context.arc(browserWidth / 3.2, yValue * 1.685, 10, 0, Math.PI * 2, true);
-
-    context.moveTo(browserWidth / 3.35 + 4.4, yValue * 1.658);
-    context.arc(browserWidth / 3.35, yValue * 1.658, 4.4, 0, Math.PI * 2, true);
-
-    context.moveTo(browserWidth / 1.33 + 10, yValue * 1.378);
-    context.arc(browserWidth / 1.33, yValue * 1.378, 10, 0, Math.PI * 2, true);
-
-    context.moveTo(browserWidth / 1.31 + 5, yValue * 1.398);
-    context.arc(browserWidth / 1.31, yValue * 1.398, 5, 0, Math.PI * 2, true);
-    context.fill();
-
-    context.stroke();
-
-    context.beginPath();
-    context.moveTo(0, guidePageY * 0.957);
-    context.bezierCurveTo(
-      browserWidth / 2,
-      guidePageY * 0.933,
-      browserWidth / 1.5,
-      guidePageY * 1.057,
-      browserWidth,
-      guidePageY * 1.03,
-    );
-    context.stroke();
-
-    // bottom
-    context.fillStyle = 'rgba(247, 251, 255, 1)';
-    context.beginPath();
-    context.moveTo(0, guidePageY * 0.9639);
-    context.bezierCurveTo(
-      browserWidth / 2,
-      guidePageY * 0.9484,
-      browserWidth / 1.5,
-      guidePageY * 1.0454,
-      browserWidth,
-      guidePageY * 1.0363,
-    );
-    context.lineTo(browserWidth, serviceGraphY * 0.9513);
-    context.bezierCurveTo(
-      browserWidth / 2,
-      serviceGraphY * 1.0065,
-      browserWidth / 1.5,
-      serviceGraphY * 0.929,
-      0,
-      serviceGraphY * 0.992,
-    );
-    context.closePath();
-    context.fill();
-    context.stroke();
-
-    context.beginPath();
-    context.moveTo(0, serviceGraphY * 0.997);
-    context.bezierCurveTo(
-      browserWidth / 2,
-      serviceGraphY * 0.9432,
-      browserWidth / 1.4,
-      serviceGraphY * 0.9972,
-      browserWidth,
-      serviceGraphY * 0.9538,
-    );
-    context.stroke();
-
-    context.fillStyle = '#ffffff';
-    // bottom circle
-    context.beginPath();
-    context.moveTo(browserWidth / 4 + 10, guidePageY * 0.966);
-    context.arc(browserWidth / 4, guidePageY * 0.966, 10, 0, Math.PI * 2, true);
-    context.fill();
-
-    context.moveTo(browserWidth / 1.2 + 10, guidePageY * 1.0324);
-    context.arc(
-      browserWidth / 1.2,
-      guidePageY * 1.0324,
-      10,
-      0,
-      Math.PI * 2,
-      true,
-    );
-    context.fill();
-
-    context.moveTo(browserWidth / 1.22 + 5, guidePageY * 1.0281);
-    context.arc(
-      browserWidth / 1.22,
-      guidePageY * 1.0281,
-      5,
-      0,
-      Math.PI * 2,
-      true,
-    );
-    context.fill();
-
-    context.moveTo(browserWidth / 4 + 10, serviceGraphY * 0.977);
-    context.arc(
-      browserWidth / 4,
-      serviceGraphY * 0.977,
-      10,
-      0,
-      Math.PI * 2,
-      true,
-    );
-    context.fill();
-
-    context.moveTo(browserWidth / 3.8 + 5, serviceGraphY * 0.9714);
-    context.arc(
-      browserWidth / 3.8,
-      serviceGraphY * 0.9714,
-      5,
-      0,
-      Math.PI * 2,
-      true,
-    );
-    context.fill();
-
-    context.stroke();
-
-    // audit image
-    context.beginPath();
-    context.moveTo(0, auditY * 0.9605);
-    context.bezierCurveTo(
-      browserWidth / 2,
-      auditY * 1.0117,
-      browserWidth / 1.7,
-      auditY * 0.9301,
-      browserWidth,
-      auditY * 0.9877,
-    );
-
-    context.moveTo(0, auditY * 0.966);
-    context.bezierCurveTo(
-      browserWidth / 2,
-      auditY * 1.0045,
-      browserWidth / 1.7,
-      auditY * 0.9301,
-      browserWidth,
-      auditY * 0.995,
-    );
-    context.stroke();
-
-    // circle
-    context.beginPath();
-    context.moveTo(browserWidth / 3 + 10, auditY * 0.978);
-    context.arc(browserWidth / 3, auditY * 0.978, 10, 0, Math.PI * 2, true);
-
-    context.moveTo(browserWidth / 3.12 + 5, auditY * 0.9761);
-    context.arc(browserWidth / 3.12, auditY * 0.9761, 5, 0, Math.PI * 2, true);
-    context.fill();
-
-    context.stroke();
-
-    // gorvernence
-    context.beginPath();
-    context.moveTo(0, governanceY * 0.9936);
-    context.bezierCurveTo(
-      browserWidth / 2,
-      governanceY * 0.961,
-      browserWidth / 1.7,
-      governanceY * 1.001,
-      browserWidth,
-      governanceY * 0.9663,
-    );
-    context.stroke();
-    context.fillStyle = 'rgba(247, 251, 255, 1)';
-    context.beginPath();
-    context.moveTo(0, governanceY * 0.996);
-    context.bezierCurveTo(
-      browserWidth / 2,
-      governanceY * 0.96,
-      browserWidth / 1.7,
-      governanceY * 1.001,
-      browserWidth,
-      governanceY * 0.9708,
-    );
-    context.lineTo(
-      browserWidth,
-      governanceY * 0.9708 + governanceBottomY + 220,
-    );
-    context.bezierCurveTo(
-      browserWidth / 2,
-      governanceY * 0.9708 + governanceBottomY + 110,
-      browserWidth / 1.7,
-      governanceY * 0.9708 + governanceBottomY + 280,
-      0,
-      governanceY * 0.9708 + governanceBottomY + 280,
-    );
-    // context.lineTo(0, governanceY * 0.9708 + governanceBottomY + 220);
-    context.fill();
-    context.stroke();
-
-    context.beginPath();
-    context.moveTo(0, governanceY * 0.9708 + governanceBottomY + 290);
-    context.bezierCurveTo(
-      browserWidth / 2,
-      governanceY * 0.9708 + governanceBottomY + 290,
-      browserWidth / 1.7,
-      governanceY * 0.9708 + governanceBottomY + 100,
-      browserWidth,
-      governanceY * 0.9708 + governanceBottomY + 240,
-    );
-
-    context.stroke();
-    // circle
-    context.fillStyle = '#ffffff';
-    context.beginPath();
-    context.moveTo(browserWidth / 3.2 + 10, governanceY * 0.9807);
-    context.arc(
-      browserWidth / 3.2,
-      governanceY * 0.9807,
-      10,
-      0,
-      Math.PI * 2,
-      true,
-    );
-
-    context.moveTo(browserWidth / 3.07 + 5, governanceY * 0.98);
-    context.arc(
-      browserWidth / 3.07,
-      governanceY * 0.98,
-      5,
-      0,
-      Math.PI * 2,
-      true,
-    );
-
-    context.moveTo(
-      browserWidth / 2.5 + 10,
-      governanceY * 0.9708 + governanceBottomY + 243,
-    );
-    context.arc(
-      browserWidth / 2.5,
-      governanceY * 0.9708 + governanceBottomY + 243,
-      10,
-      0,
-      Math.PI * 2,
-      true,
-    );
-
-    context.moveTo(
-      browserWidth / 2.6 + 5,
-      governanceY * 0.9708 + governanceBottomY + 256,
-    );
-    context.arc(
-      browserWidth / 2.6,
-      governanceY * 0.9708 + governanceBottomY + 256,
-      5,
-      0,
-      Math.PI * 2,
-      true,
-    );
-
-    context.fill();
-    context.stroke();
   };
 
   useEffect(() => {
     draw();
-  }, [innerHeight, innerWidth, loading]);
+    window.addEventListener('resize', draw);
+
+    return () => {
+      window.removeEventListener('resize', draw);
+    };
+  }, []);
 
   return (
     <>
@@ -400,7 +114,7 @@ const Main = () => {
             </div>
             <div className="main__title__button pc-only">
               <div
-                onClick={() => History.push({ pathname: `/${lng}/dashboard` })}>
+                onClick={() => History.push({ pathname: `/${lng}/deposit` })}>
                 <p ref={mainHeaderY}> {t('main.landing.button__deposit')}</p>
               </div>
               <div
@@ -420,8 +134,7 @@ const Main = () => {
             <img src={Pit} className="pit" />
           </div>
           <div className="main__title__button mobile-only">
-            <div
-              onClick={() => History.push({ pathname: `/${lng}/dashboard` })}>
+            <div onClick={() => History.push({ pathname: `/${lng}/deposit` })}>
               <p ref={mainHeaderMoblieY}>{t('main.landing.button__deposit')}</p>
             </div>
             <div
@@ -526,7 +239,6 @@ const Main = () => {
         <MainGovernanceTable
           governancePageY={governancePageY}
           governancePageBottomY={governancePageBottomY}
-          setLoading={setLoading}
         />
       </div>
     </>

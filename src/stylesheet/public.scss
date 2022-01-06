@@ -1837,6 +1837,7 @@ input[type='number'] {
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      padding-top: 80px;
       > h2 {
         color: $font-color;
       }
@@ -2096,6 +2097,7 @@ input[type='number'] {
     &__lp {
       &__header {
         text-align: center;
+        margin-top: 80px;
         > h2 {
           color: $font-color;
         }
@@ -4287,5 +4289,14 @@ input[type='number'] {
     border-top: 2px solid #333333;
     border-right: 2px solid #333333;
     transform: rotate(135deg);
+  }
+
+  .error {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9997;
   }
 }

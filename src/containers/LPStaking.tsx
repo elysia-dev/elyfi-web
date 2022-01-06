@@ -34,6 +34,8 @@ import getIncentiveId from 'src/utiles/getIncentive';
 import usePositions from 'src/hooks/usePositions';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
+import DrawWave from 'src/utiles/drawWave';
+import TokenColors from 'src/enums/TokenColors';
 
 function LPStaking(): JSX.Element {
   const { account, library } = useWeb3React();
@@ -42,7 +44,8 @@ function LPStaking(): JSX.Element {
   const { elfiPrice } = useContext(PriceContext);
   const { ethPool, daiPool } = useContext(UniswapPoolContext);
   const { ethPrice, daiPrice } = useContext(PriceContext);
-  const tokenRef = useRef<HTMLParagraphElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const { setExpecteReward, expectedReward, updateExpectedReward, isError } =
     useUpdateExpectedReward();
@@ -237,6 +240,30 @@ function LPStaking(): JSX.Element {
     return totalLiquidity;
   };
 
+  const draw = () => {
+    const dpr = window.devicePixelRatio;
+    const canvas: HTMLCanvasElement | null = canvasRef.current;
+
+    if (!headerRef.current) return;
+    const headerY =
+      headerRef.current.offsetTop +
+      (document.body.clientWidth > 1190 ? 90 : 15);
+    if (!canvas) return;
+    canvas.width = document.body.clientWidth * dpr;
+    canvas.height = document.body.clientHeight * dpr;
+    const browserWidth = canvas.width / dpr + 40;
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) return;
+    ctx.scale(dpr, dpr);
+
+    new DrawWave(ctx, browserWidth).drawOnPages(
+      headerY,
+      TokenColors.ELFI,
+      'LP',
+    );
+  };
+
   useEffect(() => {
     if (
       (txType === RecentActivityType.Deposit && !txWaiting) ||
@@ -315,8 +342,27 @@ function LPStaking(): JSX.Element {
     }
   }, [expectedReward, account]);
 
+  useEffect(() => {
+    draw();
+    window.addEventListener('resize', () => draw());
+
+    return () => {
+      window.removeEventListener('resize', () => draw());
+    };
+  }, []);
+
   return (
     <>
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'absolute',
+          width: '100%',
+          top: 0,
+          left: 0,
+          zIndex: -1,
+        }}
+      />
       <RewardModal
         visible={rewardVisibleModal}
         closeHandler={() => setRewardVisibleModal(false)}
@@ -348,22 +394,12 @@ function LPStaking(): JSX.Element {
         }
         round={round}
       />
-      <img
-        style={{
-          position: 'absolute',
-          left: 0,
-          top: tokenRef.current ? tokenRef.current?.offsetTop + 50 : 300,
-          width: '100%',
-          zIndex: -1,
-        }}
-        src={wave}
-        alt={wave}
-      />
+
       <section className="staking">
-        <div className="staking__lp__header">
+        <div ref={headerRef} className="staking__lp__header">
           <h2>{t('lpstaking.lp_token_staking')}</h2>
           <p>{t('lpstaking.lp_token_staking__content')}</p>
-          <div ref={tokenRef}>
+          <div>
             {Array(3)
               .fill(0)
               .map((_x, index) => {

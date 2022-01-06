@@ -14,13 +14,11 @@ import { useTranslation, Trans } from 'react-i18next';
 type Props = {
   governancePageY: RefObject<HTMLParagraphElement>;
   governancePageBottomY: RefObject<HTMLParagraphElement>;
-  setLoading: Dispatch<SetStateAction<boolean>>;
 };
 
 const MainGovernanceTable: FunctionComponent<Props> = ({
   governancePageY,
   governancePageBottomY,
-  setLoading,
 }) => {
   const [selectButton, setSelectButton] = useState(false);
   const [onChainLoading, setOnChainLoading] = useState(true);
@@ -106,7 +104,6 @@ const MainGovernanceTable: FunctionComponent<Props> = ({
           });
 
       setOffChainLoading(false);
-      setLoading(false);
     });
   }, []);
 
