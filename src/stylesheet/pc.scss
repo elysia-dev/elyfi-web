@@ -591,6 +591,18 @@ $device-width: 1190px;
         }
         &__body {
           padding: 30px;
+          &__reward {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            > h2:first-child {
+              margin-right: auto;
+              margin-bottom: 20px;
+            }
+            > div:nth-child(2) {
+              margin-bottom: 20px;
+            }
+          }
           &__amount {
             &__button {
               border-radius: 15px;
@@ -633,6 +645,58 @@ $device-width: 1190px;
               }
             }
           }
+          &__event-box {
+            margin-top: 15px;
+            margin-bottom: 15px;
+            &__title {
+              font-family: 'Inter-Regular';
+              font-size: 18px;
+              text-align: center;
+              line-height: 1.8;
+              color: #ffffff;
+              width: 99px;
+              height: 33px;
+              display: inline-block;
+              background: #f9ae1a;
+              border: 1px solid #f9ae1a;
+              border-radius: 10px 10px 0px 0px;
+            }
+            &__content {
+              border: 1px solid #f9ae1a;
+              padding: 25px 27px 27px 20px;
+              .event-button {
+                margin-bottom: 0px;
+              }
+              > div:first-child {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                > div:first-child {
+                  span {
+                    color: #f9ae1a;
+                  }
+                  font-size: 18px;
+                }
+              }
+              > div:nth-child(2) {
+                text-align: right;
+                margin-top: 20px;
+                > div {
+                  font-size: 20px;
+                  margin-bottom: 6px;
+                  > span:last-child {
+                    font-family: $bold;
+                    font-size: 17px;
+                  }
+                }
+                > p {
+                  font-size: 12px;
+                  color: $gray-font-color;
+                }
+              }
+            }
+          }
+
           &__loan-list {
             > div {
               > h2 {
