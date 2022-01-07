@@ -34,6 +34,10 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
+import {
+  daiMoneyPoolTime,
+  tetherMoneyPoolTime,
+} from 'src/core/data/moneypoolTimes';
 
 const initialBalanceState = {
   loading: false,
@@ -41,6 +45,8 @@ const initialBalanceState = {
   incentive: constants.Zero,
   expectedIncentiveBefore: constants.Zero,
   expectedIncentiveAfter: constants.Zero,
+  expectedAddIncentiveBefore: constants.Zero,
+  expectedAddIncentiveAfter: constants.Zero,
   deposit: constants.Zero,
   updatedAt: moment().unix(),
 };
@@ -73,6 +79,8 @@ const Dashboard: React.FunctionComponent = () => {
       incentive: BigNumber;
       expectedIncentiveBefore: BigNumber;
       expectedIncentiveAfter: BigNumber;
+      expectedAddIncentiveBefore: BigNumber;
+      expectedAddIncentiveAfter: BigNumber;
       deposit: BigNumber;
       updatedAt: number;
     }[]
@@ -128,6 +136,8 @@ const Dashboard: React.FunctionComponent = () => {
         incentive,
         expectedIncentiveBefore: incentive,
         expectedIncentiveAfter: incentive,
+        expectedAddIncentiveBefore: constants.Zero,
+        expectedAddIncentiveAfter: constants.Zero,
         governance: await ERC20__factory.connect(
           envs.governanceAddress,
           library,
@@ -202,6 +212,12 @@ const Dashboard: React.FunctionComponent = () => {
     loadBalances();
   }, [account, reserves]);
 
+  const isEndedIncentive = (token: string) => {
+    const moneyPoolTime =
+      token === Token.DAI ? daiMoneyPoolTime : tetherMoneyPoolTime;
+    return moment().isAfter(moneyPoolTime[0].endedAt);
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
       setPrevTvl(tvlLoading ? 0 : tvl);
@@ -211,17 +227,21 @@ const Dashboard: React.FunctionComponent = () => {
           return {
             ...balance,
             expectedIncentiveBefore: balance.expectedIncentiveAfter,
-            expectedIncentiveAfter: balance.incentive.add(
-              calcExpectedIncentive(
-                elfiPrice,
-                balance.deposit,
-                calcMiningAPR(
-                  elfiPrice,
-                  BigNumber.from(reserves[index].totalDeposit),
+            expectedIncentiveAfter: isEndedIncentive(balance.tokenName)
+              ? balance.expectedIncentiveAfter
+              : balance.incentive.add(
+                  calcExpectedIncentive(
+                    elfiPrice,
+                    balance.deposit,
+                    calcMiningAPR(
+                      elfiPrice,
+                      BigNumber.from(reserves[index].totalDeposit),
+                    ),
+                    balance.updatedAt,
+                  ),
                 ),
-                balance.updatedAt,
-              ),
-            ),
+            expectedAddIncentiveBefore: constants.Zero,
+            expectedAddIncentiveAfter: constants.Zero,
           };
         }),
       );
@@ -394,6 +414,10 @@ const Dashboard: React.FunctionComponent = () => {
                   reserveData={reserves[index]}
                   expectedIncentiveBefore={balance.expectedIncentiveBefore}
                   expectedIncentiveAfter={balance.expectedIncentiveAfter}
+                  expectedAddIncentiveBefore={
+                    balance.expectedAddIncentiveBefore
+                  }
+                  expectedAddIncentiveAfter={balance.expectedAddIncentiveAfter}
                   setIncentiveModalVisible={() => {
                     walletConnect === false
                       ? setConnectWalletModalvisible(true)
