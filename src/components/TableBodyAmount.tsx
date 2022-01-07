@@ -1,3 +1,4 @@
+import { useWeb3React } from '@web3-react/core';
 import moment from 'moment';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +13,7 @@ const TableBodyAmount: React.FunctionComponent<{
   buttonContent: string;
   value: string | JSX.Element;
   tokenName: string;
+  moneyPoolTime?: string;
   walletBalance?: string;
 }> = ({
   header,
@@ -19,11 +21,11 @@ const TableBodyAmount: React.FunctionComponent<{
   buttonContent,
   value,
   tokenName,
+  moneyPoolTime,
   walletBalance,
 }) => {
   const { t } = useTranslation();
   const { value: mediaQuery } = useMediaQueryType();
-  const { round } = useContext(ReservesContext);
 
   return mediaQuery === MediaQuery.PC ? (
     <>
@@ -47,7 +49,7 @@ const TableBodyAmount: React.FunctionComponent<{
                 walletBalance +
                 ' ' +
                 tokenName
-              : ''}
+              : moneyPoolTime}
           </p>
         </div>
       </div>
