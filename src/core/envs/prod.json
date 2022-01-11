@@ -23,5 +23,9 @@
   "appURI": "https://app.elyfi.world",
   "etherscan": "https://etherscan.io",
   "daiTokenizerAddress": "0xc6701e7be98A79485364419961838EB141141aAf",
-  "usdtTokeninzerAddress": "0x68f69Ab21242e194ebd7534B598e26180dD92616"
+  "usdtTokeninzerAddress": "0x68f69Ab21242e194ebd7534B598e26180dD92616",
+  "prevDaiIncentivePool": "0xD1e55Bff66da2Dc0290269B8e4b843531EBa7628",
+  "prevUSDTIncentivePool": "0xda2376FC014d0F351a7A9eBAF48B26902168E6D3",
+  "currentDaiIncentivePool": "0x3Fed75D8f58A0Ca57ecaB7446580266AC846De06",
+  "currentUSDTIncentivePool": "0x1002419Cf0313599b8B999247954e5Ae283E85b7"
 }
