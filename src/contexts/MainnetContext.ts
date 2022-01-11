@@ -3,25 +3,23 @@ import { createContext } from 'react';
 
 export interface IMainnetContextTypes {
   type: MainnetType,
-  name: string,
-  image: string
+  unsupportedChainid: boolean
 }
 
 export interface IMainnetContext extends IMainnetContextTypes {
-  changeMainnet: (mainnet: IMainnetContextTypes) => Promise<void>;
-  setCurrentMainnet: (data: IMainnetContextTypes) => void;
+  changeMainnet: (mainnetChainId: number) => Promise<void>;
+  setCurrentMainnet: (data: MainnetType) => void;
 }
 
 export const initialMainnetData: IMainnetContextTypes = {
   type: MainnetType.Ethereum,
-  name: "",
-  image: "",
+  unsupportedChainid: false
 }
 
 export const initialMainnetContext = {
   ...initialMainnetData,
-  changeMainnet: async (mainnet: IMainnetContextTypes) => {},
-  setCurrentMainnet: (data: IMainnetContextTypes) => {}
+  changeMainnet: async (mainnetChainId: number) => {},
+  setCurrentMainnet: (data: MainnetType) => {}
 }
 
 

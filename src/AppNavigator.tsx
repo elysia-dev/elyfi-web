@@ -29,21 +29,7 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 
 const AppNavigator: React.FC = () => {
-  const [isDarkmodeActivated, setDarkModeActivated] = useState(false);
   const [hamburgerBar, setHamburgerBar] = useState(false);
-  const [mainNetwork, setMainNetwork] = useState(false);
-  const setDarkMode = () => {
-    setDarkModeActivated(!isDarkmodeActivated);
-    window.sessionStorage.getItem('@isDarkMode') === 'true'
-      ? window.sessionStorage.setItem('@isDarkMode', 'false')
-      : window.sessionStorage.setItem('@isDarkMode', 'true');
-  };
-  useEffect(() => {
-    window.sessionStorage.getItem('@isDarkMode') === 'true'
-      ? setDarkModeActivated(true)
-      : setDarkModeActivated(false);
-  }, []);
-
   const { value: mediaQuery } = useMediaQueryType();
 
   const { active, chainId, deactivate, activate } = useWeb3React();
@@ -89,8 +75,6 @@ const AppNavigator: React.FC = () => {
             <Navigation
               hamburgerBar={hamburgerBar}
               setHamburgerBar={setHamburgerBar}
-              mainNetwork={mainNetwork}
-              setMainNetwork={setMainNetwork}
             />
             {/* <DarkmodeModal 
               isDarkmode={isDarkmodeActivated}

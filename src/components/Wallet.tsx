@@ -78,13 +78,13 @@ const Wallet = (props: any) => {
               }}
             /> */}
           <div>
-            {connected && (
+            {/* {connected && (
               <p className="navigation__wallet__mainnet">
                 {txStatus === (TxStatus.PENDING || TxStatus.CONFIRM)
                   ? `Transaction ${txNonce}`
                   : mainnetConverter(chainId)}
               </p>
-            )}
+            )} */}
             <div className="navigation__address">
               {connected && (
                 <div className="navigation__davatar">

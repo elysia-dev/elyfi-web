@@ -30,6 +30,10 @@ interface EnvironmentVariables {
   daiTokenizerAddress: string;
   usdtTokeninzerAddress: string;
   bscMainnetChainId: number;
+  bscMoneyPoolAddress: string;
+  bscElfiAddress: string;
+  busdAddress: string;
+  bscSubgraphURI: string;
 }
 
 const vars =

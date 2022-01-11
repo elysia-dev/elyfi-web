@@ -1,7 +1,8 @@
 import './i18n';
 
+import { useContext, useEffect, useState } from 'react';
 import { Web3ReactProvider } from '@web3-react/core';
-import { ApolloProvider, InMemoryCache, ApolloClient } from '@apollo/client';
+import { ApolloProvider, InMemoryCache, ApolloClient, useApolloClient, NormalizedCacheObject, HttpLink, ApolloLink } from '@apollo/client';
 import envs from 'src/core/envs';
 import { BrowserRouter as Router } from 'react-router-dom';
 import getLibrary from './core/utils/getLibrary';
@@ -16,31 +17,33 @@ import 'src/stylesheet/mobile.scss';
 import TxProvider from './providers/TxProvider';
 import UniswapPoolProvider from './providers/UniswapPoolProvider';
 import MainnetProvider from './providers/MainnetProvider';
+import MainnetContext from './contexts/MainnetContext';
 
-const client = new ApolloClient({
-  uri: envs.subgraphURI,
-  cache: new InMemoryCache(),
-});
 
 const App: React.FC = () => {
+  const client = new ApolloClient({
+    uri: envs.subgraphURI,
+    cache: new InMemoryCache(),
+  })
+
   return (
-    <ApolloProvider client={client}>
-      <UniswapPoolProvider>
-        <PriceProvider>
-          <Web3ReactProvider getLibrary={getLibrary}>
-            <ReservesProvider>
-              <TxProvider>
-                <MainnetProvider>
+      <ApolloProvider client={client}>
+        <UniswapPoolProvider>
+          <PriceProvider>
+            <Web3ReactProvider getLibrary={getLibrary}>
+    <MainnetProvider>
+              <ReservesProvider>
+                <TxProvider>
                   <Router>
                     <AppNavigator />
                   </Router>
-                </MainnetProvider>
-              </TxProvider>
-            </ReservesProvider>
-          </Web3ReactProvider>
-        </PriceProvider>
-      </UniswapPoolProvider>
-    </ApolloProvider>
+                </TxProvider>
+              </ReservesProvider>
+    </MainnetProvider>
+            </Web3ReactProvider>
+          </PriceProvider>
+        </UniswapPoolProvider>
+      </ApolloProvider>
   );
 };
 

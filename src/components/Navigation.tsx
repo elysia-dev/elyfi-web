@@ -37,9 +37,7 @@ const InitialNavigation: INavigation[] = [
 const Navigation: React.FunctionComponent<{
   hamburgerBar: boolean;
   setHamburgerBar: (value: React.SetStateAction<boolean>) => void;
-  mainNetwork: boolean;
-  setMainNetwork: (value: React.SetStateAction<boolean>) => void;
-}> = ({ hamburgerBar, setHamburgerBar, mainNetwork, setMainNetwork }) => {
+}> = ({ hamburgerBar, setHamburgerBar }) => {
   // Hover Value
   const [globalNavHover, setGlobalNavHover] = useState(0);
 
@@ -57,6 +55,10 @@ const Navigation: React.FunctionComponent<{
 
   const [scrolling, setScrolling] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
+
+
+  const [mainNetwork, setMainNetwork] = useState(false);
+
 
   const getLNBData = navigationLink.filter(
     (nav) => nav.type === NavigationType.LNB,

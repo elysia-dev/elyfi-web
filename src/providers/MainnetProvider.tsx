@@ -2,27 +2,34 @@ import { useWeb3React } from "@web3-react/core";
 import { useEffect, useMemo, useState } from "react";
 import MainnetContext, { IMainnetContextTypes } from "src/contexts/MainnetContext";
 import envs from "src/core/envs";
-import ETHButton from 'src/assets/images/navigation__eth.png';
-import BSCButton from 'src/assets/images/navigation__bsc.png';
 import MainnetType from "src/enums/MainnetType";
 import { mainnets } from "src/core/data/mainnets";
 import useCurrentChain from "src/hooks/useCurrentChain";
 
 const MainnetProvider: React.FC = (props) => {
   const { chainId } = useWeb3React();
-  const CurrentChain = useCurrentChain();
+  const currentChain = useCurrentChain();
 
   const [currentMainnet, setMainnet] = useState<IMainnetContextTypes>({
-    type: chainId === envs.bscMainnetChainId ? MainnetType.BSC : MainnetType.Ethereum,
-    name: chainId === envs.bscMainnetChainId ? "BSC" : "Ethereum",
-    image: chainId === envs.bscMainnetChainId ? BSCButton : ETHButton
+    type: MainnetType.Ethereum,
+    unsupportedChainid: false
   })
 
-  const changeMainnet = async (mainnet: IMainnetContextTypes) => {
+  useEffect(() => {
+    currentChain !== undefined ? (
+      setMainnet({ type: currentChain.type, unsupportedChainid: false })
+    ) : (
+      setMainnet({ ...currentMainnet, unsupportedChainid: true }),
+      console.log("Error!")
+    )
+  }, [chainId])
+
+  const setCurrentMainnet = (data: MainnetType) => setMainnet({ ...currentMainnet, type: data })
+
+  const changeMainnet = async (mainnetChainId: number) => {
     const getChainData = mainnets.find((data) => {
-      return data.chainId === (mainnet.type === MainnetType.Ethereum ? envs.requiredChainId : envs.bscMainnetChainId)
+      return data.chainId === mainnetChainId
     })
-    console.log(getChainData)
     try {
       await window.ethereum?.request({
         method: "wallet_switchEthereumChain",
@@ -49,31 +56,18 @@ const MainnetProvider: React.FC = (props) => {
               ],
             })
           ) : (
-            console.log("undefined mainnet!!")
+            console.log("undefined mainnet!!"),
+            setMainnet({ ...currentMainnet, unsupportedChainid: true })
           )
         } catch (_e) {
           console.error(_e);
+          setMainnet({ ...currentMainnet, unsupportedChainid: true })
         }
       }
       console.log(e)
+      setMainnet({ ...currentMainnet, unsupportedChainid: true })
     }
   }
-
-
-  const setCurrentMainnet = (data: IMainnetContextTypes) => setMainnet(data)
-
-  useEffect(() => {
-    CurrentChain !== undefined ? (
-      setMainnet({
-        ...currentMainnet,
-        name: CurrentChain.name,
-        image: CurrentChain.image,
-        type: CurrentChain.type
-      })
-    ) : (
-      console.log("Error!")
-    )
-  }, [chainId])
 
   return (
     <MainnetContext.Provider
