@@ -16,8 +16,6 @@ type Props = {
     daiRound: number;
     tetherRound: number;
   };
-  token?: Token.DAI | Token.USDT;
-  index?: number;
 };
 
 const RewardDetailInfo: FunctionComponent<Props> = (props) => {
@@ -55,36 +53,27 @@ const RewardDetailInfo: FunctionComponent<Props> = (props) => {
 
   return (
     <div className="component__data-info">
-      {props.depositRound ? (
-        props.index === 0 ? (
-          miningDescription()
-        ) : (
-          <div>
-            <p>{t('reward.daily_mining')}</p>
-            <p className="data">16,666.6667 ELFI</p>
-          </div>
-        )
-      ) : (
-        miningDescription()
-      )}
-      <div>
-        <p>
-          {props.unit === 'ELFI'
-            ? t('reward.accumulated_mining')
-            : t('reward.accumulated_reward')}
-        </p>
-        <p>
-          <CountUp
-            start={props.start}
-            end={props.end}
-            decimals={4}
-            duration={1}
-            formattingFn={(number) => formatCommaSmallFourDisits(number)}
-          />
-          {` ${props.unit}`}
-        </p>
-      </div>
-      {props.depositRound ? props.index === 0 && remaining() : remaining()}
+      <>
+        {miningDescription()}
+        <div>
+          <p>
+            {props.unit === 'ELFI'
+              ? t('reward.accumulated_mining')
+              : t('reward.accumulated_reward')}
+          </p>
+          <p>
+            <CountUp
+              start={props.start}
+              end={props.end}
+              decimals={4}
+              duration={1}
+              formattingFn={(number) => formatCommaSmallFourDisits(number)}
+            />
+            {` ${props.unit}`}
+          </p>
+        </div>
+        {remaining()}
+      </>
     </div>
   );
 };
