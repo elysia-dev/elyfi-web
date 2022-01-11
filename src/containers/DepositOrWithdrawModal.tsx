@@ -29,6 +29,7 @@ import buildEventEmitter from 'src/utiles/buildEventEmitter';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
+import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
 
@@ -38,7 +39,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   tokenImage: string;
   balance: BigNumber;
   depositBalance: BigNumber;
-  reserve: GetAllReserves_reserves;
+  reserve: IReserveSubgraphData;
   userData: GetUser_user | undefined | null;
   onClose: () => void;
   afterTx: () => Promise<void>;
@@ -55,6 +56,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   afterTx,
   transactionModal,
 }) => {
+  console.log(reserve)
   const { account, chainId } = useWeb3React();
   const { elfiPrice } = useContext(PriceContext);
   const [selected, select] = useState<boolean>(true);

@@ -16,10 +16,11 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import TableBodyAmount from 'src/components/TableBodyAmount';
+import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 
 interface Props {
   tokenImage: string;
-  tokenName: Token.DAI | Token.USDT;
+  tokenName: Token.DAI | Token.USDT | Token.BUSD;
   index: number;
   onClick?: (e: any) => void;
   depositBalance?: string;
@@ -28,7 +29,7 @@ interface Props {
   walletBalance?: string;
   isDisable: boolean;
   skeletonLoading: boolean;
-  reserveData: GetAllReserves_reserves;
+  reserveData: IReserveSubgraphData;
   expectedIncentiveBefore: BigNumber;
   expectedIncentiveAfter: BigNumber;
   setIncentiveModalVisible: () => void;

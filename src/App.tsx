@@ -9,6 +9,7 @@ import getLibrary from './core/utils/getLibrary';
 import AppNavigator from './AppNavigator';
 import ReservesProvider from './providers/ReservesProvider';
 import PriceProvider from './providers/PriceProvider';
+import SubgraphProvider from './providers/SubgraphProvider';
 
 import 'src/stylesheet/public.scss';
 import 'src/stylesheet/pc.scss';
@@ -17,12 +18,12 @@ import 'src/stylesheet/mobile.scss';
 import TxProvider from './providers/TxProvider';
 import UniswapPoolProvider from './providers/UniswapPoolProvider';
 import MainnetProvider from './providers/MainnetProvider';
-import MainnetContext from './contexts/MainnetContext';
 
 
 const App: React.FC = () => {
   const client = new ApolloClient({
     uri: envs.subgraphURI,
+    // uri: envs.bscSubgraphURI,
     cache: new InMemoryCache(),
   })
 
@@ -31,15 +32,17 @@ const App: React.FC = () => {
         <UniswapPoolProvider>
           <PriceProvider>
             <Web3ReactProvider getLibrary={getLibrary}>
-    <MainnetProvider>
-              <ReservesProvider>
-                <TxProvider>
-                  <Router>
-                    <AppNavigator />
-                  </Router>
-                </TxProvider>
-              </ReservesProvider>
-    </MainnetProvider>
+              <MainnetProvider>
+                <ReservesProvider>
+                  <TxProvider>
+                    <SubgraphProvider>
+                      <Router>
+                        <AppNavigator />
+                      </Router>
+                    </SubgraphProvider>
+                  </TxProvider>
+                </ReservesProvider>
+              </MainnetProvider>
             </Web3ReactProvider>
           </PriceProvider>
         </UniswapPoolProvider>

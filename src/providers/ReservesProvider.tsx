@@ -31,6 +31,7 @@ const ReservesProvider: React.FC = (props) => {
           setReserves(res.data.data.reserves as GetAllReserves_reserves[]);
         });
     }
+    console.log(error)
   }, [error]);
 
   if (loading) return <Loading />;

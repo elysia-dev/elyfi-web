@@ -1,52 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import envs from 'src/core/envs';
 import moment from 'moment';
-
-export interface IReserveSubgraph {
-  data: {
-    reserves: {
-      id: string;
-      lTokenInterestIndex: any;
-      lastUpdateTimestamp: number;
-      borrowAPY: any;
-      depositAPY: any;
-      totalBorrow: any;
-      totalDeposit: any;
-      lTokenUserBalanceCount: number;
-      dTokenUserBalanceCount: number;
-      deposit: {
-        id: string;
-      }[];
-      incentivePool: {
-        id: string;
-      };
-      borrow: {
-        id: string;
-        amount: any;
-        timestamp: number;
-        tokenId: string;
-      }[];
-      repay: {
-        id: string;
-        userDTokenBalance: any;
-        feeOnCollateralServiceProvider: any;
-        timestamp: number;
-        tokenId: string;
-      }[];
-      reserveHistory: {
-        id: string;
-        timestamp: number;
-        borrowAPY: any;
-        depositAPY: any;
-        totalBorrow: any;
-        totalDeposit: any;
-      }[];
-      lToken: {
-        id: string;
-      };
-    }[]
-  }
-}
+import { IReserveSubgraph } from 'src/contexts/SubgraphContext';
 
 const minimumTimestamp = moment().subtract(35, 'days').unix();
 
