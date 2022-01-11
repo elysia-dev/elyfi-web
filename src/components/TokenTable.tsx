@@ -18,6 +18,8 @@ import MediaQuery from 'src/enums/MediaQuery';
 import TableBodyAmount from 'src/components/TableBodyAmount';
 import { daiMoneyPoolTime } from 'src/core/data/moneypoolTimes';
 import moment from 'moment';
+import { useContext } from 'react';
+import ReservesContext from 'src/contexts/ReservesContext';
 import TableBodyEventReward from './TableBodyEventReward';
 
 interface Props {
@@ -34,8 +36,8 @@ interface Props {
   reserveData: GetAllReserves_reserves;
   expectedIncentiveBefore: BigNumber;
   expectedIncentiveAfter: BigNumber;
-  expectedAddIncentiveBefore: BigNumber;
-  expectedAddIncentiveAfter: BigNumber;
+  expectedAdditionalIncentiveBefore: BigNumber;
+  expectedAdditionalIncentiveAfter: BigNumber;
   setIncentiveModalVisible: () => void;
   setModalNumber: () => void;
   modalview: () => void;
@@ -56,8 +58,8 @@ const TokenTable: React.FC<Props> = ({
   reserveData,
   expectedIncentiveBefore,
   expectedIncentiveAfter,
-  expectedAddIncentiveBefore,
-  expectedAddIncentiveAfter,
+  expectedAdditionalIncentiveBefore,
+  expectedAdditionalIncentiveAfter,
   setIncentiveModalVisible,
   setModalNumber,
   modalview,
@@ -66,6 +68,7 @@ const TokenTable: React.FC<Props> = ({
   const { data, loading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
   const { account } = useWeb3React();
   const { t, i18n } = useTranslation();
+  const { setRound } = useContext(ReservesContext);
   const tokenInfo = reserveTokenData[tokenName];
   const list = data?.assetBondTokens.filter((product) => {
     return product.reserve.id === reserveData?.id;
@@ -157,6 +160,7 @@ const TokenTable: React.FC<Props> = ({
                   setIncentiveModalVisible();
                   setModalNumber();
                   modalview();
+                  setRound(1);
                 }}
                 buttonContent={t('dashboard.claim_reward')}
                 value={
@@ -184,16 +188,25 @@ const TokenTable: React.FC<Props> = ({
               />
             </div>
           </div>
-
           <div className="deposit__table__body__event-box">
             <TableBodyEventReward
               moneyPoolTime={`${moment(daiMoneyPoolTime[1].startedAt).format(
                 'YYYY.MM.DD',
-              )} ~ ${moment(daiMoneyPoolTime[1].endedAt).format(
-                'YYYY.MM.DD',
-              )} KST`}
-              expectedAddIncentiveBefore={expectedAddIncentiveBefore}
-              expectedAddIncentiveAfter={expectedAddIncentiveAfter}
+              )} KST ~ `}
+              expectedAdditionalIncentiveBefore={
+                expectedAdditionalIncentiveBefore
+              }
+              expectedAdditionalIncentiveAfter={
+                expectedAdditionalIncentiveAfter
+              }
+              buttonEvent={(e) => {
+                e.preventDefault();
+                setIncentiveModalVisible();
+                setModalNumber();
+                modalview();
+                setRound(2);
+              }}
+              tokenName={tokenName}
             />
           </div>
 
