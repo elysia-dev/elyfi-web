@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useRef, useState } from 'react';
 import Token from 'src/enums/Token';
 import elfi from 'src/assets/images/ELFI.png';
 import el from 'src/assets/images/el.png';
@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
-import SwiperCore, { Pagination } from 'swiper';
+import SwiperCore, { Navigation, Pagination } from 'swiper';
 import 'swiper/modules/pagination/pagination.scss';
 import 'swiper/swiper.scss';
 import { useLocation } from 'react-router-dom';
@@ -49,6 +49,9 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
   const { t } = useTranslation();
   const { value: mediaQuery } = useMediaQueryType();
   const [currentSwipe, setCurrnetSwipe] = useState(props.staking);
+  const prevNavigation = useRef<HTMLDivElement>(null);
+  const nextNavigation = useRef<HTMLDivElement>(null);
+  const pagination = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     props.setState({
@@ -57,7 +60,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
     });
   }, [currentSwipe]);
 
-  SwiperCore.use([Pagination]);
+  SwiperCore.use([Navigation, Pagination]);
   return (
     <>
       <div className="reward__token">
@@ -83,7 +86,24 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
           spaceBetween={100}
           loop={false}
           slidesPerView={1}
-          pagination={{ clickable: true }}
+          navigation={{
+            prevEl: prevNavigation.current,
+            nextEl: nextNavigation.current,
+          }}
+          pagination={
+            mediaQuery === MediaQuery.PC
+              ? {
+                  el: pagination.current,
+                  clickable: true,
+                  type: 'bullets',
+                  renderBullet: (index, className) => {
+                    return `<div class=${className}>${index + 1}</div>`;
+                  },
+                }
+              : {
+                  clickable: true,
+                }
+          }
           onSlideChange={(slides) => setCurrnetSwipe(slides.realIndex)}
           initialSlide={currentSwipe}
           style={{
@@ -170,7 +190,17 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
             );
           })}
         </Swiper>
-        {/* )} */}
+        {mediaQuery === MediaQuery.PC && (
+          <div className="swiper-custom-wrapper">
+            <div className="swiper-navigation" ref={prevNavigation}>
+              &lt;
+            </div>
+            <div ref={pagination}></div>
+            <div className="swiper-navigation" ref={nextNavigation}>
+              &gt;
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

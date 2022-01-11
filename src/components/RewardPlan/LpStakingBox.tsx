@@ -1,4 +1,10 @@
-import { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
+import {
+  Dispatch,
+  FunctionComponent,
+  SetStateAction,
+  useRef,
+  useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   lpStakingStartedAt,
@@ -9,7 +15,7 @@ import MediaQuery from 'src/enums/MediaQuery';
 import Token from 'src/enums/Token';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
-import SwiperCore, { Pagination } from 'swiper';
+import SwiperCore, { Navigation, Pagination } from 'swiper';
 import 'swiper/modules/pagination/pagination.scss';
 import 'swiper/swiper.scss';
 import LpStakingHeader from './LpStakingHeader';
@@ -64,8 +70,10 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
   const { t } = useTranslation();
   const [currentSwipe, setCurrnetSwipe] = useState(selectedRound);
   const { value: mediaQuery } = useMediaQueryType();
-
-  SwiperCore.use([Pagination]);
+  const prevNavigation = useRef<HTMLDivElement>(null);
+  const nextNavigation = useRef<HTMLDivElement>(null);
+  const pagination = useRef<HTMLDivElement>(null);
+  SwiperCore.use([Navigation, Pagination]);
 
   const miningElfiDescription = [
     [
@@ -119,7 +127,24 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
           spaceBetween={100}
           loop={false}
           slidesPerView={1}
-          pagination={{ clickable: true }}
+          navigation={{
+            prevEl: prevNavigation.current,
+            nextEl: nextNavigation.current,
+          }}
+          pagination={
+            mediaQuery === MediaQuery.PC
+              ? {
+                  el: pagination.current,
+                  clickable: true,
+                  type: 'bullets',
+                  renderBullet: (index, className) => {
+                    return `<div class=${className}>${index + 1}</div>`;
+                  },
+                }
+              : {
+                  clickable: true,
+                }
+          }
           onSlideChange={(slides) => {
             setLpStakingRound({
               ...lpStakingRound,
@@ -136,7 +161,7 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
           }}
           initialSlide={currentSwipe}
           style={{
-            height: mediaQuery === 'PC' ? '335px' : undefined,
+            height: mediaQuery === 'PC' ? '320px' : undefined,
           }}>
           {lpRoundDate.map((_x, index) => {
             return (
@@ -267,6 +292,17 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
             );
           })}
         </Swiper>
+        {mediaQuery === MediaQuery.PC && (
+          <div className="swiper-custom-wrapper">
+            <div className="swiper-navigation" ref={prevNavigation}>
+              &lt;
+            </div>
+            <div ref={pagination}></div>
+            <div className="swiper-navigation" ref={nextNavigation}>
+              &gt;
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

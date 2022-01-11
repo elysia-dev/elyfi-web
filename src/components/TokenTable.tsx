@@ -6,7 +6,7 @@ import { reserveTokenData } from 'src/core/data/reserves';
 import { useWeb3React } from '@web3-react/core';
 import CountUp from 'react-countup';
 import { formatEther } from '@ethersproject/units';
-import { BigNumber } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
 import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
 import { useQuery } from '@apollo/client';
@@ -16,6 +16,11 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import TableBodyAmount from 'src/components/TableBodyAmount';
+import { daiMoneyPoolTime } from 'src/core/data/moneypoolTimes';
+import moment from 'moment';
+import { useContext } from 'react';
+import ReservesContext from 'src/contexts/ReservesContext';
+import TableBodyEventReward from './TableBodyEventReward';
 
 interface Props {
   tokenImage: string;
@@ -31,6 +36,8 @@ interface Props {
   reserveData: GetAllReserves_reserves;
   expectedIncentiveBefore: BigNumber;
   expectedIncentiveAfter: BigNumber;
+  expectedAdditionalIncentiveBefore: BigNumber;
+  expectedAdditionalIncentiveAfter: BigNumber;
   setIncentiveModalVisible: () => void;
   setModalNumber: () => void;
   modalview: () => void;
@@ -51,6 +58,8 @@ const TokenTable: React.FC<Props> = ({
   reserveData,
   expectedIncentiveBefore,
   expectedIncentiveAfter,
+  expectedAdditionalIncentiveBefore,
+  expectedAdditionalIncentiveAfter,
   setIncentiveModalVisible,
   setModalNumber,
   modalview,
@@ -59,6 +68,7 @@ const TokenTable: React.FC<Props> = ({
   const { data, loading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
   const { account } = useWeb3React();
   const { t, i18n } = useTranslation();
+  const { setRound } = useContext(ReservesContext);
   const tokenInfo = reserveTokenData[tokenName];
   const list = data?.assetBondTokens.filter((product) => {
     return product.reserve.id === reserveData?.id;
@@ -150,6 +160,7 @@ const TokenTable: React.FC<Props> = ({
                   setIncentiveModalVisible();
                   setModalNumber();
                   modalview();
+                  setRound(1);
                 }}
                 buttonContent={t('dashboard.claim_reward')}
                 value={
@@ -168,9 +179,35 @@ const TokenTable: React.FC<Props> = ({
                     '-'
                   )
                 }
+                moneyPoolTime={`${moment(daiMoneyPoolTime[0].startedAt).format(
+                  'YYYY.MM.DD',
+                )} ~ ${moment(daiMoneyPoolTime[0].endedAt).format(
+                  'YYYY.MM.DD',
+                )} KST`}
                 tokenName={'ELFI'}
               />
             </div>
+          </div>
+          <div className="deposit__table__body__event-box">
+            <TableBodyEventReward
+              moneyPoolTime={`${moment(daiMoneyPoolTime[1].startedAt).format(
+                'YYYY.MM.DD',
+              )} KST ~ `}
+              expectedAdditionalIncentiveBefore={
+                expectedAdditionalIncentiveBefore
+              }
+              expectedAdditionalIncentiveAfter={
+                expectedAdditionalIncentiveAfter
+              }
+              buttonEvent={(e) => {
+                e.preventDefault();
+                setIncentiveModalVisible();
+                setModalNumber();
+                modalview();
+                setRound(2);
+              }}
+              tokenName={tokenName}
+            />
           </div>
 
           <div className="deposit__table__body__loan-list">
@@ -205,15 +242,6 @@ const TokenTable: React.FC<Props> = ({
                     }
                   />
                 </div>
-                {/* <div
-                  className="deposit__table__body__loan-list__more-button"
-                  style={{
-                    display: !!list && list?.length > 3 ? 'block' : 'none',
-                  }}>
-                  <a href={`/${lng}/deposits/${tokenName}`}>
-                    <p>{t('main.governance.view-more')}</p>
-                  </a>
-                </div> */}
               </div>
             )}
           </div>

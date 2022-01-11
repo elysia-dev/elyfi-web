@@ -904,6 +904,33 @@ input[type='number'] {
       > h2 {
         text-align: center;
       }
+      &__round {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        > div:first-child {
+          margin-right: 20px;
+        }
+        > div:last-child {
+          margin-left: 20px;
+        }
+        > div {
+          box-shadow: 0px 1px 6px #00000029;
+          text-align: center;
+          cursor: pointer;
+          @include hover__soft-background;
+          > p {
+            color: $font-color;
+            cursor: pointer;
+          }
+          &.active {
+            border: 1px solid $elysia-color;
+            > p {
+              font-family: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
+            }
+          }
+        }
+      }
     }
     &__table {
       background-color: $background-color;
@@ -965,6 +992,17 @@ input[type='number'] {
             cursor: pointer;
             > p {
               cursor: pointer;
+            }
+            &.disable {
+              pointer-events: none;
+              border: 0px;
+              cursor: not-allowed;
+              background-color: $gray-line;
+              box-shadow: none;
+              > p {
+                cursor: not-allowed;
+                color: $gray-font-color;
+              }
             }
           }
           > div {
@@ -1343,7 +1381,7 @@ input[type='number'] {
             &:first-child {
               color: $font-color;
             }
-            &:last-child {
+            p {
               color: $gray-font-color;
             }
           }
@@ -1399,6 +1437,61 @@ input[type='number'] {
       align-items: center;
       > h2 {
         color: $font-color;
+      }
+      .DAI {
+        > div {
+          box-shadow: 0px 1px 6px #00000029;
+          text-align: center;
+          cursor: pointer;
+          @include hover__soft-background;
+          &:hover {
+            box-shadow: 0px 0px 6px #f9ae18;
+            transition: all 0.2s ease;
+          }
+          > p {
+            color: $font-color;
+            cursor: pointer;
+          }
+          &.active {
+            border: 1px solid #f9ae18;
+            > p {
+              font-family: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
+            }
+          }
+        }
+      }
+      .USDT {
+        > div {
+          box-shadow: 0px 1px 6px #00000029;
+          text-align: center;
+          cursor: pointer;
+          @include hover__soft-background;
+          &:hover {
+            box-shadow: 0px 0px 6px #26a17b;
+            transition: all 0.2s ease;
+          }
+          > p {
+            color: $font-color;
+            cursor: pointer;
+          }
+          &.active {
+            border: 1px solid #26a17b;
+            > p {
+              font-family: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
+            }
+          }
+        }
+      }
+      &__round {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        > div:first-child {
+          margin-right: 20px;
+        }
+        > div:last-child {
+          margin-left: 20px;
+        }
       }
     }
     &__data-wrapper {

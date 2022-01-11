@@ -203,7 +203,9 @@
       "lp_token_staking": " {{token0}}-{{token1}} LP token staking",
       "lp_token_staking_description": "Providing liquidity to the {{token0}}-{{token1}} pool in Uniswap V3 and staking the received {{token0}}-{{token1}} LP tokens will give you {{token0}} and {{token1}}",
 
-      "lp_token_reward_plan": "ELFI, ETH, DAI Reward plan"
+      "lp_token_reward_plan": "ELFI, ETH, DAI Reward plan",
+
+      "deposit_add_reward_event": "<strong>New</strong> amount of rewards"
     },
     "loan": {
       "loan__title": "Loan List",
@@ -355,7 +357,9 @@
 
       "reward_plan": "Reward plan",
       "deposit__reward_plan": "Deposit reward plan",
-      "elfi_price": "ELFI Price: <strong>$ {{count}}</strong>"
+      "elfi_price": "ELFI Price: <strong>$ {{count}}</strong>",
+
+      "deposit_add_reward_event": "Additional reward events"
     },
     "portfolio": {
       "investment_status": "Loan Status",

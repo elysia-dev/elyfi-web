@@ -48,8 +48,8 @@ const Main = () => {
         reactGA.event({
           category: PageEventType.MoveToInternalPage,
           action: ButtonEventType.CheckInterestRateButton,
-        })
-      }
+        });
+      },
     },
     {
       image: MainAnimation(1),
@@ -58,8 +58,8 @@ const Main = () => {
         reactGA.event({
           category: PageEventType.MoveToInternalPage,
           action: ButtonEventType.CheckCollateralButton,
-        })
-      }
+        });
+      },
     },
     {
       image: MainAnimation(2),
@@ -68,8 +68,8 @@ const Main = () => {
         reactGA.event({
           category: PageEventType.MoveToInternalPage,
           action: ButtonEventType.CheckGovernanceButton,
-        })
-      }
+        });
+      },
     },
   ];
 
@@ -139,22 +139,22 @@ const Main = () => {
                   reactGA.event({
                     category: PageEventType.MoveToInternalPage,
                     action: ButtonEventType.DepositButton,
-                  })
-                  History.push({ pathname: `/${lng}/deposit` })
+                  });
+                  History.push({ pathname: `/${lng}/deposit` });
                 }}>
                 <p ref={mainHeaderY}> {t('main.landing.button__deposit')}</p>
               </div>
               <div
-                onClick={() =>{
+                onClick={() => {
                   reactGA.event({
                     category: PageEventType.MoveToExternalPage,
                     action: ButtonEventType.LearnMoreButton,
-                  })
+                  });
                   window.open(
                     lng === LanguageType.KO
                       ? 'https://elysia.gitbook.io/elysia.finance/'
                       : 'https://elysia.gitbook.io/elysia.finance/v/eng',
-                  )
+                  );
                 }}>
                 <p>{t('main.landing.button__view-more')}</p>
               </div>
@@ -170,8 +170,8 @@ const Main = () => {
                 reactGA.event({
                   category: PageEventType.MoveToInternalPage,
                   action: ButtonEventType.DepositButton,
-                })
-                History.push({ pathname: `/${lng}/deposit` })
+                });
+                History.push({ pathname: `/${lng}/deposit` });
               }}>
               <p ref={mainHeaderMoblieY}>{t('main.landing.button__deposit')}</p>
             </div>
@@ -180,14 +180,13 @@ const Main = () => {
                 reactGA.event({
                   category: PageEventType.MoveToExternalPage,
                   action: ButtonEventType.LearnMoreButton,
-                })
+                });
                 window.open(
                   lng === LanguageType.KO
                     ? 'https://elysia.gitbook.io/elysia.finance/'
                     : 'https://elysia.gitbook.io/elysia.finance/v/eng',
-                )
-              }}
-            >
+                );
+              }}>
               <p>{t('main.landing.button__view-more')}</p>
             </div>
           </div>

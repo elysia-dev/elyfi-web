@@ -29,11 +29,15 @@ interface EnvironmentVariables {
   etherscan: string;
   daiTokenizerAddress: string;
   usdtTokeninzerAddress: string;
+  prevDaiIncentivePool: string;
+  prevUSDTIncentivePool: string;
+  currentDaiIncentivePool: string;
+  currentUSDTIncentivePool: string;
 }
 
 const vars =
   process.env.NODE_ENV === 'production' && !process.env.REACT_APP_TEST_MODE
-    ? (prodVars as EnvironmentVariables)
-    : (testVars as EnvironmentVariables);
+    ? (prodVars as unknown as EnvironmentVariables)
+    : (testVars as unknown as EnvironmentVariables);
 
 export default vars;
