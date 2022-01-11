@@ -249,7 +249,11 @@ const Dashboard: React.FunctionComponent = () => {
   const isEndedIncentive = (token: string, round: number) => {
     const moneyPoolTime =
       token === Token.DAI ? daiMoneyPoolTime : tetherMoneyPoolTime;
-    return moment().isAfter(moneyPoolTime[round].endedAt);
+    return moment().isAfter(
+      round === 1
+        ? moneyPoolTime[round].startedAt
+        : moneyPoolTime[round].endedAt,
+    );
   };
 
   useEffect(() => {
@@ -276,7 +280,7 @@ const Dashboard: React.FunctionComponent = () => {
                 ),
             expectedAdditionalIncentiveBefore:
               balance.expectedAdditionalIncentiveAfter,
-            expectedAdditionalIncentiveAfter: isEndedIncentive(
+            expectedAdditionalIncentiveAfter: !isEndedIncentive(
               balance.tokenName,
               1,
             )
