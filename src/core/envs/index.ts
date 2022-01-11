@@ -29,6 +29,10 @@ interface EnvironmentVariables {
   etherscan: string;
   daiTokenizerAddress: string;
   usdtTokeninzerAddress: string;
+  prevDaiIncentivePool: string;
+  prevUSDTIncentivePool: string;
+  currentDaiIncentivePool: string;
+  currentUSDTIncentivePool: string;
 }
 
 const vars =
