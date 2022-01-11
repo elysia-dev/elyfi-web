@@ -22,6 +22,7 @@ import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import {
   daiMoneyPoolTime,
   moneyPoolStartedAt,
+  tetherMoneyPoolTime,
 } from 'src/core/data/moneypoolTimes';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import {
@@ -136,13 +137,13 @@ const RewardPlan: FunctionComponent = () => {
     daiRewardByElFiStakingPool: calcMintedAmounts(
       parseFloat(utils.formatEther(DAIPerDayOnELFIStakingPool)),
     ),
-    beforeMintedByDaiMoneypool: [0, 0],
+    beforeMintedByDaiMoneypool: 0,
     mintedByDaiMoneypool: calcMintedByDaiMoneypool(),
     beforeTetherRewardByElFiStakingPool: [0, 0, 0],
     tetherRewardByElFiStakingPool: calcMintedAmounts(
       parseFloat(utils.formatEther(TETHERPerDayOnELFIStakingPool)),
     ),
-    beforeMintedByTetherMoneypool: [0, 0],
+    beforeMintedByTetherMoneypool: 0,
     mintedByTetherMoneypool: calcMintedByTetherMoneypool(),
     beforeElfiRewardByLp: [0, 0, 0],
     elfiRewardByLp: calcElfiRewardByLp(),
@@ -154,16 +155,16 @@ const RewardPlan: FunctionComponent = () => {
 
   const moneyPoolInfo = {
     DAI: {
-      totalMiningValue: 3000000,
-      startMoneyPool: moneyPoolStartedAt.format('yyyy.MM.DD'),
+      startedMoneyPool: daiMoneyPoolTime[0].startedAt.format('yyyy.MM.DD'),
+      endedMoneyPool: daiMoneyPoolTime[0].endedAt.format('yyyy.MM.DD'),
     },
-    USDT: { totalMiningValue: 1583333, startMoneyPool: '2021.10.08' },
+
+    USDT: {
+      startedMoneyPool: tetherMoneyPoolTime[0].startedAt.format('yyyy.MM.DD'),
+      endedMoneyPool: tetherMoneyPoolTime[0].endedAt.format('yyyy.MM.DD'),
+    },
   };
-  const totalMiningValue = [3000000, 1583333];
-  // const startMoneyPool = [
-  //   moneyPoolStartedAt.format('yyyy.MM.DD'),
-  //   '2021.10.08',
-  // ];
+
   const beforeMintedMoneypool = {
     DAI: { beforeMintedToken: amountData.beforeMintedByDaiMoneypool },
     USDT: {
