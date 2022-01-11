@@ -1,11 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
-import { BigNumber } from 'ethers';
-import Position from 'src/core/types/Position';
 import envs from 'src/core/envs';
-import {
-  GetAllReserves,
-  GetAllReserves_reserves,
-} from 'src/queries/__generated__/GetAllReserves';
+import { GetAllReserves } from 'src/core/types/GetAllReserves';
+import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 
 const baseUrl = envs.subgraphURI;
 
