@@ -42,11 +42,12 @@ import {
 const initialBalanceState = {
   loading: false,
   value: constants.Zero,
-  incentive: constants.Zero,
+  incentiveRound1: constants.Zero,
+  incentiveRound2: constants.Zero,
   expectedIncentiveBefore: constants.Zero,
   expectedIncentiveAfter: constants.Zero,
-  expectedAddIncentiveBefore: constants.Zero,
-  expectedAddIncentiveAfter: constants.Zero,
+  expectedAdditionalIncentiveBefore: constants.Zero,
+  expectedAdditionalIncentiveAfter: constants.Zero,
   deposit: constants.Zero,
   updatedAt: moment().unix(),
 };
@@ -63,7 +64,6 @@ const Dashboard: React.FunctionComponent = () => {
     reserves,
     refetch: refetchReserve,
     round,
-    setRound,
   } = useContext(ReservesContext);
   const { elfiPrice } = useContext(PriceContext);
   const reserveId = new URLSearchParams(location.search).get('reserveId');
@@ -76,11 +76,12 @@ const Dashboard: React.FunctionComponent = () => {
       loading: boolean;
       tokenName: Token.DAI | Token.USDT;
       value: BigNumber;
-      incentive: BigNumber;
+      incentiveRound1: BigNumber;
+      incentiveRound2: BigNumber;
       expectedIncentiveBefore: BigNumber;
       expectedIncentiveAfter: BigNumber;
-      expectedAddIncentiveBefore: BigNumber;
-      expectedAddIncentiveAfter: BigNumber;
+      expectedAdditionalIncentiveBefore: BigNumber;
+      expectedAdditionalIncentiveAfter: BigNumber;
       deposit: BigNumber;
       updatedAt: number;
     }[]
@@ -119,25 +120,50 @@ const Dashboard: React.FunctionComponent = () => {
     setModalNumber(tokenInfo ? tokenInfo : 0);
   }, [reserveId]);
 
+  const getIncentiveByRound = async (
+    tokenName: Token.DAI | Token.USDT,
+    account: string,
+  ) => {
+    const incentiveRound1 = await IncentivePool__factory.connect(
+      tokenName === Token.DAI
+        ? envs.prevDaiIncentivePool
+        : envs.prevUSDTIncentivePool,
+      library.getSigner(),
+    ).getUserIncentive(account);
+
+    const incentiveRound2 = await IncentivePool__factory.connect(
+      tokenName === Token.DAI
+        ? envs.currentDaiIncentivePool
+        : envs.currentUSDTIncentivePool,
+      library.getSigner(),
+    ).getUserIncentive(account);
+
+    return {
+      incentiveRound1,
+      incentiveRound2,
+    };
+  };
+
   const fetchBalanceFrom = async (
     reserve: GetAllReserves_reserves,
     account: string,
+    tokenName: Token.DAI | Token.USDT,
   ) => {
     try {
-      const incentive = await IncentivePool__factory.connect(
-        reserve.incentivePool.id,
-        library.getSigner(),
-      ).getUserIncentive(account);
-
+      const { incentiveRound1, incentiveRound2 } = await getIncentiveByRound(
+        tokenName,
+        account,
+      );
       return {
         value: await ERC20__factory.connect(reserve.id, library).balanceOf(
           account,
         ),
-        incentive,
-        expectedIncentiveBefore: incentive,
-        expectedIncentiveAfter: incentive,
-        expectedAddIncentiveBefore: constants.Zero,
-        expectedAddIncentiveAfter: constants.Zero,
+        incentiveRound1,
+        incentiveRound2,
+        expectedIncentiveBefore: incentiveRound1,
+        expectedIncentiveAfter: incentiveRound1,
+        expectedAdditionalIncentiveBefore: incentiveRound2,
+        expectedAdditionalIncentiveAfter: incentiveRound2,
         governance: await ERC20__factory.connect(
           envs.governanceAddress,
           library,
@@ -164,7 +190,11 @@ const Dashboard: React.FunctionComponent = () => {
             if (_index !== index) return data;
             return {
               ...data,
-              ...(await fetchBalanceFrom(reserves[index], account)),
+              ...(await fetchBalanceFrom(
+                reserves[index],
+                account,
+                data.tokenName,
+              )),
               updatedAt: moment().unix(),
             };
           }),
@@ -189,7 +219,11 @@ const Dashboard: React.FunctionComponent = () => {
             return {
               ...balances[index],
               loading: false,
-              ...(await fetchBalanceFrom(reserve, account)),
+              ...(await fetchBalanceFrom(
+                reserve,
+                account,
+                balances[index].tokenName,
+              )),
               updatedAt: moment().unix(),
             };
           }),
@@ -212,10 +246,10 @@ const Dashboard: React.FunctionComponent = () => {
     loadBalances();
   }, [account, reserves]);
 
-  const isEndedIncentive = (token: string) => {
+  const isEndedIncentive = (token: string, round: number) => {
     const moneyPoolTime =
       token === Token.DAI ? daiMoneyPoolTime : tetherMoneyPoolTime;
-    return moment().isAfter(moneyPoolTime[0].endedAt);
+    return moment().isAfter(moneyPoolTime[round].endedAt);
   };
 
   useEffect(() => {
@@ -227,9 +261,9 @@ const Dashboard: React.FunctionComponent = () => {
           return {
             ...balance,
             expectedIncentiveBefore: balance.expectedIncentiveAfter,
-            expectedIncentiveAfter: isEndedIncentive(balance.tokenName)
+            expectedIncentiveAfter: isEndedIncentive(balance.tokenName, 0)
               ? balance.expectedIncentiveAfter
-              : balance.incentive.add(
+              : balance.incentiveRound1.add(
                   calcExpectedIncentive(
                     elfiPrice,
                     balance.deposit,
@@ -240,8 +274,24 @@ const Dashboard: React.FunctionComponent = () => {
                     balance.updatedAt,
                   ),
                 ),
-            expectedAddIncentiveBefore: constants.Zero,
-            expectedAddIncentiveAfter: constants.Zero,
+            expectedAdditionalIncentiveBefore:
+              balance.expectedAdditionalIncentiveAfter,
+            expectedAdditionalIncentiveAfter: isEndedIncentive(
+              balance.tokenName,
+              1,
+            )
+              ? balance.expectedAdditionalIncentiveAfter
+              : balance.incentiveRound2.add(
+                  calcExpectedIncentive(
+                    elfiPrice,
+                    balance.deposit,
+                    calcMiningAPR(
+                      elfiPrice,
+                      BigNumber.from(reserves[index].totalDeposit),
+                    ),
+                    balance.updatedAt,
+                  ),
+                ),
           };
         }),
       );
@@ -301,9 +351,25 @@ const Dashboard: React.FunctionComponent = () => {
         onClose={() => {
           setIncentiveModalVisible(false);
         }}
-        balanceBefore={balances[selectedModalNumber].expectedIncentiveBefore}
-        balanceAfter={balances[selectedModalNumber].expectedIncentiveAfter}
-        incentivePoolAddress={reserves[selectedModalNumber].incentivePool.id}
+        balanceBefore={
+          round === 2
+            ? balances[selectedModalNumber].expectedAdditionalIncentiveBefore
+            : balances[selectedModalNumber].expectedIncentiveBefore
+        }
+        balanceAfter={
+          round === 2
+            ? balances[selectedModalNumber].expectedAdditionalIncentiveAfter
+            : balances[selectedModalNumber].expectedIncentiveAfter
+        }
+        incentivePoolAddress={
+          round === 2
+            ? balances[selectedModalNumber].tokenName === Token.DAI
+              ? envs.currentDaiIncentivePool
+              : envs.currentUSDTIncentivePool
+            : balances[selectedModalNumber].tokenName === Token.DAI
+            ? envs.prevDaiIncentivePool
+            : envs.prevUSDTIncentivePool
+        }
         afterTx={() => loadBalance(selectedModalNumber)}
         transactionModal={() => setTransactionModal(true)}
       />
@@ -414,10 +480,12 @@ const Dashboard: React.FunctionComponent = () => {
                   reserveData={reserves[index]}
                   expectedIncentiveBefore={balance.expectedIncentiveBefore}
                   expectedIncentiveAfter={balance.expectedIncentiveAfter}
-                  expectedAddIncentiveBefore={
-                    balance.expectedAddIncentiveBefore
+                  expectedAdditionalIncentiveBefore={
+                    balance.expectedAdditionalIncentiveBefore
                   }
-                  expectedAddIncentiveAfter={balance.expectedAddIncentiveAfter}
+                  expectedAdditionalIncentiveAfter={
+                    balance.expectedAdditionalIncentiveAfter
+                  }
                   setIncentiveModalVisible={() => {
                     walletConnect === false
                       ? setConnectWalletModalvisible(true)
