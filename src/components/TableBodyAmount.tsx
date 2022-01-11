@@ -71,7 +71,7 @@ const TableBodyAmount: React.FunctionComponent<{
                 walletBalance +
                 ' ' +
                 tokenName
-              : ''}
+              : moneyPoolTime}
           </p>
         </div>
       </div>
