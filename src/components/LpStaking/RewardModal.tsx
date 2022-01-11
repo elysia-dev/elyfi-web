@@ -6,9 +6,19 @@ import elfi from 'src/assets/images/ELFI.png';
 import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
 import { formatSixFracionDigit } from 'src/utiles/formatters';
-import useClaimReward from 'src/hooks/useClaimReward';
 import { LpRewardModalProps } from 'src/core/types/RewardTypes';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
+import ModalViewType from 'src/enums/ModalViewType';
+import TransactionType from 'src/enums/TransactionType';
+import ElyfiVersions from 'src/enums/ElyfiVersions';
+import { useWeb3React } from '@web3-react/core';
+import { ethers, utils } from 'ethers';
+import stakerABI from 'src/core/abi/StakerABI.json';
+import envs from 'src/core/envs';
+import RecentActivityType from 'src/enums/RecentActivityType';
 import ModalHeader from '../ModalHeader';
+
+const iFace = new utils.Interface(stakerABI);
 
 const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
   visible,
@@ -17,7 +27,57 @@ const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
 }) => {
   const { t } = useTranslation();
   const { txWaiting } = useContext(TxContext);
-  const claim = useClaimReward();
+  const { account, chainId, library } = useWeb3React();
+  const { setTransaction } = useContext(TxContext);
+
+  const claim = async () => {
+    const staker = new ethers.Contract(
+      envs.stakerAddress,
+      stakerABI,
+      library.getSigner(),
+    );
+    try {
+      const res = await staker.multicall([
+        iFace.encodeFunctionData('claimReward', [
+          envs.governanceAddress,
+          account,
+          0,
+        ]),
+        iFace.encodeFunctionData('claimReward', [
+          envs.daiAddress,
+          account,
+          0,
+        ]),
+        iFace.encodeFunctionData('claimReward', [
+          envs.wEthAddress,
+          account,
+          0,
+        ])
+      ]);
+
+      setTransaction(
+        res,
+        buildEventEmitter(
+          ModalViewType.LPStakingIncentiveModal,
+          TransactionType.Claim,
+          JSON.stringify({
+            version: ElyfiVersions.V1,
+            chainId,
+            address: account,
+            incentiveDaiAmount: rewardToReceive.daiReward,
+            incentiveEthAmount: rewardToReceive.ethReward,
+            incentiveElfiAmount: rewardToReceive.elfiReward
+          })
+        ),
+        'Claim' as RecentActivityType,
+        () => {},
+        () => {},
+      );
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(`${error.message}`);
+    }
+  };
 
   const receiveRewardHandler = async () => {
     try {

@@ -38,6 +38,7 @@ import {
   daiMoneyPoolTime,
   tetherMoneyPoolTime,
 } from 'src/core/data/moneypoolTimes';
+import ModalViewType from 'src/enums/ModalViewType';
 
 const initialBalanceState = {
   loading: false,
@@ -374,6 +375,7 @@ const Dashboard: React.FunctionComponent = () => {
             ? envs.prevDaiIncentivePool
             : envs.prevUSDTIncentivePool
         }
+        tokenName={balances[selectedModalNumber].tokenName}
         afterTx={() => loadBalance(selectedModalNumber)}
         transactionModal={() => setTransactionModal(true)}
       />
@@ -454,12 +456,19 @@ const Dashboard: React.FunctionComponent = () => {
                   id={`table-${index}`}
                   onClick={(e: any) => {
                     walletConnect === false
-                      ? setConnectWalletModalvisible(true)
+                      ? (setConnectWalletModalvisible(true),
+                        ReactGA.modalview(
+                          balance.tokenName +
+                            ModalViewType.DepositConnectWalletModal,
+                        ))
                       : (e.preventDefault(),
                         setReserve(reserves[index]),
                         setModalNumber(index),
                         setModalToken(balance.tokenName),
-                        ReactGA.modalview('DepositOrWithdraw'));
+                        ReactGA.modalview(
+                          balance.tokenName +
+                            ModalViewType.DepositOrWithdrawModal,
+                        ));
                   }}
                   tokenName={balance.tokenName}
                   tokenImage={reserveTokenData[balance.tokenName].image}
@@ -492,11 +501,18 @@ const Dashboard: React.FunctionComponent = () => {
                   }
                   setIncentiveModalVisible={() => {
                     walletConnect === false
-                      ? setConnectWalletModalvisible(true)
+                      ? (setConnectWalletModalvisible(true),
+                        ReactGA.modalview(
+                          balance.tokenName + ModalViewType.IncentiveModal,
+                        ))
                       : setIncentiveModalVisible(true);
                   }}
                   setModalNumber={() => setModalNumber(index)}
-                  modalview={() => ReactGA.modalview('Incentive')}
+                  modalview={() =>
+                    ReactGA.modalview(
+                      balance.tokenName + ModalViewType.IncentiveModal,
+                    )
+                  }
                 />
               </>
             );

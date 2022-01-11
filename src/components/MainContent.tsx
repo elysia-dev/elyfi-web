@@ -8,9 +8,10 @@ const MainContent: React.FunctionComponent<{
   index: number,
   data: {
     image: () => JSX.Element,
-    link: string
+    link: string,
+    ga: () => void
   }
-}> = ({ index, data }) => {
+}> = ({ index, data}) => {
 
   const { t } = useTranslation();
   const History = useHistory();
@@ -49,7 +50,9 @@ const MainContent: React.FunctionComponent<{
               </div>
             )
           }
-          <div onClick={() => History.push({ pathname: data.link })} className="main__content__button">
+          <div
+            onClick={() => { data.ga(); History.push({ pathname: data.link }) }}
+           className="main__content__button">
             <p>
               {t(`main.section.${index}.button`)}
             </p>

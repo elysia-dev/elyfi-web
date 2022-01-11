@@ -55,13 +55,16 @@ import StakerSubgraph, { IPoolPosition } from 'src/clients/StakerSubgraph';
 import getIncentiveId from 'src/utiles/getIncentive';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import { lpRoundDate, lpUnixTimestamp } from 'src/core/data/lpStakingTime';
+import DrawWave from 'src/utiles/drawWave';
+import TokenColors from 'src/enums/TokenColors';
 
 const RewardPlan: FunctionComponent = () => {
   const { t } = useTranslation();
   const { stakingType } = useParams<{ stakingType: string }>();
   const history = useHistory();
   const { latestPrice, ethPool, daiPool } = useContext(UniswapPoolContext);
-  const tokenRef = useRef<HTMLParagraphElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
   const { ethPrice } = useContext(PriceContext);
   const { reserves } = useContext(ReservesContext);
   const current = moment();
@@ -187,6 +190,30 @@ const RewardPlan: FunctionComponent = () => {
     return amountData.mintedByElStakingPool.reduce((res, cur) => res + cur, 0);
   }, [amountData.mintedByElStakingPool]);
 
+  const draw = () => {
+    const dpr = window.devicePixelRatio;
+    const canvas: HTMLCanvasElement | null = canvasRef.current;
+
+    if (!headerRef.current) return;
+    const headerY =
+      headerRef.current.offsetTop +
+      (document.body.clientWidth > 1190 ? 200 : 120);
+    if (!canvas) return;
+    canvas.width = document.body.clientWidth * dpr;
+    canvas.height = document.body.clientHeight * dpr;
+    const browserWidth = canvas.width / dpr + 40;
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) return;
+    ctx.scale(dpr, dpr);
+
+    new DrawWave(ctx, browserWidth).drawOnPages(
+      headerY,
+      stakingType === Token.EL ? TokenColors.EL : TokenColors.ELFI,
+      stakingType === 'LP' ? stakingType : undefined,
+    );
+  };
+
   const getAllStakedPositions = () => {
     StakerSubgraph.getIncentivesWithPositionsByPoolId(
       envs.ethElfiPoolAddress,
@@ -279,24 +306,28 @@ const RewardPlan: FunctionComponent = () => {
     };
   }, [amountData]);
 
+  useEffect(() => {
+    draw();
+    window.addEventListener('resize', () => draw());
+
+    return () => {
+      window.removeEventListener('resize', () => draw());
+    };
+  }, []);
+
   return (
     <>
-      <img
+      <canvas
+        ref={canvasRef}
         style={{
           position: 'absolute',
-          left: 0,
-          top: tokenRef.current
-            ? stakingType === 'LP'
-              ? tokenRef.current?.offsetTop + 120
-              : tokenRef.current?.offsetTop + 180
-            : 0,
           width: '100%',
+          top: 0,
+          left: 0,
           zIndex: -1,
         }}
-        src={wave}
-        alt={wave}
       />
-      <div ref={tokenRef} className="reward">
+      <div ref={headerRef} className="reward">
         {stakingType === 'deposit' ? (
           <div className="component__text-navigation">
             <p onClick={() => onClickHandler()} className="pointer">

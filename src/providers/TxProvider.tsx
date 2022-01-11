@@ -30,9 +30,9 @@ const TxProvider: React.FunctionComponent = (props) => {
     setState({ ...state, txStatus, txWaiting, error: '' });
   };
 
-  const failTransaction = (tracker: any, onEvent: () => void, error: any) => {
+  const failTransaction = (emitter: any, onEvent: () => void, error: any) => {
     onEvent();
-    tracker.canceled();
+    emitter.canceled();
 
     setState({
       ...state,
@@ -55,12 +55,12 @@ const TxProvider: React.FunctionComponent = (props) => {
 
   const setTransaction = (
     tx: ContractTransaction,
-    tracker: any,
+    emitter: any,
     type: RecentActivityType,
     pending: () => void,
     callback: () => void,
   ) => {
-    tracker.created();
+    emitter.created();
     window.localStorage.setItem('@txHash', tx.hash);
     window.localStorage.setItem('@txNonce', tx.nonce.toString());
     window.localStorage.setItem('@txType', type);

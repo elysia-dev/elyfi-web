@@ -42,6 +42,9 @@ import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import { useParams } from 'react-router-dom';
+import ModalViewType from 'src/enums/ModalViewType';
+import DrawWave from 'src/utiles/drawWave';
+import TokenColors from 'src/enums/TokenColors';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI;
@@ -69,7 +72,8 @@ const Staking: React.FunctionComponent<IProps> = ({
   const current = moment();
   const { account } = useWeb3React();
   const { elPrice, elfiPrice } = useContext(PriceContext);
-  const tokenRef = useRef<HTMLParagraphElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
   const stakingPool = useStakingPool(stakedToken);
   const stakingPoolV2 = useStakingPool(Token.ELFI, true);
 
@@ -135,6 +139,35 @@ const Staking: React.FunctionComponent<IProps> = ({
 
   const { value: mediaQuery } = useMediaQueryType();
   const { lng } = useParams<{ lng: string }>();
+
+  const draw = () => {
+    const dpr = window.devicePixelRatio;
+    const canvas: HTMLCanvasElement | null = canvasRef.current;
+
+    if (!headerRef.current) return;
+    const headerY =
+      headerRef.current.offsetTop +
+      (stakedToken === Token.EL
+        ? document.body.clientWidth > 1190
+          ? 125
+          : 90
+        : document.body.clientWidth > 1190
+        ? 164
+        : 150);
+    if (!canvas) return;
+    canvas.width = document.body.clientWidth * dpr;
+    canvas.height = document.body.clientHeight * dpr;
+    const browserWidth = canvas.width / dpr + 40;
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) return;
+    ctx.scale(dpr, dpr);
+
+    new DrawWave(ctx, browserWidth).drawOnPages(
+      headerY,
+      stakedToken === Token.EL ? TokenColors.EL : TokenColors.ELFI,
+    );
+  };
 
   const fetchRoundData = async (account: string | null | undefined) => {
     try {
@@ -254,8 +287,27 @@ const Staking: React.FunctionComponent<IProps> = ({
     setState({ ...state, txWaiting: isWaiting });
   };
 
+  useEffect(() => {
+    draw();
+    window.addEventListener('resize', () => draw());
+
+    return () => {
+      window.removeEventListener('resize', () => draw());
+    };
+  }, []);
+
   return (
     <>
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'absolute',
+          width: '100%',
+          top: 0,
+          left: 0,
+          zIndex: -1,
+        }}
+      />
       <TransactionConfirmModal
         visible={transactionModal}
         closeHandler={() => {
@@ -281,6 +333,11 @@ const Staking: React.FunctionComponent<IProps> = ({
           ) &&
             roundData[selectModalRound]?.accountReward) ||
           constants.Zero
+        }
+        stakingBalance={
+          loading
+            ? constants.Zero
+            : roundData[selectModalRound].accountPrincipal
         }
         currentRound={currentRound}
         round={selectModalRound + 1}
@@ -341,7 +398,7 @@ const Staking: React.FunctionComponent<IProps> = ({
         }}
         round={selectModalRound + 1}
       />
-      <img
+      {/* <img
         style={{
           position: 'absolute',
           left: 0,
@@ -351,10 +408,10 @@ const Staking: React.FunctionComponent<IProps> = ({
         }}
         src={wave}
         alt={wave}
-      />
+      /> */}
       <section className="staking">
         <section>
-          <div className="staking__title">
+          <div ref={headerRef} className="staking__title">
             <h2>
               {t('staking.staking__token', {
                 token: stakedToken.toUpperCase(),
@@ -365,7 +422,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                 ? t('staking.el.staking__content')
                 : t('staking.elfi.staking__content')}
             </p>
-            <div ref={tokenRef} className="staking__title__button">
+            <div className="staking__title__button">
               <a
                 href={
                   stakedToken === Token.ELFI
@@ -614,9 +671,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   }
 
                                   if (migratable(stakedToken, index)) {
-                                    ReactGA.modalview(
-                                      `${stakedToken}Migration`,
-                                    );
+                                    ReactGA.modalview(stakedToken + ModalViewType.MigrationOrUnstakingModal);
                                     setRoundModal(index);
                                     setModalValue(item.accountPrincipal);
                                     return setMigrationModalVisible(true);
@@ -626,7 +681,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                       stakingRoundTimes[index].startedAt,
                                     ) > 0
                                   ) {
-                                    ReactGA.modalview(`${stakedToken}Staking`);
+                                    ReactGA.modalview(stakedToken + ModalViewType.StakingOrUnstakingModal);
                                     setRoundModal(index);
                                     setModalValue(item.accountPrincipal);
                                     setStakingModalVisible(true);
@@ -646,9 +701,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   if (item.accountReward.isZero()) {
                                     return;
                                   }
-                                  ReactGA.modalview(
-                                    `${stakedToken}StakingReward`,
-                                  );
+                                  ReactGA.modalview(stakedToken + ModalViewType.StakingIncentiveModal);
                                   current.diff(
                                     stakingRoundTimes[index].startedAt,
                                   ) > 0 && setRoundModal(index);
@@ -733,7 +786,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                 ) {
                                   return;
                                 }
-                                ReactGA.modalview(`${stakedToken}Staking`);
+                                ReactGA.modalview(stakedToken + ModalViewType.StakingOrUnstakingModal);
                                 setRoundModal(4);
                                 setModalValue(currentRound.accountPrincipal);
                                 setStakingModalVisible(true);
@@ -779,9 +832,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                 if (expectedReward.value.isZero()) {
                                   return;
                                 }
-                                ReactGA.modalview(
-                                  `${stakedToken}StakingReward`,
-                                );
+                                ReactGA.modalview(stakedToken + ModalViewType.StakingIncentiveModal);
 
                                 current.diff(stakingRoundTimes[4].startedAt) >
                                   0 && setRoundModal(4);
@@ -870,7 +921,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                               ) {
                                 return;
                               }
-                              ReactGA.modalview(`${stakedToken}Staking`);
+                              ReactGA.modalview(stakedToken + ModalViewType.StakingOrUnstakingModal);
                               setRoundModal(4);
                               setModalValue(currentRound.accountPrincipal);
                               setStakingModalVisible(true);
@@ -885,7 +936,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                               if (expectedReward.value.isZero()) {
                                 return;
                               }
-                              ReactGA.modalview(`${stakedToken}StakingReward`);
+                              ReactGA.modalview(stakedToken + ModalViewType.StakingIncentiveModal);
 
                               current.diff(stakingRoundTimes[4].startedAt) >
                                 0 && setRoundModal(4);
@@ -898,6 +949,120 @@ const Staking: React.FunctionComponent<IProps> = ({
                       </>
                     )}
                   </div>
+                </section>
+
+                <section>
+                  <section className="staking__round__remaining-data waiting">
+                    {
+                      // eslint-disable-next-line array-callback-return
+                      roundData.map((item, index) => {
+                        if (current.diff(item.startedAt) < 0) {
+                          return (
+                            <>
+                              <div className="staking__round__remaining-data__title">
+                                <div>
+                                  <h2>
+                                    {t('staking.nth', {
+                                      nth: toOrdinalNumber(i18n.language, index + 1),
+                                    })}
+                                  </h2>
+                                  <p>
+                                    {stakingRoundTimes[index].startedAt.format(
+                                      'YYYY.MM.DD HH:mm:ss',
+                                    )}
+                                    <br />
+                                    ~&nbsp;
+                                    {stakingRoundTimes[index].endedAt.format(
+                                      'YYYY.MM.DD HH:mm:ss',
+                                    )}{' '}
+                                    (KST)
+                                  </p>
+                                </div>
+                                {mediaQuery === MediaQuery.PC && (
+                                  <div>
+                                    <h2 className="percent">
+                                      -
+                                    </h2>
+                                  </div>
+                                )}
+                              </div>
+                              <div className="staking__round__remaining-data__body">
+                                {mediaQuery === MediaQuery.PC ? (
+                                  <>
+                                    <div>
+                                      <h2>{t('staking.staking_amount')}</h2>
+                                      <div>
+                                        <h2>
+                                          -
+                                          <span className="token-amount bold">
+                                            {stakedToken}
+                                          </span>
+                                        </h2>
+                                        <div className={`staking__round__button disable`}>
+                                          <p>{t('staking.staking_btn')}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <h2>{t('staking.reward_amount')}</h2>
+                                      <div>
+                                        <h2>
+                                          -
+                                          <span className="token-amount bold">
+                                            {rewardToken}
+                                          </span>
+                                        </h2>
+                                        <div className={`staking__round__button disable`} >
+                                          <p>{t('staking.claim_reward')}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    <div>
+                                      <div>
+                                        <p>APR</p>
+                                        <h2 className="percent">
+                                          -
+                                        </h2>
+                                      </div>
+                                      <div>
+                                        <p>{t('staking.staking_amount')}</p>
+                                        <h2>
+                                          -
+                                          <span className="token-amount bold">
+                                            {stakedToken}
+                                          </span>
+                                        </h2>
+                                      </div>
+                                      <div>
+                                        <p>{t('staking.reward_amount')}</p>
+                                        <h2>
+                                          -
+                                          <span className="token-amount bold">
+                                            {rewardToken}
+                                          </span>
+                                        </h2>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <div className={`staking__round__button disable`}>
+                                        <p>{t('staking.staking_btn')}</p>
+                                      </div>
+                                      <div className={`staking__round__button disable`}>
+                                        <p>{t('staking.claim_reward')}</p>
+                                      </div>
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+                            </>
+                          );
+                        }
+                      })
+                    }
+                  </section>
                 </section>
               </div>
             </section>

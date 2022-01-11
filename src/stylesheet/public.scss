@@ -328,6 +328,12 @@ input[type='number'] {
         border-radius: 0px 0px 15px 15px;
       }
     }
+    &__address {
+      display: inline-flex;
+    }
+    &__davatar {
+      margin-right: 5px;
+    }
     &__wallet {
       display: inline-flex;
       background: #00bfff 0% 0%;
@@ -881,6 +887,7 @@ input[type='number'] {
         cursor: pointer;
         @include hover__soft-background;
         > p {
+          background-color: #ffffff;
           cursor: pointer;
         }
       }
@@ -1923,6 +1930,7 @@ input[type='number'] {
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      padding-top: 80px;
       > h2 {
         color: $font-color;
       }
@@ -2167,12 +2175,13 @@ input[type='number'] {
         background-color: #f8f8f8;
         .staking__round__remaining-data__title {
           > div:first-child {
-            > p {
+            > p, h2 {
               color: #888888;
             }
           }
           > div:last-child {
             background-color: #ffffff;
+            justify-content: flex-end;
           }
         }
       }
@@ -2181,6 +2190,7 @@ input[type='number'] {
     &__lp {
       &__header {
         text-align: center;
+        margin-top: 80px;
         > h2 {
           color: $font-color;
         }
@@ -4372,5 +4382,14 @@ input[type='number'] {
     border-top: 2px solid #333333;
     border-right: 2px solid #333333;
     transform: rotate(135deg);
+  }
+
+  .error {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9997;
   }
 }

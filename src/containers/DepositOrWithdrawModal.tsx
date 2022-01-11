@@ -20,7 +20,6 @@ import PriceContext from 'src/contexts/PriceContext';
 import useMoneyPool from 'src/hooks/useMoneyPool';
 import useERC20Info from 'src/hooks/useERC20Info';
 import useWaitingTx from 'src/hooks/useWaitingTx';
-import useTxTracking from 'src/hooks/useTxTracking';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ReserveData from 'src/core/data/reserves';
@@ -28,6 +27,10 @@ import ModalHeader from 'src/components/ModalHeader';
 import ModalConverter from 'src/components/ModalConverter';
 import moment from 'moment';
 import { daiMoneyPoolTime } from 'src/core/data/moneypoolTimes';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
+import ModalViewType from 'src/enums/ModalViewType';
+import TransactionType from 'src/enums/TransactionType';
+import ElyfiVersions from 'src/enums/ElyfiVersions';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
 
@@ -56,7 +59,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   transactionModal,
   round,
 }) => {
-  const { account } = useWeb3React();
+  const { account, chainId } = useWeb3React();
   const { elfiPrice } = useContext(PriceContext);
   const isEndedRound = moment().isBefore(daiMoneyPoolTime[round - 1].endedAt);
   const [selected, select] = useState<boolean>(isEndedRound);
@@ -80,7 +83,6 @@ const DepositOrWithdrawModal: FunctionComponent<{
   );
   const { t } = useTranslation();
   const moneyPool = useMoneyPool();
-  const initTxTracker = useTxTracking();
   const { setTransaction, failTransaction } = useContext(TxContext);
 
   const tokenInfo = ReserveData.find(
@@ -123,20 +125,25 @@ const DepositOrWithdrawModal: FunctionComponent<{
 
   const increateAllowance = async () => {
     if (!account) return;
-    const tracker = initTxTracker(
-      'DepositOrWithdrawalModal',
-      'Approve',
-      `${reserve.id}`,
+    const emitter = buildEventEmitter(
+      ModalViewType.DepositOrWithdrawModal,
+      TransactionType.Approve,
+      JSON.stringify({
+        version: ElyfiVersions.V1,
+        chainId,
+        address: account,
+        moneypoolType: tokenName,
+      }),
     );
 
-    tracker.clicked();
+    emitter.clicked();
 
     reserveERC20
       .approve(envs.moneyPoolAddress, constants.MaxUint256)
       .then((tx) => {
         setTransaction(
           tx,
-          tracker,
+          emitter,
           RecentActivityType.Approve,
           () => {
             transactionModal();
@@ -149,27 +156,34 @@ const DepositOrWithdrawModal: FunctionComponent<{
       })
       .catch((error) => {
         console.error(error);
-        tracker.canceled();
+        emitter.canceled();
       });
   };
 
   const requestDeposit = async (amount: BigNumber, max: boolean) => {
     if (!account) return;
 
-    const tracker = initTxTracker(
-      'DepositOrWithdrawalModal',
-      'Deposit',
-      `${utils.formatUnits(amount, tokenInfo?.decimals)} ${reserve.id}`,
+    const emitter = buildEventEmitter(
+      ModalViewType.DepositOrWithdrawModal,
+      TransactionType.Deposit,
+      JSON.stringify({
+        version: ElyfiVersions.V1,
+        chainId,
+        address: account,
+        moneypoolType: tokenName,
+        depositAmount: utils.formatUnits(amount, tokenInfo?.decimals),
+        maxOrNot: max,
+      }),
     );
 
-    tracker.clicked();
+    emitter.clicked();
 
     moneyPool
       ?.deposit(reserve.id, account, max ? balance : amount)
       .then((tx) => {
         setTransaction(
           tx,
-          tracker,
+          emitter,
           RecentActivityType.Deposit,
           () => {
             transactionModal();
@@ -181,7 +195,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
         );
       })
       .catch((error) => {
-        failTransaction(tracker, onClose, error);
+        failTransaction(emitter, onClose, error);
         console.error(error);
       });
   };
@@ -189,20 +203,27 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const reqeustWithdraw = (amount: BigNumber, max: boolean) => {
     if (!account) return;
 
-    const tracker = initTxTracker(
-      'DepositOrWithdrawalModal',
-      'Withdraw',
-      `${utils.formatUnits(amount, tokenInfo?.decimals)} ${max} ${reserve.id}`,
+    const emitter = buildEventEmitter(
+      ModalViewType.DepositOrWithdrawModal,
+      TransactionType.Withdraw,
+      JSON.stringify({
+        version: ElyfiVersions.V1,
+        chainId,
+        address: account,
+        moneypoolType: tokenName,
+        withdrawalAmount: utils.formatUnits(amount, tokenInfo?.decimals),
+        maxOrNot: max,
+      }),
     );
 
-    tracker.clicked();
+    emitter.clicked();
 
     moneyPool
       ?.withdraw(reserve.id, account, max ? constants.MaxUint256 : amount)
       .then((tx) => {
         setTransaction(
           tx,
-          tracker,
+          emitter,
           RecentActivityType.Withdraw,
           () => {
             transactionModal();
@@ -214,7 +235,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
         );
       })
       .catch((error) => {
-        failTransaction(tracker, onClose, error);
+        failTransaction(emitter, onClose, error);
         console.error(error);
       });
   };

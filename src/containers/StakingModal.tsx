@@ -13,12 +13,15 @@ import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import useStakingPool from 'src/hooks/useStakingPool';
 import useERC20Info from 'src/hooks/useERC20Info';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
-import useTxTracking from 'src/hooks/useTxTracking';
 import txStatus from 'src/enums/TxStatus';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ModalHeader from 'src/components/ModalHeader';
 import ModalConverter from 'src/components/ModalConverter';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
+import ModalViewType from 'src/enums/ModalViewType';
+import TransactionType from 'src/enums/TransactionType';
+import ElyfiVersions from 'src/enums/ElyfiVersions';
 
 const StakingModal: React.FunctionComponent<{
   visible: boolean;
@@ -44,7 +47,7 @@ const StakingModal: React.FunctionComponent<{
   transactionModal,
 }) => {
   const { t, i18n } = useTranslation();
-  const { account } = useWeb3React();
+  const { account, chainId } = useWeb3React();
   const [stakingMode, setStakingMode] = useState<boolean>(true);
   const [amount, setAmount] = useState({ value: '', max: false });
   const current = moment();
@@ -67,7 +70,6 @@ const StakingModal: React.FunctionComponent<{
     !amount.max && utils.parseEther(amount.value || '0').gt(balance);
   const amountGtStakedBalance =
     !amount.max && utils.parseEther(amount.value || '0').gt(stakedBalance);
-  const initTxTracker = useTxTracking();
 
   useEffect(() => {
     setAmount({
@@ -174,12 +176,21 @@ const StakingModal: React.FunctionComponent<{
                     if (!account || amountLteZero || amountGtStakedBalance)
                       return;
 
-                    const tracker = initTxTracker(
-                      'StakingModal',
-                      'Withdraw',
-                      `${amount.value} ${amount.max} ${stakedToken} ${round}round`,
+                    const emitter = buildEventEmitter(
+                      ModalViewType.StakingOrUnstakingModal,
+                      TransactionType.Unstake,
+                      JSON.stringify({
+                        version: ElyfiVersions.V1,
+                        chainId,
+                        address: account,
+                        stakingType: stakedToken,
+                        round,
+                        unstakingAmount: utils.formatEther(amount.value),
+                        maxOrNot: amount.max,
+                      })
                     );
-                    tracker.clicked();
+
+                    emitter.clicked();
 
                     stakingPool
                       ?.withdraw(
@@ -194,7 +205,7 @@ const StakingModal: React.FunctionComponent<{
                       .then((tx) => {
                         setTransaction(
                           tx,
-                          tracker,
+                          emitter,
                           (stakedToken +
                             'StakingWithdraw') as RecentActivityType,
                           () => {
@@ -208,7 +219,7 @@ const StakingModal: React.FunctionComponent<{
                         );
                       })
                       .catch((e) => {
-                        failTransaction(tracker, closeHandler, e);
+                        failTransaction(emitter, closeHandler, e);
                       });
                   }}>
                   <p>
@@ -232,13 +243,21 @@ const StakingModal: React.FunctionComponent<{
                       return;
                     }
 
-                    const tracker = initTxTracker(
-                      'StakingModal',
-                      `Stake`,
-                      `${amount.value} ${amount.max} ${stakedToken} ${round}round`,
+                    const emitter = buildEventEmitter(
+                      ModalViewType.StakingOrUnstakingModal,
+                      TransactionType.Stake,
+                      JSON.stringify({
+                        version: ElyfiVersions.V1,
+                        chainId,
+                        address: account,
+                        stakingType: stakedToken,
+                        round,
+                        unstakingAmount: utils.formatEther(amount.value),
+                        maxOrNot: amount.max,
+                      })
                     );
 
-                    tracker.clicked();
+                    emitter.clicked();
 
                     // setTxWaiting(true)
 
@@ -252,7 +271,7 @@ const StakingModal: React.FunctionComponent<{
                       .then((tx) => {
                         setTransaction(
                           tx,
-                          tracker,
+                          emitter,
                           (stakedToken + 'Stake') as RecentActivityType,
                           () => {
                             closeHandler();
@@ -265,7 +284,7 @@ const StakingModal: React.FunctionComponent<{
                         );
                       })
                       .catch((e) => {
-                        failTransaction(tracker, closeHandler, e);
+                        failTransaction(emitter, closeHandler, e);
                       });
                   }}>
                   <p>
@@ -278,20 +297,26 @@ const StakingModal: React.FunctionComponent<{
                 <div
                   className={'modal__button'}
                   onClick={() => {
-                    const tracker = initTxTracker(
-                      'StakingModal',
-                      `Approve`,
-                      `${stakedToken} ${round}round`,
+                    const emitter = buildEventEmitter(
+                      ModalViewType.StakingOrUnstakingModal,
+                      TransactionType.Approve,
+                      JSON.stringify({
+                        version: ElyfiVersions.V1,
+                        chainId,
+                        address: account,
+                        stakingType: stakedToken,
+                        round,
+                      })
                     );
 
-                    tracker.clicked();
+                    emitter.clicked();
 
                     contract
                       .approve(stakingPool!.address, constants.MaxUint256)
                       .then((tx) => {
                         setTransaction(
                           tx,
-                          tracker,
+                          emitter,
                           RecentActivityType.Approve,
                           () => {
                             closeHandler();
@@ -304,7 +329,7 @@ const StakingModal: React.FunctionComponent<{
                         );
                       })
                       .catch((e) => {
-                        failTransaction(tracker, closeHandler, e);
+                        failTransaction(emitter, closeHandler, e);
                       });
                   }}>
                   <p>
