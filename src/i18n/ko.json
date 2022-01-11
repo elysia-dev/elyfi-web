@@ -203,7 +203,9 @@
       "nth_staking": "{{nth}}차 스테이킹 APR",
       "lp_token_staking_description": "Uniswap V3 에 있는 {{token0}}-{{token1}} 풀에 유동성을 제공하고 받은 {{token0}}-{{token1}} LP 토큰을 스테이킹하면 {{token0}} 과 {{token1}} 가 지급됩니다.",
       "receive_lp_token": "{{token0}}-{{token1}} LP 토큰 받기",
-      "lp_token_reward_plan": "ETH, DAI, ELFI 보상 플랜"
+      "lp_token_reward_plan": "ETH, DAI, ELFI 보상 플랜",
+
+      "deposit_add_reward_event": "<strong>New</strong> 보상 수량"
     },
     "loan": {
       "loan__title": "대출 리스트",
@@ -339,7 +341,9 @@
 
       "reward_plan": "보상 플랜",
       "deposit__reward_plan": "예치 보상 플랜",
-      "elfi_price": "ELFI 가격: <strong>$ {{count}}</strong>"
+      "elfi_price": "ELFI 가격: <strong>$ {{count}}</strong>",
+
+      "deposit_add_reward_event": "추가 보상 이벤트"
     },
     "portfolio": {
       "investment_status": "대출 현황",
