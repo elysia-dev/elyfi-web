@@ -648,22 +648,10 @@ $device-width: 1190px;
           &__event-box {
             margin-top: 15px;
             margin-bottom: 15px;
-            &__title {
-              font-family: 'Inter-Regular';
-              font-size: 18px;
-              text-align: center;
-              line-height: 1.8;
-              color: #ffffff;
-              width: 99px;
-              height: 33px;
-              display: inline-block;
-              background: #f9ae1a;
-              border: 1px solid #f9ae1a;
-              border-radius: 10px 10px 0px 0px;
-            }
+
             &__content {
-              border: 1px solid #f9ae1a;
-              padding: 25px 27px 27px 20px;
+              border-bottom: 1px solid #f0f0f1;
+              padding: 10px 0px 20px;
               .event-button {
                 margin-bottom: 0px;
               }
@@ -671,9 +659,15 @@ $device-width: 1190px;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                > div:first-child {
-                  span {
+                > .DAI {
+                  strong {
                     color: #f9ae1a;
+                  }
+                  font-size: 18px;
+                }
+                > .USDT {
+                  strong {
+                    color: #26a17b;
                   }
                   font-size: 18px;
                 }
@@ -2343,5 +2337,41 @@ $device-width: 1190px;
   }
   .swiper-pagination-horizontal {
     bottom: 0px !important;
+    width: auto !important;
+  }
+  .swiper-custom-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    > div:first-child {
+      margin-right: 10px;
+    }
+    > div:last-child {
+      margin-left: 10px;
+    }
+  }
+  .swiper-pagination-bullets {
+    line-height: 2.2;
+    > div:first-child {
+      // margin-right: 10px;
+    }
+    > div:last-child {
+      // margin-left: 0px;
+    }
+  }
+  .swiper-pagination-bullet {
+    background: none;
+    font-size: 12px;
+    text-align: center;
+    line-height: 2;
+  }
+  .swiper-pagination-bullet-active {
+    width: 24px;
+    height: 24px;
+    background: #e6e6e6;
+  }
+  .swiper-navigation {
+    color: #888888;
+    cursor: pointer;
   }
 }

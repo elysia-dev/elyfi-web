@@ -818,51 +818,42 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         &__event-box {
           margin-top: 15px;
           margin-bottom: 15px;
-          &__title {
-            font-family: 'Inter-Regular';
-            font-size: 12px;
-            text-align: center;
-            line-height: 1.6;
-            color: #ffffff;
-            width: 60px;
-            height: 20px;
-            display: inline-block;
-            background: #f9ae1a;
-            border: 1px solid #f9ae1a;
-            border-radius: 10px 10px 0px 0px;
-          }
           &__content {
-            border: 1px solid #f9ae1a;
-            padding: 12px 15px;
-            .event-button {
-              margin-top: 0;
-              margin-bottom: 0px;
-            }
+            border-bottom: 1px solid #f0f0f1;
+            padding: 0px 15px 12px 15px;
             > div:first-child {
               display: flex;
               justify-content: space-between;
-              align-items: center;
-              > div:first-child {
-                span {
+              > .DAI {
+                strong {
                   color: #f9ae1a;
                 }
                 font-size: 12px;
               }
-            }
-            > div:nth-child(2) {
-              text-align: right;
-              margin-top: 20px;
-              > div {
+              > .USDT {
+                strong {
+                  color: #26a17b;
+                }
                 font-size: 12px;
-                margin-bottom: 6px;
-                > span:last-child {
-                  font-family: $bold;
+              }
+              > div:nth-child(2) {
+                text-align: right;
+                > div {
+                  font-size: 12px;
+                  margin-bottom: 6px;
+                  > span:last-child {
+                    font-family: $bold;
+                  }
+                }
+                > p {
+                  font-size: 10px;
+                  color: $gray-font-color;
                 }
               }
-              > p {
-                font-size: 12px;
-                color: $gray-font-color;
-              }
+            }
+            .event-button {
+              margin: auto;
+              margin-top: 15px;
             }
           }
         }

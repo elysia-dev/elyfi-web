@@ -1374,7 +1374,7 @@ input[type='number'] {
             &:first-child {
               color: $font-color;
             }
-            &:last-child {
+            p {
               color: $gray-font-color;
             }
           }
