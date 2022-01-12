@@ -41,7 +41,7 @@ const MainnetSwitch: React.FunctionComponent<{
               display: getMainnetError ? "none" : "flex"
             }}
           />
-          <h2>{getChainData?.name || "Unknown Mainnet"}</h2>
+          <h2>{active ? (getChainData?.name || "Unknown Mainnet") : getMainnetType}</h2>
         </div>
         <div className="navigation__mainnet__change-network__wrapper" style={{
           display: mainNetwork === true ? "flex" : 'none'

@@ -8,7 +8,7 @@ import useCurrentChain from "src/hooks/useCurrentChain";
 import Loading from 'src/components/Loading';
 
 const MainnetProvider: React.FC = (props) => {
-  const { chainId } = useWeb3React();
+  const { active } = useWeb3React();
   const currentChain = useCurrentChain();
   const [loading, setLoading] = useState(true)
 
@@ -18,6 +18,10 @@ const MainnetProvider: React.FC = (props) => {
   })
 
   useEffect(() => {
+    if (!active) {
+      setLoading(false)
+      return;
+    };
     currentChain !== undefined ? (
       setMainnet({ type: currentChain.type, unsupportedChainid: false }), setLoading(false)
     ) : (

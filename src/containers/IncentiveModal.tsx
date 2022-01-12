@@ -37,7 +37,6 @@ const IncentiveModal: FunctionComponent<{
   transactionModal,
 }) => {
   const { account, library, chainId } = useWeb3React();
-  const { reserves } = useContext(ReservesContext);
   const { setTransaction, failTransaction } = useContext(TxContext);
 
   const reqeustClaimIncentive = async () => {
@@ -56,7 +55,6 @@ const IncentiveModal: FunctionComponent<{
     );
 
     emitter.clicked();
-
     IncentivePool__factory.connect(incentivePoolAddress, library.getSigner())
       .claimIncentive()
       .then((tx) => {
