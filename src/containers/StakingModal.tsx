@@ -264,9 +264,6 @@ const StakingModal: React.FunctionComponent<{
                     stakingPool
                       ?.stake(
                         amount.max ? balance : utils.parseEther(amount.value),
-                        {
-                          gasLimit: 1000000,
-                        },
                       )
                       .then((tx) => {
                         setTransaction(
