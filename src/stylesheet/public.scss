@@ -2492,6 +2492,51 @@ input[type='number'] {
         }
       }
     }
+    &__coming-soon {
+      width: 335px;
+      height: 335px;
+      border: 1px solid #3679B5;
+      border-radius: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      margin: 70px auto; 
+      position: relative;
+      > div {
+        border: 1px solid #3679B5;
+        border-radius: 100%;
+        background: #FFFFFF;
+        position: absolute;
+        &:first-child {
+          border: 0;
+          width: 100%;
+          text-align: center;
+        }
+        &:nth-child(2) {
+          left: 0px;
+          width: 20px;
+          height: 20px;
+          top: 100px;
+        }
+        &:nth-child(3) {
+          right: 2px;
+          width: 10px;
+          height: 10px;
+          bottom: 85px;      
+        }
+        &:last-child {
+          right: 15px;
+          width: 20px;
+          height: 20px;
+          bottom: 69px;
+        }
+        > h2 {
+          font-size: 30px;
+          color: $font-color;
+        }
+      }
+    }
   } // staking end
 
   .guide {

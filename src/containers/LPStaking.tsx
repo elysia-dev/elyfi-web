@@ -38,6 +38,8 @@ import ReactGA from 'react-ga';
 import ModalViewType from 'src/enums/ModalViewType';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
+import MainnetContext from 'src/contexts/MainnetContext';
+import MainnetType from 'src/enums/MainnetType';
 
 function LPStaking(): JSX.Element {
   const { account, library } = useWeb3React();
@@ -115,6 +117,9 @@ function LPStaking(): JSX.Element {
   });
 
   const { value: mediaQuery } = useMediaQueryType();
+
+
+  const { type: getMainnetType } = useContext(MainnetContext)
 
   const getRewardToRecive = useCallback(async () => {
     try {
@@ -424,70 +429,85 @@ function LPStaking(): JSX.Element {
               })}
           </div>
         </div>
-        <RewardPlanButton stakingType={'LP'} />
-        <section className="staking__lp__detail-box">
-          <DetailBox
-            tokens={{
-              token0: Token.ELFI,
-              token1: Token.ETH,
-            }}
-            totalLiquidity={totalLiquidity.ethElfiPoolTotalLiquidity}
-            totalStakedLiquidity={totalStakedLiquidity(envs.ethElfiPoolAddress)}
-            apr={totalLiquidity.ethElfiliquidityForApr}
-            isLoading={isLoading}
-            setModalAndSetStakeToken={() => {
-              setStakingVisibleModal(true);
-              ReactGA.modalview(Token.ETH + ModalViewType.StakingOrUnstakingModal);
-              setStakeToken(Token.ETH);
-            }}
-            round={round}
-          />
-          <DetailBox
-            tokens={{
-              token0: Token.ELFI,
-              token1: Token.DAI,
-            }}
-            totalLiquidity={totalLiquidity.daiElfiPoolTotalLiquidity}
-            totalStakedLiquidity={totalStakedLiquidity(envs.daiElfiPoolAddress)}
-            apr={totalLiquidity.daiElfiliquidityForApr}
-            isLoading={isLoading}
-            setModalAndSetStakeToken={() => {
-              setStakingVisibleModal(true);
-              ReactGA.modalview(Token.DAI + ModalViewType.StakingOrUnstakingModal);
-              setStakeToken(Token.DAI);
-            }}
-            round={round}
-          />
-        </section>
-        <section className="staking__lp__staked">
-          <StakedLp
-            stakedPositions={stakedPositions
-              .filter((position) => position.staked)
-              .filter((stakedPosition) => filterPosition(stakedPosition))}
-            setUnstakeTokenId={setUnstakeTokenId}
-            ethElfiStakedLiquidity={totalStakedLiquidity(
-              envs.ethElfiPoolAddress,
-            )}
-            daiElfiStakedLiquidity={totalStakedLiquidity(
-              envs.daiElfiPoolAddress,
-            )}
-            expectedReward={expectedReward}
-            totalExpectedReward={totalExpectedReward}
-            isError={isError}
-            round={round}
-            isLoading={isLoading}
-          />
-        </section>
+        {
+          getMainnetType === MainnetType.Ethereum ? (
+            <div>
+              <RewardPlanButton stakingType={'LP'} />
+              <section className="staking__lp__detail-box">
+                <DetailBox
+                  tokens={{
+                    token0: Token.ELFI,
+                    token1: Token.ETH,
+                  }}
+                  totalLiquidity={totalLiquidity.ethElfiPoolTotalLiquidity}
+                  totalStakedLiquidity={totalStakedLiquidity(envs.ethElfiPoolAddress)}
+                  apr={totalLiquidity.ethElfiliquidityForApr}
+                  isLoading={isLoading}
+                  setModalAndSetStakeToken={() => {
+                    setStakingVisibleModal(true);
+                    ReactGA.modalview(Token.ETH + ModalViewType.StakingOrUnstakingModal);
+                    setStakeToken(Token.ETH);
+                  }}
+                  round={round}
+                />
+                <DetailBox
+                  tokens={{
+                    token0: Token.ELFI,
+                    token1: Token.DAI,
+                  }}
+                  totalLiquidity={totalLiquidity.daiElfiPoolTotalLiquidity}
+                  totalStakedLiquidity={totalStakedLiquidity(envs.daiElfiPoolAddress)}
+                  apr={totalLiquidity.daiElfiliquidityForApr}
+                  isLoading={isLoading}
+                  setModalAndSetStakeToken={() => {
+                    setStakingVisibleModal(true);
+                    ReactGA.modalview(Token.DAI + ModalViewType.StakingOrUnstakingModal);
+                    setStakeToken(Token.DAI);
+                  }}
+                  round={round}
+                />
+              </section>
+              <section className="staking__lp__staked">
+                <StakedLp
+                  stakedPositions={stakedPositions
+                    .filter((position) => position.staked)
+                    .filter((stakedPosition) => filterPosition(stakedPosition))}
+                  setUnstakeTokenId={setUnstakeTokenId}
+                  ethElfiStakedLiquidity={totalStakedLiquidity(
+                    envs.ethElfiPoolAddress,
+                  )}
+                  daiElfiStakedLiquidity={totalStakedLiquidity(
+                    envs.daiElfiPoolAddress,
+                  )}
+                  expectedReward={expectedReward}
+                  totalExpectedReward={totalExpectedReward}
+                  isError={isError}
+                  round={round}
+                  isLoading={isLoading}
+                />
+              </section>
 
-        <section className="staking__lp__reward">
-          <Reward
-            rewardToReceive={rewardToReceive}
-            onHandler={() => {
-              setRewardVisibleModal(true)
-              ReactGA.modalview(ModalViewType.LPStakingIncentiveModal)
-            }}
-          />
-        </section>
+              <section className="staking__lp__reward">
+                <Reward
+                  rewardToReceive={rewardToReceive}
+                  onHandler={() => {
+                    setRewardVisibleModal(true)
+                    ReactGA.modalview(ModalViewType.LPStakingIncentiveModal)
+                  }}
+                />
+              </section>
+            </div>
+          ) : (
+            <div className="staking__coming-soon">
+              <div>
+                <h2>COMING SOON</h2>
+              </div>
+              <div />
+              <div />
+              <div />
+            </div>
+          )
+        }
       </section>
     </>
   );
