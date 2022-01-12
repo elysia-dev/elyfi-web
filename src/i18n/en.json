@@ -206,7 +206,7 @@
       "lp_token_reward_plan": "ELFI, ETH, DAI Reward plan",
 
       "deposit_add_reward_event": "<strong>New</strong> amount of rewards",
-      "claim_before_withraw_guide": "In order to withdraw the deposited tokens, please claim the reward tokens first!\n The reward tokens you will receive are ELFI reward tokens accumulated from <strong>2021.7.15 ~ 2022.1.11 KST!</strong>",
+      "claim_before_withraw_guide": "Please claim your rewards first to use your deposit/withdrawal! The reward tokens you will receive are ELFI reward tokens accumulated from <strong>2021.7.15 ~ 2022.1.11 KST!</strong>",
       "claim_question": "Do you want to claim rewards?"
     },
     "loan": {
