@@ -37,6 +37,7 @@ import {
 } from 'src/core/utils/calcLpReward';
 import calcMintedAmounts from 'src/core/utils/calcMintedAmounts';
 import {
+  calcMintedByBusdMoneypool,
   calcMintedByDaiMoneypool,
   calcMintedByTetherMoneypool,
 } from 'src/core/utils/calcMintedByDaiMoneypool';
@@ -53,6 +54,7 @@ import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import { lpRoundDate, lpUnixTimestamp } from 'src/core/data/lpStakingTime';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
+import SubgraphContext from 'src/contexts/SubgraphContext';
 
 const RewardPlan: FunctionComponent = () => {
   const { t } = useTranslation();
@@ -62,7 +64,8 @@ const RewardPlan: FunctionComponent = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const { ethPrice } = useContext(PriceContext);
-  const { reserves } = useContext(ReservesContext);
+  // const { reserves } = useContext(ReservesContext);
+  const { data: getSubgraphData } = useContext(SubgraphContext);
   const current = moment();
   const currentPhase = useMemo(() => {
     return stakingRoundTimes.filter(
@@ -139,6 +142,8 @@ const RewardPlan: FunctionComponent = () => {
     daiRewardByLp: calcDaiRewardByLp(),
     beforeEthRewardByLp: [0, 0, 0],
     ethRewardByLp: calcEthRewardByLp(lpStakingRound.ethElfiRound),
+    beforeMintedByBuscMoneypool: 0,
+    mintedByBusdMoneypool: calcMintedByBusdMoneypool(),
   });
 
   const moneyPoolInfo = {
@@ -147,21 +152,25 @@ const RewardPlan: FunctionComponent = () => {
       startMoneyPool: moneyPoolStartedAt.format('yyyy.MM.DD'),
     },
     USDT: { totalMiningValue: 1583333, startMoneyPool: '2021.10.08' },
+    BUSD: {
+      totalMiningValue: 3000000, startMoneyPool: '2022.01.11'
+    }
   };
-  const totalMiningValue = [3000000, 1583333];
-  // const startMoneyPool = [
-  //   moneyPoolStartedAt.format('yyyy.MM.DD'),
-  //   '2021.10.08',
-  // ];
   const beforeMintedMoneypool = {
     DAI: { beforeMintedToken: amountData.beforeMintedByDaiMoneypool },
     USDT: {
       beforeMintedToken: amountData.beforeMintedByTetherMoneypool,
     },
+    BUSD: {
+      beforeMintedToken: amountData.beforeMintedByBuscMoneypool,
+    }
   };
   const mintedMoneypool = {
     DAI: { mintedToken: amountData.mintedByDaiMoneypool },
     USDT: { mintedToken: amountData.mintedByTetherMoneypool },
+    BUSD: {
+      mintedToken: amountData.mintedByBusdMoneypool
+    }
   };
 
   const beforeTotalMintedByElStakingPool = useMemo(() => {
@@ -284,6 +293,8 @@ const RewardPlan: FunctionComponent = () => {
         daiRewardByLp: calcDaiRewardByLp(),
         beforeEthRewardByLp: amountData.ethRewardByLp,
         ethRewardByLp: calcEthRewardByLp(lpUnixTimestamp.length),
+        beforeMintedByBuscMoneypool: amountData.mintedByBusdMoneypool,
+        mintedByBusdMoneypool: calcMintedByBusdMoneypool(),
       });
     }, 2000);
     return () => {
@@ -448,9 +459,9 @@ const RewardPlan: FunctionComponent = () => {
               </div>
             </div>
             <section className="reward__container">
-              {reserves.map((reserve, index) => {
+              {getSubgraphData.reserves.map((reserve, index) => {
                 const token =
-                  reserve.id === envs.daiAddress ? Token.DAI : Token.USDT;
+                  reserve.id === envs.daiAddress ? Token.DAI : reserve.id === envs.usdtAddress ? Token.USDT : Token.BUSD;
                 return (
                   <TokenDeposit
                     key={index}

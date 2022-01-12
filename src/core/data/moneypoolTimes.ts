@@ -16,3 +16,13 @@ export const tetherMoneyPoolEndedAt = moment(
   '2022.01.11 19:00:00 +9:00',
   'YYYY.MM.DD hh:mm:ss Z',
 );
+
+export const busdMoneypoolStartedAt = moment(
+  '2022.01.11 19:00:00 +9:00',
+  'YYYY.MM.DD hh:mm:ss Z',
+);
+
+export const busdMoneypoolEndedAt = moment(
+  '2023.01.11 19:00:00 +9:00',
+  'YYYY.MM.DD hh:mm:ss Z',
+);
