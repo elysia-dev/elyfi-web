@@ -9,11 +9,9 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import LoadingIndicator from 'src/components/LoadingIndicator';
-import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { GetUser_user } from 'src/queries/__generated__/GetUser';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcAccumulatedYield from 'src/utiles/calcAccumulatedYield';
-import envs from 'src/core/envs';
 import { toPercent } from 'src/utiles/formatters';
 import calcCurrentIndex from 'src/utiles/calcCurrentIndex';
 import PriceContext from 'src/contexts/PriceContext';
@@ -30,6 +28,7 @@ import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
 import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
+import useCurrentMoneypoolAddress from 'src/hooks/useCurrnetMoneypoolAddress';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
 
@@ -56,16 +55,19 @@ const DepositOrWithdrawModal: FunctionComponent<{
   afterTx,
   transactionModal,
 }) => {
-  console.log(reserve)
-  const { account, chainId } = useWeb3React();
+  const { account, chainId, library } = useWeb3React();
   const { elfiPrice } = useContext(PriceContext);
+
+  const currentMoneypoolAddress = useCurrentMoneypoolAddress();
+
   const [selected, select] = useState<boolean>(true);
   const {
     allowance,
     loading,
     contract: reserveERC20,
     refetch,
-  } = useERC20Info(reserve.id, envs.moneyPoolAddress);
+  } = useERC20Info(reserve.id, currentMoneypoolAddress);
+
   const [liquidity, setLiquidity] = useState<{
     value: BigNumber;
     loaded: boolean;
@@ -136,7 +138,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     emitter.clicked();
 
     reserveERC20
-      .approve(envs.moneyPoolAddress, constants.MaxUint256)
+      .approve(currentMoneypoolAddress, constants.MaxUint256)
       .then((tx) => {
         setTransaction(
           tx,

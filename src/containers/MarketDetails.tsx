@@ -27,6 +27,7 @@ import MarketDetailsBody from 'src/components/MarketDetailsBody';
 import styled from 'styled-components';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
+import SubgraphContext from 'src/contexts/SubgraphContext';
 
 const initialBalanceState = {
   loading: true,
@@ -55,6 +56,11 @@ const tokenColorData: ITokencolor[] = [
     color: '#26A17B',
     subColor: '#70E8C3',
   },
+  {
+    name: 'BUSD',
+    color: '#FAD338',
+    subColor: '#F2BC07',
+  },
 ];
 
 const ChartComponent = styled(Chart)`
@@ -73,13 +79,13 @@ function MarketDetail(): JSX.Element {
   const [transactionModal, setTransactionModal] = useState(false);
   const tokenRef = useRef<HTMLParagraphElement>(null);
   const { reserves } = useContext(ReservesContext);
+  const { data: getSubgraphData } = useContext(SubgraphContext)
   const { latestPrice, poolDayData } = useContext(UniswapPoolContext);
   const { lng, id } = useParams<{ lng: string; id: Token.DAI | Token.USDT }>();
   const history = useHistory();
   const tokenInfo = reserveTokenData[id];
-  const data = reserves.find((reserve) => reserve.id === tokenInfo.address);
+  const data = getSubgraphData.reserves.find((reserve) => reserve.id === tokenInfo.address);
   const { t } = useTranslation();
-
   const selectToken = tokenColorData.find((color) => {
     return color.name === id;
   });

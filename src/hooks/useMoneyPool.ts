@@ -1,17 +1,19 @@
 import { useWeb3React } from '@web3-react/core';
-import { useMemo } from 'react';
+import { useMemo, useContext } from 'react';
 import { MoneyPool__factory } from '@elysia-dev/contract-typechain';
-import envs from 'src/core/envs';
+import useCurrentMoneypoolAddress from './useCurrnetMoneypoolAddress';
 
 const useMoneyPool = () => {
+  const currentMoneypoolAddress = useCurrentMoneypoolAddress();
   const { library } = useWeb3React();
+
   const contract = useMemo(() => {
     if (!library) return;
     return MoneyPool__factory.connect(
-      envs.moneyPoolAddress,
+      currentMoneypoolAddress,
       library.getSigner(),
     );
-  }, [library]);
+  }, [library, currentMoneypoolAddress]);
 
   return contract;
 };

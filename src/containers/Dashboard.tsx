@@ -37,6 +37,8 @@ import ModalViewType from 'src/enums/ModalViewType';
 import { useMediaQuery } from 'react-responsive';
 import { ReserveSubgraph } from 'src/clients/ReserveSubgraph';
 import SubgraphContext, { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
+import MainnetContext from 'src/contexts/MainnetContext';
+import MainnetType from 'src/enums/MainnetType';
 
 const initialBalanceState = {
   loading: false,
@@ -83,6 +85,9 @@ const Dashboard: React.FunctionComponent = () => {
       };
     }),
   );
+  const { 
+    type: getMainnetType
+  } = useContext(MainnetContext)
 
   const [incentiveModalVisible, setIncentiveModalVisible] =
     useState<boolean>(false);
@@ -124,7 +129,6 @@ const Dashboard: React.FunctionComponent = () => {
         reserve.incentivePool.id,
         library.getSigner(),
       ).getUserIncentive(account);
-
       return {
         value: await ERC20__factory.connect(reserve.id, library).balanceOf(
           account,
@@ -133,7 +137,7 @@ const Dashboard: React.FunctionComponent = () => {
         expectedIncentiveBefore: incentive,
         expectedIncentiveAfter: incentive,
         governance: await ERC20__factory.connect(
-          envs.governanceAddress,
+          getMainnetType === MainnetType.BSC ? envs.bscElfiAddress : envs.governanceAddress,
           library,
         ).balanceOf(account),
         deposit: await ERC20__factory.connect(
@@ -142,6 +146,7 @@ const Dashboard: React.FunctionComponent = () => {
         ).balanceOf(account),
       };
     } catch (error) {
+      console.log("????")
       console.error(error);
     }
   };
@@ -178,6 +183,7 @@ const Dashboard: React.FunctionComponent = () => {
       setBalances(
         await Promise.all(
           data.reserves.map(async (reserve, index) => {
+            console.log(await ERC20__factory.connect(reserve.id, library).balanceOf(account))
             return {
               ...balances[index],
               loading: false,
@@ -359,7 +365,7 @@ const Dashboard: React.FunctionComponent = () => {
               </div>
             )
           }
-
+          
           {balances.map((balance, index) => {
             return (
               <>
