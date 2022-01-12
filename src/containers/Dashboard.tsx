@@ -39,6 +39,8 @@ import {
   tetherMoneyPoolTime,
 } from 'src/core/data/moneypoolTimes';
 import ModalViewType from 'src/enums/ModalViewType';
+import { formatEther, parseEther } from '@ethersproject/units';
+import IncentiveNotification from 'src/components/IncentiveNotificationModal';
 
 const initialBalanceState = {
   loading: false,
@@ -109,6 +111,10 @@ const Dashboard: React.FunctionComponent = () => {
   const [prevTvl, setPrevTvl] = useState(0);
   const [connectWalletModalvisible, setConnectWalletModalvisible] =
     useState<boolean>(false);
+  const [
+    incentiveNotificationModalvisble,
+    setIncentiveNotificationModalvisble,
+  ] = useState(false);
   const walletConnect = isWalletConnect();
   const { value: mediaQuery } = useMediaQueryType();
 
@@ -391,6 +397,18 @@ const Dashboard: React.FunctionComponent = () => {
           setConnectWalletModalvisible(false);
         }}
       />
+      <IncentiveNotification
+        visible={incentiveNotificationModalvisble}
+        onClose={() => {
+          setIncentiveNotificationModalvisble(false);
+        }}
+        setIncentiveModalVisible={() => {
+          walletConnect === false
+            ? (setConnectWalletModalvisible(true),
+              ReactGA.modalview(ModalViewType.IncentiveModal))
+            : setIncentiveModalVisible(true);
+        }}
+      />
 
       <div className="deposit">
         <div
@@ -461,6 +479,9 @@ const Dashboard: React.FunctionComponent = () => {
                           balance.tokenName +
                             ModalViewType.DepositConnectWalletModal,
                         ))
+                      : !balance.incentiveRound1.isZero()
+                      ? (setIncentiveNotificationModalvisble(true),
+                        setModalNumber(index))
                       : (e.preventDefault(),
                         setReserve(reserves[index]),
                         setModalNumber(index),
