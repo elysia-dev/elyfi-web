@@ -211,7 +211,9 @@
       "receive_lp_token": "{{token0}}-{{token1}} LP 토큰 받기",
       "lp_token_reward_plan": "ETH, DAI, ELFI 보상 플랜",
 
-      "deposit_add_reward_event": "<strong>New</strong> 보상 수량"
+      "deposit_add_reward_event": "<strong>New</strong> 보상 수량",
+      "claim_before_withraw_guide": "예치한 토큰을 수령하기 위해서는 보상 토큰을 먼저 수령해주세요!\n 수령할 보상 토큰은 <strong>2021.7.15 ~ 2022.1.11 KST</strong> 에 쌓인 ELFI 보상 토큰입니다.",
+      "claim_question": "보상 토큰을 수령하시겠습니까?"
     },
     "loan": {
       "loan__title": "대출 리스트",
