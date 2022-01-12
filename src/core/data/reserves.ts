@@ -51,7 +51,7 @@ export const reserveTokenData = {
     name: 'BUSD',
     image: busd,
     decimals: 18,
-    address: "0x"
+    address: envs.busdAddress,
   }
 };
 
@@ -92,7 +92,7 @@ const reserves: IReserve[] = [
     name: 'BUSD',
     image: busd,
     decimals: 18,
-    address: "0x"
+    address: envs.busdAddress,
   }
 ];
 

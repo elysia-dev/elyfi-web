@@ -1,7 +1,6 @@
 import { FunctionComponent, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import envs from 'src/core/envs';
-import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { reserveTokenData } from 'src/core/data/reserves';
 import { toCompactForBignumber, toPercent } from 'src/utiles/formatters';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
@@ -11,17 +10,22 @@ import { moneyPoolEndedAt } from 'src/core/data/moneypoolTimes';
 import Token from 'src/enums/Token';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
+import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import RewardDetailInfo from './RewardDetailInfo';
 import SmallProgressBar from './SmallProgressBar';
 
 interface Props {
-  reserve: GetAllReserves_reserves;
+  reserve: IReserveSubgraphData;
   moneyPoolInfo: {
     DAI: {
       totalMiningValue: number;
       startMoneyPool: string;
     };
     USDT: {
+      totalMiningValue: number;
+      startMoneyPool: string;
+    };
+    BUSD: {
       totalMiningValue: number;
       startMoneyPool: string;
     };
@@ -37,7 +41,7 @@ const TokenDeposit: FunctionComponent<Props> = ({
   mintedMoneypool,
 }) => {
   const { t } = useTranslation();
-  const token = reserve.id === envs.daiAddress ? Token.DAI : Token.USDT;
+  const token = reserve.id === envs.daiAddress ? Token.DAI : reserve.id === envs.usdtAddress ? Token.USDT : Token.BUSD;
   const { latestPrice } = useContext(UniswapPoolContext);
   const totalMiningValue = moneyPoolInfo[token].totalMiningValue;
   const { value: mediaQuery } = useMediaQueryType();

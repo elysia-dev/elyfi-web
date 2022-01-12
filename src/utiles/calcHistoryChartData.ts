@@ -4,6 +4,7 @@ import {
 } from 'src/queries/__generated__/GetAllReserves';
 import moment from 'moment';
 import { BigNumber, utils } from 'ethers';
+import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import calcMiningAPR from './calcMiningAPR';
 import { toCompact } from './formatters';
 
@@ -13,7 +14,7 @@ interface ICalculatedData extends GetAllReserves_reserves_reserveHistory {
 }
 
 const calcHistoryChartData = (
-  data: GetAllReserves_reserves,
+  data: IReserveSubgraphData,
   historyType: 'borrow' | 'deposit',
   poolDayData: {
     token1Price: string;
