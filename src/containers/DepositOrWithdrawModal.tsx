@@ -61,8 +61,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
 }) => {
   const { account, chainId } = useWeb3React();
   const { elfiPrice } = useContext(PriceContext);
-  const isEndedRound = moment().isBefore(daiMoneyPoolTime[round - 1].endedAt);
-  const [selected, select] = useState<boolean>(isEndedRound);
+  const [selected, select] = useState<boolean>(true);
   const {
     allowance,
     loading,
