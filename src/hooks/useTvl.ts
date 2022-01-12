@@ -2,14 +2,17 @@ import { BigNumber, constants, providers } from 'ethers';
 import { formatUnits, formatEther } from 'ethers/lib/utils';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import PriceContext from 'src/contexts/PriceContext';
-import ReservesContext from 'src/contexts/ReservesContext';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import envs from 'src/core/envs';
 import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import ReserveData from 'src/core/data/reserves';
+import { initialReserveSubgraph, IReserveSubgraph } from 'src/contexts/SubgraphContext';
+import { ReserveSubgraph } from 'src/clients/ReserveSubgraph';
 
 const useTvl = (): { value: number; loading: boolean } => {
-  const { reserves } = useContext(ReservesContext);
+  const [ethReserveData, setEthReserveData] = useState<IReserveSubgraph>(initialReserveSubgraph)
+  const [bscReserveData, setBscReserveData] = useState<IReserveSubgraph>(initialReserveSubgraph)
+  const [loading, setLoading] = useState(true)
   const {
     totalValueLockedToken0,
     totalValueLockedToken1,
@@ -25,12 +28,21 @@ const useTvl = (): { value: number; loading: boolean } => {
 
   const tvl = useMemo(() => {
     return (
-      reserves.reduce((res, cur) => {
+      ethReserveData.data.reserves.reduce((res, cur) => {
         const tokenInfo = ReserveData.find((datum) => datum.address === cur.id);
         return (
           res +
           parseFloat(
-            formatUnits(BigNumber.from(cur.totalDeposit), tokenInfo?.decimals),
+            formatUnits(BigNumber.from(loading ? 0 : cur.totalDeposit), tokenInfo?.decimals),
+          )
+        );
+      }, 0) +
+      bscReserveData.data.reserves.reduce((res, cur) => {
+        const tokenInfo = ReserveData.find((datum) => datum.address === cur.id);
+        return (
+          res +
+          parseFloat(
+            formatUnits(BigNumber.from(loading ? 0 : cur.totalDeposit), tokenInfo?.decimals),
           )
         );
       }, 0) +
@@ -41,9 +53,9 @@ const useTvl = (): { value: number; loading: boolean } => {
     );
   }, [
     state,
-    reserves,
     elPrice,
     elfiPrice,
+    loading,
     totalValueLockedToken0,
     totalValueLockedToken1,
   ]);
@@ -78,6 +90,17 @@ const useTvl = (): { value: number; loading: boolean } => {
   useEffect(() => {
     loadBalances();
   }, []);
+
+  useEffect(() => {
+    setLoading(true)
+    ReserveSubgraph.getEthReserveData().then((res) => {
+      setEthReserveData(res.data)
+      ReserveSubgraph.getBscReserveData().then((res) => {
+        setBscReserveData(res.data)
+        setLoading(false)
+      })
+    })
+  }, [])
 
   return {
     value: tvl,
