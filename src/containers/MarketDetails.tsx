@@ -30,6 +30,14 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
+import {
+  Bar,
+  Cell,
+  ComposedChart,
+  Line,
+  ResponsiveContainer,
+  Tooltip,
+} from 'recharts';
 
 const initialBalanceState = {
   loading: true,
@@ -82,7 +90,10 @@ function MarketDetail(): JSX.Element {
   const { value: mediaQuery } = useMediaQueryType();
   const tokenInfo = reserveTokenData[id];
   const data = reserves.find((reserve) => reserve.id === tokenInfo.address);
+  const [tooltipPositionX, setTooltipPositionX] = useState(0);
+  const [date, setDate] = useState('');
   const { t, i18n } = useTranslation();
+  const [cellInBarIdx, setCellInBarIdx] = useState(-1);
 
   const selectToken = tokenColorData.find((color) => {
     return color.name === id;
@@ -223,6 +234,36 @@ function MarketDetail(): JSX.Element {
         .div(data.totalDeposit)
         .toNumber();
 
+  const CustomTooltip = (e: any) => {
+    if (!(cellInBarIdx === -1)) setCellInBarIdx(e.label);
+    setDate(e.payload[0]?.payload.name);
+    setTooltipPositionX(e.coordinate.x);
+    return (
+      <div
+        className="detail__graph__wrapper__tooltip"
+        style={{
+          border: `1px solid ${selectToken?.color}`,
+        }}>
+        <div className="detail__graph__wrapper__tooltip__payload">
+          <div>
+            {graphConverter
+              ? t('dashboard.total_deposit--yield')
+              : t('dashboard.total_deposit--reward')}
+          </div>
+          <div className="bold">{e.payload[0]?.payload.d} %</div>
+        </div>
+        <div className="detail__graph__wrapper__tooltip__payload">
+          <div>
+            {graphConverter
+              ? t('dashboard.total_borrowed')
+              : t('dashboard.total_deposit')}
+          </div>
+          <div className="bold">{e.payload[0]?.payload.b} </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
       <canvas
@@ -322,73 +363,90 @@ function MarketDetail(): JSX.Element {
                 <h2>{t('dashboard.borrow')}</h2>
               </div>
             </div>
-            <div className={`market__detail__graph__${id}`}>
-              <ChartComponent
-                height={'500px'}
-                chartType="ComboChart"
-                loader={<div>Loading Chart</div>}
-                data={[
-                  [
-                    'Month',
-                    graphConverter
-                      ? t('dashboard.total_borrowed')
-                      : t('dashboard.total_deposit'),
-                    { role: 'tooltip', p: { html: true } },
-                    graphConverter
-                      ? t('dashboard.borrow_apy')
-                      : t('dashboard.total_deposit--yield'),
-                    { role: 'tooltip', p: { html: true } },
-                  ],
-                  ...calcHistoryChartData(
-                    data,
-                    graphConverter ? 'borrow' : 'deposit',
-                    poolDayData,
-                    tokenInfo!.decimals,
-                  ),
-                ]}
-                options={{
-                  chartArea: {
-                    left: 50,
-                    right: 50,
-                    top: 100,
-                    width: '700px',
-                    height: '400px',
-                  },
-
-                  backgroundColor: 'transparent',
-                  tooltip: {
-                    textStyle: {
-                      color: '#333333',
-                    },
-                    showColorCode: true,
-                    isHtml: true,
-                    ignoreBounds: true,
-                  },
-                  seriesType: 'bars',
-                  bar: {
-                    groupWidth: 15,
-                  },
-                  vAxis: {
-                    gridlines: {
-                      count: 0,
-                    },
-                    textPosition: 'none',
-                  },
-                  focusTarget: 'category',
-                  curveType: 'function',
-                  legend: { position: 'none' },
-                  series: {
-                    0: {
-                      color: '#E6E6E6',
-                    },
-                    1: {
-                      type: 'line',
-                      color: id === Token.DAI ? '#F9AE19' : '#26A17B',
-                    },
-                  },
+            {/* <div className={`market__detail__graph`}> */}
+            <div className="detail__graph__wrapper">
+              <div
+                onMouseEnter={() => {
+                  setCellInBarIdx(-2);
                 }}
-              />
+                onMouseLeave={() => {
+                  setCellInBarIdx(-1);
+                }}>
+                <ResponsiveContainer width="100%" height={300}>
+                  <ComposedChart
+                    data={
+                      mediaQuery === MediaQuery.PC
+                        ? calcHistoryChartData(
+                            data,
+                            graphConverter ? 'borrow' : 'deposit',
+                            poolDayData,
+                            tokenInfo!.decimals,
+                          )
+                        : calcHistoryChartData(
+                            data,
+                            graphConverter ? 'borrow' : 'deposit',
+                            poolDayData,
+                            tokenInfo!.decimals,
+                          ).slice(20)
+                    }>
+                    <Tooltip
+                      content={<CustomTooltip />}
+                      position={{
+                        x:
+                          tooltipPositionX > 1080
+                            ? tooltipPositionX - 210
+                            : tooltipPositionX < 110
+                            ? tooltipPositionX - 20
+                            : tooltipPositionX - 113,
+                        y: -70,
+                      }}
+                      cursor={{
+                        stroke: selectToken?.color,
+                        strokeDasharray: 3.3,
+                      }}
+                    />
+                    <Bar dataKey="c" barSize={20}>
+                      {calcHistoryChartData(
+                        data,
+                        graphConverter ? 'borrow' : 'deposit',
+                        poolDayData,
+                        tokenInfo!.decimals,
+                      ).map((cData, index) => (
+                        <Cell
+                          key={index}
+                          fill={
+                            cellInBarIdx === index
+                              ? selectToken?.color
+                              : '#E6E6E6'
+                          }
+                          radius={4}
+                        />
+                      ))}
+                    </Bar>
+                    <Line
+                      type="monotone"
+                      dataKey="a"
+                      stroke={selectToken?.color}
+                      dot={false}
+                      activeDot={{
+                        stroke: selectToken?.color,
+                        strokeWidth: 2,
+                        r: 4,
+                      }}
+                    />
+                  </ComposedChart>
+                </ResponsiveContainer>
+                <div>
+                  <div
+                    style={{
+                      left: tooltipPositionX - 60,
+                    }}>
+                    {date}
+                  </div>
+                </div>
+              </div>
             </div>
+            {/* </div> */}
           </div>
         </div>
         <Loan id={tokenInfo.address} />
