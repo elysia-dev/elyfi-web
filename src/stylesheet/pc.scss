@@ -457,10 +457,16 @@ $device-width: 1190px;
           }
           &:last-child {
             margin-top: 180px;
+            > h2 {
+              margin-bottom: 35px;
+            }
           }
         }
         > div:nth-child(2) {
           margin-top: 180px;
+          > h2 {
+            margin-bottom: 35px;
+          }
           > div {
             display: flex;
             align-items: center;
