@@ -459,6 +459,22 @@ $device-width: 1190px;
             margin-top: 200px;
           }
         }
+        > div:nth-child(2) {
+          margin-top: 150px;
+          > div {
+            display: flex;
+            width: 100%;
+            > img:first-child {
+              width: 261px;
+              height: 72px;
+              margin-right: 158px;
+            }
+            > img:last-child {
+              width: 261px;
+              height: 72px;
+            }
+          }
+        }
         &__lawfirm {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
