@@ -17,7 +17,7 @@ const mainnetConverter = (mainnetChainId: number | undefined) => {
     case 1337:
       return 'Ganache Testnet';
     default:
-      return 'Ethereum Mainnet';
+      return 'Unknwon Mainnet';
   }
 };
 
