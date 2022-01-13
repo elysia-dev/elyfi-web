@@ -273,7 +273,7 @@ const Main = () => {
           </div>
           <div>
             <h2 className="bold">
-              <strong>Backed</strong>by
+              <strong>Backed</strong> by
             </h2>
             <div>
               <img src={Fbg} alt={Fbg} />
