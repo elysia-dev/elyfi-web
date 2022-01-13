@@ -1374,8 +1374,15 @@ $device-width: 1190px;
           padding: 5px 23px;
           margin-top: 30px;
           margin-bottom: 100px;
-          > p {
-            font-size: 15px;
+          > a {
+            > p {
+              font-size: 15px;
+            }
+            > img {
+              width: 34px;
+              height: 34px;
+              margin-left: -10px;
+            }
           }
         }
         &__content {

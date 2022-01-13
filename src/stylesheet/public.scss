@@ -1841,9 +1841,12 @@ input[type='number'] {
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        > p {
+        > a { 
           cursor: pointer;
-          color: $font-color;
+          > p {
+            cursor: pointer;
+            color: $font-color;
+          }
         }
       }
       &__content {
