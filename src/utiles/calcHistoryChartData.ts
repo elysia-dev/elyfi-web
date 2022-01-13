@@ -140,12 +140,13 @@ const calcHistoryChartData = (
     test.push({
       name: moment(d.timestamp * 1000).format('YY.MM.DD'),
       // a: parseInt(utils.formatUnits(d.selectedAmount, decimals), 10) * 3,
-      a: ((d.calculatedAPY / divider) * base + base * 1.2) * 1.4,
-      b:
+      lineYield: ((d.calculatedAPY / divider) * base + base * 1.2) * 1.4,
+      total:
         '$ ' +
         toCompact(parseInt(utils.formatUnits(d.selectedAmount, decimals), 10)),
-      c: (d.calculatedAPY / divider) * base + base * 1.2,
-      d: toCompact(d.calculatedAPY),
+      barTotal: parseInt(utils.formatUnits(d.selectedAmount, decimals), 10) * 2,
+      // c: (d.calculatedAPY / divider) * base + base * 1.2,
+      yield: toCompact(d.calculatedAPY),
     });
   });
   return test;
