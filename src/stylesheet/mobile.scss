@@ -640,6 +640,22 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           }
         }
       }
+      > div:nth-child(2) {
+        margin-top: 100px;
+        > div {
+          margin-top: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 300px;
+          > img {
+            width: 125px;
+            height: 52px;
+          }
+          > img:first-child {
+          }
+        }
+      }
       &__lawfirm {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
