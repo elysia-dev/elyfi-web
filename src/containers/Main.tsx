@@ -273,7 +273,7 @@ const Main = () => {
           </div>
           <div>
             <h2 className="bold">
-              <strong>Backed</strong>by
+              <strong>Backed</strong> by
             </h2>
             <div>
               <img src={Fbg} alt={Fbg} />
@@ -292,7 +292,7 @@ const Main = () => {
         <div
           style={{
             width: '100%',
-            height: 280,
+            height: 260,
           }}></div>
         <MainGovernanceTable
           governancePageY={governancePageY}
