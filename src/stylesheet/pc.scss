@@ -456,13 +456,14 @@ $device-width: 1190px;
             }
           }
           &:last-child {
-            margin-top: 200px;
+            margin-top: 180px;
           }
         }
         > div:nth-child(2) {
-          margin-top: 150px;
+          margin-top: 180px;
           > div {
             display: flex;
+            align-items: center;
             width: 100%;
             > img:first-child {
               width: 261px;
@@ -470,8 +471,8 @@ $device-width: 1190px;
               margin-right: 158px;
             }
             > img:last-child {
-              width: 261px;
-              height: 72px;
+              width: 237px;
+              height: 66px;
             }
           }
         }
@@ -483,7 +484,6 @@ $device-width: 1190px;
           gap: 30px 20px;
           align-items: flex-start;
           justify-items: center;
-          margin-top: 80px;
         }
       }
       &__governance {
