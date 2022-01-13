@@ -173,8 +173,7 @@ const TokenTable: React.FC<Props> = ({
               />
             </div>
           </div>
-
-          <div className="deposit__table__body__loan-list">
+          <div className="deposit__table__body__loan-list" style={{ display: list?.length === 0 ? "none" : "block" }}>
             {loading ? (
               <Skeleton
                 width={mediaQuery === MediaQuery.PC ? 1148 : 340}
