@@ -405,29 +405,35 @@ function LPStaking(): JSX.Element {
       <section className="staking">
         <div ref={headerRef} className="staking__lp__header">
           <h2>{t('lpstaking.lp_token_staking')}</h2>
-          <p>{t('lpstaking.lp_token_staking__content')}</p>
-          <div>
-            {Array(3)
-              .fill(0)
-              .map((_x, index) => {
-                return (
-                  <div
-                    className={index + 1 === round ? 'active' : ''}
-                    onClick={() => setRound(index + 1)}>
-                    <p>
-                      {t(
-                        mediaQuery === MediaQuery.PC
-                          ? 'staking.staking__nth'
-                          : 'staking.nth--short',
-                        {
-                          nth: toOrdinalNumber(i18n.language, index + 1),
-                        },
-                      )}
-                    </p>
-                  </div>
-                );
-              })}
-          </div>
+          {
+            getMainnetType === MainnetType.Ethereum && (
+              <>
+                <p>{t('lpstaking.lp_token_staking__content')}</p>
+                <div>
+                  {Array(3)
+                    .fill(0)
+                    .map((_x, index) => {
+                      return (
+                        <div
+                          className={index + 1 === round ? 'active' : ''}
+                          onClick={() => setRound(index + 1)}>
+                          <p>
+                            {t(
+                              mediaQuery === MediaQuery.PC
+                                ? 'staking.staking__nth'
+                                : 'staking.nth--short',
+                              {
+                                nth: toOrdinalNumber(i18n.language, index + 1),
+                              },
+                            )}
+                          </p>
+                        </div>
+                      );
+                    })}
+                </div>
+              </>
+            )
+          }
         </div>
         {
           getMainnetType === MainnetType.Ethereum ? (
@@ -498,14 +504,17 @@ function LPStaking(): JSX.Element {
               </section>
             </div>
           ) : (
-            <div className="staking__coming-soon">
-              <div>
-                <h2>COMING SOON</h2>
+            <>
+              <div style={{ marginTop: 300 }} />
+              <div className="staking__coming-soon">
+                <div>
+                  <h2>COMING SOON</h2>
+                </div>
+                <div />
+                <div />
+                <div />
               </div>
-              <div />
-              <div />
-              <div />
-            </div>
+            </>
           )
         }
       </section>
