@@ -292,8 +292,9 @@ const Main = () => {
         <div
           style={{
             width: '100%',
-            height: 280,
-          }}></div>
+            height: 220,
+          }}
+        />
         <MainGovernanceTable
           governancePageY={governancePageY}
           governancePageBottomY={governancePageBottomY}
