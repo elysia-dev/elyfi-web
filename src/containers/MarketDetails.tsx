@@ -1,5 +1,5 @@
 import { useHistory, useParams } from 'react-router-dom';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { reserveTokenData } from 'src/core/data/reserves';
 
 import { toUsd, toPercent } from 'src/utiles/formatters';
@@ -234,8 +234,48 @@ function MarketDetail(): JSX.Element {
         .div(data.totalDeposit)
         .toNumber();
 
+  const isLeftTextOverFlowX = useCallback(
+    (x: number) => {
+      return tooltipPositionX < x;
+    },
+    [tooltipPositionX],
+  );
+
+  const isRightTextOverFlowX = useCallback(
+    (x: number) => {
+      return tooltipPositionX > x;
+    },
+    [tooltipPositionX],
+  );
+
+  const calculationPositionX = useCallback(
+    (x: number) => tooltipPositionX - x,
+    [tooltipPositionX],
+  );
+
+  const setTooltipPostionX = () => {
+    return isRightTextOverFlowX(1080)
+      ? calculationPositionX(210)
+      : isLeftTextOverFlowX(110)
+      ? calculationPositionX(20)
+      : mediaQuery === MediaQuery.Mobile && isRightTextOverFlowX(250)
+      ? calculationPositionX(220)
+      : calculationPositionX(113);
+  };
+
+  const setDatePositionX = () => {
+    return isLeftTextOverFlowX(25)
+      ? calculationPositionX(48)
+      : isRightTextOverFlowX(1150)
+      ? calculationPositionX(80)
+      : mediaQuery === MediaQuery.Mobile && isRightTextOverFlowX(330)
+      ? calculationPositionX(80)
+      : calculationPositionX(60);
+  };
+
   const CustomTooltip = (e: any) => {
     if (!(cellInBarIdx === -1)) setCellInBarIdx(e.label);
+
     setDate(e.payload[0]?.payload.name);
     setTooltipPositionX(e.coordinate.x);
     return (
@@ -250,7 +290,7 @@ function MarketDetail(): JSX.Element {
               ? t('dashboard.total_deposit--yield')
               : t('dashboard.total_deposit--reward')}
           </div>
-          <div className="bold">{e.payload[0]?.payload.d} %</div>
+          <div className="bold">{e.payload[0]?.payload.yield} %</div>
         </div>
         <div className="detail__graph__wrapper__tooltip__payload">
           <div>
@@ -258,7 +298,7 @@ function MarketDetail(): JSX.Element {
               ? t('dashboard.total_borrowed')
               : t('dashboard.total_deposit')}
           </div>
-          <div className="bold">{e.payload[0]?.payload.b} </div>
+          <div className="bold">{e.payload[0]?.payload.total} </div>
         </div>
       </div>
     );
@@ -392,12 +432,7 @@ function MarketDetail(): JSX.Element {
                     <Tooltip
                       content={<CustomTooltip />}
                       position={{
-                        x:
-                          tooltipPositionX > 1080
-                            ? tooltipPositionX - 210
-                            : tooltipPositionX < 110
-                            ? tooltipPositionX - 20
-                            : tooltipPositionX - 113,
+                        x: setTooltipPostionX(),
                         y: -70,
                       }}
                       cursor={{
@@ -405,7 +440,7 @@ function MarketDetail(): JSX.Element {
                         strokeDasharray: 3.3,
                       }}
                     />
-                    <Bar dataKey="c" barSize={20}>
+                    <Bar dataKey="barTotal" barSize={20}>
                       {calcHistoryChartData(
                         data,
                         graphConverter ? 'borrow' : 'deposit',
@@ -425,7 +460,7 @@ function MarketDetail(): JSX.Element {
                     </Bar>
                     <Line
                       type="monotone"
-                      dataKey="a"
+                      dataKey="lineYield"
                       stroke={selectToken?.color}
                       dot={false}
                       activeDot={{
@@ -436,10 +471,13 @@ function MarketDetail(): JSX.Element {
                     />
                   </ComposedChart>
                 </ResponsiveContainer>
-                <div>
+                <div
+                  style={{
+                    overflow: 'hidden',
+                  }}>
                   <div
                     style={{
-                      left: tooltipPositionX - 60,
+                      left: setDatePositionX(),
                     }}>
                     {date}
                   </div>
