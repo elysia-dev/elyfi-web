@@ -330,7 +330,7 @@ function MarketDetail(): JSX.Element {
             {t('dashboard.deposit')}
           </p>
           &nbsp;&gt;&nbsp;
-          <p>{t('dashboard.reward_plan')}</p>
+          <p>{id}</p>
         </div>
         <div ref={headerRef} className="detail__header">
           <img src={tokenInfo?.image} alt="Token image" />
