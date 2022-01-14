@@ -71,22 +71,22 @@ const calcHistoryChartData = (
               } as GetAllReserves_reserves_reserveHistory);
       }
 
-      res.push(
-        item ||
-          (res.length > 0
-            ? {
-                ...res[res.length - 1],
-                timestamp: time.unix(),
-              }
-            : ({
-                id: '0x',
-                borrowAPY: '0',
-                depositAPY: '0',
-                totalBorrow: '0',
-                totalDeposit: '0',
-                timestamp: time.unix(),
-              } as GetAllReserves_reserves_reserveHistory)),
-      );
+      // res.push(
+      //   item ||
+      //     (res.length > 0
+      //       ? {
+      //           ...res[res.length - 1],
+      //           timestamp: time.unix(),
+      //         }
+      //       : ({
+      //           id: '0x',
+      //           borrowAPY: '0',
+      //           depositAPY: '0',
+      //           totalBorrow: '0',
+      //           totalDeposit: '0',
+      //           timestamp: time.unix(),
+      //         } as GetAllReserves_reserves_reserveHistory)),
+      // );
 
       return res;
     },
