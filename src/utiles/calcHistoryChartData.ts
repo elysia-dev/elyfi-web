@@ -1,14 +1,10 @@
-import {
-  GetAllReserves_reserves,
-  GetAllReserves_reserves_reserveHistory,
-} from 'src/queries/__generated__/GetAllReserves';
 import moment from 'moment';
 import { BigNumber, utils } from 'ethers';
-import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
+import { IReserveHistory, IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import calcMiningAPR from './calcMiningAPR';
 import { toCompact } from './formatters';
 
-interface ICalculatedData extends GetAllReserves_reserves_reserveHistory {
+interface ICalculatedData extends IReserveHistory {
   selectedAmount: string;
   calculatedAPY: number;
 }
@@ -48,7 +44,7 @@ const calcHistoryChartData = (
     [],
   );
   const histories = times.reduce(
-    (res: GetAllReserves_reserves_reserveHistory[], time, index) => {
+    (res: IReserveHistory[], time, index) => {
       let item = [...data.reserveHistory]
         .reverse()
         .find(
@@ -68,25 +64,25 @@ const calcHistoryChartData = (
                 totalBorrow: '0',
                 totalDeposit: '0',
                 timestamp: time.unix(),
-              } as GetAllReserves_reserves_reserveHistory);
+              } as IReserveHistory);
       }
 
-      // res.push(
-      //   item ||
-      //     (res.length > 0
-      //       ? {
-      //           ...res[res.length - 1],
-      //           timestamp: time.unix(),
-      //         }
-      //       : ({
-      //           id: '0x',
-      //           borrowAPY: '0',
-      //           depositAPY: '0',
-      //           totalBorrow: '0',
-      //           totalDeposit: '0',
-      //           timestamp: time.unix(),
-      //         } as GetAllReserves_reserves_reserveHistory)),
-      // );
+      res.push(
+        item ||
+          (res.length > 0
+            ? {
+                ...res[res.length - 1],
+                timestamp: time.unix(),
+              }
+            : ({
+                id: '0x',
+                borrowAPY: '0',
+                depositAPY: '0',
+                totalBorrow: '0',
+                totalDeposit: '0',
+                timestamp: time.unix(),
+              } as IReserveHistory)),
+      );
 
       return res;
     },
@@ -135,16 +131,22 @@ const calcHistoryChartData = (
     ) || 1,
   );
 
-  return calculatedData.map((d, _x) => {
-    return [
-      moment(d.timestamp * 1000).format('YYYY.MM.DD'),
-      parseInt(utils.formatUnits(d.selectedAmount, decimals), 10),
-      '$ ' +
+  const test: any[] = [];
+
+  calculatedData.forEach((d, _x) => {
+    test.push({
+      name: moment(d.timestamp * 1000).format('YY.MM.DD'),
+      // a: parseInt(utils.formatUnits(d.selectedAmount, decimals), 10) * 3,
+      lineYield: ((d.calculatedAPY / divider) * base + base * 1.2) * 1.4,
+      total:
+        '$ ' +
         toCompact(parseInt(utils.formatUnits(d.selectedAmount, decimals), 10)),
-      (d.calculatedAPY / divider) * base + base * 1.2,
-      toCompact(d.calculatedAPY),
-    ];
+      barTotal: parseInt(utils.formatUnits(d.selectedAmount, decimals), 10) * 2,
+      // c: (d.calculatedAPY / divider) * base + base * 1.2,
+      yield: toCompact(d.calculatedAPY),
+    });
   });
+  return test;
 };
 
 export default calcHistoryChartData;

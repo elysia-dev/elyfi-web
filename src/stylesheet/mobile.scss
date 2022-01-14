@@ -761,6 +761,22 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           }
         }
       }
+      > div:nth-child(2) {
+        margin-top: 100px;
+        > div {
+          margin-top: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 300px;
+          > img {
+            width: 125px;
+            height: 52px;
+          }
+          > img:first-child {
+          }
+        }
+      }
       &__lawfirm {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -768,7 +784,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         width: 100%;
         grid-gap: 30px 30px;
         gap: 30px 30px;
-        align-items: flex-start;
+        align-items: center;
         justify-items: center;
         margin-top: 25px;
         > img {
@@ -828,12 +844,29 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     @include page-container;
     &__title {
       height: 100px;
+      margin-bottom: 40px;
+      .react-loading-skeleton {
+        margin-top: 12px;
+      }
       > p {
         font-size: 18px;
       }
       > h2 {
         padding-top: 16px;
         font-size: 30px;
+      }
+      &__round {
+        margin-top: 15px;
+        margin-bottom: 70px;
+        > div {
+          width: 104px;
+          height: 40px;
+          border-radius: 20px;
+          > p {
+            line-height: 18px;
+            font-size: 10px;
+          }
+        }
       }
     }
     &__table {
@@ -919,6 +952,48 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
               > h2 {
                 font-size: 12px;
               }
+            }
+          }
+        }
+        &__event-box {
+          margin-top: 15px;
+          margin-bottom: 15px;
+          &__content {
+            border-bottom: 1px solid #f0f0f1;
+            padding: 0px 15px 12px 15px;
+            > div:first-child {
+              display: flex;
+              justify-content: space-between;
+              > .DAI {
+                strong {
+                  color: #f9ae1a;
+                }
+                font-size: 12px;
+              }
+              > .USDT {
+                strong {
+                  color: #26a17b;
+                }
+                font-size: 12px;
+              }
+              > div:nth-child(2) {
+                text-align: right;
+                > div {
+                  font-size: 12px;
+                  margin-bottom: 6px;
+                  > span:last-child {
+                    font-family: $bold;
+                  }
+                }
+                > p {
+                  font-size: 10px;
+                  color: $gray-font-color;
+                }
+              }
+            }
+            .event-button {
+              margin: auto;
+              margin-top: 15px;
             }
           }
         }
@@ -1195,15 +1270,29 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 
   .detail {
     @include page-container;
-
+    padding-top: 50px;
     &__header {
-      margin-bottom: 75px;
+      margin-bottom: 10px;
       > img {
         width: 42px;
         height: 42px;
       }
       > h2 {
         font-size: 18px;
+      }
+      &__DAI {
+        margin-top: 15px;
+        margin-bottom: 30px;
+        > div {
+          width: 104px;
+          height: 40px;
+          border-radius: 20px;
+          background-color: #ffffff;
+          > p {
+            line-height: 18px;
+            font-size: 10px;
+          }
+        }
       }
     }
     &__data-wrapper {
@@ -1279,6 +1368,34 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       }
     }
     &__graph {
+      &__wrapper {
+        &__tooltip {
+          width: 226px;
+          height: 70px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 20px 16px 12px 21px;
+          border-radius: 5px;
+          &__payload {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 7px;
+            > div:first-child {
+              font-family: 'SpoqaHanSansNeo';
+              font-size: 12px;
+              color: $gray-font-color;
+            }
+            > div:last-child {
+              font-size: 15px;
+              color: $font-color;
+            }
+          }
+        }
+      }
       &__converter {
         &__button {
           width: 75px;
@@ -1801,7 +1918,8 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         background-color: #f8f8f8;
         .staking__round__remaining-data__title {
           > div:first-child {
-            > p, h2 {
+            > p,
+            h2 {
               color: #888888 !important;
             }
           }

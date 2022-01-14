@@ -1,5 +1,13 @@
 import { createContext } from "react"
 
+export interface IReserveHistory {
+  id: string;
+  timestamp: number;
+  borrowAPY: any;
+  depositAPY: any;
+  totalBorrow: any;
+  totalDeposit: any;
+}
 
 export interface IReserveSubgraphData {
   id: string;
@@ -30,14 +38,7 @@ export interface IReserveSubgraphData {
     timestamp: number;
     tokenId: string;
   }[];
-  reserveHistory: {
-    id: string;
-    timestamp: number;
-    borrowAPY: any;
-    depositAPY: any;
-    totalBorrow: any;
-    totalDeposit: any;
-  }[];
+  reserveHistory: IReserveHistory[];
   lToken: {
     id: string;
   };

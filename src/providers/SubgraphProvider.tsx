@@ -17,7 +17,6 @@ const SubgraphProvider: React.FC = (props) => {
 
   useEffect(() => {
     setLoading(true)
-    console.log(getMainnetType)
     getMainnetType === MainnetType.Ethereum ?
       ReserveSubgraph.getEthReserveData().then((res) => {
         setState(res.data)
