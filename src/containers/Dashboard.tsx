@@ -39,6 +39,8 @@ import {
   tetherMoneyPoolTime,
 } from 'src/core/data/moneypoolTimes';
 import ModalViewType from 'src/enums/ModalViewType';
+import Skeleton from 'react-loading-skeleton';
+
 
 const initialBalanceState = {
   loading: false,
@@ -400,15 +402,22 @@ const Dashboard: React.FunctionComponent = () => {
               mediaQuery === MediaQuery.PC ? `url(${HeaderCircle})` : '',
           }}>
           <p className="montserrat__bold">Total Value Locked</p>
-          <CountUp
-            start={prevTvl}
-            end={tvlLoading ? 0.0 : tvl}
-            formattingFn={(number) => usdFormatter.format(number)}
-            decimals={4}
-            duration={2}
-            delay={0}>
-            {({ countUpRef }) => <h2 className="blue" ref={countUpRef} />}
-          </CountUp>
+          {tvlLoading ? (
+            <Skeleton
+              width={mediaQuery === MediaQuery.PC ? 300 : 200}
+              height={mediaQuery === MediaQuery.PC ? 70 : 50}
+            />
+          ) : (
+            <CountUp
+              start={prevTvl}
+              end={tvlLoading ? 0.0 : tvl}
+              formattingFn={(number) => usdFormatter.format(number)}
+              decimals={4}
+              duration={2}
+              delay={0}>
+              {({ countUpRef }) => <h2 className="blue" ref={countUpRef} />}
+            </CountUp>
+          )}
         </div>
         <RewardPlanButton stakingType={'deposit'} />
         <div className="deposit__table__wrapper">

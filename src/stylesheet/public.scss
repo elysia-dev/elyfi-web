@@ -897,6 +897,7 @@ input[type='number'] {
   .deposit {
     position: relative;
     &__title {
+      text-align: center;
       background: no-repeat bottom;
       > p {
         text-align: center;
@@ -1589,6 +1590,31 @@ input[type='number'] {
       }
     }
     &__graph {
+      &__wrapper {
+        width: 100%;
+        height: 400px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        > div {
+          width: 100%;
+          height: 300px;
+          position: relative;
+          > div:last-child {
+            border-top: 1px solid black;
+            position: absolute;
+            width: 100%;
+            height: 30px;
+            bottom: -25px;
+            > div {
+              position: absolute;
+              margin-top: 5px;
+              width: 120px;
+              text-align: center;
+            }
+          }
+        }
+      }
       &__converter {
         display: flex;
         flex-direction: row;
@@ -2175,7 +2201,8 @@ input[type='number'] {
         background-color: #f8f8f8;
         .staking__round__remaining-data__title {
           > div:first-child {
-            > p, h2 {
+            > p,
+            h2 {
               color: #888888;
             }
           }
