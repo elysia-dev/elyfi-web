@@ -3,7 +3,6 @@ import ReserveData, { reserveTokenData } from 'src/core/data/reserves';
 import { useEffect, useContext, useState } from 'react';
 import { toPercent, toCompactForBignumber } from 'src/utiles/formatters';
 import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
-import ReservesContext from 'src/contexts/ReservesContext';
 import { BigNumber, constants } from 'ethers';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { useHistory, useLocation } from 'react-router-dom';

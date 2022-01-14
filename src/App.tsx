@@ -7,7 +7,6 @@ import envs from 'src/core/envs';
 import { BrowserRouter as Router } from 'react-router-dom';
 import getLibrary from './core/utils/getLibrary';
 import AppNavigator from './AppNavigator';
-import ReservesProvider from './providers/ReservesProvider';
 import PriceProvider from './providers/PriceProvider';
 import SubgraphProvider from './providers/SubgraphProvider';
 
@@ -19,7 +18,6 @@ import TxProvider from './providers/TxProvider';
 import UniswapPoolProvider from './providers/UniswapPoolProvider';
 import MainnetProvider from './providers/MainnetProvider';
 
-
 const App: React.FC = () => {
   const client = new ApolloClient({
     uri: envs.subgraphURI,
@@ -28,22 +26,20 @@ const App: React.FC = () => {
   })
 
   return (
-      <ApolloProvider client={client}>
-        <UniswapPoolProvider>
-          <PriceProvider>
-            <Web3ReactProvider getLibrary={getLibrary}>
-              <MainnetProvider>
-                <ReservesProvider>
-                  <TxProvider>
-                    <SubgraphProvider>
-                      <Router>
-                        <AppNavigator />
-                      </Router>
-                    </SubgraphProvider>
-                  </TxProvider>
-                </ReservesProvider>
-              </MainnetProvider>
-            </Web3ReactProvider>
+    <ApolloProvider client={client}>
+      <UniswapPoolProvider>
+        <PriceProvider>
+          <Web3ReactProvider getLibrary={getLibrary}>
+            <MainnetProvider>
+              <TxProvider>
+                <SubgraphProvider>
+                  <Router>
+                    <AppNavigator />
+                  </Router>
+                </SubgraphProvider>
+              </TxProvider>
+            </MainnetProvider>
+          </Web3ReactProvider>
           </PriceProvider>
         </UniswapPoolProvider>
       </ApolloProvider>
