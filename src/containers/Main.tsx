@@ -27,6 +27,8 @@ import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
 import { contextType } from 'google-map-react';
 import DrawWave from 'src/utiles/drawWave';
+import Fbg from 'src/assets/images/main/fbg.png';
+import Blocore from 'src/assets/images/main/blocore.png';
 
 const Main = () => {
   const { t } = useTranslation();
@@ -270,6 +272,15 @@ const Main = () => {
             <img src={HaechiLabs} />
           </div>
           <div>
+            <h2 className="bold">
+              <strong>Backed</strong> by
+            </h2>
+            <div>
+              <img src={Fbg} alt={Fbg} />
+              <img src={Blocore} alt={Blocore} />
+            </div>
+          </div>
+          <div>
             <h2>{t('main.partners.lawfirm')}</h2>
             <div className="main__partners__lawfirm">
               {[SHIN, BKI, FocusLaw, HUB, HOW, TSMP].map((LawFirm) => {
@@ -278,6 +289,12 @@ const Main = () => {
             </div>
           </div>
         </section>
+        <div
+          style={{
+            width: '100%',
+            height: 220,
+          }}
+        />
         <MainGovernanceTable
           governancePageY={governancePageY}
           governancePageBottomY={governancePageBottomY}

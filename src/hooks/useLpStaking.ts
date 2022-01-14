@@ -42,9 +42,7 @@ const useLpStaking: () => (
 
       const res = await contract[
         'safeTransferFrom(address,address,uint256,bytes)'
-      ](account, envs.stakerAddress, tokenId, encode, {
-        gasLimit: 300000,
-      });
+      ](account, envs.stakerAddress, tokenId, encode);
       const emitter = buildEventEmitter('LpStakingModal', 'LpStaking', ``);
       setTransaction(
         res,
