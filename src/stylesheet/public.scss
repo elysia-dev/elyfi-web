@@ -897,6 +897,7 @@ input[type='number'] {
   .deposit {
     position: relative;
     &__title {
+      text-align: center;
       background: no-repeat bottom;
       > p {
         text-align: center;

@@ -708,6 +708,9 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     &__title {
       height: 100px;
       margin-bottom: 40px;
+      .react-loading-skeleton {
+        margin-top: 12px;
+      }
       > p {
         font-size: 18px;
       }

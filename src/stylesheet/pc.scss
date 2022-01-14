@@ -521,6 +521,9 @@ $device-width: 1190px;
       @include page-container;
       padding-top: 100px;
       &__title {
+        .react-loading-skeleton {
+          margin-top: 20px;
+        }
         height: 300px;
         margin-bottom: 45px;
         > p {
