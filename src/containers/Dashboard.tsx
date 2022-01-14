@@ -421,7 +421,7 @@ const Dashboard: React.FunctionComponent = () => {
               {balances.map((data, index) => {
                 return (
                   <a
-                    key={index}
+                    key={`deposit_${index}`}
                     onClick={() => remoteControlScroll(`table-${index}`)}>
                     <div>
                       <div className="deposit__remote-control__images">
@@ -455,72 +455,70 @@ const Dashboard: React.FunctionComponent = () => {
 
           {balances.map((balance, index) => {
             return (
-              <>
-                <TokenTable
-                  key={index}
-                  index={index}
-                  id={`table-${index}`}
-                  onClick={(e: any) => {
-                    walletConnect === false
-                      ? (setConnectWalletModalvisible(true),
-                        ReactGA.modalview(
-                          balance.tokenName +
-                            ModalViewType.DepositConnectWalletModal,
-                        ))
-                      : (e.preventDefault(),
-                        setReserve(reserves[index]),
-                        setModalNumber(index),
-                        setModalToken(balance.tokenName),
-                        ReactGA.modalview(
-                          balance.tokenName +
-                            ModalViewType.DepositOrWithdrawModal,
-                        ));
-                  }}
-                  tokenName={balance.tokenName}
-                  tokenImage={reserveTokenData[balance.tokenName].image}
-                  depositBalance={toCompactForBignumber(
-                    balance.deposit || constants.Zero,
+              <TokenTable
+                key={`depositTable_${index}`}
+                index={index}
+                id={`table-${index}`}
+                onClick={(e: any) => {
+                  walletConnect === false
+                    ? (setConnectWalletModalvisible(true),
+                      ReactGA.modalview(
+                        balance.tokenName +
+                          ModalViewType.DepositConnectWalletModal,
+                      ))
+                    : (e.preventDefault(),
+                      setReserve(reserves[index]),
+                      setModalNumber(index),
+                      setModalToken(balance.tokenName),
+                      ReactGA.modalview(
+                        balance.tokenName +
+                          ModalViewType.DepositOrWithdrawModal,
+                      ));
+                }}
+                tokenName={balance.tokenName}
+                tokenImage={reserveTokenData[balance.tokenName].image}
+                depositBalance={toCompactForBignumber(
+                  balance.deposit || constants.Zero,
+                  reserveTokenData[balance.tokenName].decimals,
+                )}
+                depositAPY={toPercent(reserves[index].depositAPY)}
+                miningAPR={toPercent(
+                  calcMiningAPR(
+                    elfiPrice,
+                    BigNumber.from(reserves[index].totalDeposit),
                     reserveTokenData[balance.tokenName].decimals,
-                  )}
-                  depositAPY={toPercent(reserves[index].depositAPY)}
-                  miningAPR={toPercent(
-                    calcMiningAPR(
-                      elfiPrice,
-                      BigNumber.from(reserves[index].totalDeposit),
-                      reserveTokenData[balance.tokenName].decimals,
-                    ) || '0',
-                  )}
-                  walletBalance={toCompactForBignumber(
-                    balance.value || constants.Zero,
-                    reserveTokenData[balance.tokenName].decimals,
-                  )}
-                  isDisable={!reserves[index]}
-                  skeletonLoading={balance.loading}
-                  reserveData={reserves[index]}
-                  expectedIncentiveBefore={balance.expectedIncentiveBefore}
-                  expectedIncentiveAfter={balance.expectedIncentiveAfter}
-                  expectedAdditionalIncentiveBefore={
-                    balance.expectedAdditionalIncentiveBefore
-                  }
-                  expectedAdditionalIncentiveAfter={
-                    balance.expectedAdditionalIncentiveAfter
-                  }
-                  setIncentiveModalVisible={() => {
-                    walletConnect === false
-                      ? (setConnectWalletModalvisible(true),
-                        ReactGA.modalview(
-                          balance.tokenName + ModalViewType.IncentiveModal,
-                        ))
-                      : setIncentiveModalVisible(true);
-                  }}
-                  setModalNumber={() => setModalNumber(index)}
-                  modalview={() =>
-                    ReactGA.modalview(
-                      balance.tokenName + ModalViewType.IncentiveModal,
-                    )
-                  }
-                />
-              </>
+                  ) || '0',
+                )}
+                walletBalance={toCompactForBignumber(
+                  balance.value || constants.Zero,
+                  reserveTokenData[balance.tokenName].decimals,
+                )}
+                isDisable={!reserves[index]}
+                skeletonLoading={balance.loading}
+                reserveData={reserves[index]}
+                expectedIncentiveBefore={balance.expectedIncentiveBefore}
+                expectedIncentiveAfter={balance.expectedIncentiveAfter}
+                expectedAdditionalIncentiveBefore={
+                  balance.expectedAdditionalIncentiveBefore
+                }
+                expectedAdditionalIncentiveAfter={
+                  balance.expectedAdditionalIncentiveAfter
+                }
+                setIncentiveModalVisible={() => {
+                  walletConnect === false
+                    ? (setConnectWalletModalvisible(true),
+                      ReactGA.modalview(
+                        balance.tokenName + ModalViewType.IncentiveModal,
+                      ))
+                    : setIncentiveModalVisible(true);
+                }}
+                setModalNumber={() => setModalNumber(index)}
+                modalview={() =>
+                  ReactGA.modalview(
+                    balance.tokenName + ModalViewType.IncentiveModal,
+                  )
+                }
+              />
             );
           })}
         </div>

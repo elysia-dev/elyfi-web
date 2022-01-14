@@ -204,6 +204,7 @@ const Navigation: React.FunctionComponent<{
   ) => {
     return (
       <Link
+        key={_index}
         to={{
           pathname:
             _data.type === NavigationType.Link
