@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import TempAssets from 'src/assets/images/temp_assets.png';
 import wave from 'src/assets/images/wave_elyfi.png';
 import OffChainTopic, { INapData } from 'src/clients/OffChainTopic';
@@ -21,6 +21,8 @@ import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
+import MainnetContext from 'src/contexts/MainnetContext';
+import MainnetType from 'src/enums/MainnetType';
 
 const Governance = () => {
   const [onChainLoading, setOnChainLoading] = useState(true);
@@ -34,6 +36,7 @@ const Governance = () => {
   const { t } = useTranslation();
   const History = useHistory();
   const { lng } = useParams<{ lng: string }>();
+  const { type: getMainnetType } = useContext(MainnetContext)
 
   const draw = () => {
     const dpr = window.devicePixelRatio;
@@ -438,18 +441,22 @@ const Governance = () => {
               </h3>
               <div>
                 <p>{t('governance.on_chain_voting__content')}</p>
-                <a
-                  href="https://www.withtally.com/governance/elyfi"
-                  target="_blank"
-                  rel="noopener noreferer">
-                  <div
-                    className="deposit__table__body__amount__button"
-                    style={{
-                      width: 230,
-                    }}>
-                    <p>{t('governance.onChain_tally_button')}</p>
-                  </div>
-                </a>
+                {
+                  getMainnetType === MainnetType.Ethereum && (
+                    <a
+                      href="https://www.withtally.com/governance/elyfi"
+                      target="_blank"
+                      rel="noopener noreferer">
+                      <div
+                        className="deposit__table__body__amount__button"
+                        style={{
+                          width: 230,
+                        }}>
+                        <p>{t('governance.onChain_tally_button')}</p>
+                      </div>
+                    </a>
+                  )
+                }
               </div>
             </div>
           ) : (
@@ -460,18 +467,22 @@ const Governance = () => {
                     count: onChainData.length,
                   })}
                 </h3>
-                <a
-                  href="https://www.withtally.com/governance/elyfi"
-                  target="_blank"
-                  rel="noopener noreferer">
-                  <div
-                    className="deposit__table__body__amount__button"
-                    style={{
-                      width: 150,
-                    }}>
-                    <p>{t('governance.onChain_tally_button')}</p>
-                  </div>
-                </a>
+                {
+                  getMainnetType === MainnetType.Ethereum && (
+                    <a
+                      href="https://www.withtally.com/governance/elyfi"
+                      target="_blank"
+                      rel="noopener noreferer">
+                      <div
+                        className="deposit__table__body__amount__button"
+                        style={{
+                          width: 150,
+                        }}>
+                        <p>{t('governance.onChain_tally_button')}</p>
+                      </div>
+                    </a>
+                  )
+                }
               </div>
               <div>
                 <p>{t('governance.data_verification__content')}</p>
@@ -498,20 +509,27 @@ const Governance = () => {
               </div>
             </div>
           )}
-
-          {onChainLoading ? (
-            <Skeleton width={'100%'} height={600} />
-          ) : onChainData.length > 0 ? (
-            <div className="governance__grid">
-              {onChainData.map((data, index) => {
-                return onChainConatainer(data);
-              })}
-            </div>
-          ) : (
-            <div className="governance__onchain-vote zero">
-              <p>{t('governance.onchain_list_zero')}</p>
-            </div>
-          )}
+          {
+            getMainnetType === MainnetType.Ethereum ? (
+              onChainLoading ? (
+                <Skeleton width={'100%'} height={600} />
+              ) : onChainData.length > 0 ? (
+                <div className="governance__grid">
+                  {onChainData.map((data, index) => {
+                    return onChainConatainer(data);
+                  })}
+                </div>
+              ) : (
+                <div className="governance__onchain-vote zero">
+                  <p>{t('governance.onchain_list_zero')}</p>
+                </div>
+              )
+            ) : (
+              <div className="governance__onchain-vote zero">
+                <h2>COMING SOON!</h2>
+              </div>
+            )
+          }
         </section>
         <section className="governance__loan governance__header">
           <div>

@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div>
-        <img className="footer__logo pc-only" src={ElysiaLogo} alt="Elysia" />
+        
         <div className="footer__right-container">
           <LanguageConverter />
           <div className="footer__link">

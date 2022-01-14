@@ -1101,9 +1101,8 @@ $device-width: 1190px;
             padding-bottom: 35px;
             &:first-child {
               padding-right: 23px;
-              height: 235px;
+              height: 292px;
               > div {
-                margin-bottom: 30px;
                 &:last-child {
                   margin: 0;
                 }
@@ -1113,14 +1112,13 @@ $device-width: 1190px;
               }
             }
             &:last-child {
-              padding-left: 23px;
-              height: 235px;
+              padding-left: 23px;height: 235px;
             }
           }
           &__deposit {
             &__wrapper {
               > div {
-                margin-bottom: 30px;
+                margin-bottom: 15px;
                 > p {
                   font-size: 15px;
                 }

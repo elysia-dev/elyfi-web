@@ -425,6 +425,17 @@ input[type='number'] {
           color: $font-color;
           cursor: pointer;
         }
+        &.network-error {
+          border: none;
+          background: #D84D4D;
+          width: 185px;
+          > img {
+            margin: 13px;
+          }
+          > h2 {
+            color: #FFFFFF;
+          }
+        }
       }
       &__change-network {
         &__wrapper {
@@ -445,6 +456,9 @@ input[type='number'] {
             font-size: 12px;
             color: $font-color;
             font-family: $montserrat;
+          }
+          &.network-error {
+            width: 185px;
           }
         }
         display: flex;
@@ -924,6 +938,55 @@ input[type='number'] {
         }
       }
       &__body {
+        &__strategy {
+          padding-top: 25px;
+          padding-bottom: 30px;
+          border-bottom: 1px solid $gray-line;
+          > h2 {
+            color: $font-color;
+
+            font-size: 18px;
+            margin-bottom: 20px;
+          }
+          > div {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            height: 30px;
+            > div {
+              width: 100%;
+              &:first-child {
+                border-radius: 15px 0px 0px 15px;
+                background: #0099CC;
+                > p {
+                  text-align: center;
+                  font-size: 15px;
+                  color: $background-color;
+                  line-height: 30px;
+                  > span {
+                    font-family: $bold;
+                    color: $background-color;
+                  }
+                }
+              }
+              &:last-child {
+                border-radius: 0px 15px 15px 0px;
+                background: #40AFD5;
+                > p {
+                  text-align: center;
+                  font-size: 15px;
+                  color: $background-color;
+                  line-height: 30px;
+                  > span {
+                    font-family: $bold;
+                    color: $background-color;
+                  }
+                }
+              }
+            }
+          }
+        }
         &__amount {
           text-align: right;
           &__button {
@@ -1417,6 +1480,9 @@ input[type='number'] {
         > div {
           flex: 1;
           &:first-child {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             > div {
               display: flex;
               flex-direction: row;
@@ -1473,6 +1539,43 @@ input[type='number'] {
             align-items: center;
             > h2 {
               color: $font-color;
+            }
+          }
+          &__strategy {
+            flex-direction: column !important;
+            width: calc(100% - 21px);
+            margin: 0px 0 0 21px;
+            border: 1px solid $gray-line;
+            padding: 15px;
+            border-radius: 5px;
+            gap: 15px;
+            > div {
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              width: 100%;
+              > p:first-child {
+                color: $gray-font-color;
+              }
+            }
+            &__defi-wrapper {
+              border-left: 2px solid $gray-line;
+              padding-left: 15px;
+              > div {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                > img {
+                  width: 19px;
+                  height: 19px;
+                  margin-right: 8px;
+                }
+                > p {
+                  color: $gray-font-color;
+  
+                  font-size: 15px;
+                }
+              }
             }
           }
         }
@@ -3292,7 +3395,7 @@ input[type='number'] {
       margin: 0 auto;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-end;
       > div {
         display: flex;
         flex-direction: row;

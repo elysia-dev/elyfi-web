@@ -30,6 +30,7 @@ import IncentiveModal from 'src/containers/IncentiveModal';
 import useTvl from 'src/hooks/useTvl';
 import isWalletConnect from 'src/hooks/isWalletConnect';
 import ConnectWalletModal from 'src/containers/ConnectWalletModal';
+import WrongMainnetModal from 'src/containers/WrongMainnetModal';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
@@ -86,7 +87,8 @@ const Dashboard: React.FunctionComponent = () => {
     }),
   );
   const { 
-    type: getMainnetType
+    type: getMainnetType,
+    unsupportedChainid
   } = useContext(MainnetContext)
 
   const [incentiveModalVisible, setIncentiveModalVisible] =
@@ -102,8 +104,8 @@ const Dashboard: React.FunctionComponent = () => {
   );
   const { value: tvl, loading: tvlLoading } = useTvl();
   const [prevTvl, setPrevTvl] = useState(0);
-  const [connectWalletModalvisible, setConnectWalletModalvisible] =
-    useState<boolean>(false);
+  const [connectWalletModalvisible, setConnectWalletModalvisible] = useState<boolean>(false);
+  const [wrongMainnetModalVisible, setWrongMainnetModalVisible] = useState<boolean>(false);
   const walletConnect = isWalletConnect();
   const { value: mediaQuery } = useMediaQueryType();
 
@@ -307,6 +309,12 @@ const Dashboard: React.FunctionComponent = () => {
           setConnectWalletModalvisible(false);
         }}
       />
+      <WrongMainnetModal
+        visible={wrongMainnetModalVisible}
+        onClose={() => {
+          setWrongMainnetModalVisible(false);
+        }}
+      />
 
       <div className="deposit">
         <div
@@ -378,14 +386,17 @@ const Dashboard: React.FunctionComponent = () => {
                       ? (
                         setConnectWalletModalvisible(true),
                         ReactGA.modalview(balance.tokenName + ModalViewType.DepositConnectWalletModal)
-                      )
-                      : (
-                        e.preventDefault(),
-                        setReserveData(data.reserves[index]),
-                        setModalNumber(index),
-                        setModalToken(balance.tokenName),
-                        ReactGA.modalview(balance.tokenName + ModalViewType.DepositOrWithdrawModal)
-                      )
+                      ) :
+                      unsupportedChainid
+                        ? (
+                          setWrongMainnetModalVisible(true)
+                        ) : (
+                          e.preventDefault(),
+                          setReserveData(data.reserves[index]),
+                          setModalNumber(index),
+                          setModalToken(balance.tokenName),
+                          ReactGA.modalview(balance.tokenName + ModalViewType.DepositOrWithdrawModal)
+                        )
                   }}
                   tokenName={balance.tokenName}
                   tokenImage={reserveTokenData[balance.tokenName].image}
@@ -415,8 +426,12 @@ const Dashboard: React.FunctionComponent = () => {
                       ? (
                         setConnectWalletModalvisible(true),
                         ReactGA.modalview(balance.tokenName + ModalViewType.IncentiveModal)
-                      )
-                      : setIncentiveModalVisible(true);
+                      ) :
+                      unsupportedChainid
+                        ? (
+                          setWrongMainnetModalVisible(true)
+                        ) : 
+                        setIncentiveModalVisible(true);
                   }}
                   setModalNumber={() => setModalNumber(index)}
                   modalview={() => ReactGA.modalview(balance.tokenName + ModalViewType.IncentiveModal)}

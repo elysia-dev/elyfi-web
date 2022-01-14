@@ -17,6 +17,9 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import TableBodyAmount from 'src/components/TableBodyAmount';
 import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
+import { useContext } from 'react';
+import MainnetContext from 'src/contexts/MainnetContext';
+import MainnetType from 'src/enums/MainnetType';
 
 interface Props {
   tokenImage: string;
@@ -67,6 +70,7 @@ const TokenTable: React.FC<Props> = ({
   const history = useHistory();
   const { lng } = useParams<{ lng: string }>();
   const { value: mediaQuery } = useMediaQueryType();
+  const { type: getMainnetType } = useContext(MainnetContext)
 
   const tableData = [
     [
@@ -173,6 +177,27 @@ const TokenTable: React.FC<Props> = ({
               />
             </div>
           </div>
+          {
+            getMainnetType === MainnetType.BSC && (
+              <div className="deposit__table__body__strategy">
+                <h2>
+                  Target running strategy
+                </h2>
+                <div>
+                  <div style={{ flex: 30 }} >
+                    <p>
+                      Real estate mortgage <span className="bold">30%</span>
+                    </p>
+                  </div>
+                  <div style={{ flex: 70 }} >
+                    <p>
+                      Auto investment to DeFi <span className="bold">70%</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )
+          }
           <div className="deposit__table__body__loan-list" style={{ display: list?.length === 0 ? "none" : "block" }}>
             {loading ? (
               <Skeleton

@@ -21,16 +21,13 @@ const MainnetProvider: React.FC = (props) => {
     if (!active) {
       setLoading(false) 
       if (currentMainnet.unsupportedChainid) {
-        console.log("1")
         setMainnet({ ...currentMainnet, unsupportedChainid: false })
       }
       return;
     };
     currentChain !== undefined ? (
-      console.log("2"),
       setMainnet({ type: currentChain.type, unsupportedChainid: false }), setLoading(false)
     ) : (
-      console.log("3"),
       setMainnet({ ...currentMainnet, unsupportedChainid: true }),
       console.log("Error!") , setLoading(false)
     )

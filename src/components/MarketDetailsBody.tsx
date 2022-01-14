@@ -2,6 +2,10 @@ import { useTranslation } from "react-i18next";
 import { Circle } from 'src/components/Circle';
 import MediaQuery from "src/enums/MediaQuery";
 import useMediaQueryType from "src/hooks/useMediaQueryType";
+import Defi001 from 'src/assets/images/defi_001.png';
+import { useContext } from "react";
+import MainnetContext from "src/contexts/MainnetContext";
+import MainnetType from "src/enums/MainnetType";
 
 const MarketDetailsBody: React.FunctionComponent<{
   depositReward: string,
@@ -30,6 +34,7 @@ const MarketDetailsBody: React.FunctionComponent<{
 }) => {
   const { t } = useTranslation();
   const { value: mediaquery } = useMediaQueryType();
+  const { type: getMainnetType } = useContext(MainnetContext)
 
   return (
     mediaquery === MediaQuery.PC ? (
@@ -56,7 +61,7 @@ const MarketDetailsBody: React.FunctionComponent<{
           </div>
         </div>
         <div className="detail__data-wrapper__info">
-          <div>
+          <div style={{ height: getMainnetType === MainnetType.BSC ? 292 : 235 }}>
             <div>
               <p>{t('dashboard.deposit_apy')}</p>
               <p>
@@ -83,10 +88,10 @@ const MarketDetailsBody: React.FunctionComponent<{
             </div>
           </div>
 
-          <div>
+          <div style={{ height: getMainnetType === MainnetType.BSC ? 'auto' : 235 }}>
             <div>
               <div className="detail__data-wrapper__info__deposit__wrapper">
-                <div>
+                <div  style={{ marginBottom: getMainnetType === MainnetType.BSC ? 15 : 30 }}>
                   <div className="detail__data-wrapper__info__deposit">
                     <div 
                       style={{
@@ -101,7 +106,37 @@ const MarketDetailsBody: React.FunctionComponent<{
                     {totalBorrowed}
                   </p>
                 </div>
-                <div>
+                {
+                  getMainnetType === MainnetType.BSC && (
+                    <div className="detail__data-wrapper__info__deposit__strategy">
+                      <div>
+                        <p>
+                          부동산 담보 대출
+                        </p>
+                        <p>
+                          30%
+                        </p>
+                      </div>
+                      <div>
+                        <p>
+                          디파이 자동투자
+                        </p>
+                        <p>
+                          70%
+                        </p>
+                      </div>
+                      <div className="detail__data-wrapper__info__deposit__strategy__defi-wrapper">
+                        <div>
+                          <img src={Defi001} />
+                          <p>
+                            앵커프로토콜
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                }
+                <div  style={{ marginBottom: getMainnetType === MainnetType.BSC ? 15 : 30 }}>
                   <div className="detail__data-wrapper__info__deposit">
                     <div 
                       style={{
