@@ -109,9 +109,11 @@ const Navigation: React.FunctionComponent<{
   const localNavInnerContainer = (
     _data: ISubNavigation,
     isExternalLink: boolean,
+    index: number,
   ) => {
     return (
       <Link
+        key={`nav_${index}`}
         to={{
           pathname: !isExternalLink
             ? `/${lng + _data.location}`
@@ -135,7 +137,7 @@ const Navigation: React.FunctionComponent<{
 
   const globalNavInnerContainer = (_data: INavigation, _index: number) => {
     return (
-      <div className="navigation__link__wrapper">
+      <div key={_index} className="navigation__link__wrapper">
         <div
           className="navigation__link"
           onMouseEnter={() => {
@@ -180,10 +182,11 @@ const Navigation: React.FunctionComponent<{
                   scrollTop > 125 ? '1px solid #e6e6e6' : '1px solid #e6e6e6',
               }}>
               {getHoveredLNBData.map((getData) => {
-                return getData.subNavigation!.map((subData) => {
+                return getData.subNavigation!.map((subData, index) => {
                   return localNavInnerContainer(
                     subData,
                     subData.type === NavigationType.Link ? false : true,
+                    index,
                   );
                 });
               })}
@@ -203,9 +206,9 @@ const Navigation: React.FunctionComponent<{
       <Link
         to={{
           pathname:
-          _data.type === NavigationType.Link
-            ? `/${lng + _data.location}`
-            : t(_data.location),
+            _data.type === NavigationType.Link
+              ? `/${lng + _data.location}`
+              : t(_data.location),
         }}
         target={isExternalLink ? '_blank' : undefined}
         onMouseEnter={() => {
@@ -218,7 +221,7 @@ const Navigation: React.FunctionComponent<{
             reactGA.event({
               category: PageEventType.MoveToInternalPage,
               action: ButtonEventType.DepositButtonOnTop,
-            })
+            });
           }
           initialNavigationState();
         }}>
@@ -231,6 +234,7 @@ const Navigation: React.FunctionComponent<{
     const LNBNavigation = () => {
       return (
         <div
+          key={index}
           onMouseEnter={() => {
             setSelectedLocalNavIndex(index + 1);
           }}>
@@ -259,10 +263,11 @@ const Navigation: React.FunctionComponent<{
   const mobileHamburgerBar = () => {
     return (
       <div className="navigation__hamburger__content">
-        {navigationLink.map((data) => {
+        {navigationLink.map((data, index) => {
           return data.type === NavigationType.LNB ? (
             <>
               <div
+                key={index}
                 className="navigation__hamburger__lnb"
                 onClick={() => {
                   selectedLocalNavIndex === data.id
@@ -305,7 +310,7 @@ const Navigation: React.FunctionComponent<{
                             reactGA.event({
                               category: PageEventType.MoveToInternalPage,
                               action: ButtonEventType.DepositButtonOnTop,
-                            })
+                            });
                           }
                           setHamburgerBar(false);
                         }}>
@@ -320,6 +325,7 @@ const Navigation: React.FunctionComponent<{
             </>
           ) : (
             <Link
+              key={index}
               to={{
                 pathname: `/${lng + data.location}`,
               }}

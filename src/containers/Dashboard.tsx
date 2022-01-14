@@ -33,13 +33,11 @@ import ConnectWalletModal from 'src/containers/ConnectWalletModal';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
-import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import {
   daiMoneyPoolTime,
   tetherMoneyPoolTime,
 } from 'src/core/data/moneypoolTimes';
 import ModalViewType from 'src/enums/ModalViewType';
-import { formatEther, parseEther } from '@ethersproject/units';
 import IncentiveNotification from 'src/components/IncentiveNotificationModal';
 
 const initialBalanceState = {
@@ -397,18 +395,6 @@ const Dashboard: React.FunctionComponent = () => {
           setConnectWalletModalvisible(false);
         }}
       />
-      <IncentiveNotification
-        visible={incentiveNotificationModalvisble}
-        onClose={() => {
-          setIncentiveNotificationModalvisble(false);
-        }}
-        setIncentiveModalVisible={() => {
-          walletConnect === false
-            ? (setConnectWalletModalvisible(true),
-              ReactGA.modalview(ModalViewType.IncentiveModal))
-            : setIncentiveModalVisible(true);
-        }}
-      />
 
       <div className="deposit">
         <div
@@ -434,7 +420,9 @@ const Dashboard: React.FunctionComponent = () => {
             <div className="deposit__remote-control">
               {balances.map((data, index) => {
                 return (
-                  <a onClick={() => remoteControlScroll(`table-${index}`)}>
+                  <a
+                    key={index}
+                    onClick={() => remoteControlScroll(`table-${index}`)}>
                     <div>
                       <div className="deposit__remote-control__images">
                         <img src={reserveTokenData[data.tokenName].image} />
@@ -479,9 +467,6 @@ const Dashboard: React.FunctionComponent = () => {
                           balance.tokenName +
                             ModalViewType.DepositConnectWalletModal,
                         ))
-                      : !balance.incentiveRound1.isZero()
-                      ? (setIncentiveNotificationModalvisble(true),
-                        setModalNumber(index))
                       : (e.preventDefault(),
                         setReserve(reserves[index]),
                         setModalNumber(index),
