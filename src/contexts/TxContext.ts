@@ -17,14 +17,26 @@ export type TxContextType = {
 
 export interface ITxContext extends TxContextType {
   setTransaction: (
-    tx: any,
-    emitter: any,
+    tx: ContractTransaction,
+    emitter: {
+      clicked: () => void;
+      created: () => void;
+      canceled: () => void;
+    },
     type: RecentActivityType,
     pending: () => void,
     callback: () => void,
   ) => void;
   initTransaction: (txStatus: TxStatus, txWaiting: boolean) => void;
-  failTransaction: (emitter: any, onEvent: () => void, e: any) => void;
+  failTransaction: (
+    emitter: {
+      clicked: () => void;
+      created: () => void;
+      canceled: () => void;
+    },
+    onEvent: () => void,
+    e: Error,
+  ) => void;
   reset: () => void;
 }
 
@@ -43,15 +55,27 @@ export const initialtxStatus = {
 export const initialTxContext = {
   ...initialtxStatus,
   setTransaction: (
-    tx: any,
-    emitter: any,
+    tx: ContractTransaction,
+    emitter: {
+      clicked: () => void;
+      created: () => void;
+      canceled: () => void;
+    },
     type: RecentActivityType,
     pending: () => void,
     callback: () => void,
-  ) => {},
-  initTransaction: (txStatus: TxStatus, txWaiting: boolean) => {},
-  failTransaction: (emitter: any, onEvent: () => void, e: any) => {},
-  reset: () => {},
+  ): void => {},
+  initTransaction: (txStatus: TxStatus, txWaiting: boolean): void => {},
+  failTransaction: (
+    emitter: {
+      clicked: () => void;
+      created: () => void;
+      canceled: () => void;
+    },
+    onEvent: () => void,
+    e: Error,
+  ): void => {},
+  reset: (): void => {},
 };
 
 const TxContext = createContext<ITxContext>(initialTxContext);

@@ -4,7 +4,7 @@ import wave from 'src/assets/images/wave_elyfi.png';
 import OffChainTopic, { INapData } from 'src/clients/OffChainTopic';
 import Skeleton from 'react-loading-skeleton';
 import { IProposals, OnChainTopic } from 'src/clients/OnChainTopic';
-import { BigNumber, utils } from 'ethers';
+import { utils } from 'ethers';
 import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
 import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
 import { useQuery } from '@apollo/client';
@@ -22,7 +22,7 @@ import ButtonEventType from 'src/enums/ButtonEventType';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
 
-const Governance = () => {
+const Governance = (): JSX.Element => {
   const [onChainLoading, setOnChainLoading] = useState(true);
   const [offChainLoading, setOffChainLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
@@ -167,8 +167,8 @@ const Governance = () => {
           reactGA.event({
             category: PageEventType.MoveToExternalPage,
             action: ButtonEventType.OffChainVoteButtonOnGovernance,
-          })
-          window.open(data.link)
+          });
+          window.open(data.link);
         }}>
         <div>
           <img src={`https://${data.images}`} />
@@ -204,14 +204,14 @@ const Governance = () => {
     return (
       <div
         className="governance__onchain-vote__assets governance__asset"
-        onClick={() =>{
+        onClick={() => {
           reactGA.event({
             category: PageEventType.MoveToExternalPage,
             action: ButtonEventType.OnChainVoteButtonOnGovernance,
-          })
+          });
           window.open(
             `https://www.withtally.com/governance/elyfi/proposal/${data.id}`,
-          )
+          );
         }}>
         <div>
           <img

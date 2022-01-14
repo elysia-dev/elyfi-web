@@ -25,12 +25,11 @@ import MainAnimation from 'src/components/MainAnimation';
 import reactGA from 'react-ga';
 import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
-import { contextType } from 'google-map-react';
 import DrawWave from 'src/utiles/drawWave';
 import Fbg from 'src/assets/images/main/fbg.png';
 import Blocore from 'src/assets/images/main/blocore.png';
 
-const Main = () => {
+const Main = (): JSX.Element => {
   const { t } = useTranslation();
   const mainCanvasRef = useRef<HTMLCanvasElement>(null);
   const mainHeaderY = useRef<HTMLParagraphElement>(null);

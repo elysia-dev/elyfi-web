@@ -1,4 +1,4 @@
-const mainnetConverter = (mainnetChainId: number | undefined) => {
+const mainnetConverter = (mainnetChainId: number | undefined): string => {
   switch (mainnetChainId) {
     case 1:
       return 'Ethereum Mainnet';

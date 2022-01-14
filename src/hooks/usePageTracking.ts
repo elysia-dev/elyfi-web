@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import ReactGA from 'react-ga';
 
-const usePageTracking = () => {
+const usePageTracking = (): void => {
   const location = useLocation();
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    ReactGA.initialize(process.env.REACT_APP_GA_ID || '', { debug: process.env.NODE_ENV === 'development' });
+    ReactGA.initialize(process.env.REACT_APP_GA_ID || '', {
+      debug: process.env.NODE_ENV === 'development',
+    });
     setInitialized(true);
   }, []);
 

@@ -4,7 +4,7 @@ import Twitter from 'src/assets/images/twitter.png';
 import Telegram from 'src/assets/images/telegram.png';
 import Github from 'src/assets/images/github.png';
 
-const Footer = () => {
+const Footer = (): JSX.Element => {
   return (
     <footer className="footer">
       <div>

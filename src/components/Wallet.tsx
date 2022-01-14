@@ -13,7 +13,7 @@ import TxStatus from 'src/enums/TxStatus';
 import { useENS } from 'src/hooks/useENS';
 import AccountModal from './AccountModal';
 
-const Wallet = (props: any) => {
+const Wallet = (): JSX.Element => {
   const { account, activate, active, chainId } = useWeb3React();
   const [connected, setConnected] = useState<boolean>(false);
   const { t } = useTranslation();

@@ -25,8 +25,6 @@ import RecentActivityType from 'src/enums/RecentActivityType';
 import ReserveData from 'src/core/data/reserves';
 import ModalHeader from 'src/components/ModalHeader';
 import ModalConverter from 'src/components/ModalConverter';
-import moment from 'moment';
-import { daiMoneyPoolTime } from 'src/core/data/moneypoolTimes';
 import buildEventEmitter from 'src/utiles/buildEventEmitter';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
@@ -193,7 +191,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
           },
         );
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         failTransaction(emitter, onClose, error);
         console.error(error);
       });
