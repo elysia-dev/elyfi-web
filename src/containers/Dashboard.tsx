@@ -4,7 +4,6 @@ import { useEffect, useContext, useState } from 'react';
 import { toPercent, toCompactForBignumber } from 'src/utiles/formatters';
 import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
 import { BigNumber, constants } from 'ethers';
-import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GetUser } from 'src/queries/__generated__/GetUser';
@@ -22,23 +21,18 @@ import {
 import ReactGA from 'react-ga';
 import TokenTable from 'src/components/TokenTable';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
-import CountUp from 'react-countup';
 import Token from 'src/enums/Token';
-import HeaderCircle from 'src/assets/images/title-circle.png';
 import IncentiveModal from 'src/containers/IncentiveModal';
-import useTvl from 'src/hooks/useTvl';
 import isWalletConnect from 'src/hooks/isWalletConnect';
 import ConnectWalletModal from 'src/containers/ConnectWalletModal';
 import WrongMainnetModal from 'src/containers/WrongMainnetModal';
-import useMediaQueryType from 'src/hooks/useMediaQueryType';
-import MediaQuery from 'src/enums/MediaQuery';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 import ModalViewType from 'src/enums/ModalViewType';
 import { useMediaQuery } from 'react-responsive';
-import { ReserveSubgraph } from 'src/clients/ReserveSubgraph';
 import SubgraphContext, { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
+import TvlCounter from 'src/components/TvlCounter';
 
 const initialBalanceState = {
   loading: false,
@@ -49,11 +43,22 @@ const initialBalanceState = {
   deposit: constants.Zero,
   updatedAt: moment().unix(),
 };
-const usdFormatter = new Intl.NumberFormat('en', {
-  style: 'currency',
-  currency: 'USD',
-});
 
+const remoteControlScroll = (ref: string) => {
+  const element = document.getElementById(ref);
+
+  const offset = 338;
+
+  const bodyRect = document.body.getBoundingClientRect().top;
+  const elementRect = element!.getBoundingClientRect().top;
+  const elementPosition = elementRect - bodyRect;
+  const offsetPosition = elementPosition - offset;
+
+  window.scrollTo({
+    top: offsetPosition,
+    behavior: 'smooth',
+  });
+};
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library, chainId } = useWeb3React();
@@ -85,7 +90,7 @@ const Dashboard: React.FunctionComponent = () => {
       };
     }),
   );
-  const { 
+  const {
     type: getMainnetType,
     unsupportedChainid
   } = useContext(MainnetContext)
@@ -101,12 +106,9 @@ const Dashboard: React.FunctionComponent = () => {
   const [selectedModalToken, setModalToken] = useState<Token.DAI | Token.USDT | Token.BUSD>(
     Token.DAI,
   );
-  const { value: tvl, loading: tvlLoading } = useTvl();
-  const [prevTvl, setPrevTvl] = useState(0);
   const [connectWalletModalvisible, setConnectWalletModalvisible] = useState<boolean>(false);
   const [wrongMainnetModalVisible, setWrongMainnetModalVisible] = useState<boolean>(false);
   const walletConnect = isWalletConnect();
-  const { value: mediaQuery } = useMediaQueryType();
 
   const isEnoughWide = useMediaQuery({
     query: '(min-width: 1439px)',
@@ -183,7 +185,8 @@ const Dashboard: React.FunctionComponent = () => {
       refetchUserData();
       setBalances(
         await Promise.all(
-          data.reserves.map(async (reserve, index) => {
+          data.reserves
+          .map(async (reserve, index) => {
             console.log(await ERC20__factory.connect(reserve.id, library).balanceOf(account))
             return {
               ...balances[index],
@@ -213,10 +216,8 @@ const Dashboard: React.FunctionComponent = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setPrevTvl(tvlLoading ? 0 : tvl);
       setBalances(
         balances.map((balance, index) => {
-          if (index > 1) return { ...balance };
           return {
             ...balance,
             expectedIncentiveBefore: balance.expectedIncentiveAfter,
@@ -239,23 +240,8 @@ const Dashboard: React.FunctionComponent = () => {
     return () => {
       clearInterval(interval);
     };
-  }, [tvl, balances]);
+  }, [balances]);
 
-  const remoteControlScroll = (ref: string) => {
-    const element = document.getElementById(ref);
-
-    const offset = 338;
-
-    const bodyRect = document.body.getBoundingClientRect().top;
-    const elementRect = element!.getBoundingClientRect().top;
-    const elementPosition = elementRect - bodyRect;
-    const offsetPosition = elementPosition - offset;
-
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: 'smooth',
-    });
-  };
 
   return (
     <>
@@ -316,23 +302,7 @@ const Dashboard: React.FunctionComponent = () => {
       />
 
       <div className="deposit">
-        <div
-          className="deposit__title"
-          style={{
-            backgroundImage:
-              mediaQuery === MediaQuery.PC ? `url(${HeaderCircle})` : '',
-          }}>
-          <p className="montserrat__bold">Total Value Locked</p>
-          <CountUp
-            start={prevTvl}
-            end={tvlLoading ? 0.0 : tvl}
-            formattingFn={(number) => usdFormatter.format(number)}
-            decimals={4}
-            duration={2}
-            delay={0}>
-            {({ countUpRef }) => <h2 className="blue" ref={countUpRef} />}
-          </CountUp>
-        </div>
+        <TvlCounter />
         <RewardPlanButton stakingType={'deposit'} />
         <div className="deposit__table__wrapper">
           {
@@ -372,7 +342,7 @@ const Dashboard: React.FunctionComponent = () => {
               </div>
             )
           }
-          
+
           {balances.map((balance, index) => {
             return (
               <>
@@ -429,7 +399,7 @@ const Dashboard: React.FunctionComponent = () => {
                       unsupportedChainid
                         ? (
                           setWrongMainnetModalVisible(true)
-                        ) : 
+                        ) :
                         setIncentiveModalVisible(true);
                   }}
                   setModalNumber={() => setModalNumber(index)}

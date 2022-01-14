@@ -6,12 +6,11 @@ import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import envs from 'src/core/envs';
 import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import ReserveData from 'src/core/data/reserves';
-import { initialReserveSubgraph, IReserveSubgraph } from 'src/contexts/SubgraphContext';
+import SubgraphContext, { initialReserveSubgraph, IReserveSubgraph } from 'src/contexts/SubgraphContext';
 import { ReserveSubgraph } from 'src/clients/ReserveSubgraph';
 
 const useTvl = (): { value: number; loading: boolean } => {
-  const [ethReserveData, setEthReserveData] = useState<IReserveSubgraph>(initialReserveSubgraph)
-  const [bscReserveData, setBscReserveData] = useState<IReserveSubgraph>(initialReserveSubgraph)
+  const subgraphContext = useContext(SubgraphContext);
   const [loading, setLoading] = useState(true)
   const {
     totalValueLockedToken0,
@@ -28,16 +27,7 @@ const useTvl = (): { value: number; loading: boolean } => {
 
   const tvl = useMemo(() => {
     return (
-      ethReserveData.data.reserves.reduce((res, cur) => {
-        const tokenInfo = ReserveData.find((datum) => datum.address === cur.id);
-        return (
-          res +
-          parseFloat(
-            formatUnits(BigNumber.from(loading ? 0 : cur.totalDeposit), tokenInfo?.decimals),
-          )
-        );
-      }, 0) +
-      bscReserveData.data.reserves.reduce((res, cur) => {
+      subgraphContext.data.reserves.reduce((res, cur) => {
         const tokenInfo = ReserveData.find((datum) => datum.address === cur.id);
         return (
           res +
@@ -88,19 +78,10 @@ const useTvl = (): { value: number; loading: boolean } => {
   };
 
   useEffect(() => {
-    loadBalances();
+    loadBalances().then(() => {
+      setLoading(false);
+    });
   }, []);
-
-  useEffect(() => {
-    setLoading(true)
-    ReserveSubgraph.getEthReserveData().then((res) => {
-      setEthReserveData(res.data)
-      ReserveSubgraph.getBscReserveData().then((res) => {
-        setBscReserveData(res.data)
-        setLoading(false)
-      })
-    })
-  }, [])
 
   return {
     value: tvl,
