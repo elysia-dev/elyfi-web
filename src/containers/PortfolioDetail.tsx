@@ -206,21 +206,21 @@ const PortfolioDetail: FunctionComponent = () => {
               <div className="portfolio__borrower__data">
                 <div className="portfolio__borrower__data--left">
                   <div>
-                    <p>
-                      {t('loan.loan__number')}{' '}
+                    <div>
+                      {t('loan.loan__number')}
                       <Guide content={t('portfolio.infomation_popup.0')} />
-                    </p>
+                    </div>
                     <p>{parsedTokenId.nonce}</p>
                   </div>
                   <div>
-                    <p>
+                    <div>
                       {t('loan.loan__status')}
                       <Guide
                         content={`${t('portfolio.infomation_popup.1')} \n ${t(
                           'portfolio.infomation_popup.3',
                         )} \n ${t('portfolio.infomation_popup.5')}`}
                       />
-                    </p>
+                    </div>
                     <p>
                       {t(
                         `words.${
@@ -275,10 +275,10 @@ const PortfolioDetail: FunctionComponent = () => {
                     <p>{maturityFormmater(abToken)}</p>
                   </div>
                   <div>
-                    <p>
+                    <div>
                       {t('loan.collateral_nft')}{' '}
                       <Guide content={t('portfolio.infomation_popup.7')} />
-                    </p>
+                    </div>
                     <p
                       title={abToken?.id}
                       className="link"
@@ -438,10 +438,10 @@ const PortfolioDetail: FunctionComponent = () => {
                       '',
                       contractImage[2]?.link,
                     ],
-                  ].map((data) => {
+                  ].map((data, index) => {
                     return (
-                      <div>
-                        <p>
+                      <div key={`load_detail_${index}`}>
+                        <div>
                           {data[0] ===
                           t('loan.collateral_nft__loan_product') ? (
                             <>
@@ -458,8 +458,8 @@ const PortfolioDetail: FunctionComponent = () => {
                           ) : (
                             data[0]
                           )}
-                        </p>
-                        <p
+                        </div>
+                        <div
                           onClick={() => {
                             !!data[3] === true
                               ? window.open(data[3], '_blank')
@@ -475,7 +475,7 @@ const PortfolioDetail: FunctionComponent = () => {
                                 style={{
                                   cursor: 'pointer',
                                 }}>
-                                <div
+                                <p
                                   style={{
                                     display: 'flex',
                                     justifyContent: 'center',
@@ -490,13 +490,13 @@ const PortfolioDetail: FunctionComponent = () => {
                                     }}
                                   />
                                   {data[1]}
-                                </div>
+                                </p>
                               </a>
                             </>
                           ) : (
                             data[1]
                           )}
-                        </p>
+                        </div>
                       </div>
                     );
                   })}
