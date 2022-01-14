@@ -111,7 +111,7 @@ const MarketDetailsBody: React.FunctionComponent<{
                     <div className="detail__data-wrapper__info__deposit__strategy">
                       <div>
                         <p>
-                          부동산 담보 대출
+                        {t("dashboard.real_estate_mortgage")}
                         </p>
                         <p>
                           30%
@@ -119,7 +119,7 @@ const MarketDetailsBody: React.FunctionComponent<{
                       </div>
                       <div>
                         <p>
-                          디파이 자동투자
+                        {t("dashboard.auto_invest_defi__title")}
                         </p>
                         <p>
                           70%
@@ -129,7 +129,7 @@ const MarketDetailsBody: React.FunctionComponent<{
                         <div>
                           <img src={Defi001} />
                           <p>
-                            앵커프로토콜
+                          {t("dashboard.auto_invest_defi.0")}
                           </p>
                         </div>
                       </div>

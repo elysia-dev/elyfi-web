@@ -196,17 +196,17 @@ const TokenTable: React.FC<Props> = ({
             getMainnetType === MainnetType.BSC && (
               <div className="deposit__table__body__strategy">
                 <h2>
-                  Target running strategy
+                  {t("dashboard.target_running_strategy")}
                 </h2>
                 <div>
                   <div style={{ flex: 30 }} >
                     <p>
-                      Real estate mortgage <span className="bold">30%</span>
+                    {t("dashboard.real_estate_mortgage")} <span className="bold">30%</span>
                     </p>
                   </div>
                   <div style={{ flex: 70 }} >
                     <p>
-                      Auto investment to DeFi <span className="bold">70%</span>
+                    {t("dashboard.auto_invest_defi__title")} <span className="bold">70%</span>
                     </p>
                   </div>
                 </div>

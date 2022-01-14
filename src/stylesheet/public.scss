@@ -1927,6 +1927,22 @@ input[type='number'] {
     }
   } // governance end
   .loan {
+    &__list { 
+      &--null {
+        border: 1px solid $gray-line;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 280px;
+        width: 100%;
+        border-radius: 5px;
+        > p {
+          font-size: 15px;
+          color: $gray-font-color !important;
+        }
+      }
+    }
     > div {
       border-bottom: 1px solid $gray-line;
       > h2 {
@@ -3108,7 +3124,7 @@ input[type='number'] {
               cursor: pointer;
             }
             &:first-child {
-              background-color: #e6e6e6;
+              border-right: 1px solid $gray-line;
             }
           }
           > a {

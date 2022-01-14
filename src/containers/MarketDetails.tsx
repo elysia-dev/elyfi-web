@@ -1,4 +1,4 @@
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams, Redirect } from 'react-router-dom';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { reserveTokenData } from 'src/core/data/reserves';
 
@@ -39,6 +39,8 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from 'recharts';
+import MainnetContext from 'src/contexts/MainnetContext';
+import MainnetType from 'src/enums/MainnetType';
 
 const initialBalanceState = {
   loading: true,
@@ -101,6 +103,7 @@ function MarketDetail(): JSX.Element {
   const [date, setDate] = useState('');
   const { t, i18n } = useTranslation();
   const [cellInBarIdx, setCellInBarIdx] = useState(-1);
+  const { type: getMainnetType } = useContext(MainnetContext)
 
   const selectToken = tokenColorData.find((color) => {
     return color.name === id;
@@ -225,6 +228,15 @@ function MarketDetail(): JSX.Element {
     loadBalances();
   }, [account]);
 
+  useEffect(() => {
+    // need refactoring!!!
+    if ((getMainnetType === MainnetType.BSC && balances.tokenName !== Token.BUSD) || (getMainnetType === MainnetType.Ethereum && (balances.tokenName !== (Token.DAI || Token.USDT)))) {
+      history.push({
+        pathname: `/${lng}/deposit`,
+      });
+    }
+  }, [balances])
+
   // FIXME
   // const miningAPR = utils.parseUnits('10', 25);
   if (!data || !tokenInfo) return <ErrorPage />;
@@ -281,7 +293,6 @@ function MarketDetail(): JSX.Element {
   };
 
   const CustomTooltip = (e: any) => {
-    console.log(e)
     if (!(cellInBarIdx === -1)) setCellInBarIdx(e.label);
 
     // setDate(e.payload[0]?.payload.name || "0");

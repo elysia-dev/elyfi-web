@@ -207,7 +207,14 @@
 
       "deposit_add_reward_event": "<strong>New</strong> amount of rewards",
       "claim_before_withraw_guide": "Please claim your rewards first to use your deposit/withdrawal! The reward tokens you will receive are ELFI reward tokens accumulated from <strong>2021.7.15 ~ 2022.1.11 KST!</strong>",
-      "claim_question": "Do you want to claim rewards?"
+      "claim_question": "Do you want to claim rewards?",
+      
+      "target_running_strategy": "Target running strategy",
+      "real_estate_mortgage": "Real estate mortgage",
+      "auto_invest_defi__title": "Auto investment to DeFi",
+      "auto_invest_defi": [
+        "Anchor Protocol"
+      ]
     },
     "loan": {
       "loan__title": "Loan List",
@@ -235,7 +242,8 @@
       "collateral_nft__maximum_amount": "Maximum Pledge Amount",
       "collateral_nft__loan_type": "Collateral Type",
       "collateral_nft__address": "Collateral Address",
-      "collateral_nft__contract_image": "Contract Image"
+      "collateral_nft__contract_image": "Contract Image",
+      "loan_list--null": "There are currently no outstanding loans."
     },
     "governance": {
       "status": "Status",
@@ -522,6 +530,11 @@
         "title": "Start ELYFI",
         "content": "A related function will be opened soon so that you can use deposit/withdrawal and staking on the mobile web page!",
         "button": "Coming soon!"
+      },
+      "wrong_mainnet": {
+        "title": "Wrong Network",
+        "content": "The currently connected wallet is connected to a network not provided by ELYFI.\nPlease change to Ethereum or BSC network!",
+        "button": "OK"
       }
     },
     "guide": {
