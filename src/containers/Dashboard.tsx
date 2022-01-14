@@ -1,10 +1,9 @@
 import { useWeb3React } from '@web3-react/core';
-import ReserveData, { reserveTokenData } from 'src/core/data/reserves';
-import { useEffect, useContext, useState } from 'react';
+import { reserveTokenData } from 'src/core/data/reserves';
+import { useEffect, useContext, useState, useMemo } from 'react';
 import { toPercent, toCompactForBignumber } from 'src/utiles/formatters';
 import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
 import { BigNumber, constants } from 'ethers';
-import { useHistory, useLocation } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GetUser } from 'src/queries/__generated__/GetUser';
 import { GET_USER } from 'src/queries/userQueries';
@@ -33,6 +32,20 @@ import SubgraphContext, { IReserveSubgraphData } from 'src/contexts/SubgraphCont
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
 import TvlCounter from 'src/components/TvlCounter';
+import { MainnetData } from 'src/core/data/mainnets';
+import getTokenNameFromAddress from 'src/utiles/getTokenNameFromAddress';
+
+type BalanceType = {
+  loading: boolean;
+  id: string;
+  tokenName: Token.DAI | Token.USDT | Token.BUSD;
+  value: BigNumber;
+  incentive: BigNumber;
+  expectedIncentiveBefore: BigNumber;
+  expectedIncentiveAfter: BigNumber;
+  deposit: BigNumber;
+  updatedAt: number;
+}
 
 const initialBalanceState = {
   loading: false,
@@ -41,6 +54,7 @@ const initialBalanceState = {
   expectedIncentiveBefore: constants.Zero,
   expectedIncentiveAfter: constants.Zero,
   deposit: constants.Zero,
+  id: "",
   updatedAt: moment().unix(),
 };
 
@@ -60,38 +74,65 @@ const remoteControlScroll = (ref: string) => {
   });
 };
 
+// TODO -> BUSDT는 BSC로 요청하자
+// TODO : supported chain만 balance update하기
+const fetchBalanceFrom = async (
+  reserve: IReserveSubgraphData,
+  account: string,
+  library: any,
+  mainnetType: MainnetType
+) => {
+  try {
+    const incentive = await IncentivePool__factory.connect(
+      reserve.incentivePool.id,
+      library.getSigner(),
+    ).getUserIncentive(account);
+    return {
+      value: await ERC20__factory.connect(reserve.id, library).balanceOf(
+        account,
+      ),
+      incentive,
+      expectedIncentiveBefore: incentive,
+      expectedIncentiveAfter: incentive,
+      governance: await ERC20__factory.connect(
+        mainnetType === MainnetType.BSC ? envs.bscElfiAddress : envs.governanceAddress,
+        library,
+      ).balanceOf(account),
+      deposit: await ERC20__factory.connect(
+        reserve.lToken.id,
+        library,
+      ).balanceOf(account),
+    };
+  } catch (error) {
+    return {
+      value: constants.Zero,
+      incentive: constants.Zero,
+      expectedIncentiveBefore: constants.Zero,
+      expectedIncentiveAfter: constants.Zero,
+      governance: constants.Zero,
+      deposit: constants.Zero
+    }
+  }
+};
+
 const Dashboard: React.FunctionComponent = () => {
   const { account, library, chainId } = useWeb3React();
-  const location = useLocation();
-  const history = useHistory();
   const { data } = useContext(SubgraphContext);
   const { elfiPrice } = useContext(PriceContext);
-  const reserveId = new URLSearchParams(location.search).get('reserveId');
-  const [reserveData, setReserveData] = useState<IReserveSubgraphData | undefined>(
-    data.reserves.find((reserve) => reserveId === reserve.id)
-  );
+  const [reserveData, setReserveData] = useState<IReserveSubgraphData | undefined>();
   const { t } = useTranslation();
-  const [balances, setBalances] = useState<
-    {
-      loading: boolean;
-      tokenName: Token.DAI | Token.USDT | Token.BUSD;
-      value: BigNumber;
-      incentive: BigNumber;
-      expectedIncentiveBefore: BigNumber;
-      expectedIncentiveAfter: BigNumber;
-      deposit: BigNumber;
-      updatedAt: number;
-    }[]
-  >(
-    data.reserves.map((reserve) => {
-      return {
-        ...initialBalanceState,
-        tokenName: reserve.id === envs.usdtAddress ? Token.USDT : reserve.id === envs.daiAddress ? Token.DAI : Token.BUSD
-      };
-    }),
+  const [balances, setBalances] = useState<BalanceType[]>(
+    data.reserves
+      .map((reserve) => {
+        return {
+          ...initialBalanceState,
+          id: reserve.id,
+          tokenName: getTokenNameFromAddress(reserve.id) as Token.DAI | Token.USDT | Token.BUSD,
+        };
+      }),
   );
   const {
-    type: getMainnetType,
+    type: mainnetType,
     unsupportedChainid
   } = useContext(MainnetContext)
 
@@ -102,70 +143,38 @@ const Dashboard: React.FunctionComponent = () => {
     { variables: { id: account?.toLocaleLowerCase() } },
   );
   const [transactionModal, setTransactionModal] = useState(false);
-  const [selectedModalNumber, setModalNumber] = useState(0);
-  const [selectedModalToken, setModalToken] = useState<Token.DAI | Token.USDT | Token.BUSD>(
-    Token.DAI,
-  );
+  const [selectedBalanceId, selectBalanceId] = useState("");
   const [connectWalletModalvisible, setConnectWalletModalvisible] = useState<boolean>(false);
   const [wrongMainnetModalVisible, setWrongMainnetModalVisible] = useState<boolean>(false);
   const walletConnect = isWalletConnect();
+  const { type: currentNetworkType } = useContext(MainnetContext)
+  const supportedTokens = useMemo(() => {return MainnetData[currentNetworkType].supportedTokens}, [currentNetworkType])
+  const selectedBalance = balances.find(balance => balance.id === selectedBalanceId)
+  const selectedReserve = useMemo(() => data.reserves.find(balance => balance.id === selectedBalanceId), [selectedBalanceId])
+  const supportedBalances = useMemo(() => {
+    return balances.filter((balance) => supportedTokens.some((token) => token === balance.id))
+  }, [supportedTokens, balances])
 
   const isEnoughWide = useMediaQuery({
     query: '(min-width: 1439px)',
   });
 
-  useEffect(() => {
-    const paramsData = data.reserves.find((_reserve) => reserveId === _reserve.id);
-    const tokenInfo = paramsData
-      ? ReserveData.findIndex((_reserve) => _reserve.address === paramsData.id)
-      : undefined;
-
-    setModalNumber(tokenInfo ? tokenInfo : 0);
-  }, [reserveId]);
-
-  const fetchBalanceFrom = async (
-    reserve: IReserveSubgraphData,
-    account: string,
-  ) => {
-    try {
-      const incentive = await IncentivePool__factory.connect(
-        reserve.incentivePool.id,
-        library.getSigner(),
-      ).getUserIncentive(account);
-      return {
-        value: await ERC20__factory.connect(reserve.id, library).balanceOf(
-          account,
-        ),
-        incentive,
-        expectedIncentiveBefore: incentive,
-        expectedIncentiveAfter: incentive,
-        governance: await ERC20__factory.connect(
-          getMainnetType === MainnetType.BSC ? envs.bscElfiAddress : envs.governanceAddress,
-          library,
-        ).balanceOf(account),
-        deposit: await ERC20__factory.connect(
-          reserve.lToken.id,
-          library,
-        ).balanceOf(account),
-      };
-    } catch (error) {
-      console.log("????")
-      console.error(error);
-    }
-  };
-
-  const loadBalance = async (index: number) => {
+  // balance & reserve
+  const loadBalance = async (id: string) => {
     if (!account) return;
     try {
       refetchUserData();
 
       setBalances(
         await Promise.all(
-          balances.map(async (_data, _index) => {
-            if (_index !== index) return _data;
+          balances.map(async (balance, _index) => {
+            const reserve = data.reserves.find(r => r.id === id)
+            if (balance.id !== id || !reserve) return {
+              ...balance
+            }
             return {
-              ..._data,
-              ...(await fetchBalanceFrom(data.reserves[index], account)),
+              ...balance,
+              ...(await fetchBalanceFrom(reserve, account, library, mainnetType)),
               updatedAt: moment().unix(),
             };
           }),
@@ -186,15 +195,15 @@ const Dashboard: React.FunctionComponent = () => {
       setBalances(
         await Promise.all(
           data.reserves
-          .map(async (reserve, index) => {
-            console.log(await ERC20__factory.connect(reserve.id, library).balanceOf(account))
-            return {
-              ...balances[index],
-              loading: false,
-              ...(await fetchBalanceFrom(reserve, account)),
-              updatedAt: moment().unix(),
-            };
-          }),
+            .map(async (reserve) => {
+              return {
+                id: reserve.id,
+                loading: false,
+                ...(await fetchBalanceFrom(reserve, account, library, mainnetType)),
+                tokenName: getTokenNameFromAddress(reserve.id) as Token.DAI | Token.USDT | Token.BUSD,
+                updatedAt: moment().unix(),
+              } as BalanceType;
+            }),
         ),
       );
     } catch (error) {
@@ -212,12 +221,15 @@ const Dashboard: React.FunctionComponent = () => {
 
   useEffect(() => {
     loadBalances();
-  }, [account]);
+  }, [account, mainnetType]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setBalances(
         balances.map((balance, index) => {
+          const reserve = data.reserves.find(r => r.id === balance.id)
+          if(!reserve) return balance;
+
           return {
             ...balance,
             expectedIncentiveBefore: balance.expectedIncentiveAfter,
@@ -227,7 +239,7 @@ const Dashboard: React.FunctionComponent = () => {
                 balance.deposit,
                 calcMiningAPR(
                   elfiPrice,
-                  BigNumber.from(data.reserves[index].totalDeposit),
+                  BigNumber.from(reserve.totalDeposit),
                 ),
                 balance.updatedAt,
               ),
@@ -242,46 +254,39 @@ const Dashboard: React.FunctionComponent = () => {
     };
   }, [balances]);
 
-
   return (
     <>
-      {reserveData && (
+      {reserveData && selectedBalance && (
         <DepositOrWithdrawModal
           reserve={reserveData}
           userData={userConnection?.user}
-          tokenName={reserveTokenData[selectedModalToken].name}
-          tokenImage={reserveTokenData[selectedModalToken].image}
+          tokenName={selectedBalance.tokenName}
+          tokenImage={reserveTokenData[selectedBalance.tokenName].image}
           visible={!!reserveData}
           onClose={() => {
-            const queryParams = new URLSearchParams(location.search);
-
-            if (queryParams.has('reserveId')) {
-              queryParams.delete('reserveId');
-              history.replace({
-                search: queryParams.toString(),
-              });
-            }
-
             setReserveData(undefined);
           }}
-          balance={balances[selectedModalNumber].value}
-          depositBalance={BigNumber.from(balances[selectedModalNumber].deposit)}
-          afterTx={() => loadBalance(selectedModalNumber)}
+          balance={selectedBalance.value}
+          depositBalance={BigNumber.from(selectedBalance.deposit)}
+          afterTx={() => loadBalance(selectedBalanceId)}
           transactionModal={() => setTransactionModal(true)}
         />
       )}
-      <IncentiveModal
-        visible={incentiveModalVisible}
-        onClose={() => {
-          setIncentiveModalVisible(false);
-        }}
-        balanceBefore={balances[selectedModalNumber].expectedIncentiveBefore}
-        balanceAfter={balances[selectedModalNumber].expectedIncentiveAfter}
-        incentivePoolAddress={data.reserves[selectedModalNumber].incentivePool.id}
-        tokenName={balances[selectedModalNumber].tokenName}
-        afterTx={() => loadBalance(selectedModalNumber)}
-        transactionModal={() => setTransactionModal(true)}
-      />
+      {
+        selectedBalance && selectedReserve &&
+        <IncentiveModal
+          visible={incentiveModalVisible}
+          onClose={() => {
+            setIncentiveModalVisible(false);
+          }}
+          balanceBefore={selectedBalance.expectedIncentiveBefore}
+          balanceAfter={selectedBalance.expectedIncentiveAfter}
+          incentivePoolAddress={selectedReserve.incentivePool.id}
+          tokenName={selectedBalance.tokenName}
+          afterTx={() => loadBalance(selectedBalanceId)}
+          transactionModal={() => setTransactionModal(true)}
+        />
+      }
       <TransactionConfirmModal
         visible={transactionModal}
         closeHandler={() => {
@@ -309,18 +314,22 @@ const Dashboard: React.FunctionComponent = () => {
             isEnoughWide && (
               <div className="deposit__remote-control__wrapper">
                 <div className="deposit__remote-control">
-                  {balances.map((_data, index) => {
+                  {supportedBalances.map((balance, index) => {
+                    const reserve = data.reserves.find((d) => d.id === balance.id);
+
+                    if (!reserve) return <></>;
+
                     return (
                       <a onClick={() => remoteControlScroll(`table-${index}`)}>
                         <div>
                           <div className="deposit__remote-control__images">
-                            <img src={reserveTokenData[_data.tokenName].image} />
+                            <img src={reserveTokenData[balance.tokenName].image} />
                           </div>
                           <div className="deposit__remote-control__name">
-                            <p className="montserrat">{_data.tokenName}</p>
+                            <p className="montserrat">{balance.tokenName}</p>
                           </div>
                           <p className="deposit__remote-control__apy bold">
-                            {toPercent(data.reserves[index].depositAPY)}
+                            {toPercent(reserve.depositAPY)}
                           </p>
                           <div className="deposit__remote-control__mining">
                             <p>{t('dashboard.token_mining_apr')}</p>
@@ -328,8 +337,8 @@ const Dashboard: React.FunctionComponent = () => {
                               {toPercent(
                                 calcMiningAPR(
                                   elfiPrice,
-                                  BigNumber.from(data.reserves[index].totalDeposit),
-                                  reserveTokenData[_data.tokenName].decimals,
+                                  BigNumber.from(reserve.totalDeposit),
+                                  reserveTokenData[balance.tokenName].decimals,
                                 ) || '0',
                               )}
                             </p>
@@ -343,7 +352,11 @@ const Dashboard: React.FunctionComponent = () => {
             )
           }
 
-          {balances.map((balance, index) => {
+          {supportedBalances.map((balance, index) => {
+            const reserve = data.reserves.find((d) => d.id === balance.id);
+
+            if(!reserve) return <></>;
+
             return (
               <>
                 <TokenTable
@@ -361,9 +374,8 @@ const Dashboard: React.FunctionComponent = () => {
                           setWrongMainnetModalVisible(true)
                         ) : (
                           e.preventDefault(),
-                          setReserveData(data.reserves[index]),
-                          setModalNumber(index),
-                          setModalToken(balance.tokenName),
+                          setReserveData(reserve),
+                          selectBalanceId(balance.id),
                           ReactGA.modalview(balance.tokenName + ModalViewType.DepositOrWithdrawModal)
                         )
                   }}
@@ -373,11 +385,11 @@ const Dashboard: React.FunctionComponent = () => {
                     balance.deposit || constants.Zero,
                     reserveTokenData[balance.tokenName].decimals,
                   )}
-                  depositAPY={toPercent(data.reserves[index].depositAPY)}
+                  depositAPY={toPercent(reserve.depositAPY)}
                   miningAPR={toPercent(
                     calcMiningAPR(
                       elfiPrice,
-                      BigNumber.from(data.reserves[index].totalDeposit),
+                      BigNumber.from(reserve.totalDeposit),
                       reserveTokenData[balance.tokenName].decimals,
                     ) || '0',
                   )}
@@ -385,9 +397,9 @@ const Dashboard: React.FunctionComponent = () => {
                     balance.value || constants.Zero,
                     reserveTokenData[balance.tokenName].decimals,
                   )}
-                  isDisable={!data.reserves[index]}
+                  isDisable={!reserve}
                   skeletonLoading={balance.loading}
-                  reserveData={data.reserves[index]}
+                  reserveData={reserve}
                   expectedIncentiveBefore={balance.expectedIncentiveBefore}
                   expectedIncentiveAfter={balance.expectedIncentiveAfter}
                   setIncentiveModalVisible={() => {
@@ -402,7 +414,7 @@ const Dashboard: React.FunctionComponent = () => {
                         ) :
                         setIncentiveModalVisible(true);
                   }}
-                  setModalNumber={() => setModalNumber(index)}
+                  setModalNumber={() => selectBalanceId(balance.id)}
                   modalview={() => ReactGA.modalview(balance.tokenName + ModalViewType.IncentiveModal)}
                 />
               </>
