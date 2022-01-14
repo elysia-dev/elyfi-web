@@ -80,6 +80,7 @@ module.exports = {
     'no-unused-expressions': 'off',
     'no-param-reassign': 'off',
     camelcase: 'off',
+    'no-console': 'off',
   },
   parser: '@typescript-eslint/parser',
   settings: {},
