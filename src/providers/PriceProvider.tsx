@@ -17,7 +17,6 @@ const PriceProvider: React.FC = (props) => {
     try {
       const ethPoolData = await UniswapV3.getElfiEthPoolData();
       const daiPoolData = await UniswapV3.getElfiDaiPoolData();
-
       const priceData = await Coingecko.getPrices();
 
       setState({

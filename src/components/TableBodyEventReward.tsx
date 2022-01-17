@@ -7,7 +7,7 @@ import CountUp from 'react-countup';
 import { Trans, useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import MainnetContext from 'src/contexts/MainnetContext';
-import ReservesContext from 'src/contexts/ReservesContext';
+// import ReservesContext from 'src/contexts/ReservesContext';
 import MediaQuery from 'src/enums/MediaQuery';
 import Token from 'src/enums/Token';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';

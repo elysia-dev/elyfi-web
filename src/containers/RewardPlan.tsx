@@ -17,7 +17,6 @@ import LpStakingBox from 'src/components/RewardPlan/LpStakingBox';
 import StakingBox from 'src/components/RewardPlan/StakingBox';
 import TokenDeposit from 'src/components/RewardPlan/TokenDeposit';
 import PriceContext from 'src/contexts/PriceContext';
-import ReservesContext from 'src/contexts/ReservesContext';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import {
   daiMoneyPoolTime,
@@ -68,7 +67,6 @@ const RewardPlan: FunctionComponent = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const { ethPrice } = useContext(PriceContext);
-  // const { reserves } = useContext(ReservesContext);
   const { data: getSubgraphData } = useContext(SubgraphContext);
   const current = moment();
   const currentPhase = useMemo(() => {

@@ -2,7 +2,6 @@ import { useWeb3React } from '@web3-react/core';
 import moment from 'moment';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import ReservesContext from 'src/contexts/ReservesContext';
 import { daiMoneyPoolTime } from 'src/core/data/moneypoolTimes';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';

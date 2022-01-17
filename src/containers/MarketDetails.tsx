@@ -7,13 +7,11 @@ import { BigNumber, constants } from 'ethers';
 import Chart from 'react-google-charts';
 
 import ErrorPage from 'src/components/ErrorPage';
-import ReservesContext from 'src/contexts/ReservesContext';
 import { useTranslation } from 'react-i18next';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcHistoryChartData from 'src/utiles/calcHistoryChartData';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import envs from 'src/core/envs';
-import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { useWeb3React } from '@web3-react/core';
 import {
   ERC20__factory,
@@ -30,7 +28,7 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
-import SubgraphContext from 'src/contexts/SubgraphContext';
+import SubgraphContext, { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import {
   Bar,
   Cell,
@@ -91,7 +89,6 @@ function MarketDetail(): JSX.Element {
   const [graphConverter, setGraphConverter] = useState(false);
   const [transactionModal, setTransactionModal] = useState(false);
   const tokenRef = useRef<HTMLParagraphElement>(null);
-  const { reserves } = useContext(ReservesContext);
   const { data: getSubgraphData } = useContext(SubgraphContext)
   const { latestPrice, poolDayData } = useContext(UniswapPoolContext);
   const { lng, id } = useParams<{ lng: string; id: Token.DAI | Token.USDT }>();
@@ -124,7 +121,7 @@ function MarketDetail(): JSX.Element {
   });
 
   const fetchBalanceFrom = async (
-    reserve: GetAllReserves_reserves,
+    reserve: IReserveSubgraphData,
     account: string,
   ) => {
     const incentive = await IncentivePool__factory.connect(
@@ -177,8 +174,8 @@ function MarketDetail(): JSX.Element {
     setBalances({
       ...balances,
       ...(await fetchBalanceFrom(
-        reserves[
-          reserves.findIndex((reserve) => {
+        getSubgraphData.reserves[
+          getSubgraphData.reserves.findIndex((reserve) => {
             return reserve.id === tokenInfo.address;
           })
         ],
@@ -197,8 +194,8 @@ function MarketDetail(): JSX.Element {
         ...balances,
         loading: false,
         ...(await fetchBalanceFrom(
-          reserves[
-            reserves.findIndex((reserve) => {
+          getSubgraphData.reserves[
+            getSubgraphData.reserves.findIndex((reserve) => {
               return reserve.id === tokenInfo.address;
             })
           ],

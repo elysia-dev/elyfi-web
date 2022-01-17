@@ -22,7 +22,6 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
 import { daiMoneyPoolTime } from 'src/core/data/moneypoolTimes';
 import moment from 'moment';
-import ReservesContext from 'src/contexts/ReservesContext';
 import TableBodyEventReward from './TableBodyEventReward';
 
 interface Props {
@@ -44,6 +43,7 @@ interface Props {
   setIncentiveModalVisible: () => void;
   setModalNumber: () => void;
   modalview: () => void;
+  setRound: (round: number) => void;
   id: string;
 }
 
@@ -66,13 +66,13 @@ const TokenTable: React.FC<Props> = ({
   setIncentiveModalVisible,
   setModalNumber,
   modalview,
+  setRound,
   id,
 }) => {
   const { data, loading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
   const { account } = useWeb3React();
   const { unsupportedChainid } = useContext(MainnetContext)
   const { t, i18n } = useTranslation();
-  const { setRound } = useContext(ReservesContext);
   const tokenInfo = reserveTokenData[tokenName];
   const list = data?.assetBondTokens.filter((product) => {
     return product.reserve.id === reserveData?.id;

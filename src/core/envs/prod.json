@@ -28,6 +28,7 @@
   "bscMoneyPoolAddress": "0x6E47a477F0C5019c337ACa77Afcf0dd65e24E71d",
   "bscElfiAddress": "0x9803cd5851b24C8CAE5ebbAD46D69C400553cf4b",
   "busdAddress": "0xc93b97b01455454fba11b806ea645d021212c4c9",
+  "busdIncentivePoolAddress": "0x3638c40c3f611cB2cE51a25a8801D794f5B4c751",
   "bscSubgraphURI": "https://api.thegraph.com/subgraphs/name/donguks/elyfi-bsc-subgraph",
   "prevDaiIncentivePool": "0xe58158FFea021a5883dd1256f2AFf0b1f07d79b3",
   "prevUSDTIncentivePool": "0x6A93E28A5d3148DcD8b5ca1419C4c9D34fd302eb",
