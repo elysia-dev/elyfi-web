@@ -44,7 +44,7 @@ const RewardDetailInfo: FunctionComponent<Props> = (props) => {
   const miningDescription = () =>
     props.miningDescription.map((data, _index) => {
       return (
-        <div>
+        <div key={`description_${_index}`}>
           <p>{data[0]}</p>
           <p className="data">{data[1]}</p>
         </div>
