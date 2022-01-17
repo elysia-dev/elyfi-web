@@ -15,11 +15,13 @@ import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import PriceContext from 'src/contexts/PriceContext';
 import { useWeb3React } from '@web3-react/core';
 import MainnetContext from 'src/contexts/MainnetContext';
+import ReserveToken from 'src/core/types/ReserveToken';
+import isSupportedToken from 'src/core/utils/isSupportedReserve';
 
 type BalanceType = {
   loading: boolean;
   id: string;
-  tokenName: Token.DAI | Token.USDT | Token.BUSD;
+  tokenName: ReserveToken;
   value: BigNumber;
   incentiveRound1: BigNumber;
   incentiveRound2: BigNumber;
@@ -32,7 +34,7 @@ type BalanceType = {
 }
 
 const initialBalanceState = {
-  loading: false,
+  loading: true,
   value: constants.Zero,
   incentiveRound1: constants.Zero,
   incentiveRound2: constants.Zero,
@@ -45,10 +47,9 @@ const initialBalanceState = {
   updatedAt: moment().unix(),
 };
 
-// Refactoring...
 const getIncentiveByRound = async (
   library: any,
-  tokenName: Token.DAI | Token.USDT | Token.BUSD,
+  tokenName: ReserveToken,
   account: string,
 ) => {
   const incentiveRound1 = await IncentivePool__factory.connect(
@@ -60,17 +61,19 @@ const getIncentiveByRound = async (
     library.getSigner(),
   ).getUserIncentive(account);
 
-  const incentiveRound2 = await IncentivePool__factory.connect(
-    tokenName === Token.DAI
-      ? envs.currentDaiIncentivePool
-      : tokenName === Token.USDT
-        ? envs.currentUSDTIncentivePool
-        : envs.busdIncentivePoolAddress,
-    library.getSigner(),
-  ).getUserIncentive(account);
+	// USDT & DAI have two incentivepools
+	// BSC have only one incentivepool
+	const incentiveRound2 = tokenName === Token.BUSD ? incentiveRound1 : await IncentivePool__factory.connect(
+		tokenName === Token.DAI
+			? envs.currentDaiIncentivePool
+			: tokenName === Token.USDT
+				? envs.currentUSDTIncentivePool
+				: envs.busdIncentivePoolAddress,
+		library.getSigner(),
+	).getUserIncentive(account);
 
-  return {
-    incentiveRound1,
+	return {
+		incentiveRound1,
     incentiveRound2,
   };
 };
@@ -81,7 +84,7 @@ const fetchBalanceFrom = async (
   reserve: IReserveSubgraphData,
   account: string,
   library: any,
-  tokenName: Token.DAI | Token.BUSD | Token.USDT,
+  tokenName: ReserveToken,
 ) => {
   try {
     const { incentiveRound1, incentiveRound2 } = await getIncentiveByRound(
@@ -119,14 +122,12 @@ const fetchBalanceFrom = async (
   }
 };
 
-
 type ReturnType = {
 	balances: BalanceType[],
 	loadBalance: (id: string) => void,
-	loadBalances: () => void,
 };
 
-const useBalances = (refetchUserData: () => void, ): ReturnType => {
+const useBalances = (refetchUserData: () => void): ReturnType => {
 	const { account, library } = useWeb3React();
 	const { data } = useContext(SubgraphContext);
 	const [balances, setBalances] = useState<BalanceType[]>(
@@ -135,7 +136,7 @@ const useBalances = (refetchUserData: () => void, ): ReturnType => {
 				return {
 					...initialBalanceState,
 					id: reserve.id,
-					tokenName: getTokenNameFromAddress(reserve.id) as Token.DAI | Token.USDT | Token.BUSD,
+					tokenName: getTokenNameFromAddress(reserve.id) as ReserveToken,
 				};
 			}),
 	);
@@ -153,13 +154,13 @@ const useBalances = (refetchUserData: () => void, ): ReturnType => {
         await Promise.all(
           balances.map(async (balance, _index) => {
             const reserve = data.reserves.find(r => r.id === id)
-            if (balance.id !== id || !reserve) return {
+            if (balance.id !== id || !reserve ) return {
               ...balance
             }
             return {
               ...balance,
-              ...(await fetchBalanceFrom(reserve, account, library, balance.tokenName)),
               updatedAt: moment().unix(),
+              ...(await fetchBalanceFrom(reserve, account, library, balance.tokenName)),
             };
           }),
         ),
@@ -179,19 +180,23 @@ const useBalances = (refetchUserData: () => void, ): ReturnType => {
       setBalances(
         await Promise.all(
           data.reserves
-            .map(async (reserve) => {
-              const tokenName = getTokenNameFromAddress(reserve.id) as Token.DAI | Token.USDT | Token.BUSD;
-              return {
-                id: reserve.id,
-                loading: false,
-                ...(await fetchBalanceFrom(reserve, account, library, tokenName)),
-                tokenName,
-                updatedAt: moment().unix(),
-              } as BalanceType;
-            }),
-        ),
-      );
-    } catch (error) {
+            .map(async (reserve, index) => {
+							const tokenName = getTokenNameFromAddress(reserve.id) as ReserveToken;
+							if (!isSupportedToken(tokenName, mainnetType)) {
+								return balances[index];
+							}
+
+							return {
+								id: reserve.id,
+								loading: false,
+								tokenName,
+								updatedAt: moment().unix(),
+								...(await fetchBalanceFrom(reserve, account, library, tokenName)),
+							} as BalanceType;
+						}),
+				),
+			);
+		} catch (error) {
       setBalances(
         balances.map((data) => {
           return {
@@ -258,7 +263,7 @@ const useBalances = (refetchUserData: () => void, ): ReturnType => {
     };
   }, [balances, mainnetType]);
 
-	return { balances, loadBalance, loadBalances }
+	return { balances, loadBalance }
 };
 
 export default useBalances

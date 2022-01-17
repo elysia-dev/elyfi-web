@@ -6,6 +6,7 @@ import { FunctionComponent, useContext } from 'react';
 import CountUp from 'react-countup';
 import { Trans, useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import ReserveToken from 'src/core/types/ReserveToken';
 import MediaQuery from 'src/enums/MediaQuery';
 import Token from 'src/enums/Token';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
@@ -16,7 +17,7 @@ type Props = {
   expectedAdditionalIncentiveBefore: BigNumber;
   expectedAdditionalIncentiveAfter: BigNumber;
   buttonEvent: ((e: any) => void) | undefined;
-  tokenName: Token.DAI | Token.USDT | Token.BUSD;
+  tokenName: ReserveToken;
 };
 
 const TableBodyEventReward: FunctionComponent<Props> = ({
