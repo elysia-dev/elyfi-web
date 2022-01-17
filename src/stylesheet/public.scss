@@ -336,6 +336,18 @@ input[type='number'] {
         justify-content: center;
       }
       animation: glow 1.5s linear infinite alternate;
+      &--connected {
+
+        &.unknown-chain {
+          background: #D84D4D !important;
+          padding: 10px;
+          justify-content: space-between !important;
+          > h2 {
+            color: #FFFFFF;
+            cursor: pointer;
+          }
+        }
+      }
       &__wrapper {
         display: flex;
         justify-content: center ;

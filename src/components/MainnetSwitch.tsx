@@ -2,48 +2,38 @@ import { useWeb3React } from '@web3-react/core';
 import { useContext, useMemo } from "react";
 import MainnetContext from "src/contexts/MainnetContext";
 import { MainnetData, MainnetList, mainnets } from 'src/core/data/mainnets'
-import useCurrentChain from 'src/hooks/useCurrentChain';
-import MainnetError from 'src/assets/images/network_error.png';
 
 const MainnetSwitch: React.FunctionComponent<{
   mainNetwork: boolean;
   setMainNetwork: (value: React.SetStateAction<boolean>) => void;
 }> = ({ mainNetwork, setMainNetwork }) => {
-  const { active, chainId } = useWeb3React();
+  const { active } = useWeb3React();
   const { 
     type: getMainnetType,
-    unsupportedChainid: getMainnetError,
     changeMainnet, 
     setCurrentMainnet 
   } = useContext(MainnetContext)
-  const currentChain = useCurrentChain();
-
-  const getChainData = useMemo(() => {
-    return mainnets.find((data) => {
-      return data.chainId === currentChain?.chainId
-    })
-  }, [chainId])
   
   return (
     <div className="navigation__mainnet__container">
       <div className="navigation__mainnet__wrapper">
-        <div className={`navigation__mainnet__current ${getMainnetError ? "network-error" : ""}`} 
+        <div className={`navigation__mainnet__current`} 
           onClick={() => {
             setMainNetwork(!mainNetwork)
           }}
         >
           <img 
-            src={getMainnetError ? MainnetError : MainnetData[getMainnetType].image}
+            src={MainnetData[getMainnetType].image}
           />
-          <h2>{active ? (getChainData?.name || "Wrong Network") : getMainnetType}</h2>
+          <h2>{getMainnetType}</h2>
         </div>
-        <div className={`navigation__mainnet__change-network__wrapper ${getMainnetError ? "network-error" : ""}`} style={{
+        <div className={`navigation__mainnet__change-network__wrapper`} style={{
           display: mainNetwork === true ? "flex" : 'none'
         }}>
           {
             MainnetList
             .filter((data) => {
-              return (data.type !== getMainnetType) || getMainnetError
+              return data.type !== getMainnetType
             })
             .map((_data, index) => {
               return (

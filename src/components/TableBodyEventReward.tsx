@@ -6,6 +6,7 @@ import { FunctionComponent, useContext } from 'react';
 import CountUp from 'react-countup';
 import { Trans, useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import MainnetContext from 'src/contexts/MainnetContext';
 import ReservesContext from 'src/contexts/ReservesContext';
 import MediaQuery from 'src/enums/MediaQuery';
 import Token from 'src/enums/Token';
@@ -30,6 +31,8 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
   const { t, i18n } = useTranslation();
   const { account } = useWeb3React();
   const { value: mediaQuery } = useMediaQueryType();
+  const { unsupportedChainid } = useContext(MainnetContext);
+  
   return (
     <>
       {mediaQuery === MediaQuery.PC ? (
@@ -48,7 +51,7 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
             <div>
               <div className="bold">
                 {' '}
-                {account ? (
+                {(account && !unsupportedChainid) ? (
                   <CountUp
                     className="bold amounts"
                     start={parseFloat(
@@ -82,7 +85,7 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
               <div>
                 <div className="bold">
                   {' '}
-                  {account ? (
+                  {(account && !unsupportedChainid) ? (
                     <CountUp
                       className="bold amounts"
                       start={parseFloat(
