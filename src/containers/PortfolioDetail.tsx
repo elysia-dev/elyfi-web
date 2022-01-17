@@ -29,6 +29,7 @@ import maturityFormmater from 'src/utiles/maturityFormmater';
 import ReserveData from 'src/core/data/reserves';
 import envs from 'src/core/envs';
 import Guide from 'src/components/Guide';
+import Loading from 'src/components/Loading';
 
 const PortfolioDetail: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
@@ -114,7 +115,16 @@ const PortfolioDetail: FunctionComponent = () => {
     }
   }, [abToken]);
 
-  if (error || !tokenInfo) return <ErrorPage />;
+  if (error || !tokenInfo)
+    return (
+      <div
+        style={{
+          height: '100vh',
+        }}>
+        {' '}
+        <Loading />
+      </div>
+    );
 
   const AddressCopy = (add: string | undefined) => {
     if (!document.queryCommandSupported('copy')) {

@@ -209,7 +209,18 @@
       "nth_staking": "{{nth}}차 스테이킹 APR",
       "lp_token_staking_description": "Uniswap V3 에 있는 {{token0}}-{{token1}} 풀에 유동성을 제공하고 받은 {{token0}}-{{token1}} LP 토큰을 스테이킹하면 {{token0}} 과 {{token1}} 가 지급됩니다.",
       "receive_lp_token": "{{token0}}-{{token1}} LP 토큰 받기",
-      "lp_token_reward_plan": "ETH, DAI, ELFI 보상 플랜"
+      "lp_token_reward_plan": "ETH, DAI, ELFI 보상 플랜",
+
+      "deposit_add_reward_event": "<strong>New</strong> 보상 수량",
+      "claim_before_withraw_guide": "예치/출금을 이용하기 위해 보상 토큰을 먼저 수령해주세요! 수령할 보상 토큰은 <strong>2021.7.15 ~ 2022.1.11 KST</strong> 에 쌓인 ELFI 보상 토큰입니다.",
+      "claim_question": "보상 토큰을 수령하시겠습니까?",
+      
+      "target_running_strategy": "목표 운용전략",
+      "real_estate_mortgage": "부동산 담보대출",
+      "auto_invest_defi__title": "디파이 자동투자",
+      "auto_invest_defi": [
+        "앵커프로토콜"
+      ]
     },
     "loan": {
       "loan__title": "대출 리스트",
@@ -237,7 +248,8 @@
       "collateral_nft__maximum_amount": "채권최고액",
       "collateral_nft__loan_type": "담보유형",
       "collateral_nft__address": "담보물주소",
-      "collateral_nft__contract_image": "계약서 이미지"
+      "collateral_nft__contract_image": "계약서 이미지",
+      "loan_list--null": "현재 실행된 대출이 없습니다"
     },
     "governance": {
       "status": "상태",
@@ -345,7 +357,9 @@
 
       "reward_plan": "보상 플랜",
       "deposit__reward_plan": "예치 보상 플랜",
-      "elfi_price": "ELFI 가격: <strong>$ {{count}}</strong>"
+      "elfi_price": "ELFI 가격: <strong>$ {{count}}</strong>",
+
+      "deposit_add_reward_event": "추가 보상 이벤트"
     },
     "portfolio": {
       "investment_status": "대출 현황",
@@ -448,6 +462,11 @@
         "title": "엘리파이 시작하기",
         "content": "모바일 웹 페이지에서도 예치/출금, 스테이킹을 이용할 수 있도록 관련 기능이 곧 오픈될 예정입니다!",
         "button": "Coming soon!"
+      },
+      "wrong_mainnet": {
+        "title": "잘못된 네트워크",
+        "content": "현재 연결한 지갑이 ELYFI 에서 제공하지 않는 네트워크로 연결돼 있습니다.\nEthereum 또는 BSC 네트워크로 변경해주세요!",
+        "button": "확인"
       }
     },
     "guide": {

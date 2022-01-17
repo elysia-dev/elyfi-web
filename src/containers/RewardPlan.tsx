@@ -18,7 +18,11 @@ import StakingBox from 'src/components/RewardPlan/StakingBox';
 import TokenDeposit from 'src/components/RewardPlan/TokenDeposit';
 import PriceContext from 'src/contexts/PriceContext';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
-import { moneyPoolStartedAt } from 'src/core/data/moneypoolTimes';
+import {
+  daiMoneyPoolTime,
+  moneyPoolStartedAt,
+  tetherMoneyPoolTime,
+} from 'src/core/data/moneypoolTimes';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import {
   DAIPerDayOnELFIStakingPool,
@@ -76,6 +80,12 @@ const RewardPlan: FunctionComponent = () => {
       .length;
   }, [current]);
 
+  const depositCurrentPhase = useMemo(() => {
+    return daiMoneyPoolTime.findIndex((round) =>
+      current.isBetween(round.startedAt, round.endedAt),
+    );
+  }, [current]);
+
   const onClickHandler = () => {
     history.goBack();
   };
@@ -88,6 +98,11 @@ const RewardPlan: FunctionComponent = () => {
   const [lpStakingRound, setLpStakingRound] = useState({
     daiElfiRound: lpCurrentPhase - 1,
     ethElfiRound: lpCurrentPhase - 1,
+  });
+
+  const [depositRound, setDepositRound] = useState({
+    daiRound: depositCurrentPhase === -1 ? 0 : depositCurrentPhase,
+    tetherRound: depositCurrentPhase === -1 ? 0 : depositCurrentPhase,
   });
 
   const [totalStakedPositions, setTotalStakedPositions] = useState<
@@ -146,14 +161,20 @@ const RewardPlan: FunctionComponent = () => {
 
   const moneyPoolInfo = {
     DAI: {
-      totalMiningValue: 3000000,
-      startMoneyPool: moneyPoolStartedAt.format('yyyy.MM.DD'),
+      startedMoneyPool: daiMoneyPoolTime[0].startedAt.format('yyyy.MM.DD'),
+      endedMoneyPool: daiMoneyPoolTime[0].endedAt.format('yyyy.MM.DD'),
     },
-    USDT: { totalMiningValue: 1583333, startMoneyPool: '2021.10.08' },
+
+    USDT: {
+      startedMoneyPool: tetherMoneyPoolTime[0].startedAt.format('yyyy.MM.DD'),
+      endedMoneyPool: tetherMoneyPoolTime[0].endedAt.format('yyyy.MM.DD'),
+    },
     BUSD: {
-      totalMiningValue: 3000000, startMoneyPool: '2022.01.11'
+      startedMoneyPool: tetherMoneyPoolTime[0].startedAt.format('yyyy.MM.DD'),
+      endedMoneyPool: tetherMoneyPoolTime[0].endedAt.format('yyyy.MM.DD'),
     }
   };
+
   const beforeMintedMoneypool = {
     DAI: { beforeMintedToken: amountData.beforeMintedByDaiMoneypool },
     USDT: {
@@ -463,14 +484,18 @@ const RewardPlan: FunctionComponent = () => {
                 return (
                   <TokenDeposit
                     key={index}
+                    idx={index}
                     reserve={reserve}
                     moneyPoolInfo={moneyPoolInfo}
                     beforeMintedMoneypool={
-                      beforeMintedMoneypool[token].beforeMintedToken <= 0
-                        ? 0
-                        : beforeMintedMoneypool[token].beforeMintedToken
+                      beforeMintedMoneypool[token].beforeMintedToken
+                      // beforeMintedMoneypool[token].beforeMintedToken <= 0
+                      //   ? 0
+                      //   : beforeMintedMoneypool[token].beforeMintedToken
                     }
                     mintedMoneypool={mintedMoneypool[token].mintedToken}
+                    depositRound={depositRound}
+                    setDepositRound={setDepositRound}
                   />
                 );
               })}

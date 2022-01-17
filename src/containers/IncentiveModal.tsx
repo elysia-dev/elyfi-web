@@ -82,11 +82,7 @@ const IncentiveModal: FunctionComponent<{
       className="modal modal__incentive"
       style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
-        <ModalHeader
-          title={"ELFI"}
-          image={ElifyTokenImage}
-          onClose={onClose}
-        />
+        <ModalHeader title={'ELFI'} image={ElifyTokenImage} onClose={onClose} />
         <div className="modal__body">
           <div
             className="modal__incentive__body"

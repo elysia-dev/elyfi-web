@@ -1,9 +1,7 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { ReserveSubgraph } from "src/clients/ReserveSubgraph";
 import SubgraphContext, { initialReserveSubgraph, IReserveSubgraph } from "src/contexts/SubgraphContext";
 import Loading from 'src/components/Loading';
-import MainnetContext from "src/contexts/MainnetContext";
-import { MainnetData } from "src/core/data/mainnets";
 
 const SubgraphProvider: React.FC = (props) => {
   const [state, setState] = useState<IReserveSubgraph>(initialReserveSubgraph)

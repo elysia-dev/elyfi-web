@@ -23,6 +23,8 @@ import RecentActivityType from 'src/enums/RecentActivityType';
 import ReserveData from 'src/core/data/reserves';
 import ModalHeader from 'src/components/ModalHeader';
 import ModalConverter from 'src/components/ModalConverter';
+import moment from 'moment';
+import { daiMoneyPoolTime } from 'src/core/data/moneypoolTimes';
 import buildEventEmitter from 'src/utiles/buildEventEmitter';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
@@ -43,6 +45,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   onClose: () => void;
   afterTx: () => Promise<void>;
   transactionModal: () => void;
+  round: number;
 }> = ({
   tokenName,
   visible,
@@ -54,6 +57,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   onClose,
   afterTx,
   transactionModal,
+  round,
 }) => {
   const { account, chainId, library } = useWeb3React();
   const { elfiPrice } = useContext(PriceContext);
@@ -132,7 +136,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
         chainId,
         address: account,
         moneypoolType: tokenName,
-      })
+      }),
     );
 
     emitter.clicked();
@@ -162,7 +166,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const requestDeposit = async (amount: BigNumber, max: boolean) => {
     if (!account) return;
 
-    const emitter =  buildEventEmitter(
+    const emitter = buildEventEmitter(
       ModalViewType.DepositOrWithdrawModal,
       TransactionType.Deposit,
       JSON.stringify({
@@ -172,7 +176,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
         moneypoolType: tokenName,
         depositAmount: utils.formatUnits(amount, tokenInfo?.decimals),
         maxOrNot: max,
-      })
+      }),
     );
 
     emitter.clicked();
@@ -211,8 +215,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
         address: account,
         moneypoolType: tokenName,
         withdrawalAmount: utils.formatUnits(amount, tokenInfo?.decimals),
-        maxOrNot: max
-      })
+        maxOrNot: max,
+      }),
     );
 
     emitter.clicked();
@@ -277,17 +281,11 @@ const DepositOrWithdrawModal: FunctionComponent<{
       className="modal modal--deposit"
       style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
-        <ModalHeader
-          image={tokenImage}
-          title={tokenName}
-          onClose={onClose}
-        />
+        <ModalHeader image={tokenImage} title={tokenName} onClose={onClose} />
         <ModalConverter
           handlerProps={selected}
           setState={select}
-          title={
-            [t('dashboard.deposit'), t('dashboard.withdraw')]
-          }
+          title={[t('dashboard.deposit'), t('dashboard.withdraw')]}
         />
         {waiting ? (
           <LoadingIndicator />

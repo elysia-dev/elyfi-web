@@ -104,7 +104,7 @@ const AccountModal: React.FunctionComponent<{
               </div>
             </a>
           </div>
-          <div className="modal__account__add-tokens">
+          {/* <div className="modal__account__add-tokens">
             <h2>
               토큰 불러오기
             </h2>
@@ -122,7 +122,7 @@ const AccountModal: React.FunctionComponent<{
                 })
               }
             </div>
-          </div>
+          </div> */}
           <div className="modal__account__status">
             <p className="modal__header__name spoqa__bold">
               {t('transaction.activity__title')}

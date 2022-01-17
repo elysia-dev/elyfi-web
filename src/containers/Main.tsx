@@ -27,6 +27,8 @@ import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
 import { contextType } from 'google-map-react';
 import DrawWave from 'src/utiles/drawWave';
+import Fbg from 'src/assets/images/main/fbg.png';
+import Blocore from 'src/assets/images/main/blocore.png';
 
 const Main = () => {
   const { t } = useTranslation();
@@ -48,8 +50,8 @@ const Main = () => {
         reactGA.event({
           category: PageEventType.MoveToInternalPage,
           action: ButtonEventType.CheckInterestRateButton,
-        })
-      }
+        });
+      },
     },
     {
       image: MainAnimation(1),
@@ -58,8 +60,8 @@ const Main = () => {
         reactGA.event({
           category: PageEventType.MoveToInternalPage,
           action: ButtonEventType.CheckCollateralButton,
-        })
-      }
+        });
+      },
     },
     {
       image: MainAnimation(2),
@@ -68,8 +70,8 @@ const Main = () => {
         reactGA.event({
           category: PageEventType.MoveToInternalPage,
           action: ButtonEventType.CheckGovernanceButton,
-        })
-      }
+        });
+      },
     },
   ];
 
@@ -139,22 +141,22 @@ const Main = () => {
                   reactGA.event({
                     category: PageEventType.MoveToInternalPage,
                     action: ButtonEventType.DepositButton,
-                  })
-                  History.push({ pathname: `/${lng}/deposit` })
+                  });
+                  History.push({ pathname: `/${lng}/deposit` });
                 }}>
                 <p ref={mainHeaderY}> {t('main.landing.button__deposit')}</p>
               </div>
               <div
-                onClick={() =>{
+                onClick={() => {
                   reactGA.event({
                     category: PageEventType.MoveToExternalPage,
                     action: ButtonEventType.LearnMoreButton,
-                  })
+                  });
                   window.open(
                     lng === LanguageType.KO
                       ? 'https://elysia.gitbook.io/elysia.finance/'
                       : 'https://elysia.gitbook.io/elysia.finance/v/eng',
-                  )
+                  );
                 }}>
                 <p>{t('main.landing.button__view-more')}</p>
               </div>
@@ -170,8 +172,8 @@ const Main = () => {
                 reactGA.event({
                   category: PageEventType.MoveToInternalPage,
                   action: ButtonEventType.DepositButton,
-                })
-                History.push({ pathname: `/${lng}/deposit` })
+                });
+                History.push({ pathname: `/${lng}/deposit` });
               }}>
               <p ref={mainHeaderMoblieY}>{t('main.landing.button__deposit')}</p>
             </div>
@@ -180,14 +182,13 @@ const Main = () => {
                 reactGA.event({
                   category: PageEventType.MoveToExternalPage,
                   action: ButtonEventType.LearnMoreButton,
-                })
+                });
                 window.open(
                   lng === LanguageType.KO
                     ? 'https://elysia.gitbook.io/elysia.finance/'
                     : 'https://elysia.gitbook.io/elysia.finance/v/eng',
-                )
-              }}
-            >
+                );
+              }}>
               <p>{t('main.landing.button__view-more')}</p>
             </div>
           </div>
@@ -271,6 +272,15 @@ const Main = () => {
             <img src={HaechiLabs} />
           </div>
           <div>
+            <h2 className="bold">
+              <strong>Backed</strong> by
+            </h2>
+            <div>
+              <img src={Fbg} alt={Fbg} />
+              <img src={Blocore} alt={Blocore} />
+            </div>
+          </div>
+          <div>
             <h2>{t('main.partners.lawfirm')}</h2>
             <div className="main__partners__lawfirm">
               {[SHIN, BKI, FocusLaw, HUB, HOW, TSMP].map((LawFirm) => {
@@ -279,6 +289,12 @@ const Main = () => {
             </div>
           </div>
         </section>
+        <div
+          style={{
+            width: '100%',
+            height: 220,
+          }}
+        />
         <MainGovernanceTable
           governancePageY={governancePageY}
           governancePageBottomY={governancePageBottomY}

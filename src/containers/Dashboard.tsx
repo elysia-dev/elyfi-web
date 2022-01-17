@@ -26,6 +26,11 @@ import isWalletConnect from 'src/hooks/isWalletConnect';
 import ConnectWalletModal from 'src/containers/ConnectWalletModal';
 import WrongMainnetModal from 'src/containers/WrongMainnetModal';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
+import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
+import {
+  daiMoneyPoolTime,
+  tetherMoneyPoolTime,
+} from 'src/core/data/moneypoolTimes';
 import ModalViewType from 'src/enums/ModalViewType';
 import { useMediaQuery } from 'react-responsive';
 import SubgraphContext, { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
@@ -40,9 +45,12 @@ type BalanceType = {
   id: string;
   tokenName: Token.DAI | Token.USDT | Token.BUSD;
   value: BigNumber;
-  incentive: BigNumber;
+  incentiveRound1: BigNumber;
+  incentiveRound2: BigNumber;
   expectedIncentiveBefore: BigNumber;
   expectedIncentiveAfter: BigNumber;
+  expectedAdditionalIncentiveBefore: BigNumber;
+  expectedAdditionalIncentiveAfter: BigNumber;
   deposit: BigNumber;
   updatedAt: number;
 }
@@ -50,9 +58,12 @@ type BalanceType = {
 const initialBalanceState = {
   loading: false,
   value: constants.Zero,
-  incentive: constants.Zero,
+  incentiveRound1: constants.Zero,
+  incentiveRound2: constants.Zero,
   expectedIncentiveBefore: constants.Zero,
   expectedIncentiveAfter: constants.Zero,
+  expectedAdditionalIncentiveBefore: constants.Zero,
+  expectedAdditionalIncentiveAfter: constants.Zero,
   deposit: constants.Zero,
   id: "",
   updatedAt: moment().unix(),
@@ -74,30 +85,61 @@ const remoteControlScroll = (ref: string) => {
   });
 };
 
+// Refactoring...
+const getIncentiveByRound = async (
+  library: any,
+  tokenName: Token.DAI | Token.USDT | Token.BUSD,
+  account: string,
+) => {
+  const incentiveRound1 = await IncentivePool__factory.connect(
+    tokenName === Token.DAI
+      ? envs.prevDaiIncentivePool
+      : tokenName === Token.USDT
+        ? envs.prevUSDTIncentivePool
+        : envs.busdAddress,
+    library.getSigner(),
+  ).getUserIncentive(account);
+
+  const incentiveRound2 = await IncentivePool__factory.connect(
+    tokenName === Token.DAI
+      ? envs.currentDaiIncentivePool
+      : tokenName === Token.USDT
+        ? envs.currentUSDTIncentivePool
+        : envs.busdAddress,
+    library.getSigner(),
+  ).getUserIncentive(account);
+
+  return {
+    incentiveRound1,
+    incentiveRound2,
+  };
+};
+
 // TODO -> BUSDT는 BSC로 요청하자
 // TODO : supported chain만 balance update하기
 const fetchBalanceFrom = async (
   reserve: IReserveSubgraphData,
   account: string,
   library: any,
-  mainnetType: MainnetType
+  mainnetType: MainnetType,
+  tokenName: Token.DAI | Token.BUSD | Token.USDT
 ) => {
   try {
-    const incentive = await IncentivePool__factory.connect(
-      reserve.incentivePool.id,
-      library.getSigner(),
-    ).getUserIncentive(account);
+    const { incentiveRound1, incentiveRound2 } = await getIncentiveByRound(
+      library,
+      tokenName,
+      account,
+    );
     return {
       value: await ERC20__factory.connect(reserve.id, library).balanceOf(
         account,
       ),
-      incentive,
-      expectedIncentiveBefore: incentive,
-      expectedIncentiveAfter: incentive,
-      governance: await ERC20__factory.connect(
-        mainnetType === MainnetType.BSC ? envs.bscElfiAddress : envs.governanceAddress,
-        library,
-      ).balanceOf(account),
+      incentiveRound1,
+      incentiveRound2,
+      expectedIncentiveBefore: incentiveRound1,
+      expectedIncentiveAfter: incentiveRound1,
+      expectedAdditionalIncentiveBefore: incentiveRound2,
+      expectedAdditionalIncentiveAfter: incentiveRound2,
       deposit: await ERC20__factory.connect(
         reserve.lToken.id,
         library,
@@ -106,13 +148,26 @@ const fetchBalanceFrom = async (
   } catch (error) {
     return {
       value: constants.Zero,
-      incentive: constants.Zero,
+      incentiveRound1: constants.Zero,
+      incentiveRound2: constants.Zero,
       expectedIncentiveBefore: constants.Zero,
       expectedIncentiveAfter: constants.Zero,
-      governance: constants.Zero,
+      expectedAdditionalIncentiveBefore: constants.Zero,
+      expectedAdditionalIncentiveAfter: constants.Zero,
       deposit: constants.Zero
-    }
+    } as BalanceType
   }
+};
+
+const isEndedIncentive = (token: string, round: number): boolean => {
+  if(token === Token.BUSD) return true;
+  const moneyPoolTime =
+    token === Token.DAI ? daiMoneyPoolTime : tetherMoneyPoolTime;
+  return moment().isAfter(
+    round === 1
+      ? moneyPoolTime[round].startedAt
+      : moneyPoolTime[round].endedAt,
+  );
 };
 
 const Dashboard: React.FunctionComponent = () => {
@@ -146,6 +201,7 @@ const Dashboard: React.FunctionComponent = () => {
   const [selectedBalanceId, selectBalanceId] = useState("");
   const [connectWalletModalvisible, setConnectWalletModalvisible] = useState<boolean>(false);
   const [wrongMainnetModalVisible, setWrongMainnetModalVisible] = useState<boolean>(false);
+  const [round, setRound] = useState(1);
   const walletConnect = isWalletConnect();
   const { type: currentNetworkType } = useContext(MainnetContext)
   const supportedTokens = useMemo(() => {return MainnetData[currentNetworkType].supportedTokens}, [currentNetworkType])
@@ -163,6 +219,7 @@ const Dashboard: React.FunctionComponent = () => {
   const loadBalance = async (id: string) => {
     if (!account) return;
     try {
+      // refetchReserve();
       refetchUserData();
 
       setBalances(
@@ -174,7 +231,7 @@ const Dashboard: React.FunctionComponent = () => {
             }
             return {
               ...balance,
-              ...(await fetchBalanceFrom(reserve, account, library, mainnetType)),
+              ...(await fetchBalanceFrom(reserve, account, library, mainnetType, balance.tokenName)),
               updatedAt: moment().unix(),
             };
           }),
@@ -191,16 +248,18 @@ const Dashboard: React.FunctionComponent = () => {
     }
 
     try {
+      // refetchReserve();
       refetchUserData();
       setBalances(
         await Promise.all(
           data.reserves
             .map(async (reserve) => {
+              const tokenName = getTokenNameFromAddress(reserve.id) as Token.DAI | Token.USDT | Token.BUSD;
               return {
                 id: reserve.id,
                 loading: false,
-                ...(await fetchBalanceFrom(reserve, account, library, mainnetType)),
-                tokenName: getTokenNameFromAddress(reserve.id) as Token.DAI | Token.USDT | Token.BUSD,
+                ...(await fetchBalanceFrom(reserve, account, library, mainnetType, tokenName)),
+                tokenName,
                 updatedAt: moment().unix(),
               } as BalanceType;
             }),
@@ -233,17 +292,37 @@ const Dashboard: React.FunctionComponent = () => {
           return {
             ...balance,
             expectedIncentiveBefore: balance.expectedIncentiveAfter,
-            expectedIncentiveAfter: balance.incentive.add(
-              calcExpectedIncentive(
-                elfiPrice,
-                balance.deposit,
-                calcMiningAPR(
-                  elfiPrice,
-                  BigNumber.from(reserve.totalDeposit),
+            expectedIncentiveAfter: isEndedIncentive(balance.tokenName, 0)
+              ? balance.expectedIncentiveAfter
+              : balance.incentiveRound1.add(
+                  calcExpectedIncentive(
+                    elfiPrice,
+                    balance.deposit,
+                    calcMiningAPR(
+                      elfiPrice,
+                      BigNumber.from(reserve.totalDeposit),
+                    ),
+                    balance.updatedAt,
+                  ),
                 ),
-                balance.updatedAt,
-              ),
-            ),
+            expectedAdditionalIncentiveBefore:
+              balance.expectedAdditionalIncentiveAfter,
+            expectedAdditionalIncentiveAfter: !isEndedIncentive(
+              balance.tokenName,
+              1,
+            )
+              ? balance.expectedAdditionalIncentiveAfter
+              : balance.incentiveRound2.add(
+                  calcExpectedIncentive(
+                    elfiPrice,
+                    balance.deposit,
+                    calcMiningAPR(
+                      elfiPrice,
+                      BigNumber.from(reserve.totalDeposit),
+                    ),
+                    balance.updatedAt,
+                  ),
+                ),
           };
         }),
       );
@@ -270,6 +349,7 @@ const Dashboard: React.FunctionComponent = () => {
           depositBalance={BigNumber.from(selectedBalance.deposit)}
           afterTx={() => loadBalance(selectedBalanceId)}
           transactionModal={() => setTransactionModal(true)}
+          round={round}
         />
       )}
       {
@@ -277,11 +357,23 @@ const Dashboard: React.FunctionComponent = () => {
         <IncentiveModal
           visible={incentiveModalVisible}
           onClose={() => {
-            setIncentiveModalVisible(false);
+            setIncentiveModalVisible(false)
           }}
-          balanceBefore={selectedBalance.expectedIncentiveBefore}
-          balanceAfter={selectedBalance.expectedIncentiveAfter}
-          incentivePoolAddress={selectedReserve.incentivePool.id}
+          balanceBefore={
+            round === 2 ? selectedBalance.expectedIncentiveBefore : selectedBalance.expectedAdditionalIncentiveBefore
+          }
+          balanceAfter={
+            round === 2 ? selectedBalance.expectedIncentiveAfter : selectedBalance.expectedAdditionalIncentiveAfter
+          }
+          incentivePoolAddress={
+            round === 2
+              ? selectedBalance.tokenName === Token.DAI
+                ? envs.currentDaiIncentivePool
+                : envs.currentUSDTIncentivePool
+              : selectedBalance.tokenName === Token.DAI
+                ? envs.prevDaiIncentivePool
+                : envs.prevUSDTIncentivePool
+          }
           tokenName={selectedBalance.tokenName}
           afterTx={() => loadBalance(selectedBalanceId)}
           transactionModal={() => setTransactionModal(true)}
@@ -402,6 +494,12 @@ const Dashboard: React.FunctionComponent = () => {
                   reserveData={reserve}
                   expectedIncentiveBefore={balance.expectedIncentiveBefore}
                   expectedIncentiveAfter={balance.expectedIncentiveAfter}
+                  expectedAdditionalIncentiveBefore={
+                    balance.expectedAdditionalIncentiveBefore
+                  }
+                  expectedAdditionalIncentiveAfter={
+                    balance.expectedAdditionalIncentiveAfter
+                  }
                   setIncentiveModalVisible={() => {
                     walletConnect === false
                       ? (
@@ -416,6 +514,7 @@ const Dashboard: React.FunctionComponent = () => {
                   }}
                   setModalNumber={() => selectBalanceId(balance.id)}
                   modalview={() => ReactGA.modalview(balance.tokenName + ModalViewType.IncentiveModal)}
+                  setRound={setRound}
                 />
               </>
             );

@@ -532,43 +532,64 @@ const Governance = () => {
           }
         </section>
         <section className="governance__loan governance__header">
-          <div>
-            <h3>
-              {t('governance.loan_list', {
-                count: data?.assetBondTokens.length,
-              })}
-            </h3>
-            <p>{t('governance.loan_list__content')}</p>
-          </div>
-          {loading ? (
-            <Skeleton width={1148} height={768} />
-          ) : (
-            <>
-              {/* <AssetList assetBondTokens={data?.assetBondTokens || []} /> */}
-              <AssetList
-                assetBondTokens={
-                  /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
-                  [...(data?.assetBondTokens || [])]
-                    .slice(0, pageNumber * 9)
-                    .sort((a, b) => {
-                      return b.loanStartTimestamp! - a.loanStartTimestamp! >= 0
-                        ? 1
-                        : -1;
-                    }) || []
-                }
-              />
-              {data?.assetBondTokens.length &&
-                data?.assetBondTokens.length >= pageNumber * 9 && (
-                  <div>
-                    <button
-                      className="portfolio__view-button"
-                      onClick={() => viewMoreHandler()}>
-                      {t('loan.view-more')}
-                    </button>
-                  </div>
+          {
+            (data?.assetBondTokens.length === 0 || getMainnetType === MainnetType.BSC) ? (
+              <>
+                <div>
+                  <h3>
+                    {t('governance.loan_list', {
+                      count: 0,
+                    })}
+                  </h3>
+                  <p>{t('governance.loan_list__content')}</p>
+                </div>
+                <div className="loan__list--null">
+                  <p>
+                    {t("loan.loan_list--null")}
+                  </p>
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <h3>
+                    {t('governance.loan_list', {
+                      count: data?.assetBondTokens.length,
+                    })}
+                  </h3>
+                  <p>{t('governance.loan_list__content')}</p>
+                </div>
+                {loading ? (
+                  <Skeleton width={1148} height={768} />
+                ) : (
+                  <>
+                    <AssetList
+                      assetBondTokens={
+                        /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
+                        [...(data?.assetBondTokens || [])]
+                          .slice(0, pageNumber * 9)
+                          .sort((a, b) => {
+                            return b.loanStartTimestamp! - a.loanStartTimestamp! >= 0
+                              ? 1
+                              : -1;
+                          }) || []
+                      }
+                    />
+                    {data?.assetBondTokens.length &&
+                      data?.assetBondTokens.length >= pageNumber * 9 && (
+                        <div>
+                          <button
+                            className="portfolio__view-button"
+                            onClick={() => viewMoreHandler()}>
+                            {t('loan.view-more')}
+                          </button>
+                        </div>
+                      )}
+                  </>
                 )}
-            </>
-          )}
+              </>
+            )
+          }
         </section>
       </div>
     </>

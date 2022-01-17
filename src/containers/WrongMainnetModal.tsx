@@ -14,17 +14,17 @@ const WrongMainnetModal: React.FunctionComponent<{
       style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
         <ModalHeader
-          title={"잘못된 네트워크"}
+          title={t("modal.wrong_mainnet.title")}
           onClose={onClose}
         />
         <div className="modal__connect__content">
-          <p>현재 연결한 지갑이 ELYFI 에서 제공하지 않는 네트워크로 연결돼 있습니다. Ethereum 또는 BSC 네트워크로 변경해주세요!</p>
+          <p>{t("modal.wrong_mainnet.content")}</p>
         </div>
         <div
           className={`modal__button`}
           onClick={onClose}>
           <p>
-            ㅇㅋ
+            {t("modal.wrong_mainnet.button")}
           </p>
         </div>
       </div>

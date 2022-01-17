@@ -6,7 +6,7 @@ import { reserveTokenData } from 'src/core/data/reserves';
 import { useWeb3React } from '@web3-react/core';
 import CountUp from 'react-countup';
 import { formatEther } from '@ethersproject/units';
-import { BigNumber } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
 import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
 import { useQuery } from '@apollo/client';
@@ -20,6 +20,9 @@ import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import { useContext } from 'react';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
+import { daiMoneyPoolTime } from 'src/core/data/moneypoolTimes';
+import moment from 'moment';
+import TableBodyEventReward from './TableBodyEventReward';
 
 interface Props {
   tokenImage: string;
@@ -35,9 +38,12 @@ interface Props {
   reserveData: IReserveSubgraphData;
   expectedIncentiveBefore: BigNumber;
   expectedIncentiveAfter: BigNumber;
+  expectedAdditionalIncentiveBefore: BigNumber;
+  expectedAdditionalIncentiveAfter: BigNumber;
   setIncentiveModalVisible: () => void;
   setModalNumber: () => void;
   modalview: () => void;
+  setRound: (round: number) => void;
   id: string;
 }
 
@@ -55,9 +61,12 @@ const TokenTable: React.FC<Props> = ({
   reserveData,
   expectedIncentiveBefore,
   expectedIncentiveAfter,
+  expectedAdditionalIncentiveBefore,
+  expectedAdditionalIncentiveAfter,
   setIncentiveModalVisible,
   setModalNumber,
   modalview,
+  setRound,
   id,
 }) => {
   const { data, loading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
@@ -155,6 +164,7 @@ const TokenTable: React.FC<Props> = ({
                   setIncentiveModalVisible();
                   setModalNumber();
                   modalview();
+                  setRound(1);
                 }}
                 buttonContent={t('dashboard.claim_reward')}
                 value={
@@ -173,6 +183,11 @@ const TokenTable: React.FC<Props> = ({
                     '-'
                   )
                 }
+                moneyPoolTime={`${moment(daiMoneyPoolTime[0].startedAt).format(
+                  'YYYY.MM.DD',
+                )} ~ ${moment(daiMoneyPoolTime[0].endedAt).format(
+                  'YYYY.MM.DD',
+                )} KST`}
                 tokenName={'ELFI'}
               />
             </div>
@@ -181,23 +196,45 @@ const TokenTable: React.FC<Props> = ({
             getMainnetType === MainnetType.BSC && (
               <div className="deposit__table__body__strategy">
                 <h2>
-                  Target running strategy
+                  {t("dashboard.target_running_strategy")}
                 </h2>
                 <div>
                   <div style={{ flex: 30 }} >
                     <p>
-                      Real estate mortgage <span className="bold">30%</span>
+                    {t("dashboard.real_estate_mortgage")} <span className="bold">30%</span>
                     </p>
                   </div>
                   <div style={{ flex: 70 }} >
                     <p>
-                      Auto investment to DeFi <span className="bold">70%</span>
+                    {t("dashboard.auto_invest_defi__title")} <span className="bold">70%</span>
                     </p>
                   </div>
                 </div>
               </div>
             )
           }
+          <div className="deposit__table__body__event-box">
+            <TableBodyEventReward
+              moneyPoolTime={`${moment(daiMoneyPoolTime[1].startedAt).format(
+                'YYYY.MM.DD',
+              )} KST ~ `}
+              expectedAdditionalIncentiveBefore={
+                expectedAdditionalIncentiveBefore
+              }
+              expectedAdditionalIncentiveAfter={
+                expectedAdditionalIncentiveAfter
+              }
+              buttonEvent={(e) => {
+                e.preventDefault();
+                setIncentiveModalVisible();
+                setModalNumber();
+                modalview();
+                setRound(2);
+              }}
+              tokenName={tokenName}
+            />
+          </div>
+
           <div className="deposit__table__body__loan-list" style={{ display: list?.length === 0 ? "none" : "block" }}>
             {loading ? (
               <Skeleton
@@ -230,15 +267,6 @@ const TokenTable: React.FC<Props> = ({
                     }
                   />
                 </div>
-                {/* <div
-                  className="deposit__table__body__loan-list__more-button"
-                  style={{
-                    display: !!list && list?.length > 3 ? 'block' : 'none',
-                  }}>
-                  <a href={`/${lng}/deposits/${tokenName}`}>
-                    <p>{t('main.governance.view-more')}</p>
-                  </a>
-                </div> */}
               </div>
             )}
           </div>
