@@ -24,7 +24,6 @@ import dai from 'src/assets/images/dai.png';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
-import Guide from 'src/components/Guide';
 import moment from 'moment';
 import { lpRoundDate, lpUnixTimestamp } from 'src/core/data/lpStakingTime';
 import getIncentiveId from 'src/utiles/getIncentive';

@@ -42,8 +42,6 @@ const StakingModal: React.FunctionComponent<{
   stakedToken,
   round,
   endedModal,
-  setTxStatus,
-  setTxWaiting,
   transactionModal,
 }) => {
   const { t, i18n } = useTranslation();

@@ -26,8 +26,12 @@ const useMediaQueryType = (): { value: MediaQuery } => {
   }, [isPc, isTablet, isMobile]);
 
   return {
-    value: isPc ? MediaQuery.PC : isTablet ? MediaQuery.Tablet : MediaQuery.Mobile
-  }
-}
+    value: isPc
+      ? MediaQuery.PC
+      : isTablet
+      ? MediaQuery.Tablet
+      : MediaQuery.Mobile,
+  };
+};
 
 export default useMediaQueryType;

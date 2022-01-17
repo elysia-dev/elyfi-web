@@ -8,8 +8,7 @@ const MobileDisable = () => {
     <div className="elysia" style={{ minWidth: 0, minHeight: 0 }}>
       <section
         className="mobile"
-        style={{ backgroundImage: `url(${MainBackground})` }}
-      >
+        style={{ backgroundImage: `url(${MainBackground})` }}>
         <div>
           <h2>{t('mobile.title')}</h2>
           <p>{t('mobile.content.0')}</p>
@@ -22,8 +21,7 @@ const MobileDisable = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-        }}
-      >
+        }}>
         <LanguageConverter />
       </div>
     </div>

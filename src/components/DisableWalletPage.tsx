@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import envs from 'src/core/envs';
 import { useRouteMatch } from 'react-router-dom';
 
-const DisableWalletPage = () => {
+const DisableWalletPage = (): JSX.Element => {
   const { activate, active, chainId } = useWeb3React();
   const { t } = useTranslation();
   const route = useRouteMatch();

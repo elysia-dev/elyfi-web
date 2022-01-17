@@ -1,8 +1,10 @@
 import ReactGA from 'react-ga';
 
 const buildEventEmitter = (
-  category: string, action: string, label: string
-): { clicked: () => void, created: () => void, canceled: () => void } => {
+  category: string,
+  action: string,
+  label: string,
+): { clicked: () => void; created: () => void; canceled: () => void } => {
   return {
     clicked: () => {
       ReactGA.event({
@@ -28,4 +30,4 @@ const buildEventEmitter = (
   };
 };
 
-export default buildEventEmitter
+export default buildEventEmitter;

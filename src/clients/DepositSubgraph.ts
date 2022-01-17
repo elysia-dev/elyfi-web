@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import envs from 'src/core/envs';
 import { GetAllReserves } from 'src/core/types/GetAllReserves';
-import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 
 const baseUrl = envs.subgraphApiEndpoint.subgraphURI;
 

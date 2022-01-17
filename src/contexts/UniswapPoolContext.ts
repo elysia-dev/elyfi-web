@@ -13,19 +13,19 @@ export type UniswapPoolContextType = {
   loading: boolean;
   error: boolean;
   daiPool: {
-    liquidity: BigNumber,
+    liquidity: BigNumber;
     totalValueLockedToken0: number;
     totalValueLockedToken1: number;
-    stakedToken0: number,
-    stakedToken1: number,
-  },
+    stakedToken0: number;
+    stakedToken1: number;
+  };
   ethPool: {
-    liquidity: BigNumber,
+    liquidity: BigNumber;
     totalValueLockedToken0: number;
     totalValueLockedToken1: number;
-    stakedToken0: number,
-    stakedToken1: number,
-  }
+    stakedToken0: number;
+    stakedToken1: number;
+  };
 };
 
 export const initialUniswapPoolContext = {
@@ -49,7 +49,7 @@ export const initialUniswapPoolContext = {
     liquidity: constants.Zero,
     stakedToken0: 0,
     stakedToken1: 0,
-  }
+  },
 };
 
 const UniswapPoolContext = createContext<UniswapPoolContextType>(

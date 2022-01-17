@@ -20,7 +20,6 @@ import ReservesContext from 'src/contexts/ReservesContext';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import {
   daiMoneyPoolTime,
-  moneyPoolStartedAt,
   tetherMoneyPoolTime,
 } from 'src/core/data/moneypoolTimes';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';

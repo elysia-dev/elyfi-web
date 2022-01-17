@@ -4,7 +4,7 @@ import Guide1 from 'src/assets/images/guide/voting-01.png';
 import Guide2 from 'src/assets/images/guide/voting-02.png';
 import Guide3 from 'src/assets/images/guide/voting-03.png';
 
-const VotingGuide = () => {
+const VotingGuide = (): JSX.Element => {
   const { t } = useTranslation();
   const [clickedImage, setClickedImage] = useState(-1);
 

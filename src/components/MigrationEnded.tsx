@@ -13,13 +13,9 @@ const MigrationEnded: React.FunctionComponent<{
   return (
     <div
       className="modal modal__alert"
-      style={{ display: visible ? 'block' : 'none' }}
-    >
+      style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
-        <ModalHeader
-          title={t('staking.migration')}
-          onClose={onClose}
-        />
+        <ModalHeader title={t('staking.migration')} onClose={onClose} />
         <div className="modal__alert__content">
           <h2>
             {t('staking.nth_staking_round_ended', {

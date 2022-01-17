@@ -24,10 +24,7 @@ const TransactionConfirmModal: React.FunctionComponent<{
   return (
     <div className="modal" style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
-        <ModalHeader
-          title={"ELYFI"}
-          onClose={() => closeHandler()}
-        />
+        <ModalHeader title={'ELYFI'} onClose={() => closeHandler()} />
         <div className="modal__confirm">
           <img src={TransactinConfirm} />
           <div>

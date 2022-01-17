@@ -84,7 +84,7 @@ const MigrationModal: React.FunctionComponent<{
           <LoadingIndicator />
         ) : (
           <div className="modal__migration">
-            <div className="modal__migration__wrapper"> 
+            <div className="modal__migration__wrapper">
               <div>
                 <h2>{t('staking.unstaking')}</h2>
                 <div className="modal__migration__input">
@@ -154,9 +154,7 @@ const MigrationModal: React.FunctionComponent<{
               <div>
                 <div className="modal__migration__popup__info">
                   <h2>{t('staking.migration')}</h2>
-                  <Popupinfo
-                    content={t('staking.migration--content')}
-                  />
+                  <Popupinfo content={t('staking.migration--content')} />
                 </div>
                 <div className="modal__migration__input">
                   <h2
@@ -242,9 +240,7 @@ const MigrationModal: React.FunctionComponent<{
                     nth: toOrdinalNumber(i18n.language, round),
                   })}
                 </h2>
-                <h2>
-                  {`${formatComma(stakedBalance)} ${stakedToken}`}
-                </h2>
+                <h2>{`${formatComma(stakedBalance)} ${stakedToken}`}</h2>
               </div>
               <p>{t('staking.reward_token_claim')}</p>
               <div>
@@ -253,9 +249,7 @@ const MigrationModal: React.FunctionComponent<{
                     nth: toOrdinalNumber(i18n.language, round),
                   })}
                 </h2>
-                <h2>
-                  {`${formatComma(rewardBalance)} ${rewardToken}`}
-                </h2>
+                <h2>{`${formatComma(rewardBalance)} ${rewardToken}`}</h2>
               </div>
             </div>
           </div>
@@ -286,10 +280,12 @@ const MigrationModal: React.FunctionComponent<{
                 address: account,
                 stakingType: stakedToken,
                 round,
-                migrationAmount: utils.formatEther(state.migrationAmount || '0'),
+                migrationAmount: utils.formatEther(
+                  state.migrationAmount || '0',
+                ),
                 unstakingAmount: utils.formatEther(state.withdrawAmount || '0'),
                 incentiveAmount: utils.formatEther(rewardBalance),
-              })
+              }),
             );
 
             emitter.clicked();

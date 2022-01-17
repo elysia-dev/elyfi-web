@@ -38,7 +38,6 @@ import {
   tetherMoneyPoolTime,
 } from 'src/core/data/moneypoolTimes';
 import ModalViewType from 'src/enums/ModalViewType';
-import IncentiveNotification from 'src/components/IncentiveNotificationModal';
 
 const initialBalanceState = {
   loading: false,

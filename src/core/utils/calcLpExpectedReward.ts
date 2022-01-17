@@ -1,5 +1,3 @@
-import { ELFIPerDayOnLpStakingPool } from '../data/stakings';
-
 const calcLpExpectedReward = (
   rewardToken: number,
   stakedLiquidity: number,
