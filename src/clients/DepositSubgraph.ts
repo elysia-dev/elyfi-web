@@ -3,7 +3,7 @@ import envs from 'src/core/envs';
 import { GetAllReserves } from 'src/core/types/GetAllReserves';
 import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 
-const baseUrl = envs.subgraphURI;
+const baseUrl = envs.subgraphApiEndpoint.subgraphURI;
 
 export class DepositSubgraph {
   static getAllReserves1st = async (

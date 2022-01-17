@@ -14,7 +14,7 @@ export interface Position {
 const provider = getProvider();
 
 const UniswapV3NFT = new Contract(
-  envs.nonFungiblePositionAddress,
+  envs.lpStaking.nonFungiblePositionAddress,
   abi,
   provider,
 );

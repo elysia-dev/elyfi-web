@@ -55,20 +55,20 @@ const useTvl = (): { value: number; loading: boolean } => {
       );
 
       const stakedElfiOnV1 = await ERC20__factory.connect(
-        envs.governanceAddress,
+        envs.token.governanceAddress,
         provider as any,
-      ).balanceOf(envs.elfyStakingPoolAddress);
+      ).balanceOf(envs.staking.elfyStakingPoolAddress);
 
       const stakedElfiOnV2 = await ERC20__factory.connect(
-        envs.governanceAddress,
+        envs.token.governanceAddress,
         provider as any,
-      ).balanceOf(envs.elfyV2StakingPoolAddress);
+      ).balanceOf(envs.staking.elfyV2StakingPoolAddress);
 
       setState({
         stakedEl: await ERC20__factory.connect(
-          envs.elAddress,
+          envs.token.elAddress,
           provider as any,
-        ).balanceOf(envs.elStakingPoolAddress),
+        ).balanceOf(envs.staking.elStakingPoolAddress),
         stakedElfi: stakedElfiOnV1.add(stakedElfiOnV2),
         loading: false,
       });

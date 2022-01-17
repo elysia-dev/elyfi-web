@@ -27,8 +27,8 @@ const Wallet = (): JSX.Element => {
   useEffect(() => {
     setConnected(
       !!account &&
-        (chainId === envs.requiredChainId ||
-          envs.requiredNetwork === 'ganache'),
+        (chainId === envs.network.requiredChainId ||
+          envs.network.requiredNetwork === 'ganache'),
     );
   }, [account, chainId]);
 

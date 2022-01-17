@@ -17,7 +17,7 @@ import TxProvider from './providers/TxProvider';
 import UniswapPoolProvider from './providers/UniswapPoolProvider';
 
 const client = new ApolloClient({
-  uri: envs.subgraphURI,
+  uri: envs.subgraphApiEndpoint.subgraphURI,
   cache: new InMemoryCache(),
 });
 

@@ -215,8 +215,8 @@ const RewardPlan: FunctionComponent = () => {
 
   const getAllStakedPositions = () => {
     StakerSubgraph.getIncentivesWithPositionsByPoolId(
-      envs.ethElfiPoolAddress,
-      envs.daiElfiPoolAddress,
+      envs.lpStaking.ethElfiPoolAddress,
+      envs.lpStaking.daiElfiPoolAddress,
     ).then((res) => {
       setTotalStakedPositions(res.data);
     });
@@ -465,7 +465,7 @@ const RewardPlan: FunctionComponent = () => {
             <section className="reward__container">
               {reserves.map((reserve, index) => {
                 const token =
-                  reserve.id === envs.daiAddress ? Token.DAI : Token.USDT;
+                  reserve.id === envs.token.daiAddress ? Token.DAI : Token.USDT;
                 return (
                   <TokenDeposit
                     key={index}

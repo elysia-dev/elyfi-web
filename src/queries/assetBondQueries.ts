@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 import envs from 'src/core/envs';
 
-const baseStage = envs.requiredNetwork === 'mainnet' ? 2 : 0;
+const baseStage = envs.network.requiredNetwork === 'mainnet' ? 2 : 0;
 
 export const GET_ALL_ASSET_BONDS = gql`
   query GetAllAssetBonds {

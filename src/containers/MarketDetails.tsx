@@ -116,7 +116,7 @@ function MarketDetail(): JSX.Element {
       expectedIncentiveBefore: incentive,
       expectedIncentiveAfter: incentive,
       governance: await ERC20__factory.connect(
-        envs.governanceAddress,
+        envs.token.governanceAddress,
         library,
       ).balanceOf(account),
       deposit: await ERC20__factory.connect(

@@ -65,7 +65,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     loading,
     contract: reserveERC20,
     refetch,
-  } = useERC20Info(reserve.id, envs.moneyPoolAddress);
+  } = useERC20Info(reserve.id, envs.moneyPool.moneyPoolAddress);
   const [liquidity, setLiquidity] = useState<{
     value: BigNumber;
     loaded: boolean;
@@ -136,7 +136,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     emitter.clicked();
 
     reserveERC20
-      .approve(envs.moneyPoolAddress, constants.MaxUint256)
+      .approve(envs.moneyPool.moneyPoolAddress, constants.MaxUint256)
       .then((tx) => {
         setTransaction(
           tx,

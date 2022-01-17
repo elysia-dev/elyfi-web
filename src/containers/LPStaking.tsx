@@ -125,7 +125,7 @@ function LPStaking(): JSX.Element {
         return;
       }
       const staker = new ethers.Contract(
-        envs.stakerAddress,
+        envs.lpStaking.stakerAddress,
         stakerABI,
         library.getSigner(),
       );
@@ -133,14 +133,18 @@ function LPStaking(): JSX.Element {
       setRewardToRecive({
         ...rewardToReceive,
         daiReward: parseFloat(
-          utils.formatEther(await staker.rewards(envs.daiAddress, account)),
+          utils.formatEther(
+            await staker.rewards(envs.token.daiAddress, account),
+          ),
         ),
         ethReward: parseFloat(
-          utils.formatEther(await staker.rewards(envs.wEthAddress, account)),
+          utils.formatEther(
+            await staker.rewards(envs.token.wEthAddress, account),
+          ),
         ),
         elfiReward: parseFloat(
           utils.formatEther(
-            await staker.rewards(envs.governanceAddress, account),
+            await staker.rewards(envs.token.governanceAddress, account),
           ),
         ),
       });
@@ -152,7 +156,7 @@ function LPStaking(): JSX.Element {
   const filterPosition = (position: Position) => {
     return position.incentivePotisions.some((incentivePotision) =>
       incentivePotision.incentive.rewardToken.toLowerCase() ===
-      envs.daiAddress.toLowerCase()
+      envs.token.daiAddress.toLowerCase()
         ? incentivePotision.incentive.id.toLowerCase() ===
           incentiveIds[round - 1].daiIncentiveId
         : incentivePotision.incentive.id.toLowerCase() ===
@@ -174,8 +178,8 @@ function LPStaking(): JSX.Element {
   const getAllStakedPositions = useCallback(() => {
     setIsLoading(true);
     StakerSubgraph.getIncentivesWithPositionsByPoolId(
-      envs.ethElfiPoolAddress,
-      envs.daiElfiPoolAddress,
+      envs.lpStaking.ethElfiPoolAddress,
+      envs.lpStaking.daiElfiPoolAddress,
     ).then((res) => {
       setTotalStakedPositions(res.data);
     });
@@ -373,9 +377,11 @@ function LPStaking(): JSX.Element {
         token0={Token.ELFI}
         token1={stakeToken}
         unstakedPositions={positions.filter((position) => {
-          const token0 = envs.governanceAddress;
+          const token0 = envs.token.governanceAddress;
           const token1 =
-            stakeToken === Token.ETH ? envs.wEthAddress : envs.daiAddress;
+            stakeToken === Token.ETH
+              ? envs.token.wEthAddress
+              : envs.token.daiAddress;
 
           return (
             position.token0.toLowerCase() === token0.toLowerCase() &&
@@ -385,11 +391,13 @@ function LPStaking(): JSX.Element {
         tokenImg={stakeToken === Token.ETH ? eth : dai}
         stakingPoolAddress={
           stakeToken === Token.ETH
-            ? envs.ethElfiPoolAddress
-            : envs.daiElfiPoolAddress
+            ? envs.lpStaking.ethElfiPoolAddress
+            : envs.lpStaking.daiElfiPoolAddress
         }
         rewardTokenAddress={
-          stakeToken === Token.ETH ? envs.wEthAddress : envs.daiAddress
+          stakeToken === Token.ETH
+            ? envs.token.wEthAddress
+            : envs.token.daiAddress
         }
         round={round}
       />
@@ -430,7 +438,9 @@ function LPStaking(): JSX.Element {
               token1: Token.ETH,
             }}
             totalLiquidity={totalLiquidity.ethElfiPoolTotalLiquidity}
-            totalStakedLiquidity={totalStakedLiquidity(envs.ethElfiPoolAddress)}
+            totalStakedLiquidity={totalStakedLiquidity(
+              envs.lpStaking.ethElfiPoolAddress,
+            )}
             apr={totalLiquidity.ethElfiliquidityForApr}
             isLoading={isLoading}
             setModalAndSetStakeToken={() => {
@@ -448,7 +458,9 @@ function LPStaking(): JSX.Element {
               token1: Token.DAI,
             }}
             totalLiquidity={totalLiquidity.daiElfiPoolTotalLiquidity}
-            totalStakedLiquidity={totalStakedLiquidity(envs.daiElfiPoolAddress)}
+            totalStakedLiquidity={totalStakedLiquidity(
+              envs.lpStaking.daiElfiPoolAddress,
+            )}
             apr={totalLiquidity.daiElfiliquidityForApr}
             isLoading={isLoading}
             setModalAndSetStakeToken={() => {
@@ -468,10 +480,10 @@ function LPStaking(): JSX.Element {
               .filter((stakedPosition) => filterPosition(stakedPosition))}
             setUnstakeTokenId={setUnstakeTokenId}
             ethElfiStakedLiquidity={totalStakedLiquidity(
-              envs.ethElfiPoolAddress,
+              envs.lpStaking.ethElfiPoolAddress,
             )}
             daiElfiStakedLiquidity={totalStakedLiquidity(
-              envs.daiElfiPoolAddress,
+              envs.lpStaking.daiElfiPoolAddress,
             )}
             expectedReward={expectedReward}
             totalExpectedReward={totalExpectedReward}

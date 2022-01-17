@@ -90,7 +90,8 @@ const Dashboard: React.FunctionComponent = () => {
     reserves.map((reserve) => {
       return {
         ...initialBalanceState,
-        tokenName: reserve.id === envs.daiAddress ? Token.DAI : Token.USDT,
+        tokenName:
+          reserve.id === envs.token.daiAddress ? Token.DAI : Token.USDT,
       };
     }),
   );
@@ -131,15 +132,15 @@ const Dashboard: React.FunctionComponent = () => {
   ) => {
     const incentiveRound1 = await IncentivePool__factory.connect(
       tokenName === Token.DAI
-        ? envs.prevDaiIncentivePool
-        : envs.prevUSDTIncentivePool,
+        ? envs.moneyPool.prevDaiIncentivePool
+        : envs.moneyPool.prevUSDTIncentivePool,
       library.getSigner(),
     ).getUserIncentive(account);
 
     const incentiveRound2 = await IncentivePool__factory.connect(
       tokenName === Token.DAI
-        ? envs.currentDaiIncentivePool
-        : envs.currentUSDTIncentivePool,
+        ? envs.moneyPool.currentDaiIncentivePool
+        : envs.moneyPool.currentUSDTIncentivePool,
       library.getSigner(),
     ).getUserIncentive(account);
 
@@ -170,7 +171,7 @@ const Dashboard: React.FunctionComponent = () => {
         expectedAdditionalIncentiveBefore: incentiveRound2,
         expectedAdditionalIncentiveAfter: incentiveRound2,
         governance: await ERC20__factory.connect(
-          envs.governanceAddress,
+          envs.token.governanceAddress,
           library,
         ).balanceOf(account),
         deposit: await ERC20__factory.connect(
@@ -373,11 +374,11 @@ const Dashboard: React.FunctionComponent = () => {
         incentivePoolAddress={
           round === 2
             ? balances[selectedModalNumber].tokenName === Token.DAI
-              ? envs.currentDaiIncentivePool
-              : envs.currentUSDTIncentivePool
+              ? envs.moneyPool.currentDaiIncentivePool
+              : envs.moneyPool.currentUSDTIncentivePool
             : balances[selectedModalNumber].tokenName === Token.DAI
-            ? envs.prevDaiIncentivePool
-            : envs.prevUSDTIncentivePool
+            ? envs.moneyPool.prevDaiIncentivePool
+            : envs.moneyPool.prevUSDTIncentivePool
         }
         tokenName={balances[selectedModalNumber].tokenName}
         afterTx={() => loadBalance(selectedModalNumber)}

@@ -50,7 +50,7 @@ const TokenDeposit: FunctionComponent<Props> = ({
   mintedMoneypool,
 }) => {
   const { t } = useTranslation();
-  const token = reserve.id === envs.daiAddress ? Token.DAI : Token.USDT;
+  const token = reserve.id === envs.token.daiAddress ? Token.DAI : Token.USDT;
   const { latestPrice } = useContext(UniswapPoolContext);
   const { value: mediaQuery } = useMediaQueryType();
 

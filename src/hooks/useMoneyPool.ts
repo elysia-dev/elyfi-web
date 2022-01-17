@@ -8,7 +8,7 @@ const useMoneyPool = (): MoneyPool | undefined => {
   const contract = useMemo(() => {
     if (!library) return;
     return MoneyPool__factory.connect(
-      envs.moneyPoolAddress,
+      envs.moneyPool.moneyPoolAddress,
       library.getSigner(),
     );
   }, [library]);

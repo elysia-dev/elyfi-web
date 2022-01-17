@@ -15,10 +15,10 @@ const useStakingPool = (
     if (!library) return;
     return StakingPool__factory.connect(
       staked === 'EL'
-        ? envs.elStakingPoolAddress
+        ? envs.staking.elStakingPoolAddress
         : v2
-        ? envs.elfyV2StakingPoolAddress
-        : envs.elfyStakingPoolAddress,
+        ? envs.staking.elfyV2StakingPoolAddress
+        : envs.staking.elfyStakingPoolAddress,
       library.getSigner(),
     );
   }, [library, staked, v2]);

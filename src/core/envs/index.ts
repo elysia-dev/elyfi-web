@@ -2,37 +2,47 @@ import testVars from './test.json';
 import prodVars from './prod.json';
 
 interface EnvironmentVariables {
-  moneyPoolAddress: string;
-  governanceAddress: string;
+  moneyPool: {
+    moneyPoolAddress: string;
+    daiTokenizerAddress: string;
+    usdtTokeninzerAddress: string;
+    prevDaiIncentivePool: string;
+    prevUSDTIncentivePool: string;
+    currentDaiIncentivePool: string;
+    currentUSDTIncentivePool: string;
+  };
+  staking: {
+    elStakingPoolAddress: string;
+    elfyStakingPoolAddress: string;
+    elfyV2StakingPoolAddress: string;
+  };
+  lpStaking: {
+    daiElfiPoolAddress: string;
+    ethElfiPoolAddress: string;
+    stakerAddress: string;
+    nonFungiblePositionAddress: string;
+    refundedAddress: string;
+  };
+  token: {
+    governanceAddress: string;
+    elAddress: string;
+    daiAddress: string;
+    usdtAddress: string;
+    wEthAddress: string;
+  };
+  network: {
+    requiredNetwork: string;
+    requiredChainId: number;
+  };
+  subgraphApiEndpoint: {
+    subgraphURI: string;
+    lpTokenPoolSubgraphURL: string;
+    stakerSubgraphURL: string;
+  };
+  externalApiEndpoint: {
+    etherscanURI: string;
+  };
   testStableAddress: string;
-  elStakingPoolAddress: string;
-  elfyStakingPoolAddress: string;
-  elfyV2StakingPoolAddress: string;
-  elAddress: string;
-  requiredNetwork: string;
-  requiredChainId: number;
-  subgraphURI: string;
-  etherscanURI: string;
-  daiAddress: string;
-  usdtAddress: string;
-  daiElfiPoolAddress: string;
-  ethElfiPoolAddress: string;
-  wEthAddress: string;
-  nonFungiblePositionAddress: string;
-  stakerAddress: string;
-  lpTokenStakingStartTime: number;
-  lpTokenStakingEndTime: number;
-  stakerSubgraphURL: string;
-  lpTokenPoolSubgraphURL: string;
-  refundedAddress: string;
-  appURI: string;
-  etherscan: string;
-  daiTokenizerAddress: string;
-  usdtTokeninzerAddress: string;
-  prevDaiIncentivePool: string;
-  prevUSDTIncentivePool: string;
-  currentDaiIncentivePool: string;
-  currentUSDTIncentivePool: string;
 }
 
 const vars =

@@ -67,7 +67,7 @@ const AccountModal: React.FunctionComponent<{
               <p>{t('transaction.copy_address')}</p>
             </div>
             <a
-              href={`${envs.etherscanURI}/address/${account}`}
+              href={`${envs.externalApiEndpoint.etherscanURI}/address/${account}`}
               target="_blank"
               className="link">
               <div>
@@ -83,7 +83,11 @@ const AccountModal: React.FunctionComponent<{
             </p>
 
             <a
-              href={txHash ? `${envs.etherscanURI}/tx/${txHash}` : undefined}
+              href={
+                txHash
+                  ? `${envs.externalApiEndpoint.etherscanURI}/tx/${txHash}`
+                  : undefined
+              }
               target="_blank"
               className={txHash ? '' : 'disable'}>
               <div>

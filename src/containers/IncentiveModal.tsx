@@ -14,6 +14,7 @@ import buildEventEmitter from 'src/utiles/buildEventEmitter';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
+import { useTranslation } from 'react-i18next';
 
 // Create deposit & withdraw
 const IncentiveModal: FunctionComponent<{
@@ -36,7 +37,7 @@ const IncentiveModal: FunctionComponent<{
   transactionModal,
 }) => {
   const { account, library, chainId } = useWeb3React();
-  const { reserves } = useContext(ReservesContext);
+  const { t } = useTranslation();
   const { setTransaction, failTransaction } = useContext(TxContext);
 
   const reqeustClaimIncentive = async () => {
@@ -108,7 +109,7 @@ const IncentiveModal: FunctionComponent<{
             onClick={() => {
               reqeustClaimIncentive();
             }}>
-            <p>CLAIM REWARD</p>
+            <p>{t('dashboard.claim_reward')}</p>
           </div>
         </div>
       </div>
