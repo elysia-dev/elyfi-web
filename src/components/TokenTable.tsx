@@ -52,6 +52,7 @@ const TokenTable: React.FC<Props> = ({
   // Bsc asset bond tokens should be loaded with bsc endpoint
   const { data, loading: assetLoading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
   const { account } = useWeb3React();
+  const { unsupportedChainid } = useContext(MainnetContext)
   const { t, i18n } = useTranslation();
   const tokenInfo = reserveTokenData[balance.tokenName];
   const list = data?.assetBondTokens.filter((product) => {
@@ -135,12 +136,12 @@ const TokenTable: React.FC<Props> = ({
                 header={t('dashboard.deposit_amount')}
                 buttonEvent={reserveData ? onClick : undefined}
                 buttonContent={t('dashboard.deposit_amount--button')}
-                value={account ? toCompactForBignumber(
+                value={account && !unsupportedChainid ? toCompactForBignumber(
                   balance.deposit || constants.Zero,
                   tokenInfo?.decimals,
                 )! : '-'}
                 tokenName={tokenInfo?.name}
-                walletBalance={account ? toCompactForBignumber(
+                walletBalance={account && !unsupportedChainid ? toCompactForBignumber(
                   balance.value || constants.Zero,
                   tokenInfo?.decimals,
                 ) : undefined}
@@ -159,7 +160,7 @@ const TokenTable: React.FC<Props> = ({
                 }}
                 buttonContent={t('dashboard.claim_reward')}
                 value={
-                  account ? (
+                  (account && !unsupportedChainid) ? (
                     <CountUp
                       className="bold amounts"
                       start={parseFloat(formatEther(balance.expectedIncentiveBefore))}
@@ -174,18 +175,20 @@ const TokenTable: React.FC<Props> = ({
                     '-'
                   )
                 }
-                moneyPoolTime={`${moment(daiMoneyPoolTime[0].startedAt).format(
-                  'YYYY.MM.DD',
-                )} ~ ${moment(daiMoneyPoolTime[0].endedAt).format(
-                  'YYYY.MM.DD',
-                )} KST`}
+                moneyPoolTime={getMainnetType === MainnetType.Ethereum ? (
+                  `${moment(daiMoneyPoolTime[0].startedAt).format(
+                    'YYYY.MM.DD',
+                  )} ~ ${moment(daiMoneyPoolTime[0].endedAt).format(
+                    'YYYY.MM.DD',
+                  )} KST`
+                ) : undefined}
                 tokenName={'ELFI'}
                 loading={account ? loading : false}
               />
             </div>
           </div>
           {
-            getMainnetType === MainnetType.BSC && (
+            getMainnetType === MainnetType.BSC ? (
               <div className="deposit__table__body__strategy">
                 <h2>
                   {t("dashboard.target_running_strategy")}
@@ -203,34 +206,30 @@ const TokenTable: React.FC<Props> = ({
                   </div>
                 </div>
               </div>
+            ) : (
+              <div className="deposit__table__body__event-box">
+                <TableBodyEventReward
+                  moneyPoolTime={`${moment(daiMoneyPoolTime[1].startedAt).format(
+                    'YYYY.MM.DD',
+                  )} KST ~ `}
+                  expectedAdditionalIncentiveBefore={
+                    balance.expectedAdditionalIncentiveBefore
+                  }
+                  expectedAdditionalIncentiveAfter={
+                    balance.expectedAdditionalIncentiveAfter
+                  }
+                  buttonEvent={(e) => {
+                    e.preventDefault();
+                    setIncentiveModalVisible();
+                    setModalNumber();
+                    modalview();
+                    setRound(2);
+                  }}
+                  tokenName={balance.tokenName}
+                />
+              </div>
             )
           }
-
-          {
-            getMainnetType !== MainnetType.BSC &&
-            <div className="deposit__table__body__event-box">
-              <TableBodyEventReward
-                moneyPoolTime={`${moment(daiMoneyPoolTime[1].startedAt).format(
-                  'YYYY.MM.DD',
-                )} KST ~ `}
-                expectedAdditionalIncentiveBefore={
-                  balance.expectedAdditionalIncentiveBefore
-                }
-                expectedAdditionalIncentiveAfter={
-                  balance.expectedAdditionalIncentiveAfter
-                }
-                buttonEvent={(e) => {
-                  e.preventDefault();
-                  setIncentiveModalVisible();
-                  setModalNumber();
-                  modalview();
-                  setRound(2);
-                }}
-                tokenName={balance.tokenName}
-              />
-            </div>
-          }
-
           <div className="deposit__table__body__loan-list" style={{ display: list?.length === 0 ? "none" : "block" }}>
             {assetLoading ? (
               <Skeleton

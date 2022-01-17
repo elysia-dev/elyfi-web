@@ -506,7 +506,7 @@ function LPStaking(): JSX.Element {
           ) : (
             <>
               <div style={{ marginTop: 300 }} />
-              <div className="staking__coming-soon">
+              <div className="staking__coming-soon lp">
                 <div>
                   <h2>COMING SOON</h2>
                 </div>

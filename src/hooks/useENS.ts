@@ -11,9 +11,16 @@ export const useENS = (address: string | null | undefined): ReturnType => {
 
   useEffect(() => {
     async function resolveENS() {
-      if (address && ethers.utils.isAddress(address)) {
-        const ensName = await provider.lookupAddress(address);
-        if (ensName) setENSName(ensName);
+      try {
+        if (address && ethers.utils.isAddress(address)) {
+          const getEnsName = await provider.lookupAddress(address);
+          if (getEnsName) setENSName(getEnsName);
+        }
+      } catch (e) {
+        if (e.code === "UNSUPPORTED_OPERATION") {
+          return;
+        }
+        console.error(e)
       }
     }
     resolveENS();
