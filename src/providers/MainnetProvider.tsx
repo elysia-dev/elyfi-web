@@ -7,6 +7,9 @@ import { mainnets } from "src/core/data/mainnets";
 import useCurrentChain from "src/hooks/useCurrentChain";
 import Loading from 'src/components/Loading';
 
+// ! FIXME
+// 1. Provider more details information of current mainnet. Do not use MainnetData[type].data...
+// 2. Remove redundant loading(false)
 const MainnetProvider: React.FC = (props) => {
   const { active, account } = useWeb3React();
   const currentChain = useCurrentChain();
