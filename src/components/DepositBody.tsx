@@ -1,10 +1,7 @@
 import { BigNumber, utils } from 'ethers';
-import { LegacyRef, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  formatCommaWithDigits,
-  formatSixFracionDigit,
-} from 'src/utiles/formatters';
+import { formatCommaWithDigits } from 'src/utiles/formatters';
 import { IReserve } from 'src/core/data/reserves';
 import ModalButton from 'src/components/ModalButton';
 

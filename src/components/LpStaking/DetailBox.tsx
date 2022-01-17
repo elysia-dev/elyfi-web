@@ -2,10 +2,7 @@ import { FunctionComponent } from 'react';
 import { utils } from 'ethers';
 import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 import Skeleton from 'react-loading-skeleton';
-import lpStakingTime, {
-  lpRoundDate,
-  lpUnixTimestamp,
-} from 'src/core/data/lpStakingTime';
+import { lpRoundDate, lpUnixTimestamp } from 'src/core/data/lpStakingTime';
 import moment from 'moment';
 import Token from 'src/enums/Token';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';

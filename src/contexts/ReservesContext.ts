@@ -1,9 +1,5 @@
-import { ApolloQueryResult, OperationVariables } from '@apollo/client';
 import { createContext, Dispatch, SetStateAction } from 'react';
-import {
-  GetAllReserves,
-  GetAllReserves_reserves,
-} from 'src/queries/__generated__/GetAllReserves';
+import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 
 export type ReservesContextBase = {
   reserves: GetAllReserves_reserves[];

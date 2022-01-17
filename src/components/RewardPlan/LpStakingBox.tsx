@@ -1,16 +1,6 @@
-import {
-  Dispatch,
-  FunctionComponent,
-  SetStateAction,
-  useRef,
-  useState,
-} from 'react';
+import { FunctionComponent, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  lpStakingStartedAt,
-  lpStakingEndedAt,
-  lpRoundDate,
-} from 'src/core/data/lpStakingTime';
+import { lpRoundDate } from 'src/core/data/lpStakingTime';
 import MediaQuery from 'src/enums/MediaQuery';
 import Token from 'src/enums/Token';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';

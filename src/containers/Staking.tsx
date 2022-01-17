@@ -1,5 +1,4 @@
 import elfi from 'src/assets/images/ELFI.png';
-import wave from 'src/assets/images/wave_elyfi.png';
 import el from 'src/assets/images/el.png';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';

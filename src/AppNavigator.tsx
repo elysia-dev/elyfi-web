@@ -4,12 +4,10 @@ import { useWeb3React } from '@web3-react/core';
 import ScrollToTop from 'src/hooks/ScrollToTop';
 import usePageTracking from 'src/hooks/usePageTracking';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
-import envs from 'src/core/envs';
 
 import Dashboard from 'src/containers/Dashboard';
 import { StakingEL, StakingELFI } from 'src/containers/Staking';
 import Main from 'src/containers/Main';
-import Guide from 'src/containers/Guide';
 import Governance from 'src/containers/Governance';
 
 import 'src/stylesheet/public.scss';

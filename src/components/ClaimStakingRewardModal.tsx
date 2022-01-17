@@ -1,4 +1,4 @@
-import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
+import { useWeb3React } from '@web3-react/core';
 import { BigNumber, utils } from 'ethers';
 import { FunctionComponent, useContext } from 'react';
 import LoadingIndicator from 'src/components/LoadingIndicator';
@@ -116,9 +116,11 @@ const ClaimStakingRewardModal: FunctionComponent<{
                       address: account,
                       stakingType: stakedToken,
                       stakingAmount: utils.formatEther(stakingBalance),
-                      incentiveAmount: utils.formatEther(balance?.value || endedBalance),
+                      incentiveAmount: utils.formatEther(
+                        balance?.value || endedBalance,
+                      ),
                       round,
-                    })
+                    }),
                   );
 
                   emitter.clicked();

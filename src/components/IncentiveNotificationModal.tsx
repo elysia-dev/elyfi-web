@@ -1,9 +1,7 @@
-import { useWeb3React } from '@web3-react/core';
 import { useContext } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import ModalHeader from 'src/components/ModalHeader';
 import ReservesContext from 'src/contexts/ReservesContext';
-import InjectedConnector from 'src/core/connectors/injectedConnector';
 
 const IncentiveNotification: React.FunctionComponent<{
   visible: boolean;

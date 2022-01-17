@@ -1,10 +1,8 @@
 import { FunctionComponent, useMemo, useEffect, useState, useRef } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import GoogleMapReact from 'google-map-react';
 import TempAssets from 'src/assets/images/temp_assets.png';
 import wave from 'src/assets/images/wave_elyfi.png';
 import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
-import ErrorPage from 'src/components/ErrorPage';
 import { useQuery } from '@apollo/client';
 import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
 import { parseTokenId } from 'src/utiles/parseTokenId';
@@ -12,7 +10,6 @@ import { toUsd, toPercent } from 'src/utiles/formatters';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import Skeleton from 'react-loading-skeleton';
-import Marker from 'src/components/Marker';
 import LoanProduct from 'src/enums/LoanProduct';
 import CollateralCategory from 'src/enums/CollateralCategory';
 import LoanStatus from 'src/enums/LoanStatus';

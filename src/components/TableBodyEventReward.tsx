@@ -1,12 +1,9 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber } from 'ethers';
 import { formatEther } from 'ethers/lib/utils';
-import moment from 'moment';
-import { FunctionComponent, useContext } from 'react';
+import { FunctionComponent } from 'react';
 import CountUp from 'react-countup';
 import { Trans, useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
-import ReservesContext from 'src/contexts/ReservesContext';
 import MediaQuery from 'src/enums/MediaQuery';
 import Token from 'src/enums/Token';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';

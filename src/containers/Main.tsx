@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import Advantages00 from 'src/assets/images/advantages00.png';

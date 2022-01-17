@@ -6,7 +6,7 @@ import { reserveTokenData } from 'src/core/data/reserves';
 import { useWeb3React } from '@web3-react/core';
 import CountUp from 'react-countup';
 import { formatEther } from '@ethersproject/units';
-import { BigNumber, constants } from 'ethers';
+import { BigNumber } from 'ethers';
 import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
 import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
 import { useQuery } from '@apollo/client';

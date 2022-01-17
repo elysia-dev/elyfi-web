@@ -14,7 +14,6 @@ import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import Token from 'src/enums/Token';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import SwiperCore, { Navigation, Pagination, Virtual } from 'swiper';
 import CountUp from 'react-countup';
 
 interface Props {

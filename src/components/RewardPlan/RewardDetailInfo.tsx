@@ -1,8 +1,6 @@
-import { BigNumber } from 'ethers';
-import { FunctionComponent, ReactElement } from 'react';
+import { FunctionComponent } from 'react';
 import CountUp from 'react-countup';
 import { useTranslation } from 'react-i18next';
-import Token from 'src/enums/Token';
 import { formatCommaSmallFourDisits } from 'src/utiles/formatters';
 
 type Props = {

@@ -4,14 +4,13 @@ import { useTranslation } from 'react-i18next';
 import Token from 'src/enums/Token';
 import { formatDecimalFracionDigit, toCompact } from 'src/utiles/formatters';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
-import { BigNumber, utils } from 'ethers';
+import { utils } from 'ethers';
 import StakedTokenProps from 'src/core/types/StakedTokenProps';
 import Skeleton from 'react-loading-skeleton';
 import CountUp from 'react-countup';
 import { isEthElfiPoolAddress } from 'src/core/utils/getAddressesByPool';
 import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
-import Position from 'src/core/types/Position';
 import Guide from 'src/components/Guide';
 import StakedLpItem from './StakedLpItem';
 

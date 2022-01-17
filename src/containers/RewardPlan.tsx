@@ -1,7 +1,6 @@
 import { constants, utils } from 'ethers';
 import moment from 'moment';
 import envs from 'src/core/envs';
-import wave from 'src/assets/images/wave_elyfi.png';
 import {
   FunctionComponent,
   useCallback,
