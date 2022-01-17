@@ -213,27 +213,31 @@ const TokenTable: React.FC<Props> = ({
               </div>
             )
           }
-          <div className="deposit__table__body__event-box">
-            <TableBodyEventReward
-              moneyPoolTime={`${moment(daiMoneyPoolTime[1].startedAt).format(
-                'YYYY.MM.DD',
-              )} KST ~ `}
-              expectedAdditionalIncentiveBefore={
-                expectedAdditionalIncentiveBefore
-              }
-              expectedAdditionalIncentiveAfter={
-                expectedAdditionalIncentiveAfter
-              }
-              buttonEvent={(e) => {
-                e.preventDefault();
-                setIncentiveModalVisible();
-                setModalNumber();
-                modalview();
-                setRound(2);
-              }}
-              tokenName={tokenName}
-            />
-          </div>
+
+          {
+            getMainnetType !== MainnetType.BSC &&
+            <div className="deposit__table__body__event-box">
+              <TableBodyEventReward
+                moneyPoolTime={`${moment(daiMoneyPoolTime[1].startedAt).format(
+                  'YYYY.MM.DD',
+                )} KST ~ `}
+                expectedAdditionalIncentiveBefore={
+                  expectedAdditionalIncentiveBefore
+                }
+                expectedAdditionalIncentiveAfter={
+                  expectedAdditionalIncentiveAfter
+                }
+                buttonEvent={(e) => {
+                  e.preventDefault();
+                  setIncentiveModalVisible();
+                  setModalNumber();
+                  modalview();
+                  setRound(2);
+                }}
+                tokenName={tokenName}
+              />
+            </div>
+          }
 
           <div className="deposit__table__body__loan-list" style={{ display: list?.length === 0 ? "none" : "block" }}>
             {loading ? (

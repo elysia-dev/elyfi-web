@@ -26,7 +26,6 @@ import isWalletConnect from 'src/hooks/isWalletConnect';
 import ConnectWalletModal from 'src/containers/ConnectWalletModal';
 import WrongMainnetModal from 'src/containers/WrongMainnetModal';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
-import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import {
   daiMoneyPoolTime,
   tetherMoneyPoolTime,
@@ -35,7 +34,6 @@ import ModalViewType from 'src/enums/ModalViewType';
 import { useMediaQuery } from 'react-responsive';
 import SubgraphContext, { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import MainnetContext from 'src/contexts/MainnetContext';
-import MainnetType from 'src/enums/MainnetType';
 import TvlCounter from 'src/components/TvlCounter';
 import { MainnetData } from 'src/core/data/mainnets';
 import getTokenNameFromAddress from 'src/utiles/getTokenNameFromAddress';
@@ -97,16 +95,18 @@ const getIncentiveByRound = async (
       ? envs.prevDaiIncentivePool
       : tokenName === Token.USDT
         ? envs.prevUSDTIncentivePool
-        : envs.busdAddress,
+        : envs.busdIncentivePoolAddress,
     library.getSigner(),
   ).getUserIncentive(account);
+
+  console.log(incentiveRound1)
 
   const incentiveRound2 = await IncentivePool__factory.connect(
     tokenName === Token.DAI
       ? envs.currentDaiIncentivePool
       : tokenName === Token.USDT
         ? envs.currentUSDTIncentivePool
-        : envs.busdAddress,
+        : envs.busdIncentivePoolAddress,
     library.getSigner(),
   ).getUserIncentive(account);
 
@@ -122,8 +122,7 @@ const fetchBalanceFrom = async (
   reserve: IReserveSubgraphData,
   account: string,
   library: any,
-  mainnetType: MainnetType,
-  tokenName: Token.DAI | Token.BUSD | Token.USDT
+  tokenName: Token.DAI | Token.BUSD | Token.USDT,
 ) => {
   try {
     const { incentiveRound1, incentiveRound2 } = await getIncentiveByRound(
@@ -131,6 +130,7 @@ const fetchBalanceFrom = async (
       tokenName,
       account,
     );
+
     return {
       value: await ERC20__factory.connect(reserve.id, library).balanceOf(
         account,
@@ -147,6 +147,7 @@ const fetchBalanceFrom = async (
       ).balanceOf(account),
     };
   } catch (error) {
+    console.log(error)
     return {
       value: constants.Zero,
       incentiveRound1: constants.Zero,
@@ -156,7 +157,7 @@ const fetchBalanceFrom = async (
       expectedAdditionalIncentiveBefore: constants.Zero,
       expectedAdditionalIncentiveAfter: constants.Zero,
       deposit: constants.Zero
-    } as BalanceType
+    }
   }
 };
 
@@ -216,11 +217,9 @@ const Dashboard: React.FunctionComponent = () => {
     query: '(min-width: 1439px)',
   });
 
-  // balance & reserve
   const loadBalance = async (id: string) => {
     if (!account) return;
     try {
-      // refetchReserve();
       refetchUserData();
 
       setBalances(
@@ -232,7 +231,7 @@ const Dashboard: React.FunctionComponent = () => {
             }
             return {
               ...balance,
-              ...(await fetchBalanceFrom(reserve, account, library, mainnetType, balance.tokenName)),
+              ...(await fetchBalanceFrom(reserve, account, library, balance.tokenName)),
               updatedAt: moment().unix(),
             };
           }),
@@ -249,7 +248,6 @@ const Dashboard: React.FunctionComponent = () => {
     }
 
     try {
-      // refetchReserve();
       refetchUserData();
       setBalances(
         await Promise.all(
@@ -259,7 +257,7 @@ const Dashboard: React.FunctionComponent = () => {
               return {
                 id: reserve.id,
                 loading: false,
-                ...(await fetchBalanceFrom(reserve, account, library, mainnetType, tokenName)),
+                ...(await fetchBalanceFrom(reserve, account, library, tokenName)),
                 tokenName,
                 updatedAt: moment().unix(),
               } as BalanceType;
@@ -267,7 +265,6 @@ const Dashboard: React.FunctionComponent = () => {
         ),
       );
     } catch (error) {
-      console.error(error);
       setBalances(
         balances.map((data) => {
           return {
@@ -286,7 +283,7 @@ const Dashboard: React.FunctionComponent = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setBalances(
-        balances.map((balance, index) => {
+        balances.map((balance) => {
           const reserve = data.reserves.find(r => r.id === balance.id)
           if(!reserve) return balance;
 
@@ -332,7 +329,7 @@ const Dashboard: React.FunctionComponent = () => {
     return () => {
       clearInterval(interval);
     };
-  }, [balances]);
+  }, [balances, mainnetType]);
 
   return (
     <>
@@ -440,76 +437,74 @@ const Dashboard: React.FunctionComponent = () => {
           {supportedBalances.map((balance, index) => {
             const reserve = data.reserves.find((d) => d.id === balance.id);
 
-            if(!reserve) return <></>;
+            if (!reserve) return <></>;
 
             return (
-              <>
-                <TokenTable
-                  key={index}
-                  index={index}
-                  id={`table-${index}`}
-                  onClick={(e: any) => {
-                    walletConnect === false
+              <TokenTable
+                key={index}
+                index={index}
+                id={`table-${index}`}
+                onClick={(e: any) => {
+                  walletConnect === false
+                    ? (
+                      setConnectWalletModalvisible(true),
+                      ReactGA.modalview(balance.tokenName + ModalViewType.DepositConnectWalletModal)
+                    ) :
+                    unsupportedChainid
                       ? (
-                        setConnectWalletModalvisible(true),
-                        ReactGA.modalview(balance.tokenName + ModalViewType.DepositConnectWalletModal)
-                      ) :
-                      unsupportedChainid
-                        ? (
-                          setWrongMainnetModalVisible(true)
-                        ) : (
-                          e.preventDefault(),
-                          setReserveData(reserve),
-                          selectBalanceId(balance.id),
-                          ReactGA.modalview(balance.tokenName + ModalViewType.DepositOrWithdrawModal)
-                        )
-                  }}
-                  tokenName={balance.tokenName}
-                  tokenImage={reserveTokenData[balance.tokenName].image}
-                  depositBalance={toCompactForBignumber(
-                    balance.deposit || constants.Zero,
+                        setWrongMainnetModalVisible(true)
+                      ) : (
+                        e.preventDefault(),
+                        setReserveData(reserve),
+                        selectBalanceId(balance.id),
+                        ReactGA.modalview(balance.tokenName + ModalViewType.DepositOrWithdrawModal)
+                      )
+                }}
+                tokenName={balance.tokenName}
+                tokenImage={reserveTokenData[balance.tokenName].image}
+                depositBalance={toCompactForBignumber(
+                  balance.deposit || constants.Zero,
+                  reserveTokenData[balance.tokenName].decimals,
+                )}
+                depositAPY={toPercent(reserve.depositAPY)}
+                miningAPR={toPercent(
+                  calcMiningAPR(
+                    elfiPrice,
+                    BigNumber.from(reserve.totalDeposit),
                     reserveTokenData[balance.tokenName].decimals,
-                  )}
-                  depositAPY={toPercent(reserve.depositAPY)}
-                  miningAPR={toPercent(
-                    calcMiningAPR(
-                      elfiPrice,
-                      BigNumber.from(reserve.totalDeposit),
-                      reserveTokenData[balance.tokenName].decimals,
-                    ) || '0',
-                  )}
-                  walletBalance={toCompactForBignumber(
-                    balance.value || constants.Zero,
-                    reserveTokenData[balance.tokenName].decimals,
-                  )}
-                  isDisable={!reserve}
-                  skeletonLoading={balance.loading}
-                  reserveData={reserve}
-                  expectedIncentiveBefore={balance.expectedIncentiveBefore}
-                  expectedIncentiveAfter={balance.expectedIncentiveAfter}
-                  expectedAdditionalIncentiveBefore={
-                    balance.expectedAdditionalIncentiveBefore
-                  }
-                  expectedAdditionalIncentiveAfter={
-                    balance.expectedAdditionalIncentiveAfter
-                  }
-                  setIncentiveModalVisible={() => {
-                    walletConnect === false
+                  ) || '0',
+                )}
+                walletBalance={toCompactForBignumber(
+                  balance.value || constants.Zero,
+                  reserveTokenData[balance.tokenName].decimals,
+                )}
+                isDisable={!reserve}
+                skeletonLoading={balance.loading}
+                reserveData={reserve}
+                expectedIncentiveBefore={balance.expectedIncentiveBefore}
+                expectedIncentiveAfter={balance.expectedIncentiveAfter}
+                expectedAdditionalIncentiveBefore={
+                  balance.expectedAdditionalIncentiveBefore
+                }
+                expectedAdditionalIncentiveAfter={
+                  balance.expectedAdditionalIncentiveAfter
+                }
+                setIncentiveModalVisible={() => {
+                  walletConnect === false
+                    ? (
+                      setConnectWalletModalvisible(true),
+                      ReactGA.modalview(balance.tokenName + ModalViewType.IncentiveModal)
+                    ) :
+                    unsupportedChainid
                       ? (
-                        setConnectWalletModalvisible(true),
-                        ReactGA.modalview(balance.tokenName + ModalViewType.IncentiveModal)
+                        setWrongMainnetModalVisible(true)
                       ) :
-                      unsupportedChainid
-                        ? (
-                          setWrongMainnetModalVisible(true)
-                        ) :
-                        setIncentiveModalVisible(true);
-                  }}
-                  setModalNumber={() => selectBalanceId(balance.id)}
-                  modalview={() => ReactGA.modalview(balance.tokenName + ModalViewType.IncentiveModal)}
-                  setRound={setRound}
-                />
-              </>
+                      setIncentiveModalVisible(true);
+                }}
+                setModalNumber={() => selectBalanceId(balance.id)}
+                modalview={() => ReactGA.modalview(balance.tokenName + ModalViewType.IncentiveModal)}
+                setRound={setRound}
+              />
             );
           })}
         </div>
