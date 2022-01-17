@@ -1,9 +1,9 @@
 import { useWeb3React } from '@web3-react/core';
 import { reserveTokenData } from 'src/core/data/reserves';
 import { useContext, useState, useMemo } from 'react';
-import { toPercent, toCompactForBignumber } from 'src/utiles/formatters';
+import { toPercent } from 'src/utiles/formatters';
 import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
-import { BigNumber, constants } from 'ethers';
+import { BigNumber } from 'ethers';
 import { useQuery } from '@apollo/client';
 import { GetUser } from 'src/queries/__generated__/GetUser';
 import { GET_USER } from 'src/queries/userQueries';
@@ -174,8 +174,8 @@ const Dashboard: React.FunctionComponent = () => {
             return (
               <TokenTable
                 key={index}
-                index={index}
                 id={`table-${index}`}
+                balance={balance}
                 onClick={(e: any) => {
                   walletConnect === false
                     ? (
@@ -192,35 +192,7 @@ const Dashboard: React.FunctionComponent = () => {
                         ReactGA.modalview(balance.tokenName + ModalViewType.DepositOrWithdrawModal)
                       )
                 }}
-                tokenName={balance.tokenName}
-                tokenImage={reserveTokenData[balance.tokenName].image}
-                depositBalance={toCompactForBignumber(
-                  balance.deposit || constants.Zero,
-                  reserveTokenData[balance.tokenName].decimals,
-                )}
-                depositAPY={toPercent(reserve.depositAPY)}
-                miningAPR={toPercent(
-                  calcMiningAPR(
-                    elfiPrice,
-                    BigNumber.from(reserve.totalDeposit),
-                    reserveTokenData[balance.tokenName].decimals,
-                  ) || '0',
-                )}
-                walletBalance={toCompactForBignumber(
-                  balance.value || constants.Zero,
-                  reserveTokenData[balance.tokenName].decimals,
-                )}
-                isDisable={!reserve}
-                skeletonLoading={balance.loading}
                 reserveData={reserve}
-                expectedIncentiveBefore={balance.expectedIncentiveBefore}
-                expectedIncentiveAfter={balance.expectedIncentiveAfter}
-                expectedAdditionalIncentiveBefore={
-                  balance.expectedAdditionalIncentiveBefore
-                }
-                expectedAdditionalIncentiveAfter={
-                  balance.expectedAdditionalIncentiveAfter
-                }
                 setIncentiveModalVisible={() => {
                   walletConnect === false
                     ? (

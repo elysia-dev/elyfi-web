@@ -18,7 +18,7 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import ReserveToken from 'src/core/types/ReserveToken';
 import isSupportedToken from 'src/core/utils/isSupportedReserve';
 
-type BalanceType = {
+export type BalanceType = {
   loading: boolean;
   id: string;
   tokenName: ReserveToken;
@@ -78,8 +78,6 @@ const getIncentiveByRound = async (
   };
 };
 
-// TODO -> BUSDT는 BSC로 요청하자
-// TODO : supported chain만 balance update하기
 const fetchBalanceFrom = async (
   reserve: IReserveSubgraphData,
   account: string,
@@ -127,6 +125,8 @@ type ReturnType = {
 	loadBalance: (id: string) => void,
 };
 
+// ! FIXME
+// 1. Use other naming. Balance dose not cover the usefulness
 const useBalances = (refetchUserData: () => void): ReturnType => {
 	const { account, library } = useWeb3React();
 	const { data } = useContext(SubgraphContext);
