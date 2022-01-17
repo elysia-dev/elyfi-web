@@ -355,6 +355,7 @@ const RewardPlan: FunctionComponent = () => {
                 {[ELFI, ETH, DAI].map((tokenImage, _index, _array) => {
                   return (
                     <img
+                      key={`images_${_index}`}
                       src={tokenImage}
                       style={{
                         zIndex: _array.length + 1 - _index,

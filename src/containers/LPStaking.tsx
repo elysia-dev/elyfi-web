@@ -407,6 +407,7 @@ function LPStaking(): JSX.Element {
               .map((_x, index) => {
                 return (
                   <div
+                    key={`round_button_${index}`}
                     className={index + 1 === round ? 'active' : ''}
                     onClick={() => setRound(index + 1)}>
                     <p>
@@ -437,7 +438,9 @@ function LPStaking(): JSX.Element {
             isLoading={isLoading}
             setModalAndSetStakeToken={() => {
               setStakingVisibleModal(true);
-              ReactGA.modalview(Token.ETH + ModalViewType.StakingOrUnstakingModal);
+              ReactGA.modalview(
+                Token.ETH + ModalViewType.StakingOrUnstakingModal,
+              );
               setStakeToken(Token.ETH);
             }}
             round={round}
@@ -453,7 +456,9 @@ function LPStaking(): JSX.Element {
             isLoading={isLoading}
             setModalAndSetStakeToken={() => {
               setStakingVisibleModal(true);
-              ReactGA.modalview(Token.DAI + ModalViewType.StakingOrUnstakingModal);
+              ReactGA.modalview(
+                Token.DAI + ModalViewType.StakingOrUnstakingModal,
+              );
               setStakeToken(Token.DAI);
             }}
             round={round}
@@ -483,8 +488,8 @@ function LPStaking(): JSX.Element {
           <Reward
             rewardToReceive={rewardToReceive}
             onHandler={() => {
-              setRewardVisibleModal(true)
-              ReactGA.modalview(ModalViewType.LPStakingIncentiveModal)
+              setRewardVisibleModal(true);
+              ReactGA.modalview(ModalViewType.LPStakingIncentiveModal);
             }}
           />
         </section>
