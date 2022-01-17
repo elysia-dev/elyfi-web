@@ -1077,7 +1077,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                 )}
               </section>
             ) : (
-              <div className="staking__coming-soon">
+              <div className={`staking__coming-soon ${stakedToken === Token.EL ? "el" : "elfi"}`}>
                 <div>
                   <h2>COMING SOON</h2>
                 </div>
