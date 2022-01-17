@@ -19,7 +19,6 @@ import ReserveToken from 'src/core/types/ReserveToken';
 import isSupportedToken from 'src/core/utils/isSupportedReserve';
 
 export type BalanceType = {
-  loading: boolean;
   id: string;
   tokenName: ReserveToken;
   value: BigNumber;
@@ -34,7 +33,6 @@ export type BalanceType = {
 }
 
 const initialBalanceState = {
-  loading: true,
   value: constants.Zero,
   incentiveRound1: constants.Zero,
   incentiveRound2: constants.Zero,
@@ -123,12 +121,13 @@ const fetchBalanceFrom = async (
 type ReturnType = {
 	balances: BalanceType[],
 	loadBalance: (id: string) => void,
+  loading: boolean,
 };
 
 // ! FIXME
 // 1. Use other naming. Balance dose not cover the usefulness
 const useBalances = (refetchUserData: () => void): ReturnType => {
-	const { account, library } = useWeb3React();
+	const { account, library, chainId } = useWeb3React();
 	const { data } = useContext(SubgraphContext);
 	const [balances, setBalances] = useState<BalanceType[]>(
 		data.reserves
@@ -140,12 +139,13 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
 				};
 			}),
 	);
-	const { elfiPrice } = useContext(PriceContext);
-	const {
+  const [loading, setLoading] = useState(true);
+  const { elfiPrice } = useContext(PriceContext);
+  const {
     type: mainnetType,
   } = useContext(MainnetContext)
 
-	const loadBalance = async (id: string) => {
+  const loadBalance = async (id: string) => {
     if (!account) return;
     try {
       refetchUserData();
@@ -188,7 +188,6 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
 
 							return {
 								id: reserve.id,
-								loading: false,
 								tokenName,
 								updatedAt: moment().unix(),
 								...(await fetchBalanceFrom(reserve, account, library, tokenName)),
@@ -201,18 +200,23 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
         balances.map((data) => {
           return {
             ...data,
-            loading: false,
           };
         }),
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
+    if (!chainId) return;
+    setLoading(true)
     loadBalances();
   }, [account, mainnetType]);
 
   useEffect(() => {
+    if(loading) return;
+
     const interval = setInterval(() => {
       setBalances(
         balances.map((balance) => {
@@ -261,9 +265,9 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     return () => {
       clearInterval(interval);
     };
-  }, [balances, mainnetType]);
+  }, [balances, mainnetType, loading]);
 
-	return { balances, loadBalance }
+	return { balances, loading, loadBalance }
 };
 
 export default useBalances

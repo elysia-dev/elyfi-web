@@ -30,7 +30,7 @@ import scrollToOffeset from 'src/core/utils/scrollToOffeset';
 import useBalances from 'src/hooks/useBalances';
 
 const Dashboard: React.FunctionComponent = () => {
-  const { account, library, chainId } = useWeb3React();
+  const { account } = useWeb3React();
   const { data } = useContext(SubgraphContext);
   const { elfiPrice } = useContext(PriceContext);
   const [reserveData, setReserveData] = useState<IReserveSubgraphData | undefined>();
@@ -44,7 +44,7 @@ const Dashboard: React.FunctionComponent = () => {
     GET_USER,
     { variables: { id: account?.toLocaleLowerCase() } },
   );
-  const { balances, loadBalance } = useBalances(refetchUserData);
+  const { balances, loading, loadBalance } = useBalances(refetchUserData);
   const [transactionModal, setTransactionModal] = useState(false);
   const [selectedBalanceId, selectBalanceId] = useState("");
   const [connectWalletModalvisible, setConnectWalletModalvisible] = useState<boolean>(false);
@@ -208,6 +208,7 @@ const Dashboard: React.FunctionComponent = () => {
                 setModalNumber={() => selectBalanceId(balance.id)}
                 modalview={() => ReactGA.modalview(balance.tokenName + ModalViewType.IncentiveModal)}
                 setRound={setRound}
+                loading={loading}
               />
             );
           })}

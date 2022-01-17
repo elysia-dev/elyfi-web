@@ -34,6 +34,7 @@ interface Props {
   modalview: () => void;
   setRound: (round: number) => void;
   id: string;
+  loading: boolean;
 }
 
 const TokenTable: React.FC<Props> = ({
@@ -45,8 +46,11 @@ const TokenTable: React.FC<Props> = ({
   modalview,
   setRound,
   id,
+  loading,
 }) => {
-  const { data, loading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
+  // ! BUG
+  // Bsc asset bond tokens should be loaded with bsc endpoint
+  const { data, loading: assetLoading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
   const { account } = useWeb3React();
   const { t, i18n } = useTranslation();
   const tokenInfo = reserveTokenData[balance.tokenName];
@@ -101,14 +105,12 @@ const TokenTable: React.FC<Props> = ({
             <div className="deposit__table__header__data-grid">
               <div />
               {tableData.map((data) => {
-                return balance.loading ? (
-                  <Skeleton width={120} />
-                ) : (
+                return (
                   <div>
                     <p>{data[0]}</p>
                     <p className="bold">{data[1]}</p>
                   </div>
-                );
+                )
               })}
             </div>
           )}
@@ -119,14 +121,12 @@ const TokenTable: React.FC<Props> = ({
               <div className="deposit__table__header__data-grid">
                 <div />
                 {tableData.map((data) => {
-                  return balance.loading ? (
-                    <Skeleton width={120} />
-                  ) : (
+                  return (
                     <div>
                       <p>{data[0]}</p>
                       <p className="bold">{data[1]}</p>
                     </div>
-                  );
+                  )
                 })}
               </div>
             )}
@@ -144,6 +144,7 @@ const TokenTable: React.FC<Props> = ({
                   balance.value || constants.Zero,
                   tokenInfo?.decimals,
                 ) : undefined}
+                loading={account ? loading : false}
               />
             </div>
             <div className="deposit__table__body__amount__wrapper right">
@@ -179,6 +180,7 @@ const TokenTable: React.FC<Props> = ({
                   'YYYY.MM.DD',
                 )} KST`}
                 tokenName={'ELFI'}
+                loading={account ? loading : false}
               />
             </div>
           </div>
@@ -230,7 +232,7 @@ const TokenTable: React.FC<Props> = ({
           }
 
           <div className="deposit__table__body__loan-list" style={{ display: list?.length === 0 ? "none" : "block" }}>
-            {loading ? (
+            {assetLoading ? (
               <Skeleton
                 width={mediaQuery === MediaQuery.PC ? 1148 : 340}
                 height={768}
