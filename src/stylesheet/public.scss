@@ -2121,6 +2121,9 @@ input[type='number'] {
         display: flex;
         flex-direction: row;
         border: 1px solid $gray-line;
+        .wait {
+          width: 100%;
+        }
         &__title {
           border-right: 1px solid #e6e6e6;
           display: flex;
