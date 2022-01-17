@@ -23,7 +23,7 @@ const IncentiveModal: FunctionComponent<{
   incentivePoolAddress: string;
   tokenName: string;
   onClose: () => void;
-  afterTx: () => Promise<void>;
+  afterTx: () => void;
   transactionModal: () => void;
 }> = ({
   visible,

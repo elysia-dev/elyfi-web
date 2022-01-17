@@ -43,7 +43,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   reserve: IReserveSubgraphData;
   userData: GetUser_user | undefined | null;
   onClose: () => void;
-  afterTx: () => Promise<void>;
+  afterTx: () => void;
   transactionModal: () => void;
   round: number;
 }> = ({

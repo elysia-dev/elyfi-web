@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import { reserveTokenData } from 'src/core/data/reserves';
-import { useEffect, useContext, useState, useMemo } from 'react';
+import { useContext, useState, useMemo } from 'react';
 import { toPercent, toCompactForBignumber } from 'src/utiles/formatters';
 import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
 import { BigNumber, constants } from 'ethers';
@@ -8,166 +8,26 @@ import { useQuery } from '@apollo/client';
 import { GetUser } from 'src/queries/__generated__/GetUser';
 import { GET_USER } from 'src/queries/userQueries';
 import { useTranslation } from 'react-i18next';
-import envs from 'src/core/envs';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
-import calcExpectedIncentive from 'src/utiles/calcExpectedIncentive';
-import moment from 'moment';
 import PriceContext from 'src/contexts/PriceContext';
-import {
-  ERC20__factory,
-  IncentivePool__factory,
-} from '@elysia-dev/contract-typechain';
 import ReactGA from 'react-ga';
 import TokenTable from 'src/components/TokenTable';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
-import Token from 'src/enums/Token';
 import IncentiveModal from 'src/containers/IncentiveModal';
 import isWalletConnect from 'src/hooks/isWalletConnect';
 import ConnectWalletModal from 'src/containers/ConnectWalletModal';
 import WrongMainnetModal from 'src/containers/WrongMainnetModal';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
-import {
-  daiMoneyPoolTime,
-  tetherMoneyPoolTime,
-} from 'src/core/data/moneypoolTimes';
+
 import ModalViewType from 'src/enums/ModalViewType';
 import { useMediaQuery } from 'react-responsive';
 import SubgraphContext, { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import MainnetContext from 'src/contexts/MainnetContext';
 import TvlCounter from 'src/components/TvlCounter';
 import { MainnetData } from 'src/core/data/mainnets';
-import getTokenNameFromAddress from 'src/utiles/getTokenNameFromAddress';
 import getIncentivePoolAddress from 'src/core/utils/getIncentivePoolAddress';
-
-type BalanceType = {
-  loading: boolean;
-  id: string;
-  tokenName: Token.DAI | Token.USDT | Token.BUSD;
-  value: BigNumber;
-  incentiveRound1: BigNumber;
-  incentiveRound2: BigNumber;
-  expectedIncentiveBefore: BigNumber;
-  expectedIncentiveAfter: BigNumber;
-  expectedAdditionalIncentiveBefore: BigNumber;
-  expectedAdditionalIncentiveAfter: BigNumber;
-  deposit: BigNumber;
-  updatedAt: number;
-}
-
-const initialBalanceState = {
-  loading: false,
-  value: constants.Zero,
-  incentiveRound1: constants.Zero,
-  incentiveRound2: constants.Zero,
-  expectedIncentiveBefore: constants.Zero,
-  expectedIncentiveAfter: constants.Zero,
-  expectedAdditionalIncentiveBefore: constants.Zero,
-  expectedAdditionalIncentiveAfter: constants.Zero,
-  deposit: constants.Zero,
-  id: "",
-  updatedAt: moment().unix(),
-};
-
-const remoteControlScroll = (ref: string) => {
-  const element = document.getElementById(ref);
-
-  const offset = 338;
-
-  const bodyRect = document.body.getBoundingClientRect().top;
-  const elementRect = element!.getBoundingClientRect().top;
-  const elementPosition = elementRect - bodyRect;
-  const offsetPosition = elementPosition - offset;
-
-  window.scrollTo({
-    top: offsetPosition,
-    behavior: 'smooth',
-  });
-};
-
-// Refactoring...
-const getIncentiveByRound = async (
-  library: any,
-  tokenName: Token.DAI | Token.USDT | Token.BUSD,
-  account: string,
-) => {
-  const incentiveRound1 = await IncentivePool__factory.connect(
-    tokenName === Token.DAI
-      ? envs.prevDaiIncentivePool
-      : tokenName === Token.USDT
-        ? envs.prevUSDTIncentivePool
-        : envs.busdIncentivePoolAddress,
-    library.getSigner(),
-  ).getUserIncentive(account);
-
-  const incentiveRound2 = await IncentivePool__factory.connect(
-    tokenName === Token.DAI
-      ? envs.currentDaiIncentivePool
-      : tokenName === Token.USDT
-        ? envs.currentUSDTIncentivePool
-        : envs.busdIncentivePoolAddress,
-    library.getSigner(),
-  ).getUserIncentive(account);
-
-  return {
-    incentiveRound1,
-    incentiveRound2,
-  };
-};
-
-// TODO -> BUSDT는 BSC로 요청하자
-// TODO : supported chain만 balance update하기
-const fetchBalanceFrom = async (
-  reserve: IReserveSubgraphData,
-  account: string,
-  library: any,
-  tokenName: Token.DAI | Token.BUSD | Token.USDT,
-) => {
-  try {
-    const { incentiveRound1, incentiveRound2 } = await getIncentiveByRound(
-      library,
-      tokenName,
-      account,
-    );
-
-    return {
-      value: await ERC20__factory.connect(reserve.id, library).balanceOf(
-        account,
-      ),
-      incentiveRound1,
-      incentiveRound2,
-      expectedIncentiveBefore: incentiveRound1,
-      expectedIncentiveAfter: incentiveRound1,
-      expectedAdditionalIncentiveBefore: incentiveRound2,
-      expectedAdditionalIncentiveAfter: incentiveRound2,
-      deposit: await ERC20__factory.connect(
-        reserve.lToken.id,
-        library,
-      ).balanceOf(account),
-    };
-  } catch (error) {
-    return {
-      value: constants.Zero,
-      incentiveRound1: constants.Zero,
-      incentiveRound2: constants.Zero,
-      expectedIncentiveBefore: constants.Zero,
-      expectedIncentiveAfter: constants.Zero,
-      expectedAdditionalIncentiveBefore: constants.Zero,
-      expectedAdditionalIncentiveAfter: constants.Zero,
-      deposit: constants.Zero
-    }
-  }
-};
-
-const isEndedIncentive = (token: string, round: number): boolean => {
-  if(token === Token.BUSD) return true;
-  const moneyPoolTime =
-    token === Token.DAI ? daiMoneyPoolTime : tetherMoneyPoolTime;
-  return moment().isAfter(
-    round === 1
-      ? moneyPoolTime[round].startedAt
-      : moneyPoolTime[round].endedAt,
-  );
-};
+import scrollToOffeset from 'src/core/utils/scrollToOffeset';
+import useBalances from 'src/hooks/useBalances';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account, library, chainId } = useWeb3React();
@@ -175,27 +35,16 @@ const Dashboard: React.FunctionComponent = () => {
   const { elfiPrice } = useContext(PriceContext);
   const [reserveData, setReserveData] = useState<IReserveSubgraphData | undefined>();
   const { t } = useTranslation();
-  const [balances, setBalances] = useState<BalanceType[]>(
-    data.reserves
-      .map((reserve) => {
-        return {
-          ...initialBalanceState,
-          id: reserve.id,
-          tokenName: getTokenNameFromAddress(reserve.id) as Token.DAI | Token.USDT | Token.BUSD,
-        };
-      }),
-  );
   const {
-    type: mainnetType,
     unsupportedChainid
   } = useContext(MainnetContext)
-
   const [incentiveModalVisible, setIncentiveModalVisible] =
     useState<boolean>(false);
   const { data: userConnection, refetch: refetchUserData } = useQuery<GetUser>(
     GET_USER,
     { variables: { id: account?.toLocaleLowerCase() } },
   );
+  const { balances, loadBalance } = useBalances(refetchUserData);
   const [transactionModal, setTransactionModal] = useState(false);
   const [selectedBalanceId, selectBalanceId] = useState("");
   const [connectWalletModalvisible, setConnectWalletModalvisible] = useState<boolean>(false);
@@ -213,120 +62,6 @@ const Dashboard: React.FunctionComponent = () => {
   const isEnoughWide = useMediaQuery({
     query: '(min-width: 1439px)',
   });
-
-  const loadBalance = async (id: string) => {
-    if (!account) return;
-    try {
-      refetchUserData();
-
-      setBalances(
-        await Promise.all(
-          balances.map(async (balance, _index) => {
-            const reserve = data.reserves.find(r => r.id === id)
-            if (balance.id !== id || !reserve) return {
-              ...balance
-            }
-            return {
-              ...balance,
-              ...(await fetchBalanceFrom(reserve, account, library, balance.tokenName)),
-              updatedAt: moment().unix(),
-            };
-          }),
-        ),
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const loadBalances = async () => {
-    if (!account) {
-      return;
-    }
-
-    try {
-      refetchUserData();
-      setBalances(
-        await Promise.all(
-          data.reserves
-            .map(async (reserve) => {
-              const tokenName = getTokenNameFromAddress(reserve.id) as Token.DAI | Token.USDT | Token.BUSD;
-              return {
-                id: reserve.id,
-                loading: false,
-                ...(await fetchBalanceFrom(reserve, account, library, tokenName)),
-                tokenName,
-                updatedAt: moment().unix(),
-              } as BalanceType;
-            }),
-        ),
-      );
-    } catch (error) {
-      setBalances(
-        balances.map((data) => {
-          return {
-            ...data,
-            loading: false,
-          };
-        }),
-      );
-    }
-  };
-
-  useEffect(() => {
-    loadBalances();
-  }, [account, mainnetType]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setBalances(
-        balances.map((balance) => {
-          const reserve = data.reserves.find(r => r.id === balance.id)
-          if(!reserve) return balance;
-
-          return {
-            ...balance,
-            expectedIncentiveBefore: balance.expectedIncentiveAfter,
-            expectedIncentiveAfter: isEndedIncentive(balance.tokenName, 0)
-              ? balance.expectedIncentiveAfter
-              : balance.incentiveRound1.add(
-                  calcExpectedIncentive(
-                    elfiPrice,
-                    balance.deposit,
-                    calcMiningAPR(
-                      elfiPrice,
-                      BigNumber.from(reserve.totalDeposit),
-                    ),
-                    balance.updatedAt,
-                  ),
-                ),
-            expectedAdditionalIncentiveBefore:
-              balance.expectedAdditionalIncentiveAfter,
-            expectedAdditionalIncentiveAfter: !isEndedIncentive(
-              balance.tokenName,
-              1,
-            )
-              ? balance.expectedAdditionalIncentiveAfter
-              : balance.incentiveRound2.add(
-                  calcExpectedIncentive(
-                    elfiPrice,
-                    balance.deposit,
-                    calcMiningAPR(
-                      elfiPrice,
-                      BigNumber.from(reserve.totalDeposit),
-                    ),
-                    balance.updatedAt,
-                  ),
-                ),
-          };
-        }),
-      );
-    }, 3000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [balances, mainnetType]);
 
   return (
     <>
@@ -399,7 +134,7 @@ const Dashboard: React.FunctionComponent = () => {
                     if (!reserve) return <></>;
 
                     return (
-                      <a onClick={() => remoteControlScroll(`table-${index}`)}>
+                      <a onClick={() => scrollToOffeset(`table-${index}`, 338)}>
                         <div>
                           <div className="deposit__remote-control__images">
                             <img src={reserveTokenData[balance.tokenName].image} />
