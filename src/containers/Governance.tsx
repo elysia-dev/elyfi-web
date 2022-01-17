@@ -42,7 +42,7 @@ const Governance = (): JSX.Element => {
     const headerY = headerRef.current.offsetTop + 80;
     if (!canvas) return;
     canvas.width = document.body.clientWidth * dpr;
-    canvas.height = document.body.clientHeight * dpr;
+    canvas.height = (document.body.clientHeight * dpr) / 2;
     const browserWidth = canvas.width / dpr + 40;
     const ctx = canvas.getContext('2d');
 
