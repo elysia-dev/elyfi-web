@@ -33,6 +33,7 @@ interface EnvironmentVariables {
   bscMoneyPoolAddress: string;
   bscElfiAddress: string;
   busdAddress: string;
+  busdIncentivePoolAddress: string;
   bscSubgraphURI: string;
   prevDaiIncentivePool: string;
   prevUSDTIncentivePool: string;

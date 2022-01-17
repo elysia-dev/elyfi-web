@@ -39,6 +39,7 @@ import MainnetType from 'src/enums/MainnetType';
 import TvlCounter from 'src/components/TvlCounter';
 import { MainnetData } from 'src/core/data/mainnets';
 import getTokenNameFromAddress from 'src/utiles/getTokenNameFromAddress';
+import getIncentivePoolAddress from 'src/core/utils/getIncentivePoolAddress';
 
 type BalanceType = {
   loading: boolean;
@@ -365,15 +366,7 @@ const Dashboard: React.FunctionComponent = () => {
           balanceAfter={
             round === 2 ? selectedBalance.expectedIncentiveAfter : selectedBalance.expectedAdditionalIncentiveAfter
           }
-          incentivePoolAddress={
-            round === 2
-              ? selectedBalance.tokenName === Token.DAI
-                ? envs.currentDaiIncentivePool
-                : envs.currentUSDTIncentivePool
-              : selectedBalance.tokenName === Token.DAI
-                ? envs.prevDaiIncentivePool
-                : envs.prevUSDTIncentivePool
-          }
+          incentivePoolAddress={getIncentivePoolAddress(round, selectedBalance.tokenName)}
           tokenName={selectedBalance.tokenName}
           afterTx={() => loadBalance(selectedBalanceId)}
           transactionModal={() => setTransactionModal(true)}
