@@ -1,30 +1,43 @@
 {
-  "moneyPoolAddress": "0xa93008fD32EB24E488DDAA6C0aA152559fDa9E8c",
-  "governanceAddress": "0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4",
-  "elStakingPoolAddress": "0xd804e198d25a1920522ca0094a670184a9c972d7",
-  "elfyStakingPoolAddress": "0xb41bcd480fbd986331eeed516c52e447b50dacb4",
-  "elfyV2StakingPoolAddress": "0xCD668B44C7Cf3B63722D5cE5F655De68dD8f2750",
-  "elAddress": "0x2781246fe707bb15cee3e5ea354e2154a2877b16",
-  "daiAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
-  "usdtAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-  "requiredNetwork": "ganache",
-  "requiredChainId": 1337,
-  "subgraphURI": "https://api.studio.thegraph.com/query/862/elyfi/v0.0.4",
-  "etherscanURI": "https://etherscan.io",
-  "nonFungiblePositionAddress": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
-  "stakerAddress": "0x1f98407aaB862CdDeF78Ed252D6f557aA5b0f00d",
-  "wEthAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-  "daiElfiPoolAddress": "0xbde484db131bd2ae80e44a57f865c1dfebb7e31f",
-  "ethElfiPoolAddress": "0xc311faebe8802f9cfc91284016d1de9537ec66b7",
-  "stakerSubgraphURL": "https://api.studio.thegraph.com/query/862/lp-staking-elyfi/v0.0.8",
-  "lpTokenPoolSubgraphURL": "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3",
-  "refundedAddress": "0x23b062F33ed93EE8C8e658e609dbd80797DFdA89",
-  "appURI": "https://app.elyfi.world",
-  "etherscan": "https://etherscan.io",
-  "daiTokenizerAddress": "0xc6701e7be98A79485364419961838EB141141aAf",
-  "usdtTokeninzerAddress": "0x68f69Ab21242e194ebd7534B598e26180dD92616",
-  "prevDaiIncentivePool": "0xD1e55Bff66da2Dc0290269B8e4b843531EBa7628",
-  "prevUSDTIncentivePool": "0xda2376FC014d0F351a7A9eBAF48B26902168E6D3",
-  "currentDaiIncentivePool": "0xFeCd3cA2cF7FaB7e3236239888E167b1d07d556b",
-  "currentUSDTIncentivePool": "0x3Fed75D8f58A0Ca57ecaB7446580266AC846De06"
+  "moneyPool": {
+    "moneyPoolAddress": "0xa93008fD32EB24E488DDAA6C0aA152559fDa9E8c",
+    "daiTokenizerAddress": "0xc6701e7be98A79485364419961838EB141141aAf",
+    "usdtTokeninzerAddress": "0x68f69Ab21242e194ebd7534B598e26180dD92616",
+    "prevDaiIncentivePool": "0xD1e55Bff66da2Dc0290269B8e4b843531EBa7628",
+    "prevUSDTIncentivePool": "0xda2376FC014d0F351a7A9eBAF48B26902168E6D3",
+    "currentDaiIncentivePool": "0xFeCd3cA2cF7FaB7e3236239888E167b1d07d556b",
+    "currentUSDTIncentivePool": "0x3Fed75D8f58A0Ca57ecaB7446580266AC846De06"
+  },
+  "staking": {
+    "elStakingPoolAddress": "0xd804e198d25a1920522ca0094a670184a9c972d7",
+    "elfyStakingPoolAddress": "0xb41bcd480fbd986331eeed516c52e447b50dacb4",
+    "elfyV2StakingPoolAddress": "0xCD668B44C7Cf3B63722D5cE5F655De68dD8f2750"
+  },
+  "lpStaking": {
+    "daiElfiPoolAddress": "0xbde484db131bd2ae80e44a57f865c1dfebb7e31f",
+    "ethElfiPoolAddress": "0xc311faebe8802f9cfc91284016d1de9537ec66b7",
+    "stakerAddress": "0x1f98407aaB862CdDeF78Ed252D6f557aA5b0f00d",
+    "nonFungiblePositionAddress": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
+    "refundedAddress": "0x23b062F33ed93EE8C8e658e609dbd80797DFdA89"
+  },
+  "token": {
+    "governanceAddress": "0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4",
+    "elAddress": "0x2781246fe707bb15cee3e5ea354e2154a2877b16",
+    "daiAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
+    "usdtAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+    "wEthAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+  },
+  "network": {
+    "requiredNetwork": "ganache",
+    "requiredChainId": 1337
+  },
+  "subgraphApiEndpoint": {
+    "subgraphURI": "https://api.studio.thegraph.com/query/862/elyfi/v0.0.4",
+    "stakerSubgraphURL": "https://api.studio.thegraph.com/query/862/lp-staking-elyfi/v0.0.8",
+    "lpTokenPoolSubgraphURL": "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3"
+  },
+  "externalApiEndpoint": {
+    "etherscanURI": "https://etherscan.io",
+    "appURI": "https://app.elyfi.world"
+  }
 }

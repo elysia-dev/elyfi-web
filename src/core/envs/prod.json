@@ -1,31 +1,44 @@
 {
-  "moneyPoolAddress": "0xa93008fD32EB24E488DDAA6C0aA152559fDa9E8c",
-  "governanceAddress": "0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4",
-  "testStableAddress": "0x73e839d53FB65eb954B04Ea0cC0e2e11aAB936F7",
-  "elStakingPoolAddress": "0xd804e198d25a1920522ca0094a670184a9c972d7",
-  "elfyStakingPoolAddress": "0xb41bcd480fbd986331eeed516c52e447b50dacb4",
-  "elfyV2StakingPoolAddress": "0xCD668B44C7Cf3B63722D5cE5F655De68dD8f2750",
-  "elAddress": "0x2781246fe707bb15cee3e5ea354e2154a2877b16",
-  "daiAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
-  "usdtAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-  "requiredNetwork": "Mainnet",
-  "requiredChainId": 1,
-  "subgraphURI": "https://gateway.thegraph.com/api/96f993b15274d04d4c1be0cb5fb79ff6/subgraphs/id/0x9d2d46e67c420147834c76b23c9bac485f114feb-0",
-  "etherscanURI": "https://etherscan.io",
-  "nonFungiblePositionAddress": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
-  "stakerAddress": "0x1f98407aaB862CdDeF78Ed252D6f557aA5b0f00d",
-  "wEthAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-  "daiElfiPoolAddress": "0xbde484db131bd2ae80e44a57f865c1dfebb7e31f",
-  "ethElfiPoolAddress": "0xc311faebe8802f9cfc91284016d1de9537ec66b7",
-  "stakerSubgraphURL": "https://api.studio.thegraph.com/query/862/lp-staking-elyfi/v0.0.8",
-  "lpTokenPoolSubgraphURL": "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3",
-  "refundedAddress": "0x23b062F33ed93EE8C8e658e609dbd80797DFdA89",
-  "appURI": "https://app.elyfi.world",
-  "etherscan": "https://etherscan.io",
-  "daiTokenizerAddress": "0xc6701e7be98A79485364419961838EB141141aAf",
-  "usdtTokeninzerAddress": "0x68f69Ab21242e194ebd7534B598e26180dD92616",
-  "prevDaiIncentivePool": "0xe58158FFea021a5883dd1256f2AFf0b1f07d79b3",
-  "prevUSDTIncentivePool": "0x6A93E28A5d3148DcD8b5ca1419C4c9D34fd302eb",
-  "currentDaiIncentivePool": "0x3Fed75D8f58A0Ca57ecaB7446580266AC846De06",
-  "currentUSDTIncentivePool": "0x94aa0e263f7fCae5648A1062877FE66788402f71"
+  "moneyPool": {
+    "moneyPoolAddress": "0xa93008fD32EB24E488DDAA6C0aA152559fDa9E8c",
+    "daiTokenizerAddress": "0xc6701e7be98A79485364419961838EB141141aAf",
+    "usdtTokeninzerAddress": "0x68f69Ab21242e194ebd7534B598e26180dD92616",
+    "prevDaiIncentivePool": "0xe58158FFea021a5883dd1256f2AFf0b1f07d79b3",
+    "prevUSDTIncentivePool": "0x6A93E28A5d3148DcD8b5ca1419C4c9D34fd302eb",
+    "currentDaiIncentivePool": "0x3Fed75D8f58A0Ca57ecaB7446580266AC846De06",
+    "currentUSDTIncentivePool": "0x94aa0e263f7fCae5648A1062877FE66788402f71"
+  },
+  "staking": {
+    "elStakingPoolAddress": "0xd804e198d25a1920522ca0094a670184a9c972d7",
+    "elfyStakingPoolAddress": "0xb41bcd480fbd986331eeed516c52e447b50dacb4",
+    "elfyV2StakingPoolAddress": "0xCD668B44C7Cf3B63722D5cE5F655De68dD8f2750"
+  },
+  "lpStaking": {
+    "daiElfiPoolAddress": "0xbde484db131bd2ae80e44a57f865c1dfebb7e31f",
+    "ethElfiPoolAddress": "0xc311faebe8802f9cfc91284016d1de9537ec66b7",
+    "stakerAddress": "0x1f98407aaB862CdDeF78Ed252D6f557aA5b0f00d",
+    "nonFungiblePositionAddress": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
+    "refundedAddress": "0x23b062F33ed93EE8C8e658e609dbd80797DFdA89"
+  },
+  "token": {
+    "governanceAddress": "0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4",
+    "elAddress": "0x2781246fe707bb15cee3e5ea354e2154a2877b16",
+    "daiAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
+    "usdtAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+    "wEthAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+  },
+  "network": {
+    "requiredNetwork": "Mainnet",
+    "requiredChainId": 1
+  },
+  "subgraphApiEndpoint": {
+    "subgraphURI": "https://gateway.thegraph.com/api/96f993b15274d04d4c1be0cb5fb79ff6/subgraphs/id/0x9d2d46e67c420147834c76b23c9bac485f114feb-0",
+    "stakerSubgraphURL": "https://api.studio.thegraph.com/query/862/lp-staking-elyfi/v0.0.8",
+    "lpTokenPoolSubgraphURL": "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3"
+  },
+  "externalApiEndpoint": {
+    "etherscanURI": "https://etherscan.io",
+    "appURI": "https://app.elyfi.world"
+  },
+  "testStableAddress": "0x73e839d53FB65eb954B04Ea0cC0e2e11aAB936F7"
 }
