@@ -99,8 +99,6 @@ const getIncentiveByRound = async (
     library.getSigner(),
   ).getUserIncentive(account);
 
-  console.log(incentiveRound1)
-
   const incentiveRound2 = await IncentivePool__factory.connect(
     tokenName === Token.DAI
       ? envs.currentDaiIncentivePool
@@ -147,7 +145,6 @@ const fetchBalanceFrom = async (
       ).balanceOf(account),
     };
   } catch (error) {
-    console.log(error)
     return {
       value: constants.Zero,
       incentiveRound1: constants.Zero,
