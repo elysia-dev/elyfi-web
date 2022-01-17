@@ -513,7 +513,7 @@ const Dashboard: React.FunctionComponent = () => {
                     : setIncentiveModalVisible(true);
                 }}
                 setModalNumber={() => setModalNumber(index)}
-                modalview={() =>
+                incentiveModalGA={() =>
                   ReactGA.modalview(
                     balance.tokenName + ModalViewType.IncentiveModal,
                   )
