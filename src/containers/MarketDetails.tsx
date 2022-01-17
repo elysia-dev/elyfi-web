@@ -167,7 +167,7 @@ function MarketDetail(): JSX.Element {
     ctx.scale(dpr, dpr);
     new DrawWave(ctx, browserWidth).drawOnPages(
       headerY,
-      id === Token.DAI ? TokenColors.DAI : TokenColors.USDT,
+      id === Token.DAI ? TokenColors.DAI : id === Token.USDT ? TokenColors.USDT : TokenColors.BUSD,
     );
   };
 
