@@ -40,14 +40,13 @@ interface Props {
   expectedAdditionalIncentiveAfter: BigNumber;
   setIncentiveModalVisible: () => void;
   setModalNumber: () => void;
-  modalview: () => void;
+  incentiveModalGA: () => void;
   id: string;
 }
 
 const TokenTable: React.FC<Props> = ({
   tokenImage,
   tokenName,
-  index,
   onClick,
   depositBalance,
   depositAPY,
@@ -62,7 +61,7 @@ const TokenTable: React.FC<Props> = ({
   expectedAdditionalIncentiveAfter,
   setIncentiveModalVisible,
   setModalNumber,
-  modalview,
+  incentiveModalGA,
   id,
 }) => {
   const { data, loading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
@@ -159,7 +158,7 @@ const TokenTable: React.FC<Props> = ({
                   e.preventDefault();
                   setIncentiveModalVisible();
                   setModalNumber();
-                  modalview();
+                  incentiveModalGA();
                   setRound(1);
                 }}
                 buttonContent={t('dashboard.claim_reward')}
@@ -203,7 +202,7 @@ const TokenTable: React.FC<Props> = ({
                 e.preventDefault();
                 setIncentiveModalVisible();
                 setModalNumber();
-                modalview();
+                incentiveModalGA();
                 setRound(2);
               }}
               tokenName={tokenName}
