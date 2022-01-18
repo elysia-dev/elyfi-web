@@ -429,9 +429,20 @@ input[type='number'] {
         z-index: 2;
         cursor: pointer;
 
-        width: 150px;
+        width: 170px;
         height: 48px;
         border-radius: 5px;
+        &::after {
+          content: '';
+          display: inline-block;
+          width: 6px;
+          height: 6px;
+          margin-left: 20px;
+          margin-bottom: 2px;
+          border-top: 1px solid #333333;
+          border-right: 1px solid #333333;
+          transform: rotate(135deg);
+        }
         > h2 {
           font-size: 15px;
           font-family: $montserrat--bold;
@@ -4688,12 +4699,12 @@ input[type='number'] {
   .down_arrow {
     content: '';
     display: inline-block;
-    width: 10px;
-    height: 10px;
-    margin-left: 3px;
-    margin-bottom: 5px;
-    border-top: 2px solid #333333;
-    border-right: 2px solid #333333;
+    width: 6px;
+    height: 6px;
+    margin-left: 2px;
+    margin-bottom: 2px;
+    border-top: 1px solid #333333;
+    border-right: 1px solid #333333;
     transform: rotate(135deg);
   }
 

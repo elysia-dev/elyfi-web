@@ -164,7 +164,9 @@ const Navigation: React.FunctionComponent<{
               style={{
                 marginRight: 8,
               }}>
-              {t(_data.i18nKeyword).toUpperCase()}
+              <p>
+                {t(_data.i18nKeyword).toUpperCase()}
+              </p>
             </div>
             {!['navigation.dashboard', 'navigation.governance'].includes(
               _data.i18nKeyword.toLowerCase(),
