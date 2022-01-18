@@ -19,7 +19,7 @@ const Wallet = (props: any) => {
   const { txStatus } = useContext(TxContext);
 
   const WalletRef = useRef<HTMLDivElement>(null);
-  const { ensName } = useENS(account);
+  const { ensName, ensLoading } = useENS(account || "");
   const shortAddress = `${account?.slice(0, 6)}....${account?.slice(-4)}`;
 
   const { unsupportedChainid } = useContext(MainnetContext)
@@ -60,32 +60,32 @@ const Wallet = (props: any) => {
             </>
           ) : (
             <div className="navigation__wallet__wrapper">
-              <div>
-                <div className="navigation__address">
-                  {connected && (
-                    <div className="navigation__davatar">
+              <div className="navigation__address">
+                <div className="navigation__davatar">
+                  {
+                    (ensLoading && account && connected) && (
                       <Davatar
-                        size={18}
-                        address={account || ''}
+                        size={30}
+                        address={account}
                         generatedAvatarType="jazzicon"
                       />
-                    </div>
-                  )}
-                  <p
-                    className={`navigation__wallet__status${
-                      connected ? '--connected' : ''
-                    }`}>
-                    {!connected
-                      ? t('navigation.connect_wallet')
-                      : txStatus === TxStatus.PENDING
-                      ? 'Pending...'
-                      : txStatus === TxStatus.FAIL
-                      ? 'FAILED!'
-                      : txStatus === TxStatus.CONFIRM
-                      ? 'Confirmed!!'
-                      : `${ensName || shortAddress}`}
-                  </p>
+                    )
+                  }
                 </div>
+                <p
+                  className={`navigation__wallet__status${
+                    connected ? '--connected' : ''
+                  }`}>
+                  {!connected
+                    ? t('navigation.connect_wallet')
+                    : txStatus === TxStatus.PENDING
+                    ? 'Pending...'
+                    : txStatus === TxStatus.FAIL
+                    ? 'FAILED!'
+                    : txStatus === TxStatus.CONFIRM
+                    ? 'Confirmed!!'
+                    : `${ensName || shortAddress}`}
+                </p>
               </div>
             </div>
           )

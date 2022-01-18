@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import mainnetConverter from 'src/utiles/mainnetConverter';
 import TxContext from 'src/contexts/TxContext';
@@ -20,9 +20,8 @@ const AccountModal: React.FunctionComponent<{
   const { account, deactivate, chainId } = useWeb3React();
   const { t } = useTranslation();
   const { reset, txHash, txStatus, txType } = useContext(TxContext);
-  const { ensName } = useENS(account);
+  const { ensName, ensLoading } = useENS(account || "");
   const shortAddress = `${account?.slice(0, 8)}....${account?.slice(-6)}`;
-
 
   const AddressCopy = (data: string) => {
     if (!document.queryCommandSupported('copy')) {
@@ -71,11 +70,15 @@ const AccountModal: React.FunctionComponent<{
               <p>{mainnetConverter(chainId)}</p>
               <div>
                 <div className="navigation__davatar">
-                  <Davatar
-                    size={14}
-                    address={account || ''}
-                    generatedAvatarType="jazzicon"
-                  />
+                  {
+                    (ensLoading && account) && (
+                      <Davatar
+                        size={14}
+                        address={account}
+                        generatedAvatarType="jazzicon"
+                      />
+                    )
+                  }
                 </div>
                 <p className="bold">
                   {ensName || shortAddress}
