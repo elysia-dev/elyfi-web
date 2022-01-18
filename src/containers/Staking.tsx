@@ -1,6 +1,13 @@
 import elfi from 'src/assets/images/ELFI.png';
 import el from 'src/assets/images/el.png';
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { constants } from 'ethers';
 import Skeleton from 'react-loading-skeleton';
@@ -44,6 +51,7 @@ import { useParams } from 'react-router-dom';
 import ModalViewType from 'src/enums/ModalViewType';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
+import StakingModalType from 'src/enums/StakingModalType';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI;
@@ -99,16 +107,15 @@ const Staking: React.FunctionComponent<IProps> = ({
     Token.DAI,
   );
 
-  const [stakingModalVisible, setStakingModalVisible] =
-    useState<boolean>(false);
-  const [claimStakingRewardModalVisible, setClaimStakingRewardModalVisible] =
-    useState<boolean>(false);
-  const [migrationModalVisible, setMigrationModalVisible] =
-    useState<boolean>(false);
-  const [stakingEndedVisible, setStakingEndedVisible] =
-    useState<boolean>(false);
-  const [migrationEndedVisible, setMigrationEndedVisible] =
-    useState<boolean>(false);
+  const [modalType, setModalType] = useState('');
+
+  const modalVisible = useCallback(
+    (type: StakingModalType) => {
+      return modalType === type;
+    },
+    [modalType],
+  );
+
   const [transactionModal, setTransactionModal] = useState(false);
 
   const [selectModalRound, setRoundModal] = useState(0);
@@ -314,7 +321,7 @@ const Staking: React.FunctionComponent<IProps> = ({
         }}
       />
       <ClaimStakingRewardModal
-        visible={claimStakingRewardModalVisible}
+        visible={modalVisible(StakingModalType.Claim)}
         stakedToken={stakedToken}
         token={rewardToken}
         balance={
@@ -340,15 +347,15 @@ const Staking: React.FunctionComponent<IProps> = ({
         }
         currentRound={currentRound}
         round={selectModalRound + 1}
-        closeHandler={() => setClaimStakingRewardModalVisible(false)}
+        closeHandler={() => setModalType('')}
         afterTx={() => {
           account && fetchRoundData(account);
         }}
         transactionModal={() => setTransactionModal(true)}
       />
       <StakingModal
-        visible={stakingModalVisible}
-        closeHandler={() => setStakingModalVisible(false)}
+        visible={modalVisible(StakingModalType.Staking)}
+        closeHandler={() => setModalType('')}
         stakedToken={stakedToken}
         stakedBalance={
           loading
@@ -360,15 +367,15 @@ const Staking: React.FunctionComponent<IProps> = ({
           account && fetchRoundData(account);
         }}
         endedModal={() => {
-          setStakingEndedVisible(true);
+          setModalType(StakingModalType.StakingEnded);
         }}
         setTxStatus={getStatus}
         setTxWaiting={getWaiting}
         transactionModal={() => setTransactionModal(true)}
       />
       <MigrationModal
-        visible={migrationModalVisible}
-        closeHandler={() => setMigrationModalVisible(false)}
+        visible={modalVisible(StakingModalType.Migaration)}
+        closeHandler={() => setModalType('')}
         stakedToken={stakedToken}
         rewardToken={rewardToken}
         stakedBalance={loading ? constants.Zero : modalValue}
@@ -382,17 +389,17 @@ const Staking: React.FunctionComponent<IProps> = ({
         transactionModal={() => setTransactionModal(true)}
       />
       <StakingEnded
-        visible={stakingEndedVisible}
+        visible={modalVisible(StakingModalType.StakingEnded)}
         onClose={() => {
-          setStakingEndedVisible(false);
+          setModalType('');
           setState({ ...state, selectPhase: currentPhase });
         }}
         round={selectModalRound + 1}
       />
       <MigrationEnded
-        visible={migrationEndedVisible}
+        visible={modalVisible(StakingModalType.MigarationEnded)}
         onClose={() => {
-          setMigrationEndedVisible(false);
+          setModalType('');
           setState({ ...state, selectPhase: currentPhase });
         }}
         round={selectModalRound + 1}
@@ -676,7 +683,9 @@ const Staking: React.FunctionComponent<IProps> = ({
                                     );
                                     setRoundModal(index);
                                     setModalValue(item.accountPrincipal);
-                                    return setMigrationModalVisible(true);
+                                    return setModalType(
+                                      StakingModalType.Migaration,
+                                    );
                                   }
                                   if (
                                     current.diff(
@@ -689,7 +698,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                     );
                                     setRoundModal(index);
                                     setModalValue(item.accountPrincipal);
-                                    setStakingModalVisible(true);
+                                    setModalType(StakingModalType.Staking);
                                   }
                                 }}>
                                 <p>
@@ -714,7 +723,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                     stakingRoundTimes[index].startedAt,
                                   ) > 0 && setRoundModal(index);
                                   setModalValue(item.accountReward);
-                                  setClaimStakingRewardModalVisible(true);
+                                  setModalType(StakingModalType.Claim);
                                 }}>
                                 <p>{t('staking.claim_reward')}</p>
                               </div>
@@ -800,7 +809,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                 );
                                 setRoundModal(4);
                                 setModalValue(currentRound.accountPrincipal);
-                                setStakingModalVisible(true);
+                                setModalType(StakingModalType.Staking);
                               }}>
                               <p>{t('staking.staking_btn')}</p>
                             </div>
@@ -851,7 +860,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                 current.diff(stakingRoundTimes[4].startedAt) >
                                   0 && setRoundModal(4);
                                 setModalValue(expectedReward.value);
-                                setClaimStakingRewardModalVisible(true);
+                                setModalType(StakingModalType.Claim);
                               }}>
                               <p>{t('staking.claim_reward')}</p>
                             </div>
@@ -941,7 +950,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                               );
                               setRoundModal(4);
                               setModalValue(currentRound.accountPrincipal);
-                              setStakingModalVisible(true);
+                              setModalType(StakingModalType.Staking);
                             }}>
                             <p>{t('staking.staking_btn')}</p>
                           </div>
@@ -961,7 +970,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                               current.diff(stakingRoundTimes[4].startedAt) >
                                 0 && setRoundModal(4);
                               setModalValue(expectedReward.value);
-                              setClaimStakingRewardModalVisible(true);
+                              setModalType(StakingModalType.Claim);
                             }}>
                             <p>{t('staking.claim_reward')}</p>
                           </div>
