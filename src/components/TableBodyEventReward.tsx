@@ -13,14 +13,14 @@ type Props = {
   moneyPoolTime: string;
   buttonEvent: ((e: any) => void) | undefined;
   tokenName: Token.DAI | Token.USDT;
-  value: string | JSX.Element;
+  rewardCountUp: string | JSX.Element;
 };
 
 const TableBodyEventReward: FunctionComponent<Props> = ({
   moneyPoolTime,
   buttonEvent,
   tokenName,
-  value,
+  rewardCountUp,
 }) => {
   const { t, i18n } = useTranslation();
   const { account } = useWeb3React();
@@ -43,7 +43,7 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
             <div>
               <div className="bold">
                 {' '}
-                {account ? value : '-'}
+                {account ? rewardCountUp : '-'}
                 <span>{' ELFI'}</span>
               </div>
               <p>{moneyPoolTime}</p>
@@ -60,7 +60,7 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
               <div>
                 <div className="bold">
                   {' '}
-                  {account ? value : '-'}
+                  {account ? rewardCountUp : '-'}
                   <span>{' ELFI'}</span>
                 </div>
                 <p>{moneyPoolTime}</p>

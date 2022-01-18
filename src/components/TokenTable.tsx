@@ -186,7 +186,7 @@ const TokenTable: React.FC<Props> = ({
               moneyPoolTime={`${moment(daiMoneyPoolTime[1].startedAt).format(
                 'YYYY.MM.DD',
               )} KST ~ `}
-              value={
+              rewardCountUp={
                 <RewardCountUp
                   balance={balance}
                   reserveData={reserveData}
