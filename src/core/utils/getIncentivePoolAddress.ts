@@ -8,7 +8,7 @@ const getIncentivePoolAddress = (round: number, token: Token): string => {
 		case Token.USDT:
 			return round === 1 ? envs.prevDaiIncentivePool : envs.currentDaiIncentivePool
 		case Token.BUSD:
-			return envs.busdAddress
+			return envs.busdIncentivePoolAddress
 		default:
 			return envs.prevDaiIncentivePool
 	}
