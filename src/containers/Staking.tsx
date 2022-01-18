@@ -52,6 +52,7 @@ import ModalViewType from 'src/enums/ModalViewType';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
 import StakingModalType from 'src/enums/StakingModalType';
+import { StakingPool } from '@elysia-dev/contract-typechain';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI;
@@ -175,81 +176,91 @@ const Staking: React.FunctionComponent<IProps> = ({
     );
   };
 
+  const getStakingInfo = async (
+    round: number,
+    account: any,
+    stakingPool: StakingPool,
+  ) => {
+    const modifiedRound = (round + 1 - v2Threshold).toString();
+    const poolData = await stakingPool.getPoolData(modifiedRound);
+    const userData = await stakingPool.getUserData(modifiedRound, account);
+    const accountReward = await stakingPool.getUserReward(
+      account,
+      modifiedRound,
+    );
+    return {
+      poolData,
+      userData,
+      accountReward,
+    };
+  };
+
+  const setStakingRoundData = (account: string | null | undefined) => {
+    return stakingRoundTimes.map(async (_item, round) => {
+      let data;
+      if (stakingPoolV2 && stakingPool && account) {
+        if (round >= v2Threshold && stakedToken === Token.ELFI) {
+          data = await getStakingInfo(round, account, stakingPoolV2);
+        } else {
+          data = await getStakingInfo(
+            round + v2Threshold,
+            account,
+            stakingPool,
+          );
+        }
+        return {
+          accountReward: data.accountReward,
+          totalPrincipal: data.poolData.totalPrincipal,
+          accountPrincipal: data.userData.userPrincipal,
+          apr: calcAPR(
+            data.poolData.totalPrincipal,
+            stakedToken === Token.EL ? elPrice : elfiPrice,
+            rewardToken === Token.ELFI
+              ? ELFIPerDayOnELStakingPool
+              : DAIPerDayOnELFIStakingPool,
+            rewardToken === Token.ELFI ? elfiPrice : 1,
+          ),
+          loadedAt: moment(),
+          startedAt: stakingRoundTimes[round].startedAt,
+          endedAt: stakingRoundTimes[round].endedAt,
+        } as RoundData;
+      } else {
+        return {
+          accountReward: constants.Zero,
+          totalPrincipal: constants.Zero,
+          accountPrincipal: constants.Zero,
+          apr: stakedToken === Token.ELFI ? elfiPoolApr : elPoolApr,
+          loadedAt: moment(),
+          startedAt: stakingRoundTimes[round].startedAt,
+          endedAt: stakingRoundTimes[round].endedAt,
+        } as RoundData;
+      }
+    });
+  };
+
+  const setErrorStakingRoundData = () => {
+    return stakingRoundTimes.map(async (_item, round) => {
+      return {
+        accountReward: constants.Zero,
+        totalPrincipal: constants.Zero,
+        accountPrincipal: constants.Zero,
+        apr: stakedToken === Token.ELFI ? elfiPoolApr : elPoolApr,
+        loadedAt: moment(),
+        startedAt: stakingRoundTimes[round].startedAt,
+        endedAt: stakingRoundTimes[round].endedAt,
+      } as RoundData;
+    });
+  };
+
   const fetchRoundData = async (account: string | null | undefined) => {
     try {
-      const data = await Promise.all(
-        stakingRoundTimes.map(async (_item, round) => {
-          let poolData;
-          let userData;
-          let accountReward;
-          if (stakingPoolV2 && stakingPool && account) {
-            if (round >= v2Threshold && stakedToken === Token.ELFI) {
-              const modifiedRound = (round + 1 - v2Threshold).toString();
-              poolData = await stakingPoolV2.getPoolData(modifiedRound);
-              userData = await stakingPoolV2.getUserData(
-                modifiedRound,
-                account,
-              );
-              accountReward = await stakingPoolV2.getUserReward(
-                account,
-                modifiedRound,
-              );
-            } else {
-              const modifiedRound = (round + 1).toString();
-              poolData = await stakingPool.getPoolData(modifiedRound);
-              userData = await stakingPool.getUserData(modifiedRound, account);
-              accountReward = await stakingPool.getUserReward(
-                account,
-                modifiedRound,
-              );
-            }
-            return {
-              accountReward,
-              totalPrincipal: poolData.totalPrincipal,
-              accountPrincipal: userData.userPrincipal,
-              apr: calcAPR(
-                poolData.totalPrincipal,
-                stakedToken === Token.EL ? elPrice : elfiPrice,
-                rewardToken === Token.ELFI
-                  ? ELFIPerDayOnELStakingPool
-                  : DAIPerDayOnELFIStakingPool,
-                rewardToken === Token.ELFI ? elfiPrice : 1,
-              ),
-              loadedAt: moment(),
-              startedAt: stakingRoundTimes[round].startedAt,
-              endedAt: stakingRoundTimes[round].endedAt,
-            } as RoundData;
-          } else {
-            return {
-              accountReward: constants.Zero,
-              totalPrincipal: constants.Zero,
-              accountPrincipal: constants.Zero,
-              apr: stakedToken === Token.ELFI ? elfiPoolApr : elPoolApr,
-              loadedAt: moment(),
-              startedAt: stakingRoundTimes[round].startedAt,
-              endedAt: stakingRoundTimes[round].endedAt,
-            } as RoundData;
-          }
-        }),
-      );
-
+      const data = await Promise.all(setStakingRoundData(account));
       setroundData(data);
       setLoading(false);
     } catch (error) {
-      console.log(error);
-      const data = await Promise.all(
-        stakingRoundTimes.map(async (_item, round) => {
-          return {
-            accountReward: constants.Zero,
-            totalPrincipal: constants.Zero,
-            accountPrincipal: constants.Zero,
-            apr: stakedToken === Token.ELFI ? elfiPoolApr : elPoolApr,
-            loadedAt: moment(),
-            startedAt: stakingRoundTimes[round].startedAt,
-            endedAt: stakingRoundTimes[round].endedAt,
-          } as RoundData;
-        }),
-      );
+      console.log('error');
+      console.error(error);
+      const data = await Promise.all(setErrorStakingRoundData());
       setroundData(data);
       setLoading(false);
       setError(true);
@@ -286,12 +297,12 @@ const Staking: React.FunctionComponent<IProps> = ({
     };
   });
 
-  const getStatus = (status: txStatus) => {
-    setState({ ...state, txStatus: status });
-  };
-  const getWaiting = (isWaiting: boolean) => {
-    setState({ ...state, txWaiting: isWaiting });
-  };
+  // const getStatus = (status: txStatus,) => {
+  //   setState({ ...state, txStatus: status, txWaiting: isWaiting});
+  // };
+  // const getWaiting = (isWaiting: boolean) => {
+  //   setState({ ...state, txWaiting: isWaiting });
+  // };
 
   useEffect(() => {
     draw();
@@ -369,8 +380,6 @@ const Staking: React.FunctionComponent<IProps> = ({
         endedModal={() => {
           setModalType(StakingModalType.StakingEnded);
         }}
-        setTxStatus={getStatus}
-        setTxWaiting={getWaiting}
         transactionModal={() => setTransactionModal(true)}
       />
       <MigrationModal
