@@ -232,7 +232,7 @@ function MarketDetail(): JSX.Element {
         pathname: `/${lng}/deposit`,
       });
     }
-  }, [balances])
+  }, [balances, getMainnetType])
 
   // FIXME
   // const miningAPR = utils.parseUnits('10', 25);
