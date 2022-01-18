@@ -11,6 +11,7 @@ import envs from 'src/core/envs';
 import TxStatus from 'src/enums/TxStatus';
 import { reserveTokenData } from 'src/core/data/reserves';
 import ELFI from 'src/assets/images/ELFI.png'
+import Davatar from '@davatar/react';
 import ModalHeader from './ModalHeader';
 
 const AccountModal: React.FunctionComponent<{
@@ -74,7 +75,13 @@ const AccountModal: React.FunctionComponent<{
             <div>
               <p>{mainnetConverter(chainId)}</p>
               <div>
-                <div />
+                <div className="navigation__davatar">
+                  <Davatar
+                    size={14}
+                    address={account || ''}
+                    generatedAvatarType="jazzicon"
+                  />
+                </div>
                 <p className="spoqa__bold">
                   {account?.slice(0, 8)}....{account?.slice(-6)}
                 </p>
