@@ -3,7 +3,8 @@ import { createContext } from 'react';
 
 export interface IMainnetContextTypes {
   type: MainnetType,
-  unsupportedChainid: boolean
+  unsupportedChainid: boolean,
+  active: boolean,
 }
 
 export interface IMainnetContext extends IMainnetContextTypes {
@@ -13,7 +14,8 @@ export interface IMainnetContext extends IMainnetContextTypes {
 
 export const initialMainnetData: IMainnetContextTypes = {
   type: MainnetType.Ethereum,
-  unsupportedChainid: false
+  unsupportedChainid: false,
+  active: false
 }
 
 export const initialMainnetContext = {
