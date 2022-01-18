@@ -281,9 +281,11 @@ const MigrationModal: React.FunctionComponent<{
                 stakingType: stakedToken,
                 round,
                 migrationAmount: utils.formatEther(
-                  state.migrationAmount || '0',
+                  parseEther(state.migrationAmount) || '0',
                 ),
-                unstakingAmount: utils.formatEther(state.withdrawAmount || '0'),
+                unstakingAmount: utils.formatEther(
+                  parseEther(state.withdrawAmount) || '0',
+                ),
                 incentiveAmount: utils.formatEther(rewardBalance),
               }),
             );
