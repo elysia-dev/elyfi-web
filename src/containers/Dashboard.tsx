@@ -33,21 +33,17 @@ import ConnectWalletModal from 'src/containers/ConnectWalletModal';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
-import {
-  daiMoneyPoolTime,
-  tetherMoneyPoolTime,
-} from 'src/core/data/moneypoolTimes';
 import ModalViewType from 'src/enums/ModalViewType';
+import DepositBalance from 'src/core/types/DepositBalance';
 
 const initialBalanceState = {
   loading: false,
   value: constants.Zero,
-  incentiveRound1: constants.Zero,
-  incentiveRound2: constants.Zero,
-  expectedIncentiveBefore: constants.Zero,
-  expectedIncentiveAfter: constants.Zero,
-  expectedAdditionalIncentiveBefore: constants.Zero,
-  expectedAdditionalIncentiveAfter: constants.Zero,
+  incentive: [constants.Zero, constants.Zero],
+  daiIncentiveRound1: [constants.Zero, constants.Zero],
+  daiIncentiveRound2: [constants.Zero, constants.Zero],
+  usdtIncentiveRound1: [constants.Zero, constants.Zero],
+  usdtIncentiveRound2: [constants.Zero, constants.Zero],
   deposit: constants.Zero,
   updatedAt: moment().unix(),
 };
@@ -70,22 +66,8 @@ const Dashboard: React.FunctionComponent = () => {
   const [reserve, setReserve] = useState<GetAllReserves_reserves | undefined>(
     reserves.find((reserve) => reserveId === reserve.id),
   );
-  const { t, i18n } = useTranslation();
-  const [balances, setBalances] = useState<
-    {
-      loading: boolean;
-      tokenName: Token.DAI | Token.USDT;
-      value: BigNumber;
-      incentiveRound1: BigNumber;
-      incentiveRound2: BigNumber;
-      expectedIncentiveBefore: BigNumber;
-      expectedIncentiveAfter: BigNumber;
-      expectedAdditionalIncentiveBefore: BigNumber;
-      expectedAdditionalIncentiveAfter: BigNumber;
-      deposit: BigNumber;
-      updatedAt: number;
-    }[]
-  >(
+  const { t } = useTranslation();
+  const [balances, setBalances] = useState<DepositBalance[]>(
     reserves.map((reserve) => {
       return {
         ...initialBalanceState,
@@ -109,10 +91,6 @@ const Dashboard: React.FunctionComponent = () => {
   const [prevTvl, setPrevTvl] = useState(0);
   const [connectWalletModalvisible, setConnectWalletModalvisible] =
     useState<boolean>(false);
-  const [
-    incentiveNotificationModalvisble,
-    setIncentiveNotificationModalvisble,
-  ] = useState(false);
   const walletConnect = isWalletConnect();
   const { value: mediaQuery } = useMediaQueryType();
 
@@ -163,12 +141,7 @@ const Dashboard: React.FunctionComponent = () => {
         value: await ERC20__factory.connect(reserve.id, library).balanceOf(
           account,
         ),
-        incentiveRound1,
-        incentiveRound2,
-        expectedIncentiveBefore: incentiveRound1,
-        expectedIncentiveAfter: incentiveRound1,
-        expectedAdditionalIncentiveBefore: incentiveRound2,
-        expectedAdditionalIncentiveAfter: incentiveRound2,
+        incentive: [incentiveRound1, incentiveRound2],
         governance: await ERC20__factory.connect(
           envs.token.governanceAddress,
           library,
@@ -179,6 +152,7 @@ const Dashboard: React.FunctionComponent = () => {
         ).balanceOf(account),
       };
     } catch (error) {
+      console.log('error', tokenName);
       console.error(error);
     }
   };
@@ -248,68 +222,17 @@ const Dashboard: React.FunctionComponent = () => {
   };
 
   useEffect(() => {
-    loadBalances();
-  }, [account, reserves]);
+    if (tvlLoading) return;
+    const timeout = setTimeout(() => {
+      setPrevTvl(tvl);
+    }, 2000);
 
-  const isEndedIncentive = (token: string, round: number) => {
-    const moneyPoolTime =
-      token === Token.DAI ? daiMoneyPoolTime : tetherMoneyPoolTime;
-    return moment().isAfter(
-      round === 1
-        ? moneyPoolTime[round].startedAt
-        : moneyPoolTime[round].endedAt,
-    );
-  };
+    return () => clearTimeout(timeout);
+  }, [tvl]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setPrevTvl(tvlLoading ? 0 : tvl);
-      setBalances(
-        balances.map((balance, index) => {
-          if (index > 1) return { ...balance };
-          return {
-            ...balance,
-            expectedIncentiveBefore: balance.expectedIncentiveAfter,
-            expectedIncentiveAfter: isEndedIncentive(balance.tokenName, 0)
-              ? balance.expectedIncentiveAfter
-              : balance.incentiveRound1.add(
-                  calcExpectedIncentive(
-                    elfiPrice,
-                    balance.deposit,
-                    calcMiningAPR(
-                      elfiPrice,
-                      BigNumber.from(reserves[index].totalDeposit),
-                    ),
-                    balance.updatedAt,
-                  ),
-                ),
-            expectedAdditionalIncentiveBefore:
-              balance.expectedAdditionalIncentiveAfter,
-            expectedAdditionalIncentiveAfter: !isEndedIncentive(
-              balance.tokenName,
-              1,
-            )
-              ? balance.expectedAdditionalIncentiveAfter
-              : balance.incentiveRound2.add(
-                  calcExpectedIncentive(
-                    elfiPrice,
-                    balance.deposit,
-                    calcMiningAPR(
-                      elfiPrice,
-                      BigNumber.from(reserves[index].totalDeposit),
-                    ),
-                    balance.updatedAt,
-                  ),
-                ),
-          };
-        }),
-      );
-    }, 3000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [tvl, balances]);
+    loadBalances();
+  }, [account, reserves]);
 
   const remoteControlScroll = (ref: string) => {
     const element = document.getElementById(ref);
@@ -325,6 +248,15 @@ const Dashboard: React.FunctionComponent = () => {
       top: offsetPosition,
       behavior: 'smooth',
     });
+  };
+  const incentiveByRound = (balance: DepositBalance, index: number) => {
+    return balance.tokenName === Token.DAI
+      ? round === 1
+        ? balance.daiIncentiveRound1[index]
+        : balance.daiIncentiveRound2[index]
+      : round === 1
+      ? balance.usdtIncentiveRound1[index]
+      : balance.usdtIncentiveRound2[index];
   };
 
   return (
@@ -360,16 +292,8 @@ const Dashboard: React.FunctionComponent = () => {
         onClose={() => {
           setIncentiveModalVisible(false);
         }}
-        balanceBefore={
-          round === 2
-            ? balances[selectedModalNumber].expectedAdditionalIncentiveBefore
-            : balances[selectedModalNumber].expectedIncentiveBefore
-        }
-        balanceAfter={
-          round === 2
-            ? balances[selectedModalNumber].expectedAdditionalIncentiveAfter
-            : balances[selectedModalNumber].expectedIncentiveAfter
-        }
+        balanceBefore={incentiveByRound(balances[selectedModalNumber], 0)}
+        balanceAfter={incentiveByRound(balances[selectedModalNumber], 1)}
         incentivePoolAddress={
           round === 2
             ? balances[selectedModalNumber].tokenName === Token.DAI
@@ -496,14 +420,8 @@ const Dashboard: React.FunctionComponent = () => {
                 isDisable={!reserves[index]}
                 skeletonLoading={balance.loading}
                 reserveData={reserves[index]}
-                expectedIncentiveBefore={balance.expectedIncentiveBefore}
-                expectedIncentiveAfter={balance.expectedIncentiveAfter}
-                expectedAdditionalIncentiveBefore={
-                  balance.expectedAdditionalIncentiveBefore
-                }
-                expectedAdditionalIncentiveAfter={
-                  balance.expectedAdditionalIncentiveAfter
-                }
+                balance={balance}
+                setBalances={setBalances}
                 setIncentiveModalVisible={() => {
                   walletConnect === false
                     ? (setConnectWalletModalvisible(true),
