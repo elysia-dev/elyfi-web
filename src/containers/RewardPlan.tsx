@@ -1,7 +1,6 @@
 import { constants, utils } from 'ethers';
 import moment from 'moment';
 import envs from 'src/core/envs';
-import wave from 'src/assets/images/wave_elyfi.png';
 import {
   FunctionComponent,
   useCallback,
@@ -22,6 +21,7 @@ import {
   daiMoneyPoolTime,
   moneyPoolStartedAt,
   tetherMoneyPoolTime,
+  busdMoneyPoolTime
 } from 'src/core/data/moneypoolTimes';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import {
@@ -58,6 +58,10 @@ import { lpRoundDate, lpUnixTimestamp } from 'src/core/data/lpStakingTime';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
 import SubgraphContext from 'src/contexts/SubgraphContext';
+import isSupportedReserve from 'src/core/utils/isSupportedReserve';
+import MainnetType from 'src/enums/MainnetType';
+import MainnetContext from 'src/contexts/MainnetContext';
+import getTokenNameByAddress from 'src/core/utils/getTokenNameByAddress';
 
 const RewardPlan: FunctionComponent = () => {
   const { t } = useTranslation();
@@ -68,6 +72,7 @@ const RewardPlan: FunctionComponent = () => {
   const headerRef = useRef<HTMLDivElement>(null);
   const { ethPrice } = useContext(PriceContext);
   const { data: getSubgraphData } = useContext(SubgraphContext);
+  const { type: getMainnetType } = useContext(MainnetContext);
   const current = moment();
   const currentPhase = useMemo(() => {
     return stakingRoundTimes.filter(
@@ -170,8 +175,8 @@ const RewardPlan: FunctionComponent = () => {
       endedMoneyPool: tetherMoneyPoolTime[0].endedAt.format('yyyy.MM.DD'),
     },
     BUSD: {
-      startedMoneyPool: tetherMoneyPoolTime[0].startedAt.format('yyyy.MM.DD'),
-      endedMoneyPool: tetherMoneyPoolTime[0].endedAt.format('yyyy.MM.DD'),
+      startedMoneyPool: busdMoneyPoolTime[0].startedAt.format('yyyy.MM.DD'),
+      endedMoneyPool: busdMoneyPoolTime[0].endedAt.format('yyyy.MM.DD'),
     }
   };
 
@@ -478,9 +483,7 @@ const RewardPlan: FunctionComponent = () => {
               </div>
             </div>
             <section className="reward__container">
-              {getSubgraphData.reserves.map((reserve, index) => {
-                const token =
-                  reserve.id === envs.daiAddress ? Token.DAI : reserve.id === envs.usdtAddress ? Token.USDT : Token.BUSD;
+              {getSubgraphData.reserves.filter((data) => isSupportedReserve(getTokenNameByAddress(data.id), getMainnetType)).map((reserve, index) => {
                 return (
                   <TokenDeposit
                     key={index}
@@ -488,12 +491,11 @@ const RewardPlan: FunctionComponent = () => {
                     reserve={reserve}
                     moneyPoolInfo={moneyPoolInfo}
                     beforeMintedMoneypool={
-                      beforeMintedMoneypool[token].beforeMintedToken
-                      // beforeMintedMoneypool[token].beforeMintedToken <= 0
-                      //   ? 0
-                      //   : beforeMintedMoneypool[token].beforeMintedToken
+                      beforeMintedMoneypool[getTokenNameByAddress(reserve.id)].beforeMintedToken <= 0
+                        ? 0
+                        : beforeMintedMoneypool[getTokenNameByAddress(reserve.id)].beforeMintedToken
                     }
-                    mintedMoneypool={mintedMoneypool[token].mintedToken}
+                    mintedMoneypool={mintedMoneypool[getTokenNameByAddress(reserve.id)].mintedToken}
                     depositRound={depositRound}
                     setDepositRound={setDepositRound}
                   />
