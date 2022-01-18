@@ -134,16 +134,22 @@ const calcHistoryChartData = (
     ) || 1,
   );
 
-  return calculatedData.map((d, _x) => {
-    return [
-      moment(d.timestamp * 1000).format('YYYY.MM.DD'),
-      parseInt(utils.formatUnits(d.selectedAmount, decimals), 10),
-      '$ ' +
+  const test: any[] = [];
+
+  calculatedData.forEach((d, _x) => {
+    test.push({
+      name: moment(d.timestamp * 1000).format('YY.MM.DD'),
+      // a: parseInt(utils.formatUnits(d.selectedAmount, decimals), 10) * 3,
+      lineYield: ((d.calculatedAPY / divider) * base + base * 1.2) * 1.4,
+      total:
+        '$ ' +
         toCompact(parseInt(utils.formatUnits(d.selectedAmount, decimals), 10)),
-      (d.calculatedAPY / divider) * base + base * 1.2,
-      toCompact(d.calculatedAPY),
-    ];
+      barTotal: parseInt(utils.formatUnits(d.selectedAmount, decimals), 10) * 2,
+      // c: (d.calculatedAPY / divider) * base + base * 1.2,
+      yield: toCompact(d.calculatedAPY),
+    });
   });
+  return test;
 };
 
 export default calcHistoryChartData;
