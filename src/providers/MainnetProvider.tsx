@@ -8,7 +8,7 @@ import useCurrentChain from "src/hooks/useCurrentChain";
 import Loading from 'src/components/Loading';
 
 // ! FIXME
-// 1. Provider more details information of current mainnet. Do not use MainnetData[type].data...
+// 1. Provid more details information of current mainnet. Do not use MainnetData[type].data...
 // 2. Remove redundant loading(false)
 const MainnetProvider: React.FC = (props) => {
   const { active, account } = useWeb3React();
@@ -17,21 +17,22 @@ const MainnetProvider: React.FC = (props) => {
 
   const [currentMainnet, setMainnet] = useState<IMainnetContextTypes>({
     type: MainnetType.Ethereum,
-    unsupportedChainid: true
+    unsupportedChainid: true,
+    active: false,
   })
 
   useEffect(() => {
     if (!active) {
-      setLoading(false) 
+      setLoading(false)
       if (currentMainnet.unsupportedChainid) {
-        setMainnet({ ...currentMainnet, unsupportedChainid: false })
+        setMainnet({ ...currentMainnet, unsupportedChainid: false, active })
       }
       return;
     };
     currentChain !== undefined ? (
-      setMainnet({ type: currentChain.type, unsupportedChainid: false }), setLoading(false)
+      setMainnet({ type: currentChain.type, unsupportedChainid: false, active }), setLoading(false)
     ) : (
-      setMainnet({ ...currentMainnet, unsupportedChainid: true }),
+      setMainnet({ ...currentMainnet, unsupportedChainid: true, active }),
       console.log("Error!") , setLoading(false)
     )
   }, [currentChain, active])

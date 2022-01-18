@@ -143,6 +143,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
   const { elfiPrice } = useContext(PriceContext);
   const {
     type: mainnetType,
+    active,
   } = useContext(MainnetContext)
 
   const loadBalance = async (id: string) => {
@@ -209,13 +210,15 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
   };
 
   useEffect(() => {
-    if (!chainId) return;
+    // Only called when active.
+    // When active is false, balance is allways zero
+    if (!account || !active) return;
     setLoading(true)
     loadBalances();
-  }, [account, mainnetType]);
+  }, [account, active]);
 
   useEffect(() => {
-    if(loading) return;
+    if(loading || !active) return;
 
     const interval = setInterval(() => {
       setBalances(
@@ -265,7 +268,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     return () => {
       clearInterval(interval);
     };
-  }, [balances, mainnetType, loading]);
+  }, [balances, mainnetType, loading, active]);
 
 	return { balances, loading, loadBalance }
 };

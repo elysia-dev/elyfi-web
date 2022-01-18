@@ -4,12 +4,9 @@ import wave from 'src/assets/images/wave_elyfi.png';
 import OffChainTopic, { INapData } from 'src/clients/OffChainTopic';
 import Skeleton from 'react-loading-skeleton';
 import { IProposals, OnChainTopic } from 'src/clients/OnChainTopic';
-import { BigNumber, utils } from 'ethers';
-import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
-import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
-import { useQuery } from '@apollo/client';
+import { utils } from 'ethers';
 import AssetList from 'src/containers/AssetList';
-import { useTranslation, Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import GovernanceGuideBox from 'src/components/GovernanceGuideBox';
 import { useParams, useHistory } from 'react-router-dom';
 import LanguageType from 'src/enums/LanguageType';
@@ -23,6 +20,7 @@ import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
+import SubgraphContext, { IAssetBond } from 'src/contexts/SubgraphContext';
 
 const Governance = () => {
   const [onChainLoading, setOnChainLoading] = useState(true);
@@ -32,7 +30,9 @@ const Governance = () => {
   const headerRef = useRef<HTMLDivElement>(null);
   const [onChainData, setOnChainData] = useState<IProposals[]>([]);
   const [offChainNapData, setOffChainNapData] = useState<INapData[]>([]);
-  const { data, loading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
+  const { getAssetBondsByNetwork } = useContext(SubgraphContext);
+  const { type: mainnetType } = useContext(MainnetContext)
+  const assetBondTokens = getAssetBondsByNetwork(mainnetType)
   const { t } = useTranslation();
   const History = useHistory();
   const { lng } = useParams<{ lng: string }>();
@@ -533,7 +533,7 @@ const Governance = () => {
         </section>
         <section className="governance__loan governance__header">
           {
-            (data?.assetBondTokens.length === 0 || getMainnetType === MainnetType.BSC) ? (
+            (assetBondTokens.length === 0 || getMainnetType === MainnetType.BSC) ? (
               <>
                 <div>
                   <h3>
@@ -554,39 +554,35 @@ const Governance = () => {
                 <div>
                   <h3>
                     {t('governance.loan_list', {
-                      count: data?.assetBondTokens.length,
+                      count: assetBondTokens.length,
                     })}
                   </h3>
                   <p>{t('governance.loan_list__content')}</p>
                 </div>
-                {loading ? (
-                  <Skeleton width={1148} height={768} />
-                ) : (
-                  <>
-                    <AssetList
-                      assetBondTokens={
-                        /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
-                        [...(data?.assetBondTokens || [])]
-                          .slice(0, pageNumber * 9)
-                          .sort((a, b) => {
-                            return b.loanStartTimestamp! - a.loanStartTimestamp! >= 0
-                              ? 1
-                              : -1;
-                          }) || []
-                      }
-                    />
-                    {data?.assetBondTokens.length &&
-                      data?.assetBondTokens.length >= pageNumber * 9 && (
-                        <div>
-                          <button
-                            className="portfolio__view-button"
-                            onClick={() => viewMoreHandler()}>
-                            {t('loan.view-more')}
-                          </button>
-                        </div>
-                      )}
-                  </>
-                )}
+                <>
+                  <AssetList
+                    assetBondTokens={
+                      /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
+                      [...(assetBondTokens as IAssetBond[] || [])]
+                        .slice(0, pageNumber * 9)
+                        .sort((a, b) => {
+                          return b.loanStartTimestamp! - a.loanStartTimestamp! >= 0
+                            ? 1
+                            : -1;
+                        }) || []
+                    }
+                  />
+                  {assetBondTokens.length &&
+                    assetBondTokens.length >= pageNumber * 9 && (
+                      <div>
+                        <button
+                          className="portfolio__view-button"
+                          onClick={() => viewMoreHandler()}>
+                          {t('loan.view-more')}
+                        </button>
+                      </div>
+                    )}
+                </>
               </>
             )
           }

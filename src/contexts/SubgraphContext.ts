@@ -1,4 +1,7 @@
+import { BigNumber } from "ethers";
 import { createContext } from "react"
+import ABTokenState from "src/enums/ABTokenState";
+import MainnetType from "src/enums/MainnetType";
 
 export interface IReserveHistory {
   id: string;
@@ -7,6 +10,34 @@ export interface IReserveHistory {
   depositAPY: any;
   totalBorrow: any;
   totalDeposit: any;
+}
+
+export interface IAssetBond {
+  id: string
+  state: ABTokenState
+  signer: {
+    id: string
+  }
+  borrower: {
+    id: string
+  }
+  collateralServiceProvider: {
+    id: string
+  }
+  reserve: {
+    id: string
+  }
+  principal: BigNumber
+  debtCeiling: BigNumber
+  couponRate: BigNumber
+  interestRate: BigNumber
+  delinquencyRate: BigNumber
+  loanStartTimestamp: number
+  collateralizeTimestamp: number
+  maturityTimestamp: number
+  liquidationTimestamp: number
+  ipfsHash: string
+  signerOpinionHash: string
 }
 
 export interface IReserveSubgraphData {
@@ -42,7 +73,9 @@ export interface IReserveSubgraphData {
   lToken: {
     id: string;
   };
+  assetBondTokens: IAssetBond[]
 }
+
 
 export interface IReserveSubgraph {
   data: {
@@ -101,11 +134,22 @@ export const initialReserveSubgraph: IReserveSubgraph = {
         lToken: {
           id: "",
         },
+        assetBondTokens: [],
       }
-    ]
-  }
+    ],
+  },
 }
 
-const SubgraphContext = createContext<IReserveSubgraph>(initialReserveSubgraph);
+interface ISubgraphContext {
+  data: {
+    reserves: IReserveSubgraphData[]
+  },
+  getAssetBondsByNetwork: (network: MainnetType) => IAssetBond[]
+}
+
+const SubgraphContext = createContext<ISubgraphContext>({
+  ...initialReserveSubgraph,
+  getAssetBondsByNetwork: () => []
+});
 
 export default SubgraphContext

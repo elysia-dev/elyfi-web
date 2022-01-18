@@ -39,6 +39,8 @@ import {
 } from 'recharts';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
+import isSupportedReserve from 'src/core/utils/isSupportedReserve';
+import ReserveToken from 'src/core/types/ReserveToken';
 
 const initialBalanceState = {
   loading: true,
@@ -108,7 +110,7 @@ function MarketDetail(): JSX.Element {
 
   const [balances, setBalances] = useState<{
     loading: boolean;
-    tokenName: string;
+    tokenName: ReserveToken;
     value: BigNumber;
     incentive: BigNumber;
     expectedIncentiveBefore: BigNumber;
@@ -227,7 +229,7 @@ function MarketDetail(): JSX.Element {
 
   useEffect(() => {
     // need refactoring!!!
-    if ((getMainnetType === MainnetType.BSC && balances.tokenName !== Token.BUSD) || (getMainnetType === MainnetType.Ethereum && (balances.tokenName !== (Token.DAI || Token.USDT)))) {
+    if (!isSupportedReserve(balances.tokenName ,getMainnetType)) {
       history.push({
         pathname: `/${lng}/deposit`,
       });
