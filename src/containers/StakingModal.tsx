@@ -31,8 +31,6 @@ const StakingModal: React.FunctionComponent<{
   stakedBalance: BigNumber;
   round: number;
   endedModal: () => void;
-  setTxStatus: (status: txStatus) => void;
-  setTxWaiting: (status: boolean) => void;
   transactionModal: () => void;
 }> = ({
   visible,
