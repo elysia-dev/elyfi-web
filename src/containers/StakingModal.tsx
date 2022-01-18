@@ -185,7 +185,9 @@ const StakingModal: React.FunctionComponent<{
                         address: account,
                         stakingType: stakedToken,
                         round,
-                        unstakingAmount: utils.formatEther(amount.value),
+                        unstakingAmount: utils.formatEther(
+                          utils.parseEther(amount.value),
+                        ),
                         maxOrNot: amount.max,
                       }),
                     );
@@ -252,7 +254,9 @@ const StakingModal: React.FunctionComponent<{
                         address: account,
                         stakingType: stakedToken,
                         round,
-                        unstakingAmount: utils.formatEther(amount.value),
+                        unstakingAmount: utils.formatEther(
+                          utils.parseEther(amount.value),
+                        ),
                         maxOrNot: amount.max,
                       }),
                     );
@@ -260,7 +264,6 @@ const StakingModal: React.FunctionComponent<{
                     emitter.clicked();
 
                     // setTxWaiting(true)
-
                     stakingPool
                       ?.stake(
                         amount.max ? balance : utils.parseEther(amount.value),
