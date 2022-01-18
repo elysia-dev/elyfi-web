@@ -1,11 +1,8 @@
 import { FunctionComponent, useCallback, useContext, useState } from 'react';
-import { useQuery } from '@apollo/client';
-import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
 import { useTranslation } from 'react-i18next';
-import Skeleton from 'react-loading-skeleton';
-import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
 import { BigNumber, constants, utils } from 'ethers';
 import MainnetContext from 'src/contexts/MainnetContext';
+import SubgraphContext from 'src/contexts/SubgraphContext';
 import MainnetType from 'src/enums/MainnetType';
 import AssetList from './AssetList';
 
@@ -15,7 +12,9 @@ const usdFormatter = new Intl.NumberFormat('en', {
 });
 
 const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
-  const { data, loading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
+  const { getAssetBondsByNetwork } = useContext(SubgraphContext);
+  const { type: mainnetType } = useContext(MainnetContext)
+  const assetBondTokens = getAssetBondsByNetwork(mainnetType)
   const [pageNumber, setPageNumber] = useState(1);
   const { t } = useTranslation();
   // true -> byLatest, false -> byLoanAmount
@@ -23,13 +22,13 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
   const { type: getMainnetType } = useContext(MainnetContext)
   const totalBorrow = parseFloat(
     utils.formatEther(
-      data?.assetBondTokens.reduce(
+      assetBondTokens.reduce(
         (res, cur) => res.add(cur.principal),
         constants.Zero,
       ) || constants.Zero,
     ),
   );
-  const list = data?.assetBondTokens.filter((product) => {
+  const list = assetBondTokens.filter((product) => {
     return product.reserve.id === id;
   });
 
@@ -75,13 +74,6 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
                   </div>
                 </div>
               </div> */}
-              {loading ? (
-                <div className="portfolio__asset-list__info__container">
-                  <Skeleton className="portfolio__asset-list__info" />
-                  <Skeleton className="portfolio__asset-list__info" />
-                  <Skeleton className="portfolio__asset-list__info" />
-                </div>
-              ) : (
                 <>
                   <AssetList
                     assetBondTokens={
@@ -111,11 +103,9 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
                     </div>
                   )}
                 </>
-              )}
             </>
           )
         }
-        
       </section>
     </>
   );

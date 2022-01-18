@@ -1,14 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import Skeleton from 'react-loading-skeleton';
 import { formatSixFracionDigit, toCompactForBignumber, toPercent, toUsd } from 'src/utiles/formatters';
 import { reserveTokenData } from 'src/core/data/reserves';
 import { useWeb3React } from '@web3-react/core';
 import CountUp from 'react-countup';
 import { formatEther } from '@ethersproject/units';
 import { BigNumber, constants } from 'ethers';
-import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
-import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
-import { useQuery } from '@apollo/client';
 import AssetList from 'src/containers/AssetList';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
@@ -48,16 +44,10 @@ const TokenTable: React.FC<Props> = ({
   id,
   loading,
 }) => {
-  // ! BUG
-  // Bsc asset bond tokens should be loaded with bsc endpoint
-  const { data, loading: assetLoading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
   const { account } = useWeb3React();
   const { unsupportedChainid } = useContext(MainnetContext)
   const { t, i18n } = useTranslation();
   const tokenInfo = reserveTokenData[balance.tokenName];
-  const list = data?.assetBondTokens.filter((product) => {
-    return product.reserve.id === reserveData?.id;
-  });
   const history = useHistory();
   const { lng } = useParams<{ lng: string }>();
   const { value: mediaQuery } = useMediaQueryType();
@@ -230,40 +220,33 @@ const TokenTable: React.FC<Props> = ({
               </div>
             )
           }
-          <div className="deposit__table__body__loan-list" style={{ display: list?.length === 0 ? "none" : "block" }}>
-            {assetLoading ? (
-              <Skeleton
-                width={mediaQuery === MediaQuery.PC ? 1148 : 340}
-                height={768}
-              />
-            ) : (
+          <div className="deposit__table__body__loan-list" style={{ display: reserveData.assetBondTokens.length === 0 ? "none" : "block" }}>
+            <div>
               <div>
-                <div>
-                  <h2>{t('dashboard.recent_loan')}</h2>
-                  <Link to={`/${lng}/deposits/${balance.tokenName}`}>
-                    <div className="deposit__table__body__loan-list__button">
-                      <p>{t('main.governance.view-more')}</p>
-                    </div>
-                  </Link>
-                </div>
-                <div>
-                  <AssetList
-                    assetBondTokens={
-                      // Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다.
-                      [...(list || [])]
-                        .sort((a, b) => {
-                          return b.loanStartTimestamp! -
-                            a.loanStartTimestamp! >=
-                            0
-                            ? 1
-                            : -1;
-                        })
-                        .slice(0, mediaQuery === MediaQuery.PC ? 3 : 2) || []
-                    }
-                  />
-                </div>
+                <h2>{t('dashboard.recent_loan')}</h2>
+                <Link to={`/${lng}/deposits/${balance.tokenName}`}>
+                  <div className="deposit__table__body__loan-list__button">
+                    <p>{t('main.governance.view-more')}</p>
+                  </div>
+                </Link>
               </div>
-            )}
+              <div>
+                <AssetList
+                  assetBondTokens={
+                    // Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다.
+                    [...(reserveData.assetBondTokens || [])]
+                      .sort((a, b) => {
+                        return b.loanStartTimestamp! -
+                          a.loanStartTimestamp! >=
+                          0
+                          ? 1
+                          : -1;
+                      })
+                      .slice(0, mediaQuery === MediaQuery.PC ? 3 : 2) || []
+                  }
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

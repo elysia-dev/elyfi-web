@@ -1,7 +1,7 @@
 import MainnetType from "src/enums/MainnetType"
 import Token from "src/enums/Token"
 
-const isSupportedToken = (token: Token, network: MainnetType): boolean => {
+const isSupportedReserve = (token: Token, network: MainnetType): boolean => {
 	switch (network) {
 		case MainnetType.Ethereum:
 			return [Token.DAI, Token.USDT].includes(token)
@@ -12,4 +12,4 @@ const isSupportedToken = (token: Token, network: MainnetType): boolean => {
 	}
 }
 
-export default isSupportedToken
+export default isSupportedReserve
