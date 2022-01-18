@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import MainBackground from 'src/assets/images/main-background.png';
 import LanguageConverter from './LanguageConverter';
 
-const MobileDisable = () => {
+const MobileDisable = (): JSX.Element => {
   const { t } = useTranslation();
   return (
     <div className="elysia" style={{ minWidth: 0, minHeight: 0 }}>
