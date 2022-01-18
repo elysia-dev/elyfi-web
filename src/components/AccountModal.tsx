@@ -9,9 +9,9 @@ import NewTab from 'src/assets/images/new_tab.png';
 import Copy from 'src/assets/images/copy.png';
 import envs from 'src/core/envs';
 import TxStatus from 'src/enums/TxStatus';
-import { reserveTokenData } from 'src/core/data/reserves';
-import ELFI from 'src/assets/images/ELFI.png'
-import ModalHeader from './ModalHeader';
+import Davatar from '@davatar/react';
+import ModalHeader from 'src/components/ModalHeader';
+import { useENS } from 'src/hooks/useENS';
 
 const AccountModal: React.FunctionComponent<{
   visible: boolean;
@@ -20,13 +20,9 @@ const AccountModal: React.FunctionComponent<{
   const { account, deactivate, chainId } = useWeb3React();
   const { t } = useTranslation();
   const { reset, txHash, txStatus, txType } = useContext(TxContext);
+  const { ensName } = useENS(account);
+  const shortAddress = `${account?.slice(0, 8)}....${account?.slice(-6)}`;
 
-  const tokenDataArray: string[][] = [
-    [ELFI, "ELFI", "18", envs.governanceAddress],
-    [reserveTokenData.EL.image, reserveTokenData.EL.name, reserveTokenData.EL.decimals.toString(), reserveTokenData.EL.address],
-    [reserveTokenData.DAI.image, reserveTokenData.DAI.name, reserveTokenData.DAI.decimals.toString(), reserveTokenData.DAI.address],
-    [reserveTokenData.USDT.image, reserveTokenData.USDT.name, reserveTokenData.USDT.decimals.toString(), reserveTokenData.USDT.address],
-  ]
 
   const AddressCopy = (data: string) => {
     if (!document.queryCommandSupported('copy')) {
@@ -74,9 +70,15 @@ const AccountModal: React.FunctionComponent<{
             <div>
               <p>{mainnetConverter(chainId)}</p>
               <div>
-                <div />
-                <p className="spoqa__bold">
-                  {account?.slice(0, 8)}....{account?.slice(-6)}
+                <div className="navigation__davatar">
+                  <Davatar
+                    size={14}
+                    address={account || ''}
+                    generatedAvatarType="jazzicon"
+                  />
+                </div>
+                <p className="bold">
+                  {ensName || shortAddress}
                 </p>
               </div>
             </div>
