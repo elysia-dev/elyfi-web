@@ -18,9 +18,11 @@ import MediaQuery from 'src/enums/MediaQuery';
 import TableBodyAmount from 'src/components/TableBodyAmount';
 import { daiMoneyPoolTime } from 'src/core/data/moneypoolTimes';
 import moment from 'moment';
-import { useContext } from 'react';
+import { Dispatch, SetStateAction, useContext } from 'react';
 import ReservesContext from 'src/contexts/ReservesContext';
+import DepositBalance from 'src/core/types/DepositBalance';
 import TableBodyEventReward from './TableBodyEventReward';
+import RewardCountUp from './RewardCountUp';
 
 interface Props {
   tokenImage: string;
@@ -34,14 +36,12 @@ interface Props {
   isDisable: boolean;
   skeletonLoading: boolean;
   reserveData: GetAllReserves_reserves;
-  expectedIncentiveBefore: BigNumber;
-  expectedIncentiveAfter: BigNumber;
-  expectedAdditionalIncentiveBefore: BigNumber;
-  expectedAdditionalIncentiveAfter: BigNumber;
   setIncentiveModalVisible: () => void;
   setModalNumber: () => void;
   incentiveModalGA: () => void;
   id: string;
+  balance: DepositBalance;
+  setBalances: Dispatch<SetStateAction<DepositBalance[]>>;
 }
 
 const TokenTable: React.FC<Props> = ({
@@ -55,18 +55,16 @@ const TokenTable: React.FC<Props> = ({
   isDisable,
   skeletonLoading,
   reserveData,
-  expectedIncentiveBefore,
-  expectedIncentiveAfter,
-  expectedAdditionalIncentiveBefore,
-  expectedAdditionalIncentiveAfter,
   setIncentiveModalVisible,
   setModalNumber,
   incentiveModalGA,
   id,
+  balance,
+  setBalances,
 }) => {
   const { data, loading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
   const { account } = useWeb3React();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { setRound } = useContext(ReservesContext);
   const tokenInfo = reserveTokenData[tokenName];
   const list = data?.assetBondTokens.filter((product) => {
@@ -164,15 +162,11 @@ const TokenTable: React.FC<Props> = ({
                 buttonContent={t('dashboard.claim_reward')}
                 value={
                   account ? (
-                    <CountUp
-                      className="bold amounts"
-                      start={parseFloat(formatEther(expectedIncentiveBefore))}
-                      end={parseFloat(formatEther(expectedIncentiveAfter))}
-                      formattingFn={(number) => {
-                        return formatSixFracionDigit(number);
-                      }}
-                      decimals={6}
-                      duration={1}
+                    <RewardCountUp
+                      balance={balance}
+                      reserveData={reserveData}
+                      round={0}
+                      setBalances={setBalances}
                     />
                   ) : (
                     '-'
@@ -192,11 +186,13 @@ const TokenTable: React.FC<Props> = ({
               moneyPoolTime={`${moment(daiMoneyPoolTime[1].startedAt).format(
                 'YYYY.MM.DD',
               )} KST ~ `}
-              expectedAdditionalIncentiveBefore={
-                expectedAdditionalIncentiveBefore
-              }
-              expectedAdditionalIncentiveAfter={
-                expectedAdditionalIncentiveAfter
+              value={
+                <RewardCountUp
+                  balance={balance}
+                  reserveData={reserveData}
+                  round={1}
+                  setBalances={setBalances}
+                />
               }
               buttonEvent={(e) => {
                 e.preventDefault();
