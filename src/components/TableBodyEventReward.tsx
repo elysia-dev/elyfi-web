@@ -11,18 +11,16 @@ import { formatSixFracionDigit } from 'src/utiles/formatters';
 
 type Props = {
   moneyPoolTime: string;
-  expectedAdditionalIncentiveBefore: BigNumber;
-  expectedAdditionalIncentiveAfter: BigNumber;
   buttonEvent: ((e: any) => void) | undefined;
   tokenName: Token.DAI | Token.USDT;
+  value: string | JSX.Element;
 };
 
 const TableBodyEventReward: FunctionComponent<Props> = ({
   moneyPoolTime,
-  expectedAdditionalIncentiveAfter,
-  expectedAdditionalIncentiveBefore,
   buttonEvent,
   tokenName,
+  value,
 }) => {
   const { t, i18n } = useTranslation();
   const { account } = useWeb3React();
@@ -45,24 +43,7 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
             <div>
               <div className="bold">
                 {' '}
-                {account ? (
-                  <CountUp
-                    className="bold amounts"
-                    start={parseFloat(
-                      formatEther(expectedAdditionalIncentiveBefore),
-                    )}
-                    end={parseFloat(
-                      formatEther(expectedAdditionalIncentiveAfter),
-                    )}
-                    formattingFn={(number) => {
-                      return formatSixFracionDigit(number);
-                    }}
-                    decimals={6}
-                    duration={1}
-                  />
-                ) : (
-                  '-'
-                )}
+                {account ? value : '-'}
                 <span>{' ELFI'}</span>
               </div>
               <p>{moneyPoolTime}</p>
@@ -79,24 +60,7 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
               <div>
                 <div className="bold">
                   {' '}
-                  {account ? (
-                    <CountUp
-                      className="bold amounts"
-                      start={parseFloat(
-                        formatEther(expectedAdditionalIncentiveBefore),
-                      )}
-                      end={parseFloat(
-                        formatEther(expectedAdditionalIncentiveAfter),
-                      )}
-                      formattingFn={(number) => {
-                        return formatSixFracionDigit(number);
-                      }}
-                      decimals={6}
-                      duration={1}
-                    />
-                  ) : (
-                    '-'
-                  )}
+                  {account ? value : '-'}
                   <span>{' ELFI'}</span>
                 </div>
                 <p>{moneyPoolTime}</p>
