@@ -90,7 +90,7 @@ const Main = () => {
     const nowTime = new Date();
     const setTime = window.localStorage.getItem("@disableTime") || "0";
 
-    // nowTime.getDate() < parseInt(setTime, 10) && setPopupVisible(true)
+    nowTime.getDate() < parseInt(setTime, 10) && setPopupVisible(true)
   }
 
   useEffect(() => {
