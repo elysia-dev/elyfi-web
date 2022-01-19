@@ -12,6 +12,8 @@ import TxStatus from 'src/enums/TxStatus';
 import Davatar from '@davatar/react';
 import ModalHeader from 'src/components/ModalHeader';
 import { useENS } from 'src/hooks/useENS';
+import MainnetContext from 'src/contexts/MainnetContext';
+import MainnetType from 'src/enums/MainnetType';
 
 const AccountModal: React.FunctionComponent<{
   visible: boolean;
@@ -20,6 +22,7 @@ const AccountModal: React.FunctionComponent<{
   const { account, deactivate, chainId } = useWeb3React();
   const { t } = useTranslation();
   const { reset, txHash, txStatus, txType } = useContext(TxContext);
+  const { type: getMainnetType } = useContext(MainnetContext);
   const { ensName, ensLoading } = useENS(account || "");
   const shortAddress = `${account?.slice(0, 8)}....${account?.slice(-6)}`;
 
@@ -100,12 +103,19 @@ const AccountModal: React.FunctionComponent<{
               <p>{t('transaction.copy_address')}</p>
             </div>
             <a
-              href={`${envs.etherscanURI}/address/${account}`}
+              href={`${getMainnetType === MainnetType.Ethereum ? envs.etherscanURI : envs.bscscanURI}/address/${account}`}
               target="_blank"
               className="link">
               <div>
-                <img src={NewTab} alt="On Etherscan" />
-                <p>{t('transaction.on_etherscan')}</p>
+                <img src={NewTab} alt="On View" />
+                <p>
+                {
+                  getMainnetType === MainnetType.Ethereum ?
+                  t('transaction.on_etherscan')
+                  :
+                  t('transaction.on_bscscan')
+                }
+                </p>
               </div>
             </a>
           </div>
@@ -134,7 +144,7 @@ const AccountModal: React.FunctionComponent<{
             </p>
 
             <a
-              href={txHash ? `${envs.etherscanURI}/tx/${txHash}` : undefined}
+              href={txHash ? `${getMainnetType === MainnetType.Ethereum ? envs.etherscanURI : envs.bscscanURI}/tx/${txHash}` : undefined}
               target="_blank"
               className={txHash ? '' : 'disable'}>
               <div>

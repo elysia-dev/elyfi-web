@@ -484,6 +484,7 @@
       "nth_connect": "Connect with {{nth}}",
       "copy_address": "Copy address",
       "on_etherscan": "View on Etherscan",
+      "on_bscscan": "View on Bsc scan",
       "activity__title": "Recent Activity",
       "Idle": "Recent activity is displayed here",
       "Approve": "Approve",

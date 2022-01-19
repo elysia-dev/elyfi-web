@@ -438,6 +438,7 @@
       "nth_connect": "{{nth}}에 연결됨",
       "copy_address": "주소 복사",
       "on_etherscan": "Etherscan에서 보기",
+      "on_bscscan": "Bsc scan에서 보기",
       "activity__title": "최근 활동",
       "Idle": "최근 활동이 여기에 표시됩니다.",
       "Approve": "승인",
