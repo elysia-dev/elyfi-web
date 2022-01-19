@@ -3,7 +3,7 @@ import { Circle } from 'src/components/Circle';
 import MediaQuery from "src/enums/MediaQuery";
 import useMediaQueryType from "src/hooks/useMediaQueryType";
 import Defi001 from 'src/assets/images/defi_001.png';
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import MainnetContext from "src/contexts/MainnetContext";
 import MainnetType from "src/enums/MainnetType";
 
@@ -35,6 +35,7 @@ const MarketDetailsBody: React.FunctionComponent<{
   const { t } = useTranslation();
   const { value: mediaquery } = useMediaQueryType();
   const { type: getMainnetType } = useContext(MainnetContext)
+  const [hover, setHover] = useState(false)
 
   return (
     mediaquery === MediaQuery.PC ? (
@@ -61,7 +62,7 @@ const MarketDetailsBody: React.FunctionComponent<{
           </div>
         </div>
         <div className="detail__data-wrapper__info">
-          <div style={{ height: getMainnetType === MainnetType.BSC ? 292 : 235 }}>
+          <div style={{ height: getMainnetType === MainnetType.BSC ? 274 : 235 }}>
             <div>
               <p>{t('dashboard.deposit_apy')}</p>
               <p>
@@ -118,14 +119,21 @@ const MarketDetailsBody: React.FunctionComponent<{
                         </p>
                       </div>
                       <div>
-                        <p>
-                        {t("dashboard.auto_invest_defi__title")}
-                        </p>
+                        <div>
+                          <p>
+                          {t("dashboard.auto_invest_defi__title")}
+                          </p>
+                          <div onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+                            <p>
+                              ?
+                            </p>
+                          </div>
+                        </div>
                         <p>
                           70%
                         </p>
                       </div>
-                      <div className="detail__data-wrapper__info__deposit__strategy__defi-wrapper">
+                      <div className="detail__data-wrapper__info__deposit__strategy__defi-wrapper" style={{ display: hover ? "block" : "none" }}>
                         <div>
                           <img src={Defi001} />
                           <p>
