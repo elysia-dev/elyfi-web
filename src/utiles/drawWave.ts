@@ -356,45 +356,58 @@ class DrawWave {
     this.ctx.stroke();
   }
 
-  drawOnPages(headerY: number, color: TokenColors, token?: string): void {
+  drawOnPages(
+    headerY: number,
+    color: TokenColors,
+    browserHeghit: number,
+    isBackgroundColor: boolean,
+    token?: string,
+  ): void {
+    this.ctx.fillStyle = 'rgba(247, 251, 255, 1)';
     this.ctx.strokeStyle = color;
     this.ctx.beginPath();
     this.ctx.moveTo(0, headerY * 1.5);
     this.ctx.bezierCurveTo(
       this.browserWidth / 5,
-      headerY * 1.2,
+      headerY * 0.7,
       this.browserWidth / 5,
-      headerY * 1.6,
+      headerY * 1.7,
       this.browserWidth / 2,
-      headerY * 1.55,
+      headerY * 1.7,
     );
     this.ctx.bezierCurveTo(
-      this.browserWidth / 1.2,
-      headerY * 1.5,
       this.browserWidth / 1.3,
-      headerY * 1.15,
+      headerY * 1.7,
+      this.browserWidth / 1.3,
+      headerY * 0.55,
       this.browserWidth,
-      headerY * 1.5,
+      headerY * 1.6,
     );
     this.ctx.stroke();
     this.ctx.beginPath();
     this.ctx.moveTo(0, headerY * 1.6);
     this.ctx.bezierCurveTo(
       this.browserWidth / 5,
-      headerY * 1.07,
+      headerY * 0.58,
       this.browserWidth / 5,
       headerY * 1.7,
       this.browserWidth / 2,
-      headerY * 1.6,
+      headerY * 1.7,
     );
     this.ctx.bezierCurveTo(
       this.browserWidth / 1.2,
-      headerY * 1.45,
+      headerY * 1.63,
       this.browserWidth / 1.3,
-      headerY * 1.15,
+      headerY * 0.8,
       this.browserWidth,
       headerY * 1.6,
     );
+    if (isBackgroundColor) {
+      this.ctx.lineTo(this.browserWidth, browserHeghit);
+      this.ctx.lineTo(0, browserHeghit);
+      this.ctx.closePath();
+      this.ctx.fill();
+    }
     this.ctx.stroke();
 
     // circle
@@ -407,14 +420,14 @@ class DrawWave {
       : color;
     this.ctx.beginPath();
     this.ctx.fillStyle = '#ffffff';
-    this.ctx.moveTo(this.browserWidth / 7 + 10, headerY * 1.39);
-    this.ctx.arc(this.browserWidth / 7, headerY * 1.39, 10, 0, Math.PI * 2);
+    this.ctx.moveTo(this.browserWidth / 7 + 10, headerY * 1.185);
+    this.ctx.arc(this.browserWidth / 7, headerY * 1.185, 10, 0, Math.PI * 2);
 
     this.ctx.moveTo(this.browserWidth / 1.46 + 5, headerY * 1.475);
     this.ctx.arc(this.browserWidth / 1.46, headerY * 1.475, 5, 0, Math.PI * 2);
 
-    this.ctx.moveTo(this.browserWidth / 3 + 10, headerY * 1.52);
-    this.ctx.arc(this.browserWidth / 3, headerY * 1.52, 10, 0, Math.PI * 2);
+    this.ctx.moveTo(this.browserWidth / 3 + 10, headerY * 1.56);
+    this.ctx.arc(this.browserWidth / 3, headerY * 1.56, 10, 0, Math.PI * 2);
 
     this.ctx.fill();
     this.ctx.stroke();
@@ -428,14 +441,106 @@ class DrawWave {
         : '#00BFFF'
       : color;
 
-    this.ctx.moveTo(this.browserWidth / 1.5 + 10, headerY * 1.49);
-    this.ctx.arc(this.browserWidth / 1.5, headerY * 1.49, 10, 0, Math.PI * 2);
+    this.ctx.moveTo(this.browserWidth / 1.5 + 10, headerY * 1.52);
+    this.ctx.arc(this.browserWidth / 1.5, headerY * 1.52, 10, 0, Math.PI * 2);
 
-    this.ctx.moveTo(this.browserWidth / 7.8 + 5, headerY * 1.43);
-    this.ctx.arc(this.browserWidth / 7.8, headerY * 1.43, 5, 0, Math.PI * 2);
+    this.ctx.moveTo(this.browserWidth / 7.5 + 5, headerY * 1.25);
+    this.ctx.arc(this.browserWidth / 7.5, headerY * 1.25, 5, 0, Math.PI * 2);
 
-    this.ctx.moveTo(this.browserWidth / 1.18 + 10, headerY * 1.36);
-    this.ctx.arc(this.browserWidth / 1.18, headerY * 1.36, 10, 0, Math.PI * 2);
+    this.ctx.moveTo(this.browserWidth / 1.18 + 10, headerY * 1.25);
+    this.ctx.arc(this.browserWidth / 1.18, headerY * 1.25, 10, 0, Math.PI * 2);
+
+    this.ctx.fill();
+
+    this.ctx.stroke();
+  }
+
+  drawMobileOnPages(
+    headerY: number,
+    color: TokenColors,
+    browserHeghit: number,
+    isBackgroundColor: boolean,
+    token?: string,
+  ): void {
+    this.ctx.strokeStyle = color;
+    this.ctx.beginPath();
+    this.ctx.moveTo(0, headerY * 1.7);
+    this.ctx.bezierCurveTo(
+      this.browserWidth / 5,
+      headerY * 1.5,
+      this.browserWidth / 5,
+      headerY * 1.7,
+      this.browserWidth / 2,
+      headerY * 1.66,
+    );
+    this.ctx.bezierCurveTo(
+      this.browserWidth / 1.4,
+      headerY * 1.65,
+      this.browserWidth / 1.3,
+      headerY * 1.5,
+      this.browserWidth,
+      headerY * 1.75,
+    );
+    this.ctx.stroke();
+    this.ctx.beginPath();
+    this.ctx.moveTo(0, headerY * 1.65);
+    this.ctx.bezierCurveTo(
+      this.browserWidth / 5,
+      headerY * 1.48,
+      this.browserWidth / 5,
+      headerY * 1.7,
+      this.browserWidth / 2,
+      headerY * 1.66,
+    );
+    this.ctx.bezierCurveTo(
+      this.browserWidth / 1.2,
+      headerY * 1.58,
+      this.browserWidth / 1.4,
+      headerY * 1.5,
+      this.browserWidth,
+      headerY * 1.7,
+    );
+    this.ctx.stroke();
+
+    // circle
+    this.ctx.strokeStyle = token
+      ? token === Token.EL
+        ? '#3679B5'
+        : token === 'LP'
+        ? '#F9AE19'
+        : '#00BFFF'
+      : color;
+    this.ctx.beginPath();
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.moveTo(this.browserWidth / 7 + 10, headerY * 1.6);
+    this.ctx.arc(this.browserWidth / 7, headerY * 1.6, 10, 0, Math.PI * 2);
+
+    this.ctx.moveTo(this.browserWidth / 1.44 + 5, headerY * 1.595);
+    this.ctx.arc(this.browserWidth / 1.44, headerY * 1.595, 5, 0, Math.PI * 2);
+
+    this.ctx.moveTo(this.browserWidth / 3 + 10, headerY * 1.65);
+    this.ctx.arc(this.browserWidth / 3, headerY * 1.65, 10, 0, Math.PI * 2);
+
+    this.ctx.fill();
+    this.ctx.stroke();
+
+    this.ctx.beginPath();
+    this.ctx.strokeStyle = token
+      ? token === Token.EL
+        ? '#3679B5'
+        : token === 'LP'
+        ? '#627EEA'
+        : '#00BFFF'
+      : color;
+
+    this.ctx.moveTo(this.browserWidth / 1.55 + 10, headerY * 1.62);
+    this.ctx.arc(this.browserWidth / 1.55, headerY * 1.62, 10, 0, Math.PI * 2);
+
+    this.ctx.moveTo(this.browserWidth / 10 + 5, headerY * 1.627);
+    this.ctx.arc(this.browserWidth / 10, headerY * 1.627, 5, 0, Math.PI * 2);
+
+    this.ctx.moveTo(this.browserWidth / 1.18 + 10, headerY * 1.625);
+    this.ctx.arc(this.browserWidth / 1.18, headerY * 1.625, 10, 0, Math.PI * 2);
 
     this.ctx.fill();
 
