@@ -9,6 +9,7 @@ import isLng from 'src/utiles/isLng';
 
 import Slate from 'src/clients/Slate';
 import ReserveData from 'src/core/data/reserves';
+import { useTranslation } from 'react-i18next';
 import Marker from './Marker';
 
 const defaultLat = 37.5172;
@@ -19,6 +20,7 @@ const AssetItem: FunctionComponent<{
   onClick: () => void;
   style?: React.CSSProperties;
 }> = ({ abToken, onClick, style }) => {
+  const { t } = useTranslation();
   const parsedTokenId = useMemo(() => {
     return parseTokenId(abToken.id);
   }, [abToken]);
@@ -75,9 +77,11 @@ const AssetItem: FunctionComponent<{
       </div>
       <div className="component__loan-list__data">
         <div>
-          <p>{toPercent(abToken.interestRate || '0')}</p>
+          <p>{t('loan.loan__interest_rate')}</p>
+          <p className="bold">{toPercent(abToken.interestRate || '0')}</p>
         </div>
         <div>
+          <p>{t('loan.loan__borrowed')}</p>
           <p className="bold">
             {'$ ' +
               toCompactForBignumber(
