@@ -14,6 +14,8 @@ import ModalHeader from 'src/components/ModalHeader';
 import { useENS } from 'src/hooks/useENS';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import MediaQuery from 'src/enums/MediaQuery';
 
 const AccountModal: React.FunctionComponent<{
   visible: boolean;
@@ -25,6 +27,7 @@ const AccountModal: React.FunctionComponent<{
   const { type: getMainnetType } = useContext(MainnetContext);
   const { ensName, ensLoading } = useENS(account || "");
   const shortAddress = `${account?.slice(0, 8)}....${account?.slice(-6)}`;
+  const { value: mediaQuery } = useMediaQueryType();
 
   const AddressCopy = (data: string) => {
     if (!document.queryCommandSupported('copy')) {
@@ -76,7 +79,7 @@ const AccountModal: React.FunctionComponent<{
                   {
                     (ensLoading && account) && (
                       <Davatar
-                        size={14}
+                        size={mediaQuery === MediaQuery.PC ? 14 : 9}
                         address={account}
                         generatedAvatarType="jazzicon"
                       />

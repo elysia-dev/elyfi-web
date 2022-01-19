@@ -250,6 +250,43 @@ const MarketDetailsBody: React.FunctionComponent<{
                 {totalBorrowed}
               </p>
             </div>
+            {
+              getMainnetType === MainnetType.BSC && (
+                <div className="detail__data-wrapper__info__deposit__strategy">
+                  <div>
+                    <p>
+                    {t("dashboard.real_estate_mortgage")}
+                    </p>
+                    <p>
+                      30%
+                    </p>
+                  </div>
+                  <div>
+                    <div>
+                      <p>
+                      {t("dashboard.auto_invest_defi__title")}
+                      </p>
+                      <div onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+                        <p>
+                          ?
+                        </p>
+                      </div>
+                    </div>
+                    <p>
+                      70%
+                    </p>
+                  </div>
+                  <div className="detail__data-wrapper__info__deposit__strategy__defi-wrapper" style={{ display: hover ? "block" : "none" }}>
+                    <div>
+                      <img src={Defi001} />
+                      <p>
+                      {t("dashboard.auto_invest_defi.0")}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )
+            }
             <div>
               <div className="detail__data-wrapper__info__deposit">
                 <div 

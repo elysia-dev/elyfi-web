@@ -31,6 +31,36 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 
   .navigation {
     overflow-y: scroll;
+    &__mainnet {
+      &__current {
+        width: 120px;
+        height: 35px;
+        border-radius: 5px;
+        > img {
+          width: 30px;
+        }
+        > h2 {
+          font-size: 12px;
+        }
+      }
+      &__change-network {
+        &__wrapper {
+          width: 120px;
+          top: 29px;
+          padding-top: 6px;
+          padding-bottom: 2px;
+          &.network-error {
+            width: 185px;
+          }
+        }
+        > h2 {
+          font-size: 12px;
+        }
+        > img {
+          width: 30px;
+        }
+      }
+    }
     &__hamburger {
       &__content {
         > div,
@@ -180,6 +210,10 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         border-radius: 0px 0px 15px 15px;
       }
     }
+    &__address {
+      justify-content: space-around;
+      width: 100%;
+    }
     &__wallet {
       display: inline-flex;
       background: #00bfff 0% 0%;
@@ -262,6 +296,11 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         &.CONFIRM {
           box-shadow: 0px 0px 6px #23eb1b81;
           border: 2px solid #23eb1b;
+        }
+        &.unknown-chain {
+          > h2 {
+            font-size: 15px;
+          }
         }
       }
       &__status {
@@ -914,6 +953,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             border-radius: 15px;
             width: 130px;
             height: 26px;
+            margin: 0 auto;
             margin-top: 15px;
             margin-bottom: 20px;
             > p {
@@ -1007,6 +1047,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           }
           > div {
             > div {
+              align-items: center;
               > h2 {
                 font-size: 12px !important;
                 margin: 0 !important;
@@ -1035,6 +1076,37 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             > a > p {
               font-size: 12px;
               line-height: 26px;
+            }
+          }
+        }
+        &__strategy {
+          padding: 12px 15px 15px;
+          > h2 {
+            font-size: 12px;
+            margin-bottom: 20px;
+          }
+          > div {
+            width: 100%;
+            height: 35px;
+            > div {
+              width: 100%;
+              align-items: center;
+              display: flex;
+              justify-content: center;
+              &:first-child {
+                border-radius: 15px 0px 0px 15px;
+                > p {
+                  font-size: 10px;
+                  line-height: 12px;
+                }
+              }
+              &:last-child {
+                border-radius: 0px 15px 15px 0px;
+                > p {
+                  font-size: 10px;
+                  line-height: 12px;
+                }
+              }
             }
           }
         }
@@ -1272,10 +1344,11 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     @include page-container;
     padding-top: 50px;
     &__header {
-      margin-bottom: 10px;
+      margin-bottom: 70px;
       > img {
         width: 42px;
         height: 42px;
+        margin-bottom: 10px;
       }
       > h2 {
         font-size: 18px;
@@ -1297,6 +1370,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     }
     &__data-wrapper {
       margin-bottom: 40px;
+      background: #fff;
       &__title {
         padding: 14px 16px;
         > h2 {
@@ -1359,6 +1433,47 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             width: 100%;
             > h2 {
               font-size: 12px;
+            }
+          }
+          &__strategy {
+            width: calc(100% - 40px) !important;
+            margin: 0px 0 0 20px;
+            padding: 10px 15px !important;
+            border-radius: 5px;
+            gap: 15px;
+            > div {
+              > p {
+                font-size: 11px;
+              }
+              > div {
+                gap: 5px;
+                > div {
+                  width: 14px;
+                  height: 14px;
+                  > p {
+                    font-size: 10px;
+                  }
+                }
+                > p {
+                  font-size: 11px;
+                }
+              }
+            }
+            &__defi-wrapper {
+              width: calc(100% - 15px) !important;
+              bottom: -40px;
+              left: 15px;
+              padding: 15px 20px;
+              > div {
+                > img {
+                  width: 19px;
+                  height: 19px;
+                  margin-right: 8px;
+                }
+                > p {
+                  font-size: 15px;
+                }
+              }
             }
           }
         }
@@ -1497,7 +1612,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           }
         }
         > p {
-          font-size: 12px;
+          font-size: 11px;
           color: $sub-font-color;
         }
       }
@@ -1686,6 +1801,10 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         margin-top: 15px;
         margin-bottom: 100px;
         > a {
+          > img {
+            width: 22px;
+            margin-left: -5px;
+          }
           > p {
             font-size: 12px;
           }
@@ -2329,6 +2448,38 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         }
       }
     }
+    &__coming-soon {
+      width: 240px;
+      height: 240px;
+      border-radius: 100%;
+      margin: 70px auto; 
+      > div {
+        border-radius: 100%;
+        background: #FFFFFF;
+        position: absolute;
+        &:nth-child(2) {
+          left: 0px;
+          width: 20px;
+          height: 20px;
+          top: 60px;
+        }
+        &:nth-child(3) {
+          right: 2px;
+          width: 10px;
+          height: 10px;
+          bottom: 50px;      
+        }
+        &:last-child {
+          right: 15px;
+          width: 20px;
+          height: 20px;
+          bottom: 34px;
+        }
+        > h2 {
+          font-size: 20px;
+        }
+      }
+    }
   } // staking end
 
   .modal {
@@ -2722,6 +2873,21 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           font-size: 12px;
           line-height: 20px;
         }
+      }
+    }
+    &__network-change-modal__button {
+      &__wrapper {
+        padding: 10px 20px;
+        gap: 10px;
+      }
+      height: 30px;
+      > img {
+        width: 28px;
+        height: 28px;
+      }
+      > h2 {
+        font-size: 12px;
+        margin-right: 8px;
       }
     }
   } // modal end
