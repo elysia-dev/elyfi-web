@@ -244,7 +244,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
                 ),
             expectedAdditionalIncentiveBefore:
               balance.expectedAdditionalIncentiveAfter,
-            expectedAdditionalIncentiveAfter: !isEndedIncentive(
+            expectedAdditionalIncentiveAfter: isEndedIncentive(
               balance.tokenName,
               1,
             )
