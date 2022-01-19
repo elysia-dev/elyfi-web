@@ -164,7 +164,7 @@ const Navigation: React.FunctionComponent<{
               style={{
                 marginRight: 8,
               }}>
-              <p>
+              <p style={{ cursor: "pointer" }}>
                 {t(_data.i18nKeyword).toUpperCase()}
               </p>
             </div>
