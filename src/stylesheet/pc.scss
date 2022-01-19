@@ -2272,8 +2272,13 @@ $device-width: 1190px;
         &__data {
           padding: 15px;
           > div {
-            > p {
-              font-size: 15px;
+            > p:last-child {
+              font-size: 18px;
+              color: $font-color;
+            }
+            > p:first-child {
+              font-size: 12px;
+              margin-bottom: 5px;
             }
           }
         }

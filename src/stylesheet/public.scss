@@ -2052,6 +2052,7 @@ input[type='number'] {
         justify-content: space-between;
         height: $current-data-height;
         align-items: center;
+        background-color: #ffffff;
         > div {
           display: flex;
           justify-content: space-between;
@@ -2094,6 +2095,7 @@ input[type='number'] {
         justify-content: space-between;
         align-items: center;
         border-bottom: 1px solid #e6e6e6;
+        background-color: #ffffff;
         &:last-child {
           border: 0px;
         }
@@ -2141,6 +2143,7 @@ input[type='number'] {
         display: flex;
         flex-direction: row;
         border: 1px solid $gray-line;
+        background-color: #ffffff;
         &__title {
           border-right: 1px solid #e6e6e6;
           display: flex;
@@ -2229,6 +2232,7 @@ input[type='number'] {
           flex-direction: row;
           justify-content: space-evenly;
           > div {
+            background: #ffffff;
             box-shadow: 0px 1px 6px #00000029;
             text-align: center;
             cursor: pointer;
@@ -2275,6 +2279,7 @@ input[type='number'] {
         &__body {
           border: 1px solid $gray-line;
           border-radius: 0px 0px 5px 5px;
+          background-color: #ffffff;
         }
         &__item-header {
           > div {
@@ -2388,6 +2393,7 @@ input[type='number'] {
         }
         &__table {
           border: 1px solid $gray-line;
+          background-color: #ffffff;
           &__header {
             display: flex;
             justify-content: space-between;
@@ -2581,6 +2587,7 @@ input[type='number'] {
             display: flex;
             justify-content: center;
             align-items: center;
+            background: #ffffff;
           }
         }
         &__header {
@@ -2594,6 +2601,7 @@ input[type='number'] {
             display: flex;
             flex-direction: row;
             border-bottom: 1px solid $gray-line;
+            background-color: #ffffff;
             > div {
               flex: 1;
             }
@@ -3215,6 +3223,7 @@ input[type='number'] {
         justify-content: space-between;
         align-items: center;
         flex-direction: row;
+        background: #ffffff;
         > div {
           flex: 1;
           text-align: center;
@@ -3223,6 +3232,9 @@ input[type='number'] {
           }
           > p {
             cursor: pointer;
+          }
+          > p:first-child {
+            color: $gray-font-color;
           }
         }
       }
