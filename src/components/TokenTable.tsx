@@ -220,12 +220,12 @@ const TokenTable: React.FC<Props> = ({
               </div>
             )
           }
-          <div className="deposit__table__body__loan-list" style={{ display: reserveData.assetBondTokens.length === 0 ? "block" : "block" }}>
+          <div className="deposit__table__body__loan-list">
             <div>
               <div>
                 <h2>{t('dashboard.recent_loan')}</h2>
                 {
-                  reserveData.assetBondTokens.length > 0 && (
+                  (reserveData.assetBondTokens.length > 0 && getMainnetType === MainnetType.Ethereum)&& (
                     <Link to={`/${lng}/deposits/${balance.tokenName}`}>
                       <div className="deposit__table__body__loan-list__button">
                         <p>{t('main.governance.view-more')}</p>
@@ -236,7 +236,7 @@ const TokenTable: React.FC<Props> = ({
               </div>
               <div>
                 {
-                  reserveData.assetBondTokens.length === 0 ?
+                  (reserveData.assetBondTokens.length === 0 || getMainnetType === MainnetType.BSC) ?
                   (
                     <div className="loan__list--null" style={{ marginTop: 30 }}>
                       <p>
