@@ -215,7 +215,7 @@ const RewardPlan: FunctionComponent = () => {
     if (!headerRef.current) return;
     const headerY =
       headerRef.current.offsetTop +
-      (document.body.clientWidth > 1190 ? 200 : 120);
+      (document.body.clientWidth > 1190 ? 250 : 120);
     if (!canvas) return;
     canvas.width = document.body.clientWidth * dpr;
     canvas.height = document.body.clientHeight * dpr;
