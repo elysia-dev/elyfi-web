@@ -1100,6 +1100,9 @@ input[type='number'] {
               border-left: 1px solid $gray-line;
             }
             > div {
+              &:first-child {
+                margin-top: 3px;
+              }
               > h2 {
                 color: $font-color;
               }
@@ -3444,6 +3447,10 @@ input[type='number'] {
       justify-content: center;
       border-radius: 5px;
       cursor: pointer;
+      transition: all 0.2s ease-in;
+      &:hover {
+        border: 1px solid $elysia-color;
+      }
       > h2 {
         font-size: 15px;
         font-family: $montserrat--bold;
@@ -3944,7 +3951,7 @@ input[type='number'] {
     cursor: pointer;
     &--1 {
       height: 25px;
-      width: 2px;
+      width: 1px;
       margin-left: 12.5px;
       background-color: #b7b7b7;
       transform: rotate(45deg);
@@ -3952,7 +3959,7 @@ input[type='number'] {
     }
     &--2 {
       height: 25px;
-      width: 2px;
+      width: 1px;
       background-color: #b7b7b7;
       transform: rotate(90deg);
       z-index: 2;

@@ -67,17 +67,17 @@ const Wallet = (props: any) => {
           ) : (
             <div className="navigation__wallet__wrapper">
               <div className="navigation__address">
-                <div className="navigation__davatar">
-                  {
-                    (ensLoading && account && connected) && (
+                {
+                  (ensLoading && account && connected) && (
+                    <div className="navigation__davatar">
                       <Davatar
                         size={30}
                         address={account}
                         generatedAvatarType="jazzicon"
                       />
-                    )
-                  }
-                </div>
+                    </div>
+                  )
+                }
                 <p
                   className={`navigation__wallet__status${
                     connected ? '--connected' : ''
