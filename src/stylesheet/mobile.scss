@@ -346,6 +346,56 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   .main {
     width: $device-width;
     margin: 0 auto;
+    &__popup {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.7);
+      overflow: hidden;
+      &__container {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        position: fixed;
+        > div {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          > img {
+            min-width: 270px;
+            max-width: 360px;
+            width: 90vw;
+            max-height: 80vh;
+            margin-top: 10px;
+          }
+          > div {
+            display: flex;
+            flex-direction: row;
+            justify-content: left;
+            align-items: center;
+            gap: 5px;
+            > p {
+              color: #ffffff;
+              font-size: 12px;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+      &__button {
+        border: 1px solid #ffffff;
+        width: 12px;
+        height: 12px;
+        cursor: pointer;
+        &:hover {
+          background-color: #ffffff50;
+        }
+      }
+    }
     &__image-wrapper {
       width: 310px;
       > img {

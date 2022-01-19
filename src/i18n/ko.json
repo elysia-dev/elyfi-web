@@ -83,6 +83,9 @@
         "table--date": "일 자",
         "view-more": "더 보기",
         "view-more--disable": "접기"
+      },
+      "popup": {
+        "disable_popup": "오늘 그만보기"
       }
     },
     "words": {

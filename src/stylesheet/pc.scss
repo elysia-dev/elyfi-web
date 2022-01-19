@@ -160,6 +160,55 @@ $device-width: 1190px;
       width: $device-width;
       margin: 0 auto;
       margin-top: 100px;
+      &__popup {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999;
+        background: rgba(0, 0, 0, 0.7);
+        overflow: hidden;
+        &__container {
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          position: fixed;
+          > div {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            > img {
+              margin-top: 20px;
+              max-height: 80vh;
+              cursor: pointer;
+            }
+            > div {
+              display: flex;
+              flex-direction: row;
+              justify-content: left;
+              align-items: center;
+              gap: 10px;
+              margin-left: 5px;
+              > p {
+                color: #ffffff;
+                font-size: 20px;
+                cursor: pointer;
+              }
+            }
+          }
+        }
+        &__button {
+          border: 1px solid #ffffff;
+          width: 20px;
+          height: 20px;
+          cursor: pointer;
+          &:hover {
+            background-color: #ffffff50;
+          }
+        }
+      }
       &__image-wrapper {
         width: 515px;
         .dom {

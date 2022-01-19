@@ -83,6 +83,9 @@
         "table--date": "Date",
         "view-more": "View more",
         "view-more--disable": "Close"
+      },
+      "popup": {
+        "disable_popup": "do not open this window today"
       }
     },
     "words": {
