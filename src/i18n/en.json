@@ -535,7 +535,11 @@
         "title": "Wrong Network",
         "content": "The currently connected wallet is connected to a network not provided by ELYFI.\nPlease change to Ethereum or BSC network!",
         "button": "OK"
-      }
+      },
+      "network_change": {
+        "title": "Change network",
+        "content": "The wallet is connected to a network not provided by ELYFI.\nPlease select the desired network among the networks below and change it!"
+      } 
     },
     "guide": {
       "apr": "APR is an abbreviation of Annual percentage rate, which means the ratio of the total compensation amount to the total liquidity.",

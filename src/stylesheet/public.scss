@@ -435,10 +435,11 @@ input[type='number'] {
         &::after {
           content: '';
           display: inline-block;
+          position: absolute;
           width: 6px;
           height: 6px;
-          margin-left: 20px;
           margin-bottom: 2px;
+          right: 12px;
           border-top: 1px solid #333333;
           border-right: 1px solid #333333;
           transform: rotate(135deg);
@@ -466,7 +467,7 @@ input[type='number'] {
           display: flex;
           position: absolute; 
           flex-direction: column;
-          width: 150px;
+          width: 170px;
           top: 38px;
           padding-top: 10px;
           border: 1px solid $gray-line;
@@ -1050,6 +1051,7 @@ input[type='number'] {
             align-items: center;
             cursor: pointer;
             position: relative;
+            margin: 0 0 0 auto;
             &::after {
               content: "";
               width: 100%;
@@ -3162,12 +3164,16 @@ input[type='number'] {
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.2s linear;
             > p {
               color: #636363;
               cursor: pointer;
             }
             &:first-child {
               border-right: 1px solid $gray-line;
+            }
+            &:hover {
+              background-color: #e6e6e6;
             }
           }
           > a {
@@ -3179,6 +3185,10 @@ input[type='number'] {
               display: flex;
               align-items: center;
               justify-content: center;
+              transition: all 0.2s linear;
+              &:hover {
+                background-color: #e6e6e6;
+              }
               > p {
                 color: #636363;
                 cursor: pointer;
@@ -3416,6 +3426,29 @@ input[type='number'] {
         > p {
           color: $font-color;
         }
+      }
+    }
+    &__network-change-modal__button {
+      &__wrapper {
+        display: flex;
+        flex-direction: row;
+        padding: 20px 30px;
+        gap: 10px;
+      }
+      height: 48px;
+      border: 1px solid $gray-line;
+      display: flex;
+      flex-direction: row;
+      flex: 1;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      cursor: pointer;
+      > h2 {
+        font-size: 15px;
+        font-family: $montserrat--bold;
+        cursor: pointer;
+        margin-right: 8px;
       }
     }
   } // modal end

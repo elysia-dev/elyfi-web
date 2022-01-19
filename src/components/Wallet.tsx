@@ -10,12 +10,14 @@ import { useENS } from 'src/hooks/useENS';
 import AccountModal from 'src/components/AccountModal';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetError from 'src/assets/images/network_error.png';
+import NetworkChangeModal from './NetworkChangeModal';
 
 const Wallet = (props: any) => {
   const { account, activate, active, chainId } = useWeb3React();
   const [connected, setConnected] = useState<boolean>(false);
   const { t } = useTranslation();
-  const [modal, setModal] = useState(false);
+  const [accountModalVisible, setAccountModalVisible] = useState(false);
+  const [networkChangeModalVisible, setNetworkChangeModalVisible] = useState(false);
   const { txStatus } = useContext(TxContext);
 
   const WalletRef = useRef<HTMLDivElement>(null);
@@ -34,7 +36,8 @@ const Wallet = (props: any) => {
 
   return (
     <>
-      <AccountModal visible={modal} closeHandler={() => setModal(false)} />
+      <AccountModal visible={accountModalVisible} closeHandler={() => setAccountModalVisible(false)} />
+      <NetworkChangeModal visible={networkChangeModalVisible} closeHandler={() => setNetworkChangeModalVisible(false)} />
       <div
         className={`navigation__wallet${
           connected ? '--connected' : ''
@@ -46,8 +49,11 @@ const Wallet = (props: any) => {
               window.sessionStorage.setItem('@connect', 'true');
             });
           }
-          if (connected) {
-            setModal(true);
+          if (unsupportedChainid) {
+            setNetworkChangeModalVisible(true)
+          }
+          if (connected && !unsupportedChainid) {
+            setAccountModalVisible(true);
           }
         }}>
         {
