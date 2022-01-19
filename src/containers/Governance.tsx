@@ -33,6 +33,7 @@ const Governance = () => {
   const { data, loading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
   const { t } = useTranslation();
   const History = useHistory();
+  const { value: mediaQuery } = useMediaQueryType();
   const { lng } = useParams<{ lng: string }>();
 
   const draw = () => {
@@ -45,15 +46,27 @@ const Governance = () => {
     canvas.width = document.body.clientWidth * dpr;
     canvas.height = document.body.clientHeight * dpr;
     const browserWidth = canvas.width / dpr + 40;
+    const browserHeight = canvas.height / dpr;
     const ctx = canvas.getContext('2d');
 
     if (!ctx) return;
     ctx.scale(dpr, dpr);
-
-    new DrawWave(ctx, browserWidth).drawOnPages(headerY, TokenColors.ELFI);
+    if (mediaQuery === MediaQuery.Mobile) {
+      new DrawWave(ctx, browserWidth).drawMobileOnPages(
+        headerY,
+        TokenColors.ELFI,
+        browserHeight,
+        true,
+      );
+      return;
+    }
+    new DrawWave(ctx, browserWidth).drawOnPages(
+      headerY,
+      TokenColors.ELFI,
+      browserHeight,
+      true,
+    );
   };
-
-  const { value: mediaQuery } = useMediaQueryType();
 
   const viewMoreHandler = useCallback(() => {
     setPageNumber((prev) => prev + 1);
@@ -152,12 +165,14 @@ const Governance = () => {
 
   useEffect(() => {
     draw();
+    window.addEventListener('scroll', () => draw());
     window.addEventListener('resize', () => draw());
 
     return () => {
+      window.removeEventListener('scroll', () => draw());
       window.removeEventListener('resize', () => draw());
     };
-  }, []);
+  }, [document.body.clientHeight]);
 
   const offChainContainer = (data: INapData) => {
     return (
@@ -167,8 +182,8 @@ const Governance = () => {
           reactGA.event({
             category: PageEventType.MoveToExternalPage,
             action: ButtonEventType.OffChainVoteButtonOnGovernance,
-          })
-          window.open(data.link)
+          });
+          window.open(data.link);
         }}>
         <div>
           <img src={`https://${data.images}`} />
@@ -204,14 +219,14 @@ const Governance = () => {
     return (
       <div
         className="governance__onchain-vote__assets governance__asset"
-        onClick={() =>{
+        onClick={() => {
           reactGA.event({
             category: PageEventType.MoveToExternalPage,
             action: ButtonEventType.OnChainVoteButtonOnGovernance,
-          })
+          });
           window.open(
             `https://www.withtally.com/governance/elyfi/proposal/${data.id}`,
-          )
+          );
         }}>
         <div>
           <img

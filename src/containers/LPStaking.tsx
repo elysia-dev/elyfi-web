@@ -254,14 +254,28 @@ function LPStaking(): JSX.Element {
     canvas.width = document.body.clientWidth * dpr;
     canvas.height = document.body.clientHeight * dpr;
     const browserWidth = canvas.width / dpr + 40;
+    const browserHeight = canvas.height / dpr;
     const ctx = canvas.getContext('2d');
 
     if (!ctx) return;
     ctx.scale(dpr, dpr);
 
+    if (mediaQuery === MediaQuery.Mobile) {
+      new DrawWave(ctx, browserWidth).drawMobileOnPages(
+        headerY,
+        TokenColors.ELFI,
+        browserHeight,
+        true,
+        'LP',
+      );
+      return;
+    }
+
     new DrawWave(ctx, browserWidth).drawOnPages(
       headerY,
       TokenColors.ELFI,
+      browserHeight,
+      true,
       'LP',
     );
   };
@@ -351,7 +365,7 @@ function LPStaking(): JSX.Element {
     return () => {
       window.removeEventListener('resize', () => draw());
     };
-  }, []);
+  }, [document.body.clientHeight]);
 
   return (
     <>
@@ -437,7 +451,9 @@ function LPStaking(): JSX.Element {
             isLoading={isLoading}
             setModalAndSetStakeToken={() => {
               setStakingVisibleModal(true);
-              ReactGA.modalview(Token.ETH + ModalViewType.StakingOrUnstakingModal);
+              ReactGA.modalview(
+                Token.ETH + ModalViewType.StakingOrUnstakingModal,
+              );
               setStakeToken(Token.ETH);
             }}
             round={round}
@@ -453,7 +469,9 @@ function LPStaking(): JSX.Element {
             isLoading={isLoading}
             setModalAndSetStakeToken={() => {
               setStakingVisibleModal(true);
-              ReactGA.modalview(Token.DAI + ModalViewType.StakingOrUnstakingModal);
+              ReactGA.modalview(
+                Token.DAI + ModalViewType.StakingOrUnstakingModal,
+              );
               setStakeToken(Token.DAI);
             }}
             round={round}
@@ -483,8 +501,8 @@ function LPStaking(): JSX.Element {
           <Reward
             rewardToReceive={rewardToReceive}
             onHandler={() => {
-              setRewardVisibleModal(true)
-              ReactGA.modalview(ModalViewType.LPStakingIncentiveModal)
+              setRewardVisibleModal(true);
+              ReactGA.modalview(ModalViewType.LPStakingIncentiveModal);
             }}
           />
         </section>
