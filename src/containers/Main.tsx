@@ -112,7 +112,7 @@ const Main = () => {
     return () => {
       window.removeEventListener('resize', draw);
     };
-  }, []);
+  }, [document.body.clientHeight]);
 
   return (
     <>
