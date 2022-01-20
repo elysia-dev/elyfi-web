@@ -234,16 +234,16 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
             expectedIncentiveAfter: isEndedIncentive(balance.tokenName, 0)
               ? balance.expectedIncentiveAfter
               : balance.expectedIncentiveAfter.add(
-                  calcExpectedIncentive(
+                calcExpectedIncentive(
+                  elfiPrice,
+                  balance.deposit,
+                  calcMiningAPR(
                     elfiPrice,
-                    balance.deposit,
-                    calcMiningAPR(
-                      elfiPrice,
-                      BigNumber.from(reserve.totalDeposit),
-                    ).mul(busd3xRewardEvent(balance.tokenName)),
-                    balance.updatedAt,
-                  ),
+                    BigNumber.from(reserve.totalDeposit),
+                  ).mul(busd3xRewardEvent(balance.tokenName)),
+                  balance.updatedAt,
                 ),
+              ),
             expectedAdditionalIncentiveBefore:
               balance.expectedAdditionalIncentiveAfter,
             expectedAdditionalIncentiveAfter: isEndedIncentive(
@@ -252,16 +252,17 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
             )
               ? balance.expectedAdditionalIncentiveAfter
               : balance.expectedAdditionalIncentiveAfter.add(
-                  calcExpectedIncentive(
+                calcExpectedIncentive(
+                  elfiPrice,
+                  balance.deposit,
+                  calcMiningAPR(
                     elfiPrice,
-                    balance.deposit,
-                    calcMiningAPR(
-                      elfiPrice,
-                      BigNumber.from(reserve.totalDeposit),
-                    ).mul(busd3xRewardEvent(balance.tokenName)),
-                    balance.updatedAt,
-                  ),
+                    BigNumber.from(reserve.totalDeposit),
+                  ).mul(busd3xRewardEvent(balance.tokenName)),
+                  balance.updatedAt,
                 ),
+              ),
+            updatedAt: moment().unix(),
           };
         }),
       );
