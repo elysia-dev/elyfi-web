@@ -215,7 +215,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     if (!account || !active) return;
     setLoading(true)
     loadBalances();
-  }, [account, active]);
+  }, [account, active, chainId]);
 
   useEffect(() => {
     if(loading || !active) return;
