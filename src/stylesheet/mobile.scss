@@ -945,16 +945,25 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       margin-bottom: 40px;
       position: relative;
       &__box {
-        display: none;
+        display: none !important;
       }
       > div {
         z-index: 2;
-        > h2 {
-          font-size: 13px;
+        > div {
           margin-left: 15px;
-          line-height: 20px;
-          strong {
-            color: $elysia-color;
+          height: 70px;
+          > h2 {
+            font-size: 13px;
+            line-height: 20px;
+            text-shadow: 2px 0px 4px #FFFFFF;
+            strong {
+              color: $elysia-color;
+            }
+          }
+          > p {
+            font-size: 10px;
+            color: $font-color;
+            text-shadow: 2px 0px 4px #FFFFFF;
           }
         }
       }

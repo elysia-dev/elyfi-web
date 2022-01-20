@@ -913,12 +913,22 @@ input[type='number'] {
         display: flex;
         flex-direction: row;
         align-items: center;
-        > h2 {
-          font-size: 20px;
+        > div {
           margin-left: 20px;
-          line-height: 35px;
-          strong {
-            color: $elysia-color;
+          height: 90px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          > h2 {
+            font-size: 20px;
+            line-height: 34px;
+            strong {
+              color: $elysia-color;
+            }
+          }
+          > p {
+            font-size: 14px;
+            color: $gray-font-color;
           }
         }
       }

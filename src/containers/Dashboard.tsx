@@ -16,7 +16,7 @@ import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
 import IncentiveModal from 'src/containers/IncentiveModal';
 import isWalletConnect from 'src/hooks/isWalletConnect';
 import ConnectWalletModal from 'src/containers/ConnectWalletModal';
-import WrongMainnetModal from 'src/containers/WrongMainnetModal';
+import NetworkChangeModal from 'src/components/NetworkChangeModal';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 
 import ModalViewType from 'src/enums/ModalViewType';
@@ -130,9 +130,9 @@ const Dashboard: React.FunctionComponent = () => {
           setConnectWalletModalvisible(false);
         }}
       />
-      <WrongMainnetModal
+      <NetworkChangeModal
         visible={wrongMainnetModalVisible}
-        onClose={() => {
+        closeHandler={() => {
           setWrongMainnetModalVisible(false);
         }}
       />
@@ -146,9 +146,14 @@ const Dashboard: React.FunctionComponent = () => {
                 EVENT
               </p>
             </div>
-            <h2>
-              <Trans i18nKey={t("dashboard.event_title")} />
-            </h2>
+            <div>
+              <h2>
+                <Trans i18nKey={t("dashboard.event_title")} />
+              </h2>
+              <p>
+                2022.1.20 19:00:00 ~ 2022.1.26 19:00:00 KST
+              </p>
+            </div>
           </div>
           <img src={EventImage} />
         </div>
