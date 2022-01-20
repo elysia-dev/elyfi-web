@@ -1,9 +1,9 @@
-import Token from "src/enums/Token";
+import Token from 'src/enums/Token';
 import {
-	daiMoneyPoolTime,
-	tetherMoneyPoolTime,
+  daiMoneyPoolTime,
+  tetherMoneyPoolTime,
 } from 'src/core/data/moneypoolTimes';
-import moment from "moment";
+import moment from 'moment';
 
 const isEndedIncentive = (token: string, round: number): boolean => {
 	if (token === Token.BUSD) return false;

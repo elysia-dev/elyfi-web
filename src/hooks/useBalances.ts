@@ -239,19 +239,17 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
             expectedIncentiveBefore: balance.expectedIncentiveAfter,
             expectedIncentiveAfter: isEndedIncentive(balance.tokenName, 0)
               ? balance.expectedIncentiveAfter
-              : balance.incentiveRound1
-                  .add(
-                    calcExpectedIncentive(
+              : balance.incentiveRound1.add(
+                  calcExpectedIncentive(
+                    elfiPrice,
+                    balance.deposit,
+                    calcMiningAPR(
                       elfiPrice,
-                      balance.deposit,
-                      calcMiningAPR(
-                        elfiPrice,
-                        BigNumber.from(reserve.totalDeposit),
-                      ),
-                      balance.updatedAt,
-                    ),
-                  )
-                  .mul(busd3xRewardEvent(balance.tokenName)),
+                      BigNumber.from(reserve.totalDeposit),
+                    ).mul(busd3xRewardEvent(balance.tokenName)),
+                    balance.updatedAt,
+                  ),
+                ),
             expectedAdditionalIncentiveBefore:
               balance.expectedAdditionalIncentiveAfter,
             expectedAdditionalIncentiveAfter: isEndedIncentive(
@@ -259,19 +257,17 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
               1,
             )
               ? balance.expectedAdditionalIncentiveAfter
-              : balance.incentiveRound2
-                  .add(
-                    calcExpectedIncentive(
+              : balance.incentiveRound2.add(
+                  calcExpectedIncentive(
+                    elfiPrice,
+                    balance.deposit,
+                    calcMiningAPR(
                       elfiPrice,
-                      balance.deposit,
-                      calcMiningAPR(
-                        elfiPrice,
-                        BigNumber.from(reserve.totalDeposit),
-                      ),
-                      balance.updatedAt,
-                    ),
-                  )
-                  .mul(busd3xRewardEvent(balance.tokenName)),
+                      BigNumber.from(reserve.totalDeposit),
+                    ).mul(busd3xRewardEvent(balance.tokenName)),
+                    balance.updatedAt,
+                  ),
+                ),
           };
         }),
       );
