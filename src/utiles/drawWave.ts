@@ -403,14 +403,129 @@ class DrawWave {
       headerY * 1.6,
     );
     if (isBackgroundColor) {
-      this.ctx.lineTo(this.browserWidth, browserHeghit);
-      this.ctx.lineTo(0, browserHeghit);
+      console.log(browserHeghit);
+      this.ctx.lineTo(this.browserWidth, browserHeghit - 150);
+      this.ctx.bezierCurveTo(
+        this.browserWidth / 1.2,
+        browserHeghit - 330,
+        this.browserWidth / 1.3,
+        browserHeghit - 48,
+        this.browserWidth / 2,
+        browserHeghit - 94,
+      );
+      this.ctx.bezierCurveTo(
+        this.browserWidth / 2.7,
+        browserHeghit - 105,
+        this.browserWidth / 3,
+        browserHeghit - 250,
+        0,
+        browserHeghit - 190,
+      );
       this.ctx.closePath();
       this.ctx.fill();
+
+      // this.ctx.beginPath();
+      this.ctx.moveTo(0, browserHeghit - 165);
+      this.ctx.bezierCurveTo(
+        this.browserWidth / 3,
+        browserHeghit - 300,
+        this.browserWidth / 4,
+        browserHeghit - 70,
+        this.browserWidth / 1.7,
+        browserHeghit - 94,
+      );
+      this.ctx.bezierCurveTo(
+        this.browserWidth / 1.1,
+        browserHeghit - 170,
+        this.browserWidth / 1.17,
+        browserHeghit - 240,
+        this.browserWidth,
+        browserHeghit - 170,
+      );
     }
     this.ctx.stroke();
 
     // circle
+    if (isBackgroundColor) {
+      this.ctx.strokeStyle = token
+        ? token === Token.EL
+          ? '#3679B5'
+          : token === 'LP'
+          ? '#F9AE19'
+          : '#00BFFF'
+        : color;
+      this.ctx.beginPath();
+      this.ctx.fillStyle = '#ffffff';
+      this.ctx.moveTo(this.browserWidth / 7 + 10, browserHeghit - 204.5);
+      this.ctx.arc(
+        this.browserWidth / 7,
+        browserHeghit - 204.5,
+        10,
+        0,
+        Math.PI * 2,
+      );
+
+      this.ctx.moveTo(this.browserWidth / 1.46 + 5, browserHeghit - 115.5);
+      this.ctx.arc(
+        this.browserWidth / 1.46,
+        browserHeghit - 115.5,
+        5,
+        0,
+        Math.PI * 2,
+      );
+
+      this.ctx.moveTo(this.browserWidth / 3 + 10, browserHeghit - 167);
+      this.ctx.arc(
+        this.browserWidth / 3,
+        browserHeghit - 167,
+        10,
+        0,
+        Math.PI * 2,
+      );
+
+      this.ctx.fill();
+      this.ctx.stroke();
+
+      this.ctx.beginPath();
+      this.ctx.strokeStyle = token
+        ? token === Token.EL
+          ? '#3679B5'
+          : token === 'LP'
+          ? '#627EEA'
+          : '#00BFFF'
+        : color;
+
+      this.ctx.moveTo(this.browserWidth / 1.5 + 10, browserHeghit - 116);
+      this.ctx.arc(
+        this.browserWidth / 1.5,
+        browserHeghit - 116,
+        10,
+        0,
+        Math.PI * 2,
+      );
+
+      this.ctx.moveTo(this.browserWidth / 7.58 + 5, browserHeghit - 210);
+      this.ctx.arc(
+        this.browserWidth / 7.58,
+        browserHeghit - 210,
+        5,
+        0,
+        Math.PI * 2,
+      );
+
+      this.ctx.moveTo(this.browserWidth / 1.18 + 10, browserHeghit - 203);
+      this.ctx.arc(
+        this.browserWidth / 1.18,
+        browserHeghit - 203,
+        10,
+        0,
+        Math.PI * 2,
+      );
+
+      this.ctx.fill();
+
+      this.ctx.stroke();
+    }
     this.ctx.strokeStyle = token
       ? token === Token.EL
         ? '#3679B5'
