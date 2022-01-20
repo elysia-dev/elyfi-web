@@ -28,7 +28,9 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
-import SubgraphContext, { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
+import SubgraphContext, {
+  IReserveSubgraphData,
+} from 'src/contexts/SubgraphContext';
 import {
   Bar,
   Cell,
@@ -41,6 +43,7 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
 import isSupportedReserve from 'src/core/utils/isSupportedReserve';
 import ReserveToken from 'src/core/types/ReserveToken';
+import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 
 const initialBalanceState = {
   loading: true,
@@ -91,18 +94,20 @@ function MarketDetail(): JSX.Element {
   const [graphConverter, setGraphConverter] = useState(false);
   const [transactionModal, setTransactionModal] = useState(false);
   const tokenRef = useRef<HTMLParagraphElement>(null);
-  const { data: getSubgraphData } = useContext(SubgraphContext)
+  const { data: getSubgraphData } = useContext(SubgraphContext);
   const { latestPrice, poolDayData } = useContext(UniswapPoolContext);
   const { lng, id } = useParams<{ lng: string; id: Token.DAI | Token.USDT }>();
   const history = useHistory();
   const { value: mediaQuery } = useMediaQueryType();
   const tokenInfo = reserveTokenData[id];
-  const data = getSubgraphData.reserves.find((reserve) => reserve.id === tokenInfo.address);
+  const data = getSubgraphData.reserves.find(
+    (reserve) => reserve.id === tokenInfo.address,
+  );
   const [tooltipPositionX, setTooltipPositionX] = useState(0);
   const [date, setDate] = useState('');
   const { t, i18n } = useTranslation();
   const [cellInBarIdx, setCellInBarIdx] = useState(-1);
-  const { type: getMainnetType } = useContext(MainnetContext)
+  const { type: getMainnetType } = useContext(MainnetContext);
 
   const selectToken = tokenColorData.find((color) => {
     return color.name === id;
@@ -166,7 +171,11 @@ function MarketDetail(): JSX.Element {
     ctx.scale(dpr, dpr);
     new DrawWave(ctx, browserWidth).drawOnPages(
       headerY,
-      id === Token.DAI ? TokenColors.DAI : id === Token.USDT ? TokenColors.USDT : TokenColors.BUSD,
+      id === Token.DAI
+        ? TokenColors.DAI
+        : id === Token.USDT
+        ? TokenColors.USDT
+        : TokenColors.BUSD,
     );
   };
 
@@ -229,12 +238,12 @@ function MarketDetail(): JSX.Element {
 
   useEffect(() => {
     // need refactoring!!!
-    if (!isSupportedReserve(balances.tokenName ,getMainnetType)) {
+    if (!isSupportedReserve(balances.tokenName, getMainnetType)) {
       history.push({
         pathname: `/${lng}/deposit`,
       });
     }
-  }, [balances, getMainnetType])
+  }, [balances, getMainnetType]);
 
   // FIXME
   // const miningAPR = utils.parseUnits('10', 25);
@@ -294,7 +303,7 @@ function MarketDetail(): JSX.Element {
   const CustomTooltip = (e: any) => {
     if (!(cellInBarIdx === -1)) setCellInBarIdx(e.label);
 
-    // setDate(e.payload[0]?.payload.name || "0");
+    setDate(e.payload[0]?.payload.name || '');
     setTooltipPositionX(e.coordinate.x);
     return (
       <div
@@ -387,11 +396,15 @@ function MarketDetail(): JSX.Element {
         <div className="detail__container">
           <MarketDetailsBody
             depositReward={toPercent(
-              BigNumber.from(data.depositAPY).add(miningAPR),
+              BigNumber.from(data.depositAPY).add(
+                miningAPR.mul(busd3xRewardEvent(selectToken?.name)),
+              ),
             )}
             totalDeposit={toUsd(data.totalDeposit, tokenInfo?.decimals)}
             depositAPY={toPercent(data.depositAPY)}
-            miningAPRs={toPercent(miningAPR)}
+            miningAPRs={toPercent(
+              miningAPR.mul(busd3xRewardEvent(selectToken?.name)),
+            )}
             depositor={data.deposit.length}
             totalLoans={data.borrow.length}
             totalBorrowed={toUsd(data.totalBorrow, tokenInfo?.decimals)}
