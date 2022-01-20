@@ -31,6 +31,7 @@ import getIncentivePoolAddress from 'src/core/utils/getIncentivePoolAddress';
 import scrollToOffeset from 'src/core/utils/scrollToOffeset';
 import useBalances from 'src/hooks/useBalances';
 import EventImage from 'src/assets/images/event_image.png';
+import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();
@@ -185,7 +186,8 @@ const Dashboard: React.FunctionComponent = () => {
                                 elfiPrice,
                                 BigNumber.from(reserve.totalDeposit),
                                 reserveTokenData[balance.tokenName].decimals,
-                              ) || '0',
+                              ).mul(busd3xRewardEvent(balance.tokenName)) ||
+                                '0',
                             )}
                           </p>
                         </div>
