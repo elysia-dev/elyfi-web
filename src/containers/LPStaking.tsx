@@ -360,9 +360,11 @@ function LPStaking(): JSX.Element {
 
   useEffect(() => {
     draw();
+    window.addEventListener('scroll', () => draw());
     window.addEventListener('resize', () => draw());
 
     return () => {
+      window.removeEventListener('scroll', () => draw());
       window.removeEventListener('resize', () => draw());
     };
   }, [document.body.clientHeight]);
