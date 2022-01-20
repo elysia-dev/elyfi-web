@@ -326,8 +326,8 @@ const Governance = () => {
               onClick={() =>
                 window.open(
                   lng === LanguageType.KO
-                    ? 'https://elysia.gitbook.io/elyfi-governance-faq/v/kor/'
-                    : 'https://elysia.gitbook.io/elyfi-governance-faq/',
+                    ? 'https://elysia.gitbook.io/elyfi-user-guide/v/korean-2/governance/governance-faq'
+                    : 'https://elysia.gitbook.io/elyfi-user-guide/governance',
                 )
               }>
               <p>{t('governance.button--governance_faq')}</p>
