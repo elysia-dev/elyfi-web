@@ -7,7 +7,7 @@ import { BigNumber } from 'ethers';
 import { useQuery } from '@apollo/client';
 import { GetUser } from 'src/queries/__generated__/GetUser';
 import { GET_USER } from 'src/queries/userQueries';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import PriceContext from 'src/contexts/PriceContext';
 import ReactGA from 'react-ga';
@@ -30,6 +30,8 @@ import { MainnetData } from 'src/core/data/mainnets';
 import getIncentivePoolAddress from 'src/core/utils/getIncentivePoolAddress';
 import scrollToOffeset from 'src/core/utils/scrollToOffeset';
 import useBalances from 'src/hooks/useBalances';
+import EventImage from 'src/assets/images/event_image.png';
+import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();
@@ -102,14 +104,10 @@ const Dashboard: React.FunctionComponent = () => {
             setIncentiveModalVisible(false);
           }}
           balanceBefore={
-            round === 1
-              ? selectedBalance.expectedIncentiveBefore
-              : selectedBalance.expectedAdditionalIncentiveBefore
+            round === 1 ? selectedBalance.expectedIncentiveBefore : selectedBalance.expectedAdditionalIncentiveBefore
           }
           balanceAfter={
-            round === 1
-              ? selectedBalance.expectedIncentiveAfter
-              : selectedBalance.expectedAdditionalIncentiveAfter
+            round === 1 ? selectedBalance.expectedIncentiveAfter : selectedBalance.expectedAdditionalIncentiveAfter
           }
           incentivePoolAddress={getIncentivePoolAddress(
             round,
@@ -141,6 +139,19 @@ const Dashboard: React.FunctionComponent = () => {
 
       <div className="deposit">
         <TvlCounter />
+        <div className="deposit__event">
+          <div>
+            <div className="deposit__event__box">
+              <p>
+                EVENT
+              </p>
+            </div>
+            <h2>
+              <Trans i18nKey={t("dashboard.event_title")} />
+            </h2>
+          </div>
+          <img src={EventImage} />
+        </div>
         <RewardPlanButton stakingType={'deposit'} />
         <div className="deposit__table__wrapper">
           {isEnoughWide && (
@@ -154,7 +165,7 @@ const Dashboard: React.FunctionComponent = () => {
                   if (!reserve) return <></>;
 
                   return (
-                    <a onClick={() => scrollToOffeset(`table-${index}`, 338)}>
+                    <a onClick={() => scrollToOffeset(`table-${index}`, 678)}>
                       <div>
                         <div className="deposit__remote-control__images">
                           <img
@@ -175,7 +186,8 @@ const Dashboard: React.FunctionComponent = () => {
                                 elfiPrice,
                                 BigNumber.from(reserve.totalDeposit),
                                 reserveTokenData[balance.tokenName].decimals,
-                              ) || '0',
+                              ).mul(busd3xRewardEvent(balance.tokenName)) ||
+                                '0',
                             )}
                           </p>
                         </div>
