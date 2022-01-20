@@ -515,7 +515,10 @@ const Governance = () => {
                   <div>
                     <button
                       className="portfolio__view-button"
-                      onClick={() => viewMoreHandler()}>
+                      onClick={() => {
+                        viewMoreHandler();
+                        draw();
+                      }}>
                       {t('loan.view-more')}
                     </button>
                   </div>
