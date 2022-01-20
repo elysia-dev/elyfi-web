@@ -123,6 +123,23 @@ export class UniswapV3 {
         `,
     });
   };
+
+  static getElfiBusdPoolData = async (): Promise<AxiosResponse<IPoolData>> => {
+    return axios.post(baseUrl, {
+      query: `
+          {
+            pool(id: "0x9803cd5851b24C8CAE5ebbAD46D69C400553cf4b"){
+							poolDayData(orderBy: date) {
+								date,
+								token1Price
+							},
+              liquidity,
+              sqrtPrice
+            },
+          }
+        `,
+    });
+  };
 }
 
 export default UniswapV3;

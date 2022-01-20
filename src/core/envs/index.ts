@@ -13,6 +13,7 @@ interface EnvironmentVariables {
   requiredChainId: number;
   subgraphURI: string;
   etherscanURI: string;
+  bscscanURI: string;
   daiAddress: string;
   usdtAddress: string;
   daiElfiPoolAddress: string;
@@ -26,9 +27,14 @@ interface EnvironmentVariables {
   lpTokenPoolSubgraphURL: string;
   refundedAddress: string;
   appURI: string;
-  etherscan: string;
   daiTokenizerAddress: string;
   usdtTokeninzerAddress: string;
+  bscMainnetChainId: number;
+  bscMoneyPoolAddress: string;
+  bscElfiAddress: string;
+  busdAddress: string;
+  busdIncentivePoolAddress: string;
+  bscSubgraphURI: string;
   prevDaiIncentivePool: string;
   prevUSDTIncentivePool: string;
   currentDaiIncentivePool: string;

@@ -2,14 +2,16 @@ import { BigNumber, constants, providers } from 'ethers';
 import { formatUnits, formatEther } from 'ethers/lib/utils';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import PriceContext from 'src/contexts/PriceContext';
-import ReservesContext from 'src/contexts/ReservesContext';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import envs from 'src/core/envs';
 import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import ReserveData from 'src/core/data/reserves';
+import SubgraphContext, { initialReserveSubgraph, IReserveSubgraph } from 'src/contexts/SubgraphContext';
+import { ReserveSubgraph } from 'src/clients/ReserveSubgraph';
 
 const useTvl = (): { value: number; loading: boolean } => {
-  const { reserves } = useContext(ReservesContext);
+  const subgraphContext = useContext(SubgraphContext);
+  const [loading, setLoading] = useState(true)
   const {
     totalValueLockedToken0,
     totalValueLockedToken1,
@@ -25,12 +27,12 @@ const useTvl = (): { value: number; loading: boolean } => {
 
   const tvl = useMemo(() => {
     return (
-      reserves.reduce((res, cur) => {
+      subgraphContext.data.reserves.reduce((res, cur) => {
         const tokenInfo = ReserveData.find((datum) => datum.address === cur.id);
         return (
           res +
           parseFloat(
-            formatUnits(BigNumber.from(cur.totalDeposit), tokenInfo?.decimals),
+            formatUnits(BigNumber.from(loading ? 0 : cur.totalDeposit), tokenInfo?.decimals),
           )
         );
       }, 0) +
@@ -41,9 +43,9 @@ const useTvl = (): { value: number; loading: boolean } => {
     );
   }, [
     state,
-    reserves,
     elPrice,
     elfiPrice,
+    loading,
     totalValueLockedToken0,
     totalValueLockedToken1,
   ]);
@@ -78,7 +80,9 @@ const useTvl = (): { value: number; loading: boolean } => {
   };
 
   useEffect(() => {
-    loadBalances();
+    loadBalances().then(() => {
+      setLoading(false);
+    });
   }, []);
 
   return {

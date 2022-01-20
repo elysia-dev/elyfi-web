@@ -3,6 +3,7 @@ import eth from 'src/assets/images/eth.png';
 import dai from 'src/assets/images/dai.png';
 import usdc from 'src/assets/images/USDC.png';
 import usdt from 'src/assets/images/usdt.png';
+import busd from 'src/assets/images/busd.png';
 import envs from 'src/core/envs';
 
 export interface IReserve {
@@ -46,6 +47,12 @@ export const reserveTokenData = {
     decimals: 6,
     address: '0x',
   },
+  BUSD: {
+    name: 'BUSD',
+    image: busd,
+    decimals: 18,
+    address: envs.busdAddress,
+  }
 };
 
 const reserves: IReserve[] = [
@@ -81,6 +88,12 @@ const reserves: IReserve[] = [
     decimals: 6,
     address: '0x',
   },
+  {
+    name: 'BUSD',
+    image: busd,
+    decimals: 18,
+    address: envs.busdAddress,
+  }
 ];
 
 export default reserves;

@@ -1,6 +1,7 @@
 enum ButtonEventType {
 	DepositButtonOnTop = "DepositButtonOnTop",
 	DepositButton = "DepositButton",
+	DepositButtonOnEventModal = "DepositButtonOnEventModal",
 	CheckInterestRateButton = "CheckInterestRateButton",
 	CheckCollateralButton = "CheckCollateralButton",
 	CheckGovernanceButton = "CheckGovernanceButton",

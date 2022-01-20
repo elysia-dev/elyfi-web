@@ -6,7 +6,6 @@ import { formatCommaSmall, formatSixFracionDigit } from 'src/utiles/formatters';
 import { formatEther } from 'ethers/lib/utils';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
-import ReservesContext from 'src/contexts/ReservesContext';
 import { IncentivePool__factory } from '@elysia-dev/contract-typechain';
 import CountUp from 'react-countup';
 import ModalHeader from 'src/components/ModalHeader';
@@ -24,7 +23,7 @@ const IncentiveModal: FunctionComponent<{
   incentivePoolAddress: string;
   tokenName: string;
   onClose: () => void;
-  afterTx: () => Promise<void>;
+  afterTx: () => void;
   transactionModal: () => void;
 }> = ({
   visible,
@@ -37,7 +36,6 @@ const IncentiveModal: FunctionComponent<{
   transactionModal,
 }) => {
   const { account, library, chainId } = useWeb3React();
-  const { reserves } = useContext(ReservesContext);
   const { setTransaction, failTransaction } = useContext(TxContext);
 
   const reqeustClaimIncentive = async () => {
@@ -56,7 +54,6 @@ const IncentiveModal: FunctionComponent<{
     );
 
     emitter.clicked();
-
     IncentivePool__factory.connect(incentivePoolAddress, library.getSigner())
       .claimIncentive()
       .then((tx) => {

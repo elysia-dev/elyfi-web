@@ -17,6 +17,15 @@ export const tetherMoneyPoolEndedAt = moment(
   'YYYY.MM.DD hh:mm:ss Z',
 );
 
+export const busdMoneypoolStartedAt = moment(
+  '2022.01.20 19:00:00 +9:00',
+  'YYYY.MM.DD hh:mm:ss Z',
+);
+
+export const busdMoneypoolEndedAt = moment(
+  '2022.06.10 20:00:00 +9:00',
+  'YYYY.MM.DD hh:mm:ss Z',
+);
 export const daiMoneyPoolTime = [
   {
     startedAt: moneyPoolStartedAt,
@@ -35,6 +44,16 @@ export const tetherMoneyPoolTime = [
   },
   {
     startedAt: moment('2022.01.11 18:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
+    endedAt: moment('2022.06.10 20:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
+  },
+];
+export const busdMoneyPoolTime = [
+  {
+    startedAt: busdMoneypoolStartedAt,
+    endedAt: busdMoneypoolEndedAt,
+  },
+  {
+    startedAt: moment('2022.01.20 18:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
     endedAt: moment('2022.06.10 20:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
   },
 ];

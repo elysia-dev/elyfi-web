@@ -1,9 +1,9 @@
-$device-width: 360px;
+$device-width: 320px;
 $footer-height: 100px;
 
 $font-color: #333333;
 $sub-font-color: #646464;
-$elysia-color: #00a7ff;
+$elysia-color: #00BFFF;
 $background-color: #ffffff;
 $gray-line: #f0f0f1;
 $gray-font-color: #888888;
@@ -31,13 +31,43 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 
   .navigation {
     overflow-y: scroll;
+    &__mainnet {
+      &__current {
+        width: 120px;
+        height: 35px;
+        border-radius: 5px;
+        > img {
+          width: 30px;
+        }
+        > h2 {
+          font-size: 12px;
+        }
+      }
+      &__change-network {
+        &__wrapper {
+          width: 120px;
+          top: 29px;
+          padding-top: 6px;
+          padding-bottom: 2px;
+          &.network-error {
+            width: 185px;
+          }
+        }
+        > h2 {
+          font-size: 12px;
+        }
+        > img {
+          width: 30px;
+        }
+      }
+    }
     &__hamburger {
       &__content {
         > div,
         a > div {
           // padding: 33px 0px 36px;
           height: 70px;
-          width: 360px;
+          width: $device-width;
           margin: 0 auto;
           border-bottom: 1px solid $gray-line;
           display: flex;
@@ -69,7 +99,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           }
           &__wrapper {
             margin: 0px auto;
-            width: 360px;
+            width: $device-width;
             padding: 13px 0;
             > div {
               padding: 15px 0;
@@ -78,7 +108,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         }
       }
       &__footer {
-        width: 360px;
+        width: $device-width;
         margin: 30px auto;
         display: flex;
         flex-direction: column;
@@ -106,6 +136,9 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         cursor: pointer;
         width: 25px;
         height: 25px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         i {
           border-radius: 2px;
           content: '';
@@ -177,14 +210,101 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         border-radius: 0px 0px 15px 15px;
       }
     }
+    &__address {
+      justify-content: space-around;
+      width: 100%;
+    }
     &__wallet {
+      display: inline-flex;
+      background: #00bfff 0% 0%;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      margin-left: 50px;
       width: 100%;
       height: 50px;
       border-radius: 28px;
       margin: 0;
       &--connected {
-        margin: 0;
         width: 100%;
+        height: 54px;
+        margin: 0;
+        display: inline-flex;
+        border-radius: 5px;
+        opacity: 1;
+        align-items: center;
+        justify-content: flex-end;
+        text-align: right;
+        position: relative;
+        cursor: pointer;
+        border: 2px solid #e6e6e6;
+
+        &:hover {
+          border: 2px solid $elysia-color ;
+        }
+        &.FAIL {
+          box-shadow: 0px 0px 6px #ff1d1d81;
+          border: 2px solid #ff1d1d;
+        }
+        &.PENDING {
+          box-shadow: 0px 0px 6px #f5f5f581;
+          border: 2px solid #f5f5f5;
+          color: #00bfff;
+          box-shadow: inset 0 0 0 1px rgba(#00bfff, 0.5);
+
+          &::before,
+          &::after {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            content: '';
+            z-index: -1;
+            margin: -1 * 0.05 * 100%;
+            box-shadow: inset 0 0 0 2px;
+            animation: clipMe 4s linear infinite;
+          }
+          &::before {
+            animation-delay: 4s * -0.5;
+          }
+          // @keyframes clipMe {
+          //   0%,
+          //   100% {
+          //     clip: rect(0px, 205px * 1.1, 2px, 0px);
+          //   }
+          //   25% {
+          //     clip: rect(0px, 2px, 67px * 1.1, 0px);
+          //   }
+          //   50% {
+          //     clip: rect(67px * 1.1 - 2px, 205px * 1.1, 67px * 1.1, 0px);
+          //   }
+          //   75% {
+          //     clip: rect(0px, 205px * 1.1, 67px * 1.1, 205px * 1.1);
+          //   }
+          // }
+          .loader {
+            left: 15px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            position: relative;
+            -webkit-animation: load5 1.1s infinite ease;
+            animation: load5 1.1s infinite ease;
+            -webkit-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            transform: translateZ(0);
+          }
+        }
+        &.CONFIRM {
+          box-shadow: 0px 0px 6px #23eb1b81;
+          border: 2px solid #23eb1b;
+        }
+        &.unknown-chain {
+          > h2 {
+            font-size: 15px;
+          }
+        }
       }
       &__status {
         &--connected {
@@ -229,10 +349,60 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   .main {
     width: $device-width;
     margin: 0 auto;
+    &__popup {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.7);
+      overflow: hidden;
+      &__container {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        position: fixed;
+        > div {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          > img {
+            min-width: 270px;
+            max-width: 360px;
+            width: 90vw;
+            max-height: 80vh;
+            margin-top: 10px;
+          }
+          > div {
+            display: flex;
+            flex-direction: row;
+            justify-content: left;
+            align-items: center;
+            gap: 5px;
+            > p {
+              color: #ffffff;
+              font-size: 12px;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+      &__button {
+        border: 1px solid #ffffff;
+        width: 12px;
+        height: 12px;
+        cursor: pointer;
+        &:hover {
+          background-color: #ffffff50;
+        }
+      }
+    }
     &__image-wrapper {
-      width: 340px;
+      width: 310px;
       > img {
-        width: 340px;
+        width: 310px;
       }
       .dom {
         top: -50px;
@@ -348,7 +518,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             width: $device-width;
             position: relative;
             z-index: 2;
-            margin-bottom: -60px;
+            margin-bottom: -25px;
             animation-duration: 15s;
             animation-name: DownFade--mobile;
             animation-iteration-count: infinite;
@@ -523,6 +693,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         flex-direction: column;
         align-items: center;
         margin: 60px 0;
+        transform: scale(.85);
         .scroll-arrow {
           position: initial;
         }
@@ -536,6 +707,48 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           height: 140px;
           border-radius: 100%;
           border: 1px solid $elysia-color;
+          &.circle_01 {
+            left: 10px;
+            position: relative;
+          }
+          &.circle_02 {
+            width: 160px;
+            height: 160px;
+            background: #F7FBFF;
+          }
+          &.circle_03 {
+            left: 10px;
+            position: relative;
+            background: #F7FBFF;
+          }
+          &.circle_04 {
+            width: 175px;
+            height: 175px;
+            position: relative;
+            background: #F7FBFF;
+            > div {
+              &:first-child {
+                width: 11px;
+                height: 11px;
+                position: absolute;
+                border: 1px solid $elysia-color;
+                border-radius: 100%;
+                right: 8px;
+                top: 33px;
+                background: #ffffff;
+              }
+              &:last-child {
+                width: 7px;
+                height: 7px;
+                position: absolute;
+                border: 1px solid #00BFFF;
+                border-radius: 100%;
+                right: 4px;
+                top: 27px;
+                background: #ffffff;
+              }
+            }
+          }
           > p {
             font-size: 12px;
             color: $font-color;
@@ -721,9 +934,55 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 
   .deposit {
     @include page-container;
-    &__title {
-      height: 100px;
+    &__event {
+      border: 1px solid $gray-line;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      height: 85px;
+      align-items: center;
       margin-bottom: 40px;
+      position: relative;
+      &__box {
+        display: none !important;
+      }
+      > div {
+        z-index: 2;
+        > div {
+          margin-left: 15px;
+          height: 70px;
+          > h2 {
+            font-size: 13px;
+            line-height: 20px;
+            text-shadow: 2px 0px 4px #FFFFFF;
+            strong {
+              color: $elysia-color;
+            }
+          }
+          > p {
+            font-size: 10px;
+            color: $font-color;
+            text-shadow: 2px 0px 4px #FFFFFF;
+          }
+        }
+      }
+      > img {
+        height: 85px;
+        position: absolute;
+        right: 0;
+        z-index: 1;
+      }
+    }
+    &__title {
+      height: 300px;
+      margin-bottom: 40px;
+      padding-top: 180px;
+      margin-top: -230px;
+      background-repeat: no-repeat;
+      background-position-x: center;
+      background-position-y: center;
+      background-size: 100%;
       .react-loading-skeleton {
         margin-top: 12px;
       }
@@ -793,6 +1052,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             border-radius: 15px;
             width: 130px;
             height: 26px;
+            margin: 0 auto;
             margin-top: 15px;
             margin-bottom: 20px;
             > p {
@@ -879,13 +1139,14 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         &__loan-list {
           padding: 12px 15px;
           .component__loan-list__container {
-            grid-template-columns: repeat(2, 150px);
+            grid-template-columns: repeat(2, 135px);
             > div {
-              width: 150px;
+              width: 135px;
             }
           }
           > div {
             > div {
+              align-items: center;
               > h2 {
                 font-size: 12px !important;
                 margin: 0 !important;
@@ -914,6 +1175,58 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             > a > p {
               font-size: 12px;
               line-height: 26px;
+            }
+          }
+        }
+        &__strategy {
+          padding: 12px 15px 15px;
+          > h2 {
+            font-size: 12px;
+            margin-bottom: 20px;
+          }
+          > div {
+            width: 100%;
+            height: 20px;
+            > div {
+              width: 100%;
+              align-items: center;
+              display: flex;
+              justify-content: center;
+              &:first-child {
+                border-radius: 15px 0px 0px 15px;
+                > p {
+                  font-size: 10px;
+                  line-height: 12px;
+                }
+              }
+              &:last-child {
+                border-radius: 0px 15px 15px 0px;
+                > p {
+                  font-size: 10px;
+                  line-height: 12px;
+                }
+              }
+            }
+          }
+
+          &__text-info {
+            display: flex;
+            align-items: center;
+            height: auto !important;
+            margin-top: 10px;
+            gap: 5px;
+            justify-content: flex-start !important;
+            .last {
+              background: #40AFD5 !important;
+            }
+            > div {
+              width: 10px !important;
+              height: 10px;
+              border-radius: 100% !important;
+            }
+            > p {
+              font-size: 12px;
+              color: $gray-font-color;
             }
           }
         }
@@ -1151,10 +1464,11 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     @include page-container;
     padding-top: 50px;
     &__header {
-      margin-bottom: 10px;
+      margin-bottom: 70px;
       > img {
         width: 42px;
         height: 42px;
+        margin-bottom: 10px;
       }
       > h2 {
         font-size: 18px;
@@ -1176,6 +1490,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     }
     &__data-wrapper {
       margin-bottom: 40px;
+      background: #fff;
       &__title {
         padding: 14px 16px;
         > h2 {
@@ -1240,6 +1555,47 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
               font-size: 12px;
             }
           }
+          &__strategy {
+            width: calc(100% - 40px) !important;
+            margin: 0px 0 0 20px;
+            padding: 10px 15px !important;
+            border-radius: 5px;
+            gap: 15px;
+            > div {
+              > p {
+                font-size: 11px;
+              }
+              > div {
+                gap: 5px;
+                > div {
+                  width: 14px;
+                  height: 14px;
+                  > p {
+                    font-size: 10px;
+                  }
+                }
+                > p {
+                  font-size: 11px;
+                }
+              }
+            }
+            &__defi-wrapper {
+              width: calc(100% - 15px) !important;
+              bottom: -40px;
+              left: 15px;
+              padding: 15px 20px;
+              > div {
+                > img {
+                  width: 19px;
+                  height: 19px;
+                  margin-right: 8px;
+                }
+                > p {
+                  font-size: 15px;
+                }
+              }
+            }
+          }
         }
         &__circle-wrapper {
           justify-content: center !important;
@@ -1289,7 +1645,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 
   .governance {
     @include page-container;
-    $asset-width: 164px;
+    $asset-width: 150px;
     &__asset {
       width: $asset-width;
       &__progress-bar {
@@ -1376,7 +1732,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           }
         }
         > p {
-          font-size: 12px;
+          font-size: 11px;
           color: $sub-font-color;
         }
       }
@@ -1565,6 +1921,10 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         margin-top: 15px;
         margin-bottom: 100px;
         > a {
+          > img {
+            width: 22px;
+            margin-left: -5px;
+          }
           > p {
             font-size: 12px;
           }
@@ -1620,7 +1980,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           padding: 0 16px 18px 16px;
         }
         border-radius: 15px;
-        width: 152px;
+        width: 138px;
         height: 26px;
         line-height: 26px;
         padding: 0px;
@@ -1823,7 +2183,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           margin-top: 15px;
           margin-bottom: 70px;
           > div {
-            width: 104px;
+            width: 80px;
             height: 26px;
             border-radius: 15px;
             > p {
@@ -2208,6 +2568,38 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         }
       }
     }
+    &__coming-soon {
+      width: 240px;
+      height: 240px;
+      border-radius: 100%;
+      margin: 70px auto; 
+      > div {
+        border-radius: 100%;
+        background: #FFFFFF;
+        position: absolute;
+        &:nth-child(2) {
+          left: 0px;
+          width: 20px;
+          height: 20px;
+          top: 60px;
+        }
+        &:nth-child(3) {
+          right: 2px;
+          width: 10px;
+          height: 10px;
+          bottom: 50px;      
+        }
+        &:last-child {
+          right: 15px;
+          width: 20px;
+          height: 20px;
+          bottom: 34px;
+        }
+        > h2 {
+          font-size: 20px;
+        }
+      }
+    }
   } // staking end
 
   .modal {
@@ -2227,8 +2619,8 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     &__container {
       border-radius: 20px;
       // width: 95vw;
-      width: 360px;
-      min-width: 360px;
+      width: $device-width;
+      min-width: $device-width;
     }
     &__header {
       padding: 10px 12px;
@@ -2374,7 +2766,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         }
         > div:last-child {
           border-radius: 20px;
-          width: 150px;
+          width: 100px;
           height: 30px;
           border: 1px solid $gray-line;
           box-shadow: 0px 0px 3px #00000011;
@@ -2603,11 +2995,26 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         }
       }
     }
+    &__network-change-modal__button {
+      &__wrapper {
+        padding: 10px 20px;
+        gap: 10px;
+      }
+      height: 30px;
+      > img {
+        width: 28px;
+        height: 28px;
+      }
+      > h2 {
+        font-size: 12px;
+        margin-right: 8px;
+      }
+    }
   } // modal end
 
   .component {
     &__loan-list {
-      $loan-list-size: 164px;
+      $loan-list-size: 150px;
 
       width: $loan-list-size;
       &__container {
@@ -2734,6 +3141,10 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     width: 106px;
     height: 25px;
   }
+
+  .logo-wrapper {
+    height: 40px;
+  }
   .footer {
     margin-top: 80px;
     > div {
@@ -2809,12 +3220,12 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   }
 
   // .header {
-  //   min-width: 360px;
-  //   height: 360px;
+  //   min-width: $device-width;
+  //   height: $device-width;
   //   &__title {
   //     font-size: 20px;
   //     &__wrapper {
-  //       width: 360px;
+  //       width: $device-width;
   //       bottom: 42px;
   //     }
   //   }
@@ -2827,7 +3238,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   //   background-repeat: no-repeat;
   //   &__title {
   //     &-wrapper {
-  //       width: 360px;
+  //       width: $device-width;
   //       bottom: 42px;
   //     }
   //     &-text {
@@ -2854,7 +3265,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   // }
 
   // .tokens {
-  //   width: 360px;
+  //   width: $device-width;
   //   padding-bottom: 100px;
   //   &__container {
   //     margin-top: 85px;
@@ -3020,13 +3431,13 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   //   }
   // }
   // .staking {
-  //   width: 360px;
+  //   width: $device-width;
   //   margin: 100px auto;
   //   &__sign {
   //     font-size: 10px !important;
   //   }
   //   &__round {
-  //     width: 360px;
+  //     width: $device-width;
   //     margin-top: 50px;
   //     &__border {
   //       width: 27px;
@@ -3034,7 +3445,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   //     }
   //     &__container {
   //       flex: 1;
-  //       width: 360px;
+  //       width: $device-width;
   //     }
   //     &__remaining-data {
   //       margin: 45px 0;
@@ -3282,7 +3693,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   //     }
   //   }
   //   &__infomation {
-  //     width: 360px;
+  //     width: $device-width;
   //     margin-top: 75px;
   //     flex-direction: column;
   //     > :nth-child(2) {
@@ -3319,7 +3730,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   //       }
   //     }
   //     &__wrapper {
-  //       width: 360px;
+  //       width: $device-width;
   //       padding: 10px;
   //       box-shadow: 0px 0px 6px #00000029;
   //       gap: 23px;
@@ -3419,7 +3830,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   //     // height: 95vh;
   //     border-radius: 0px;
   //     margin: auto;
-  //     min-width: 360px;
+  //     min-width: $device-width;
   //     overflow-y: initial !important;
   //     top: 50%;
   //     left: 50%;
@@ -3718,13 +4129,13 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   // .footer {
   //   padding-top: 25px;
   //   padding-bottom: 25px;
-  //   min-width: 360px;
+  //   min-width: $device-width;
   //   &__content {
   //     font-size: 15px;
   //     top: 14px;
   //   }
   //   &__container {
-  //     width: 360px;
+  //     width: $device-width;
   //   }
   //   &__white-logo {
   //     width: 100px;

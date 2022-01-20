@@ -56,7 +56,7 @@
       "graph": {
         "title": "<strong>ELYFI</strong> 서비스 이해하기",
         "circle-content": [
-          "* 온라인 투자 연계 금융업자 등록업체",
+          "온라인 투자 연계 금융업자 등록업체",
           "담보법인",
           "엘리파이",
           "부동산 소유주"
@@ -83,6 +83,9 @@
         "table--date": "일 자",
         "view-more": "더 보기",
         "view-more--disable": "접기"
+      },
+      "popup": {
+        "disable_popup": "오늘 그만보기"
       }
     },
     "words": {
@@ -103,6 +106,7 @@
       "staking": "스테이킹",
       "docs": "문서",
       "elyfi_docs": "엘리파이 백서",
+      "elyfi_guide": "ELYFI 가이드",
       "governance_docs": "거버넌스 문서",
       "guide": "가이드",
       "uniswap_elfi": "Uniswap(ELFI)",
@@ -115,7 +119,6 @@
       "ELStake": "EL 스테이킹",
       "ELFIStake": "ELFI 스테이킹",
       "LPStake": "LP 스테이킹",
-      "elyfi_guide": "ELYFI 가이드",
       "link": {
         "docs": "https://elysia.gitbook.io/elysia.finance/",
         "guide": "https://elysia.gitbook.io/elyfi-user-guide/v/korean-2/",
@@ -162,6 +165,7 @@
       "minted": "ELFI 토큰",
       "minted_balance": "ELFI 잔액",
       "withdraw": "출금",
+      "withdraw--button": "출금하기",
       "max": "최대",
       "deposit_available": "예치 가능한 양",
       "withdraw_availble": "출금 가능한 양",
@@ -213,7 +217,15 @@
 
       "deposit_add_reward_event": "<strong>New</strong> 보상 수량",
       "claim_before_withraw_guide": "예치/출금을 이용하기 위해 보상 토큰을 먼저 수령해주세요! 수령할 보상 토큰은 <strong>2021.7.15 ~ 2022.1.11 KST</strong> 에 쌓인 ELFI 보상 토큰입니다.",
-      "claim_question": "보상 토큰을 수령하시겠습니까?"
+      "claim_question": "보상 토큰을 수령하시겠습니까?",
+      
+      "target_running_strategy": "목표 운용전략",
+      "real_estate_mortgage": "부동산 담보대출",
+      "auto_invest_defi__title": "디파이 자동투자",
+      "auto_invest_defi": [
+        "앵커프로토콜"
+      ],
+      "event_title": "ELFI <strong>300%</strong> 보상 이벤트\nBUSD를 예치하고, ELFI 토큰을 받아가세요!"
     },
     "loan": {
       "loan__title": "대출 리스트",
@@ -241,7 +253,8 @@
       "collateral_nft__maximum_amount": "채권최고액",
       "collateral_nft__loan_type": "담보유형",
       "collateral_nft__address": "담보물주소",
-      "collateral_nft__contract_image": "계약서 이미지"
+      "collateral_nft__contract_image": "계약서 이미지",
+      "loan_list--null": "현재 실행된 대출이 없습니다"
     },
     "governance": {
       "status": "상태",
@@ -430,6 +443,7 @@
       "nth_connect": "{{nth}}에 연결됨",
       "copy_address": "주소 복사",
       "on_etherscan": "Etherscan에서 보기",
+      "on_bscscan": "Bsc scan에서 보기",
       "activity__title": "최근 활동",
       "Idle": "최근 활동이 여기에 표시됩니다.",
       "Approve": "승인",
@@ -447,13 +461,22 @@
     "modal": {
       "connect_wallet": {
         "title": "엘리파이 시작하기",
-        "content": "예치/출금을 하기 위해서는 지갑 연결이 필요합니다.\n연결하시겠습니까?",
+        "content": "엘리파이를 이용하기 위해서는 지갑 연결이 필요합니다.\n연결하시겠습니까?",
         "button": "연결하기"
       },
       "connect_metamask": {
         "title": "엘리파이 시작하기",
         "content": "모바일 웹 페이지에서도 예치/출금, 스테이킹을 이용할 수 있도록 관련 기능이 곧 오픈될 예정입니다!",
         "button": "Coming soon!"
+      },
+      "wrong_mainnet": {
+        "title": "잘못된 네트워크",
+        "content": "현재 연결한 지갑이 ELYFI 에서 제공하지 않는 네트워크로 연결돼 있습니다.\nEthereum 또는 BSC 네트워크로 변경해주세요!",
+        "button": "확인"
+      },
+      "network_change": {
+        "title": "네트워크 변경하기",
+        "content": "현재 연결한 지갑이 ELYFI에서 제공하지 않는 네트워크로 연결돼 있습니다.\n아래 네트워크 중 원하는 네트워크를 선택하여 변경해주세요!"
       }
     },
     "guide": {

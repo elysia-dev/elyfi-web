@@ -14,13 +14,13 @@
           "button": "Check APR"
         },
         {
-          "header": "<strong>Depositors can obtain interest stably<br/>by depositing virtual assets in ELYFI backed by real estate-based tokens.</strong>",
-          "content": "The protocol operates stably with a system that secures real estate-based tokens with small fluctuations rather than virtual assets with high liquidation risk due to large fluctuations in value.",
+          "header": "<strong>ELYFI facilitates real estate backed NFTs so that digital asset loans can be more efficient</strong>",
+          "content": "The protocol provides opportunity for borrowers and lenders who are looking to avoid volatility and liquidation risk crypto lending markets.",
           "button": "Check collateral"
         },
         {
-          "header": "<strong>ELFI holders directly decide matters related<br/>to the operation of the protocol.</strong>",
-          "content": "It is reliable because matters related to the operation of the protocol such as loan execution and interest rates are decided by the votes of the holders.",
+          "header": "<strong>ELFI holders decide matters related to the protocol</strong>",
+          "content": "Important decisions such as loan executions and interest rate are voted by the community through on-chain and off-chain governance.",
           "button": "Check Governance"
         }
       ],
@@ -56,7 +56,7 @@
       "graph": {
         "title": "What is <strong>ELYFI</strong>?",
         "circle-content": [
-          "* Online investment-linked financial business entities",
+          "Online investment-linked financial business entities",
           "Lending Company",
           "ELYFI",
           "Property owner"
@@ -83,6 +83,9 @@
         "table--date": "Date",
         "view-more": "View more",
         "view-more--disable": "Close"
+      },
+      "popup": {
+        "disable_popup": "Do not open this window today"
       }
     },
     "words": {
@@ -103,6 +106,7 @@
       "staking": "staking",
       "docs": "docs",
       "elyfi_docs": "elyfi docs",
+      "elyfi_guide": "ELYFI Guide",
       "governance_docs": "governance docs",
       "guide": "guide",
       "uniswap_elfi": "Uniswap(ELFI)",
@@ -115,7 +119,6 @@
       "ELStake": "EL Staking",
       "ELFIStake": "ELFI Staking",
       "LPStake": "LP Staking",
-      "elyfi_guide": "ELYFI Guide",
       "link": {
         "docs": "https://elysia.gitbook.io/elysia.finance/v/eng/",
         "guide": "https://elysia.gitbook.io/elyfi-user-guide/",
@@ -152,6 +155,7 @@
       "minted": "ELFI Token",
       "minted_balance": "ELFI Balance",
       "withdraw": "Withdraw",
+      "withdraw--button": "Withdraw",
       "max": "MAX",
       "deposit_available": "Deposit Available",
       "total_deposit_yield": "Total Deposit Yield",
@@ -207,7 +211,15 @@
 
       "deposit_add_reward_event": "<strong>New</strong> amount of rewards",
       "claim_before_withraw_guide": "Please claim your rewards first to use your deposit/withdrawal! The reward tokens you will receive are ELFI reward tokens accumulated from <strong>2021.7.15 ~ 2022.1.11 KST!</strong>",
-      "claim_question": "Do you want to claim rewards?"
+      "claim_question": "Do you want to claim rewards?",
+      
+      "target_running_strategy": "Target running strategy",
+      "real_estate_mortgage": "Real estate mortgage",
+      "auto_invest_defi__title": "Auto investment to DeFi",
+      "auto_invest_defi": [
+        "Anchor Protocol"
+      ],
+      "event_title": "ELFI <strong>300%</strong> Reward Event\nDeposit BUSD, Get ELFI Tokens!"
     },
     "loan": {
       "loan__title": "Loan List",
@@ -235,7 +247,8 @@
       "collateral_nft__maximum_amount": "Maximum Pledge Amount",
       "collateral_nft__loan_type": "Collateral Type",
       "collateral_nft__address": "Collateral Address",
-      "collateral_nft__contract_image": "Contract Image"
+      "collateral_nft__contract_image": "Contract Image",
+      "loan_list--null": "There are currently no outstanding loans."
     },
     "governance": {
       "status": "Status",
@@ -476,6 +489,7 @@
       "nth_connect": "Connect with {{nth}}",
       "copy_address": "Copy address",
       "on_etherscan": "View on Etherscan",
+      "on_bscscan": "View on Bsc scan",
       "activity__title": "Recent Activity",
       "Idle": "Recent activity is displayed here",
       "Approve": "Approve",
@@ -515,14 +529,23 @@
     "modal": {
       "connect_wallet": {
         "title": "Start ELYFI",
-        "content": "A wallet connection is required to deposit/withdraw.\nDo you want to connect?",
+        "content": "A wallet connection is required to use ELYFI.\nDo you want to connect?",
         "button": "Connect Wallet"
       },
       "connect_metamask": {
         "title": "Start ELYFI",
         "content": "A related function will be opened soon so that you can use deposit/withdrawal and staking on the mobile web page!",
         "button": "Coming soon!"
-      }
+      },
+      "wrong_mainnet": {
+        "title": "Wrong Network",
+        "content": "The currently connected wallet is connected to a network not provided by ELYFI.\nPlease change to Ethereum or BSC network!",
+        "button": "OK"
+      },
+      "network_change": {
+        "title": "Change network",
+        "content": "The wallet is connected to a network not provided by ELYFI.\nPlease select the desired network among the networks below and change it!"
+      } 
     },
     "guide": {
       "apr": "APR is an abbreviation of Annual percentage rate, which means the ratio of the total compensation amount to the total liquidity.",

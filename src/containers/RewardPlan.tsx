@@ -1,7 +1,6 @@
 import { constants, utils } from 'ethers';
 import moment from 'moment';
 import envs from 'src/core/envs';
-import wave from 'src/assets/images/wave_elyfi.png';
 import {
   FunctionComponent,
   useCallback,
@@ -17,12 +16,12 @@ import LpStakingBox from 'src/components/RewardPlan/LpStakingBox';
 import StakingBox from 'src/components/RewardPlan/StakingBox';
 import TokenDeposit from 'src/components/RewardPlan/TokenDeposit';
 import PriceContext from 'src/contexts/PriceContext';
-import ReservesContext from 'src/contexts/ReservesContext';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import {
   daiMoneyPoolTime,
   moneyPoolStartedAt,
   tetherMoneyPoolTime,
+  busdMoneyPoolTime
 } from 'src/core/data/moneypoolTimes';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import {
@@ -41,6 +40,7 @@ import {
 } from 'src/core/utils/calcLpReward';
 import calcMintedAmounts from 'src/core/utils/calcMintedAmounts';
 import {
+  calcMintedByBusdMoneypool,
   calcMintedByDaiMoneypool,
   calcMintedByTetherMoneypool,
 } from 'src/core/utils/calcMintedByDaiMoneypool';
@@ -57,6 +57,11 @@ import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import { lpRoundDate, lpUnixTimestamp } from 'src/core/data/lpStakingTime';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
+import SubgraphContext from 'src/contexts/SubgraphContext';
+import isSupportedReserve from 'src/core/utils/isSupportedReserve';
+import MainnetType from 'src/enums/MainnetType';
+import MainnetContext from 'src/contexts/MainnetContext';
+import getTokenNameByAddress from 'src/core/utils/getTokenNameByAddress';
 
 const RewardPlan: FunctionComponent = () => {
   const { t } = useTranslation();
@@ -66,7 +71,8 @@ const RewardPlan: FunctionComponent = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const { ethPrice } = useContext(PriceContext);
-  const { reserves } = useContext(ReservesContext);
+  const { data: getSubgraphData } = useContext(SubgraphContext);
+  const { type: getMainnetType } = useContext(MainnetContext);
   const current = moment();
   const currentPhase = useMemo(() => {
     return stakingRoundTimes.filter(
@@ -154,6 +160,8 @@ const RewardPlan: FunctionComponent = () => {
     daiRewardByLp: calcDaiRewardByLp(),
     beforeEthRewardByLp: [0, 0, 0],
     ethRewardByLp: calcEthRewardByLp(lpStakingRound.ethElfiRound),
+    beforeMintedByBuscMoneypool: 0,
+    mintedByBusdMoneypool: calcMintedByBusdMoneypool(),
   });
 
   const moneyPoolInfo = {
@@ -166,6 +174,10 @@ const RewardPlan: FunctionComponent = () => {
       startedMoneyPool: tetherMoneyPoolTime[0].startedAt.format('yyyy.MM.DD'),
       endedMoneyPool: tetherMoneyPoolTime[0].endedAt.format('yyyy.MM.DD'),
     },
+    BUSD: {
+      startedMoneyPool: busdMoneyPoolTime[0].startedAt.format('yyyy.MM.DD'),
+      endedMoneyPool: busdMoneyPoolTime[0].endedAt.format('yyyy.MM.DD'),
+    }
   };
 
   const beforeMintedMoneypool = {
@@ -173,10 +185,16 @@ const RewardPlan: FunctionComponent = () => {
     USDT: {
       beforeMintedToken: amountData.beforeMintedByTetherMoneypool,
     },
+    BUSD: {
+      beforeMintedToken: amountData.beforeMintedByBuscMoneypool,
+    }
   };
   const mintedMoneypool = {
     DAI: { mintedToken: amountData.mintedByDaiMoneypool },
     USDT: { mintedToken: amountData.mintedByTetherMoneypool },
+    BUSD: {
+      mintedToken: amountData.mintedByBusdMoneypool
+    }
   };
 
   const beforeTotalMintedByElStakingPool = useMemo(() => {
@@ -197,7 +215,7 @@ const RewardPlan: FunctionComponent = () => {
     if (!headerRef.current) return;
     const headerY =
       headerRef.current.offsetTop +
-      (document.body.clientWidth > 1190 ? 200 : 120);
+      (document.body.clientWidth > 1190 ? 250 : 120);
     if (!canvas) return;
     canvas.width = document.body.clientWidth * dpr;
     canvas.height = document.body.clientHeight * dpr;
@@ -299,6 +317,8 @@ const RewardPlan: FunctionComponent = () => {
         daiRewardByLp: calcDaiRewardByLp(),
         beforeEthRewardByLp: amountData.ethRewardByLp,
         ethRewardByLp: calcEthRewardByLp(lpUnixTimestamp.length),
+        beforeMintedByBuscMoneypool: amountData.mintedByBusdMoneypool,
+        mintedByBusdMoneypool: calcMintedByBusdMoneypool(),
       });
     }, 2000);
     return () => {
@@ -463,9 +483,7 @@ const RewardPlan: FunctionComponent = () => {
               </div>
             </div>
             <section className="reward__container">
-              {reserves.map((reserve, index) => {
-                const token =
-                  reserve.id === envs.daiAddress ? Token.DAI : Token.USDT;
+              {getSubgraphData.reserves.filter((data) => isSupportedReserve(getTokenNameByAddress(data.id), getMainnetType)).map((reserve, index) => {
                 return (
                   <TokenDeposit
                     key={index}
@@ -473,12 +491,11 @@ const RewardPlan: FunctionComponent = () => {
                     reserve={reserve}
                     moneyPoolInfo={moneyPoolInfo}
                     beforeMintedMoneypool={
-                      beforeMintedMoneypool[token].beforeMintedToken
-                      // beforeMintedMoneypool[token].beforeMintedToken <= 0
-                      //   ? 0
-                      //   : beforeMintedMoneypool[token].beforeMintedToken
+                      beforeMintedMoneypool[getTokenNameByAddress(reserve.id)].beforeMintedToken <= 0
+                        ? 0
+                        : beforeMintedMoneypool[getTokenNameByAddress(reserve.id)].beforeMintedToken
                     }
-                    mintedMoneypool={mintedMoneypool[token].mintedToken}
+                    mintedMoneypool={mintedMoneypool[getTokenNameByAddress(reserve.id)].mintedToken}
                     depositRound={depositRound}
                     setDepositRound={setDepositRound}
                   />
