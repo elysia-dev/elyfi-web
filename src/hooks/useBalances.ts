@@ -25,8 +25,6 @@ export type BalanceType = {
   id: string;
   tokenName: ReserveToken;
   value: BigNumber;
-  incentiveRound1: BigNumber;
-  incentiveRound2: BigNumber;
   expectedIncentiveBefore: BigNumber;
   expectedIncentiveAfter: BigNumber;
   expectedAdditionalIncentiveBefore: BigNumber;
@@ -37,8 +35,6 @@ export type BalanceType = {
 
 const initialBalanceState = {
   value: constants.Zero,
-  incentiveRound1: constants.Zero,
-  incentiveRound2: constants.Zero,
   expectedIncentiveBefore: constants.Zero,
   expectedIncentiveAfter: constants.Zero,
   expectedAdditionalIncentiveBefore: constants.Zero,
@@ -99,8 +95,6 @@ const fetchBalanceFrom = async (
       value: await ERC20__factory.connect(reserve.id, library).balanceOf(
         account,
       ),
-      incentiveRound1,
-      incentiveRound2,
       expectedIncentiveBefore: incentiveRound1,
       expectedIncentiveAfter: incentiveRound1,
       expectedAdditionalIncentiveBefore: incentiveRound2,
@@ -239,7 +233,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
             expectedIncentiveBefore: balance.expectedIncentiveAfter,
             expectedIncentiveAfter: isEndedIncentive(balance.tokenName, 0)
               ? balance.expectedIncentiveAfter
-              : balance.incentiveRound1.add(
+              : balance.expectedIncentiveAfter.add(
                   calcExpectedIncentive(
                     elfiPrice,
                     balance.deposit,
@@ -257,7 +251,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
               1,
             )
               ? balance.expectedAdditionalIncentiveAfter
-              : balance.incentiveRound2.add(
+              : balance.expectedAdditionalIncentiveAfter.add(
                   calcExpectedIncentive(
                     elfiPrice,
                     balance.deposit,
