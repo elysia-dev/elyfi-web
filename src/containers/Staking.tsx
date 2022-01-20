@@ -422,37 +422,43 @@ const Staking: React.FunctionComponent<IProps> = ({
                 token: stakedToken.toUpperCase(),
               })}
             </h2>
-            <p>
-              {stakedToken === Token.EL
-                ? t('staking.el.staking__content')
-                : t('staking.elfi.staking__content')}
-            </p>
-            <div className="staking__title__button">
-              <a
-                href={
-                  stakedToken === Token.ELFI
-                    ? 'https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4'
-                    : lng === LanguageType.KO
-                    ? 'https://coinmarketcap.com/ko/currencies/elysia/markets/'
-                    : 'https://coinmarketcap.com/currencies/elysia/markets/'
-                }
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                {stakedToken === Token.ELFI && (
-                  <img src={Uniswap} alt="Uniswap" />
-                )}
-                <p>
-                  {stakedToken === Token.EL
-                    ? t('staking.el.staking__content--button')
-                    : t('staking.elfi.staking__content--button')}
-                </p>
-              </a>
-            </div>
+            {
+              getMainnetType === MainnetType.Ethereum && (
+                <>
+                  <p>
+                    {stakedToken === Token.EL
+                      ? t('staking.el.staking__content')
+                      : t('staking.elfi.staking__content')}
+                  </p>
+                  <div className="staking__title__button">
+                    <a
+                      href={
+                        stakedToken === Token.ELFI
+                          ? 'https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4'
+                          : lng === LanguageType.KO
+                          ? 'https://coinmarketcap.com/ko/currencies/elysia/markets/'
+                          : 'https://coinmarketcap.com/currencies/elysia/markets/'
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      {stakedToken === Token.ELFI && (
+                        <img src={Uniswap} alt="Uniswap" />
+                      )}
+                      <p>
+                        {stakedToken === Token.EL
+                          ? t('staking.el.staking__content--button')
+                          : t('staking.elfi.staking__content--button')}
+                      </p>
+                    </a>
+                  </div>
+                </>
+              )
+            }
           </div>
           {
             getMainnetType === MainnetType.Ethereum ? (
@@ -1077,14 +1083,17 @@ const Staking: React.FunctionComponent<IProps> = ({
                 )}
               </section>
             ) : (
-              <div className={`staking__coming-soon ${stakedToken === Token.EL ? "el" : "elfi"}`}>
-                <div>
-                  <h2>COMING SOON</h2>
+              <>
+                <div style={{ marginTop: 300 }} />
+                <div className={`staking__coming-soon ${stakedToken === Token.EL ? "el" : "elfi"}`}>
+                  <div>
+                    <h2>COMING SOON</h2>
+                  </div>
+                  <div />
+                  <div />
+                  <div />
                 </div>
-                <div />
-                <div />
-                <div />
-              </div>
+              </>
             )
           }
         </section>
