@@ -15,10 +15,6 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import CountUp from 'react-countup';
-import SwiperCore, { Navigation, Pagination, Virtual } from 'swiper';
-import RewardDetailInfo from './RewardDetailInfo';
-import SmallProgressBar from './SmallProgressBar';
-
 
 interface Props {
   reserve: IReserveSubgraphData;
@@ -58,7 +54,12 @@ const TokenDeposit: FunctionComponent<Props> = ({
   mintedMoneypool,
 }) => {
   const { t } = useTranslation();
-  const token = reserve.id === envs.daiAddress ? Token.DAI : reserve.id === envs.usdtAddress ? Token.USDT : Token.BUSD;
+  const token =
+    reserve.id === envs.daiAddress
+      ? Token.DAI
+      : reserve.id === envs.usdtAddress
+      ? Token.USDT
+      : Token.BUSD;
   const { latestPrice } = useContext(UniswapPoolContext);
   const { value: mediaQuery } = useMediaQueryType();
 
@@ -177,7 +178,12 @@ const TokenDeposit: FunctionComponent<Props> = ({
           <div className="component__data-info">
             <div>
               <p>{t('reward.daily_mining')}</p>
-              <p className="data">16,666.6667 ELFI</p>
+              <p className="data">
+                {reserveTokenData[token].name === Token.BUSD
+                  ? '50,000.0000'
+                  : '16,666.6667'}{' '}
+                ELFI
+              </p>
             </div>
             <div>
               <p>{t('reward.accumulated_mining')}</p>

@@ -6,7 +6,9 @@ import {
   IncentivePool__factory,
 } from '@elysia-dev/contract-typechain';
 import Token from 'src/enums/Token';
-import SubgraphContext, { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
+import SubgraphContext, {
+  IReserveSubgraphData,
+} from 'src/contexts/SubgraphContext';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import getTokenNameFromAddress from 'src/utiles/getTokenNameFromAddress';
 import isEndedIncentive from 'src/core/utils/isEndedIncentive';
@@ -17,6 +19,7 @@ import { useWeb3React } from '@web3-react/core';
 import MainnetContext from 'src/contexts/MainnetContext';
 import ReserveToken from 'src/core/types/ReserveToken';
 import isSupportedReserveByChainId from 'src/core/utils/isSupportedReserveByChainId';
+import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 
 export type BalanceType = {
   id: string;
@@ -30,7 +33,7 @@ export type BalanceType = {
   expectedAdditionalIncentiveAfter: BigNumber;
   deposit: BigNumber;
   updatedAt: number;
-}
+};
 
 const initialBalanceState = {
   value: constants.Zero,
@@ -41,7 +44,7 @@ const initialBalanceState = {
   expectedAdditionalIncentiveBefore: constants.Zero,
   expectedAdditionalIncentiveAfter: constants.Zero,
   deposit: constants.Zero,
-  id: "",
+  id: '',
   updatedAt: moment().unix(),
 };
 
@@ -54,24 +57,27 @@ const getIncentiveByRound = async (
     tokenName === Token.DAI
       ? envs.prevDaiIncentivePool
       : tokenName === Token.USDT
-        ? envs.prevUSDTIncentivePool
-        : envs.busdIncentivePoolAddress,
+      ? envs.prevUSDTIncentivePool
+      : envs.busdIncentivePoolAddress,
     library.getSigner(),
   ).getUserIncentive(account);
 
-	// USDT & DAI have two incentivepools
-	// BSC have only one incentivepool
-	const incentiveRound2 = tokenName === Token.BUSD ? incentiveRound1 : await IncentivePool__factory.connect(
-		tokenName === Token.DAI
-			? envs.currentDaiIncentivePool
-			: tokenName === Token.USDT
-				? envs.currentUSDTIncentivePool
-				: envs.busdIncentivePoolAddress,
-		library.getSigner(),
-	).getUserIncentive(account);
+  // USDT & DAI have two incentivepools
+  // BSC have only one incentivepool
+  const incentiveRound2 =
+    tokenName === Token.BUSD
+      ? incentiveRound1
+      : await IncentivePool__factory.connect(
+          tokenName === Token.DAI
+            ? envs.currentDaiIncentivePool
+            : tokenName === Token.USDT
+            ? envs.currentUSDTIncentivePool
+            : envs.busdIncentivePoolAddress,
+          library.getSigner(),
+        ).getUserIncentive(account);
 
-	return {
-		incentiveRound1,
+  return {
+    incentiveRound1,
     incentiveRound2,
   };
 };
@@ -113,38 +119,34 @@ const fetchBalanceFrom = async (
       expectedIncentiveAfter: constants.Zero,
       expectedAdditionalIncentiveBefore: constants.Zero,
       expectedAdditionalIncentiveAfter: constants.Zero,
-      deposit: constants.Zero
-    }
+      deposit: constants.Zero,
+    };
   }
 };
 
 type ReturnType = {
-	balances: BalanceType[],
-	loadBalance: (id: string) => void,
-  loading: boolean,
+  balances: BalanceType[];
+  loadBalance: (id: string) => void;
+  loading: boolean;
 };
 
 // ! FIXME
 // 1. Use other naming. Balance dose not cover the usefulness
 const useBalances = (refetchUserData: () => void): ReturnType => {
-	const { account, library, chainId } = useWeb3React();
-	const { data } = useContext(SubgraphContext);
-	const [balances, setBalances] = useState<BalanceType[]>(
-		data.reserves
-			.map((reserve) => {
-				return {
-					...initialBalanceState,
-					id: reserve.id,
-					tokenName: getTokenNameFromAddress(reserve.id) as ReserveToken,
-				};
-			}),
-	);
+  const { account, library, chainId } = useWeb3React();
+  const { data } = useContext(SubgraphContext);
+  const [balances, setBalances] = useState<BalanceType[]>(
+    data.reserves.map((reserve) => {
+      return {
+        ...initialBalanceState,
+        id: reserve.id,
+        tokenName: getTokenNameFromAddress(reserve.id) as ReserveToken,
+      };
+    }),
+  );
   const [loading, setLoading] = useState(true);
   const { elfiPrice } = useContext(PriceContext);
-  const {
-    type: mainnetType,
-    active,
-  } = useContext(MainnetContext)
+  const { type: mainnetType, active } = useContext(MainnetContext);
 
   const loadBalance = async (id: string) => {
     if (!account) return;
@@ -154,14 +156,20 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
       setBalances(
         await Promise.all(
           balances.map(async (balance, _index) => {
-            const reserve = data.reserves.find(r => r.id === id)
-            if (balance.id !== id || !reserve ) return {
-              ...balance
-            }
+            const reserve = data.reserves.find((r) => r.id === id);
+            if (balance.id !== id || !reserve)
+              return {
+                ...balance,
+              };
             return {
               ...balance,
               updatedAt: moment().unix(),
-              ...(await fetchBalanceFrom(reserve, account, library, balance.tokenName)),
+              ...(await fetchBalanceFrom(
+                reserve,
+                account,
+                library,
+                balance.tokenName,
+              )),
             };
           }),
         ),
@@ -187,16 +195,16 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
 								return balances[index];
 							}
 
-							return {
-								id: reserve.id,
-								tokenName,
-								updatedAt: moment().unix(),
-								...(await fetchBalanceFrom(reserve, account, library, tokenName)),
-							} as BalanceType;
-						}),
-				),
-			);
-		} catch (error) {
+            return {
+              id: reserve.id,
+              tokenName,
+              updatedAt: moment().unix(),
+              ...(await fetchBalanceFrom(reserve, account, library, tokenName)),
+            } as BalanceType;
+          }),
+        ),
+      );
+    } catch (error) {
       setBalances(
         balances.map((data) => {
           return {
@@ -213,35 +221,37 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     // Only called when active.
     // When active is false, balance is allways zero
     if (!account || !active) return;
-    setLoading(true)
+    setLoading(true);
     loadBalances();
   }, [account, active, chainId]);
 
   useEffect(() => {
-    if(loading || !active) return;
+    if (loading || !active) return;
 
     const interval = setInterval(() => {
       setBalances(
         balances.map((balance) => {
-          const reserve = data.reserves.find(r => r.id === balance.id)
-          if(!reserve) return balance;
+          const reserve = data.reserves.find((r) => r.id === balance.id);
+          if (!reserve) return balance;
 
           return {
             ...balance,
             expectedIncentiveBefore: balance.expectedIncentiveAfter,
             expectedIncentiveAfter: isEndedIncentive(balance.tokenName, 0)
               ? balance.expectedIncentiveAfter
-              : balance.incentiveRound1.add(
-                  calcExpectedIncentive(
-                    elfiPrice,
-                    balance.deposit,
-                    calcMiningAPR(
+              : balance.incentiveRound1
+                  .add(
+                    calcExpectedIncentive(
                       elfiPrice,
-                      BigNumber.from(reserve.totalDeposit),
+                      balance.deposit,
+                      calcMiningAPR(
+                        elfiPrice,
+                        BigNumber.from(reserve.totalDeposit),
+                      ),
+                      balance.updatedAt,
                     ),
-                    balance.updatedAt,
-                  ),
-                ),
+                  )
+                  .mul(busd3xRewardEvent(balance.tokenName)),
             expectedAdditionalIncentiveBefore:
               balance.expectedAdditionalIncentiveAfter,
             expectedAdditionalIncentiveAfter: isEndedIncentive(
@@ -249,17 +259,19 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
               1,
             )
               ? balance.expectedAdditionalIncentiveAfter
-              : balance.incentiveRound2.add(
-                  calcExpectedIncentive(
-                    elfiPrice,
-                    balance.deposit,
-                    calcMiningAPR(
+              : balance.incentiveRound2
+                  .add(
+                    calcExpectedIncentive(
                       elfiPrice,
-                      BigNumber.from(reserve.totalDeposit),
+                      balance.deposit,
+                      calcMiningAPR(
+                        elfiPrice,
+                        BigNumber.from(reserve.totalDeposit),
+                      ),
+                      balance.updatedAt,
                     ),
-                    balance.updatedAt,
-                  ),
-                ),
+                  )
+                  .mul(busd3xRewardEvent(balance.tokenName)),
           };
         }),
       );
@@ -270,7 +282,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     };
   }, [balances, chainId, loading, active]);
 
-	return { balances, loading, loadBalance }
+  return { balances, loading, loadBalance };
 };
 
-export default useBalances
+export default useBalances;

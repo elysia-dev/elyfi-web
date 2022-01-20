@@ -1,5 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import { formatSixFracionDigit, toCompactForBignumber, toPercent, toUsd } from 'src/utiles/formatters';
+import {
+  formatSixFracionDigit,
+  toCompactForBignumber,
+  toPercent,
+  toUsd,
+} from 'src/utiles/formatters';
 import { reserveTokenData } from 'src/core/data/reserves';
 import { useWeb3React } from '@web3-react/core';
 import CountUp from 'react-countup';
@@ -19,10 +24,11 @@ import { BalanceType } from 'src/hooks/useBalances';
 import moment from 'moment';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import PriceContext from 'src/contexts/PriceContext';
+import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 import TableBodyEventReward from './TableBodyEventReward';
 
 interface Props {
-  balance: BalanceType
+  balance: BalanceType;
   onClick?: (e: any) => void;
   reserveData: IReserveSubgraphData;
   setIncentiveModalVisible: () => void;
@@ -45,14 +51,14 @@ const TokenTable: React.FC<Props> = ({
   loading,
 }) => {
   const { account } = useWeb3React();
-  const { unsupportedChainid } = useContext(MainnetContext)
+  const { unsupportedChainid } = useContext(MainnetContext);
   const { t, i18n } = useTranslation();
   const tokenInfo = reserveTokenData[balance.tokenName];
   const history = useHistory();
   const { lng } = useParams<{ lng: string }>();
   const { value: mediaQuery } = useMediaQueryType();
-  const { type: getMainnetType } = useContext(MainnetContext)
-  const { elfiPrice } = useContext(PriceContext)
+  const { type: getMainnetType } = useContext(MainnetContext);
+  const { elfiPrice } = useContext(PriceContext);
 
   const tableData = [
     [
@@ -63,14 +69,17 @@ const TokenTable: React.FC<Props> = ({
       t('dashboard.total_borrowed'),
       toUsd(reserveData.totalBorrow, tokenInfo?.decimals),
     ],
-    [t('dashboard.token_mining_apr'), toPercent(
-      calcMiningAPR(
-        elfiPrice,
-        BigNumber.from(reserveData.totalDeposit),
-        reserveTokenData[balance.tokenName].decimals,
-      ) || '0',
-    )|| 0],
-    [t('dashboard.deposit_apy'), toPercent(reserveData.depositAPY)|| 0],
+    [
+      t('dashboard.token_mining_apr'),
+      toPercent(
+        calcMiningAPR(
+          elfiPrice,
+          BigNumber.from(reserveData.totalDeposit),
+          reserveTokenData[balance.tokenName].decimals,
+        ).mul(busd3xRewardEvent(balance.tokenName)) || '0',
+      ) || 0,
+    ],
+    [t('dashboard.deposit_apy'), toPercent(reserveData.depositAPY) || 0],
     [t('dashboard.borrow_apy'), toPercent(reserveData.borrowAPY)],
   ];
 
@@ -101,7 +110,7 @@ const TokenTable: React.FC<Props> = ({
                     <p>{data[0]}</p>
                     <p className="bold">{data[1]}</p>
                   </div>
-                )
+                );
               })}
             </div>
           )}
@@ -117,7 +126,7 @@ const TokenTable: React.FC<Props> = ({
                       <p>{data[0]}</p>
                       <p className="bold">{data[1]}</p>
                     </div>
-                  )
+                  );
                 })}
               </div>
             )}
@@ -126,15 +135,23 @@ const TokenTable: React.FC<Props> = ({
                 header={t('dashboard.deposit_amount')}
                 buttonEvent={reserveData ? onClick : undefined}
                 buttonContent={t('dashboard.deposit_amount--button')}
-                value={account && !unsupportedChainid ? toCompactForBignumber(
-                  balance.deposit || constants.Zero,
-                  tokenInfo?.decimals,
-                )! : '-'}
+                value={
+                  account && !unsupportedChainid
+                    ? toCompactForBignumber(
+                        balance.deposit || constants.Zero,
+                        tokenInfo?.decimals,
+                      )!
+                    : '-'
+                }
                 tokenName={tokenInfo?.name}
-                walletBalance={account && !unsupportedChainid ? toCompactForBignumber(
-                  balance.value || constants.Zero,
-                  tokenInfo?.decimals,
-                ) : undefined}
+                walletBalance={
+                  account && !unsupportedChainid
+                    ? toCompactForBignumber(
+                        balance.value || constants.Zero,
+                        tokenInfo?.decimals,
+                      )
+                    : undefined
+                }
                 loading={account ? loading : false}
               />
             </div>
@@ -150,11 +167,15 @@ const TokenTable: React.FC<Props> = ({
                 }}
                 buttonContent={t('dashboard.claim_reward')}
                 value={
-                  (account && !unsupportedChainid) ? (
+                  account && !unsupportedChainid ? (
                     <CountUp
                       className="bold amounts"
-                      start={parseFloat(formatEther(balance.expectedIncentiveBefore))}
-                      end={parseFloat(formatEther(balance.expectedIncentiveAfter))}
+                      start={parseFloat(
+                        formatEther(balance.expectedIncentiveBefore),
+                      )}
+                      end={parseFloat(
+                        formatEther(balance.expectedIncentiveAfter),
+                      )}
                       formattingFn={(number) => {
                         return formatSixFracionDigit(number);
                       }}
@@ -165,101 +186,90 @@ const TokenTable: React.FC<Props> = ({
                     '-'
                   )
                 }
-                moneyPoolTime={getMainnetType === MainnetType.Ethereum ? (
-                  `${moment(daiMoneyPoolTime[0].startedAt).format(
-                    'YYYY.MM.DD',
-                  )} ~ ${moment(daiMoneyPoolTime[0].endedAt).format(
-                    'YYYY.MM.DD',
-                  )} KST`
-                ) : undefined}
+                moneyPoolTime={
+                  getMainnetType === MainnetType.Ethereum
+                    ? `${moment(daiMoneyPoolTime[0].startedAt).format(
+                        'YYYY.MM.DD',
+                      )} ~ ${moment(daiMoneyPoolTime[0].endedAt).format(
+                        'YYYY.MM.DD',
+                      )} KST`
+                    : undefined
+                }
                 tokenName={'ELFI'}
                 loading={account ? loading : false}
               />
             </div>
           </div>
-          {
-            getMainnetType === MainnetType.BSC ? (
-              <div className="deposit__table__body__strategy">
-                <h2>
-                  {t("dashboard.target_running_strategy")}
-                </h2>
-                <div>
-                  <div style={{ flex: 30 }} >
-                    <p>
-                    {t("dashboard.real_estate_mortgage")} <span className="bold">30%</span>
-                    </p>
-                  </div>
-                  <div style={{ flex: 70 }} >
-                    <p>
-                    {t("dashboard.auto_invest_defi__title")} <span className="bold">70%</span>
-                    </p>
-                  </div>
+          {getMainnetType === MainnetType.BSC ? (
+            <div className="deposit__table__body__strategy">
+              <h2>{t('dashboard.target_running_strategy')}</h2>
+              <div>
+                <div style={{ flex: 30 }}>
+                  <p>
+                    {t('dashboard.real_estate_mortgage')}{' '}
+                    <span className="bold">30%</span>
+                  </p>
+                </div>
+                <div style={{ flex: 70 }}>
+                  <p>
+                    {t('dashboard.auto_invest_defi__title')}{' '}
+                    <span className="bold">70%</span>
+                  </p>
                 </div>
               </div>
-            ) : (
-              <div className="deposit__table__body__event-box">
-                <TableBodyEventReward
-                  moneyPoolTime={`${moment(daiMoneyPoolTime[1].startedAt).format(
-                    'YYYY.MM.DD',
-                  )} KST ~ `}
-                  expectedAdditionalIncentiveBefore={
-                    balance.expectedAdditionalIncentiveBefore
-                  }
-                  expectedAdditionalIncentiveAfter={
-                    balance.expectedAdditionalIncentiveAfter
-                  }
-                  buttonEvent={(e) => {
-                    e.preventDefault();
-                    setIncentiveModalVisible();
-                    setModalNumber();
-                    modalview();
-                    setRound(2);
-                  }}
-                  tokenName={balance.tokenName}
-                />
-              </div>
-            )
-          }
-          <div className="deposit__table__body__loan-list">
+            </div>
+          ) : (
+            <div className="deposit__table__body__event-box">
+              <TableBodyEventReward
+                moneyPoolTime={`${moment(daiMoneyPoolTime[1].startedAt).format(
+                  'YYYY.MM.DD',
+                )} KST ~ `}
+                expectedAdditionalIncentiveBefore={
+                  balance.expectedAdditionalIncentiveBefore
+                }
+                expectedAdditionalIncentiveAfter={
+                  balance.expectedAdditionalIncentiveAfter
+                }
+                buttonEvent={(e) => {
+                  e.preventDefault();
+                  setIncentiveModalVisible();
+                  setModalNumber();
+                  modalview();
+                  setRound(2);
+                }}
+                tokenName={balance.tokenName}
+              />
+            </div>
+          )}
+          <div
+            className="deposit__table__body__loan-list"
+            style={{
+              display:
+                reserveData.assetBondTokens.length === 0 ? 'none' : 'block',
+            }}>
             <div>
               <div>
                 <h2>{t('dashboard.recent_loan')}</h2>
-                {
-                  (reserveData.assetBondTokens.length > 0 && getMainnetType === MainnetType.Ethereum)&& (
-                    <Link to={`/${lng}/deposits/${balance.tokenName}`}>
-                      <div className="deposit__table__body__loan-list__button">
-                        <p>{t('main.governance.view-more')}</p>
-                      </div>
-                    </Link>
-                  )
-                }
+                <Link to={`/${lng}/deposits/${balance.tokenName}`}>
+                  <div className="deposit__table__body__loan-list__button">
+                    <p>{t('main.governance.view-more')}</p>
+                  </div>
+                </Link>
               </div>
               <div>
-                {
-                  (reserveData.assetBondTokens.length === 0 || getMainnetType === MainnetType.BSC) ?
-                  (
-                    <div className="loan__list--null" style={{ marginTop: 30 }}>
-                      <p>
-                        {t("loan.loan_list--null")}
-                      </p>
-                    </div>
-                  ) : (
-                    <AssetList
-                      assetBondTokens={
-                        // Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다.
-                        [...(reserveData.assetBondTokens || [])]
-                          .sort((a, b) => {
-                            return b.loanStartTimestamp! -
-                              a.loanStartTimestamp! >=
-                              0
-                              ? 1
-                              : -1;
-                          })
-                          .slice(0, mediaQuery === MediaQuery.PC ? 3 : 2) || []
-                      }
-                    />
-                  )
-                }
+                <AssetList
+                  assetBondTokens={
+                    // Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다.
+                    [...(reserveData.assetBondTokens || [])]
+                      .sort((a, b) => {
+                        return b.loanStartTimestamp! - a.loanStartTimestamp! >=
+                          0
+                          ? 1
+                          : -1;
+                      })
+                      .slice(0, mediaQuery === MediaQuery.PC ? 3 : 2) || []
+                  }
+                />
               </div>
             </div>
           </div>
