@@ -10,9 +10,7 @@ const isEndedIncentive = (token: string, round: number): boolean => {
 	const moneyPoolTime =
 		token === Token.DAI ? daiMoneyPoolTime : tetherMoneyPoolTime;
 	return moment().isAfter(
-		round === 1
-			? moneyPoolTime[round].startedAt
-			: moneyPoolTime[round].endedAt,
+			moneyPoolTime[round].endedAt,
 	);
 };
 

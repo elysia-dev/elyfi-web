@@ -82,7 +82,6 @@ const fetchBalanceFrom = async (
   library: any,
   tokenName: ReserveToken,
 ) => {
-  console.log(tokenName)
   try {
     const { incentiveRound1, incentiveRound2 } = await getIncentiveByRound(
       library,

@@ -90,10 +90,10 @@ const Dashboard: React.FunctionComponent = () => {
             setIncentiveModalVisible(false)
           }}
           balanceBefore={
-            round === 2 ? selectedBalance.expectedIncentiveBefore : selectedBalance.expectedAdditionalIncentiveBefore
+            round === 1 ? selectedBalance.expectedIncentiveBefore : selectedBalance.expectedAdditionalIncentiveBefore
           }
           balanceAfter={
-            round === 2 ? selectedBalance.expectedIncentiveAfter : selectedBalance.expectedAdditionalIncentiveAfter
+            round === 1 ? selectedBalance.expectedIncentiveAfter : selectedBalance.expectedAdditionalIncentiveAfter
           }
           incentivePoolAddress={getIncentivePoolAddress(round, selectedBalance.tokenName)}
           tokenName={selectedBalance.tokenName}
