@@ -81,7 +81,6 @@ const Main = () => {
   const dailyPopupDisable = () => {
     const today = new Date();
     today.setDate(today.getDate() + 1);
-    
     window.localStorage.setItem("@disableTime", (today.getDate()).toString());
     setPopupVisible(true);
   }
@@ -116,7 +115,13 @@ const Main = () => {
               </div>
             </div>
           </div>
-          <div onClick={() => History.push({ pathname: `/${lng}/deposit` })}>
+          <div onClick={() => {
+            reactGA.event({
+              category: PageEventType.MoveToInternalPage,
+              action: ButtonEventType.DepositButtonOnEventModal,
+            });
+            History.push({ pathname: `/${lng}/deposit` })
+          }}>
             <img src={lng === LanguageType.KO ? EventPopupKo : EventPopupEn} />
           </div>
         </div>
