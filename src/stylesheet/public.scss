@@ -993,6 +993,7 @@ input[type='number'] {
             display: flex;
             justify-content: space-between;
             > p {
+              cursor: pointer;
               &:first-child {
                 color: $gray-font-color;
               }
