@@ -21,7 +21,9 @@ import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 
 import ModalViewType from 'src/enums/ModalViewType';
 import { useMediaQuery } from 'react-responsive';
-import SubgraphContext, { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
+import SubgraphContext, {
+  IReserveSubgraphData,
+} from 'src/contexts/SubgraphContext';
 import MainnetContext from 'src/contexts/MainnetContext';
 import TvlCounter from 'src/components/TvlCounter';
 import { MainnetData } from 'src/core/data/mainnets';
@@ -34,11 +36,11 @@ const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();
   const { data } = useContext(SubgraphContext);
   const { elfiPrice } = useContext(PriceContext);
-  const [reserveData, setReserveData] = useState<IReserveSubgraphData | undefined>();
+  const [reserveData, setReserveData] = useState<
+    IReserveSubgraphData | undefined
+  >();
   const { t } = useTranslation();
-  const {
-    unsupportedChainid
-  } = useContext(MainnetContext)
+  const { unsupportedChainid } = useContext(MainnetContext);
   const [incentiveModalVisible, setIncentiveModalVisible] =
     useState<boolean>(false);
   const { data: userConnection, refetch: refetchUserData } = useQuery<GetUser>(
@@ -47,18 +49,29 @@ const Dashboard: React.FunctionComponent = () => {
   );
   const { balances, loading, loadBalance } = useBalances(refetchUserData);
   const [transactionModal, setTransactionModal] = useState(false);
-  const [selectedBalanceId, selectBalanceId] = useState("");
-  const [connectWalletModalvisible, setConnectWalletModalvisible] = useState<boolean>(false);
-  const [wrongMainnetModalVisible, setWrongMainnetModalVisible] = useState<boolean>(false);
+  const [selectedBalanceId, selectBalanceId] = useState('');
+  const [connectWalletModalvisible, setConnectWalletModalvisible] =
+    useState<boolean>(false);
+  const [wrongMainnetModalVisible, setWrongMainnetModalVisible] =
+    useState<boolean>(false);
   const [round, setRound] = useState(1);
   const walletConnect = isWalletConnect();
-  const { type: currentNetworkType } = useContext(MainnetContext)
-  const supportedTokens = useMemo(() => {return MainnetData[currentNetworkType].supportedTokens}, [currentNetworkType])
-  const selectedBalance = balances.find(balance => balance.id === selectedBalanceId)
-  const selectedReserve = useMemo(() => data.reserves.find(balance => balance.id === selectedBalanceId), [selectedBalanceId])
+  const { type: currentNetworkType } = useContext(MainnetContext);
+  const supportedTokens = useMemo(() => {
+    return MainnetData[currentNetworkType].supportedTokens;
+  }, [currentNetworkType]);
+  const selectedBalance = balances.find(
+    (balance) => balance.id === selectedBalanceId,
+  );
+  const selectedReserve = useMemo(
+    () => data.reserves.find((balance) => balance.id === selectedBalanceId),
+    [selectedBalanceId],
+  );
   const supportedBalances = useMemo(() => {
-    return balances.filter((balance) => supportedTokens.some((token) => token === balance.id))
-  }, [supportedTokens, balances])
+    return balances.filter((balance) =>
+      supportedTokens.some((token) => token === balance.id),
+    );
+  }, [supportedTokens, balances]);
 
   const isEnoughWide = useMediaQuery({
     query: '(min-width: 1439px)',
@@ -83,12 +96,11 @@ const Dashboard: React.FunctionComponent = () => {
           round={round}
         />
       )}
-      {
-        selectedBalance && selectedReserve &&
+      {selectedBalance && selectedReserve && (
         <IncentiveModal
           visible={incentiveModalVisible}
           onClose={() => {
-            setIncentiveModalVisible(false)
+            setIncentiveModalVisible(false);
           }}
           balanceBefore={
             round === 1 ? selectedBalance.expectedIncentiveBefore : selectedBalance.expectedAdditionalIncentiveBefore
@@ -96,12 +108,15 @@ const Dashboard: React.FunctionComponent = () => {
           balanceAfter={
             round === 1 ? selectedBalance.expectedIncentiveAfter : selectedBalance.expectedAdditionalIncentiveAfter
           }
-          incentivePoolAddress={getIncentivePoolAddress(round, selectedBalance.tokenName)}
+          incentivePoolAddress={getIncentivePoolAddress(
+            round,
+            selectedBalance.tokenName,
+          )}
           tokenName={selectedBalance.tokenName}
           afterTx={() => loadBalance(selectedBalanceId)}
           transactionModal={() => setTransactionModal(true)}
         />
-      }
+      )}
       <TransactionConfirmModal
         visible={transactionModal}
         closeHandler={() => {
@@ -138,47 +153,49 @@ const Dashboard: React.FunctionComponent = () => {
         </div>
         <RewardPlanButton stakingType={'deposit'} />
         <div className="deposit__table__wrapper">
-          {
-            isEnoughWide && (
-              <div className="deposit__remote-control__wrapper">
-                <div className="deposit__remote-control">
-                  {supportedBalances.map((balance, index) => {
-                    const reserve = data.reserves.find((d) => d.id === balance.id);
+          {isEnoughWide && (
+            <div className="deposit__remote-control__wrapper">
+              <div className="deposit__remote-control">
+                {supportedBalances.map((balance, index) => {
+                  const reserve = data.reserves.find(
+                    (d) => d.id === balance.id,
+                  );
 
-                    if (!reserve) return <></>;
+                  if (!reserve) return <></>;
 
-                    return (
-                      <a onClick={() => scrollToOffeset(`table-${index}`, 338)}>
-                        <div>
-                          <div className="deposit__remote-control__images">
-                            <img src={reserveTokenData[balance.tokenName].image} />
-                          </div>
-                          <div className="deposit__remote-control__name">
-                            <p className="montserrat">{balance.tokenName}</p>
-                          </div>
-                          <p className="deposit__remote-control__apy bold">
-                            {toPercent(reserve.depositAPY)}
-                          </p>
-                          <div className="deposit__remote-control__mining">
-                            <p>{t('dashboard.token_mining_apr')}</p>
-                            <p>
-                              {toPercent(
-                                calcMiningAPR(
-                                  elfiPrice,
-                                  BigNumber.from(reserve.totalDeposit),
-                                  reserveTokenData[balance.tokenName].decimals,
-                                ) || '0',
-                              )}
-                            </p>
-                          </div>
+                  return (
+                    <a onClick={() => scrollToOffeset(`table-${index}`, 338)}>
+                      <div>
+                        <div className="deposit__remote-control__images">
+                          <img
+                            src={reserveTokenData[balance.tokenName].image}
+                          />
                         </div>
-                      </a>
-                    );
-                  })}
-                </div>
+                        <div className="deposit__remote-control__name">
+                          <p className="montserrat">{balance.tokenName}</p>
+                        </div>
+                        <p className="deposit__remote-control__apy bold">
+                          {toPercent(reserve.depositAPY)}
+                        </p>
+                        <div className="deposit__remote-control__mining">
+                          <p>{t('dashboard.token_mining_apr')}</p>
+                          <p>
+                            {toPercent(
+                              calcMiningAPR(
+                                elfiPrice,
+                                BigNumber.from(reserve.totalDeposit),
+                                reserveTokenData[balance.tokenName].decimals,
+                              ) || '0',
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                    </a>
+                  );
+                })}
               </div>
-            )
-          }
+            </div>
+          )}
 
           {supportedBalances.map((balance, index) => {
             const reserve = data.reserves.find((d) => d.id === balance.id);
@@ -192,35 +209,38 @@ const Dashboard: React.FunctionComponent = () => {
                 balance={balance}
                 onClick={(e: any) => {
                   walletConnect === false
-                    ? (
-                      setConnectWalletModalvisible(true),
-                      ReactGA.modalview(balance.tokenName + ModalViewType.DepositConnectWalletModal)
-                    ) :
-                    unsupportedChainid
-                      ? (
-                        setWrongMainnetModalVisible(true)
-                      ) : (
-                        e.preventDefault(),
-                        setReserveData(reserve),
-                        selectBalanceId(balance.id),
-                        ReactGA.modalview(balance.tokenName + ModalViewType.DepositOrWithdrawModal)
-                      )
+                    ? (setConnectWalletModalvisible(true),
+                      ReactGA.modalview(
+                        balance.tokenName +
+                          ModalViewType.DepositConnectWalletModal,
+                      ))
+                    : unsupportedChainid
+                    ? setWrongMainnetModalVisible(true)
+                    : (e.preventDefault(),
+                      setReserveData(reserve),
+                      selectBalanceId(balance.id),
+                      ReactGA.modalview(
+                        balance.tokenName +
+                          ModalViewType.DepositOrWithdrawModal,
+                      ));
                 }}
                 reserveData={reserve}
                 setIncentiveModalVisible={() => {
                   walletConnect === false
-                    ? (
-                      setConnectWalletModalvisible(true),
-                      ReactGA.modalview(balance.tokenName + ModalViewType.IncentiveModal)
-                    ) :
-                    unsupportedChainid
-                      ? (
-                        setWrongMainnetModalVisible(true)
-                      ) :
-                      setIncentiveModalVisible(true);
+                    ? (setConnectWalletModalvisible(true),
+                      ReactGA.modalview(
+                        balance.tokenName + ModalViewType.IncentiveModal,
+                      ))
+                    : unsupportedChainid
+                    ? setWrongMainnetModalVisible(true)
+                    : setIncentiveModalVisible(true);
                 }}
                 setModalNumber={() => selectBalanceId(balance.id)}
-                modalview={() => ReactGA.modalview(balance.tokenName + ModalViewType.IncentiveModal)}
+                modalview={() =>
+                  ReactGA.modalview(
+                    balance.tokenName + ModalViewType.IncentiveModal,
+                  )
+                }
                 setRound={setRound}
                 loading={loading}
               />
