@@ -18,8 +18,7 @@ const TvlCounter: React.FC = () => {
 		<div
 			className="deposit__title"
 			style={{
-				backgroundImage:
-					mediaQuery === MediaQuery.PC ? `url(${HeaderCircle})` : '',
+				backgroundImage: `url(${HeaderCircle})`,
 			}}>
 			<p className="montserrat__bold">Total Value Locked</p>
 			{

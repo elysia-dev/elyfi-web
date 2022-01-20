@@ -966,8 +966,14 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       }
     }
     &__title {
-      height: 100px;
+      height: 300px;
       margin-bottom: 40px;
+      padding-top: 180px;
+      margin-top: -230px;
+      background-repeat: no-repeat;
+      background-position-x: center;
+      background-position-y: center;
+      background-size: 100%;
       .react-loading-skeleton {
         margin-top: 12px;
       }
