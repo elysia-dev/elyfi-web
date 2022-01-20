@@ -86,6 +86,10 @@ $device-width: 1190px;
           position: relative;
           cursor: pointer;
           border: 1px solid $gray-line;
+
+          &:hover {
+            border: 1px solid $elysia-color ;
+          }
           &.unknown-chain {
             > img {
               width: 20px;

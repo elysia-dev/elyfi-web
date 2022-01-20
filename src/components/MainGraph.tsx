@@ -14,7 +14,8 @@ const MainGraph = () => {
         <div className="main__service__graph--section01">
           <div className="main__service__graph--section01--01">
             <div className="main__service__graph--circle circle_01">
-              <p>
+              <p style={{transform: "scale(0.9)"}} >
+                <span style={{ color: "#00A7FF" }}>*</span>
                 {t("main.graph.circle-content.0")}
               </p>
             </div>
@@ -166,6 +167,7 @@ const MainGraph = () => {
             </div>
             <div className="main__service__graph--circle circle_02">
               <p>
+                <span style={{ color: "#00A7FF" }}>*</span>
                 {t("main.graph.circle-content.0")}
               </p>
             </div>

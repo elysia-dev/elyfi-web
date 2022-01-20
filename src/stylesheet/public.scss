@@ -338,7 +338,7 @@ input[type='number'] {
       }
       animation: glow 1.5s linear infinite alternate;
       &--connected {
-
+        transition: all 0.2s ease-in;
         &.unknown-chain {
           background: #D84D4D !important;
           padding: 10px;
@@ -428,6 +428,10 @@ input[type='number'] {
         background: $background-color;
         z-index: 2;
         cursor: pointer;
+        transition: all 0.2s ease-in;
+        &:hover {
+          border: 1px solid $elysia-color;
+        }
         &::after {
           content: '';
           display: inline-block;
@@ -1178,11 +1182,11 @@ input[type='number'] {
         align-items: center;
         border-top: 1px solid $gray-line;
         cursor: pointer;
+        border-radius: 5px;
+        border: 1px solid #FFFFFFFF;
+        transition: all 0.2s ease-in;
         &:hover {
-          background: $gray-line;
-        }
-        &:first-child {
-          border: 0;
+          border: 1px solid #00bfff;
         }
       }
       &__images {
