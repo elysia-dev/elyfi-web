@@ -1,8 +1,14 @@
 import moment from 'moment';
 import { BigNumber, utils } from 'ethers';
-import { IReserveHistory, IReserveSubgraphData } from 'src/contexts/SubgraphContext';
+import envs from 'src/core/envs';
+import {
+  IReserveHistory,
+  IReserveSubgraphData,
+} from 'src/contexts/SubgraphContext';
+import Token from 'src/enums/Token';
 import calcMiningAPR from './calcMiningAPR';
 import { toCompact } from './formatters';
+import { busd3xRewardEvent } from './busd3xRewardEvent';
 
 interface ICalculatedData extends IReserveHistory {
   selectedAmount: string;
@@ -43,51 +49,48 @@ const calcHistoryChartData = (
     },
     [],
   );
-  const histories = times.reduce(
-    (res: IReserveHistory[], time, index) => {
-      let item = [...data.reserveHistory]
-        .reverse()
-        .find(
-          (history) =>
-            moment(history.timestamp * 1000).format('L') === time.format('L'),
-        );
-
-      if (index === 0 && !item) {
-        item =
-          data.reserveHistory[0] &&
-          data.reserveHistory[0].timestamp <= time.unix()
-            ? data.reserveHistory[0]!
-            : ({
-                id: '0x',
-                borrowAPY: '0',
-                depositAPY: '0',
-                totalBorrow: '0',
-                totalDeposit: '0',
-                timestamp: time.unix(),
-              } as IReserveHistory);
-      }
-
-      res.push(
-        item ||
-          (res.length > 0
-            ? {
-                ...res[res.length - 1],
-                timestamp: time.unix(),
-              }
-            : ({
-                id: '0x',
-                borrowAPY: '0',
-                depositAPY: '0',
-                totalBorrow: '0',
-                totalDeposit: '0',
-                timestamp: time.unix(),
-              } as IReserveHistory)),
+  const histories = times.reduce((res: IReserveHistory[], time, index) => {
+    let item = [...data.reserveHistory]
+      .reverse()
+      .find(
+        (history) =>
+          moment(history.timestamp * 1000).format('L') === time.format('L'),
       );
 
-      return res;
-    },
-    [],
-  );
+    if (index === 0 && !item) {
+      item =
+        data.reserveHistory[0] &&
+        data.reserveHistory[0].timestamp <= time.unix()
+          ? data.reserveHistory[0]!
+          : ({
+              id: '0x',
+              borrowAPY: '0',
+              depositAPY: '0',
+              totalBorrow: '0',
+              totalDeposit: '0',
+              timestamp: time.unix(),
+            } as IReserveHistory);
+    }
+
+    res.push(
+      item ||
+        (res.length > 0
+          ? {
+              ...res[res.length - 1],
+              timestamp: time.unix(),
+            }
+          : ({
+              id: '0x',
+              borrowAPY: '0',
+              depositAPY: '0',
+              totalBorrow: '0',
+              totalDeposit: '0',
+              timestamp: time.unix(),
+            } as IReserveHistory)),
+    );
+
+    return res;
+  }, []);
 
   const avgPrice =
     prices.reduce((sum, value) => sum + parseFloat(value.token1Price), 0) /
@@ -143,7 +146,10 @@ const calcHistoryChartData = (
         toCompact(parseInt(utils.formatUnits(d.selectedAmount, decimals), 10)),
       barTotal: parseInt(utils.formatUnits(d.selectedAmount, decimals), 10) * 2,
       // c: (d.calculatedAPY / divider) * base + base * 1.2,
-      yield: toCompact(d.calculatedAPY),
+      yield: toCompact(
+        d.calculatedAPY *
+          busd3xRewardEvent(data.id === envs.busdAddress ? Token.BUSD : ''),
+      ),
     });
   });
   return test;
