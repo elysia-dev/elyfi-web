@@ -305,6 +305,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
             isApproved={!loading && allowance.gt(balance)}
             increaseAllownace={increateAllowance}
             deposit={requestDeposit}
+            isLoading={loading}
           />
         ) : (
           <WithdrawBody

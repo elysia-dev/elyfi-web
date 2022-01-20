@@ -16,6 +16,7 @@ const DepositBody: React.FunctionComponent<{
   isApproved: boolean;
   increaseAllownace: () => void;
   deposit: (amount: BigNumber, max: boolean) => void;
+  isLoading: boolean;
 }> = ({
   tokenInfo,
   depositAPY,
@@ -24,6 +25,7 @@ const DepositBody: React.FunctionComponent<{
   isApproved,
   increaseAllownace,
   deposit,
+  isLoading
 }) => {
   const [amount, setAmount] = useState({ value: '', max: false });
   const inputRef = useRef<HTMLInputElement>(null);
@@ -117,7 +119,7 @@ const DepositBody: React.FunctionComponent<{
       </div>
       <ModalButton
         className={
-          isApproved
+          (isApproved || isLoading)
             ? `modal__button${
                 amountLteZero || amountGtBalance ? ' disable' : ''
               }`
@@ -131,7 +133,7 @@ const DepositBody: React.FunctionComponent<{
                 utils.parseUnits(amount.value, tokenInfo.decimals),
                 amount.max,
               )
-            : increaseAllownace();
+            : isLoading ? undefined : increaseAllownace();
         }}
         content={
           isApproved
@@ -142,7 +144,7 @@ const DepositBody: React.FunctionComponent<{
                   tokenName: tokenInfo.name,
                 })
               : t('dashboard.deposit--button')
-            : t('dashboard.protocol_allow', { tokenName: tokenInfo.name })
+            : isLoading ? "Now Loading...." : t('dashboard.protocol_allow', { tokenName: tokenInfo.name })
         }
       />
     </>
