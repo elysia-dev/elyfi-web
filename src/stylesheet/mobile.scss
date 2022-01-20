@@ -931,6 +931,37 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 
   .deposit {
     @include page-container;
+    &__event {
+      border: 1px solid $gray-line;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      height: 85px;
+      align-items: center;
+      margin-bottom: 40px;
+      position: relative;
+      &__box {
+        display: none;
+      }
+      > div {
+        z-index: 2;
+        > h2 {
+          font-size: 13px;
+          margin-left: 15px;
+          line-height: 20px;
+          strong {
+            color: $elysia-color;
+          }
+        }
+      }
+      > img {
+        height: 85px;
+        position: absolute;
+        right: 0;
+        z-index: 1;
+      }
+    }
     &__title {
       height: 100px;
       margin-bottom: 40px;

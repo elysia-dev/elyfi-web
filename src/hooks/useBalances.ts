@@ -9,7 +9,7 @@ import Token from 'src/enums/Token';
 import SubgraphContext, {
   IReserveSubgraphData,
 } from 'src/contexts/SubgraphContext';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import getTokenNameFromAddress from 'src/utiles/getTokenNameFromAddress';
 import isEndedIncentive from 'src/core/utils/isEndedIncentive';
 import calcExpectedIncentive from 'src/utiles/calcExpectedIncentive';
@@ -18,7 +18,7 @@ import PriceContext from 'src/contexts/PriceContext';
 import { useWeb3React } from '@web3-react/core';
 import MainnetContext from 'src/contexts/MainnetContext';
 import ReserveToken from 'src/core/types/ReserveToken';
-import isSupportedToken from 'src/core/utils/isSupportedReserve';
+import isSupportedReserveByChainId from 'src/core/utils/isSupportedReserveByChainId';
 import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 
 export type BalanceType = {
@@ -179,7 +179,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     }
   };
 
-  const loadBalances = async () => {
+  const loadBalances = useCallback(async () => {
     if (!account) {
       return;
     }
@@ -188,13 +188,12 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
       refetchUserData();
       setBalances(
         await Promise.all(
-          data.reserves.map(async (reserve, index) => {
-            const tokenName = getTokenNameFromAddress(
-              reserve.id,
-            ) as ReserveToken;
-            if (!isSupportedToken(tokenName, mainnetType)) {
-              return balances[index];
-            }
+          data.reserves
+            .map(async (reserve, index) => {
+							const tokenName = getTokenNameFromAddress(reserve.id) as ReserveToken;
+							if (!isSupportedReserveByChainId(tokenName, chainId)) {
+								return balances[index];
+							}
 
             return {
               id: reserve.id,
@@ -216,7 +215,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [account, library, chainId])
 
   useEffect(() => {
     // Only called when active.
@@ -224,7 +223,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     if (!account || !active) return;
     setLoading(true);
     loadBalances();
-  }, [account, active]);
+  }, [account, active, chainId]);
 
   useEffect(() => {
     if (loading || !active) return;
@@ -277,7 +276,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     return () => {
       clearInterval(interval);
     };
-  }, [balances, mainnetType, loading, active]);
+  }, [balances, chainId, loading, active]);
 
   return { balances, loading, loadBalance };
 };
