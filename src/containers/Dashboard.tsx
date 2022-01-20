@@ -165,7 +165,7 @@ const Dashboard: React.FunctionComponent = () => {
                   if (!reserve) return <></>;
 
                   return (
-                    <a onClick={() => scrollToOffeset(`table-${index}`, 338)}>
+                    <a onClick={() => scrollToOffeset(`table-${index}`, 678)}>
                       <div>
                         <div className="deposit__remote-control__images">
                           <img
