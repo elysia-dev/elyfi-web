@@ -85,7 +85,7 @@
         "view-more--disable": "Close"
       },
       "popup": {
-        "disable_popup": "do not open this window today"
+        "disable_popup": "Do not open this window today"
       }
     },
     "words": {
@@ -155,6 +155,7 @@
       "minted": "ELFI Token",
       "minted_balance": "ELFI Balance",
       "withdraw": "Withdraw",
+      "withdraw--button": "Withdraw",
       "max": "MAX",
       "deposit_available": "Deposit Available",
       "total_deposit_yield": "Total Deposit Yield",
@@ -528,7 +529,7 @@
     "modal": {
       "connect_wallet": {
         "title": "Start ELYFI",
-        "content": "A wallet connection is required to deposit/withdraw.\nDo you want to connect?",
+        "content": "A wallet connection is required to use ELYFI.\nDo you want to connect?",
         "button": "Connect Wallet"
       },
       "connect_metamask": {

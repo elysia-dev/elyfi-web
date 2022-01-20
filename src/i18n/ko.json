@@ -165,6 +165,7 @@
       "minted": "ELFI 토큰",
       "minted_balance": "ELFI 잔액",
       "withdraw": "출금",
+      "withdraw--button": "출금하기",
       "max": "최대",
       "deposit_available": "예치 가능한 양",
       "withdraw_availble": "출금 가능한 양",
@@ -460,7 +461,7 @@
     "modal": {
       "connect_wallet": {
         "title": "엘리파이 시작하기",
-        "content": "예치/출금을 하기 위해서는 지갑 연결이 필요합니다.\n연결하시겠습니까?",
+        "content": "엘리파이를 이용하기 위해서는 지갑 연결이 필요합니다.\n연결하시겠습니까?",
         "button": "연결하기"
       },
       "connect_metamask": {
