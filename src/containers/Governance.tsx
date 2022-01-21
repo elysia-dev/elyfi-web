@@ -1,14 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import TempAssets from 'src/assets/images/temp_assets.png';
 import OffChainTopic, { INapData } from 'src/clients/OffChainTopic';
 import Skeleton from 'react-loading-skeleton';
 import { IProposals, OnChainTopic } from 'src/clients/OnChainTopic';
 import { utils } from 'ethers';
-import { GET_ALL_ASSET_BONDS } from 'src/queries/assetBondQueries';
-import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
-import { useQuery } from '@apollo/client';
 import AssetList from 'src/containers/AssetList';
-import { useTranslation, Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import GovernanceGuideBox from 'src/components/GovernanceGuideBox';
 import { useParams, useHistory } from 'react-router-dom';
 import LanguageType from 'src/enums/LanguageType';
@@ -20,6 +17,9 @@ import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
+import MainnetContext from 'src/contexts/MainnetContext';
+import MainnetType from 'src/enums/MainnetType';
+import SubgraphContext, { IAssetBond } from 'src/contexts/SubgraphContext';
 
 const Governance = (): JSX.Element => {
   const [onChainLoading, setOnChainLoading] = useState(true);
@@ -29,10 +29,13 @@ const Governance = (): JSX.Element => {
   const headerRef = useRef<HTMLDivElement>(null);
   const [onChainData, setOnChainData] = useState<IProposals[]>([]);
   const [offChainNapData, setOffChainNapData] = useState<INapData[]>([]);
-  const { data, loading } = useQuery<GetAllAssetBonds>(GET_ALL_ASSET_BONDS);
+  const { getAssetBondsByNetwork } = useContext(SubgraphContext);
+  const { type: mainnetType } = useContext(MainnetContext);
+  const assetBondTokens = getAssetBondsByNetwork(mainnetType);
   const { t } = useTranslation();
   const History = useHistory();
   const { lng } = useParams<{ lng: string }>();
+  const { type: getMainnetType } = useContext(MainnetContext);
 
   const draw = () => {
     const dpr = window.devicePixelRatio;
@@ -322,8 +325,8 @@ const Governance = (): JSX.Element => {
               onClick={() =>
                 window.open(
                   lng === LanguageType.KO
-                    ? 'https://elysia.gitbook.io/elyfi-governance-faq/v/kor/'
-                    : 'https://elysia.gitbook.io/elyfi-governance-faq/',
+                    ? 'https://elysia.gitbook.io/elyfi-user-guide/v/korean-2/governance/governance-faq'
+                    : 'https://elysia.gitbook.io/elyfi-user-guide/governance',
                 )
               }>
               <p>{t('governance.button--governance_faq')}</p>
@@ -380,9 +383,7 @@ const Governance = (): JSX.Element => {
                   </div>
                 </a>
               </div>
-              <div>
-                <p>{t('governance.data_verification__content')}</p>
-              </div>
+              <p>{t('governance.data_verification__content')}</p>
             </div>
           )}
 
@@ -413,18 +414,20 @@ const Governance = (): JSX.Element => {
               </h3>
               <div>
                 <p>{t('governance.on_chain_voting__content')}</p>
-                <a
-                  href="https://www.withtally.com/governance/elyfi"
-                  target="_blank"
-                  rel="noopener noreferer">
-                  <div
-                    className="deposit__table__body__amount__button"
-                    style={{
-                      width: 230,
-                    }}>
-                    <p>{t('governance.onChain_tally_button')}</p>
-                  </div>
-                </a>
+                {getMainnetType === MainnetType.Ethereum && (
+                  <a
+                    href="https://www.withtally.com/governance/elyfi"
+                    target="_blank"
+                    rel="noopener noreferer">
+                    <div
+                      className="deposit__table__body__amount__button"
+                      style={{
+                        width: 230,
+                      }}>
+                      <p>{t('governance.onChain_tally_button')}</p>
+                    </div>
+                  </a>
+                )}
               </div>
             </div>
           ) : (
@@ -435,75 +438,99 @@ const Governance = (): JSX.Element => {
                     count: onChainData.length,
                   })}
                 </h3>
-                <a
-                  href="https://www.withtally.com/governance/elyfi"
-                  target="_blank"
-                  rel="noopener noreferer">
-                  <div
-                    className="deposit__table__body__amount__button"
-                    style={{
-                      width: 150,
-                    }}>
-                    <p>{t('governance.onChain_tally_button')}</p>
-                  </div>
-                </a>
+                {getMainnetType === MainnetType.Ethereum && (
+                  <a
+                    href="https://www.withtally.com/governance/elyfi"
+                    target="_blank"
+                    rel="noopener noreferer">
+                    <div
+                      className="deposit__table__body__amount__button"
+                      style={{
+                        width: 150,
+                      }}>
+                      <p>{t('governance.onChain_tally_button')}</p>
+                    </div>
+                  </a>
+                )}
               </div>
-              <div>
-                <p>{t('governance.data_verification__content')}</p>
-              </div>
+              <p>{t('governance.data_verification__content')}</p>
             </div>
           )}
-
-          {onChainLoading ? (
-            <Skeleton width={'100%'} height={600} />
-          ) : onChainData.length > 0 ? (
-            <div className="governance__grid">
-              {onChainData.map((data, index) => {
-                return onChainConatainer(data);
-              })}
-            </div>
+          {getMainnetType === MainnetType.Ethereum ? (
+            onChainLoading ? (
+              <Skeleton width={'100%'} height={600} />
+            ) : onChainData.length > 0 ? (
+              <div className="governance__grid">
+                {onChainData.map((data, index) => {
+                  return onChainConatainer(data);
+                })}
+              </div>
+            ) : (
+              <div className="governance__onchain-vote zero">
+                <p>{t('governance.onchain_list_zero')}</p>
+              </div>
+            )
           ) : (
             <div className="governance__onchain-vote zero">
-              <p>{t('governance.onchain_list_zero')}</p>
+              <h2>COMING SOON!</h2>
             </div>
           )}
         </section>
         <section className="governance__loan governance__header">
-          <div>
-            <h3>
-              {t('governance.loan_list', {
-                count: data?.assetBondTokens.length,
-              })}
-            </h3>
-            <p>{t('governance.loan_list__content')}</p>
-          </div>
-          {loading ? (
-            <Skeleton width={1148} height={768} />
+          {assetBondTokens.length === 0 ||
+          getMainnetType === MainnetType.BSC ? (
+            <>
+              <div>
+                <div>
+                  <h3>
+                    {t('governance.loan_list', {
+                      count: 0,
+                    })}
+                  </h3>
+                </div>
+                <p>{t('governance.loan_list__content')}</p>
+              </div>
+              <div className="loan__list--null">
+                <p>{t('loan.loan_list--null')}</p>
+              </div>
+            </>
           ) : (
             <>
-              {/* <AssetList assetBondTokens={data?.assetBondTokens || []} /> */}
-              <AssetList
-                assetBondTokens={
-                  /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
-                  [...(data?.assetBondTokens || [])]
-                    .slice(0, pageNumber * 9)
-                    .sort((a, b) => {
-                      return b.loanStartTimestamp! - a.loanStartTimestamp! >= 0
-                        ? 1
-                        : -1;
-                    }) || []
-                }
-              />
-              {data?.assetBondTokens.length &&
-                data?.assetBondTokens.length >= pageNumber * 9 && (
-                  <div>
-                    <button
-                      className="portfolio__view-button"
-                      onClick={() => viewMoreHandler()}>
-                      {t('loan.view-more')}
-                    </button>
-                  </div>
-                )}
+              <div>
+                <div>
+                  <h3>
+                    {t('governance.loan_list', {
+                      count: assetBondTokens.length,
+                    })}
+                  </h3>
+                </div>
+                <p>{t('governance.loan_list__content')}</p>
+              </div>
+              <>
+                <AssetList
+                  assetBondTokens={
+                    /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
+                    [...((assetBondTokens as IAssetBond[]) || [])]
+                      .slice(0, pageNumber * 9)
+                      .sort((a, b) => {
+                        return b.loanStartTimestamp! - a.loanStartTimestamp! >=
+                          0
+                          ? 1
+                          : -1;
+                      }) || []
+                  }
+                />
+                {assetBondTokens.length &&
+                  assetBondTokens.length >= pageNumber * 9 && (
+                    <div>
+                      <button
+                        className="portfolio__view-button"
+                        onClick={() => viewMoreHandler()}>
+                        {t('loan.view-more')}
+                      </button>
+                    </div>
+                  )}
+              </>
             </>
           )}
         </section>

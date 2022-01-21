@@ -1,7 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { Circle } from 'src/components/Circle';
+import MainnetType from 'src/enums/MainnetType';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import Defi001 from 'src/assets/images/defi_001.png';
+import { useContext, useState } from 'react';
+import MainnetContext from 'src/contexts/MainnetContext';
 
 const MarketDetailsBody: React.FunctionComponent<{
   depositReward: string;
@@ -30,6 +34,8 @@ const MarketDetailsBody: React.FunctionComponent<{
 }) => {
   const { t } = useTranslation();
   const { value: mediaquery } = useMediaQueryType();
+  const { type: getMainnetType } = useContext(MainnetContext);
+  const [hover, setHover] = useState(false);
 
   return mediaquery === MediaQuery.PC ? (
     <div className="detail__data-wrapper">
@@ -47,7 +53,7 @@ const MarketDetailsBody: React.FunctionComponent<{
         </div>
       </div>
       <div className="detail__data-wrapper__info">
-        <div>
+        <div style={{ height: getMainnetType === MainnetType.BSC ? 274 : 235 }}>
           <div>
             <p>{t('dashboard.deposit_apy')}</p>
             <p>{depositAPY}</p>
@@ -64,35 +70,72 @@ const MarketDetailsBody: React.FunctionComponent<{
             <p>{t('dashboard.total_loans')}</p>
             <p>{totalLoans}</p>
           </div>
+          <div>
+            <p>{t('dashboard.total_loans')}</p>
+            <p>{totalLoans}</p>
+          </div>
         </div>
 
-        <div>
-          <div>
-            <div className="detail__data-wrapper__info__deposit__wrapper">
-              <div>
-                <div className="detail__data-wrapper__info__deposit">
-                  <div
-                    style={{
-                      backgroundColor: color || '#333333',
-                    }}
-                  />
-                  <p>{t('dashboard.total_borrowed')}</p>
-                </div>
-                <p>{totalBorrowed}</p>
+        <div
+          style={{
+            height: getMainnetType === MainnetType.BSC ? 'auto' : 235,
+          }}>
+          <div className="detail__data-wrapper__info__deposit__wrapper">
+            <div
+              style={{
+                marginBottom: getMainnetType === MainnetType.BSC ? 15 : 30,
+              }}>
+              <div className="detail__data-wrapper__info__deposit">
+                <div
+                  style={{
+                    backgroundColor: color || '#333333',
+                  }}
+                />
+                <p>{t('dashboard.total_borrowed')}</p>
               </div>
-              <div>
-                <div className="detail__data-wrapper__info__deposit">
-                  <div
-                    style={{
-                      backgroundColor: subColor || '#888888',
-                    }}
-                  />
-                  <p>{t('dashboard.available_liquidity')}</p>
-                </div>
-                <p>{availableLiquidity}</p>
-              </div>
+              <p>{totalBorrowed}</p>
             </div>
-
+            {getMainnetType === MainnetType.BSC && (
+              <div className="detail__data-wrapper__info__deposit__strategy">
+                <div>
+                  <p>{t('dashboard.real_estate_mortgage')}</p>
+                  <p>30%</p>
+                </div>
+                <div>
+                  <div>
+                    <p>{t('dashboard.auto_invest_defi__title')}</p>
+                    <div
+                      onMouseEnter={() => setHover(true)}
+                      onMouseLeave={() => setHover(false)}>
+                      <p>?</p>
+                    </div>
+                  </div>
+                  <p>70%</p>
+                </div>
+                <div
+                  className="detail__data-wrapper__info__deposit__strategy__defi-wrapper"
+                  style={{ display: hover ? 'block' : 'none' }}>
+                  <div>
+                    <img src={Defi001} />
+                    <p>{t('dashboard.auto_invest_defi.0')}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div
+              style={{
+                marginBottom: getMainnetType === MainnetType.BSC ? 15 : 30,
+              }}>
+              <div className="detail__data-wrapper__info__deposit">
+                <div
+                  style={{
+                    backgroundColor: subColor || '#888888',
+                  }}
+                />
+                <p>{t('dashboard.available_liquidity')}</p>
+              </div>
+              <p>{availableLiquidity}</p>
+            </div>
             <div className="detail__data-wrapper__info__deposit__utilization">
               <h2>{t('dashboard.utilization')}</h2>
               <h2>{`${utilization}%`}</h2>
@@ -101,7 +144,7 @@ const MarketDetailsBody: React.FunctionComponent<{
           <div className="detail__data-wrapper__info__circle-wrapper">
             <Circle
               progress={Math.round(100 - utilization)}
-              color={color || '#333333'}
+              color={color || '#050303'}
               subColor={subColor || '#888888'}
             />
           </div>
@@ -169,7 +212,59 @@ const MarketDetailsBody: React.FunctionComponent<{
               />
               <p>{t('dashboard.available_liquidity')}</p>
             </div>
-            <p>{availableLiquidity}</p>
+            <div>
+              <div className="detail__data-wrapper__info__deposit">
+                <div
+                  style={{
+                    backgroundColor: color || '#333333',
+                  }}
+                />
+                <p>{t('dashboard.total_borrowed')}</p>
+              </div>
+              <p>{totalBorrowed}</p>
+            </div>
+            {getMainnetType === MainnetType.BSC && (
+              <div className="detail__data-wrapper__info__deposit__strategy">
+                <div>
+                  <p>{t('dashboard.real_estate_mortgage')}</p>
+                  <p>30%</p>
+                </div>
+                <div>
+                  <div>
+                    <p>{t('dashboard.auto_invest_defi__title')}</p>
+                    <div
+                      onMouseEnter={() => setHover(true)}
+                      onMouseLeave={() => setHover(false)}>
+                      <p>?</p>
+                    </div>
+                  </div>
+                  <p>70%</p>
+                </div>
+                <div
+                  className="detail__data-wrapper__info__deposit__strategy__defi-wrapper"
+                  style={{ display: hover ? 'block' : 'none' }}>
+                  <div>
+                    <img src={Defi001} />
+                    <p>{t('dashboard.auto_invest_defi.0')}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div>
+              <div className="detail__data-wrapper__info__deposit">
+                <div
+                  style={{
+                    backgroundColor: subColor || '#888888',
+                  }}
+                />
+                <p>{t('dashboard.available_liquidity')}</p>
+              </div>
+              <p>{availableLiquidity}</p>
+            </div>
+          </div>
+          <div className="detail__data-wrapper__info__deposit__utilization">
+            <h2>{t('dashboard.utilization')}</h2>
+            <h2>{`${utilization}%`}</h2>
           </div>
         </div>
         <div className="detail__data-wrapper__info__deposit__utilization">

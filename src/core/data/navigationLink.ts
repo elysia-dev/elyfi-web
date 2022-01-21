@@ -1,5 +1,6 @@
 import NavigationType from 'src/enums/NavigationType';
 
+
 export interface ISubNavigation {
   type: NavigationType;
   location: string;

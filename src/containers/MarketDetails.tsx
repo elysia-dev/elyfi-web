@@ -1,16 +1,16 @@
-import { useHistory, useParams } from 'react-router-dom';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useHistory, useParams, Redirect } from 'react-router-dom';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { reserveTokenData } from 'src/core/data/reserves';
 
 import { toUsd, toPercent } from 'src/utiles/formatters';
-import { BigNumber } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 
 import ErrorPage from 'src/components/ErrorPage';
-import ReservesContext from 'src/contexts/ReservesContext';
 import { useTranslation } from 'react-i18next';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcHistoryChartData from 'src/utiles/calcHistoryChartData';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
+import envs from 'src/core/envs';
 import { useWeb3React } from '@web3-react/core';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
 import Token from 'src/enums/Token';
@@ -19,6 +19,9 @@ import MarketDetailsBody from 'src/components/MarketDetailsBody';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
+import SubgraphContext, {
+  IReserveSubgraphData,
+} from 'src/contexts/SubgraphContext';
 import {
   Bar,
   Cell,
@@ -32,6 +35,26 @@ import {
   setDatePositionX,
   setTooltipBoxPositionX,
 } from 'src/utiles/graphTooltipPositionX';
+import MainnetContext from 'src/contexts/MainnetContext';
+import MainnetType from 'src/enums/MainnetType';
+import isSupportedReserve from 'src/core/utils/isSupportedReserve';
+import ReserveToken from 'src/core/types/ReserveToken';
+import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
+import moment from 'moment';
+import {
+  ERC20__factory,
+  IncentivePool__factory,
+} from '@elysia-dev/contract-typechain';
+
+const initialBalanceState = {
+  loading: true,
+  value: constants.Zero,
+  incentive: constants.Zero,
+  expectedIncentiveBefore: constants.Zero,
+  expectedIncentiveAfter: constants.Zero,
+  deposit: constants.Zero,
+  updatedAt: moment().unix(),
+};
 
 interface ITokencolor {
   name: string;
@@ -50,30 +73,78 @@ const tokenColorData: ITokencolor[] = [
     color: '#26A17B',
     subColor: '#70E8C3',
   },
+  {
+    name: 'BUSD',
+    color: '#FAD338',
+    subColor: '#FBC300',
+  },
 ];
 
 function MarketDetail(): JSX.Element {
-  const { account } = useWeb3React();
+  const { account, library } = useWeb3React();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const [graphConverter, setGraphConverter] = useState(false);
   const [transactionModal, setTransactionModal] = useState(false);
   const tokenRef = useRef<HTMLParagraphElement>(null);
-  const { reserves } = useContext(ReservesContext);
+  const { data: getSubgraphData } = useContext(SubgraphContext);
   const { latestPrice, poolDayData } = useContext(UniswapPoolContext);
   const { lng, id } = useParams<{ lng: string; id: Token.DAI | Token.USDT }>();
   const history = useHistory();
   const { value: mediaQuery } = useMediaQueryType();
   const tokenInfo = reserveTokenData[id];
-  const data = reserves.find((reserve) => reserve.id === tokenInfo.address);
+  const data = getSubgraphData.reserves.find(
+    (reserve) => reserve.id === tokenInfo.address,
+  );
   const [tooltipPositionX, setTooltipPositionX] = useState(0);
   const [date, setDate] = useState('');
   const { t } = useTranslation();
   const [cellInBarIdx, setCellInBarIdx] = useState(-1);
+  const { type: getMainnetType } = useContext(MainnetContext);
 
   const selectToken = tokenColorData.find((color) => {
     return color.name === id;
   });
+
+  const [balances, setBalances] = useState<{
+    loading: boolean;
+    tokenName: ReserveToken;
+    value: BigNumber;
+    incentive: BigNumber;
+    expectedIncentiveBefore: BigNumber;
+    expectedIncentiveAfter: BigNumber;
+    deposit: BigNumber;
+    updatedAt: number;
+  }>({
+    ...initialBalanceState,
+    tokenName: id,
+  });
+
+  const fetchBalanceFrom = async (
+    reserve: IReserveSubgraphData,
+    account: string,
+  ) => {
+    const incentive = await IncentivePool__factory.connect(
+      reserve.incentivePool.id,
+      library.getSigner(),
+    ).getUserIncentive(account);
+    return {
+      value: await ERC20__factory.connect(reserve.id, library).balanceOf(
+        account,
+      ),
+      incentive,
+      expectedIncentiveBefore: incentive,
+      expectedIncentiveAfter: incentive,
+      governance: await ERC20__factory.connect(
+        envs.token.governanceAddress,
+        library,
+      ).balanceOf(account),
+      deposit: await ERC20__factory.connect(
+        reserve.lToken.id,
+        library,
+      ).balanceOf(account),
+    };
+  };
 
   const draw = () => {
     const dpr = window.devicePixelRatio;
@@ -93,11 +164,16 @@ function MarketDetail(): JSX.Element {
     ctx.scale(dpr, dpr);
     new DrawWave(ctx, browserWidth).drawOnPages(
       headerY,
-      id === Token.DAI ? TokenColors.DAI : TokenColors.USDT,
+      id === Token.DAI
+        ? TokenColors.DAI
+        : id === Token.USDT
+        ? TokenColors.USDT
+        : TokenColors.BUSD,
     );
   };
 
   useEffect(() => {
+    draw();
     window.addEventListener('resize', () => draw());
 
     return () => {
@@ -106,8 +182,13 @@ function MarketDetail(): JSX.Element {
   }, []);
 
   useEffect(() => {
-    draw();
-  }, [account]);
+    // need refactoring!!!
+    if (!isSupportedReserve(balances.tokenName, getMainnetType)) {
+      history.push({
+        pathname: `/${lng}/deposit`,
+      });
+    }
+  }, [balances, getMainnetType]);
 
   // FIXME
   // const miningAPR = utils.parseUnits('10', 25);
@@ -128,7 +209,7 @@ function MarketDetail(): JSX.Element {
   const CustomTooltip = (e: any) => {
     if (!(cellInBarIdx === -1)) setCellInBarIdx(e.label);
 
-    setDate(e.payload[0]?.payload.name);
+    setDate(e.payload[0]?.payload.name || '');
     setTooltipPositionX(e.coordinate.x);
     return (
       <div
@@ -191,11 +272,15 @@ function MarketDetail(): JSX.Element {
         <div className="detail__container">
           <MarketDetailsBody
             depositReward={toPercent(
-              BigNumber.from(data.depositAPY).add(miningAPR),
+              BigNumber.from(data.depositAPY).add(
+                miningAPR.mul(busd3xRewardEvent(selectToken?.name)),
+              ),
             )}
             totalDeposit={toUsd(data.totalDeposit, tokenInfo?.decimals)}
             depositAPY={toPercent(data.depositAPY)}
-            miningAPRs={toPercent(miningAPR)}
+            miningAPRs={toPercent(
+              miningAPR.mul(busd3xRewardEvent(selectToken?.name)),
+            )}
             depositor={data.deposit.length}
             totalLoans={data.borrow.length}
             totalBorrowed={toUsd(data.totalBorrow, tokenInfo?.decimals)}

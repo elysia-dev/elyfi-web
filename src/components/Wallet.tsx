@@ -1,44 +1,56 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
-import mainnetConverter from 'src/utiles/mainnetConverter';
 import { useTranslation } from 'react-i18next';
-import Idle from 'src/assets/images/status__idle.png';
-import Confirm from 'src/assets/images/status__confirm.png';
-import Fail from 'src/assets/images/status__fail.png';
 import TxContext from 'src/contexts/TxContext';
 import Davatar from '@davatar/react';
 import envs from 'src/core/envs';
 import TxStatus from 'src/enums/TxStatus';
 import { useENS } from 'src/hooks/useENS';
-import AccountModal from './AccountModal';
+import AccountModal from 'src/components/AccountModal';
+import MainnetContext from 'src/contexts/MainnetContext';
+import MainnetError from 'src/assets/images/network_error.png';
+import NetworkChangeModal from './NetworkChangeModal';
 
 const Wallet = (): JSX.Element => {
   const { account, activate, active, chainId } = useWeb3React();
   const [connected, setConnected] = useState<boolean>(false);
   const { t } = useTranslation();
-  const [modal, setModal] = useState(false);
-  const { txStatus, txWaiting, txNonce } = useContext(TxContext);
+  const [accountModalVisible, setAccountModalVisible] = useState(false);
+  const [networkChangeModalVisible, setNetworkChangeModalVisible] =
+    useState(false);
+  const { txStatus } = useContext(TxContext);
 
   const WalletRef = useRef<HTMLDivElement>(null);
-  const { ensName } = useENS(account);
+  const { ensName, ensLoading } = useENS(account || '');
   const shortAddress = `${account?.slice(0, 6)}....${account?.slice(-4)}`;
+
+  const { unsupportedChainid } = useContext(MainnetContext);
 
   useEffect(() => {
     setConnected(
       !!account &&
-        (chainId === envs.network.requiredChainId ||
-          envs.network.requiredNetwork === 'ganache'),
+        !!chainId &&
+        [envs.network.requiredChainId, envs.network.bscMainnetChainId].includes(
+          chainId,
+        ),
     );
   }, [account, chainId]);
 
   return (
     <>
-      <AccountModal visible={modal} closeHandler={() => setModal(false)} />
+      <AccountModal
+        visible={accountModalVisible}
+        closeHandler={() => setAccountModalVisible(false)}
+      />
+      <NetworkChangeModal
+        visible={networkChangeModalVisible}
+        closeHandler={() => setNetworkChangeModalVisible(false)}
+      />
       <div
-        className={`navigation__wallet${
-          connected ? '--connected' : ''
-        } ${txStatus}`}
+        className={`navigation__wallet${connected ? '--connected' : ''} ${
+          unsupportedChainid ? 'unknown-chain' : txStatus
+        }`}
         ref={WalletRef}
         onClick={() => {
           if (!active) {
@@ -46,51 +58,26 @@ const Wallet = (): JSX.Element => {
               window.sessionStorage.setItem('@connect', 'true');
             });
           }
-          if (connected) {
-            setModal(true);
+          if (unsupportedChainid) {
+            setNetworkChangeModalVisible(true);
+          }
+          if (connected && !unsupportedChainid) {
+            setAccountModalVisible(true);
           }
         }}>
-        <div className="navigation__wallet__wrapper">
-          <img
-            style={{
-              display: !connected
-                ? 'none'
-                : txStatus !== TxStatus.PENDING
-                ? 'block'
-                : 'none',
-            }}
-            src={
-              txWaiting === undefined
-                ? Idle
-                : txStatus === TxStatus.FAIL
-                ? Fail
-                : txStatus === TxStatus.CONFIRM
-                ? Confirm
-                : Idle
-            }
-            alt="status"
-            className="navigation__status"
-          />
-          <div
-            className="loader"
-            style={{
-              display: txStatus === TxStatus.PENDING ? 'block' : 'none',
-            }}
-          />
-          <div>
-            {connected && (
-              <p className="navigation__wallet__mainnet">
-                {txStatus === (TxStatus.PENDING || TxStatus.CONFIRM)
-                  ? `Transaction ${txNonce}`
-                  : mainnetConverter(chainId)}
-              </p>
-            )}
+        {unsupportedChainid ? (
+          <>
+            <img src={MainnetError} />
+            <h2 className="montserrat">Wrong Network</h2>
+          </>
+        ) : (
+          <div className="navigation__wallet__wrapper">
             <div className="navigation__address">
-              {connected && (
+              {ensLoading && account && connected && (
                 <div className="navigation__davatar">
                   <Davatar
-                    size={18}
-                    address={account || ''}
+                    size={30}
+                    address={account}
                     generatedAvatarType="jazzicon"
                   />
                 </div>
@@ -111,7 +98,7 @@ const Wallet = (): JSX.Element => {
               </p>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );

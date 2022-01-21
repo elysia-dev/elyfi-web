@@ -24,14 +24,14 @@ const ConnectWalletModal: React.FunctionComponent<{
         ) ? (
           <>
             <div className="modal__connect__content">
-              <p>{t('connect_metamask.content')}</p>
+              <p>{t('modal.connect_metamask.content')}</p>
             </div>
             <div
               className={`modal__button`}
               style={{
                 background: '#BFBFBF',
               }}>
-              <p>{t('connect_metamask.button')}</p>
+              <p>{t('modal.connect_metamask.button')}</p>
             </div>
           </>
         ) : (

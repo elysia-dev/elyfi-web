@@ -5,7 +5,10 @@ const isWalletConnect = (): boolean => {
   const { active, chainId } = useWeb3React();
   const isValidChain =
     envs.network.requiredNetwork === 'ganache' ||
-    chainId === envs.network.requiredChainId;
+    (!!chainId &&
+      [envs.network.requiredChainId, envs.network.bscMainnetChainId].includes(
+        chainId,
+      ));
 
   return active && isValidChain;
 };

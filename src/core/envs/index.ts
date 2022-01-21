@@ -3,6 +3,7 @@ import prodVars from './prod.json';
 
 interface EnvironmentVariables {
   moneyPool: {
+    bscMoneyPoolAddress: string;
     moneyPoolAddress: string;
     daiTokenizerAddress: string;
     usdtTokeninzerAddress: string;
@@ -10,6 +11,7 @@ interface EnvironmentVariables {
     prevUSDTIncentivePool: string;
     currentDaiIncentivePool: string;
     currentUSDTIncentivePool: string;
+    busdIncentivePoolAddress: string;
   };
   staking: {
     elStakingPoolAddress: string;
@@ -29,18 +31,23 @@ interface EnvironmentVariables {
     daiAddress: string;
     usdtAddress: string;
     wEthAddress: string;
+    bscElfiAddress: string;
+    busdAddress: string;
   };
   network: {
     requiredNetwork: string;
     requiredChainId: number;
+    bscMainnetChainId: number;
   };
   subgraphApiEndpoint: {
     subgraphURI: string;
     lpTokenPoolSubgraphURL: string;
     stakerSubgraphURL: string;
+    bscSubgraphURI: string;
   };
   externalApiEndpoint: {
     etherscanURI: string;
+    bscscanURI: string;
   };
   testStableAddress: string;
 }

@@ -1,10 +1,10 @@
 import moment from 'moment';
-import { GetAllAssetBonds_assetBondTokens } from 'src/queries/__generated__/GetAllAssetBonds';
+import { IAssetBond } from 'src/contexts/SubgraphContext';
 
 const maturityFormmater = (
-  abToken: GetAllAssetBonds_assetBondTokens | null | undefined,
+  abToken: IAssetBond,
 ): string => {
-  if (!abToken?.maturityTimestamp) return '-';
+  if (!abToken.maturityTimestamp) return '-';
   if (
     [
       '115792089237316195422007842550160057480242544124026915590235438085798243682305',

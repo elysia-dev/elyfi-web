@@ -1,7 +1,6 @@
 import { Dispatch, FunctionComponent, SetStateAction, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import envs from 'src/core/envs';
-import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { reserveTokenData } from 'src/core/data/reserves';
 import {
   formatCommaSmallFourDisits,
@@ -14,10 +13,12 @@ import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import Token from 'src/enums/Token';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
+import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import CountUp from 'react-countup';
+import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 
 interface Props {
-  reserve: GetAllReserves_reserves;
+  reserve: IReserveSubgraphData;
   idx: number;
   moneyPoolInfo: {
     DAI: {
@@ -25,6 +26,10 @@ interface Props {
       endedMoneyPool: string;
     };
     USDT: {
+      startedMoneyPool: string;
+      endedMoneyPool: string;
+    };
+    BUSD: {
       startedMoneyPool: string;
       endedMoneyPool: string;
     };
@@ -50,7 +55,12 @@ const TokenDeposit: FunctionComponent<Props> = ({
   mintedMoneypool,
 }) => {
   const { t } = useTranslation();
-  const token = reserve.id === envs.token.daiAddress ? Token.DAI : Token.USDT;
+  const token =
+    reserve.id === envs.token.daiAddress
+      ? Token.DAI
+      : reserve.id === envs.token.usdtAddress
+      ? Token.USDT
+      : Token.BUSD;
   const { latestPrice } = useContext(UniswapPoolContext);
   const { value: mediaQuery } = useMediaQueryType();
 
@@ -110,7 +120,7 @@ const TokenDeposit: FunctionComponent<Props> = ({
                         latestPrice,
                         BigNumber.from(reserve.totalDeposit || 0),
                         reserveTokenData[token].decimals,
-                      ),
+                      ).mul(busd3xRewardEvent(reserveTokenData[token].name)),
                     ) || 0}
                   </h2>
                 </div>
@@ -169,7 +179,12 @@ const TokenDeposit: FunctionComponent<Props> = ({
           <div className="component__data-info">
             <div>
               <p>{t('reward.daily_mining')}</p>
-              <p className="data">16,666.6667 ELFI</p>
+              <p className="data">
+                {reserveTokenData[token].name === Token.BUSD
+                  ? '50,000.0000'
+                  : '16,666.6667'}{' '}
+                ELFI
+              </p>
             </div>
             <div>
               <p>{t('reward.accumulated_mining')}</p>
