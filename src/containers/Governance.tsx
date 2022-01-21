@@ -164,6 +164,7 @@ const Governance = (): JSX.Element => {
   const offChainContainer = (data: INapData) => {
     return (
       <div
+        key={data.nap}
         className="governance__validation__assets governance__asset"
         onClick={() => {
           reactGA.event({
@@ -187,7 +188,7 @@ const Governance = (): JSX.Element => {
           <div>
             {data.votes.map((vote, _x) => {
               return (
-                <div>
+                <div key={`vote_${_x}`}>
                   <h2>{vote.html}</h2>
                   <progress
                     className={`governance__asset__progress-bar index-${_x}`}
@@ -205,6 +206,7 @@ const Governance = (): JSX.Element => {
   const onChainConatainer = (data: IProposals) => {
     return (
       <div
+        key={data.data.description}
         className="governance__onchain-vote__assets governance__asset"
         onClick={() => {
           reactGA.event({
@@ -393,7 +395,7 @@ const Governance = (): JSX.Element => {
               moment().isBefore(data.endedDate),
             ).length > 0 ? (
             <div className="governance__grid">
-              {offChainNapData.map((data, index) => {
+              {offChainNapData.map((data) => {
                 if (data.endedDate && moment().isBefore(data.endedDate)) {
                   return offChainContainer(data);
                 }
@@ -506,31 +508,28 @@ const Governance = (): JSX.Element => {
                 </div>
                 <p>{t('governance.loan_list__content')}</p>
               </div>
-              <>
-                <AssetList
-                  assetBondTokens={
-                    /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
-                    [...((assetBondTokens as IAssetBond[]) || [])]
-                      .slice(0, pageNumber * 9)
-                      .sort((a, b) => {
-                        return b.loanStartTimestamp! - a.loanStartTimestamp! >=
-                          0
-                          ? 1
-                          : -1;
-                      }) || []
-                  }
-                />
-                {assetBondTokens.length &&
-                  assetBondTokens.length >= pageNumber * 9 && (
-                    <div>
-                      <button
-                        className="portfolio__view-button"
-                        onClick={() => viewMoreHandler()}>
-                        {t('loan.view-more')}
-                      </button>
-                    </div>
-                  )}
-              </>
+              <AssetList
+                assetBondTokens={
+                  /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
+                  [...((assetBondTokens as IAssetBond[]) || [])]
+                    .slice(0, pageNumber * 9)
+                    .sort((a, b) => {
+                      return b.loanStartTimestamp! - a.loanStartTimestamp! >= 0
+                        ? 1
+                        : -1;
+                    }) || []
+                }
+              />
+              {assetBondTokens.length &&
+                assetBondTokens.length >= pageNumber * 9 && (
+                  <div>
+                    <button
+                      className="portfolio__view-button"
+                      onClick={() => viewMoreHandler()}>
+                      {t('loan.view-more')}
+                    </button>
+                  </div>
+                )}
             </>
           )}
         </section>

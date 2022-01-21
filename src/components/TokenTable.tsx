@@ -9,8 +9,6 @@ import { reserveTokenData } from 'src/core/data/reserves';
 import { useWeb3React } from '@web3-react/core';
 import CountUp from 'react-countup';
 import { formatEther } from '@ethersproject/units';
-import { GetAllAssetBonds } from 'src/queries/__generated__/GetAllAssetBonds';
-import { useQuery } from '@apollo/client';
 import { BigNumber, constants } from 'ethers';
 import AssetList from 'src/containers/AssetList';
 import { Link, useHistory, useParams } from 'react-router-dom';
@@ -23,13 +21,11 @@ import MainnetType from 'src/enums/MainnetType';
 import { daiMoneyPoolTime } from 'src/core/data/moneypoolTimes';
 import { BalanceType } from 'src/hooks/useBalances';
 import moment from 'moment';
-import { Dispatch, SetStateAction, useContext } from 'react';
-import DepositBalance from 'src/core/types/DepositBalance';
+import { useContext } from 'react';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import PriceContext from 'src/contexts/PriceContext';
 import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 import TableBodyEventReward from './TableBodyEventReward';
-import RewardCountUp from './RewardCountUp';
 
 interface Props {
   balance: BalanceType;
@@ -108,9 +104,9 @@ const TokenTable: React.FC<Props> = ({
           {mediaQuery === MediaQuery.PC && (
             <div className="deposit__table__header__data-grid">
               <div />
-              {tableData.map((data) => {
+              {tableData.map((data, index) => {
                 return (
-                  <div>
+                  <div key={index}>
                     <p>{data[0]}</p>
                     <p className="bold">{data[1]}</p>
                   </div>
@@ -124,9 +120,9 @@ const TokenTable: React.FC<Props> = ({
             {mediaQuery === MediaQuery.Mobile && (
               <div className="deposit__table__header__data-grid">
                 <div />
-                {tableData.map((data) => {
+                {tableData.map((data, index) => {
                   return (
-                    <div>
+                    <div key={index}>
                       <p>{data[0]}</p>
                       <p className="bold">{data[1]}</p>
                     </div>
