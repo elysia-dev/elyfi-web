@@ -314,7 +314,7 @@ function MarketDetail(): JSX.Element {
         <div className="detail__graph__wrapper__tooltip__payload">
           <div>
             {graphConverter
-              ? t('dashboard.total_deposit--yield')
+              ? t('dashboard.borrow_apy')
               : t('dashboard.total_deposit--reward')}
           </div>
           <div className="bold">{e.payload[0]?.payload.yield} %</div>
