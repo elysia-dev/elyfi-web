@@ -56,9 +56,7 @@ const Navigation: React.FunctionComponent<{
   const [scrolling, setScrolling] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
 
-
   const [mainNetwork, setMainNetwork] = useState(false);
-
 
   const getLNBData = navigationLink.filter(
     (nav) => nav.type === NavigationType.LNB,
@@ -170,7 +168,7 @@ const Navigation: React.FunctionComponent<{
               style={{
                 marginRight: 8,
               }}>
-              <p style={{ cursor: "pointer" }}>
+              <p style={{ cursor: 'pointer' }}>
                 {t(_data.i18nKeyword).toUpperCase()}
               </p>
             </div>
@@ -219,59 +217,51 @@ const Navigation: React.FunctionComponent<{
     _index: number,
     isExternalLink?: boolean,
   ) => {
-    return (
-      <>
-        {isExternalLink ? (
-          <div
-            key={_index}
-            onMouseEnter={() => {
-              setGlobalNavHover(_index + 1);
+    return isExternalLink ? (
+      <div
+        key={`linkNavigation_${_index}`}
+        onMouseEnter={() => {
+          setGlobalNavHover(_index + 1);
 
-              setSelectedLocalNavIndex(0);
-            }}
-            onClick={() => {
-              if (_index === 0) {
-                reactGA.event({
-                  category: PageEventType.MoveToInternalPage,
-                  action: ButtonEventType.DepositButtonOnTop,
-                });
-              }
-              initialNavigationState();
-            }}>
-            {globalNavInnerContainer(
-              _data as INavigation,
-              _index,
-              isExternalLink,
-            )}
-          </div>
-        ) : (
-          <Link
-            key={_index}
-            to={{
-              pathname:
-                _data.type === NavigationType.Link
-                  ? `/${lng + _data.location}`
-                  : t(_data.location),
-            }}
-            target={isExternalLink ? '_blank' : undefined}
-            onMouseEnter={() => {
-              setGlobalNavHover(_index + 1);
+          setSelectedLocalNavIndex(0);
+        }}
+        onClick={() => {
+          if (_index === 0) {
+            reactGA.event({
+              category: PageEventType.MoveToInternalPage,
+              action: ButtonEventType.DepositButtonOnTop,
+            });
+          }
+          initialNavigationState();
+        }}>
+        {globalNavInnerContainer(_data as INavigation, _index, isExternalLink)}
+      </div>
+    ) : (
+      <Link
+        key={_index}
+        to={{
+          pathname:
+            _data.type === NavigationType.Link
+              ? `/${lng + _data.location}`
+              : t(_data.location),
+        }}
+        target={isExternalLink ? '_blank' : undefined}
+        onMouseEnter={() => {
+          setGlobalNavHover(_index + 1);
 
-              setSelectedLocalNavIndex(0);
-            }}
-            onClick={() => {
-              if (_index === 0) {
-                reactGA.event({
-                  category: PageEventType.MoveToInternalPage,
-                  action: ButtonEventType.DepositButtonOnTop,
-                });
-              }
-              initialNavigationState();
-            }}>
-            {globalNavInnerContainer(_data as INavigation, _index)}
-          </Link>
-        )}
-      </>
+          setSelectedLocalNavIndex(0);
+        }}
+        onClick={() => {
+          if (_index === 0) {
+            reactGA.event({
+              category: PageEventType.MoveToInternalPage,
+              action: ButtonEventType.DepositButtonOnTop,
+            });
+          }
+          initialNavigationState();
+        }}>
+        {globalNavInnerContainer(_data as INavigation, _index)}
+      </Link>
     );
   };
 
@@ -287,13 +277,11 @@ const Navigation: React.FunctionComponent<{
         </div>
       );
     };
-
     // return data.type === NavigationType.Link
     //   ? linkNavigation(data, index, false)
     //   : data.type === NavigationType.Href
     //   ? linkNavigation(data, index, true)
     //   : LNBNavigation();
-
     return data.type === NavigationType.Link
       ? linkNavigation(data, index, false)
       : linkNavigation(data, index, true);
@@ -343,6 +331,7 @@ const Navigation: React.FunctionComponent<{
                   {data.subNavigation!.map((_data, index) => {
                     return (
                       <Link
+                        key={`hamburgerBar_${index}`}
                         to={{
                           pathname:
                             _data.type === NavigationType.Link
@@ -410,7 +399,6 @@ const Navigation: React.FunctionComponent<{
     );
   };
 
-
   useEffect(() => {
     function handleClickOutside(e: MouseEvent): void {
       if (
@@ -418,7 +406,7 @@ const Navigation: React.FunctionComponent<{
         !navigationRef.current.contains(e.target as Node)
       ) {
         initialNavigationState();
-        setMainNetwork(false)
+        setMainNetwork(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -438,7 +426,14 @@ const Navigation: React.FunctionComponent<{
         style={{
           backgroundColor: scrollTop > 125 ? '#FFFFFF' : '#FFFFFF',
           height: hamburgerBar ? '100%' : 'auto',
-          overflowY: mediaQuery === MediaQuery.PC ? "initial" : !mainNetwork ? "scroll" : hamburgerBar ? "scroll" : "initial"
+          overflowY:
+            mediaQuery === MediaQuery.PC
+              ? 'initial'
+              : !mainNetwork
+              ? 'scroll'
+              : hamburgerBar
+              ? 'scroll'
+              : 'initial',
         }}
         ref={navigationRef}
         onMouseLeave={() => {
@@ -466,7 +461,7 @@ const Navigation: React.FunctionComponent<{
             </div>
             {setNavigationLink()}
             {mediaQuery === MediaQuery.Mobile && (
-              <MainnetSwitch 
+              <MainnetSwitch
                 mainNetwork={mainNetwork}
                 setMainNetwork={setMainNetwork}
               />

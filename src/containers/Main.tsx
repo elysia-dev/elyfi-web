@@ -249,7 +249,13 @@ const Main = (): JSX.Element => {
           </div>
         </section>
         {sectionEvent.map((_data, _index) => {
-          return <MainContent index={_index} data={_data} />;
+          return (
+            <MainContent
+              key={`sectionEvent_${_index}`}
+              index={_index}
+              data={_data}
+            />
+          );
         })}
         <section className="main__advantages main__section">
           <h2 ref={guideY}>
@@ -289,15 +295,13 @@ const Main = (): JSX.Element => {
               ],
             ].map((data, _index) => {
               return (
-                <>
+                <div key={_index}>
+                  <img src={data[0]} />
                   <div>
-                    <img src={data[0]} />
-                    <div>
-                      <h2>{data[1]}</h2>
-                      <p>{data[2]}</p>
-                    </div>
+                    <h2>{data[1]}</h2>
+                    <p>{data[2]}</p>
                   </div>
-                </>
+                </div>
               );
             })}
           </div>
@@ -338,8 +342,8 @@ const Main = (): JSX.Element => {
           <div>
             <h2>{t('main.partners.lawfirm')}</h2>
             <div className="main__partners__lawfirm">
-              {[SHIN, BKI, FocusLaw, HUB, HOW, TSMP].map((LawFirm) => {
-                return <img src={LawFirm} />;
+              {[SHIN, BKI, FocusLaw, HUB, HOW, TSMP].map((LawFirm, index) => {
+                return <img key={`lawfirm_${index}`} src={LawFirm} />;
               })}
             </div>
           </div>
