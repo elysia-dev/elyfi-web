@@ -25,6 +25,8 @@ import moment from 'moment';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import PriceContext from 'src/contexts/PriceContext';
 import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
+import { parseTokenId } from 'src/utiles/parseTokenId';
+import CollateralCategory from 'src/enums/CollateralCategory';
 import TableBodyEventReward from './TableBodyEventReward';
 
 interface Props {
@@ -59,6 +61,10 @@ const TokenTable: React.FC<Props> = ({
   const { value: mediaQuery } = useMediaQueryType();
   const { type: getMainnetType } = useContext(MainnetContext);
   const { elfiPrice } = useContext(PriceContext);
+  const assetBondTokensBackedByEstate = reserveData.assetBondTokens.filter((ab) => {
+    const parsedId = parseTokenId(ab.id);
+    return CollateralCategory.Others !== parsedId.collateralCategory
+  })
 
   const tableData = [
     [
@@ -272,14 +278,14 @@ const TokenTable: React.FC<Props> = ({
             <div>
               <div>
                 <h2>{t('dashboard.recent_loan')}</h2>
-                <Link to={`/${lng}/deposits/${balance.tokenName}`} style={{ display: reserveData.assetBondTokens.length === 0 ? 'none' : 'block'}}>
+                <Link to={`/${lng}/deposits/${balance.tokenName}`} style={{ display: assetBondTokensBackedByEstate.length === 0 ? 'none' : 'block'}}>
                   <div className="deposit__table__body__loan-list__button">
                     <p>{t('main.governance.view-more')}</p>
                   </div>
                 </Link>
               </div>
               {
-                (reserveData.assetBondTokens.length === 0 || getMainnetType === MainnetType.BSC) && (
+                (assetBondTokensBackedByEstate.length === 0 || getMainnetType === MainnetType.BSC) && (
                   <div className="loan__list--null" style={{ marginTop: 30 }}>
                     <p>
                       {t("loan.loan_list--null")}
@@ -291,7 +297,7 @@ const TokenTable: React.FC<Props> = ({
                 <AssetList
                   assetBondTokens={
                     // Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다.
-                    [...(reserveData.assetBondTokens || [])]
+                    [...(assetBondTokensBackedByEstate || [])]
                       .sort((a, b) => {
                         return b.loanStartTimestamp! - a.loanStartTimestamp! >=
                           0
