@@ -148,7 +148,11 @@ const calcHistoryChartData = (
       // c: (d.calculatedAPY / divider) * base + base * 1.2,
       yield: toCompact(
         d.calculatedAPY *
-          busd3xRewardEvent(data.id === envs.busdAddress ? Token.BUSD : ''),
+          busd3xRewardEvent(
+            data.id === envs.busdAddress && historyType === 'deposit'
+              ? Token.BUSD
+              : '',
+          ),
       ),
     });
   });
