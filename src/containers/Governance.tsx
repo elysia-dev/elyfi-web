@@ -21,6 +21,8 @@ import TokenColors from 'src/enums/TokenColors';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
 import SubgraphContext, { IAssetBond } from 'src/contexts/SubgraphContext';
+import { parseTokenId } from 'src/utiles/parseTokenId';
+import CollateralCategory from 'src/enums/CollateralCategory';
 
 const Governance = () => {
   const [onChainLoading, setOnChainLoading] = useState(true);
@@ -37,6 +39,10 @@ const Governance = () => {
   const History = useHistory();
   const { lng } = useParams<{ lng: string }>();
   const { type: getMainnetType } = useContext(MainnetContext)
+  const assetBondTokensBackedByEstate = assetBondTokens.filter((product) => {
+    const parsedId = parseTokenId(product.id);
+    return CollateralCategory.Others !== parsedId.collateralCategory
+  })
 
   const draw = () => {
     const dpr = window.devicePixelRatio;
@@ -485,7 +491,7 @@ const Governance = () => {
         </section>
         <section className="governance__loan governance__header">
           {
-            (assetBondTokens.length === 0) ? (
+            (assetBondTokensBackedByEstate.length === 0) ? (
               <>
                 <div>
                   <div>
@@ -509,7 +515,7 @@ const Governance = () => {
                   <div>
                     <h3>
                       {t('governance.loan_list', {
-                        count: assetBondTokens.length,
+                        count: assetBondTokensBackedByEstate.length,
                       })}
                     </h3>
                   </div>
@@ -519,7 +525,7 @@ const Governance = () => {
                   <AssetList
                     assetBondTokens={
                       /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
-                      [...(assetBondTokens as IAssetBond[] || [])]
+                      [...(assetBondTokensBackedByEstate as IAssetBond[] || [])]
                         .slice(0, pageNumber * 9)
                         .sort((a, b) => {
                           return b.loanStartTimestamp! - a.loanStartTimestamp! >= 0
@@ -528,8 +534,8 @@ const Governance = () => {
                         }) || []
                     }
                   />
-                  {assetBondTokens.length &&
-                    assetBondTokens.length >= pageNumber * 9 && (
+                  {assetBondTokensBackedByEstate.length &&
+                    assetBondTokensBackedByEstate.length >= pageNumber * 9 && (
                       <div>
                         <button
                           className="portfolio__view-button"
