@@ -13,8 +13,9 @@ const MainGraph = () => {
       <div className="main__service__graph">
         <div className="main__service__graph--section01">
           <div className="main__service__graph--section01--01">
-            <div className="main__service__graph--circle">
-              <p>
+            <div className="main__service__graph--circle circle_01">
+              <p style={{transform: "scale(0.9)"}} >
+                <span style={{ color: "#00A7FF" }}>*</span>
                 {t("main.graph.circle-content.0")}
               </p>
             </div>
@@ -33,7 +34,7 @@ const MainGraph = () => {
             <div />
           </div>
           <div className="main__service__graph--section01--03">
-            <div className="main__service__graph--circle">
+            <div className="main__service__graph--circle circle_02">
               <p>
                 {t("main.graph.circle-content.1")}
               </p>
@@ -45,7 +46,7 @@ const MainGraph = () => {
             </p>
             <div className="main__service__graph__line-wrapper">
             {
-              animationLine(11, "right")
+              animationLine(10, "right")
             }
             </div>
             <div>
@@ -59,7 +60,7 @@ const MainGraph = () => {
               }}
             >
             {
-              animationLine(11, "left")
+              animationLine(10, "left")
             }
             </div>
             <p>
@@ -67,10 +68,12 @@ const MainGraph = () => {
             </p>
           </div>
           <div className="main__service__graph--section01--05">
-            <div className="main__service__graph--circle">
+            <div className="main__service__graph--circle circle_03">
+              <div />
               <p className="blue bold">
                 {t("main.graph.circle-content.2")}
               </p>
+              <div />
             </div>
           </div>
         </div>
@@ -90,7 +93,10 @@ const MainGraph = () => {
               <div>
 
               </div>
-              <div className="main__service__graph__line-wrapper">
+              <div className="main__service__graph__line-wrapper"
+                style={{
+                  top: 10
+                }}>
               {
                 animationLine(2, "down")
               }
@@ -102,7 +108,7 @@ const MainGraph = () => {
               </div>
             </div>
             <div className="main__service__graph--section02--01--02">
-              <div className="main__service__graph--circle">
+              <div className="main__service__graph--circle circle_04">
                 <p>
                   {t("main.graph.circle-content.3")}
                 </p>
@@ -140,7 +146,7 @@ const MainGraph = () => {
       <div className="main__service__graph">
         <div className="main__service__graph--section01">
           <div className="main__service__graph--section01--01">
-            <div className="main__service__graph--circle">
+            <div className="main__service__graph--circle circle_01">
               <p>
                 {t("main.graph.circle-content.3")}
               </p>
@@ -159,8 +165,9 @@ const MainGraph = () => {
                 </p>
               </div>
             </div>
-            <div className="main__service__graph--circle">
+            <div className="main__service__graph--circle circle_02">
               <p>
+                <span style={{ color: "#00A7FF" }}>*</span>
                 {t("main.graph.circle-content.0")}
               </p>
             </div>
@@ -175,7 +182,7 @@ const MainGraph = () => {
                 </p>
               </div>
             </div>
-            <div className="main__service__graph--circle">
+            <div className="main__service__graph--circle circle_03">
               <p>
               { t("main.graph.circle-content.1")}
               </p>
@@ -189,7 +196,7 @@ const MainGraph = () => {
               }
               <div className="scroll-arrow temp">
                 {
-                  Array(57).fill(0).map((_x) => {
+                  Array(61).fill(0).map((_x) => {
                     return <span className="arrow--00" />
                   })
                 }
@@ -230,10 +237,12 @@ const MainGraph = () => {
               </p>
             </div>
           </div>
-          <div className="main__service__graph--circle">
-            <p>
-            {t("main.graph.circle-content.2")}  
+          <div className="main__service__graph--circle circle_04">
+            <div />
+            <p className="blue bold">
+              {t("main.graph.circle-content.2")}
             </p>
+            <div />
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams, Redirect } from 'react-router-dom';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { reserveTokenData } from 'src/core/data/reserves';
 
@@ -7,13 +7,11 @@ import { BigNumber, constants } from 'ethers';
 import Chart from 'react-google-charts';
 
 import ErrorPage from 'src/components/ErrorPage';
-import ReservesContext from 'src/contexts/ReservesContext';
 import { useTranslation } from 'react-i18next';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcHistoryChartData from 'src/utiles/calcHistoryChartData';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import envs from 'src/core/envs';
-import { GetAllReserves_reserves } from 'src/queries/__generated__/GetAllReserves';
 import { useWeb3React } from '@web3-react/core';
 import {
   ERC20__factory,
@@ -30,6 +28,9 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
+import SubgraphContext, {
+  IReserveSubgraphData,
+} from 'src/contexts/SubgraphContext';
 import {
   Bar,
   Cell,
@@ -38,6 +39,11 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from 'recharts';
+import MainnetContext from 'src/contexts/MainnetContext';
+import MainnetType from 'src/enums/MainnetType';
+import isSupportedReserve from 'src/core/utils/isSupportedReserve';
+import ReserveToken from 'src/core/types/ReserveToken';
+import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 
 const initialBalanceState = {
   loading: true,
@@ -66,6 +72,11 @@ const tokenColorData: ITokencolor[] = [
     color: '#26A17B',
     subColor: '#70E8C3',
   },
+  {
+    name: 'BUSD',
+    color: '#FAD338',
+    subColor: '#FBC300',
+  },
 ];
 
 const ChartComponent = styled(Chart)`
@@ -83,17 +94,20 @@ function MarketDetail(): JSX.Element {
   const [graphConverter, setGraphConverter] = useState(false);
   const [transactionModal, setTransactionModal] = useState(false);
   const tokenRef = useRef<HTMLParagraphElement>(null);
-  const { reserves } = useContext(ReservesContext);
+  const { data: getSubgraphData } = useContext(SubgraphContext);
   const { latestPrice, poolDayData } = useContext(UniswapPoolContext);
   const { lng, id } = useParams<{ lng: string; id: Token.DAI | Token.USDT }>();
   const history = useHistory();
   const { value: mediaQuery } = useMediaQueryType();
   const tokenInfo = reserveTokenData[id];
-  const data = reserves.find((reserve) => reserve.id === tokenInfo.address);
+  const data = getSubgraphData.reserves.find(
+    (reserve) => reserve.id === tokenInfo.address,
+  );
   const [tooltipPositionX, setTooltipPositionX] = useState(0);
   const [date, setDate] = useState('');
   const { t, i18n } = useTranslation();
   const [cellInBarIdx, setCellInBarIdx] = useState(-1);
+  const { type: getMainnetType } = useContext(MainnetContext);
 
   const selectToken = tokenColorData.find((color) => {
     return color.name === id;
@@ -101,7 +115,7 @@ function MarketDetail(): JSX.Element {
 
   const [balances, setBalances] = useState<{
     loading: boolean;
-    tokenName: string;
+    tokenName: ReserveToken;
     value: BigNumber;
     incentive: BigNumber;
     expectedIncentiveBefore: BigNumber;
@@ -114,7 +128,7 @@ function MarketDetail(): JSX.Element {
   });
 
   const fetchBalanceFrom = async (
-    reserve: GetAllReserves_reserves,
+    reserve: IReserveSubgraphData,
     account: string,
   ) => {
     const incentive = await IncentivePool__factory.connect(
@@ -169,7 +183,11 @@ function MarketDetail(): JSX.Element {
 
     new DrawWave(ctx, browserWidth).drawOnPages(
       headerY,
-      id === Token.DAI ? TokenColors.DAI : TokenColors.USDT,
+      id === Token.DAI
+        ? TokenColors.DAI
+        : id === Token.USDT
+        ? TokenColors.USDT
+        : TokenColors.BUSD,
       browserHeight,
       false,
     );
@@ -181,8 +199,8 @@ function MarketDetail(): JSX.Element {
     setBalances({
       ...balances,
       ...(await fetchBalanceFrom(
-        reserves[
-          reserves.findIndex((reserve) => {
+        getSubgraphData.reserves[
+          getSubgraphData.reserves.findIndex((reserve) => {
             return reserve.id === tokenInfo.address;
           })
         ],
@@ -201,8 +219,8 @@ function MarketDetail(): JSX.Element {
         ...balances,
         loading: false,
         ...(await fetchBalanceFrom(
-          reserves[
-            reserves.findIndex((reserve) => {
+          getSubgraphData.reserves[
+            getSubgraphData.reserves.findIndex((reserve) => {
               return reserve.id === tokenInfo.address;
             })
           ],
@@ -231,6 +249,15 @@ function MarketDetail(): JSX.Element {
     draw();
     loadBalances();
   }, [account]);
+
+  useEffect(() => {
+    // need refactoring!!!
+    if (!isSupportedReserve(balances.tokenName, getMainnetType)) {
+      history.push({
+        pathname: `/${lng}/deposit`,
+      });
+    }
+  }, [balances, getMainnetType]);
 
   // FIXME
   // const miningAPR = utils.parseUnits('10', 25);
@@ -290,7 +317,7 @@ function MarketDetail(): JSX.Element {
   const CustomTooltip = (e: any) => {
     if (!(cellInBarIdx === -1)) setCellInBarIdx(e.label);
 
-    setDate(e.payload[0]?.payload.name);
+    setDate(e.payload[0]?.payload.name || '');
     setTooltipPositionX(e.coordinate.x);
     return (
       <div
@@ -301,7 +328,7 @@ function MarketDetail(): JSX.Element {
         <div className="detail__graph__wrapper__tooltip__payload">
           <div>
             {graphConverter
-              ? t('dashboard.total_deposit--yield')
+              ? t('dashboard.borrow_apy')
               : t('dashboard.total_deposit--reward')}
           </div>
           <div className="bold">{e.payload[0]?.payload.yield} %</div>
@@ -383,11 +410,15 @@ function MarketDetail(): JSX.Element {
         <div className="detail__container">
           <MarketDetailsBody
             depositReward={toPercent(
-              BigNumber.from(data.depositAPY).add(miningAPR),
+              BigNumber.from(data.depositAPY).add(
+                miningAPR.mul(busd3xRewardEvent(selectToken?.name)),
+              ),
             )}
             totalDeposit={toUsd(data.totalDeposit, tokenInfo?.decimals)}
             depositAPY={toPercent(data.depositAPY)}
-            miningAPRs={toPercent(miningAPR)}
+            miningAPRs={toPercent(
+              miningAPR.mul(busd3xRewardEvent(selectToken?.name)),
+            )}
             depositor={data.deposit.length}
             totalLoans={data.borrow.length}
             totalBorrowed={toUsd(data.totalBorrow, tokenInfo?.decimals)}

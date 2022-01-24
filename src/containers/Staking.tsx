@@ -45,6 +45,8 @@ import { useParams } from 'react-router-dom';
 import ModalViewType from 'src/enums/ModalViewType';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
+import MainnetContext from 'src/contexts/MainnetContext';
+import MainnetType from 'src/enums/MainnetType';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI;
@@ -76,6 +78,7 @@ const Staking: React.FunctionComponent<IProps> = ({
   const headerRef = useRef<HTMLDivElement>(null);
   const stakingPool = useStakingPool(stakedToken);
   const stakingPoolV2 = useStakingPool(Token.ELFI, true);
+  const { type: getMainnetType } = useContext(MainnetContext);
 
   const currentPhase = useMemo(() => {
     return stakingRoundTimes.filter(
@@ -431,213 +434,522 @@ const Staking: React.FunctionComponent<IProps> = ({
                 token: stakedToken.toUpperCase(),
               })}
             </h2>
-            <p>
-              {stakedToken === Token.EL
-                ? t('staking.el.staking__content')
-                : t('staking.elfi.staking__content')}
-            </p>
-            <div className="staking__title__button">
-              <a
-                href={
-                  stakedToken === Token.ELFI
-                    ? 'https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4'
-                    : lng === LanguageType.KO
-                    ? 'https://coinmarketcap.com/ko/currencies/elysia/markets/'
-                    : 'https://coinmarketcap.com/currencies/elysia/markets/'
-                }
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                {stakedToken === Token.ELFI && (
-                  <img src={Uniswap} alt="Uniswap" />
-                )}
+            {getMainnetType === MainnetType.Ethereum && (
+              <>
                 <p>
                   {stakedToken === Token.EL
-                    ? t('staking.el.staking__content--button')
-                    : t('staking.elfi.staking__content--button')}
+                    ? t('staking.el.staking__content')
+                    : t('staking.elfi.staking__content')}
                 </p>
-              </a>
-            </div>
-          </div>
-          {stakedToken === Token.ELFI && <GovernanceGuideBox />}
-          <div className="staking__title__content__wrapper">
-            {mediaQuery === MediaQuery.PC ? (
-              <>
-                <div className="staking__title__content__token-wrapper">
-                  <img src={stakedToken === Token.EL ? el : elfi} />
-                  <h2>
-                    {t('staking.staking__token', {
-                      token: stakedToken.toUpperCase(),
-                    })}
-                  </h2>
-                </div>
-                <div className="staking__title__content">
-                  <p>
-                    {t('staking.staking__notice', { stakedToken, rewardToken })}
-                  </p>
-                  <RewardPlanButton stakingType={stakedToken} />
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="staking__title__content__token-wrapper">
-                  <div>
-                    <img src={stakedToken === Token.EL ? el : elfi} />
-                    <h2>
-                      {t('staking.staking__token', {
-                        token: stakedToken.toUpperCase(),
-                      })}
-                    </h2>
-                  </div>
-                  <RewardPlanButton stakingType={stakedToken} />
-                </div>
-                <div className="staking__title__content">
-                  <p>
-                    {t('staking.staking__notice', { stakedToken, rewardToken })}
-                  </p>
+                <div className="staking__title__button">
+                  <a
+                    href={
+                      stakedToken === Token.ELFI
+                        ? 'https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4'
+                        : lng === LanguageType.KO
+                        ? 'https://coinmarketcap.com/ko/currencies/elysia/markets/'
+                        : 'https://coinmarketcap.com/currencies/elysia/markets/'
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    {stakedToken === Token.ELFI && (
+                      <img src={Uniswap} alt="Uniswap" />
+                    )}
+                    <p>
+                      {stakedToken === Token.EL
+                        ? t('staking.el.staking__content--button')
+                        : t('staking.elfi.staking__content--button')}
+                    </p>
+                  </a>
                 </div>
               </>
             )}
           </div>
-        </section>
-        {loading ? (
-          <Skeleton width={'100%'} height={600} />
-        ) : (
-          <>
-            <section className="staking__round">
-              <div
-                className="staking__round__border"
-                style={{
-                  height: roundDataLength,
-                }}
-              />
-              <div className="staking__round__container">
-                <section className="staking__round__current-data">
-                  {current.diff(stakingRoundTimes[currentPhase - 1].endedAt) >=
-                  0 ? (
-                    <p>{t('staking.current_round_null')}</p>
-                  ) : (
-                    <>
+          {getMainnetType === MainnetType.Ethereum ? (
+            <section>
+              {stakedToken === Token.ELFI && <GovernanceGuideBox />}
+              <div className="staking__title__content__wrapper">
+                {mediaQuery === MediaQuery.PC ? (
+                  <>
+                    <div className="staking__title__content__token-wrapper">
+                      <img src={stakedToken === Token.EL ? el : elfi} />
+                      <h2>
+                        {t('staking.staking__token', {
+                          token: stakedToken.toUpperCase(),
+                        })}
+                      </h2>
+                    </div>
+                    <div className="staking__title__content">
+                      <p>
+                        {t('staking.staking__notice', {
+                          stakedToken,
+                          rewardToken,
+                        })}
+                      </p>
+                      <RewardPlanButton stakingType={stakedToken} />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="staking__title__content__token-wrapper">
                       <div>
-                        <div>
-                          <p>
-                            <Trans
-                              i18nKey="staking.staking__in_progress"
-                              values={{
-                                nth: toOrdinalNumber(
-                                  i18n.language,
-                                  currentPhase,
-                                ),
-                              }}
-                            />
-                          </p>
-                        </div>
-                        {mediaQuery === MediaQuery.PC ? (
-                          <h2>
-                            {stakingRoundTimes[
-                              currentPhase - 1
-                            ].startedAt.format('YYYY.MM.DD HH:mm:ss')}
-                            &nbsp;~&nbsp;
-                            {stakingRoundTimes[currentPhase - 1].endedAt.format(
-                              'YYYY.MM.DD HH:mm:ss',
-                            )}
-                            &nbsp;(KST)
-                          </h2>
-                        ) : (
-                          <div>
-                            <h2>
-                              {stakingRoundTimes[
-                                currentPhase - 1
-                              ].startedAt.format('YYYY.MM.DD HH:mm:ss')}
-                            </h2>
-                            <h2>&nbsp;~&nbsp;</h2>
-                            <h2>
-                              {stakingRoundTimes[
-                                currentPhase - 1
-                              ].endedAt.format('YYYY.MM.DD HH:mm:ss')}
-                              &nbsp;(KST)
-                            </h2>
-                          </div>
-                        )}
-                      </div>
-                      <div>
-                        <p>APR</p>
-                        <h2 className="percent">
-                          {current.diff(
-                            stakingRoundTimes[currentPhase - 1].startedAt,
-                          ) <= 0 ||
-                          currentRound?.apr.eq(constants.MaxUint256) ||
-                          current.diff(
-                            stakingRoundTimes[currentPhase - 1].endedAt,
-                          ) >= 0
-                            ? '-'
-                            : toPercentWithoutSign(currentRound?.apr || '0')}
+                        <img src={stakedToken === Token.EL ? el : elfi} />
+                        <h2>
+                          {t('staking.staking__token', {
+                            token: stakedToken.toUpperCase(),
+                          })}
                         </h2>
                       </div>
-                    </>
-                  )}
-                </section>
-
-                <section className="staking__round__previous__wrapper">
-                  {
-                    // eslint-disable-next-line array-callback-return
-                    roundData.map((item, index) => {
-                      if (current.diff(item.endedAt) > 0) {
-                        return (
-                          <div className="staking__round__previous" key={index}>
+                      <RewardPlanButton stakingType={stakedToken} />
+                    </div>
+                    <div className="staking__title__content">
+                      <p>
+                        {t('staking.staking__notice', {
+                          stakedToken,
+                          rewardToken,
+                        })}
+                      </p>
+                    </div>
+                  </>
+                )}
+              </div>
+              {loading ? (
+                <Skeleton width={'100%'} height={600} />
+              ) : (
+                <>
+                  <section className="staking__round">
+                    <div
+                      className="staking__round__border"
+                      style={{
+                        height: roundDataLength,
+                      }}
+                    />
+                    <div className="staking__round__container">
+                      <section className="staking__round__current-data">
+                        {current.diff(
+                          stakingRoundTimes[currentPhase - 1].endedAt,
+                        ) >= 0 ? (
+                          <p>{t('staking.current_round_null')}</p>
+                        ) : (
+                          <>
                             <div>
-                              <div className="staking__round__previous__title">
-                                <h2>
-                                  {t('staking.nth', {
-                                    nth: toOrdinalNumber(
-                                      i18n.language,
-                                      index + 1,
-                                    ),
-                                  })}
-                                </h2>
-                                {mediaQuery === MediaQuery.PC ? (
-                                  <p>
-                                    {stakingRoundTimes[index].startedAt.format(
-                                      'YYYY.MM.DD HH:mm:ss',
-                                    )}
-                                    <br />
-                                    ~&nbsp;
-                                    {stakingRoundTimes[index].endedAt.format(
-                                      'YYYY.MM.DD HH:mm:ss',
-                                    )}
-                                    &nbsp;(KST)
-                                  </p>
-                                ) : (
-                                  <div>
-                                    <p>
-                                      {stakingRoundTimes[
-                                        index
-                                      ].startedAt.format('YYYY.MM.DD HH:mm:ss')}
-                                    </p>
-                                    <p>
-                                      <br />
-                                      ~&nbsp;
-                                    </p>
-                                    <p>
-                                      {stakingRoundTimes[index].endedAt.format(
-                                        'YYYY.MM.DD HH:mm:ss',
-                                      )}
-                                      &nbsp;(KST)
-                                    </p>
-                                  </div>
-                                )}
+                              <div>
+                                <p>
+                                  <Trans
+                                    i18nKey="staking.staking__in_progress"
+                                    values={{
+                                      nth: toOrdinalNumber(
+                                        i18n.language,
+                                        currentPhase,
+                                      ),
+                                    }}
+                                  />
+                                </p>
                               </div>
-                              <div className="staking__round__previous__body">
+                              {mediaQuery === MediaQuery.PC ? (
+                                <h2>
+                                  {stakingRoundTimes[
+                                    currentPhase - 1
+                                  ].startedAt.format('YYYY.MM.DD HH:mm:ss')}
+                                  &nbsp;~&nbsp;
+                                  {stakingRoundTimes[
+                                    currentPhase - 1
+                                  ].endedAt.format('YYYY.MM.DD HH:mm:ss')}
+                                  &nbsp;(KST)
+                                </h2>
+                              ) : (
+                                <div>
+                                  <h2>
+                                    {stakingRoundTimes[
+                                      currentPhase - 1
+                                    ].startedAt.format('YYYY.MM.DD HH:mm:ss')}
+                                  </h2>
+                                  <h2>&nbsp;~&nbsp;</h2>
+                                  <h2>
+                                    {stakingRoundTimes[
+                                      currentPhase - 1
+                                    ].endedAt.format('YYYY.MM.DD HH:mm:ss')}
+                                    &nbsp;(KST)
+                                  </h2>
+                                </div>
+                              )}
+                            </div>
+                            <div>
+                              <p>APR</p>
+                              <h2 className="percent">
+                                {current.diff(
+                                  stakingRoundTimes[currentPhase - 1].startedAt,
+                                ) <= 0 ||
+                                currentRound?.apr.eq(constants.MaxUint256) ||
+                                current.diff(
+                                  stakingRoundTimes[currentPhase - 1].endedAt,
+                                ) >= 0
+                                  ? '-'
+                                  : toPercentWithoutSign(
+                                      currentRound?.apr || '0',
+                                    )}
+                              </h2>
+                            </div>
+                          </>
+                        )}
+                      </section>
+
+                      <section className="staking__round__previous__wrapper">
+                        {
+                          // eslint-disable-next-line array-callback-return
+                          roundData.map((item, index) => {
+                            if (current.diff(item.endedAt) > 0) {
+                              return (
+                                <div
+                                  className="staking__round__previous"
+                                  key={index}>
+                                  <div>
+                                    <div className="staking__round__previous__title">
+                                      <h2>
+                                        {t('staking.nth', {
+                                          nth: toOrdinalNumber(
+                                            i18n.language,
+                                            index + 1,
+                                          ),
+                                        })}
+                                      </h2>
+                                      {mediaQuery === MediaQuery.PC ? (
+                                        <p>
+                                          {stakingRoundTimes[
+                                            index
+                                          ].startedAt.format(
+                                            'YYYY.MM.DD HH:mm:ss',
+                                          )}
+                                          <br />
+                                          ~&nbsp;
+                                          {stakingRoundTimes[
+                                            index
+                                          ].endedAt.format(
+                                            'YYYY.MM.DD HH:mm:ss',
+                                          )}
+                                          &nbsp;(KST)
+                                        </p>
+                                      ) : (
+                                        <div>
+                                          <p>
+                                            {stakingRoundTimes[
+                                              index
+                                            ].startedAt.format(
+                                              'YYYY.MM.DD HH:mm:ss',
+                                            )}
+                                          </p>
+                                          <p>
+                                            <br />
+                                            ~&nbsp;
+                                          </p>
+                                          <p>
+                                            {stakingRoundTimes[
+                                              index
+                                            ].endedAt.format(
+                                              'YYYY.MM.DD HH:mm:ss',
+                                            )}
+                                            &nbsp;(KST)
+                                          </p>
+                                        </div>
+                                      )}
+                                    </div>
+                                    <div className="staking__round__previous__body">
+                                      <div>
+                                        <p>{t('staking.staking_amount')}</p>
+                                        <h2>
+                                          {`${
+                                            formatCommaSmall(
+                                              item.accountPrincipal,
+                                            ) || '-'
+                                          }`}
+                                          <span className="token-amount bold">
+                                            {stakedToken}
+                                          </span>
+                                        </h2>
+                                      </div>
+                                      <div>
+                                        <p>{t('staking.reward_amount')}</p>
+                                        <h2>
+                                          {item.accountReward.isZero() ? (
+                                            '-'
+                                          ) : (
+                                            <CountUp
+                                              start={parseFloat(
+                                                formatEther(item.accountReward),
+                                              )}
+                                              end={parseFloat(
+                                                formatEther(item.accountReward),
+                                              )}
+                                              formattingFn={(number) => {
+                                                return formatSixFracionDigit(
+                                                  number,
+                                                );
+                                              }}
+                                              decimals={6}
+                                              duration={1}
+                                            />
+                                          )}
+                                          <span className="token-amount bold">
+                                            {rewardToken}
+                                          </span>
+                                        </h2>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div className="staking__round__button__wrapper">
+                                    <div
+                                      className={`staking__round__button ${
+                                        item.accountPrincipal.isZero()
+                                          ? ' disable'
+                                          : ''
+                                      }`}
+                                      onClick={(e) => {
+                                        if (item.accountPrincipal.isZero()) {
+                                          return;
+                                        }
+
+                                        if (migratable(stakedToken, index)) {
+                                          ReactGA.modalview(
+                                            stakedToken +
+                                              ModalViewType.MigrationOrUnstakingModal,
+                                          );
+                                          setRoundModal(index);
+                                          setModalValue(item.accountPrincipal);
+                                          return setMigrationModalVisible(true);
+                                        }
+                                        if (
+                                          current.diff(
+                                            stakingRoundTimes[index].startedAt,
+                                          ) > 0
+                                        ) {
+                                          ReactGA.modalview(
+                                            stakedToken +
+                                              ModalViewType.StakingOrUnstakingModal,
+                                          );
+                                          setRoundModal(index);
+                                          setModalValue(item.accountPrincipal);
+                                          setStakingModalVisible(true);
+                                        }
+                                      }}>
+                                      <p>
+                                        {migratable(stakedToken, index)
+                                          ? t('staking.unstaking_migration')
+                                          : t('staking.staking_btn')}
+                                      </p>
+                                    </div>
+                                    <div
+                                      className={`staking__round__button ${
+                                        item.accountReward.isZero()
+                                          ? ' disable'
+                                          : ''
+                                      }`}
+                                      onClick={(e) => {
+                                        if (item.accountReward.isZero()) {
+                                          return;
+                                        }
+                                        ReactGA.modalview(
+                                          stakedToken +
+                                            ModalViewType.StakingIncentiveModal,
+                                        );
+                                        current.diff(
+                                          stakingRoundTimes[index].startedAt,
+                                        ) > 0 && setRoundModal(index);
+                                        setModalValue(item.accountReward);
+                                        setClaimStakingRewardModalVisible(true);
+                                      }}>
+                                      <p>{t('staking.claim_reward')}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            }
+                          })
+                        }
+                      </section>
+
+                      <section className="staking__round__remaining-data current">
+                        <div className="staking__round__remaining-data__title">
+                          <div>
+                            <h2>
+                              {t('staking.nth', {
+                                nth: toOrdinalNumber(i18n.language, 5),
+                              })}
+                            </h2>
+                            <p>
+                              {stakingRoundTimes[4].startedAt.format(
+                                'YYYY.MM.DD HH:mm:ss',
+                              )}
+                              <br />
+                              ~&nbsp;
+                              {stakingRoundTimes[4].endedAt.format(
+                                'YYYY.MM.DD HH:mm:ss',
+                              )}{' '}
+                              (KST)
+                            </p>
+                          </div>
+                          {mediaQuery === MediaQuery.PC && (
+                            <div>
+                              <p>APR</p>
+                              <h2 className="percent">
+                                {current.diff(stakingRoundTimes[4].startedAt) <=
+                                  0 ||
+                                roundData[4]?.apr.eq(constants.MaxUint256) ||
+                                current.diff(stakingRoundTimes[4].endedAt) >= 0
+                                  ? '-'
+                                  : toPercentWithoutSign(roundData[4].apr || 0)}
+                              </h2>
+                            </div>
+                          )}
+                        </div>
+                        <div className="staking__round__remaining-data__body">
+                          {mediaQuery === MediaQuery.PC ? (
+                            <>
+                              <div>
+                                <h2>{t('staking.staking_amount')}</h2>
+                                <div>
+                                  <h2>
+                                    {`${
+                                      current.diff(
+                                        stakingRoundTimes[4].startedAt,
+                                      ) > 0
+                                        ? formatCommaSmall(
+                                            roundData[4]?.accountPrincipal ||
+                                              '0',
+                                          )
+                                        : '-'
+                                    }`}
+                                    <span className="token-amount bold">
+                                      {stakedToken}
+                                    </span>
+                                  </h2>
+                                  <div
+                                    className={`staking__round__button ${
+                                      current.diff(
+                                        stakingRoundTimes[4].startedAt,
+                                      ) <= 0 || !account
+                                        ? ' disable'
+                                        : ''
+                                    }`}
+                                    onClick={(e) => {
+                                      if (
+                                        current.diff(
+                                          stakingRoundTimes[4].startedAt,
+                                        ) < 0 ||
+                                        current.diff(
+                                          stakingRoundTimes[4].endedAt,
+                                        ) > 0 ||
+                                        !account
+                                      ) {
+                                        return;
+                                      }
+                                      ReactGA.modalview(
+                                        stakedToken +
+                                          ModalViewType.StakingOrUnstakingModal,
+                                      );
+                                      setRoundModal(4);
+                                      setModalValue(
+                                        currentRound.accountPrincipal,
+                                      );
+                                      setStakingModalVisible(true);
+                                    }}>
+                                    <p>{t('staking.staking_btn')}</p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div>
+                                <h2>{t('staking.reward_amount')}</h2>
+                                <div>
+                                  <h2>
+                                    {expectedReward.before.isZero() ? (
+                                      '-'
+                                    ) : (
+                                      <CountUp
+                                        start={parseFloat(
+                                          formatEther(expectedReward.before),
+                                        )}
+                                        end={parseFloat(
+                                          formatEther(
+                                            expectedReward.before.isZero()
+                                              ? currentRound.accountReward
+                                              : expectedReward.value,
+                                          ),
+                                        )}
+                                        formattingFn={(number) => {
+                                          return formatSixFracionDigit(number);
+                                        }}
+                                        decimals={6}
+                                        duration={1}
+                                      />
+                                    )}
+                                    <span className="token-amount bold">
+                                      {rewardToken}
+                                    </span>
+                                  </h2>
+                                  <div
+                                    className={`staking__round__button ${
+                                      expectedReward.value.isZero()
+                                        ? ' disable'
+                                        : ''
+                                    }`}
+                                    onClick={(e) => {
+                                      if (expectedReward.value.isZero()) {
+                                        return;
+                                      }
+                                      ReactGA.modalview(
+                                        stakedToken +
+                                          ModalViewType.StakingIncentiveModal,
+                                      );
+
+                                      current.diff(
+                                        stakingRoundTimes[4].startedAt,
+                                      ) > 0 && setRoundModal(4);
+                                      setModalValue(expectedReward.value);
+                                      setClaimStakingRewardModalVisible(true);
+                                    }}>
+                                    <p>{t('staking.claim_reward')}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div>
+                                <div>
+                                  <p>APR</p>
+                                  <h2 className="percent">
+                                    {current.diff(
+                                      stakingRoundTimes[4].startedAt,
+                                    ) <= 0 ||
+                                    roundData[4]?.apr.eq(
+                                      constants.MaxUint256,
+                                    ) ||
+                                    current.diff(
+                                      stakingRoundTimes[4].endedAt,
+                                    ) >= 0
+                                      ? '-'
+                                      : toPercentWithoutSign(
+                                          roundData[4].apr || 0,
+                                        )}
+                                  </h2>
+                                </div>
                                 <div>
                                   <p>{t('staking.staking_amount')}</p>
                                   <h2>
                                     {`${
-                                      formatCommaSmall(item.accountPrincipal) ||
-                                      '-'
+                                      current.diff(
+                                        stakingRoundTimes[4].startedAt,
+                                      ) > 0
+                                        ? formatCommaSmall(
+                                            roundData[4]?.accountPrincipal ||
+                                              '0',
+                                          )
+                                        : '-'
                                     }`}
                                     <span className="token-amount bold">
                                       {stakedToken}
@@ -647,15 +959,19 @@ const Staking: React.FunctionComponent<IProps> = ({
                                 <div>
                                   <p>{t('staking.reward_amount')}</p>
                                   <h2>
-                                    {item.accountReward.isZero() ? (
+                                    {expectedReward.before.isZero() ? (
                                       '-'
                                     ) : (
                                       <CountUp
                                         start={parseFloat(
-                                          formatEther(item.accountReward),
+                                          formatEther(expectedReward.before),
                                         )}
                                         end={parseFloat(
-                                          formatEther(item.accountReward),
+                                          formatEther(
+                                            expectedReward.before.isZero()
+                                              ? currentRound.accountReward
+                                              : expectedReward.value,
+                                          ),
                                         )}
                                         formattingFn={(number) => {
                                           return formatSixFracionDigit(number);
@@ -670,442 +986,222 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   </h2>
                                 </div>
                               </div>
-                            </div>
-
-                            <div className="staking__round__button__wrapper">
-                              <div
-                                className={`staking__round__button ${
-                                  item.accountPrincipal.isZero()
-                                    ? ' disable'
-                                    : ''
-                                }`}
-                                onClick={(e) => {
-                                  if (item.accountPrincipal.isZero()) {
-                                    return;
-                                  }
-
-                                  if (migratable(stakedToken, index)) {
-                                    ReactGA.modalview(
-                                      stakedToken +
-                                        ModalViewType.MigrationOrUnstakingModal,
-                                    );
-                                    setRoundModal(index);
-                                    setModalValue(item.accountPrincipal);
-                                    return setMigrationModalVisible(true);
-                                  }
-                                  if (
+                              <div>
+                                <div
+                                  className={`staking__round__button ${
                                     current.diff(
-                                      stakingRoundTimes[index].startedAt,
-                                    ) > 0
-                                  ) {
+                                      stakingRoundTimes[4].startedAt,
+                                    ) <= 0 || !account
+                                      ? ' disable'
+                                      : ''
+                                  }`}
+                                  onClick={(e) => {
+                                    if (
+                                      current.diff(
+                                        stakingRoundTimes[4].startedAt,
+                                      ) < 0 ||
+                                      current.diff(
+                                        stakingRoundTimes[4].endedAt,
+                                      ) > 0 ||
+                                      !account
+                                    ) {
+                                      return;
+                                    }
                                     ReactGA.modalview(
                                       stakedToken +
                                         ModalViewType.StakingOrUnstakingModal,
                                     );
-                                    setRoundModal(index);
-                                    setModalValue(item.accountPrincipal);
+                                    setRoundModal(4);
+                                    setModalValue(
+                                      currentRound.accountPrincipal,
+                                    );
                                     setStakingModalVisible(true);
-                                  }
-                                }}>
-                                <p>
-                                  {migratable(stakedToken, index)
-                                    ? t('staking.unstaking_migration')
-                                    : t('staking.staking_btn')}
-                                </p>
-                              </div>
-                              <div
-                                className={`staking__round__button ${
-                                  item.accountReward.isZero() ? ' disable' : ''
-                                }`}
-                                onClick={(e) => {
-                                  if (item.accountReward.isZero()) {
-                                    return;
-                                  }
-                                  ReactGA.modalview(
-                                    stakedToken +
-                                      ModalViewType.StakingIncentiveModal,
-                                  );
-                                  current.diff(
-                                    stakingRoundTimes[index].startedAt,
-                                  ) > 0 && setRoundModal(index);
-                                  setModalValue(item.accountReward);
-                                  setClaimStakingRewardModalVisible(true);
-                                }}>
-                                <p>{t('staking.claim_reward')}</p>
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      }
-                    })
-                  }
-                </section>
-
-                <section className="staking__round__remaining-data current">
-                  <div className="staking__round__remaining-data__title">
-                    <div>
-                      <h2>
-                        {t('staking.nth', {
-                          nth: toOrdinalNumber(i18n.language, 5),
-                        })}
-                      </h2>
-                      <p>
-                        {stakingRoundTimes[4].startedAt.format(
-                          'YYYY.MM.DD HH:mm:ss',
-                        )}
-                        <br />
-                        ~&nbsp;
-                        {stakingRoundTimes[4].endedAt.format(
-                          'YYYY.MM.DD HH:mm:ss',
-                        )}{' '}
-                        (KST)
-                      </p>
-                    </div>
-                    {mediaQuery === MediaQuery.PC && (
-                      <div>
-                        <p>APR</p>
-                        <h2 className="percent">
-                          {current.diff(stakingRoundTimes[4].startedAt) <= 0 ||
-                          roundData[4]?.apr.eq(constants.MaxUint256) ||
-                          current.diff(stakingRoundTimes[4].endedAt) >= 0
-                            ? '-'
-                            : toPercentWithoutSign(roundData[4].apr || 0)}
-                        </h2>
-                      </div>
-                    )}
-                  </div>
-                  <div className="staking__round__remaining-data__body">
-                    {mediaQuery === MediaQuery.PC ? (
-                      <>
-                        <div>
-                          <h2>{t('staking.staking_amount')}</h2>
-                          <div>
-                            <h2>
-                              {`${
-                                current.diff(stakingRoundTimes[4].startedAt) > 0
-                                  ? formatCommaSmall(
-                                      roundData[4]?.accountPrincipal || '0',
-                                    )
-                                  : '-'
-                              }`}
-                              <span className="token-amount bold">
-                                {stakedToken}
-                              </span>
-                            </h2>
-                            <div
-                              className={`staking__round__button ${
-                                current.diff(stakingRoundTimes[4].startedAt) <=
-                                  0 || !account
-                                  ? ' disable'
-                                  : ''
-                              }`}
-                              onClick={(e) => {
-                                if (
-                                  current.diff(stakingRoundTimes[4].startedAt) <
-                                    0 ||
-                                  current.diff(stakingRoundTimes[4].endedAt) >
-                                    0 ||
-                                  !account
-                                ) {
-                                  return;
-                                }
-                                ReactGA.modalview(
-                                  stakedToken +
-                                    ModalViewType.StakingOrUnstakingModal,
-                                );
-                                setRoundModal(4);
-                                setModalValue(currentRound.accountPrincipal);
-                                setStakingModalVisible(true);
-                              }}>
-                              <p>{t('staking.staking_btn')}</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <h2>{t('staking.reward_amount')}</h2>
-                          <div>
-                            <h2>
-                              {expectedReward.before.isZero() ? (
-                                '-'
-                              ) : (
-                                <CountUp
-                                  start={parseFloat(
-                                    formatEther(expectedReward.before),
-                                  )}
-                                  end={parseFloat(
-                                    formatEther(
-                                      expectedReward.before.isZero()
-                                        ? currentRound.accountReward
-                                        : expectedReward.value,
-                                    ),
-                                  )}
-                                  formattingFn={(number) => {
-                                    return formatSixFracionDigit(number);
-                                  }}
-                                  decimals={6}
-                                  duration={1}
-                                />
-                              )}
-                              <span className="token-amount bold">
-                                {rewardToken}
-                              </span>
-                            </h2>
-                            <div
-                              className={`staking__round__button ${
-                                expectedReward.value.isZero() ? ' disable' : ''
-                              }`}
-                              onClick={(e) => {
-                                if (expectedReward.value.isZero()) {
-                                  return;
-                                }
-                                ReactGA.modalview(
-                                  stakedToken +
-                                    ModalViewType.StakingIncentiveModal,
-                                );
-
-                                current.diff(stakingRoundTimes[4].startedAt) >
-                                  0 && setRoundModal(4);
-                                setModalValue(expectedReward.value);
-                                setClaimStakingRewardModalVisible(true);
-                              }}>
-                              <p>{t('staking.claim_reward')}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div>
-                          <div>
-                            <p>APR</p>
-                            <h2 className="percent">
-                              {current.diff(stakingRoundTimes[4].startedAt) <=
-                                0 ||
-                              roundData[4]?.apr.eq(constants.MaxUint256) ||
-                              current.diff(stakingRoundTimes[4].endedAt) >= 0
-                                ? '-'
-                                : toPercentWithoutSign(roundData[4].apr || 0)}
-                            </h2>
-                          </div>
-                          <div>
-                            <p>{t('staking.staking_amount')}</p>
-                            <h2>
-                              {`${
-                                current.diff(stakingRoundTimes[4].startedAt) > 0
-                                  ? formatCommaSmall(
-                                      roundData[4]?.accountPrincipal || '0',
-                                    )
-                                  : '-'
-                              }`}
-                              <span className="token-amount bold">
-                                {stakedToken}
-                              </span>
-                            </h2>
-                          </div>
-                          <div>
-                            <p>{t('staking.reward_amount')}</p>
-                            <h2>
-                              {expectedReward.before.isZero() ? (
-                                '-'
-                              ) : (
-                                <CountUp
-                                  start={parseFloat(
-                                    formatEther(expectedReward.before),
-                                  )}
-                                  end={parseFloat(
-                                    formatEther(
-                                      expectedReward.before.isZero()
-                                        ? currentRound.accountReward
-                                        : expectedReward.value,
-                                    ),
-                                  )}
-                                  formattingFn={(number) => {
-                                    return formatSixFracionDigit(number);
-                                  }}
-                                  decimals={6}
-                                  duration={1}
-                                />
-                              )}
-                              <span className="token-amount bold">
-                                {rewardToken}
-                              </span>
-                            </h2>
-                          </div>
-                        </div>
-                        <div>
-                          <div
-                            className={`staking__round__button ${
-                              current.diff(stakingRoundTimes[4].startedAt) <=
-                                0 || !account
-                                ? ' disable'
-                                : ''
-                            }`}
-                            onClick={(e) => {
-                              if (
-                                current.diff(stakingRoundTimes[4].startedAt) <
-                                  0 ||
-                                current.diff(stakingRoundTimes[4].endedAt) >
-                                  0 ||
-                                !account
-                              ) {
-                                return;
-                              }
-                              ReactGA.modalview(
-                                stakedToken +
-                                  ModalViewType.StakingOrUnstakingModal,
-                              );
-                              setRoundModal(4);
-                              setModalValue(currentRound.accountPrincipal);
-                              setStakingModalVisible(true);
-                            }}>
-                            <p>{t('staking.staking_btn')}</p>
-                          </div>
-                          <div
-                            className={`staking__round__button ${
-                              expectedReward.value.isZero() ? ' disable' : ''
-                            }`}
-                            onClick={(e) => {
-                              if (expectedReward.value.isZero()) {
-                                return;
-                              }
-                              ReactGA.modalview(
-                                stakedToken +
-                                  ModalViewType.StakingIncentiveModal,
-                              );
-
-                              current.diff(stakingRoundTimes[4].startedAt) >
-                                0 && setRoundModal(4);
-                              setModalValue(expectedReward.value);
-                              setClaimStakingRewardModalVisible(true);
-                            }}>
-                            <p>{t('staking.claim_reward')}</p>
-                          </div>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </section>
-
-                <section>
-                  <section className="staking__round__remaining-data waiting">
-                    {
-                      // eslint-disable-next-line array-callback-return
-                      roundData.map((item, index) => {
-                        if (current.diff(item.startedAt) < 0) {
-                          return (
-                            <>
-                              <div className="staking__round__remaining-data__title">
-                                <div>
-                                  <h2>
-                                    {t('staking.nth', {
-                                      nth: toOrdinalNumber(
-                                        i18n.language,
-                                        index + 1,
-                                      ),
-                                    })}
-                                  </h2>
-                                  <p>
-                                    {stakingRoundTimes[index].startedAt.format(
-                                      'YYYY.MM.DD HH:mm:ss',
-                                    )}
-                                    <br />
-                                    ~&nbsp;
-                                    {stakingRoundTimes[index].endedAt.format(
-                                      'YYYY.MM.DD HH:mm:ss',
-                                    )}{' '}
-                                    (KST)
-                                  </p>
+                                  }}>
+                                  <p>{t('staking.staking_btn')}</p>
                                 </div>
-                                {mediaQuery === MediaQuery.PC && (
-                                  <div>
-                                    <h2 className="percent">-</h2>
-                                  </div>
-                                )}
-                              </div>
-                              <div className="staking__round__remaining-data__body">
-                                {mediaQuery === MediaQuery.PC ? (
-                                  <>
-                                    <div>
-                                      <h2>{t('staking.staking_amount')}</h2>
-                                      <div>
-                                        <h2>
-                                          -
-                                          <span className="token-amount bold">
-                                            {stakedToken}
-                                          </span>
-                                        </h2>
-                                        <div
-                                          className={`staking__round__button disable`}>
-                                          <p>{t('staking.staking_btn')}</p>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <h2>{t('staking.reward_amount')}</h2>
-                                      <div>
-                                        <h2>
-                                          -
-                                          <span className="token-amount bold">
-                                            {rewardToken}
-                                          </span>
-                                        </h2>
-                                        <div
-                                          className={`staking__round__button disable`}>
-                                          <p>{t('staking.claim_reward')}</p>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </>
-                                ) : (
-                                  <>
-                                    <div>
-                                      <div>
-                                        <p>APR</p>
-                                        <h2 className="percent">-</h2>
-                                      </div>
-                                      <div>
-                                        <p>{t('staking.staking_amount')}</p>
-                                        <h2>
-                                          -
-                                          <span className="token-amount bold">
-                                            {stakedToken}
-                                          </span>
-                                        </h2>
-                                      </div>
-                                      <div>
-                                        <p>{t('staking.reward_amount')}</p>
-                                        <h2>
-                                          -
-                                          <span className="token-amount bold">
-                                            {rewardToken}
-                                          </span>
-                                        </h2>
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <div
-                                        className={`staking__round__button disable`}>
-                                        <p>{t('staking.staking_btn')}</p>
-                                      </div>
-                                      <div
-                                        className={`staking__round__button disable`}>
-                                        <p>{t('staking.claim_reward')}</p>
-                                      </div>
-                                    </div>
-                                  </>
-                                )}
+                                <div
+                                  className={`staking__round__button ${
+                                    expectedReward.value.isZero()
+                                      ? ' disable'
+                                      : ''
+                                  }`}
+                                  onClick={(e) => {
+                                    if (expectedReward.value.isZero()) {
+                                      return;
+                                    }
+                                    ReactGA.modalview(
+                                      stakedToken +
+                                        ModalViewType.StakingIncentiveModal,
+                                    );
+
+                                    current.diff(
+                                      stakingRoundTimes[4].startedAt,
+                                    ) > 0 && setRoundModal(4);
+                                    setModalValue(expectedReward.value);
+                                    setClaimStakingRewardModalVisible(true);
+                                  }}>
+                                  <p>{t('staking.claim_reward')}</p>
+                                </div>
                               </div>
                             </>
-                          );
-                        }
-                      })
-                    }
+                          )}
+                        </div>
+                      </section>
+
+                      <section>
+                        <section className="staking__round__remaining-data waiting">
+                          {
+                            // eslint-disable-next-line array-callback-return
+                            roundData.map((item, index) => {
+                              if (current.diff(item.startedAt) < 0) {
+                                return (
+                                  <>
+                                    <div className="staking__round__remaining-data__title">
+                                      <div>
+                                        <h2>
+                                          {t('staking.nth', {
+                                            nth: toOrdinalNumber(
+                                              i18n.language,
+                                              index + 1,
+                                            ),
+                                          })}
+                                        </h2>
+                                        <p>
+                                          {stakingRoundTimes[
+                                            index
+                                          ].startedAt.format(
+                                            'YYYY.MM.DD HH:mm:ss',
+                                          )}
+                                          <br />
+                                          ~&nbsp;
+                                          {stakingRoundTimes[
+                                            index
+                                          ].endedAt.format(
+                                            'YYYY.MM.DD HH:mm:ss',
+                                          )}{' '}
+                                          (KST)
+                                        </p>
+                                      </div>
+                                      {mediaQuery === MediaQuery.PC && (
+                                        <div>
+                                          <h2 className="percent">-</h2>
+                                        </div>
+                                      )}
+                                    </div>
+                                    <div className="staking__round__remaining-data__body">
+                                      {mediaQuery === MediaQuery.PC ? (
+                                        <>
+                                          <div>
+                                            <h2>
+                                              {t('staking.staking_amount')}
+                                            </h2>
+                                            <div>
+                                              <h2>
+                                                -
+                                                <span className="token-amount bold">
+                                                  {stakedToken}
+                                                </span>
+                                              </h2>
+                                              <div
+                                                className={`staking__round__button disable`}>
+                                                <p>
+                                                  {t('staking.staking_btn')}
+                                                </p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div>
+                                            <h2>
+                                              {t('staking.reward_amount')}
+                                            </h2>
+                                            <div>
+                                              <h2>
+                                                -
+                                                <span className="token-amount bold">
+                                                  {rewardToken}
+                                                </span>
+                                              </h2>
+                                              <div
+                                                className={`staking__round__button disable`}>
+                                                <p>
+                                                  {t('staking.claim_reward')}
+                                                </p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <div>
+                                            <div>
+                                              <p>APR</p>
+                                              <h2 className="percent">-</h2>
+                                            </div>
+                                            <div>
+                                              <p>
+                                                {t('staking.staking_amount')}
+                                              </p>
+                                              <h2>
+                                                -
+                                                <span className="token-amount bold">
+                                                  {stakedToken}
+                                                </span>
+                                              </h2>
+                                            </div>
+                                            <div>
+                                              <p>
+                                                {t('staking.reward_amount')}
+                                              </p>
+                                              <h2>
+                                                -
+                                                <span className="token-amount bold">
+                                                  {rewardToken}
+                                                </span>
+                                              </h2>
+                                            </div>
+                                          </div>
+                                          <div>
+                                            <div
+                                              className={`staking__round__button disable`}>
+                                              <p>{t('staking.staking_btn')}</p>
+                                            </div>
+                                            <div
+                                              className={`staking__round__button disable`}>
+                                              <p>{t('staking.claim_reward')}</p>
+                                            </div>
+                                          </div>
+                                        </>
+                                      )}
+                                    </div>
+                                  </>
+                                );
+                              }
+                            })
+                          }
+                        </section>
+                      </section>
+                    </div>
                   </section>
-                </section>
-              </div>
+                </>
+              )}
             </section>
-          </>
-        )}
+          ) : (
+            <>
+              <div style={{ marginTop: 300 }} />
+              <div
+                className={`staking__coming-soon ${
+                  stakedToken === Token.EL ? 'el' : 'elfi'
+                }`}>
+                <div>
+                  <h2>COMING SOON</h2>
+                </div>
+                <div />
+                <div />
+                <div />
+              </div>
+            </>
+          )}
+        </section>
       </section>
     </>
   );

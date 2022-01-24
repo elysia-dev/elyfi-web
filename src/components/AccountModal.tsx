@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import mainnetConverter from 'src/utiles/mainnetConverter';
 import TxContext from 'src/contexts/TxContext';
@@ -9,7 +9,13 @@ import NewTab from 'src/assets/images/new_tab.png';
 import Copy from 'src/assets/images/copy.png';
 import envs from 'src/core/envs';
 import TxStatus from 'src/enums/TxStatus';
-import ModalHeader from './ModalHeader';
+import Davatar from '@davatar/react';
+import ModalHeader from 'src/components/ModalHeader';
+import { useENS } from 'src/hooks/useENS';
+import MainnetContext from 'src/contexts/MainnetContext';
+import MainnetType from 'src/enums/MainnetType';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import MediaQuery from 'src/enums/MediaQuery';
 
 const AccountModal: React.FunctionComponent<{
   visible: boolean;
@@ -18,6 +24,10 @@ const AccountModal: React.FunctionComponent<{
   const { account, deactivate, chainId } = useWeb3React();
   const { t } = useTranslation();
   const { reset, txHash, txStatus, txType } = useContext(TxContext);
+  const { type: getMainnetType } = useContext(MainnetContext);
+  const { ensName, ensLoading } = useENS(account || "");
+  const shortAddress = `${account?.slice(0, 8)}....${account?.slice(-6)}`;
+  const { value: mediaQuery } = useMediaQueryType();
 
   const AddressCopy = (data: string) => {
     if (!document.queryCommandSupported('copy')) {
@@ -31,6 +41,25 @@ const AccountModal: React.FunctionComponent<{
     document.body.removeChild(area);
     alert('Copied!!');
   };
+  
+  const addELFIToken = async (data: string[]) => {
+    try {
+      await window.ethereum?.request({
+        method: 'wallet_watchAsset',
+        params: {
+          type: 'ERC20',
+          options: {
+            address: data[3],
+            symbol: data[1],
+            decimals: data[2],
+            image: data[0],
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div
@@ -46,9 +75,19 @@ const AccountModal: React.FunctionComponent<{
             <div>
               <p>{mainnetConverter(chainId)}</p>
               <div>
-                <div />
-                <p className="spoqa__bold">
-                  {account?.slice(0, 8)}....{account?.slice(-6)}
+                <div className="navigation__davatar">
+                  {
+                    (ensLoading && account) && (
+                      <Davatar
+                        size={mediaQuery === MediaQuery.PC ? 14 : 9}
+                        address={account}
+                        generatedAvatarType="jazzicon"
+                      />
+                    )
+                  }
+                </div>
+                <p className="bold">
+                  {ensName || shortAddress}
                 </p>
               </div>
             </div>
@@ -67,23 +106,48 @@ const AccountModal: React.FunctionComponent<{
               <p>{t('transaction.copy_address')}</p>
             </div>
             <a
-              href={`${envs.etherscanURI}/address/${account}`}
+              href={`${getMainnetType === MainnetType.Ethereum ? envs.etherscanURI : envs.bscscanURI}/address/${account}`}
               target="_blank"
               className="link">
               <div>
-                <img src={NewTab} alt="On Etherscan" />
-                <p>{t('transaction.on_etherscan')}</p>
+                <img src={NewTab} alt="On View" />
+                <p>
+                {
+                  getMainnetType === MainnetType.Ethereum ?
+                  t('transaction.on_etherscan')
+                  :
+                  t('transaction.on_bscscan')
+                }
+                </p>
               </div>
             </a>
           </div>
-
+          {/* <div className="modal__account__add-tokens">
+            <h2>
+              토큰 불러오기
+            </h2>
+            <div>
+              {
+                tokenDataArray.map((data, index) => {
+                  return (
+                    <div key={index} onClick={() => addELFIToken(data)}>
+                      <img src={data[0]} />
+                      <p>
+                        {data[1]}
+                      </p>
+                    </div>
+                  )
+                })
+              }
+            </div>
+          </div> */}
           <div className="modal__account__status">
             <p className="modal__header__name spoqa__bold">
               {t('transaction.activity__title')}
             </p>
 
             <a
-              href={txHash ? `${envs.etherscanURI}/tx/${txHash}` : undefined}
+              href={txHash ? `${getMainnetType === MainnetType.Ethereum ? envs.etherscanURI : envs.bscscanURI}/tx/${txHash}` : undefined}
               target="_blank"
               className={txHash ? '' : 'disable'}>
               <div>

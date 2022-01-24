@@ -1,5 +1,4 @@
 import { FunctionComponent, useEffect, useMemo, useState } from 'react';
-import { GetAllAssetBonds_assetBondTokens } from 'src/queries/__generated__/GetAllAssetBonds';
 import { toCompactForBignumber, toPercent } from 'src/utiles/formatters';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import GoogleMapReact from 'google-map-react';
@@ -10,13 +9,14 @@ import isLng from 'src/utiles/isLng';
 import Slate from 'src/clients/Slate';
 import ReserveData from 'src/core/data/reserves';
 import { useTranslation } from 'react-i18next';
+import { IAssetBond } from 'src/contexts/SubgraphContext';
 import Marker from './Marker';
 
 const defaultLat = 37.5172;
 const defaultLng = 127.0473;
 
 const AssetItem: FunctionComponent<{
-  abToken: GetAllAssetBonds_assetBondTokens;
+  abToken: IAssetBond;
   onClick: () => void;
   style?: React.CSSProperties;
 }> = ({ abToken, onClick, style }) => {

@@ -18,6 +18,11 @@ import LanguageType from 'src/enums/LanguageType';
 import reactGA from 'react-ga';
 import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
+
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import MediaQuery from 'src/enums/MediaQuery';
+import MainnetSwitch from 'src/components/MainnetSwitch';
+
 import ErrorModal from './ErrorModal';
 
 const InitialNavigation: INavigation[] = [
@@ -44,11 +49,16 @@ const Navigation: React.FunctionComponent<{
   const { t } = useTranslation();
   const { txStatus, error } = useContext(TxContext);
   const { lng } = useParams<{ lng: string }>();
+  const { value: mediaQuery } = useMediaQueryType();
 
   const location = useLocation();
 
   const [scrolling, setScrolling] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
+
+
+  const [mainNetwork, setMainNetwork] = useState(false);
+
 
   const getLNBData = navigationLink.filter(
     (nav) => nav.type === NavigationType.LNB,
@@ -154,7 +164,9 @@ const Navigation: React.FunctionComponent<{
               style={{
                 marginRight: 8,
               }}>
-              {t(_data.i18nKeyword).toUpperCase()}
+              <p style={{ cursor: "pointer" }}>
+                {t(_data.i18nKeyword).toUpperCase()}
+              </p>
             </div>
             {!['navigation.dashboard', 'navigation.governance'].includes(
               _data.i18nKeyword.toLowerCase(),
@@ -355,6 +367,7 @@ const Navigation: React.FunctionComponent<{
     );
   };
 
+
   useEffect(() => {
     function handleClickOutside(e: MouseEvent): void {
       if (
@@ -362,6 +375,7 @@ const Navigation: React.FunctionComponent<{
         !navigationRef.current.contains(e.target as Node)
       ) {
         initialNavigationState();
+        setMainNetwork(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -381,6 +395,7 @@ const Navigation: React.FunctionComponent<{
         style={{
           backgroundColor: scrollTop > 125 ? '#FFFFFF' : '#FFFFFF',
           height: hamburgerBar ? '100%' : 'auto',
+          overflowY: mediaQuery === MediaQuery.PC ? "initial" : !mainNetwork ? "scroll" : hamburgerBar ? "scroll" : "initial"
         }}
         ref={navigationRef}
         onMouseLeave={() => {
@@ -407,6 +422,12 @@ const Navigation: React.FunctionComponent<{
               </Link>
             </div>
             {setNavigationLink()}
+            {mediaQuery === MediaQuery.Mobile && (
+              <MainnetSwitch 
+                mainNetwork={mainNetwork}
+                setMainNetwork={setMainNetwork}
+              />
+            )}
             <div
               className={`navigation__hamburger__button ${
                 hamburgerBar && 'active'
@@ -419,7 +440,15 @@ const Navigation: React.FunctionComponent<{
               <i />
             </div>
           </div>
-          {setMediaQueryMetamask('pc')}
+          <div className="navigation__mainnet">
+            {mediaQuery === MediaQuery.PC && (
+              <MainnetSwitch
+                mainNetwork={mainNetwork}
+                setMainNetwork={setMainNetwork}
+              />
+            )}
+            {setMediaQueryMetamask('pc')}
+          </div>
         </div>
         {hamburgerBar && mobileHamburgerBar()}
       </nav>

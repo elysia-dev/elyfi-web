@@ -403,7 +403,6 @@ class DrawWave {
       headerY * 1.6,
     );
     if (isBackgroundColor) {
-      console.log(browserHeghit);
       this.ctx.lineTo(this.browserWidth, browserHeghit - 150);
       this.ctx.bezierCurveTo(
         this.browserWidth / 1.2,
@@ -526,6 +525,7 @@ class DrawWave {
 
       this.ctx.stroke();
     }
+
     this.ctx.strokeStyle = token
       ? token === Token.EL
         ? '#3679B5'
