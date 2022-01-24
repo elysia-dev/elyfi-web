@@ -12,10 +12,10 @@ const AssetList: React.FC<{
 
   return (
     <div className="component__loan-list__container">
-      {assetBondTokens.map((abToken, index) => {
-        const tokenId = parseTokenId(abToken.id)
-        if (LoanProduct[tokenId.productNumber] === "Others") return;
-        
+      {assetBondTokens.filter((data) => {
+        const tokenId = parseTokenId(data.id)
+        return LoanProduct[tokenId.productNumber] !== "Others"
+      }).map((abToken, index) => {
         return (
           <AssetItem
             key={index}
