@@ -16,7 +16,7 @@ const MainnetProvider: React.FC = (props) => {
   const [loading, setLoading] = useState(true)
 
   const [currentMainnet, setMainnet] = useState<IMainnetContextTypes>({
-    type: MainnetType.Ethereum,
+    type: MainnetType.BSC,
     unsupportedChainid: true,
     active: false,
   })
