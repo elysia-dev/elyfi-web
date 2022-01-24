@@ -485,7 +485,7 @@ const Governance = () => {
         </section>
         <section className="governance__loan governance__header">
           {
-            (assetBondTokens.length === 0 || getMainnetType === MainnetType.BSC) ? (
+            (assetBondTokens.length === 0) ? (
               <>
                 <div>
                   <div>
