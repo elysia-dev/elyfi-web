@@ -18,6 +18,8 @@ import PriceContext from 'src/contexts/PriceContext';
 import { useWeb3React } from '@web3-react/core';
 import MainnetContext from 'src/contexts/MainnetContext';
 import ReserveToken from 'src/core/types/ReserveToken';
+import isSupportedToken from 'src/core/utils/isSupportedReserve';
+import { formatEther } from '@ethersproject/units';
 import isSupportedReserveByChainId from 'src/core/utils/isSupportedReserveByChainId';
 import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 
@@ -228,7 +230,6 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
         balances.map((balance) => {
           const reserve = data.reserves.find((r) => r.id === balance.id);
           if (!reserve) return balance;
-
           return {
             ...balance,
             expectedIncentiveBefore: balance.expectedIncentiveAfter,
