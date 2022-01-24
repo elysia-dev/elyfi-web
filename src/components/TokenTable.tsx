@@ -285,29 +285,30 @@ const TokenTable: React.FC<Props> = ({
                 </Link>
               </div>
               {
-                (assetBondTokensBackedByEstate.length === 0 || getMainnetType === MainnetType.BSC) && (
+                (assetBondTokensBackedByEstate.length === 0) ? (
                   <div className="loan__list--null" style={{ marginTop: 30 }}>
                     <p>
                       {t("loan.loan_list--null")}
                     </p>
                   </div>
+                ) : (
+                  <div>
+                    <AssetList
+                      assetBondTokens={
+                        // Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다.
+                        [...(assetBondTokensBackedByEstate || [])]
+                          .sort((a, b) => {
+                            return b.loanStartTimestamp! - a.loanStartTimestamp! >=
+                              0
+                              ? 1
+                              : -1;
+                          })
+                          .slice(0, mediaQuery === MediaQuery.PC ? 3 : 2) || []
+                      }
+                    />
+                  </div>
                 )
               }
-              <div>
-                <AssetList
-                  assetBondTokens={
-                    // Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다.
-                    [...(assetBondTokensBackedByEstate || [])]
-                      .sort((a, b) => {
-                        return b.loanStartTimestamp! - a.loanStartTimestamp! >=
-                          0
-                          ? 1
-                          : -1;
-                      })
-                      .slice(0, mediaQuery === MediaQuery.PC ? 3 : 2) || []
-                  }
-                />
-              </div>
             </div>
           </div>
         </div>

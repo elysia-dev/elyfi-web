@@ -19,7 +19,6 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
   const { t } = useTranslation();
   // true -> byLatest, false -> byLoanAmount
   const [sortMode, setSortMode] = useState(false);
-  const { type: getMainnetType } = useContext(MainnetContext)
   const totalBorrow = parseFloat(
     utils.formatEther(
       assetBondTokens.reduce(
@@ -44,7 +43,7 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
           <p>{t('loan.loan__content')}</p>
         </div>
         {
-          (list?.length === 0 || getMainnetType === MainnetType.BSC) ? (
+          (list?.length === 0) ? (
             <div className="loan__list--null">
               <p>
                 {t("loan.loan_list--null")}
@@ -52,7 +51,6 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
             </div>
           ) : (
             <>
-
               {/* <div className="text__title" >
                 <div
                   className="loan__select-box"
