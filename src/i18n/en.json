@@ -213,7 +213,7 @@
       "claim_before_withraw_guide": "Please claim your rewards first to use your deposit/withdrawal! The reward tokens you will receive are ELFI reward tokens accumulated from <strong>2021.7.15 ~ 2022.1.11 KST!</strong>",
       "claim_question": "Do you want to claim rewards?",
       
-      "target_running_strategy": "Target running strategy",
+      "target_running_strategy": "Target running strategy (Target deposit APY: 10%)",
       "real_estate_mortgage": "Real estate mortgage",
       "auto_invest_defi__title": "Auto investment to DeFi",
       "auto_invest_defi": [
