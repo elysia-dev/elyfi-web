@@ -33,15 +33,17 @@ const Governance = () => {
   const [onChainData, setOnChainData] = useState<IProposals[]>([]);
   const [offChainNapData, setOffChainNapData] = useState<INapData[]>([]);
   const { getAssetBondsByNetwork } = useContext(SubgraphContext);
-  const { type: mainnetType } = useContext(MainnetContext)
-  const assetBondTokens = getAssetBondsByNetwork(mainnetType)
+  const { type: mainnetType } = useContext(MainnetContext);
+  const assetBondTokens = getAssetBondsByNetwork(mainnetType);
   const { t } = useTranslation();
   const History = useHistory();
+  const { value: mediaQuery } = useMediaQueryType();
   const { lng } = useParams<{ lng: string }>();
+  const { type: getMainnetType } = useContext(MainnetContext);
   const assetBondTokensBackedByEstate = assetBondTokens.filter((product) => {
     const parsedId = parseTokenId(product.id);
-    return CollateralCategory.Others !== parsedId.collateralCategory
-  })
+    return CollateralCategory.Others !== parsedId.collateralCategory;
+  });
 
   const draw = () => {
     const dpr = window.devicePixelRatio;
@@ -53,15 +55,27 @@ const Governance = () => {
     canvas.width = document.body.clientWidth * dpr;
     canvas.height = document.body.clientHeight * dpr;
     const browserWidth = canvas.width / dpr + 40;
+    const browserHeight = canvas.height / dpr;
     const ctx = canvas.getContext('2d');
 
     if (!ctx) return;
     ctx.scale(dpr, dpr);
-
-    new DrawWave(ctx, browserWidth).drawOnPages(headerY, TokenColors.ELFI);
+    if (mediaQuery === MediaQuery.Mobile) {
+      new DrawWave(ctx, browserWidth).drawMobileOnPages(
+        headerY,
+        TokenColors.ELFI,
+        browserHeight,
+        true,
+      );
+      return;
+    }
+    new DrawWave(ctx, browserWidth).drawOnPages(
+      headerY,
+      TokenColors.ELFI,
+      browserHeight,
+      true,
+    );
   };
-
-  const { value: mediaQuery } = useMediaQueryType();
 
   const viewMoreHandler = useCallback(() => {
     setPageNumber((prev) => prev + 1);
@@ -125,7 +139,10 @@ const Governance = () => {
                 link: `https://forum.elyfi.world/t/${getNATData.data.slug}`,
                 endedDate:
                   getNATData.data.post_stream.posts[0].polls[0].close || '',
-                network: (!!getHTMLStringData.match(regexNetwork)) === true ? MainnetType.BSC : MainnetType.Ethereum
+                network:
+                  !!getHTMLStringData.match(regexNetwork) === true
+                    ? MainnetType.BSC
+                    : MainnetType.Ethereum,
               } as INapData,
             ]);
           });
@@ -162,12 +179,14 @@ const Governance = () => {
 
   useEffect(() => {
     draw();
+    window.addEventListener('scroll', () => draw());
     window.addEventListener('resize', () => draw());
 
     return () => {
+      window.removeEventListener('scroll', () => draw());
       window.removeEventListener('resize', () => draw());
     };
-  }, []);
+  }, [document.body.clientHeight]);
 
   const offChainContainer = (data: INapData) => {
     return (
@@ -177,8 +196,8 @@ const Governance = () => {
           reactGA.event({
             category: PageEventType.MoveToExternalPage,
             action: ButtonEventType.OffChainVoteButtonOnGovernance,
-          })
-          window.open(data.link)
+          });
+          window.open(data.link);
         }}>
         <div>
           <img src={`https://${data.images}`} />
@@ -214,14 +233,14 @@ const Governance = () => {
     return (
       <div
         className="governance__onchain-vote__assets governance__asset"
-        onClick={() =>{
+        onClick={() => {
           reactGA.event({
             category: PageEventType.MoveToExternalPage,
             action: ButtonEventType.OnChainVoteButtonOnGovernance,
-          })
+          });
           window.open(
             `https://www.withtally.com/governance/elyfi/proposal/${data.id}`,
-          )
+          );
         }}>
         <div>
           <img
@@ -347,9 +366,11 @@ const Governance = () => {
             <div>
               <h3>
                 {t('governance.data_verification', {
-                  count: offChainNapData.filter((data) => data.network === mainnetType).filter((data) => {
-                    return moment().isBefore(data.endedDate);
-                  }).length,
+                  count: offChainNapData
+                    .filter((data) => data.network === mainnetType)
+                    .filter((data) => {
+                      return moment().isBefore(data.endedDate);
+                    }).length,
                 })}
               </h3>
               <div>
@@ -373,9 +394,10 @@ const Governance = () => {
               <div>
                 <h3>
                   {t('governance.data_verification', {
-                    count: offChainNapData.filter((data) => data.network === mainnetType).filter((data) =>
-                      moment().isBefore(data.endedDate),
-                    ).length,
+                    count: offChainNapData
+                      .filter((data) => data.network === mainnetType)
+                      .filter((data) => moment().isBefore(data.endedDate))
+                      .length,
                   })}
                 </h3>
                 <a
@@ -397,16 +419,19 @@ const Governance = () => {
 
           {offChainLoading ? (
             <Skeleton width={'100%'} height={600} />
-          ) : offChainNapData.filter((data) => data.network === mainnetType).filter((data) =>
-              moment().isBefore(data.endedDate),
-            ).length > 0 ? (
+          ) : offChainNapData
+              .filter((data) => data.network === mainnetType)
+              .filter((data) => moment().isBefore(data.endedDate)).length >
+            0 ? (
             <div className="governance__grid">
-              {offChainNapData.filter((data) => data.network === mainnetType).map((data, index) => {
-                if (data.endedDate && moment().isBefore(data.endedDate)) {
-                  return offChainContainer(data);
-                }
-                return null;
-              })}
+              {offChainNapData
+                .filter((data) => data.network === mainnetType)
+                .map((data, index) => {
+                  if (data.endedDate && moment().isBefore(data.endedDate)) {
+                    return offChainContainer(data);
+                  }
+                  return null;
+                })}
             </div>
           ) : (
             <div className="governance__validation zero">
@@ -422,22 +447,20 @@ const Governance = () => {
               </h3>
               <div>
                 <p>{t('governance.on_chain_voting__content')}</p>
-                {
-                  mainnetType === MainnetType.Ethereum && (
-                    <a
-                      href="https://www.withtally.com/governance/elyfi"
-                      target="_blank"
-                      rel="noopener noreferer">
-                      <div
-                        className="deposit__table__body__amount__button"
-                        style={{
-                          width: 230,
-                        }}>
-                        <p>{t('governance.onChain_tally_button')}</p>
-                      </div>
-                    </a>
-                  )
-                }
+                {mainnetType === MainnetType.Ethereum && (
+                  <a
+                    href="https://www.withtally.com/governance/elyfi"
+                    target="_blank"
+                    rel="noopener noreferer">
+                    <div
+                      className="deposit__table__body__amount__button"
+                      style={{
+                        width: 230,
+                      }}>
+                      <p>{t('governance.onChain_tally_button')}</p>
+                    </div>
+                  </a>
+                )}
               </div>
             </div>
           ) : (
@@ -448,107 +471,100 @@ const Governance = () => {
                     count: onChainData.length,
                   })}
                 </h3>
-                {
-                  mainnetType === MainnetType.Ethereum && (
-                    <a
-                      href="https://www.withtally.com/governance/elyfi"
-                      target="_blank"
-                      rel="noopener noreferer">
-                      <div
-                        className="deposit__table__body__amount__button"
-                        style={{
-                          width: 150,
-                        }}>
-                        <p>{t('governance.onChain_tally_button')}</p>
-                      </div>
-                    </a>
-                  )
-                }
+                {mainnetType === MainnetType.Ethereum && (
+                  <a
+                    href="https://www.withtally.com/governance/elyfi"
+                    target="_blank"
+                    rel="noopener noreferer">
+                    <div
+                      className="deposit__table__body__amount__button"
+                      style={{
+                        width: 150,
+                      }}>
+                      <p>{t('governance.onChain_tally_button')}</p>
+                    </div>
+                  </a>
+                )}
               </div>
               <p>{t('governance.data_verification__content')}</p>
             </div>
           )}
-          {
-            mainnetType === MainnetType.Ethereum ? (
-              onChainLoading ? (
-                <Skeleton width={'100%'} height={600} />
-              ) : onChainData.length > 0 ? (
-                <div className="governance__grid">
-                  {onChainData.map((data, index) => {
-                    return onChainConatainer(data);
-                  })}
-                </div>
-              ) : (
-                <div className="governance__onchain-vote zero">
-                  <p>{t('governance.onchain_list_zero')}</p>
-                </div>
-              )
+          {mainnetType === MainnetType.Ethereum ? (
+            onChainLoading ? (
+              <Skeleton width={'100%'} height={600} />
+            ) : onChainData.length > 0 ? (
+              <div className="governance__grid">
+                {onChainData.map((data, index) => {
+                  return onChainConatainer(data);
+                })}
+              </div>
             ) : (
               <div className="governance__onchain-vote zero">
-                <h2>COMING SOON!</h2>
+                <p>{t('governance.onchain_list_zero')}</p>
               </div>
             )
-          }
+          ) : (
+            <div className="governance__onchain-vote zero">
+              <h2>COMING SOON!</h2>
+            </div>
+          )}
         </section>
         <section className="governance__loan governance__header">
-          {
-            (assetBondTokensBackedByEstate.length === 0) ? (
-              <>
+          {assetBondTokensBackedByEstate.length === 0 ? (
+            <>
+              <div>
                 <div>
-                  <div>
-                    <h3>
-                      {t('governance.loan_list', {
-                        count: 0,
-                      })}
-                    </h3>
-                  </div>
-                  <p>{t('governance.loan_list__content')}</p>
+                  <h3>
+                    {t('governance.loan_list', {
+                      count: 0,
+                    })}
+                  </h3>
                 </div>
-                <div className="loan__list--null">
-                  <p>
-                    {t("loan.loan_list--null")}
-                  </p>
-                </div>
-              </>
-            ) : (
-              <>
+                <p>{t('governance.loan_list__content')}</p>
+              </div>
+              <div className="loan__list--null">
+                <p>{t('loan.loan_list--null')}</p>
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
                 <div>
-                  <div>
-                    <h3>
-                      {t('governance.loan_list', {
-                        count: assetBondTokensBackedByEstate.length,
-                      })}
-                    </h3>
-                  </div>
-                  <p>{t('governance.loan_list__content')}</p>
+                  <h3>
+                    {t('governance.loan_list', {
+                      count: assetBondTokensBackedByEstate.length,
+                    })}
+                  </h3>
                 </div>
-                <>
-                  <AssetList
-                    assetBondTokens={
-                      /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
-                      [...(assetBondTokensBackedByEstate as IAssetBond[] || [])]
-                        .slice(0, pageNumber * 9)
-                        .sort((a, b) => {
-                          return b.loanStartTimestamp! - a.loanStartTimestamp! >= 0
-                            ? 1
-                            : -1;
-                        }) || []
-                    }
-                  />
-                  {assetBondTokensBackedByEstate.length &&
-                    assetBondTokensBackedByEstate.length >= pageNumber * 9 && (
-                      <div>
-                        <button
-                          className="portfolio__view-button"
-                          onClick={() => viewMoreHandler()}>
-                          {t('loan.view-more')}
-                        </button>
-                      </div>
-                    )}
-                </>
+                <p>{t('governance.loan_list__content')}</p>
+              </div>
+              <>
+                <AssetList
+                  assetBondTokens={
+                    /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
+                    [...((assetBondTokensBackedByEstate as IAssetBond[]) || [])]
+                      .slice(0, pageNumber * 9)
+                      .sort((a, b) => {
+                        return b.loanStartTimestamp! - a.loanStartTimestamp! >=
+                          0
+                          ? 1
+                          : -1;
+                      }) || []
+                  }
+                />
+                {assetBondTokensBackedByEstate.length &&
+                  assetBondTokensBackedByEstate.length >= pageNumber * 9 && (
+                    <div>
+                      <button
+                        className="portfolio__view-button"
+                        onClick={() => viewMoreHandler()}>
+                        {t('loan.view-more')}
+                      </button>
+                    </div>
+                  )}
               </>
-            )
-          }
+            </>
+          )}
         </section>
       </div>
     </>

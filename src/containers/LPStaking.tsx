@@ -118,8 +118,7 @@ function LPStaking(): JSX.Element {
 
   const { value: mediaQuery } = useMediaQueryType();
 
-
-  const { type: getMainnetType } = useContext(MainnetContext)
+  const { type: getMainnetType } = useContext(MainnetContext);
 
   const getRewardToRecive = useCallback(async () => {
     try {
@@ -259,14 +258,28 @@ function LPStaking(): JSX.Element {
     canvas.width = document.body.clientWidth * dpr;
     canvas.height = document.body.clientHeight * dpr;
     const browserWidth = canvas.width / dpr + 40;
+    const browserHeight = canvas.height / dpr;
     const ctx = canvas.getContext('2d');
 
     if (!ctx) return;
     ctx.scale(dpr, dpr);
 
+    if (mediaQuery === MediaQuery.Mobile) {
+      new DrawWave(ctx, browserWidth).drawMobileOnPages(
+        headerY,
+        TokenColors.ELFI,
+        browserHeight,
+        true,
+        'LP',
+      );
+      return;
+    }
+
     new DrawWave(ctx, browserWidth).drawOnPages(
       headerY,
       TokenColors.ELFI,
+      browserHeight,
+      true,
       'LP',
     );
   };
@@ -351,12 +364,14 @@ function LPStaking(): JSX.Element {
 
   useEffect(() => {
     draw();
+    window.addEventListener('scroll', () => draw());
     window.addEventListener('resize', () => draw());
 
     return () => {
+      window.removeEventListener('scroll', () => draw());
       window.removeEventListener('resize', () => draw());
     };
-  }, []);
+  }, [document.body.clientHeight]);
 
   return (
     <>
@@ -405,118 +420,122 @@ function LPStaking(): JSX.Element {
       <section className="staking">
         <div ref={headerRef} className="staking__lp__header">
           <h2>{t('lpstaking.lp_token_staking')}</h2>
-          {
-            getMainnetType === MainnetType.Ethereum && (
-              <>
-                <p>{t('lpstaking.lp_token_staking__content')}</p>
-                <div>
-                  {Array(3)
-                    .fill(0)
-                    .map((_x, index) => {
-                      return (
-                        <div
-                          className={index + 1 === round ? 'active' : ''}
-                          onClick={() => setRound(index + 1)}>
-                          <p>
-                            {t(
-                              mediaQuery === MediaQuery.PC
-                                ? 'staking.staking__nth'
-                                : 'staking.nth--short',
-                              {
-                                nth: toOrdinalNumber(i18n.language, index + 1),
-                              },
-                            )}
-                          </p>
-                        </div>
-                      );
-                    })}
-                </div>
-              </>
-            )
-          }
-        </div>
-        {
-          getMainnetType === MainnetType.Ethereum ? (
-            <div>
-              <RewardPlanButton stakingType={'LP'} />
-              <section className="staking__lp__detail-box">
-                <DetailBox
-                  tokens={{
-                    token0: Token.ELFI,
-                    token1: Token.ETH,
-                  }}
-                  totalLiquidity={totalLiquidity.ethElfiPoolTotalLiquidity}
-                  totalStakedLiquidity={totalStakedLiquidity(envs.ethElfiPoolAddress)}
-                  apr={totalLiquidity.ethElfiliquidityForApr}
-                  isLoading={isLoading}
-                  setModalAndSetStakeToken={() => {
-                    setStakingVisibleModal(true);
-                    ReactGA.modalview(Token.ETH + ModalViewType.StakingOrUnstakingModal);
-                    setStakeToken(Token.ETH);
-                  }}
-                  round={round}
-                />
-                <DetailBox
-                  tokens={{
-                    token0: Token.ELFI,
-                    token1: Token.DAI,
-                  }}
-                  totalLiquidity={totalLiquidity.daiElfiPoolTotalLiquidity}
-                  totalStakedLiquidity={totalStakedLiquidity(envs.daiElfiPoolAddress)}
-                  apr={totalLiquidity.daiElfiliquidityForApr}
-                  isLoading={isLoading}
-                  setModalAndSetStakeToken={() => {
-                    setStakingVisibleModal(true);
-                    ReactGA.modalview(Token.DAI + ModalViewType.StakingOrUnstakingModal);
-                    setStakeToken(Token.DAI);
-                  }}
-                  round={round}
-                />
-              </section>
-              <section className="staking__lp__staked">
-                <StakedLp
-                  stakedPositions={stakedPositions
-                    .filter((position) => position.staked)
-                    .filter((stakedPosition) => filterPosition(stakedPosition))}
-                  setUnstakeTokenId={setUnstakeTokenId}
-                  ethElfiStakedLiquidity={totalStakedLiquidity(
-                    envs.ethElfiPoolAddress,
-                  )}
-                  daiElfiStakedLiquidity={totalStakedLiquidity(
-                    envs.daiElfiPoolAddress,
-                  )}
-                  expectedReward={expectedReward}
-                  totalExpectedReward={totalExpectedReward}
-                  isError={isError}
-                  round={round}
-                  isLoading={isLoading}
-                />
-              </section>
-
-              <section className="staking__lp__reward">
-                <Reward
-                  rewardToReceive={rewardToReceive}
-                  onHandler={() => {
-                    setRewardVisibleModal(true)
-                    ReactGA.modalview(ModalViewType.LPStakingIncentiveModal)
-                  }}
-                />
-              </section>
-            </div>
-          ) : (
+          {getMainnetType === MainnetType.Ethereum && (
             <>
-              <div style={{ marginTop: 300 }} />
-              <div className="staking__coming-soon lp">
-                <div>
-                  <h2>COMING SOON</h2>
-                </div>
-                <div />
-                <div />
-                <div />
+              <p>{t('lpstaking.lp_token_staking__content')}</p>
+              <div>
+                {Array(3)
+                  .fill(0)
+                  .map((_x, index) => {
+                    return (
+                      <div
+                        className={index + 1 === round ? 'active' : ''}
+                        onClick={() => setRound(index + 1)}>
+                        <p>
+                          {t(
+                            mediaQuery === MediaQuery.PC
+                              ? 'staking.staking__nth'
+                              : 'staking.nth--short',
+                            {
+                              nth: toOrdinalNumber(i18n.language, index + 1),
+                            },
+                          )}
+                        </p>
+                      </div>
+                    );
+                  })}
               </div>
             </>
-          )
-        }
+          )}
+        </div>
+        {getMainnetType === MainnetType.Ethereum ? (
+          <div>
+            <RewardPlanButton stakingType={'LP'} />
+            <section className="staking__lp__detail-box">
+              <DetailBox
+                tokens={{
+                  token0: Token.ELFI,
+                  token1: Token.ETH,
+                }}
+                totalLiquidity={totalLiquidity.ethElfiPoolTotalLiquidity}
+                totalStakedLiquidity={totalStakedLiquidity(
+                  envs.ethElfiPoolAddress,
+                )}
+                apr={totalLiquidity.ethElfiliquidityForApr}
+                isLoading={isLoading}
+                setModalAndSetStakeToken={() => {
+                  setStakingVisibleModal(true);
+                  ReactGA.modalview(
+                    Token.ETH + ModalViewType.StakingOrUnstakingModal,
+                  );
+                  setStakeToken(Token.ETH);
+                }}
+                round={round}
+              />
+              <DetailBox
+                tokens={{
+                  token0: Token.ELFI,
+                  token1: Token.DAI,
+                }}
+                totalLiquidity={totalLiquidity.daiElfiPoolTotalLiquidity}
+                totalStakedLiquidity={totalStakedLiquidity(
+                  envs.daiElfiPoolAddress,
+                )}
+                apr={totalLiquidity.daiElfiliquidityForApr}
+                isLoading={isLoading}
+                setModalAndSetStakeToken={() => {
+                  setStakingVisibleModal(true);
+                  ReactGA.modalview(
+                    Token.DAI + ModalViewType.StakingOrUnstakingModal,
+                  );
+                  setStakeToken(Token.DAI);
+                }}
+                round={round}
+              />
+            </section>
+            <section className="staking__lp__staked">
+              <StakedLp
+                stakedPositions={stakedPositions
+                  .filter((position) => position.staked)
+                  .filter((stakedPosition) => filterPosition(stakedPosition))}
+                setUnstakeTokenId={setUnstakeTokenId}
+                ethElfiStakedLiquidity={totalStakedLiquidity(
+                  envs.ethElfiPoolAddress,
+                )}
+                daiElfiStakedLiquidity={totalStakedLiquidity(
+                  envs.daiElfiPoolAddress,
+                )}
+                expectedReward={expectedReward}
+                totalExpectedReward={totalExpectedReward}
+                isError={isError}
+                round={round}
+                isLoading={isLoading}
+              />
+            </section>
+
+            <section className="staking__lp__reward">
+              <Reward
+                rewardToReceive={rewardToReceive}
+                onHandler={() => {
+                  setRewardVisibleModal(true);
+                  ReactGA.modalview(ModalViewType.LPStakingIncentiveModal);
+                }}
+              />
+            </section>
+          </div>
+        ) : (
+          <>
+            <div style={{ marginTop: 300 }} />
+            <div className="staking__coming-soon lp">
+              <div>
+                <h2>COMING SOON</h2>
+              </div>
+              <div />
+              <div />
+              <div />
+            </div>
+          </>
+        )}
       </section>
     </>
   );

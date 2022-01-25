@@ -21,7 +21,7 @@ import {
   daiMoneyPoolTime,
   moneyPoolStartedAt,
   tetherMoneyPoolTime,
-  busdMoneyPoolTime
+  busdMoneyPoolTime,
 } from 'src/core/data/moneypoolTimes';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import {
@@ -57,6 +57,8 @@ import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import { lpRoundDate, lpUnixTimestamp } from 'src/core/data/lpStakingTime';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
+import MediaQuery from 'src/enums/MediaQuery';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import SubgraphContext from 'src/contexts/SubgraphContext';
 import isSupportedReserve from 'src/core/utils/isSupportedReserve';
 import MainnetType from 'src/enums/MainnetType';
@@ -74,6 +76,7 @@ const RewardPlan: FunctionComponent = () => {
   const { data: getSubgraphData } = useContext(SubgraphContext);
   const { type: getMainnetType } = useContext(MainnetContext);
   const current = moment();
+  const { value: mediaQuery } = useMediaQueryType();
   const currentPhase = useMemo(() => {
     return stakingRoundTimes.filter(
       (round) => current.diff(round.startedAt) >= 0,
@@ -177,7 +180,7 @@ const RewardPlan: FunctionComponent = () => {
     BUSD: {
       startedMoneyPool: busdMoneyPoolTime[0].startedAt.format('yyyy.MM.DD'),
       endedMoneyPool: busdMoneyPoolTime[0].endedAt.format('yyyy.MM.DD'),
-    }
+    },
   };
 
   const beforeMintedMoneypool = {
@@ -187,14 +190,14 @@ const RewardPlan: FunctionComponent = () => {
     },
     BUSD: {
       beforeMintedToken: amountData.beforeMintedByBuscMoneypool,
-    }
+    },
   };
   const mintedMoneypool = {
     DAI: { mintedToken: amountData.mintedByDaiMoneypool },
     USDT: { mintedToken: amountData.mintedByTetherMoneypool },
     BUSD: {
-      mintedToken: amountData.mintedByBusdMoneypool
-    }
+      mintedToken: amountData.mintedByBusdMoneypool,
+    },
   };
 
   const beforeTotalMintedByElStakingPool = useMemo(() => {
@@ -220,14 +223,28 @@ const RewardPlan: FunctionComponent = () => {
     canvas.width = document.body.clientWidth * dpr;
     canvas.height = document.body.clientHeight * dpr;
     const browserWidth = canvas.width / dpr + 40;
+    const browserHeight = canvas.height / dpr;
     const ctx = canvas.getContext('2d');
 
     if (!ctx) return;
     ctx.scale(dpr, dpr);
 
+    if (mediaQuery === MediaQuery.Mobile) {
+      new DrawWave(ctx, browserWidth).drawMobileOnPages(
+        headerY,
+        TokenColors.ELFI,
+        browserHeight,
+        false,
+        stakingType === 'LP' ? stakingType : undefined,
+      );
+      return;
+    }
+
     new DrawWave(ctx, browserWidth).drawOnPages(
       headerY,
       stakingType === Token.EL ? TokenColors.EL : TokenColors.ELFI,
+      browserHeight,
+      false,
       stakingType === 'LP' ? stakingType : undefined,
     );
   };
@@ -483,24 +500,37 @@ const RewardPlan: FunctionComponent = () => {
               </div>
             </div>
             <section className="reward__container">
-              {getSubgraphData.reserves.filter((data) => isSupportedReserve(getTokenNameByAddress(data.id), getMainnetType)).map((reserve, index) => {
-                return (
-                  <TokenDeposit
-                    key={index}
-                    idx={index}
-                    reserve={reserve}
-                    moneyPoolInfo={moneyPoolInfo}
-                    beforeMintedMoneypool={
-                      beforeMintedMoneypool[getTokenNameByAddress(reserve.id)].beforeMintedToken <= 0
-                        ? 0
-                        : beforeMintedMoneypool[getTokenNameByAddress(reserve.id)].beforeMintedToken
-                    }
-                    mintedMoneypool={mintedMoneypool[getTokenNameByAddress(reserve.id)].mintedToken}
-                    depositRound={depositRound}
-                    setDepositRound={setDepositRound}
-                  />
-                );
-              })}
+              {getSubgraphData.reserves
+                .filter((data) =>
+                  isSupportedReserve(
+                    getTokenNameByAddress(data.id),
+                    getMainnetType,
+                  ),
+                )
+                .map((reserve, index) => {
+                  return (
+                    <TokenDeposit
+                      key={index}
+                      idx={index}
+                      reserve={reserve}
+                      moneyPoolInfo={moneyPoolInfo}
+                      beforeMintedMoneypool={
+                        beforeMintedMoneypool[getTokenNameByAddress(reserve.id)]
+                          .beforeMintedToken <= 0
+                          ? 0
+                          : beforeMintedMoneypool[
+                              getTokenNameByAddress(reserve.id)
+                            ].beforeMintedToken
+                      }
+                      mintedMoneypool={
+                        mintedMoneypool[getTokenNameByAddress(reserve.id)]
+                          .mintedToken
+                      }
+                      depositRound={depositRound}
+                      setDepositRound={setDepositRound}
+                    />
+                  );
+                })}
             </section>
           </>
         )}

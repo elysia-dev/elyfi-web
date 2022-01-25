@@ -1,12 +1,12 @@
 $font-color: #333333;
 $sub-font-color: #646464;
-$elysia-color: #00BFFF;
+$elysia-color: #00bfff;
 $background-color: #ffffff;
 $gray-line: #f0f0f1;
 $gray-font-color: #888888;
 $loan-list-size: 315px;
 $navigation-margin-height: 100px;
-$elysia-color--deep: #0099CB;
+$elysia-color--deep: #0099cb;
 
 $governance-progress-00: #0099cc;
 $governance-progress-01: #cc0000;
@@ -88,7 +88,7 @@ $device-width: 1190px;
           border: 1px solid $gray-line;
 
           &:hover {
-            border: 1px solid $elysia-color ;
+            border: 1px solid $elysia-color;
           }
           &.unknown-chain {
             > img {
@@ -97,7 +97,7 @@ $device-width: 1190px;
             }
             > h2 {
               font-size: 15px;
-              font-family: "Montserrat-bold";
+              font-family: 'Montserrat-bold';
             }
           }
           &.FAIL {
@@ -108,7 +108,7 @@ $device-width: 1190px;
             border: 2px solid #f5f5f5;
             color: #00bfff;
             box-shadow: inset 0 0 0 1px rgba(#00bfff, 0.5);
-  
+
             &::before,
             &::after {
               position: absolute;
@@ -127,7 +127,8 @@ $device-width: 1190px;
               animation-delay: 2s * -0.5;
             }
             @keyframes clipMe {
-              0%, 100% {
+              0%,
+              100% {
                 clip: rect(0px, 184px, 2px, 0px);
               }
               25% {
@@ -490,15 +491,15 @@ $device-width: 1190px;
             text-align: center;
             &.circle_01 {
               transform: scale(1.1);
-              background: #F7FBFF;
+              background: #f7fbff;
             }
             &.circle_02 {
-              background: #F7FBFF;
+              background: #f7fbff;
             }
             &.circle_03 {
               transform: scale(1.25);
               position: relative;
-              background: #F7FBFF;
+              background: #f7fbff;
               > div {
                 &:first-child {
                   width: 21px;
@@ -514,7 +515,7 @@ $device-width: 1190px;
                   width: 13px;
                   height: 13px;
                   position: absolute;
-                  border: 1px solid #00BFFF;
+                  border: 1px solid #00bfff;
                   border-radius: 100%;
                   right: 0;
                   top: 18px;
@@ -789,7 +790,7 @@ $device-width: 1190px;
             }
           }
         }
-        > img { 
+        > img {
           height: 152px;
         }
       }
@@ -1404,7 +1405,8 @@ $device-width: 1190px;
               }
             }
             &:last-child {
-              padding-left: 23px;height: 235px;
+              padding-left: 23px;
+              height: 235px;
             }
           }
           &__deposit {
@@ -2234,10 +2236,10 @@ $device-width: 1190px;
         width: 335px;
         height: 335px;
         border-radius: 100%;
-        margin: 70px auto; 
+        margin: 70px auto;
         > div {
           border-radius: 100%;
-          background: #FFFFFF;
+          background: #ffffff;
           position: absolute;
           &:nth-child(2) {
             left: 0px;
@@ -2249,7 +2251,7 @@ $device-width: 1190px;
             right: 2px;
             width: 10px;
             height: 10px;
-            bottom: 85px;      
+            bottom: 85px;
           }
           &:last-child {
             right: 15px;
@@ -2630,8 +2632,13 @@ $device-width: 1190px;
         &__data {
           padding: 15px;
           > div {
-            > p {
-              font-size: 15px;
+            > p:last-child {
+              font-size: 18px;
+              color: $font-color;
+            }
+            > p:first-child {
+              font-size: 12px;
+              margin-bottom: 5px;
             }
           }
         }
@@ -2801,7 +2808,7 @@ $device-width: 1190px;
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 9999;
-      padding-bottom: 31px;
+      // padding-bottom: 31px;
 
       &__header {
         display: flex;
@@ -2842,9 +2849,21 @@ $device-width: 1190px;
           }
         }
       }
-      > div:last-child {
-        margin: 20px auto;
+      &__button {
+        width: 452px;
+        height: 47px;
+        border-radius: 5px;
+        margin: auto auto;
+        margin-top: 20px;
+        line-height: 47px;
+        border-radius: 47px;
+        > p {
+          font-size: 18px;
+        }
       }
+      // > div:last-child {
+      //   margin: 20px auto;
+      // }
     }
   }
 }

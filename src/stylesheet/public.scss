@@ -38,15 +38,15 @@
 
 $font-color: #333333;
 $sub-font-color: #646464;
-$elysia-color: #00BFFF;
-$el-color: #3679B5;
+$elysia-color: #00bfff;
+$el-color: #3679b5;
 $background-color: #ffffff;
 $gray-line: #f0f0f1;
 $gray-font-color: #888888;
 $loan-list-size: 315px;
 $navigation-margin-height: 100px;
-$montserrat: "Montserrat";
-$montserrat--bold: "Montserrat-bold";
+$montserrat: 'Montserrat';
+$montserrat--bold: 'Montserrat-bold';
 
 $governance-progress-00: #0099cc;
 $governance-progress-01: #3d5299;
@@ -340,18 +340,18 @@ input[type='number'] {
       &--connected {
         transition: all 0.2s ease-in;
         &.unknown-chain {
-          background: #D84D4D !important;
+          background: #d84d4d !important;
           padding: 10px;
           justify-content: space-between !important;
           > h2 {
-            color: #FFFFFF;
+            color: #ffffff;
             cursor: pointer;
           }
         }
       }
       &__wrapper {
         display: flex;
-        justify-content: center ;
+        justify-content: center;
         align-items: center;
         width: 100%;
       }
@@ -418,7 +418,7 @@ input[type='number'] {
       &__wrapper {
         position: relative;
         margin-left: 10px;
-      } 
+      }
       &__current {
         display: flex;
         flex-direction: row;
@@ -453,7 +453,7 @@ input[type='number'] {
       &__change-network {
         &__wrapper {
           display: flex;
-          position: absolute; 
+          position: absolute;
           flex-direction: column;
           border: 1px solid $gray-line;
           background: $background-color;
@@ -1032,7 +1032,7 @@ input[type='number'] {
             > div {
               width: 100%;
               &:first-child {
-                background: #0099CC;
+                background: #0099cc;
                 > p {
                   text-align: center;
                   color: $background-color;
@@ -1043,7 +1043,7 @@ input[type='number'] {
                 }
               }
               &:last-child {
-                background: #40AFD5;
+                background: #40afd5;
                 > p {
                   text-align: center;
                   color: $background-color;
@@ -1069,7 +1069,7 @@ input[type='number'] {
             position: relative;
             margin: 0 0 0 auto;
             &::after {
-              content: "";
+              content: '';
               width: 100%;
               height: 100%;
               position: absolute;
@@ -1193,7 +1193,7 @@ input[type='number'] {
         border-top: 1px solid $gray-line;
         cursor: pointer;
         border-radius: 5px;
-        border: 1px solid #FFFFFFFF;
+        border: 1px solid #ffffffff;
         transition: all 0.2s ease-in;
         &:hover {
           border: 1px solid #00bfff;
@@ -1715,7 +1715,7 @@ input[type='number'] {
             &__defi-wrapper {
               border: 1px solid $gray-line;
               position: absolute;
-              background: #FFFFFF;
+              background: #ffffff;
               > div {
                 display: flex;
                 flex-direction: row;
@@ -1981,7 +1981,7 @@ input[type='number'] {
     }
   } // governance end
   .loan {
-    &__list { 
+    &__list {
       &--null {
         border: 1px solid $gray-line;
         text-align: center;
@@ -2129,7 +2129,7 @@ input[type='number'] {
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        > a { 
+        > a {
           cursor: pointer;
           > p {
             cursor: pointer;
@@ -2211,6 +2211,7 @@ input[type='number'] {
         justify-content: space-between;
         height: $current-data-height;
         align-items: center;
+        background-color: #ffffff;
         > div {
           display: flex;
           justify-content: space-between;
@@ -2253,6 +2254,7 @@ input[type='number'] {
         justify-content: space-between;
         align-items: center;
         border-bottom: 1px solid #e6e6e6;
+        background-color: #ffffff;
         &:last-child {
           border: 0px;
         }
@@ -2300,6 +2302,7 @@ input[type='number'] {
         display: flex;
         flex-direction: row;
         border: 1px solid $gray-line;
+        background-color: #ffffff;
         &__title {
           border-right: 1px solid #e6e6e6;
           display: flex;
@@ -2388,6 +2391,7 @@ input[type='number'] {
           flex-direction: row;
           justify-content: space-evenly;
           > div {
+            background: #ffffff;
             box-shadow: 0px 1px 6px #00000029;
             text-align: center;
             cursor: pointer;
@@ -2433,6 +2437,7 @@ input[type='number'] {
         &__body {
           border: 1px solid $gray-line;
           border-radius: 0px 0px 5px 5px;
+          background-color: #ffffff;
         }
         &__item-header {
           > div {
@@ -2544,6 +2549,7 @@ input[type='number'] {
         }
         &__table {
           border: 1px solid $gray-line;
+          background-color: #ffffff;
           &__header {
             display: flex;
             justify-content: space-between;
@@ -2737,6 +2743,7 @@ input[type='number'] {
             display: flex;
             justify-content: center;
             align-items: center;
+            background: #ffffff;
           }
         }
         &__header {
@@ -2750,6 +2757,7 @@ input[type='number'] {
             display: flex;
             flex-direction: row;
             border-bottom: 1px solid $gray-line;
+            background-color: #ffffff;
             > div {
               flex: 1;
             }
@@ -2791,9 +2799,9 @@ input[type='number'] {
       align-items: center;
       position: relative;
       &.el {
-        border: 1px solid #3679B5;
+        border: 1px solid #3679b5;
         > div {
-          border: 1px solid #3679B5;
+          border: 1px solid #3679b5;
         }
       }
       &.elfi {
@@ -2805,15 +2813,15 @@ input[type='number'] {
       &.lp {
         border: 1px solid $elysia-color;
         > div {
-          border: 1px solid #627EEA;
+          border: 1px solid #627eea;
           &:last-child {
-            border: 1px solid #FABF41;
+            border: 1px solid #fabf41;
           }
         }
       }
       > div {
         border-radius: 100%;
-        background: #FFFFFF;
+        background: #ffffff;
         position: absolute;
         &:first-child {
           border: 0;
@@ -3485,6 +3493,7 @@ input[type='number'] {
         justify-content: space-between;
         align-items: center;
         flex-direction: row;
+        background: #ffffff;
         > div {
           flex: 1;
           text-align: center;
@@ -3493,6 +3502,9 @@ input[type='number'] {
           }
           > p {
             cursor: pointer;
+          }
+          > p:first-child {
+            color: $gray-font-color;
           }
         }
       }
@@ -4621,50 +4633,31 @@ input[type='number'] {
 
   @keyframes ripple {
     0% {
-      box-shadow: 
-        0 0 6px #00000029,
-        0 0 1px #00000029,
-        0 0 0 0px rgba($elysia-color, .3),
-        0 0 0 0px rgba($elysia-color, .3),
+      box-shadow: 0 0 6px #00000029, 0 0 1px #00000029,
+        0 0 0 0px rgba($elysia-color, 0.3), 0 0 0 0px rgba($elysia-color, 0.3);
     }
     100% {
-      box-shadow: 
-      0 0 6px #00000029,
-      0 0 6px #00000029,
-      0 0 3px 20px rgba($elysia-color, .0),
-      0 0 3px 30px rgba($elysia-color, .0),
+      box-shadow: 0 0 6px #00000029, 0 0 6px #00000029,
+        0 0 3px 20px rgba($elysia-color, 0), 0 0 3px 30px rgba($elysia-color, 0);
     }
   }
   @-webkit-keyframes ripple {
     0% {
-      -webkit-box-shadow: 
-        0 0 8px  #1c1c1c29,
-        0 0 0px  #ffffff,
-        0 0 10px  #1c1c1c29,
+      -webkit-box-shadow: 0 0 8px #1c1c1c29, 0 0 0px #ffffff, 0 0 10px #1c1c1c29;
     }
     15% {
-      -webkit-box-shadow: 
-        0 0 2px  #1c1c1c29,
-        0 0 0px  #ffffff,
-        0 0 10px  #1c1c1c29,
+      -webkit-box-shadow: 0 0 2px #1c1c1c29, 0 0 0px #ffffff, 0 0 10px #1c1c1c29;
     }
     50% {
-      -webkit-box-shadow: 
-        0 0 4px  #1c1c1c29,
-        0 0 0px  #ffffff,
-        0 0 10px  #1c1c1c29,
+      -webkit-box-shadow: 0 0 4px #1c1c1c29, 0 0 0px #ffffff, 0 0 10px #1c1c1c29;
     }
     95% {
-      -webkit-box-shadow: 
-        0 0 10px  #1c1c1c29,
-        0 0 0px  #ffffff,
-        0 0 10px  #1c1c1c29,
+      -webkit-box-shadow: 0 0 10px #1c1c1c29, 0 0 0px #ffffff,
+        0 0 10px #1c1c1c29;
     }
     100% {
-      -webkit-box-shadow: 
-        0 0 10px  #1c1c1c29,
-        0 0 0px  #ffffff,
-        0 0 10px  #1c1c1c29,
+      -webkit-box-shadow: 0 0 10px #1c1c1c29, 0 0 0px #ffffff,
+        0 0 10px #1c1c1c29;
     }
   }
   .market__detail__graph__DAI div div div div svg g {
@@ -4757,5 +4750,16 @@ input[type='number'] {
     top: 0;
     left: 0;
     z-index: 9997;
+    &__container {
+      &__button {
+        box-shadow: 0px 0px 6px #00000029;
+        background: #00bfff;
+        text-align: center;
+        cursor: pointer;
+        > p {
+          color: #ffffff;
+        }
+      }
+    }
   }
 }
