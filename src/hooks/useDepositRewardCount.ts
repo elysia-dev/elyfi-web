@@ -26,13 +26,13 @@ function useDepositRewardCount(
   setBalances: Dispatch<SetStateAction<BalanceType[]>>,
 ): {
   beforeIncentive: BigNumber;
-  afterIncentiveByRound: BigNumber;
+  afterIncentive: BigNumber;
 } {
   const { value: tvl } = useTvl();
   const { elfiPrice } = useContext(PriceContext);
   const [incentive, setIncentive] = useState({
     beforeIncentive: constants.Zero,
-    afterIncentiveByRound: constants.Zero,
+    afterIncentive: constants.Zero,
   });
 
   const calcIncentive = useCallback(
@@ -63,9 +63,9 @@ function useDepositRewardCount(
   const setEachTokenIncentive = (item: BalanceType) => {
     return {
       beforeRound1: afterIncentiveByRound(item),
-      afterRound1: calcIncentive(incentive.afterIncentiveByRound),
+      afterRound1: calcIncentive(incentive.afterIncentive),
       beforeRound2: afterIncentiveByRound(item),
-      afterRound2: calcIncentive(incentive.afterIncentiveByRound),
+      afterRound2: calcIncentive(incentive.afterIncentive),
     };
   };
 
@@ -75,7 +75,7 @@ function useDepositRewardCount(
         round === 0
           ? balance.expectedIncentive[balance.tokenName].beforeRound1
           : balance.expectedIncentive[balance.tokenName].beforeRound2,
-      afterIncentiveByRound:
+      afterIncentive:
         round === 0
           ? balance.expectedIncentive[balance.tokenName].afterRound1
           : balance.expectedIncentive[balance.tokenName].afterRound2,
