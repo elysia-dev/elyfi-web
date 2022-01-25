@@ -38,7 +38,6 @@ const Governance = () => {
   const { t } = useTranslation();
   const History = useHistory();
   const { lng } = useParams<{ lng: string }>();
-  const { type: getMainnetType } = useContext(MainnetContext)
   const assetBondTokensBackedByEstate = assetBondTokens.filter((product) => {
     const parsedId = parseTokenId(product.id);
     return CollateralCategory.Others !== parsedId.collateralCategory
@@ -104,6 +103,7 @@ const Governance = () => {
             const getHTMLStringData: string =
               getNATData.data.post_stream.posts[0].cooked.toString();
             const regexNap = /NAP#: .*(?=<)/;
+            const regexNetwork = /Network: .*(?=<)/;
             setOffChainNapData((napData) => [
               ...napData,
               {
@@ -125,6 +125,7 @@ const Governance = () => {
                 link: `https://forum.elyfi.world/t/${getNATData.data.slug}`,
                 endedDate:
                   getNATData.data.post_stream.posts[0].polls[0].close || '',
+                network: (!!getHTMLStringData.match(regexNetwork)) === true ? MainnetType.BSC : MainnetType.Ethereum
               } as INapData,
             ]);
           });
@@ -346,7 +347,7 @@ const Governance = () => {
             <div>
               <h3>
                 {t('governance.data_verification', {
-                  count: offChainNapData.filter((data) => {
+                  count: offChainNapData.filter((data) => data.network === mainnetType).filter((data) => {
                     return moment().isBefore(data.endedDate);
                   }).length,
                 })}
@@ -372,7 +373,7 @@ const Governance = () => {
               <div>
                 <h3>
                   {t('governance.data_verification', {
-                    count: offChainNapData.filter((data) =>
+                    count: offChainNapData.filter((data) => data.network === mainnetType).filter((data) =>
                       moment().isBefore(data.endedDate),
                     ).length,
                   })}
@@ -396,11 +397,11 @@ const Governance = () => {
 
           {offChainLoading ? (
             <Skeleton width={'100%'} height={600} />
-          ) : offChainNapData.filter((data) =>
+          ) : offChainNapData.filter((data) => data.network === mainnetType).filter((data) =>
               moment().isBefore(data.endedDate),
             ).length > 0 ? (
             <div className="governance__grid">
-              {offChainNapData.map((data, index) => {
+              {offChainNapData.filter((data) => data.network === mainnetType).map((data, index) => {
                 if (data.endedDate && moment().isBefore(data.endedDate)) {
                   return offChainContainer(data);
                 }
@@ -422,7 +423,7 @@ const Governance = () => {
               <div>
                 <p>{t('governance.on_chain_voting__content')}</p>
                 {
-                  getMainnetType === MainnetType.Ethereum && (
+                  mainnetType === MainnetType.Ethereum && (
                     <a
                       href="https://www.withtally.com/governance/elyfi"
                       target="_blank"
@@ -448,7 +449,7 @@ const Governance = () => {
                   })}
                 </h3>
                 {
-                  getMainnetType === MainnetType.Ethereum && (
+                  mainnetType === MainnetType.Ethereum && (
                     <a
                       href="https://www.withtally.com/governance/elyfi"
                       target="_blank"
@@ -468,7 +469,7 @@ const Governance = () => {
             </div>
           )}
           {
-            getMainnetType === MainnetType.Ethereum ? (
+            mainnetType === MainnetType.Ethereum ? (
               onChainLoading ? (
                 <Skeleton width={'100%'} height={600} />
               ) : onChainData.length > 0 ? (

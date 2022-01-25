@@ -28,7 +28,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <h2>ⓒ 2021 | ELYFI | All rights reserved.</h2>
+      <h2>ⓒ 2021·2022 | ELYFI | All rights reserved.</h2>
     </footer>
   );
 };
