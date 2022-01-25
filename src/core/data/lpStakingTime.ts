@@ -18,8 +18,8 @@ export const lpRoundDate = [
     endedAt: moment('2022.01.24 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
   },
   {
-    startedAt: moment('2022.01.25 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
-    endedAt: moment('2022.03.05 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
+    startedAt: moment('2022.01.26 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
+    endedAt: moment('2022.03.07 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
   },
 ];
 
