@@ -116,9 +116,11 @@ const ClaimStakingRewardModal: FunctionComponent<{
                       address: account,
                       stakingType: stakedToken,
                       stakingAmount: utils.formatEther(stakingBalance),
-                      incentiveAmount: utils.formatEther(balance?.value || endedBalance),
+                      incentiveAmount: utils.formatEther(
+                        balance?.value || endedBalance,
+                      ),
                       round,
-                    })
+                    }),
                   );
 
                   emitter.clicked();
