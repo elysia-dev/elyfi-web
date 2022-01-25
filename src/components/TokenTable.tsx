@@ -21,11 +21,12 @@ import MainnetType from 'src/enums/MainnetType';
 import { daiMoneyPoolTime } from 'src/core/data/moneypoolTimes';
 import { BalanceType } from 'src/hooks/useBalances';
 import moment from 'moment';
-import { useContext } from 'react';
+import { Dispatch, SetStateAction, useContext } from 'react';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import PriceContext from 'src/contexts/PriceContext';
 import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 import TableBodyEventReward from './TableBodyEventReward';
+import RewardCountUp from './RewardCountUp';
 
 interface Props {
   balance: BalanceType;
@@ -37,6 +38,7 @@ interface Props {
   setRound: (round: number) => void;
   id: string;
   loading: boolean;
+  setBalances: Dispatch<SetStateAction<BalanceType[]>>;
 }
 
 const TokenTable: React.FC<Props> = ({
@@ -49,6 +51,7 @@ const TokenTable: React.FC<Props> = ({
   setRound,
   id,
   loading,
+  setBalances,
 }) => {
   const { account } = useWeb3React();
   const { unsupportedChainid } = useContext(MainnetContext);
@@ -168,21 +171,27 @@ const TokenTable: React.FC<Props> = ({
                 buttonContent={t('dashboard.claim_reward')}
                 value={
                   account && !unsupportedChainid ? (
-                    <CountUp
-                      className="bold amounts"
-                      start={parseFloat(
-                        formatEther(balance.expectedIncentiveBefore),
-                      )}
-                      end={parseFloat(
-                        formatEther(balance.expectedIncentiveAfter),
-                      )}
-                      formattingFn={(number) => {
-                        return formatSixFracionDigit(number);
-                      }}
-                      decimals={6}
-                      duration={1}
+                    <RewardCountUp
+                      balance={balance}
+                      reserveData={reserveData}
+                      round={0}
+                      setBalances={setBalances}
                     />
                   ) : (
+                    // <CountUp
+                    //   className="bold amounts"
+                    //   start={parseFloat(
+                    //     formatEther(balance.expectedIncentiveBefore),
+                    //   )}
+                    //   end={parseFloat(
+                    //     formatEther(balance.expectedIncentiveAfter),
+                    //   )}
+                    //   formattingFn={(number) => {
+                    //     return formatSixFracionDigit(number);
+                    //   }}
+                    //   decimals={6}
+                    //   duration={1}
+                    // />
                     '-'
                   )
                 }
@@ -247,12 +256,6 @@ const TokenTable: React.FC<Props> = ({
                 moneyPoolTime={`${moment(daiMoneyPoolTime[1].startedAt).format(
                   'YYYY.MM.DD',
                 )} KST ~ `}
-                // expectedAdditionalIncentiveBefore={
-                //   balance.expectedAdditionalIncentiveBefore
-                // }
-                // expectedAdditionalIncentiveAfter={
-                //   balance.expectedAdditionalIncentiveAfter
-                // }
                 buttonEvent={(e) => {
                   e.preventDefault();
                   setIncentiveModalVisible();
@@ -261,7 +264,14 @@ const TokenTable: React.FC<Props> = ({
                   setRound(2);
                 }}
                 tokenName={balance.tokenName}
-                rewardCountUp={<div />}
+                rewardCountUp={
+                  <RewardCountUp
+                    balance={balance}
+                    reserveData={reserveData}
+                    round={1}
+                    setBalances={setBalances}
+                  />
+                }
               />
             </div>
           )}
