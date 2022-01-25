@@ -20,6 +20,8 @@ import TokenColors from 'src/enums/TokenColors';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
 import SubgraphContext, { IAssetBond } from 'src/contexts/SubgraphContext';
+import { parseTokenId } from 'src/utiles/parseTokenId';
+import CollateralCategory from 'src/enums/CollateralCategory';
 
 const Governance = (): JSX.Element => {
   const [onChainLoading, setOnChainLoading] = useState(true);
@@ -35,7 +37,10 @@ const Governance = (): JSX.Element => {
   const { t } = useTranslation();
   const History = useHistory();
   const { lng } = useParams<{ lng: string }>();
-  const { type: getMainnetType } = useContext(MainnetContext);
+  const assetBondTokensBackedByEstate = assetBondTokens.filter((product) => {
+    const parsedId = parseTokenId(product.id);
+    return CollateralCategory.Others !== parsedId.collateralCategory;
+  });
 
   const draw = () => {
     const dpr = window.devicePixelRatio;
@@ -97,6 +102,7 @@ const Governance = (): JSX.Element => {
             const getHTMLStringData: string =
               getNATData.data.post_stream.posts[0].cooked.toString();
             const regexNap = /NAP#: .*(?=<)/;
+            const regexNetwork = /Network: .*(?=<)/;
             setOffChainNapData((napData) => [
               ...napData,
               {
@@ -118,6 +124,10 @@ const Governance = (): JSX.Element => {
                 link: `https://forum.elyfi.world/t/${getNATData.data.slug}`,
                 endedDate:
                   getNATData.data.post_stream.posts[0].polls[0].close || '',
+                network:
+                  !!getHTMLStringData.match(regexNetwork) === true
+                    ? MainnetType.BSC
+                    : MainnetType.Ethereum,
               } as INapData,
             ]);
           });
@@ -341,9 +351,11 @@ const Governance = (): JSX.Element => {
             <div>
               <h3>
                 {t('governance.data_verification', {
-                  count: offChainNapData.filter((data) => {
-                    return moment().isBefore(data.endedDate);
-                  }).length,
+                  count: offChainNapData
+                    .filter((data) => data.network === mainnetType)
+                    .filter((data) => {
+                      return moment().isBefore(data.endedDate);
+                    }).length,
                 })}
               </h3>
               <div>
@@ -367,9 +379,10 @@ const Governance = (): JSX.Element => {
               <div>
                 <h3>
                   {t('governance.data_verification', {
-                    count: offChainNapData.filter((data) =>
-                      moment().isBefore(data.endedDate),
-                    ).length,
+                    count: offChainNapData
+                      .filter((data) => data.network === mainnetType)
+                      .filter((data) => moment().isBefore(data.endedDate))
+                      .length,
                   })}
                 </h3>
                 <a
@@ -391,16 +404,19 @@ const Governance = (): JSX.Element => {
 
           {offChainLoading ? (
             <Skeleton width={'100%'} height={600} />
-          ) : offChainNapData.filter((data) =>
-              moment().isBefore(data.endedDate),
-            ).length > 0 ? (
+          ) : offChainNapData
+              .filter((data) => data.network === mainnetType)
+              .filter((data) => moment().isBefore(data.endedDate)).length >
+            0 ? (
             <div className="governance__grid">
-              {offChainNapData.map((data) => {
-                if (data.endedDate && moment().isBefore(data.endedDate)) {
-                  return offChainContainer(data);
-                }
-                return null;
-              })}
+              {offChainNapData
+                .filter((data) => data.network === mainnetType)
+                .map((data, index) => {
+                  if (data.endedDate && moment().isBefore(data.endedDate)) {
+                    return offChainContainer(data);
+                  }
+                  return null;
+                })}
             </div>
           ) : (
             <div className="governance__validation zero">
@@ -416,7 +432,7 @@ const Governance = (): JSX.Element => {
               </h3>
               <div>
                 <p>{t('governance.on_chain_voting__content')}</p>
-                {getMainnetType === MainnetType.Ethereum && (
+                {mainnetType === MainnetType.Ethereum && (
                   <a
                     href="https://www.withtally.com/governance/elyfi"
                     target="_blank"
@@ -440,7 +456,7 @@ const Governance = (): JSX.Element => {
                     count: onChainData.length,
                   })}
                 </h3>
-                {getMainnetType === MainnetType.Ethereum && (
+                {mainnetType === MainnetType.Ethereum && (
                   <a
                     href="https://www.withtally.com/governance/elyfi"
                     target="_blank"
@@ -458,7 +474,7 @@ const Governance = (): JSX.Element => {
               <p>{t('governance.data_verification__content')}</p>
             </div>
           )}
-          {getMainnetType === MainnetType.Ethereum ? (
+          {mainnetType === MainnetType.Ethereum ? (
             onChainLoading ? (
               <Skeleton width={'100%'} height={600} />
             ) : onChainData.length > 0 ? (
@@ -479,8 +495,7 @@ const Governance = (): JSX.Element => {
           )}
         </section>
         <section className="governance__loan governance__header">
-          {assetBondTokens.length === 0 ||
-          getMainnetType === MainnetType.BSC ? (
+          {assetBondTokensBackedByEstate.length === 0 ? (
             <>
               <div>
                 <div>
@@ -502,34 +517,37 @@ const Governance = (): JSX.Element => {
                 <div>
                   <h3>
                     {t('governance.loan_list', {
-                      count: assetBondTokens.length,
+                      count: assetBondTokensBackedByEstate.length,
                     })}
                   </h3>
                 </div>
                 <p>{t('governance.loan_list__content')}</p>
               </div>
-              <AssetList
-                assetBondTokens={
-                  /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
-                  [...((assetBondTokens as IAssetBond[]) || [])]
-                    .slice(0, pageNumber * 9)
-                    .sort((a, b) => {
-                      return b.loanStartTimestamp! - a.loanStartTimestamp! >= 0
-                        ? 1
-                        : -1;
-                    }) || []
-                }
-              />
-              {assetBondTokens.length &&
-                assetBondTokens.length >= pageNumber * 9 && (
-                  <div>
-                    <button
-                      className="portfolio__view-button"
-                      onClick={() => viewMoreHandler()}>
-                      {t('loan.view-more')}
-                    </button>
-                  </div>
-                )}
+              <>
+                <AssetList
+                  assetBondTokens={
+                    /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
+                    [...((assetBondTokensBackedByEstate as IAssetBond[]) || [])]
+                      .slice(0, pageNumber * 9)
+                      .sort((a, b) => {
+                        return b.loanStartTimestamp! - a.loanStartTimestamp! >=
+                          0
+                          ? 1
+                          : -1;
+                      }) || []
+                  }
+                />
+                {assetBondTokensBackedByEstate.length &&
+                  assetBondTokensBackedByEstate.length >= pageNumber * 9 && (
+                    <div>
+                      <button
+                        className="portfolio__view-button"
+                        onClick={() => viewMoreHandler()}>
+                        {t('loan.view-more')}
+                      </button>
+                    </div>
+                  )}
+              </>
             </>
           )}
         </section>

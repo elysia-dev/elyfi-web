@@ -30,7 +30,6 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
   const { account } = useWeb3React();
   const { value: mediaQuery } = useMediaQueryType();
   const { unsupportedChainid } = useContext(MainnetContext);
-
   return (
     <>
       {mediaQuery === MediaQuery.PC ? (

@@ -28,13 +28,7 @@ const Wallet = (): JSX.Element => {
   const { unsupportedChainid } = useContext(MainnetContext);
 
   useEffect(() => {
-    setConnected(
-      !!account &&
-        !!chainId &&
-        [envs.network.requiredChainId, envs.network.bscMainnetChainId].includes(
-          chainId,
-        ),
-    );
+    setConnected(!!account);
   }, [account, chainId]);
 
   return (

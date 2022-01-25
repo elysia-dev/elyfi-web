@@ -18,13 +18,42 @@ const MainGraph = (): JSX.Element => {
             </p>
           </div>
         </div>
-        <div className="main__service__graph--section01--02">
-          <div>
-            <p>{t('main.graph.line-content.0')}</p>
-          </div>
-          <div className="main__service__graph__line-wrapper">
-            {animationLine(8, 'left')}
-          </div>
+      </div>
+      <div className="main__service__graph--section01--02">
+        <div>
+          <p>{t('main.graph.line-content.0')}</p>
+        </div>
+        <div className="main__service__graph__line-wrapper">
+          {animationLine(8, 'left')}
+        </div>
+        <div />
+      </div>
+      <div className="main__service__graph--section01--03">
+        <div className="main__service__graph--circle circle_02">
+          <p>{t('main.graph.circle-content.1')}</p>
+        </div>
+      </div>
+      <div className="main__service__graph--section01--04">
+        <p>{t('main.graph.line-content.1')}</p>
+        <div className="main__service__graph__line-wrapper">
+          {animationLine(10, 'right')}
+        </div>
+        <div></div>
+        <div
+          className="main__service__graph__line-wrapper"
+          style={{
+            position: 'relative',
+            left: -11,
+            top: -3,
+          }}>
+          {animationLine(10, 'left')}
+        </div>
+        <p>{t('main.graph.line-content.2')}</p>
+      </div>
+      <div className="main__service__graph--section01--05">
+        <div className="main__service__graph--circle circle_03">
+          <div />
+          <p className="blue bold">{t('main.graph.circle-content.2')}</p>
           <div />
         </div>
         <div className="main__service__graph--section01--03">
@@ -47,7 +76,6 @@ const MainGraph = (): JSX.Element => {
             }}>
             {animationLine(10, 'left')}
           </div>
-          <p>{t('main.graph.line-content.2')}</p>
         </div>
         <div className="main__service__graph--section01--05">
           <div className="main__service__graph--circle circle_03">
@@ -95,14 +123,17 @@ const MainGraph = (): JSX.Element => {
             </div>
           </div>
           <div className="main__service__graph__line-wrapper">
-            {animationLine(11, 'left')}
+            {animationLine(5, 'up')}
           </div>
+        </div>
+        <div className="main__service__graph__line-wrapper">
+          {animationLine(11, 'left')}
+        </div>
+        <div>
           <div>
-            <div>
-              <p>{t('main.graph.line-content.4')}</p>
-            </div>
-            <div></div>
+            <p>{t('main.graph.line-content.4')}</p>
           </div>
+          <div></div>
         </div>
       </div>
     </div>
@@ -145,8 +176,8 @@ const MainGraph = (): JSX.Element => {
             <div className="scroll-arrow temp">
               {Array(61)
                 .fill(0)
-                .map((_x, _index) => {
-                  return <span key={`arrow_${_index}`} className="arrow--00" />;
+                .map((_x) => {
+                  return <span className="arrow--00" />;
                 })}
             </div>
             <div

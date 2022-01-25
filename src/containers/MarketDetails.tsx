@@ -36,7 +36,6 @@ import {
   setTooltipBoxPositionX,
 } from 'src/utiles/graphTooltipPositionX';
 import MainnetContext from 'src/contexts/MainnetContext';
-import MainnetType from 'src/enums/MainnetType';
 import isSupportedReserve from 'src/core/utils/isSupportedReserve';
 import ReserveToken from 'src/core/types/ReserveToken';
 import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
@@ -172,6 +171,50 @@ function MarketDetail(): JSX.Element {
     );
   };
 
+  const loadBalance = async () => {
+    if (!account) return;
+
+    setBalances({
+      ...balances,
+      ...(await fetchBalanceFrom(
+        getSubgraphData.reserves[
+          getSubgraphData.reserves.findIndex((reserve) => {
+            return reserve.id === tokenInfo.address;
+          })
+        ],
+        account,
+      )),
+      updatedAt: moment().unix(),
+    });
+  };
+
+  const loadBalances = async () => {
+    if (!account) {
+      return;
+    }
+    try {
+      setBalances({
+        ...balances,
+        loading: false,
+        ...(await fetchBalanceFrom(
+          getSubgraphData.reserves[
+            getSubgraphData.reserves.findIndex((reserve) => {
+              return reserve.id === tokenInfo.address;
+            })
+          ],
+          account,
+        )),
+        updatedAt: moment().unix(),
+      });
+    } catch (error) {
+      console.error(error);
+      setBalances({
+        ...balances,
+        loading: false,
+      });
+    }
+  };
+
   useEffect(() => {
     draw();
     window.addEventListener('resize', () => draw());
@@ -180,6 +223,15 @@ function MarketDetail(): JSX.Element {
       window.removeEventListener('resize', () => draw());
     };
   }, []);
+
+  useEffect(() => {
+    // need refactoring!!!
+    if (!isSupportedReserve(balances.tokenName, getMainnetType)) {
+      history.push({
+        pathname: `/${lng}/deposit`,
+      });
+    }
+  }, [balances, getMainnetType]);
 
   useEffect(() => {
     // need refactoring!!!
@@ -220,7 +272,7 @@ function MarketDetail(): JSX.Element {
         <div className="detail__graph__wrapper__tooltip__payload">
           <div>
             {graphConverter
-              ? t('dashboard.total_deposit--yield')
+              ? t('dashboard.borrow_apy')
               : t('dashboard.total_deposit--reward')}
           </div>
           <div className="bold">{e.payload[0]?.payload.yield} %</div>

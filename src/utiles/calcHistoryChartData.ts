@@ -149,7 +149,9 @@ const calcHistoryChartData = (
       yield: toCompact(
         d.calculatedAPY *
           busd3xRewardEvent(
-            data.id === envs.token.busdAddress ? Token.BUSD : '',
+            data.id === envs.token.busdAddress && historyType === 'deposit'
+              ? Token.BUSD
+              : '',
           ),
       ),
     });

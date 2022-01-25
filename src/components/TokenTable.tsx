@@ -25,6 +25,8 @@ import { Dispatch, SetStateAction, useContext } from 'react';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import PriceContext from 'src/contexts/PriceContext';
 import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
+import { parseTokenId } from 'src/utiles/parseTokenId';
+import CollateralCategory from 'src/enums/CollateralCategory';
 import TableBodyEventReward from './TableBodyEventReward';
 import RewardCountUp from './RewardCountUp';
 
@@ -62,6 +64,12 @@ const TokenTable: React.FC<Props> = ({
   const { value: mediaQuery } = useMediaQueryType();
   const { type: getMainnetType } = useContext(MainnetContext);
   const { elfiPrice } = useContext(PriceContext);
+  const assetBondTokensBackedByEstate = reserveData.assetBondTokens.filter(
+    (ab) => {
+      const parsedId = parseTokenId(ab.id);
+      return CollateralCategory.Others !== parsedId.collateralCategory;
+    },
+  );
 
   const tableData = [
     [

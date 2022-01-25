@@ -16,9 +16,6 @@ import MediaQuery from 'src/enums/MediaQuery';
 import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import CountUp from 'react-countup';
 import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
-import SwiperCore, { Navigation, Pagination, Virtual } from 'swiper';
-import RewardDetailInfo from './RewardDetailInfo';
-import SmallProgressBar from './SmallProgressBar';
 
 interface Props {
   reserve: IReserveSubgraphData;

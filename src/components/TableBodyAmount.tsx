@@ -80,11 +80,11 @@ const TableBodyAmount: React.FunctionComponent<{
             </p>
           )}
         </div>
-      </div>
-      <div
-        onClick={buttonEvent}
-        className="deposit__table__body__amount__button">
-        <p>{buttonContent}</p>
+        <div
+          onClick={buttonEvent}
+          className="deposit__table__body__amount__button">
+          <p>{buttonContent}</p>
+        </div>
       </div>
     </>
   );
