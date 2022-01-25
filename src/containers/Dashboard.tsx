@@ -32,6 +32,7 @@ import scrollToOffeset from 'src/core/utils/scrollToOffeset';
 import useBalances from 'src/hooks/useBalances';
 import EventImage from 'src/assets/images/event_image.png';
 import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
+import Token from 'src/enums/Token';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();
@@ -48,7 +49,8 @@ const Dashboard: React.FunctionComponent = () => {
     GET_USER,
     { variables: { id: account?.toLocaleLowerCase() } },
   );
-  const { balances, loading, loadBalance } = useBalances(refetchUserData);
+  const { balances, loading, loadBalance, setBalances } =
+    useBalances(refetchUserData);
   const [transactionModal, setTransactionModal] = useState(false);
   const [selectedBalanceId, selectBalanceId] = useState('');
   const [connectWalletModalvisible, setConnectWalletModalvisible] =
@@ -105,13 +107,17 @@ const Dashboard: React.FunctionComponent = () => {
           }}
           balanceBefore={
             round === 1
-              ? selectedBalance.expectedIncentiveBefore
-              : selectedBalance.expectedAdditionalIncentiveBefore
+              ? selectedBalance.expectedIncentive[selectedBalance.tokenName]
+                  .beforeRound1
+              : selectedBalance.expectedIncentive[selectedBalance.tokenName]
+                  .beforeRound2
           }
           balanceAfter={
             round === 1
-              ? selectedBalance.expectedIncentiveAfter
-              : selectedBalance.expectedAdditionalIncentiveAfter
+              ? selectedBalance.expectedIncentive[selectedBalance.tokenName]
+                  .afterRound1
+              : selectedBalance.expectedIncentive[selectedBalance.tokenName]
+                  .afterRound2
           }
           incentivePoolAddress={getIncentivePoolAddress(
             round,
@@ -250,6 +256,7 @@ const Dashboard: React.FunctionComponent = () => {
                 }
                 setRound={setRound}
                 loading={loading}
+                setBalances={setBalances}
               />
             );
           })}
