@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import MainnetType from 'src/enums/MainnetType';
 
 export interface TopicList {
   topic_list: {
@@ -25,6 +26,7 @@ export interface INapData {
   totalVoters: number;
   link: string;
   endedDate: string;
+  network: MainnetType;
 }
 
 export default class OffChainTopic {

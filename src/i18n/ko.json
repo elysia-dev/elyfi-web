@@ -219,7 +219,7 @@
       "claim_before_withraw_guide": "예치/출금을 이용하기 위해 보상 토큰을 먼저 수령해주세요! 수령할 보상 토큰은 <strong>2021.7.15 ~ 2022.1.11 KST</strong> 에 쌓인 ELFI 보상 토큰입니다.",
       "claim_question": "보상 토큰을 수령하시겠습니까?",
       
-      "target_running_strategy": "목표 운용전략",
+      "target_running_strategy": "목표 운용전략 (목표 예치 APY: 10%)",
       "real_estate_mortgage": "부동산 담보대출",
       "auto_invest_defi__title": "디파이 자동투자",
       "auto_invest_defi": [
@@ -271,7 +271,7 @@
       "on_chain_voting__content": "온체인 거버넌스(DAO)에서 투표가 진행중인 제안서 리스트 입니다.",
       "loan_list": "대출리스트 ({{ count }} 건)",
       "loan_list_plural": "대출리스트 ({{ count }} 건)",
-      "loan_list__content": "거버넌스(DAO)의 결정에 따라 DAI 머니풀에서 실행된 대출입니다.",
+      "loan_list__content": "거버넌스(DAO)의 결정에 따라 머니풀에서 실행된 대출입니다.",
       "onchain_list_zero": "현재 진행중인 온체인 투표가 없습니다.",
       "offchain_list_zero": "현재 진행중인 데이터 검증 투표가 없습니다.",
       "forum_button": "ELYFI 포럼으로 이동하기",
@@ -279,7 +279,7 @@
     },
     "staking": {
       "staking__token": "{{ token }} 스테이킹",
-      "staking__notice": "{{ stakedToken }} 스테이킹은 {{ rewardToken }} 채굴 플랜에 따라 4차례로 나눠서 진행됩니다.\n{{ stakedToken }} 토큰을 스테이킹하면 {{ rewardToken }} 토큰을 리워드로 받게 되며, 스테이킹한 {{ stakedToken }} 토큰은 언제든지 언스테이킹이 가능합니다.\n\n* 이전 회차에 스테이킹한 {{ stakedToken }} 토큰과 보상 받은 {{ rewardToken }} 토큰은 다음 회차의 스테이킹 풀에 자동으로 전송되지 않습니다.",
+      "staking__notice": "{{ stakedToken }} 스테이킹은 {{ rewardToken }} 채굴 플랜에 따라 6차례로 나눠서 진행됩니다.\n{{ stakedToken }} 토큰을 스테이킹하면 {{ rewardToken }} 토큰을 리워드로 받게 되며, 스테이킹한 {{ stakedToken }} 토큰은 언제든지 언스테이킹이 가능합니다.\n\n* 이전 회차에 스테이킹한 {{ stakedToken }} 토큰과 보상 받은 {{ rewardToken }} 토큰은 다음 회차의 스테이킹 풀에 자동으로 전송되지 않습니다.",
       "staking__nth": "{{ nth }}차 스테이킹",
       "current_round_null": "현재 진행중인 회차가 없습니다.",
       "staking__in_progress": "<strong>{{ nth }}차</strong> 스테이킹 진행 중",

@@ -4,6 +4,8 @@ import { BigNumber, constants, utils } from 'ethers';
 import MainnetContext from 'src/contexts/MainnetContext';
 import SubgraphContext from 'src/contexts/SubgraphContext';
 import MainnetType from 'src/enums/MainnetType';
+import { parseTokenId } from 'src/utiles/parseTokenId';
+import CollateralCategory from 'src/enums/CollateralCategory';
 import AssetList from './AssetList';
 
 const usdFormatter = new Intl.NumberFormat('en', {
@@ -19,7 +21,6 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
   const { t } = useTranslation();
   // true -> byLatest, false -> byLoanAmount
   const [sortMode, setSortMode] = useState(false);
-  const { type: getMainnetType } = useContext(MainnetContext)
   const totalBorrow = parseFloat(
     utils.formatEther(
       assetBondTokens.reduce(
@@ -28,9 +29,11 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
       ) || constants.Zero,
     ),
   );
-  const list = assetBondTokens.filter((product) => {
-    return product.reserve.id === id;
-  });
+
+  const assetBondTokensBackedByEstate = assetBondTokens.filter((product) => {
+    const parsedId = parseTokenId(product.id);
+    return (CollateralCategory.Others !== parsedId.collateralCategory && product.reserve.id === id)
+  })
 
   const viewMoreHandler = useCallback(() => {
     setPageNumber((prev) => prev + 1);
@@ -40,11 +43,11 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
     <>
       <section className="loan">
         <div>
-          <h2>{t('governance.loan_list', { count: list?.length })}</h2>
+          <h2>{t('governance.loan_list', { count: assetBondTokensBackedByEstate.length })}</h2>
           <p>{t('loan.loan__content')}</p>
         </div>
         {
-          (list?.length === 0 || getMainnetType === MainnetType.BSC) ? (
+          (assetBondTokensBackedByEstate.length === 0) ? (
             <div className="loan__list--null">
               <p>
                 {t("loan.loan_list--null")}
@@ -52,7 +55,6 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
             </div>
           ) : (
             <>
-
               {/* <div className="text__title" >
                 <div
                   className="loan__select-box"
@@ -78,7 +80,7 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
                   <AssetList
                     assetBondTokens={
                       /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
-                      [...(list || [])].slice(0, pageNumber * 9).sort((a, b) => {
+                      [...(assetBondTokensBackedByEstate || [])].slice(0, pageNumber * 9).sort((a, b) => {
                         if (sortMode) {
                           return BigNumber.from(b.principal).gte(
                             BigNumber.from(a.principal),
@@ -93,7 +95,7 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
                       }) || []
                     }
                   />
-                  {list?.length && list.length >= pageNumber * 9 && (
+                  {assetBondTokensBackedByEstate.length && assetBondTokensBackedByEstate.length >= pageNumber * 9 && (
                     <div>
                       <button
                         className="portfolio__view-button"
