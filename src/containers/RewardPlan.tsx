@@ -21,7 +21,7 @@ import {
   daiMoneyPoolTime,
   moneyPoolStartedAt,
   tetherMoneyPoolTime,
-  busdMoneyPoolTime
+  busdMoneyPoolTime,
 } from 'src/core/data/moneypoolTimes';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import {
@@ -159,7 +159,7 @@ const RewardPlan: FunctionComponent = () => {
     beforeDaiRewardByLp: [0, 0, 0],
     daiRewardByLp: calcDaiRewardByLp(),
     beforeEthRewardByLp: [0, 0, 0],
-    ethRewardByLp: calcEthRewardByLp(lpStakingRound.ethElfiRound),
+    ethRewardByLp: calcEthRewardByLp(),
     beforeMintedByBuscMoneypool: 0,
     mintedByBusdMoneypool: calcMintedByBusdMoneypool(),
   });
@@ -177,7 +177,7 @@ const RewardPlan: FunctionComponent = () => {
     BUSD: {
       startedMoneyPool: busdMoneyPoolTime[0].startedAt.format('yyyy.MM.DD'),
       endedMoneyPool: busdMoneyPoolTime[0].endedAt.format('yyyy.MM.DD'),
-    }
+    },
   };
 
   const beforeMintedMoneypool = {
@@ -187,14 +187,14 @@ const RewardPlan: FunctionComponent = () => {
     },
     BUSD: {
       beforeMintedToken: amountData.beforeMintedByBuscMoneypool,
-    }
+    },
   };
   const mintedMoneypool = {
     DAI: { mintedToken: amountData.mintedByDaiMoneypool },
     USDT: { mintedToken: amountData.mintedByTetherMoneypool },
     BUSD: {
-      mintedToken: amountData.mintedByBusdMoneypool
-    }
+      mintedToken: amountData.mintedByBusdMoneypool,
+    },
   };
 
   const beforeTotalMintedByElStakingPool = useMemo(() => {
@@ -316,7 +316,7 @@ const RewardPlan: FunctionComponent = () => {
         beforeDaiRewardByLp: amountData.daiRewardByLp,
         daiRewardByLp: calcDaiRewardByLp(),
         beforeEthRewardByLp: amountData.ethRewardByLp,
-        ethRewardByLp: calcEthRewardByLp(lpUnixTimestamp.length),
+        ethRewardByLp: calcEthRewardByLp(),
         beforeMintedByBuscMoneypool: amountData.mintedByBusdMoneypool,
         mintedByBusdMoneypool: calcMintedByBusdMoneypool(),
       });
@@ -483,24 +483,37 @@ const RewardPlan: FunctionComponent = () => {
               </div>
             </div>
             <section className="reward__container">
-              {getSubgraphData.reserves.filter((data) => isSupportedReserve(getTokenNameByAddress(data.id), getMainnetType)).map((reserve, index) => {
-                return (
-                  <TokenDeposit
-                    key={index}
-                    idx={index}
-                    reserve={reserve}
-                    moneyPoolInfo={moneyPoolInfo}
-                    beforeMintedMoneypool={
-                      beforeMintedMoneypool[getTokenNameByAddress(reserve.id)].beforeMintedToken <= 0
-                        ? 0
-                        : beforeMintedMoneypool[getTokenNameByAddress(reserve.id)].beforeMintedToken
-                    }
-                    mintedMoneypool={mintedMoneypool[getTokenNameByAddress(reserve.id)].mintedToken}
-                    depositRound={depositRound}
-                    setDepositRound={setDepositRound}
-                  />
-                );
-              })}
+              {getSubgraphData.reserves
+                .filter((data) =>
+                  isSupportedReserve(
+                    getTokenNameByAddress(data.id),
+                    getMainnetType,
+                  ),
+                )
+                .map((reserve, index) => {
+                  return (
+                    <TokenDeposit
+                      key={index}
+                      idx={index}
+                      reserve={reserve}
+                      moneyPoolInfo={moneyPoolInfo}
+                      beforeMintedMoneypool={
+                        beforeMintedMoneypool[getTokenNameByAddress(reserve.id)]
+                          .beforeMintedToken <= 0
+                          ? 0
+                          : beforeMintedMoneypool[
+                              getTokenNameByAddress(reserve.id)
+                            ].beforeMintedToken
+                      }
+                      mintedMoneypool={
+                        mintedMoneypool[getTokenNameByAddress(reserve.id)]
+                          .mintedToken
+                      }
+                      depositRound={depositRound}
+                      setDepositRound={setDepositRound}
+                    />
+                  );
+                })}
             </section>
           </>
         )}
