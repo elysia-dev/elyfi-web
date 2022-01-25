@@ -49,24 +49,23 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
             <div>
               <div className="bold">
                 {' '}
-                {/* {(account && !unsupportedChainid) ? (
-                  <CountUp
-                    className="bold amounts"
-                    start={parseFloat(
-                      formatEther(expectedAdditionalIncentiveBefore),
-                    )}
-                    end={parseFloat(
-                      formatEther(expectedAdditionalIncentiveAfter),
-                    )}
-                    formattingFn={(number) => {
-                      return formatSixFracionDigit(number);
-                    }}
-                    decimals={6}
-                    duration={1}
-                  />
-                ) : (
-                  '-'
-                )} */}
+                {account && !unsupportedChainid
+                  ? rewardCountUp
+                  : // <CountUp
+                    //   className="bold amounts"
+                    //   start={parseFloat(
+                    //     formatEther(expectedAdditionalIncentiveBefore),
+                    //   )}
+                    //   end={parseFloat(
+                    //     formatEther(expectedAdditionalIncentiveAfter),
+                    //   )}
+                    //   formattingFn={(number) => {
+                    //     return formatSixFracionDigit(number);
+                    //   }}
+                    //   decimals={6}
+                    //   duration={1}
+                    // />
+                    '-'}
                 <span>{' ELFI'}</span>
               </div>
               <p>{moneyPoolTime}</p>
