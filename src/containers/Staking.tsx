@@ -279,10 +279,10 @@ const Staking: React.FunctionComponent<IProps> = ({
       if (!roundData[2]) return;
       setExpectedReward({
         before: expectedReward.value.isZero()
-          ? roundData[4].accountReward
+          ? roundData[5].accountReward
           : expectedReward.value,
         value: calcExpectedReward(
-          roundData[4],
+          roundData[5],
           rewardToken === Token.ELFI
             ? ELFIPerDayOnELStakingPool
             : DAIPerDayOnELFIStakingPool,
@@ -778,16 +778,16 @@ const Staking: React.FunctionComponent<IProps> = ({
                           <div>
                             <h2>
                               {t('staking.nth', {
-                                nth: toOrdinalNumber(i18n.language, 5),
+                                nth: toOrdinalNumber(i18n.language, 6),
                               })}
                             </h2>
                             <p>
-                              {stakingRoundTimes[4].startedAt.format(
+                              {stakingRoundTimes[5].startedAt.format(
                                 'YYYY.MM.DD HH:mm:ss',
                               )}
                               <br />
                               ~&nbsp;
-                              {stakingRoundTimes[4].endedAt.format(
+                              {stakingRoundTimes[5].endedAt.format(
                                 'YYYY.MM.DD HH:mm:ss',
                               )}{' '}
                               (KST)
@@ -797,12 +797,12 @@ const Staking: React.FunctionComponent<IProps> = ({
                             <div>
                               <p>APR</p>
                               <h2 className="percent">
-                                {current.diff(stakingRoundTimes[4].startedAt) <=
+                                {current.diff(stakingRoundTimes[5].startedAt) <=
                                   0 ||
-                                roundData[4]?.apr.eq(constants.MaxUint256) ||
-                                current.diff(stakingRoundTimes[4].endedAt) >= 0
+                                roundData[5]?.apr.eq(constants.MaxUint256) ||
+                                current.diff(stakingRoundTimes[5].endedAt) >= 0
                                   ? '-'
-                                  : toPercentWithoutSign(roundData[4].apr || 0)}
+                                  : toPercentWithoutSign(roundData[5].apr || 0)}
                               </h2>
                             </div>
                           )}
@@ -816,10 +816,10 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   <h2>
                                     {`${
                                       current.diff(
-                                        stakingRoundTimes[4].startedAt,
+                                        stakingRoundTimes[5].startedAt,
                                       ) > 0
                                         ? formatCommaSmall(
-                                            roundData[4]?.accountPrincipal ||
+                                            roundData[5]?.accountPrincipal ||
                                               '0',
                                           )
                                         : '-'
@@ -831,7 +831,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   <div
                                     className={`staking__round__button ${
                                       current.diff(
-                                        stakingRoundTimes[4].startedAt,
+                                        stakingRoundTimes[5].startedAt,
                                       ) <= 0 || !account
                                         ? ' disable'
                                         : ''
@@ -839,10 +839,10 @@ const Staking: React.FunctionComponent<IProps> = ({
                                     onClick={(e) => {
                                       if (
                                         current.diff(
-                                          stakingRoundTimes[4].startedAt,
+                                          stakingRoundTimes[5].startedAt,
                                         ) < 0 ||
                                         current.diff(
-                                          stakingRoundTimes[4].endedAt,
+                                          stakingRoundTimes[5].endedAt,
                                         ) > 0 ||
                                         !account
                                       ) {
@@ -852,7 +852,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                         stakedToken +
                                           ModalViewType.StakingOrUnstakingModal,
                                       );
-                                      setRoundModal(4);
+                                      setRoundModal(5);
                                       setModalValue(
                                         currentRound.accountPrincipal,
                                       );
@@ -907,8 +907,8 @@ const Staking: React.FunctionComponent<IProps> = ({
                                       );
 
                                       current.diff(
-                                        stakingRoundTimes[4].startedAt,
-                                      ) > 0 && setRoundModal(4);
+                                        stakingRoundTimes[5].startedAt,
+                                      ) > 0 && setRoundModal(5);
                                       setModalValue(expectedReward.value);
                                       setClaimStakingRewardModalVisible(true);
                                     }}>
@@ -924,17 +924,17 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   <p>APR</p>
                                   <h2 className="percent">
                                     {current.diff(
-                                      stakingRoundTimes[4].startedAt,
+                                      stakingRoundTimes[5].startedAt,
                                     ) <= 0 ||
-                                    roundData[4]?.apr.eq(
+                                    roundData[5]?.apr.eq(
                                       constants.MaxUint256,
                                     ) ||
                                     current.diff(
-                                      stakingRoundTimes[4].endedAt,
+                                      stakingRoundTimes[5].endedAt,
                                     ) >= 0
                                       ? '-'
                                       : toPercentWithoutSign(
-                                          roundData[4].apr || 0,
+                                          roundData[5].apr || 0,
                                         )}
                                   </h2>
                                 </div>
@@ -943,10 +943,10 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   <h2>
                                     {`${
                                       current.diff(
-                                        stakingRoundTimes[4].startedAt,
+                                        stakingRoundTimes[5].startedAt,
                                       ) > 0
                                         ? formatCommaSmall(
-                                            roundData[4]?.accountPrincipal ||
+                                            roundData[5]?.accountPrincipal ||
                                               '0',
                                           )
                                         : '-'
@@ -990,7 +990,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                 <div
                                   className={`staking__round__button ${
                                     current.diff(
-                                      stakingRoundTimes[4].startedAt,
+                                      stakingRoundTimes[5].startedAt,
                                     ) <= 0 || !account
                                       ? ' disable'
                                       : ''
@@ -998,10 +998,10 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   onClick={(e) => {
                                     if (
                                       current.diff(
-                                        stakingRoundTimes[4].startedAt,
+                                        stakingRoundTimes[5].startedAt,
                                       ) < 0 ||
                                       current.diff(
-                                        stakingRoundTimes[4].endedAt,
+                                        stakingRoundTimes[5].endedAt,
                                       ) > 0 ||
                                       !account
                                     ) {
@@ -1011,7 +1011,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                       stakedToken +
                                         ModalViewType.StakingOrUnstakingModal,
                                     );
-                                    setRoundModal(4);
+                                    setRoundModal(5);
                                     setModalValue(
                                       currentRound.accountPrincipal,
                                     );
@@ -1035,8 +1035,8 @@ const Staking: React.FunctionComponent<IProps> = ({
                                     );
 
                                     current.diff(
-                                      stakingRoundTimes[4].startedAt,
-                                    ) > 0 && setRoundModal(4);
+                                      stakingRoundTimes[5].startedAt,
+                                    ) > 0 && setRoundModal(5);
                                     setModalValue(expectedReward.value);
                                     setClaimStakingRewardModalVisible(true);
                                   }}>
@@ -1048,7 +1048,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                         </div>
                       </section>
 
-                      <section>
+                      {/* <section>
                         <section className="staking__round__remaining-data waiting">
                           {
                             // eslint-disable-next-line array-callback-return
@@ -1179,7 +1179,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                             })
                           }
                         </section>
-                      </section>
+                      </section> */}
                     </div>
                   </section>
                 </>
