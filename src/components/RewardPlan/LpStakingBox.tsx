@@ -1,16 +1,7 @@
-import {
-  Dispatch,
-  FunctionComponent,
-  SetStateAction,
-  useRef,
-  useState,
-} from 'react';
+import { FunctionComponent, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  lpStakingStartedAt,
-  lpStakingEndedAt,
-  lpRoundDate,
-} from 'src/core/data/lpStakingTime';
+import { lpRoundDate } from 'src/core/data/lpStakingTime';
+import { ETH_REWARD_PER_POOL_3 } from 'src/core/utils/calcLpReward';
 import MediaQuery from 'src/enums/MediaQuery';
 import Token from 'src/enums/Token';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
@@ -97,7 +88,7 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
             t('reward.daily_reward'),
             `${
               lpStakingRound.ethElfiRound >= 2
-                ? '0.0000 ETH'
+                ? '0.255 ETH'
                 : lpStakingRound.ethElfiRound === 1
                 ? '0.1609 ETH'
                 : '0.1376 ETH'
@@ -234,7 +225,7 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
                             .toString()
                             .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                         : lpStakingRound.ethElfiRound >= 2
-                        ? 'TBD'
+                        ? ETH_REWARD_PER_POOL_3
                         : (props.ethReward
                             ? index === 0
                               ? props.ethReward[0]
