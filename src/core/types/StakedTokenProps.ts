@@ -19,6 +19,7 @@ type StakedTokenProps = {
   };
   isError: string;
   round: number;
+  currentRound: number;
   isLoading: boolean;
 };
 

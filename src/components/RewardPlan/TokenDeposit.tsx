@@ -177,12 +177,7 @@ const TokenDeposit: FunctionComponent<Props> = ({
           <div className="component__data-info">
             <div>
               <p>{t('reward.daily_mining')}</p>
-              <p className="data">
-                {reserveTokenData[token].name === Token.BUSD
-                  ? '50,000.0000'
-                  : '16,666.6667'}{' '}
-                ELFI
-              </p>
+              <p className="data">16,666.6667 ELFI</p>
             </div>
             <div>
               <p>{t('reward.accumulated_mining')}</p>

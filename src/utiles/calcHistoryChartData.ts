@@ -148,12 +148,14 @@ const calcHistoryChartData = (
       // c: (d.calculatedAPY / divider) * base + base * 1.2,
       yield: toCompact(
         d.calculatedAPY *
-          busd3xRewardEvent(
-            data.id === envs.busdAddress && historyType === 'deposit'
-              ? Token.BUSD
-              : '',
-              moment(d.timestamp * 1000)
-          ),
+          (data.id === envs.busdAddress && historyType === 'deposit'
+            ? moment(d.timestamp * 1000).isBetween(
+                '2022.01.20 19:00:00 +09:00',
+                '2022.01.26 19:00:00 +09:00',
+              )
+              ? 3
+              : 1
+            : 1),
       ),
     });
   });
