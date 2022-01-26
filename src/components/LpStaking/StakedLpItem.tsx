@@ -298,7 +298,7 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
               className="staking__lp__staked__table__content__button">
               <p>{t('staking.unstaking')}</p>
             </div>
-            {!(round >= lpUnixTimestamp.length) &&
+            {!(round >= currentRound) &&
               moment().isBetween(startedDate, endedDate) && (
                 <div
                   onClick={() => migrationHandler(position)}
