@@ -15,7 +15,6 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import CountUp from 'react-countup';
-import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 
 interface Props {
   reserve: IReserveSubgraphData;
@@ -120,8 +119,7 @@ const TokenDeposit: FunctionComponent<Props> = ({
                         latestPrice,
                         BigNumber.from(reserve.totalDeposit || 0),
                         reserveTokenData[token].decimals,
-                      ).mul(busd3xRewardEvent(reserveTokenData[token].name)),
-                    ) || 0}
+                      )) || 0}
                   </h2>
                 </div>
               </div>

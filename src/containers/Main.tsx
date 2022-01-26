@@ -29,8 +29,6 @@ import { contextType } from 'google-map-react';
 import DrawWave from 'src/utiles/drawWave';
 import Fbg from 'src/assets/images/main/fbg.png';
 import Blocore from 'src/assets/images/main/blocore.png';
-import EventPopupKo from 'src/assets/images/event_popup--ko.png';
-import EventPopupEn from 'src/assets/images/event_popup--en.png';
 
 const Main = () => {
   const { t } = useTranslation();
@@ -76,58 +74,6 @@ const Main = () => {
       },
     },
   ];
-  const [popupVisible, setPopupVisible] = useState(false);
-
-  const dailyPopupDisable = () => {
-    const today = new Date();
-    today.setDate(today.getDate() + 1);
-    window.localStorage.setItem("@disableTime", (today.getDate()).toString());
-    setPopupVisible(true);
-  }
-
-  const showingPopup = () => {
-    const nowTime = new Date();
-    const setTime = window.localStorage.getItem("@disableTime") || "0";
-
-    nowTime.getDate() < parseInt(setTime, 10) && setPopupVisible(true)
-  }
-
-  useEffect(() => {
-    showingPopup()
-  }, [])
-
-  const displayPopup = () => {
-    return (
-      <div className="main__popup">
-        <div className="main__popup__container">
-          <div>
-            <div onClick={() => dailyPopupDisable()}>
-              <div className="main__popup__button" />
-              <p>
-              {
-                t("main.popup.disable_popup")
-              }
-              </p>
-            </div>
-            <div className="close-button" onClick={() => { setPopupVisible(true) }}>
-              <div className="close-button--1">
-                <div className="close-button--2" />
-              </div>
-            </div>
-          </div>
-          <div onClick={() => {
-            reactGA.event({
-              category: PageEventType.MoveToInternalPage,
-              action: ButtonEventType.DepositButtonOnEventModal,
-            });
-            History.push({ pathname: `/${lng}/deposit` })
-          }}>
-            <img src={lng === LanguageType.KO ? EventPopupKo : EventPopupEn} />
-          </div>
-        </div>
-      </div>
-    )
-  }
 
   const draw = () => {
     const dpr = window.devicePixelRatio;
@@ -180,9 +126,6 @@ const Main = () => {
           zIndex: -1,
         }}
       />
-      {
-        !popupVisible && displayPopup()
-      }
       <div className="main root-container">
         <section className="main__title main__section">
           <div className="main__title__container">
