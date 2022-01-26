@@ -206,7 +206,7 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
               </p>
             </div> */}
         </div>
-        {!(round >= lpUnixTimestamp.length) &&
+        {!(round >= currentRound) &&
           moment().isBetween(startedDate, endedDate) && (
             <div
               onClick={() => migrationHandler(position)}
