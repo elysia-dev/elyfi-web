@@ -26,11 +26,11 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
     isError,
     round,
     isLoading,
+    currentRound,
   } = props;
   const { account } = useWeb3React();
   const { t } = useTranslation();
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
-
   return (
     <>
       <div className="staking__lp__reward__header">
@@ -102,6 +102,7 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
                         };
                       }}
                       round={round}
+                      currentRound={currentRound}
                     />
                   );
                 })
