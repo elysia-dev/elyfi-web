@@ -270,7 +270,7 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
               </h2>
             )}
             <h2 className="staking__lp__staked__table__content--right__reward__unit">
-              &nbsp;{rewardTokenType}
+              &nbsp;ELFI
             </h2>
           </div>
         </div>
