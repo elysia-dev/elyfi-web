@@ -19,7 +19,6 @@ import PriceContext from 'src/contexts/PriceContext';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import {
   daiMoneyPoolTime,
-  moneyPoolStartedAt,
   tetherMoneyPoolTime,
   busdMoneyPoolTime,
 } from 'src/core/data/moneypoolTimes';
@@ -37,6 +36,7 @@ import {
   calcElfiRewardByLp,
   calcEthRewardByLp,
   ETH_REWARD_PER_POOL_2,
+  ETH_REWARD_PER_POOL_3,
 } from 'src/core/utils/calcLpReward';
 import calcMintedAmounts from 'src/core/utils/calcMintedAmounts';
 import {
@@ -162,7 +162,7 @@ const RewardPlan: FunctionComponent = () => {
     beforeDaiRewardByLp: [0, 0, 0],
     daiRewardByLp: calcDaiRewardByLp(),
     beforeEthRewardByLp: [0, 0, 0],
-    ethRewardByLp: calcEthRewardByLp(lpStakingRound.ethElfiRound),
+    ethRewardByLp: calcEthRewardByLp(),
     beforeMintedByBuscMoneypool: 0,
     mintedByBusdMoneypool: calcMintedByBusdMoneypool(),
   });
@@ -333,7 +333,7 @@ const RewardPlan: FunctionComponent = () => {
         beforeDaiRewardByLp: amountData.daiRewardByLp,
         daiRewardByLp: calcDaiRewardByLp(),
         beforeEthRewardByLp: amountData.ethRewardByLp,
-        ethRewardByLp: calcEthRewardByLp(lpUnixTimestamp.length),
+        ethRewardByLp: calcEthRewardByLp(),
         beforeMintedByBuscMoneypool: amountData.mintedByBusdMoneypool,
         mintedByBusdMoneypool: calcMintedByBusdMoneypool(),
       });
@@ -416,8 +416,10 @@ const RewardPlan: FunctionComponent = () => {
               token1={'ETH'}
               secondTokenValue={{
                 total:
-                  lpStakingRound.ethElfiRound === 1
-                    ? ETH_REWARD_PER_POOL_2
+                  lpStakingRound.ethElfiRound <= 1
+                    ? lpStakingRound.ethElfiRound === 2
+                      ? ETH_REWARD_PER_POOL_3
+                      : ETH_REWARD_PER_POOL_2
                     : ETH_REWARD_PER_POOL,
                 start: amountData.beforeEthRewardByLp,
                 end: amountData.ethRewardByLp,

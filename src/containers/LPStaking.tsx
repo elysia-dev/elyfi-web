@@ -510,6 +510,7 @@ function LPStaking(): JSX.Element {
                 isError={isError}
                 round={round}
                 isLoading={isLoading}
+                currentRound={currentRound - 1}
               />
             </section>
 

@@ -30,8 +30,6 @@ import { MainnetData } from 'src/core/data/mainnets';
 import getIncentivePoolAddress from 'src/core/utils/getIncentivePoolAddress';
 import scrollToOffeset from 'src/core/utils/scrollToOffeset';
 import useBalances from 'src/hooks/useBalances';
-import EventImage from 'src/assets/images/event_image.png';
-import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();
@@ -139,24 +137,6 @@ const Dashboard: React.FunctionComponent = () => {
 
       <div className="deposit">
         <TvlCounter />
-        <div className="deposit__event">
-          <div>
-            <div className="deposit__event__box">
-              <p>
-                EVENT
-              </p>
-            </div>
-            <div>
-              <h2>
-                <Trans i18nKey={t("dashboard.event_title")} />
-              </h2>
-              <p>
-                2022.1.20 19:00:00 ~ 2022.1.26 19:00:00 KST
-              </p>
-            </div>
-          </div>
-          <img src={EventImage} />
-        </div>
         <RewardPlanButton stakingType={'deposit'} />
         <div className="deposit__table__wrapper">
           {isEnoughWide && (
@@ -191,8 +171,7 @@ const Dashboard: React.FunctionComponent = () => {
                                 elfiPrice,
                                 BigNumber.from(reserve.totalDeposit),
                                 reserveTokenData[balance.tokenName].decimals,
-                              ).mul(busd3xRewardEvent(balance.tokenName)) ||
-                                '0',
+                              ) || '0',
                             )}
                           </p>
                         </div>

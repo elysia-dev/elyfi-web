@@ -56,6 +56,7 @@ export type StakedLpItemProps = {
     lpTokenType: string;
   };
   round: number;
+  currentRound: number;
 };
 
 export type StakingTitleProps = {

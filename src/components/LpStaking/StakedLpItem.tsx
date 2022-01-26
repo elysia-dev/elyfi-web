@@ -24,8 +24,14 @@ import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
 
 const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
-  const { position, setUnstakeTokenId, expectedReward, positionInfo, round } =
-    props;
+  const {
+    position,
+    setUnstakeTokenId,
+    expectedReward,
+    positionInfo,
+    round,
+    currentRound,
+  } = props;
   const { t } = useTranslation();
   const { poolAddress, rewardTokenAddress } = getAddressesByPool(position);
   const {
@@ -63,11 +69,7 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
           lpTokenValues(poolAddress, rewardTokenAddress, round - 1),
           tokenId,
         ]),
-        iFace.encodeFunctionData('withdrawToken', [
-          tokenId,
-          account,
-          '0x',
-        ]),
+        iFace.encodeFunctionData('withdrawToken', [tokenId, account, '0x']),
       ]);
       setTransaction(
         res,
@@ -79,7 +81,7 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
             chainId,
             address: account,
             tokenId,
-          })
+          }),
         ),
         'Withdraw' as RecentActivityType,
         () => {},
@@ -126,7 +128,7 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
             chainId,
             address: account,
             tokenId,
-          })
+          }),
         ),
         'LPMigration' as RecentActivityType,
         () => {},
@@ -139,16 +141,10 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
   };
 
   const startedDate = moment
-    .unix(
-      lpUnixTimestamp[round === lpUnixTimestamp.length ? round - 1 : round]
-        .startedAt,
-    )
+    .unix(lpUnixTimestamp[currentRound].startedAt)
     .format('YYYY.MM.DD hh:mm:ss Z');
   const endedDate = moment
-    .unix(
-      lpUnixTimestamp[round === lpUnixTimestamp.length ? round - 1 : round]
-        .endedAt,
-    )
+    .unix(lpUnixTimestamp[currentRound].endedAt)
     .format('YYYY.MM.DD hh:mm:ss Z');
 
   const unstakingHandler = async (position: {
@@ -183,39 +179,33 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
 
   const { value: mediaQuery } = useMediaQueryType();
 
-  return (
-    mediaQuery === MediaQuery.PC ? (
-      <div className="staking__lp__staked__table__content">
-        <div className="staking__lp__staked__table__content--left">
-          <div>
-            <h2>{position.tokenId}</h2>
+  return mediaQuery === MediaQuery.PC ? (
+    <div className="staking__lp__staked__table__content">
+      <div className="staking__lp__staked__table__content--left">
+        <div>
+          <h2>{position.tokenId}</h2>
+        </div>
+        <div>
+          <h2>{lpTokenType}</h2>
+        </div>
+        <div>
+          <h2>$ {toCompact(stakedLiquidity)}</h2>
+        </div>
+        <div>
+          <div
+            onClick={() => unstakingHandler(position)}
+            className="staking__lp__staked__table__content__button">
+            <p>{t('staking.unstaking')}</p>
           </div>
-          <div>
-            <h2>{lpTokenType}</h2>
-          </div>
-          <div>
-            <h2>$ {toCompact(stakedLiquidity)}</h2>
-          </div>
-          <div>
-            <div 
-              onClick={() => unstakingHandler(position)}
-              className="staking__lp__staked__table__content__button"
-            >
-              <p>
-                {t('staking.unstaking')}
-              </p>
-            </div>
-            <div 
+          {/* <div 
               onClick={() => unstakingHandler(position)}
               className="staking__lp__staked__table__content__button"
             >
               <p>
                 {t("staking.migration")}
               </p>
-            </div>
-          </div>
-          {!(round === lpUnixTimestamp.length) &&
-            round - 1 === 0 &&
+            </div> */}
+          {!(round - 1 >= currentRound) &&
             moment().isBetween(startedDate, endedDate) && (
               <div
                 onClick={() => migrationHandler(position)}
@@ -224,154 +214,167 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
               </div>
             )}
         </div>
+      </div>
 
-        <div className="staking__lp__staked__table__content--center" >
+      <div className="staking__lp__staked__table__content--center">
+        <div />
+      </div>
+      <div className="staking__lp__staked__table__content--right">
+        <div>
+          <div className="staking__lp__staked__table__content--right__image">
+            <img src={tokenImg} />
+            <h2>{rewardTokenType}</h2>
+          </div>
+          <div className="staking__lp__staked__table__content--right__reward">
+            {rewardToken > 0.0001 ? (
+              <CountUp
+                className="staking__lp__staked__table__content--right__reward__amount"
+                start={beforeRewardToken}
+                end={rewardToken}
+                formattingFn={(number) => {
+                  return formatDecimalFracionDigit(number, 4);
+                }}
+                duration={1}
+                decimals={4}
+              />
+            ) : (
+              <h2 className="staking__lp__staked__table__content--right__reward__amount">
+                0.0000...
+              </h2>
+            )}
+            <h2 className="staking__lp__staked__table__content--right__reward__unit">
+              &nbsp;{rewardTokenType}
+            </h2>
+          </div>
+        </div>
+        <div>
+          <div className="staking__lp__staked__table__content--right__image">
+            <img src={elfi} />
+            <h2>{Token.ELFI}</h2>
+          </div>
+          <div className="staking__lp__staked__table__content--right__reward">
+            {expectedReward?.elfiReward > 0.0001 ? (
+              <CountUp
+                className="staking__lp__staked__table__content--right__reward__amount"
+                start={expectedReward?.beforeElfiReward}
+                end={expectedReward?.elfiReward}
+                formattingFn={(number) => {
+                  return formatDecimalFracionDigit(number, 4);
+                }}
+                duration={1}
+                decimals={4}
+              />
+            ) : (
+              <h2 className="staking__lp__staked__table__content--right__reward__amount">
+                0.0000...
+              </h2>
+            )}
+            <h2 className="staking__lp__staked__table__content--right__reward__unit">
+              &nbsp;ELFI
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div className="staking__lp__staked__table__content__wrapper">
+      <div className="staking__lp__staked__table__content">
+        <div className="staking__lp__staked__table__content--left">
+          <div>
+            <p>ID</p>
+            <h2>{position.tokenId}</h2>
+          </div>
+          <div>
+            <p>{t('lpstaking.staked_lp_token_type')}</p>
+            <h2>{lpTokenType}</h2>
+          </div>
+          <div>
+            <p>{t('lpstaking.liquidity')}</p>
+            <h2>$ {toCompact(stakedLiquidity)}</h2>
+          </div>
+          <div>
+            <div
+              onClick={() => unstakingHandler(position)}
+              className="staking__lp__staked__table__content__button">
+              <p>{t('staking.unstaking')}</p>
+            </div>
+            {!(round - 1 >= currentRound) &&
+              moment().isBetween(startedDate, endedDate) && (
+                <div
+                  onClick={() => migrationHandler(position)}
+                  className="staking__lp__staked__table__content__button">
+                  <p>{t('staking.migration')}</p>
+                </div>
+              )}
+          </div>
+        </div>
+
+        <div className="staking__lp__staked__table__content--center">
           <div />
         </div>
         <div className="staking__lp__staked__table__content--right">
-          <div>
-            <div className="staking__lp__staked__table__content--right__image">
-              <img src={tokenImg} />
-              <h2>{rewardTokenType}</h2>
-            </div>
-            <div className="staking__lp__staked__table__content--right__reward">
-              {rewardToken > 0.0001 ? (
-                <CountUp
-                  className="staking__lp__staked__table__content--right__reward__amount"
-                  start={beforeRewardToken}
-                  end={rewardToken}
-                  formattingFn={(number) => {
-                    return formatDecimalFracionDigit(number, 4);
-                  }}
-                  duration={1}
-                  decimals={4}
-                />
-              ) : (
-                <h2 className="staking__lp__staked__table__content--right__reward__amount">0.0000...</h2>
-              )}
-              <h2 className="staking__lp__staked__table__content--right__reward__unit">&nbsp;{rewardTokenType}</h2>
-            </div>
+          <div className="staking__lp__staked__table__content--right__header">
+            <p>{t('lpstaking.expected_reward')}</p>
           </div>
-          <div>
-            <div className="staking__lp__staked__table__content--right__image">
-              <img src={elfi} />
-              <h2>{Token.ELFI}</h2>
-            </div>
-            <div className="staking__lp__staked__table__content--right__reward">
-              {expectedReward?.elfiReward > 0.0001 ? (
-                <CountUp
-                  className="staking__lp__staked__table__content--right__reward__amount"
-                  start={expectedReward?.beforeElfiReward}
-                  end={expectedReward?.elfiReward}
-                  formattingFn={(number) => {
-                    return formatDecimalFracionDigit(number, 4);
-                  }}
-                  duration={1}
-                  decimals={4}
-                />
-              ) : (
-                <h2 className="staking__lp__staked__table__content--right__reward__amount">0.0000...</h2>
-              )}
-              <h2 className="staking__lp__staked__table__content--right__reward__unit">&nbsp;{rewardTokenType}</h2>
-            </div>
-          </div>
-        </div>
-      </div>
-    ) : (
-      <div className="staking__lp__staked__table__content__wrapper">
-        <div className="staking__lp__staked__table__content">
-          <div className="staking__lp__staked__table__content--left">
+          <div className="staking__lp__staked__table__content--right__body">
             <div>
-              <p>ID</p>
-              <h2>{position.tokenId}</h2>
-            </div>
-            <div>
-              <p>{t('lpstaking.staked_lp_token_type')}</p>
-              <h2>{lpTokenType}</h2>
-            </div>
-            <div>
-              <p>{t('lpstaking.liquidity')}</p>
-              <h2>$ {toCompact(stakedLiquidity)}</h2>
-            </div>
-            <div>
-              <div 
-                onClick={() => unstakingHandler(position)}
-                className="staking__lp__staked__table__content__button"
-              >
-                <p>
-                  {t('staking.unstaking')}
-                </p>
+              <div className="staking__lp__staked__table__content--right__image">
+                <img src={tokenImg} />
+                <h2>{rewardTokenType}</h2>
               </div>
-              <div 
-                onClick={() => unstakingHandler(position)}
-                className="staking__lp__staked__table__content__button"
-              >
-                <p>
-                  {t("staking.migration")}
-                </p>
+              <div className="staking__lp__staked__table__content--right__reward">
+                {rewardToken > 0.0001 ? (
+                  <CountUp
+                    className="staking__lp__staked__table__content--right__reward__amount"
+                    start={beforeRewardToken}
+                    end={rewardToken}
+                    formattingFn={(number) => {
+                      return formatDecimalFracionDigit(number, 4);
+                    }}
+                    duration={1}
+                    decimals={4}
+                  />
+                ) : (
+                  <h2 className="staking__lp__staked__table__content--right__reward__amount">
+                    0.0000...
+                  </h2>
+                )}
+                <h2 className="staking__lp__staked__table__content--right__reward__unit">
+                  &nbsp;{rewardTokenType}
+                </h2>
               </div>
             </div>
-          </div>
-
-          <div className="staking__lp__staked__table__content--center" >
-            <div />
-          </div>
-          <div className="staking__lp__staked__table__content--right">
-            <div className="staking__lp__staked__table__content--right__header">
-              <p>{t('lpstaking.expected_reward')}</p>
-            </div>
-            <div className="staking__lp__staked__table__content--right__body">
-              <div>
-                <div className="staking__lp__staked__table__content--right__image">
-                  <img src={tokenImg} />
-                  <h2>{rewardTokenType}</h2>
-                </div>
-                <div className="staking__lp__staked__table__content--right__reward">
-                  {rewardToken > 0.0001 ? (
-                    <CountUp
-                      className="staking__lp__staked__table__content--right__reward__amount"
-                      start={beforeRewardToken}
-                      end={rewardToken}
-                      formattingFn={(number) => {
-                        return formatDecimalFracionDigit(number, 4);
-                      }}
-                      duration={1}
-                      decimals={4}
-                    />
-                  ) : (
-                    <h2 className="staking__lp__staked__table__content--right__reward__amount">0.0000...</h2>
-                  )}
-                  <h2 className="staking__lp__staked__table__content--right__reward__unit">&nbsp;{rewardTokenType}</h2>
-                </div>
+            <div>
+              <div className="staking__lp__staked__table__content--right__image">
+                <img src={elfi} />
+                <h2>{Token.ELFI}</h2>
               </div>
-              <div>
-                <div className="staking__lp__staked__table__content--right__image">
-                  <img src={elfi} />
-                  <h2>{Token.ELFI}</h2>
-                </div>
-                <div className="staking__lp__staked__table__content--right__reward">
-                  {expectedReward?.elfiReward > 0.0001 ? (
-                    <CountUp
-                      className="staking__lp__staked__table__content--right__reward__amount"
-                      start={expectedReward?.beforeElfiReward}
-                      end={expectedReward?.elfiReward}
-                      formattingFn={(number) => {
-                        return formatDecimalFracionDigit(number, 4);
-                      }}
-                      duration={1}
-                      decimals={4}
-                    />
-                  ) : (
-                    <h2 className="staking__lp__staked__table__content--right__reward__amount">0.0000...</h2>
-                  )}
-                  <h2 className="staking__lp__staked__table__content--right__reward__unit">&nbsp;{rewardTokenType}</h2>
-                </div>
+              <div className="staking__lp__staked__table__content--right__reward">
+                {expectedReward?.elfiReward > 0.0001 ? (
+                  <CountUp
+                    className="staking__lp__staked__table__content--right__reward__amount"
+                    start={expectedReward?.beforeElfiReward}
+                    end={expectedReward?.elfiReward}
+                    formattingFn={(number) => {
+                      return formatDecimalFracionDigit(number, 4);
+                    }}
+                    duration={1}
+                    decimals={4}
+                  />
+                ) : (
+                  <h2 className="staking__lp__staked__table__content--right__reward__amount">
+                    0.0000...
+                  </h2>
+                )}
+                <h2 className="staking__lp__staked__table__content--right__reward__unit">
+                  &nbsp;{rewardTokenType}
+                </h2>
               </div>
             </div>
           </div>
         </div>
       </div>
-    )
+    </div>
   );
 };
 
