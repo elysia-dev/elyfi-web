@@ -8,6 +8,7 @@ import {
 import Token from 'src/enums/Token';
 import calcMiningAPR from './calcMiningAPR';
 import { toCompact } from './formatters';
+import { busd3xRewardEvent } from './busd3xRewardEvent';
 
 interface ICalculatedData extends IReserveHistory {
   selectedAmount: string;
@@ -145,7 +146,15 @@ const calcHistoryChartData = (
         toCompact(parseInt(utils.formatUnits(d.selectedAmount, decimals), 10)),
       barTotal: parseInt(utils.formatUnits(d.selectedAmount, decimals), 10) * 2,
       // c: (d.calculatedAPY / divider) * base + base * 1.2,
-      yield: toCompact(d.calculatedAPY),
+      yield: toCompact(
+        d.calculatedAPY *
+          busd3xRewardEvent(
+            data.id === envs.busdAddress && historyType === 'deposit'
+              ? Token.BUSD
+              : '',
+              moment(d.timestamp * 1000)
+          ),
+      ),
     });
   });
   return test;
