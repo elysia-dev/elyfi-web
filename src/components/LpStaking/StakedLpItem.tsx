@@ -62,11 +62,11 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
     try {
       const res = await staker.multicall([
         iFace.encodeFunctionData('unstakeToken', [
-          lpTokenValues(poolAddress, envs.governanceAddress, round - 1),
+          lpTokenValues(poolAddress, envs.governanceAddress, round - 2),
           tokenId,
         ]),
         iFace.encodeFunctionData('unstakeToken', [
-          lpTokenValues(poolAddress, rewardTokenAddress, round - 1),
+          lpTokenValues(poolAddress, rewardTokenAddress, round - 2),
           tokenId,
         ]),
         iFace.encodeFunctionData('withdrawToken', [tokenId, account, '0x']),
@@ -101,19 +101,19 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
     try {
       const res = await staker.multicall([
         iFace.encodeFunctionData('unstakeToken', [
-          lpTokenValues(poolAddress, envs.governanceAddress, round - 1),
+          lpTokenValues(poolAddress, envs.governanceAddress, round - 2),
           tokenId,
         ]),
         iFace.encodeFunctionData('unstakeToken', [
+          lpTokenValues(poolAddress, rewardTokenAddress, round - 2),
+          tokenId,
+        ]),
+        iFace.encodeFunctionData('stakeToken', [
+          lpTokenValues(poolAddress, envs.governanceAddress, round - 1),
+          tokenId,
+        ]),
+        iFace.encodeFunctionData('stakeToken', [
           lpTokenValues(poolAddress, rewardTokenAddress, round - 1),
-          tokenId,
-        ]),
-        iFace.encodeFunctionData('stakeToken', [
-          lpTokenValues(poolAddress, envs.governanceAddress, round),
-          tokenId,
-        ]),
-        iFace.encodeFunctionData('stakeToken', [
-          lpTokenValues(poolAddress, rewardTokenAddress, round),
           tokenId,
         ]),
       ]);
@@ -205,7 +205,7 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
                 {t("staking.migration")}
               </p>
             </div> */}
-          {!(round >= currentRound) &&
+          {!(round - 1 >= currentRound) &&
             moment().isBetween(startedDate, endedDate) && (
               <div
                 onClick={() => migrationHandler(position)}
@@ -298,7 +298,7 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
               className="staking__lp__staked__table__content__button">
               <p>{t('staking.unstaking')}</p>
             </div>
-            {!(round >= currentRound) &&
+            {!(round - 1 >= currentRound) &&
               moment().isBetween(startedDate, endedDate) && (
                 <div
                   onClick={() => migrationHandler(position)}

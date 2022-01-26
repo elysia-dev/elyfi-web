@@ -31,6 +31,7 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
   const { account } = useWeb3React();
   const { t } = useTranslation();
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
+
   return (
     <>
       <div className="staking__lp__reward__header">
