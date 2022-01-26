@@ -15,6 +15,7 @@ const WithdrawBody: React.FunctionComponent<{
   yieldProduced: BigNumber;
   accumulatedYield: BigNumber;
   withdraw: (amount: BigNumber, max: boolean) => void;
+  transactionWait: boolean;
 }> = ({
   tokenInfo,
   depositBalance,
@@ -22,6 +23,7 @@ const WithdrawBody: React.FunctionComponent<{
   yieldProduced,
   accumulatedYield,
   withdraw,
+  transactionWait
 }) => {
     const [amount, setAmount] = useState<{ value: string; max: boolean }>({
       value: '',
@@ -129,16 +131,18 @@ const WithdrawBody: React.FunctionComponent<{
           </div>
         </div>
         <ModalButton
-          className={`modal__button${amountGtBalance || amountLteZero ? ' disable' : ''}`}
+          className={`modal__button${amountGtBalance || amountLteZero || transactionWait ? ' disable' : ''}`}
           onClick={() => {
-            if (!(amountLteZero || amountGtBalance)) {
+            if (!(amountLteZero || amountGtBalance || transactionWait)) {
               withdraw(
                 utils.parseUnits(amount.value, tokenInfo.decimals),
                 amount.max,
               );
             }
           }}
-          content={amountLteZero
+          content={
+            transactionWait ? "Transaction is now loading..." : 
+            amountLteZero
             ? t('dashboard.enter_amount')
             : amountGtBalance
               ? t('dashboard.insufficient_balance', { tokenName: tokenInfo.name })

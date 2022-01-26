@@ -62,9 +62,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
 }) => {
   const { account, chainId, library } = useWeb3React();
   const { elfiPrice } = useContext(PriceContext);
-
   const currentMoneypoolAddress = useCurrentMoneypoolAddress();
-
   const [selected, select] = useState<boolean>(true);
   const {
     allowance,
@@ -89,6 +87,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const moneyPool = useMoneyPool();
   const { setTransaction, failTransaction } = useContext(TxContext);
 
+  const [transactionWait, setTransactionWait] = useState<boolean>(false);
   const tokenInfo = ReserveData.find(
     (_reserve) => _reserve.address === reserve.id,
   );
@@ -128,6 +127,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   }, [accumulatedYield, reserve, userData]);
 
   const increateAllowance = async () => {
+    setTransactionWait(true)
     if (!account) return;
     const emitter = buildEventEmitter(
       ModalViewType.DepositOrWithdrawModal,
@@ -165,6 +165,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
   };
 
   const requestDeposit = async (amount: BigNumber, max: boolean) => {
+    setTransactionWait(true)
+
     if (!account) return;
 
     const emitter = buildEventEmitter(
@@ -205,6 +207,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
   };
 
   const reqeustWithdraw = (amount: BigNumber, max: boolean) => {
+    setTransactionWait(true)
+    
     if (!account) return;
 
     const emitter = buildEventEmitter(
@@ -306,6 +310,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
             increaseAllownace={increateAllowance}
             deposit={requestDeposit}
             isLoading={loading}
+            transactionWait={transactionWait}
           />
         ) : (
           <WithdrawBody
@@ -315,6 +320,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
             yieldProduced={yieldProduced}
             liquidity={liquidity.value}
             withdraw={reqeustWithdraw}
+            transactionWait={transactionWait}
           />
         )}
       </div>
