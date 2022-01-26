@@ -62,11 +62,11 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
     try {
       const res = await staker.multicall([
         iFace.encodeFunctionData('unstakeToken', [
-          lpTokenValues(poolAddress, envs.governanceAddress, round - 2),
+          lpTokenValues(poolAddress, envs.governanceAddress, round - 1),
           tokenId,
         ]),
         iFace.encodeFunctionData('unstakeToken', [
-          lpTokenValues(poolAddress, rewardTokenAddress, round - 2),
+          lpTokenValues(poolAddress, rewardTokenAddress, round - 1),
           tokenId,
         ]),
         iFace.encodeFunctionData('withdrawToken', [tokenId, account, '0x']),
@@ -101,19 +101,19 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
     try {
       const res = await staker.multicall([
         iFace.encodeFunctionData('unstakeToken', [
-          lpTokenValues(poolAddress, envs.governanceAddress, round - 2),
-          tokenId,
-        ]),
-        iFace.encodeFunctionData('unstakeToken', [
-          lpTokenValues(poolAddress, rewardTokenAddress, round - 2),
-          tokenId,
-        ]),
-        iFace.encodeFunctionData('stakeToken', [
           lpTokenValues(poolAddress, envs.governanceAddress, round - 1),
           tokenId,
         ]),
-        iFace.encodeFunctionData('stakeToken', [
+        iFace.encodeFunctionData('unstakeToken', [
           lpTokenValues(poolAddress, rewardTokenAddress, round - 1),
+          tokenId,
+        ]),
+        iFace.encodeFunctionData('stakeToken', [
+          lpTokenValues(poolAddress, envs.governanceAddress, round),
+          tokenId,
+        ]),
+        iFace.encodeFunctionData('stakeToken', [
+          lpTokenValues(poolAddress, rewardTokenAddress, round),
           tokenId,
         ]),
       ]);
