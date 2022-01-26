@@ -115,6 +115,8 @@ const Staking: React.FunctionComponent<IProps> = ({
     useState<boolean>(false);
   const [transactionModal, setTransactionModal] = useState(false);
 
+  const [transactionWait, setTransactionWait] = useState<boolean>(false);
+  
   const [selectModalRound, setRoundModal] = useState(0);
   const [modalValue, setModalValue] = useState(constants.Zero);
 
@@ -358,15 +360,23 @@ const Staking: React.FunctionComponent<IProps> = ({
         }
         currentRound={currentRound}
         round={selectModalRound + 1}
-        closeHandler={() => setClaimStakingRewardModalVisible(false)}
+        closeHandler={() => {
+          setTransactionWait(false)
+          setClaimStakingRewardModalVisible(false)
+        }}
         afterTx={() => {
           account && fetchRoundData(account);
         }}
         transactionModal={() => setTransactionModal(true)}
+        transactionWait={transactionWait}
+        setTransactionWait={() => setTransactionWait(true)}
       />
       <StakingModal
         visible={stakingModalVisible}
-        closeHandler={() => setStakingModalVisible(false)}
+        closeHandler={() => {
+          setTransactionWait(false)
+          setStakingModalVisible(false)
+        }}
         stakedToken={stakedToken}
         stakedBalance={
           loading
@@ -383,10 +393,15 @@ const Staking: React.FunctionComponent<IProps> = ({
         setTxStatus={getStatus}
         setTxWaiting={getWaiting}
         transactionModal={() => setTransactionModal(true)}
+        transactionWait={transactionWait}
+        setTransactionWait={() => setTransactionWait(true)}
       />
       <MigrationModal
         visible={migrationModalVisible}
-        closeHandler={() => setMigrationModalVisible(false)}
+        closeHandler={() => {  
+          setTransactionWait(false)
+          setMigrationModalVisible(false)
+        }}
         stakedToken={stakedToken}
         rewardToken={rewardToken}
         stakedBalance={loading ? constants.Zero : modalValue}
@@ -398,6 +413,8 @@ const Staking: React.FunctionComponent<IProps> = ({
           account && fetchRoundData(account);
         }}
         transactionModal={() => setTransactionModal(true)}
+        transactionWait={transactionWait}
+        setTransactionWait={() => setTransactionWait(true)}
       />
       <StakingEnded
         visible={stakingEndedVisible}

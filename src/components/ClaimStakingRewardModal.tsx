@@ -35,6 +35,8 @@ const ClaimStakingRewardModal: FunctionComponent<{
   closeHandler: () => void;
   afterTx: () => void;
   transactionModal: () => void;
+  transactionWait: boolean;
+  setTransactionWait: () => void;
 }> = ({
   visible,
   stakedToken,
@@ -47,6 +49,8 @@ const ClaimStakingRewardModal: FunctionComponent<{
   closeHandler,
   afterTx,
   transactionModal,
+  transactionWait,
+  setTransactionWait,
 }) => {
   const { account, chainId } = useWeb3React();
   const stakingPool = useStakingPool(stakedToken, round >= 3);
@@ -103,8 +107,11 @@ const ClaimStakingRewardModal: FunctionComponent<{
                 </p>
               </div>
               <div
-                className="modal__button"
+                className={`modal__button ${transactionWait ? "disable" : ""}`}
                 onClick={() => {
+                  transactionWait ? undefined :
+
+                  setTransactionWait()
                   if (!account) return;
 
                   const emitter = buildEventEmitter(
@@ -152,7 +159,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
                       failTransaction(emitter, closeHandler, e);
                     });
                 }}>
-                <p>{t('staking.claim_reward')}</p>
+                <p>{transactionWait ? "Transaction is loading..." : t('staking.claim_reward')}</p>
               </div>
             </>
           )}

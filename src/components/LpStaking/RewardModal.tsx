@@ -24,6 +24,8 @@ const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
   visible,
   closeHandler,
   rewardToReceive,
+  transactionWait,
+  setTransactionWait,
 }) => {
   const { t } = useTranslation();
   const { txWaiting } = useContext(TxContext);
@@ -81,6 +83,7 @@ const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
 
   const receiveRewardHandler = async () => {
     try {
+      setTransactionWait()
       await claim();
     } catch (error) {
       alert(error);
@@ -143,9 +146,9 @@ const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
         </div>
         <div>
           <div
-            className={`modal__button`}
+            className={`modal__button ${transactionWait ? "disable" : ""}`}
             onClick={() => receiveRewardHandler()}>
-            <p>{t('staking.claim_reward')}</p>
+            <p>{transactionWait ? "Transaction is loading..." : t('staking.claim_reward')}</p>
           </div>
         </div>
       </div>

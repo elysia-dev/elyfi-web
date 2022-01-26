@@ -41,6 +41,8 @@ export type LpStakingModalProps = {
   stakingPoolAddress: string;
   rewardTokenAddress: string;
   round: number;
+  transactionWait: boolean;
+  setTransactionWait: () => void;
 };
 
 export type StakedLpItemProps = {

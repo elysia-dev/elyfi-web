@@ -34,6 +34,8 @@ const MigrationModal: React.FunctionComponent<{
   rewardBalance: BigNumber;
   round: number;
   transactionModal: () => void;
+  transactionWait: boolean;
+  setTransactionWait: () => void;
 }> = ({
   visible,
   closeHandler,
@@ -44,6 +46,8 @@ const MigrationModal: React.FunctionComponent<{
   rewardToken,
   round,
   transactionModal,
+  transactionWait,
+  setTransactionWait,
 }) => {
   const current = moment();
   const { t, i18n } = useTranslation();
@@ -258,7 +262,8 @@ const MigrationModal: React.FunctionComponent<{
           className={`modal__button${
             stakedBalance.isZero() ||
             amountGtStakedBalance ||
-            migrationAmountGtStakedBalance
+            migrationAmountGtStakedBalance ||
+            transactionWait
               ? ' disable'
               : ''
           }`}
@@ -267,9 +272,12 @@ const MigrationModal: React.FunctionComponent<{
               stakedBalance.isZero() ||
               !account ||
               amountGtStakedBalance ||
-              migrationAmountGtStakedBalance
+              migrationAmountGtStakedBalance ||
+              transactionWait
             )
               return;
+
+            setTransactionWait()
 
             const emitter = buildEventEmitter(
               ModalViewType.MigrationOrUnstakingModal,
@@ -326,7 +334,8 @@ const MigrationModal: React.FunctionComponent<{
               });
           }}>
           <p>
-            {amountGtStakedBalance
+            {
+            transactionWait ? "Transaction is loading..." : amountGtStakedBalance
               ? t('staking.insufficient_balance')
               : t('staking.transfer')}
           </p>

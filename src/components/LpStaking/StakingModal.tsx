@@ -21,6 +21,8 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
     stakingPoolAddress,
     rewardTokenAddress,
     round,
+    transactionWait,
+    setTransactionWait,
   } = props;
   const { t } = useTranslation();
   const [stakingMode, setStakingMode] = useState<boolean>(true);
@@ -39,6 +41,7 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
 
   const lpStakingHandler = async () => {
     try {
+      setTransactionWait()
       await staking(
         stakingPoolAddress,
         rewardTokenAddress,
@@ -108,20 +111,24 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
         )}
         <div
           className={`modal__button${
-            unstakedPositions.length === 0
+            transactionWait 
+              ? " disable" 
+              : unstakedPositions.length === 0
               ? ' disable'
               : selectedToken.id
               ? ''
               : ' disable'
           }`}
           onClick={() =>
-            unstakedPositions.length === 0
+            transactionWait 
+              ? '' 
+              : unstakedPositions.length === 0
               ? ''
               : selectedToken.id
               ? lpStakingHandler()
               : ''
           }>
-          <p>{t('staking.staking')}</p>
+          <p>{transactionWait ? "Transaction is loading..." : t('staking.staking')}</p>
         </div>
       </div>
     </div>

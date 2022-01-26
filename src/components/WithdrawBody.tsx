@@ -141,7 +141,7 @@ const WithdrawBody: React.FunctionComponent<{
             }
           }}
           content={
-            transactionWait ? "Transaction is now loading..." : 
+            transactionWait ? "Transaction is loading..." : 
             amountLteZero
             ? t('dashboard.enter_amount')
             : amountGtBalance

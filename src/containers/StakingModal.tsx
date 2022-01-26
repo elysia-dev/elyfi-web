@@ -34,6 +34,8 @@ const StakingModal: React.FunctionComponent<{
   setTxStatus: (status: txStatus) => void;
   setTxWaiting: (status: boolean) => void;
   transactionModal: () => void;
+  transactionWait: boolean;
+  setTransactionWait: () => void;
 }> = ({
   visible,
   closeHandler,
@@ -45,6 +47,8 @@ const StakingModal: React.FunctionComponent<{
   setTxStatus,
   setTxWaiting,
   transactionModal,
+  transactionWait,
+  setTransactionWait,
 }) => {
   const { t, i18n } = useTranslation();
   const { account, chainId } = useWeb3React();
@@ -170,12 +174,13 @@ const StakingModal: React.FunctionComponent<{
               {!stakingMode ? (
                 <div
                   className={`modal__button${
-                    amountLteZero || amountGtStakedBalance ? ' disable' : ''
+                    amountLteZero || amountGtStakedBalance || transactionWait ? ' disable' : ''
                   }`}
                   onClick={() => {
-                    if (!account || amountLteZero || amountGtStakedBalance)
+                    if (!account || amountLteZero || amountGtStakedBalance || transactionWait)
                       return;
-
+                    
+                    setTransactionWait()
                     const emitter = buildEventEmitter(
                       ModalViewType.StakingOrUnstakingModal,
                       TransactionType.Unstake,
@@ -225,7 +230,7 @@ const StakingModal: React.FunctionComponent<{
                       });
                   }}>
                   <p>
-                    {amountGtStakedBalance
+                    {transactionWait ? "Transaction is loading..." : amountGtStakedBalance
                       ? t('staking.insufficient_balance')
                       : t('staking.unstaking')}
                   </p>
@@ -233,10 +238,10 @@ const StakingModal: React.FunctionComponent<{
               ) : !allowanceLoading && allowance.gte(balance) ? (
                 <div
                   className={`modal__button${
-                    amountLteZero || amountGtBalance ? ' disable' : ''
+                    amountLteZero || amountGtBalance || transactionWait ? ' disable' : ''
                   }`}
                   onClick={() => {
-                    if (!account || amountLteZero || amountGtBalance) return;
+                    if (!account || amountLteZero || amountGtBalance || transactionWait) return;
                     if (
                       current.diff(stakingRoundTimes[round - 1].endedAt) > 0
                     ) {
@@ -244,7 +249,7 @@ const StakingModal: React.FunctionComponent<{
                       closeHandler();
                       return;
                     }
-
+                    setTransactionWait()
                     const emitter = buildEventEmitter(
                       ModalViewType.StakingOrUnstakingModal,
                       TransactionType.Stake,
@@ -289,15 +294,19 @@ const StakingModal: React.FunctionComponent<{
                       });
                   }}>
                   <p>
-                    {amountGtBalance
+                    {transactionWait ? "Transaction is loading..." : amountGtBalance
                       ? t('staking.insufficient_balance')
                       : t('staking.staking')}
                   </p>
                 </div>
               ) : (
                 <div
-                  className={'modal__button'}
+                  className={`modal__button ${transactionWait ? "disable" : ""}`}
                   onClick={() => {
+                    if (transactionWait) return;
+
+                    setTransactionWait()
+
                     const emitter = buildEventEmitter(
                       ModalViewType.StakingOrUnstakingModal,
                       TransactionType.Approve,
@@ -334,7 +343,7 @@ const StakingModal: React.FunctionComponent<{
                       });
                   }}>
                   <p>
-                    {t('dashboard.protocol_allow', { tokenName: stakedToken })}
+                    {transactionWait ? "Transaction is loading..." : t('dashboard.protocol_allow', { tokenName: stakedToken })}
                   </p>
                 </div>
               )}

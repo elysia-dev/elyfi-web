@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, utils } from 'ethers';
-import { FunctionComponent, useContext } from 'react';
+import { FunctionComponent, useContext, useState } from 'react';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
 import { formatCommaSmall, formatSixFracionDigit } from 'src/utiles/formatters';
 import { formatEther } from 'ethers/lib/utils';
@@ -25,6 +25,8 @@ const IncentiveModal: FunctionComponent<{
   onClose: () => void;
   afterTx: () => void;
   transactionModal: () => void;
+  transactionWait: boolean;
+  setTransactionWait: () => void;
 }> = ({
   visible,
   balanceBefore,
@@ -34,11 +36,14 @@ const IncentiveModal: FunctionComponent<{
   onClose,
   afterTx,
   transactionModal,
+  transactionWait,
+  setTransactionWait,
 }) => {
   const { account, library, chainId } = useWeb3React();
   const { setTransaction, failTransaction } = useContext(TxContext);
 
   const reqeustClaimIncentive = async () => {
+    setTransactionWait()
     if (!account) return;
 
     const emitter = buildEventEmitter(
@@ -102,11 +107,11 @@ const IncentiveModal: FunctionComponent<{
             />
           </div>
           <div
-            className="modal__button"
+            className={`modal__button ${transactionWait ? "disable" : ""}`}
             onClick={() => {
-              reqeustClaimIncentive();
+              !transactionWait ? reqeustClaimIncentive() : undefined
             }}>
-            <p>CLAIM REWARD</p>
+            <p>{!transactionWait ? "CLAIM REWARD" : "Transaction is loading..."}</p>
           </div>
         </div>
       </div>

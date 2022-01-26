@@ -139,12 +139,12 @@ const DepositBody: React.FunctionComponent<{
             : isLoading ? undefined : increaseAllownace();
         }}
         content={
-          transactionWait ? "Transaction is now loading..." : 
+          transactionWait ? "Transaction is loading..." : 
           isApproved
             ? amountLteZero
               ? t('dashboard.enter_amount')
               : amountGtBalance
-              ? t('dashboard.insufficient_balance', {
+              ? t('staking.insufficient_balance', {
                   tokenName: tokenInfo.name,
                 })
               : t('dashboard.deposit--button')

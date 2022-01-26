@@ -45,6 +45,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
   onClose: () => void;
   afterTx: () => void;
   transactionModal: () => void;
+  transactionWait: boolean;
+  setTransactionWait: () => void;
   round: number;
 }> = ({
   tokenName,
@@ -56,6 +58,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
   userData,
   onClose,
   afterTx,
+  transactionWait,
+  setTransactionWait,
   transactionModal,
   round,
 }) => {
@@ -86,7 +90,6 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const moneyPool = useMoneyPool();
   const { setTransaction, failTransaction } = useContext(TxContext);
 
-  const [transactionWait, setTransactionWait] = useState<boolean>(false);
   const tokenInfo = ReserveData.find(
     (_reserve) => _reserve.address === reserve.id,
   );
@@ -126,7 +129,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   }, [accumulatedYield, reserve, userData]);
 
   const increateAllowance = async () => {
-    setTransactionWait(true)
+    setTransactionWait()
     if (!account) return;
     const emitter = buildEventEmitter(
       ModalViewType.DepositOrWithdrawModal,
@@ -164,7 +167,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   };
 
   const requestDeposit = async (amount: BigNumber, max: boolean) => {
-    setTransactionWait(true)
+    setTransactionWait()
 
     if (!account) return;
 
@@ -206,7 +209,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   };
 
   const reqeustWithdraw = (amount: BigNumber, max: boolean) => {
-    setTransactionWait(true)
+    setTransactionWait()
     
     if (!account) return;
 
