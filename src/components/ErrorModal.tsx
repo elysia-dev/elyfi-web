@@ -57,7 +57,7 @@ const ErrorModal: FunctionComponent<Props> = ({ error }) => {
             </div>
           </div>
         </div>
-        <div className={`modal__button`} onClick={() => errorCopy()}>
+        <div className="error__container__button" onClick={() => errorCopy()}>
           <p>{t('staking.error_code_copy')}</p>
         </div>
       </div>

@@ -161,14 +161,26 @@ const Staking: React.FunctionComponent<IProps> = ({
     canvas.width = document.body.clientWidth * dpr;
     canvas.height = document.body.clientHeight * dpr;
     const browserWidth = canvas.width / dpr + 40;
+    const browserHeight = canvas.height / dpr;
     const ctx = canvas.getContext('2d');
-
     if (!ctx) return;
     ctx.scale(dpr, dpr);
+
+    if (mediaQuery === MediaQuery.Mobile) {
+      new DrawWave(ctx, browserWidth).drawMobileOnPages(
+        headerY,
+        TokenColors.ELFI,
+        browserHeight,
+        true,
+      );
+      return;
+    }
 
     new DrawWave(ctx, browserWidth).drawOnPages(
       headerY,
       stakedToken === Token.EL ? TokenColors.EL : TokenColors.ELFI,
+      browserHeight,
+      true,
     );
   };
 
@@ -292,12 +304,14 @@ const Staking: React.FunctionComponent<IProps> = ({
 
   useEffect(() => {
     draw();
+    window.addEventListener('scroll', () => draw());
     window.addEventListener('resize', () => draw());
 
     return () => {
+      window.removeEventListener('scroll', () => draw());
       window.removeEventListener('resize', () => draw());
     };
-  }, []);
+  }, [document.body.clientHeight]);
 
   return (
     <>

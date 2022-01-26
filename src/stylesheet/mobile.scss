@@ -3,7 +3,7 @@ $footer-height: 100px;
 
 $font-color: #333333;
 $sub-font-color: #646464;
-$elysia-color: #00BFFF;
+$elysia-color: #00bfff;
 $background-color: #ffffff;
 $gray-line: #f0f0f1;
 $gray-font-color: #888888;
@@ -240,7 +240,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         border: 2px solid #e6e6e6;
 
         &:hover {
-          border: 2px solid $elysia-color ;
+          border: 2px solid $elysia-color;
         }
         &.FAIL {
           box-shadow: 0px 0px 6px #ff1d1d81;
@@ -693,7 +693,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         flex-direction: column;
         align-items: center;
         margin: 60px 0;
-        transform: scale(.85);
+        transform: scale(0.85);
         .scroll-arrow {
           position: initial;
         }
@@ -714,18 +714,18 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           &.circle_02 {
             width: 160px;
             height: 160px;
-            background: #F7FBFF;
+            background: #f7fbff;
           }
           &.circle_03 {
             left: 10px;
             position: relative;
-            background: #F7FBFF;
+            background: #f7fbff;
           }
           &.circle_04 {
             width: 175px;
             height: 175px;
             position: relative;
-            background: #F7FBFF;
+            background: #f7fbff;
             > div {
               &:first-child {
                 width: 11px;
@@ -741,7 +741,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
                 width: 7px;
                 height: 7px;
                 position: absolute;
-                border: 1px solid #00BFFF;
+                border: 1px solid #00bfff;
                 border-radius: 100%;
                 right: 4px;
                 top: 27px;
@@ -955,7 +955,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           > h2 {
             font-size: 13px;
             line-height: 20px;
-            text-shadow: 2px 0px 4px #FFFFFF;
+            text-shadow: 2px 0px 4px #ffffff;
             strong {
               color: $elysia-color;
             }
@@ -963,7 +963,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           > p {
             font-size: 10px;
             color: $font-color;
-            text-shadow: 2px 0px 4px #FFFFFF;
+            text-shadow: 2px 0px 4px #ffffff;
           }
         }
       }
@@ -1217,7 +1217,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             gap: 5px;
             justify-content: flex-start !important;
             .last {
-              background: #40AFD5 !important;
+              background: #40afd5 !important;
             }
             > div {
               width: 10px !important;
@@ -2572,10 +2572,10 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       width: 240px;
       height: 240px;
       border-radius: 100%;
-      margin: 70px auto; 
+      margin: 70px auto;
       > div {
         border-radius: 100%;
-        background: #FFFFFF;
+        background: #ffffff;
         position: absolute;
         &:nth-child(2) {
           left: 0px;
@@ -2587,7 +2587,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           right: 2px;
           width: 10px;
           height: 10px;
-          bottom: 50px;      
+          bottom: 50px;
         }
         &:last-child {
           right: 15px;
@@ -3036,7 +3036,10 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       &__data {
         padding: 7px 12px 5px;
         > div {
-          > p {
+          > p:last-child {
+            font-size: 10px;
+          }
+          > p:first-child {
             font-size: 10px;
           }
         }
@@ -3172,7 +3175,6 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 9999;
-      padding-bottom: 31px;
 
       &__header {
         display: flex;
@@ -3213,8 +3215,17 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           }
         }
       }
-      > div:last-child {
-        margin: 8px auto;
+      &__button {
+        width: 239px;
+        height: 30px;
+        border-radius: 5px;
+        margin: auto auto;
+        margin-top: 10px;
+        line-height: 30px;
+        border-radius: 47px;
+        > p {
+          font-size: 14px;
+        }
       }
     }
   }
