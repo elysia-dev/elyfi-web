@@ -30,14 +30,14 @@ export const calcMintedByTetherMoneypool = (): number => {
   );
 };
 
-const busdDepositRewardPerSecond =
-  ((3000000 * 2) / (365 * 24 * 3600)) * busd3xRewardEvent(Token.BUSD);
+const busdDepositRewardPerSecond = (3000000 * 2) / (365 * 24 * 3600);
 
 export const calcMintedByBusdMoneypool = (): number => {
   const current = moment();
 
   return current.diff(busdMoneypoolEndedAt) <= 0
     ? current.diff(busdMoneypoolStartedAt, 'seconds') *
-        busdDepositRewardPerSecond
+        busdDepositRewardPerSecond +
+        50000 * 7
     : 1583333;
 };
