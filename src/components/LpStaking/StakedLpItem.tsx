@@ -205,15 +205,15 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
                 {t("staking.migration")}
               </p>
             </div> */}
+          {!(round >= currentRound) &&
+            moment().isBetween(startedDate, endedDate) && (
+              <div
+                onClick={() => migrationHandler(position)}
+                className="staking__lp__staked__table__content__button">
+                <p>{t('staking.migration')}</p>
+              </div>
+            )}
         </div>
-        {!(round >= currentRound) &&
-          moment().isBetween(startedDate, endedDate) && (
-            <div
-              onClick={() => migrationHandler(position)}
-              className="staking__lp__staked__table__content__button">
-              <p>{t('staking.migration')}</p>
-            </div>
-          )}
       </div>
 
       <div className="staking__lp__staked__table__content--center">
