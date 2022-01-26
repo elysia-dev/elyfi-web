@@ -7,7 +7,6 @@ import {
   busdMoneypoolEndedAt,
 } from 'src/core/data/moneypoolTimes';
 import Token from 'src/enums/Token';
-import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 
 const daiDepositRewardPerSecond = (3000000 * 2) / (365 * 24 * 3600);
 
@@ -31,7 +30,7 @@ export const calcMintedByTetherMoneypool = (): number => {
 };
 
 const busdDepositRewardPerSecond =
-  ((3000000 * 2) / (365 * 24 * 3600)) * busd3xRewardEvent(Token.BUSD);
+  ((3000000 * 2) / (365 * 24 * 3600));
 
 export const calcMintedByBusdMoneypool = (): number => {
   const current = moment();

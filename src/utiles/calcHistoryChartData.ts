@@ -152,6 +152,7 @@ const calcHistoryChartData = (
             data.id === envs.busdAddress && historyType === 'deposit'
               ? Token.BUSD
               : '',
+              moment(d.timestamp * 1000)
           ),
       ),
     });

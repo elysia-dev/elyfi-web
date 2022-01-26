@@ -43,7 +43,6 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
 import isSupportedReserve from 'src/core/utils/isSupportedReserve';
 import ReserveToken from 'src/core/types/ReserveToken';
-import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 
 const initialBalanceState = {
   loading: true,
@@ -409,16 +408,10 @@ function MarketDetail(): JSX.Element {
         </div>
         <div className="detail__container">
           <MarketDetailsBody
-            depositReward={toPercent(
-              BigNumber.from(data.depositAPY).add(
-                miningAPR.mul(busd3xRewardEvent(selectToken?.name)),
-              ),
-            )}
+            depositReward={toPercent(BigNumber.from(data.depositAPY).add(miningAPR))}
             totalDeposit={toUsd(data.totalDeposit, tokenInfo?.decimals)}
             depositAPY={toPercent(data.depositAPY)}
-            miningAPRs={toPercent(
-              miningAPR.mul(busd3xRewardEvent(selectToken?.name)),
-            )}
+            miningAPRs={toPercent(miningAPR)}
             depositor={data.deposit.length}
             totalLoans={data.borrow.length}
             totalBorrowed={toUsd(data.totalBorrow, tokenInfo?.decimals)}
