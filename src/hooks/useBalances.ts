@@ -18,46 +18,33 @@ import {
   useState,
 } from 'react';
 import getTokenNameFromAddress from 'src/utiles/getTokenNameFromAddress';
+import isEndedIncentive from 'src/core/utils/isEndedIncentive';
+import calcExpectedIncentive from 'src/utiles/calcExpectedIncentive';
+import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import PriceContext from 'src/contexts/PriceContext';
 import { useWeb3React } from '@web3-react/core';
 import MainnetContext from 'src/contexts/MainnetContext';
 import ReserveToken from 'src/core/types/ReserveToken';
 import isSupportedReserveByChainId from 'src/core/utils/isSupportedReserveByChainId';
 
-type incentiveType = {
-  beforeRound1: BigNumber;
-  afterRound1: BigNumber;
-  beforeRound2: BigNumber;
-  afterRound2: BigNumber;
-};
-
 export type BalanceType = {
   id: string;
   tokenName: ReserveToken;
   value: BigNumber;
-  expectedIncentive: {
-    DAI: incentiveType;
-    USDT: incentiveType;
-    BUSD: incentiveType;
-  };
+  expectedIncentiveBefore: BigNumber;
+  expectedIncentiveAfter: BigNumber;
+  expectedAdditionalIncentiveBefore: BigNumber;
+  expectedAdditionalIncentiveAfter: BigNumber;
   deposit: BigNumber;
   updatedAt: number;
 };
 
-const initialIncentive = {
-  beforeRound1: constants.Zero,
-  afterRound1: constants.Zero,
-  beforeRound2: constants.Zero,
-  afterRound2: constants.Zero,
-};
-
 const initialBalanceState = {
   value: constants.Zero,
-  expectedIncentive: {
-    DAI: initialIncentive,
-    USDT: initialIncentive,
-    BUSD: initialIncentive,
-  },
+  expectedIncentiveBefore: constants.Zero,
+  expectedIncentiveAfter: constants.Zero,
+  expectedAdditionalIncentiveBefore: constants.Zero,
+  expectedAdditionalIncentiveAfter: constants.Zero,
   deposit: constants.Zero,
   id: '',
   updatedAt: moment().unix(),
@@ -110,22 +97,14 @@ const fetchBalanceFrom = async (
       account,
     );
 
-    const incentiveByRound = {
-      beforeRound1: incentiveRound1,
-      afterRound1: incentiveRound1,
-      beforeRound2: incentiveRound2,
-      afterRound2: incentiveRound2,
-    };
-
     return {
       value: await ERC20__factory.connect(reserve.id, library).balanceOf(
         account,
       ),
-      expectedIncentive: {
-        DAI: incentiveByRound,
-        USDT: incentiveByRound,
-        BUSD: incentiveByRound,
-      },
+      expectedIncentiveBefore: incentiveRound1,
+      expectedIncentiveAfter: incentiveRound1,
+      expectedAdditionalIncentiveBefore: incentiveRound2,
+      expectedAdditionalIncentiveAfter: incentiveRound2,
       deposit: await ERC20__factory.connect(
         reserve.lToken.id,
         library,
@@ -136,11 +115,10 @@ const fetchBalanceFrom = async (
       value: constants.Zero,
       incentiveRound1: constants.Zero,
       incentiveRound2: constants.Zero,
-      expectedIncentive: {
-        DAI: initialIncentive,
-        USDT: initialIncentive,
-        BUSD: initialIncentive,
-      },
+      expectedIncentiveBefore: constants.Zero,
+      expectedIncentiveAfter: constants.Zero,
+      expectedAdditionalIncentiveBefore: constants.Zero,
+      expectedAdditionalIncentiveAfter: constants.Zero,
       deposit: constants.Zero,
     };
   }
@@ -248,6 +226,60 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     setLoading(true);
     loadBalances();
   }, [account, active, chainId]);
+
+  useEffect(() => {
+    if (loading || !active) return;
+
+    const interval = setInterval(() => {
+      setBalances(
+        balances.map((balance) => {
+          const reserve = data.reserves.find((r) => r.id === balance.id);
+          if (!reserve) return balance;
+
+          return {
+            ...balance,
+            expectedIncentiveBefore: balance.expectedIncentiveAfter,
+            expectedIncentiveAfter: isEndedIncentive(balance.tokenName, 0)
+              ? balance.expectedIncentiveAfter
+              : balance.expectedIncentiveAfter.add(
+                  calcExpectedIncentive(
+                    elfiPrice,
+                    balance.deposit,
+                    calcMiningAPR(
+                      elfiPrice,
+                      BigNumber.from(reserve.totalDeposit),
+                    ),
+                    balance.updatedAt,
+                  ),
+                ),
+            expectedAdditionalIncentiveBefore:
+              balance.expectedAdditionalIncentiveAfter,
+            expectedAdditionalIncentiveAfter: isEndedIncentive(
+              balance.tokenName,
+              1,
+            )
+              ? balance.expectedAdditionalIncentiveAfter
+              : balance.expectedAdditionalIncentiveAfter.add(
+                  calcExpectedIncentive(
+                    elfiPrice,
+                    balance.deposit,
+                    calcMiningAPR(
+                      elfiPrice,
+                      BigNumber.from(reserve.totalDeposit),
+                    ),
+                    balance.updatedAt,
+                  ),
+                ),
+            updatedAt: moment().unix(),
+          };
+        }),
+      );
+    }, 3000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [balances, chainId, loading, active]);
 
   return { balances, loading, loadBalance, setBalances };
 };
