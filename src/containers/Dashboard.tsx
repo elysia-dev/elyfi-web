@@ -32,7 +32,6 @@ import scrollToOffeset from 'src/core/utils/scrollToOffeset';
 import useBalances from 'src/hooks/useBalances';
 import EventImage from 'src/assets/images/event_image.png';
 import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
-import Token from 'src/enums/Token';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();
@@ -107,17 +106,13 @@ const Dashboard: React.FunctionComponent = () => {
           }}
           balanceBefore={
             round === 1
-              ? selectedBalance.expectedIncentive[selectedBalance.tokenName]
-                  .beforeRound1
-              : selectedBalance.expectedIncentive[selectedBalance.tokenName]
-                  .beforeRound2
+              ? selectedBalance.expectedIncentiveBefore
+              : selectedBalance.expectedAdditionalIncentiveBefore
           }
           balanceAfter={
             round === 1
-              ? selectedBalance.expectedIncentive[selectedBalance.tokenName]
-                  .afterRound1
-              : selectedBalance.expectedIncentive[selectedBalance.tokenName]
-                  .afterRound2
+              ? selectedBalance.expectedIncentiveAfter
+              : selectedBalance.expectedAdditionalIncentiveAfter
           }
           incentivePoolAddress={getIncentivePoolAddress(
             round,
