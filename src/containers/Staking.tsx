@@ -718,7 +718,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                           return;
                                         }
 
-                                        if (migratable(stakedToken, index)) {
+                                        if (migratable(stakedToken, index) && stakedToken === Token.EL) {
                                           ReactGA.modalview(
                                             stakedToken +
                                               ModalViewType.MigrationOrUnstakingModal,
@@ -742,7 +742,9 @@ const Staking: React.FunctionComponent<IProps> = ({
                                         }
                                       }}>
                                       <p>
-                                        {migratable(stakedToken, index)
+                                        {
+                                          stakedToken === Token.ELFI ? t("staking.unstaking") :
+                                          migratable(stakedToken, index)
                                           ? t('staking.unstaking_migration')
                                           : t('staking.staking_btn')}
                                       </p>
