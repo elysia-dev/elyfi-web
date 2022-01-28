@@ -1,6 +1,6 @@
 import elfi from 'src/assets/images/ELFI.png';
-import wave from 'src/assets/images/wave_elyfi.png';
 import el from 'src/assets/images/el.png';
+import envs from 'src/core/envs';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { constants } from 'ethers';
@@ -47,6 +47,7 @@ import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
+import { StakingPool__factory } from '@elysia-dev/contract-typechain';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI;
@@ -72,12 +73,15 @@ const Staking: React.FunctionComponent<IProps> = ({
 }) => {
   const { t, i18n } = useTranslation();
   const current = moment();
-  const { account } = useWeb3React();
+  const { account, library } = useWeb3React();
   const { elPrice, elfiPrice } = useContext(PriceContext);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const stakingPool = useStakingPool(stakedToken);
-  const stakingPoolV2 = useStakingPool(Token.ELFI, true);
+  const { contract: stakingPool } = useStakingPool(stakedToken);
+  const { contract: stakingPoolV2, rewardContractForV2 } = useStakingPool(
+    Token.ELFI,
+    true,
+  );
   const { type: getMainnetType } = useContext(MainnetContext);
 
   const currentPhase = useMemo(() => {
@@ -192,14 +196,18 @@ const Staking: React.FunctionComponent<IProps> = ({
           let userData;
           let accountReward;
           if (stakingPoolV2 && stakingPool && account) {
-            if (round >= v2Threshold && stakedToken === Token.ELFI) {
+            if (
+              round >= v2Threshold &&
+              stakedToken === Token.ELFI &&
+              rewardContractForV2
+            ) {
               const modifiedRound = (round + 1 - v2Threshold).toString();
               poolData = await stakingPoolV2.getPoolData(modifiedRound);
               userData = await stakingPoolV2.getUserData(
                 modifiedRound,
                 account,
               );
-              accountReward = await stakingPoolV2.getUserReward(
+              accountReward = await rewardContractForV2.getUserReward(
                 account,
                 modifiedRound,
               );
