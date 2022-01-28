@@ -786,19 +786,15 @@ const Staking: React.FunctionComponent<IProps> = ({
                                         if (item.accountReward.isZero()) {
                                           return;
                                         }
-                                        if (stakedToken === Token.ELFI) {
-                                          return setClaimDisableModalVisible(true)
-                                        } else {
-                                          ReactGA.modalview(
-                                            stakedToken +
-                                              ModalViewType.StakingIncentiveModal,
-                                          );
-                                          current.diff(
-                                            stakingRoundTimes[index].startedAt,
-                                          ) > 0 && setRoundModal(index);
-                                          setModalValue(item.accountReward);
-                                          setClaimStakingRewardModalVisible(true);
-                                        }
+                                        ReactGA.modalview(
+                                          stakedToken +
+                                            ModalViewType.StakingIncentiveModal,
+                                        );
+                                        current.diff(
+                                          stakingRoundTimes[index].startedAt,
+                                        ) > 0 && setRoundModal(index);
+                                        setModalValue(item.accountReward);
+                                        setClaimStakingRewardModalVisible(true);
                                       }}>
                                       <p>{t('staking.claim_reward')}</p>
                                     </div>
@@ -937,19 +933,15 @@ const Staking: React.FunctionComponent<IProps> = ({
                                         return;
                                       }
 
-                                      if (stakedToken === Token.ELFI) {
-                                        return setClaimDisableModalVisible(true)
-                                      } else {
-                                        ReactGA.modalview(
-                                          stakedToken +
-                                            ModalViewType.StakingIncentiveModal,
-                                        );
-                                        current.diff(
-                                          stakingRoundTimes[5].startedAt,
-                                        ) > 0 && setRoundModal(5);
-                                        setModalValue(expectedReward.value);
-                                        setClaimStakingRewardModalVisible(true);
-                                      }
+                                      ReactGA.modalview(
+                                         stakedToken +
+                                          ModalViewType.StakingIncentiveModal,
+                                      );
+                                      current.diff(
+                                        stakingRoundTimes[5].startedAt,
+                                      ) > 0 && setRoundModal(5);
+                                      setModalValue(expectedReward.value);
+                                      setClaimStakingRewardModalVisible(true);
                                     }}>
                                     <p>{t('staking.claim_reward')}</p>
                                   </div>
