@@ -49,10 +49,19 @@ const ClaimStakingRewardModal: FunctionComponent<{
   transactionModal,
 }) => {
   const { account, chainId } = useWeb3React();
-  const stakingPool = useStakingPool(stakedToken, round >= 3);
+  const { contract: stakingPool, rewardContractForV2 } = useStakingPool(
+    stakedToken,
+    round >= 3,
+  );
+
   const { waiting } = useWatingTx();
   const { t } = useTranslation();
   const { setTransaction, failTransaction } = useContext(TxContext);
+
+  const claimAddress = rewardContractForV2 ? rewardContractForV2 : stakingPool;
+  const claimRound = (
+    round >= 3 && stakedToken === Token.ELFI ? round - 2 : round
+  ).toString();
 
   return (
     <div
@@ -127,13 +136,9 @@ const ClaimStakingRewardModal: FunctionComponent<{
 
                   // TRICKY
                   // ELFI V2 StakingPool need round - 2 value
-                  stakingPool
-                    ?.claim(
-                      (round >= 3 && stakedToken === Token.ELFI
-                        ? round - 2
-                        : round
-                      ).toString(),
-                    )
+
+                  claimAddress
+                    ?.claim(claimRound)
                     .then((tx) => {
                       setTransaction(
                         tx,
