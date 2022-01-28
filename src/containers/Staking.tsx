@@ -212,8 +212,12 @@ const Staking: React.FunctionComponent<IProps> = ({
                 modifiedRound,
               );
             }
+
             return {
-              accountReward,
+              accountReward:
+                stakedToken === Token.ELFI && round === 5
+                  ? accountReward.div(20)
+                  : accountReward,
               totalPrincipal: poolData.totalPrincipal,
               accountPrincipal: userData.userPrincipal,
               apr: calcAPR(
@@ -891,29 +895,35 @@ const Staking: React.FunctionComponent<IProps> = ({
                                       {rewardToken}
                                     </span>
                                   </h2>
-                                  <div
-                                    className={`staking__round__button ${
-                                      expectedReward.value.isZero()
-                                        ? ' disable'
-                                        : ''
-                                    }`}
-                                    onClick={(e) => {
-                                      if (expectedReward.value.isZero()) {
-                                        return;
-                                      }
-                                      ReactGA.modalview(
-                                        stakedToken +
-                                          ModalViewType.StakingIncentiveModal,
-                                      );
-
-                                      current.diff(
-                                        stakingRoundTimes[5].startedAt,
-                                      ) > 0 && setRoundModal(5);
-                                      setModalValue(expectedReward.value);
-                                      setClaimStakingRewardModalVisible(true);
-                                    }}>
-                                    <p>{t('staking.claim_reward')}</p>
-                                  </div>
+                                  {stakedToken === Token.ELFI ? (
+                                    <div
+                                      className={`staking__round__button disable`}>
+                                      <p>{t('staking.claim_reward')}</p>
+                                    </div>
+                                  ) : (
+                                    <div
+                                      className={`staking__round__button ${
+                                        expectedReward.value.isZero()
+                                          ? ' disable'
+                                          : ''
+                                      }`}
+                                      onClick={(e) => {
+                                        if (expectedReward.value.isZero()) {
+                                          return;
+                                        }
+                                        ReactGA.modalview(
+                                          stakedToken +
+                                            ModalViewType.StakingIncentiveModal,
+                                        );
+                                        current.diff(
+                                          stakingRoundTimes[5].startedAt,
+                                        ) > 0 && setRoundModal(5);
+                                        setModalValue(expectedReward.value);
+                                        setClaimStakingRewardModalVisible(true);
+                                      }}>
+                                      <p>{t('staking.claim_reward')}</p>
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             </>
@@ -1019,29 +1029,35 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   }}>
                                   <p>{t('staking.staking_btn')}</p>
                                 </div>
-                                <div
-                                  className={`staking__round__button ${
-                                    expectedReward.value.isZero()
-                                      ? ' disable'
-                                      : ''
-                                  }`}
-                                  onClick={(e) => {
-                                    if (expectedReward.value.isZero()) {
-                                      return;
-                                    }
-                                    ReactGA.modalview(
-                                      stakedToken +
-                                        ModalViewType.StakingIncentiveModal,
-                                    );
-
-                                    current.diff(
-                                      stakingRoundTimes[5].startedAt,
-                                    ) > 0 && setRoundModal(5);
-                                    setModalValue(expectedReward.value);
-                                    setClaimStakingRewardModalVisible(true);
-                                  }}>
-                                  <p>{t('staking.claim_reward')}</p>
-                                </div>
+                                {stakedToken === Token.ELFI ? (
+                                  <div
+                                    className={`staking__round__button disable`}>
+                                    <p>{t('staking.claim_reward')}</p>
+                                  </div>
+                                ) : (
+                                  <div
+                                    className={`staking__round__button ${
+                                      expectedReward.value.isZero()
+                                        ? ' disable'
+                                        : ''
+                                    }`}
+                                    onClick={(e) => {
+                                      if (expectedReward.value.isZero()) {
+                                        return;
+                                      }
+                                      ReactGA.modalview(
+                                        stakedToken +
+                                          ModalViewType.StakingIncentiveModal,
+                                      );
+                                      current.diff(
+                                        stakingRoundTimes[5].startedAt,
+                                      ) > 0 && setRoundModal(5);
+                                      setModalValue(expectedReward.value);
+                                      setClaimStakingRewardModalVisible(true);
+                                    }}>
+                                    <p>{t('staking.claim_reward')}</p>
+                                  </div>
+                                )}
                               </div>
                             </>
                           )}
