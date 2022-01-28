@@ -545,7 +545,17 @@
       "network_change": {
         "title": "Change network",
         "content": "The wallet is connected to a network not provided by ELYFI.\nPlease select the desired network among the networks below and change it!"
-      } 
+      },
+      "claim_disable": {
+        "title": "Disable button",
+        "content": "The reward claim function has been temporarily disabled due to an error inquiry about the migration function, which is currently provided for convenience.",
+        "button": "OK"
+      },
+      "migration_disable": {
+        "title": "Disable migration",
+        "content": "The ELFI staking migration function has been temporarily disabled due to an error inquiry about the migration function, which is currently provided for convenience.\nIf you participate in the 6th staking, please staking in the 6th pool after unstaking",
+        "button": "OK"
+      }
     },
     "guide": {
       "apr": "APR is an abbreviation of Annual percentage rate, which means the ratio of the total compensation amount to the total liquidity.",

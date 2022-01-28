@@ -47,6 +47,8 @@ import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
+import ClaimDisableModal from 'src/components/ClaimDisableModal';
+import MigrationDisableModal from 'src/components/MigrationDisableModal';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI;
@@ -112,6 +114,10 @@ const Staking: React.FunctionComponent<IProps> = ({
   const [stakingEndedVisible, setStakingEndedVisible] =
     useState<boolean>(false);
   const [migrationEndedVisible, setMigrationEndedVisible] =
+    useState<boolean>(false);
+  const [claimDisableModalVisible, setClaimDisableModalVisible] =
+    useState<boolean>(false);
+  const [migrationDisableModalVisible, setMigrationDisableModalVisible] =
     useState<boolean>(false);
   const [transactionModal, setTransactionModal] = useState(false);
 
@@ -419,6 +425,19 @@ const Staking: React.FunctionComponent<IProps> = ({
         }}
         round={selectModalRound + 1}
       />
+      <ClaimDisableModal
+        visible={claimDisableModalVisible}
+        onClose={() => {
+          setClaimDisableModalVisible(false);
+        }}
+      />
+      <MigrationDisableModal
+        visible={migrationDisableModalVisible}
+        onClose={() => {
+          setMigrationDisableModalVisible(false)
+          setStakingModalVisible(true)
+        }}
+      />
       {/* <img
         style={{
           position: 'absolute',
@@ -718,14 +737,18 @@ const Staking: React.FunctionComponent<IProps> = ({
                                           return;
                                         }
 
-                                        if (migratable(stakedToken, index) && stakedToken === Token.EL) {
-                                          ReactGA.modalview(
-                                            stakedToken +
-                                              ModalViewType.MigrationOrUnstakingModal,
-                                          );
-                                          setRoundModal(index);
-                                          setModalValue(item.accountPrincipal);
-                                          return setMigrationModalVisible(true);
+                                        if (migratable(stakedToken, index)) {
+                                          if (stakedToken === Token.ELFI) {
+                                           setMigrationDisableModalVisible(true)
+                                          } else {
+                                            ReactGA.modalview(
+                                              stakedToken +
+                                                ModalViewType.MigrationOrUnstakingModal,
+                                            );
+                                            setRoundModal(index);
+                                            setModalValue(item.accountPrincipal);
+                                            return setMigrationModalVisible(true);
+                                          }
                                         }
                                         if (
                                           current.diff(
@@ -738,15 +761,18 @@ const Staking: React.FunctionComponent<IProps> = ({
                                           );
                                           setRoundModal(index);
                                           setModalValue(item.accountPrincipal);
-                                          setStakingModalVisible(true);
+                                          if (stakedToken === Token.EL) {
+                                            setStakingModalVisible(true);
+                                          } 
                                         }
                                       }}>
                                       <p>
                                         {
-                                          stakedToken === Token.ELFI ? t("staking.unstaking") :
-                                          migratable(stakedToken, index)
-                                          ? t('staking.unstaking_migration')
-                                          : t('staking.staking_btn')}
+                                          stakedToken === Token.ELFI 
+                                            ? t("staking.unstaking")
+                                            : migratable(stakedToken, index)
+                                              ? t('staking.unstaking_migration')
+                                              : t('staking.staking_btn')}
                                       </p>
                                     </div>
                                     <div
@@ -759,15 +785,19 @@ const Staking: React.FunctionComponent<IProps> = ({
                                         if (item.accountReward.isZero()) {
                                           return;
                                         }
-                                        ReactGA.modalview(
-                                          stakedToken +
-                                            ModalViewType.StakingIncentiveModal,
-                                        );
-                                        current.diff(
-                                          stakingRoundTimes[index].startedAt,
-                                        ) > 0 && setRoundModal(index);
-                                        setModalValue(item.accountReward);
-                                        setClaimStakingRewardModalVisible(true);
+                                        if (stakedToken === Token.ELFI) {
+                                          return setClaimDisableModalVisible(true)
+                                        } else {
+                                          ReactGA.modalview(
+                                            stakedToken +
+                                              ModalViewType.StakingIncentiveModal,
+                                          );
+                                          current.diff(
+                                            stakingRoundTimes[index].startedAt,
+                                          ) > 0 && setRoundModal(index);
+                                          setModalValue(item.accountReward);
+                                          setClaimStakingRewardModalVisible(true);
+                                        }
                                       }}>
                                       <p>{t('staking.claim_reward')}</p>
                                     </div>
@@ -897,22 +927,20 @@ const Staking: React.FunctionComponent<IProps> = ({
                                       {rewardToken}
                                     </span>
                                   </h2>
-                                  {stakedToken === Token.ELFI ? (
-                                    <div
-                                      className={`staking__round__button disable`}>
-                                      <p>{t('staking.claim_reward')}</p>
-                                    </div>
-                                  ) : (
-                                    <div
-                                      className={`staking__round__button ${
-                                        expectedReward.value.isZero()
-                                          ? ' disable'
-                                          : ''
-                                      }`}
-                                      onClick={(e) => {
-                                        if (expectedReward.value.isZero()) {
-                                          return;
-                                        }
+                                  <div
+                                    className={`staking__round__button ${
+                                      expectedReward.value.isZero()
+                                        ? ' disable'
+                                        : ''
+                                    }`}
+                                    onClick={(e) => {
+                                      if (expectedReward.value.isZero()) {
+                                        return;
+                                      }
+
+                                      if (stakedToken === Token.ELFI) {
+                                        return setClaimDisableModalVisible(true)
+                                      } else {
                                         ReactGA.modalview(
                                           stakedToken +
                                             ModalViewType.StakingIncentiveModal,
@@ -922,10 +950,10 @@ const Staking: React.FunctionComponent<IProps> = ({
                                         ) > 0 && setRoundModal(5);
                                         setModalValue(expectedReward.value);
                                         setClaimStakingRewardModalVisible(true);
-                                      }}>
-                                      <p>{t('staking.claim_reward')}</p>
-                                    </div>
-                                  )}
+                                      }
+                                    }}>
+                                    <p>{t('staking.claim_reward')}</p>
+                                  </div>
                                 </div>
                               </div>
                             </>
@@ -1031,22 +1059,19 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   }}>
                                   <p>{t('staking.staking_btn')}</p>
                                 </div>
-                                {stakedToken === Token.ELFI ? (
-                                  <div
-                                    className={`staking__round__button disable`}>
-                                    <p>{t('staking.claim_reward')}</p>
-                                  </div>
-                                ) : (
-                                  <div
-                                    className={`staking__round__button ${
-                                      expectedReward.value.isZero()
-                                        ? ' disable'
-                                        : ''
-                                    }`}
-                                    onClick={(e) => {
-                                      if (expectedReward.value.isZero()) {
-                                        return;
-                                      }
+                                <div
+                                  className={`staking__round__button ${
+                                    expectedReward.value.isZero()
+                                      ? ' disable'
+                                      : ''
+                                  }`}
+                                  onClick={(e) => {
+                                    if (expectedReward.value.isZero()) {
+                                      return;
+                                    }
+                                    if (stakedToken === Token.ELFI) {
+                                      return setClaimDisableModalVisible(true)
+                                    } else {
                                       ReactGA.modalview(
                                         stakedToken +
                                           ModalViewType.StakingIncentiveModal,
@@ -1056,10 +1081,10 @@ const Staking: React.FunctionComponent<IProps> = ({
                                       ) > 0 && setRoundModal(5);
                                       setModalValue(expectedReward.value);
                                       setClaimStakingRewardModalVisible(true);
-                                    }}>
-                                    <p>{t('staking.claim_reward')}</p>
-                                  </div>
-                                )}
+                                    }
+                                  }}>
+                                  <p>{t('staking.claim_reward')}</p>
+                                </div>
                               </div>
                             </>
                           )}
