@@ -35,7 +35,7 @@ const useStakingPool = (
         library.getSigner(),
       );
     }
-  }, [library, staked]);
+  }, [library, staked, v2]);
 
   return { contract, rewardContractForV2 };
 };
