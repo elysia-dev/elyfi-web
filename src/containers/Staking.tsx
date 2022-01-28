@@ -212,8 +212,12 @@ const Staking: React.FunctionComponent<IProps> = ({
                 modifiedRound,
               );
             }
+
             return {
-              accountReward,
+              accountReward:
+                stakedToken === Token.ELFI && round === 5
+                  ? accountReward.div(20)
+                  : accountReward,
               totalPrincipal: poolData.totalPrincipal,
               accountPrincipal: userData.userPrincipal,
               apr: calcAPR(
