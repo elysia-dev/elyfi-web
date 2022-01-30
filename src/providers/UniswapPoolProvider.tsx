@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import envs from 'src/core/envs';
-import UniswapV3 from 'src/clients/UniswapV3';
 import Loading from 'src/components/Loading';
 import ErrorPage from 'src/components/ErrorPage';
 import UniswapPoolContext, {
@@ -8,6 +6,7 @@ import UniswapPoolContext, {
   UniswapPoolContextType,
 } from 'src/contexts/UniswapPoolContext';
 import { BigNumber } from 'ethers';
+import CachedUniswapV3 from 'src/clients/CachedUniswapV3';
 
 const UniswapPoolProvider: React.FC = (props) => {
   const [state, setState] = useState<UniswapPoolContextType>(
@@ -15,55 +14,56 @@ const UniswapPoolProvider: React.FC = (props) => {
   );
 
   useEffect(() => {
-    UniswapV3.getPoolData()
+    CachedUniswapV3.getPoolData()
       .then((res) => {
+        const data = res.data.data.data.data
         setState({
           ...state,
           totalValueLockedUSD: parseFloat(
-            res.data.data.daiPool.totalValueLockedUSD,
+            data.daiPool.totalValueLockedUSD,
           ),
           totalValueLockedToken0: parseFloat(
-            res.data.data.daiPool.totalValueLockedToken0,
+            data.daiPool.totalValueLockedToken0,
           ),
           totalValueLockedToken1: parseFloat(
-            res.data.data.daiPool.totalValueLockedToken1,
+            data.daiPool.totalValueLockedToken1,
           ),
-          poolDayData: res.data.data.daiPool.poolDayData,
+          poolDayData: data.daiPool.poolDayData,
           latestPrice: parseFloat(
-            res.data.data.daiPool.poolDayData[
-              res.data.data.daiPool.poolDayData.length - 1
+            data.daiPool.poolDayData[
+              data.daiPool.poolDayData.length - 1
             ].token1Price,
           ),
           ethPool: {
-            liquidity: res.data.data.ethPool.liquidity,
+            liquidity: data.ethPool.liquidity,
             totalValueLockedToken0: parseFloat(
-              res.data.data.ethPool.totalValueLockedToken0,
+              data.ethPool.totalValueLockedToken0,
             ),
             totalValueLockedToken1: parseFloat(
-              res.data.data.ethPool.totalValueLockedToken1,
+              data.ethPool.totalValueLockedToken1,
             ),
-            stakedToken0: res.data.data.stakedEthPositions.reduce(
+            stakedToken0: data.stakedEthPositions.reduce(
               (sum, cur) => sum + parseFloat(cur.depositedToken0),
               0,
             ),
-            stakedToken1: res.data.data.stakedEthPositions.reduce(
+            stakedToken1: data.stakedEthPositions.reduce(
               (sum, cur) => sum + parseFloat(cur.depositedToken1),
               0,
             ),
           },
           daiPool: {
-            liquidity: res.data.data.daiPool.liquidity,
+            liquidity: data.daiPool.liquidity,
             totalValueLockedToken0: parseFloat(
-              res.data.data.daiPool.totalValueLockedToken0,
+              data.daiPool.totalValueLockedToken0,
             ),
             totalValueLockedToken1: parseFloat(
-              res.data.data.daiPool.totalValueLockedToken1,
+              data.daiPool.totalValueLockedToken1,
             ),
-            stakedToken0: res.data.data.stakedDaiPositions.reduce(
+            stakedToken0: data.stakedDaiPositions.reduce(
               (sum, cur) => sum + parseFloat(cur.depositedToken0),
               0,
             ),
-            stakedToken1: res.data.data.stakedDaiPositions.reduce(
+            stakedToken1: data.stakedDaiPositions.reduce(
               (sum, cur) => sum + parseFloat(cur.depositedToken1),
               0,
             ),
