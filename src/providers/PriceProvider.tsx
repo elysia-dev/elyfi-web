@@ -4,26 +4,25 @@ import PriceContext, {
   initialPriceContext,
   PriceContextType,
 } from 'src/contexts/PriceContext';
-import UniswapV3 from 'src/clients/UniswapV3';
 import Loading from 'src/components/Loading';
 import ErrorPage from 'src/components/ErrorPage';
 import Coingecko from 'src/clients/Coingecko';
 import calcPriceFromSqrtPriceX96 from 'src/utiles/calcPriceFromSqrtPriceX96';
+import CachedUniswapV3 from 'src/clients/CachedUniswapV3';
 
 const PriceProvider: React.FC = (props) => {
   const [state, setState] = useState<PriceContextType>(initialPriceContext);
 
   const fetchPrices = async () => {
     try {
-      const ethPoolData = await UniswapV3.getElfiEthPoolData();
-      const daiPoolData = await UniswapV3.getElfiDaiPoolData();
+      const uniswapPoolData = (await CachedUniswapV3.getPoolData()).data.data.data.data;
       const priceData = await Coingecko.getPrices();
 
       setState({
         ...state,
         elfiPrice: parseFloat(
-          daiPoolData.data.data.pool.poolDayData[
-            daiPoolData.data.data.pool.poolDayData.length - 1
+          uniswapPoolData.daiPool.poolDayData[
+            uniswapPoolData.daiPool.poolDayData.length - 1
           ].token1Price,
         ),
         elPrice: priceData.data.elysia.usd,
@@ -32,23 +31,24 @@ const PriceProvider: React.FC = (props) => {
         ethPrice: priceData.data.ethereum.usd,
         elfiDaiPool: {
           price: calcPriceFromSqrtPriceX96(
-            daiPoolData.data.data.pool.sqrtPrice,
+            uniswapPoolData.daiPool.sqrtPrice,
           ),
           liquidity: parseFloat(
-            utils.formatEther(daiPoolData.data.data.pool.liquidity),
+            utils.formatEther(uniswapPoolData.daiPool.liquidity),
           ),
         },
         elfiEthPool: {
           price: calcPriceFromSqrtPriceX96(
-            ethPoolData.data.data.pool.sqrtPrice,
+           uniswapPoolData.ethPool.sqrtPrice,
           ),
           liquidity: parseFloat(
-            utils.formatEther(ethPoolData.data.data.pool.liquidity),
+            utils.formatEther(uniswapPoolData.ethPool.liquidity),
           ),
         },
         loading: false,
       });
     } catch (e) {
+      console.log(e)
       Coingecko.getPrices()
         .then((priceData) => {
           setState({
