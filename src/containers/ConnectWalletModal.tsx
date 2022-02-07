@@ -19,7 +19,7 @@ const ConnectWalletModal: React.FunctionComponent<{
           onClose={onClose}
         />
 
-        {/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        {/* {/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
           navigator.userAgent,
         ) ? (
           <>
@@ -34,29 +34,29 @@ const ConnectWalletModal: React.FunctionComponent<{
               <p>{t('modal.connect_metamask.button')}</p>
             </div>
           </>
-        ) : (
-          <>
-            <div className="modal__connect__content">
-              <p>{t('modal.connect_wallet.content')}</p>
-            </div>
-            <div
-              className={`modal__button`}
-              onClick={() => {
-                window.ethereum?.isMetaMask
-                  ? activate().then(() => {
-                      window.sessionStorage.setItem('@connect', 'true');
-                      onClose();
-                    })
-                  : window.open('https://metamask.io/download.html');
-              }}>
-              <p>
-                {window.ethereum?.isMetaMask
-                  ? t('modal.connect_wallet.button')
-                  : t('navigation.install_metamask')}
-              </p>
-            </div>
-          </>
-        )}
+        ) : ( */}
+        <>
+          <div className="modal__connect__content">
+            <p>{t('modal.connect_wallet.content')}</p>
+          </div>
+          <div
+            className={`modal__button`}
+            onClick={() => {
+              window.ethereum?.isMetaMask
+                ? activate().then(() => {
+                    window.sessionStorage.setItem('@connect', 'true');
+                    onClose();
+                  })
+                : window.open('https://metamask.io/download.html');
+            }}>
+            <p>
+              {window.ethereum?.isMetaMask
+                ? t('modal.connect_wallet.button')
+                : t('navigation.install_metamask')}
+            </p>
+          </div>
+        </>
+        {/* )} */}
       </div>
     </div>
   );
