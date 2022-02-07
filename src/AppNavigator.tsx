@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import ScrollToTop from 'src/hooks/ScrollToTop';
@@ -27,21 +27,25 @@ import MarketDetail from 'src/containers/MarketDetails';
 import PortfolioDetail from 'src/containers/PortfolioDetail';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
+import { Web3Context } from './providers/Web3Provider';
+import MainnetContext from './contexts/MainnetContext';
 
 const AppNavigator: React.FC = () => {
   const [hamburgerBar, setHamburgerBar] = useState(false);
   const { value: mediaQuery } = useMediaQueryType();
+  const { type: getMainnetType, unsupportedChainid } =
+    useContext(MainnetContext);
 
-  const { active, chainId, deactivate, activate } = useWeb3React();
+  const { deactivate, activate } = useContext(Web3Context);
   usePageTracking();
 
   useEffect(() => {
     if (window.sessionStorage.getItem('@connect') === 'true') {
-      activate(InjectedConnector);
+      activate();
     } else {
       deactivate();
     }
-  }, []);
+  }, [getMainnetType]);
 
   const LanguageDetctionPage = () => {
     const history = useHistory();

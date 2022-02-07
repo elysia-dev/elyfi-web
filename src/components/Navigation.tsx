@@ -56,9 +56,7 @@ const Navigation: React.FunctionComponent<{
   const [scrolling, setScrolling] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
 
-
   const [mainNetwork, setMainNetwork] = useState(false);
-
 
   const getLNBData = navigationLink.filter(
     (nav) => nav.type === NavigationType.LNB,
@@ -164,7 +162,7 @@ const Navigation: React.FunctionComponent<{
               style={{
                 marginRight: 8,
               }}>
-              <p style={{ cursor: "pointer" }}>
+              <p style={{ cursor: 'pointer' }}>
                 {t(_data.i18nKeyword).toUpperCase()}
               </p>
             </div>
@@ -215,9 +213,9 @@ const Navigation: React.FunctionComponent<{
       <Link
         to={{
           pathname:
-          _data.type === NavigationType.Link
-            ? `/${lng + _data.location}`
-            : t(_data.location),
+            _data.type === NavigationType.Link
+              ? `/${lng + _data.location}`
+              : t(_data.location),
         }}
         target={isExternalLink ? '_blank' : undefined}
         onMouseEnter={() => {
@@ -230,7 +228,7 @@ const Navigation: React.FunctionComponent<{
             reactGA.event({
               category: PageEventType.MoveToInternalPage,
               action: ButtonEventType.DepositButtonOnTop,
-            })
+            });
           }
           initialNavigationState();
         }}>
@@ -317,7 +315,7 @@ const Navigation: React.FunctionComponent<{
                             reactGA.event({
                               category: PageEventType.MoveToInternalPage,
                               action: ButtonEventType.DepositButtonOnTop,
-                            })
+                            });
                           }
                           setHamburgerBar(false);
                         }}>
@@ -367,7 +365,6 @@ const Navigation: React.FunctionComponent<{
     );
   };
 
-
   useEffect(() => {
     function handleClickOutside(e: MouseEvent): void {
       if (
@@ -375,7 +372,7 @@ const Navigation: React.FunctionComponent<{
         !navigationRef.current.contains(e.target as Node)
       ) {
         initialNavigationState();
-        setMainNetwork(false)
+        setMainNetwork(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -395,7 +392,14 @@ const Navigation: React.FunctionComponent<{
         style={{
           backgroundColor: scrollTop > 125 ? '#FFFFFF' : '#FFFFFF',
           height: hamburgerBar ? '100%' : 'auto',
-          overflowY: mediaQuery === MediaQuery.PC ? "initial" : !mainNetwork ? "scroll" : hamburgerBar ? "scroll" : "initial"
+          overflowY:
+            mediaQuery === MediaQuery.PC
+              ? 'initial'
+              : !mainNetwork
+              ? 'scroll'
+              : hamburgerBar
+              ? 'scroll'
+              : 'initial',
         }}
         ref={navigationRef}
         onMouseLeave={() => {
@@ -423,7 +427,7 @@ const Navigation: React.FunctionComponent<{
             </div>
             {setNavigationLink()}
             {mediaQuery === MediaQuery.Mobile && (
-              <MainnetSwitch 
+              <MainnetSwitch
                 mainNetwork={mainNetwork}
                 setMainNetwork={setMainNetwork}
               />
