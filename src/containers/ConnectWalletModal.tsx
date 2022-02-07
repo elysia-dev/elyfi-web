@@ -1,14 +1,14 @@
-import { useWeb3React } from '@web3-react/core';
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import ModalHeader from 'src/components/ModalHeader';
-import InjectedConnector from 'src/core/connectors/injectedConnector';
+import { Web3Context } from 'src/providers/Web3Provider';
 
 const ConnectWalletModal: React.FunctionComponent<{
   visible: boolean;
   onClose: () => void;
 }> = ({ visible, onClose }) => {
   const { t } = useTranslation();
-  const { activate } = useWeb3React();
+  const { activate } = useContext(Web3Context);
   return (
     <div
       className="modal modal__connect"
@@ -43,7 +43,7 @@ const ConnectWalletModal: React.FunctionComponent<{
               className={`modal__button`}
               onClick={() => {
                 window.ethereum?.isMetaMask
-                  ? activate(InjectedConnector).then(() => {
+                  ? activate().then(() => {
                       window.sessionStorage.setItem('@connect', 'true');
                       onClose();
                     })

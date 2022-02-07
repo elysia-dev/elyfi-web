@@ -1,4 +1,3 @@
-import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants, utils } from 'ethers';
 import {
   useContext,
@@ -23,8 +22,6 @@ import RecentActivityType from 'src/enums/RecentActivityType';
 import ReserveData from 'src/core/data/reserves';
 import ModalHeader from 'src/components/ModalHeader';
 import ModalConverter from 'src/components/ModalConverter';
-import moment from 'moment';
-import { daiMoneyPoolTime } from 'src/core/data/moneypoolTimes';
 import buildEventEmitter from 'src/utiles/buildEventEmitter';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
@@ -32,6 +29,7 @@ import ElyfiVersions from 'src/enums/ElyfiVersions';
 import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import useCurrentMoneypoolAddress from 'src/hooks/useCurrnetMoneypoolAddress';
 import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
+import { Web3Context } from 'src/providers/Web3Provider';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
 
@@ -60,7 +58,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   transactionModal,
   round,
 }) => {
-  const { account, chainId, library } = useWeb3React();
+  const { account, chainId } = useContext(Web3Context);
   const { elfiPrice } = useContext(PriceContext);
 
   const currentMoneypoolAddress = useCurrentMoneypoolAddress();

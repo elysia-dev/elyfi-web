@@ -14,6 +14,7 @@ import ReserveData from 'src/core/data/reserves';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
+import { Web3Context } from 'src/providers/Web3Provider';
 
 // Create deposit & withdraw
 const IncentiveModal: FunctionComponent<{
@@ -35,11 +36,11 @@ const IncentiveModal: FunctionComponent<{
   afterTx,
   transactionModal,
 }) => {
-  const { account, library, chainId } = useWeb3React();
+  const { account, provider, chainId } = useContext(Web3Context);
   const { setTransaction, failTransaction } = useContext(TxContext);
 
   const reqeustClaimIncentive = async () => {
-    if (!account) return;
+    if (!account || !provider) return;
 
     const emitter = buildEventEmitter(
       ModalViewType.IncentiveModal,
@@ -50,11 +51,11 @@ const IncentiveModal: FunctionComponent<{
         address: account,
         moneypoolType: tokenName,
         incentiveAmount: utils.formatEther(balanceAfter),
-      })
+      }),
     );
 
     emitter.clicked();
-    IncentivePool__factory.connect(incentivePoolAddress, library.getSigner())
+    IncentivePool__factory.connect(incentivePoolAddress, provider.getSigner())
       .claimIncentive()
       .then((tx) => {
         emitter.created();
