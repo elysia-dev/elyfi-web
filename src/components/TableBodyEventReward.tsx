@@ -13,6 +13,7 @@ import MediaQuery from 'src/enums/MediaQuery';
 import Token from 'src/enums/Token';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import { formatSixFracionDigit } from 'src/utiles/formatters';
+import { Web3Context } from 'src/providers/Web3Provider';
 
 type Props = {
   moneyPoolTime: string;
@@ -30,10 +31,10 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
   tokenName,
 }) => {
   const { t, i18n } = useTranslation();
-  const { account } = useWeb3React();
+  const { account } = useContext(Web3Context);
   const { value: mediaQuery } = useMediaQueryType();
   const { unsupportedChainid } = useContext(MainnetContext);
-  
+
   return (
     <>
       {mediaQuery === MediaQuery.PC ? (
@@ -52,7 +53,7 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
             <div>
               <div className="bold">
                 {' '}
-                {(account && !unsupportedChainid) ? (
+                {account && !unsupportedChainid ? (
                   <CountUp
                     className="bold amounts"
                     start={parseFloat(
@@ -86,7 +87,7 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
               <div>
                 <div className="bold">
                   {' '}
-                  {(account && !unsupportedChainid) ? (
+                  {account && !unsupportedChainid ? (
                     <CountUp
                       className="bold amounts"
                       start={parseFloat(
