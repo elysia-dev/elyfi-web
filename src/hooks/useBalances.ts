@@ -20,6 +20,7 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import ReserveToken from 'src/core/types/ReserveToken';
 import isSupportedReserveByChainId from 'src/core/utils/isSupportedReserveByChainId';
 import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
+import { Web3Context } from 'src/providers/Web3Provider';
 
 export type BalanceType = {
   id: string;
@@ -127,7 +128,7 @@ type ReturnType = {
 // ! FIXME
 // 1. Use other naming. Balance dose not cover the usefulness
 const useBalances = (refetchUserData: () => void): ReturnType => {
-  const { account, library, chainId } = useWeb3React();
+  const { account, chainId, provider } = useContext(Web3Context);
   const { data } = useContext(SubgraphContext);
   const [balances, setBalances] = useState<BalanceType[]>(
     data.reserves.map((reserve) => {
@@ -161,7 +162,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
               ...(await fetchBalanceFrom(
                 reserve,
                 account,
-                library,
+                provider,
                 balance.tokenName,
               )),
             };
@@ -177,23 +178,35 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     if (!account) {
       return;
     }
-
     try {
       refetchUserData();
       setBalances(
         await Promise.all(
-          data.reserves
-            .map(async (reserve, index) => {
-							const tokenName = getTokenNameFromAddress(reserve.id) as ReserveToken;
-							if (!isSupportedReserveByChainId(tokenName, chainId)) {
-								return balances[index];
-							}
+          data.reserves.map(async (reserve, index) => {
+            const tokenName = getTokenNameFromAddress(
+              reserve.id,
+            ) as ReserveToken;
+            if (
+              !isSupportedReserveByChainId(
+                tokenName,
+                chainId.toString().includes('0x')
+                  ? parseInt(chainId.toString(), 16)
+                  : chainId,
+              )
+            ) {
+              return balances[index];
+            }
 
             return {
               id: reserve.id,
               tokenName,
               updatedAt: moment().unix(),
-              ...(await fetchBalanceFrom(reserve, account, library, tokenName)),
+              ...(await fetchBalanceFrom(
+                reserve,
+                account,
+                provider,
+                tokenName,
+              )),
             } as BalanceType;
           }),
         ),
@@ -209,7 +222,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     } finally {
       setLoading(false);
     }
-  }, [account, library, chainId])
+  }, [account, provider, chainId]);
 
   useEffect(() => {
     // Only called when active.
@@ -234,16 +247,16 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
             expectedIncentiveAfter: isEndedIncentive(balance.tokenName, 0)
               ? balance.expectedIncentiveAfter
               : balance.expectedIncentiveAfter.add(
-                calcExpectedIncentive(
-                  elfiPrice,
-                  balance.deposit,
-                  calcMiningAPR(
+                  calcExpectedIncentive(
                     elfiPrice,
-                    BigNumber.from(reserve.totalDeposit),
-                  ).mul(busd3xRewardEvent(balance.tokenName)),
-                  balance.updatedAt,
+                    balance.deposit,
+                    calcMiningAPR(
+                      elfiPrice,
+                      BigNumber.from(reserve.totalDeposit),
+                    ).mul(busd3xRewardEvent(balance.tokenName)),
+                    balance.updatedAt,
+                  ),
                 ),
-              ),
             expectedAdditionalIncentiveBefore:
               balance.expectedAdditionalIncentiveAfter,
             expectedAdditionalIncentiveAfter: isEndedIncentive(
@@ -252,16 +265,16 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
             )
               ? balance.expectedAdditionalIncentiveAfter
               : balance.expectedAdditionalIncentiveAfter.add(
-                calcExpectedIncentive(
-                  elfiPrice,
-                  balance.deposit,
-                  calcMiningAPR(
+                  calcExpectedIncentive(
                     elfiPrice,
-                    BigNumber.from(reserve.totalDeposit),
-                  ).mul(busd3xRewardEvent(balance.tokenName)),
-                  balance.updatedAt,
+                    balance.deposit,
+                    calcMiningAPR(
+                      elfiPrice,
+                      BigNumber.from(reserve.totalDeposit),
+                    ).mul(busd3xRewardEvent(balance.tokenName)),
+                    balance.updatedAt,
+                  ),
                 ),
-              ),
             updatedAt: moment().unix(),
           };
         }),
