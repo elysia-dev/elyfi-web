@@ -1,4 +1,5 @@
 import { createContext, useState } from 'react';
+import envs from 'src/core/envs';
 import Web3Modal from 'web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import Web3 from 'web3';
@@ -16,12 +17,38 @@ interface Web3State {
   result: any | null;
 }
 
+const walletConnectProvider = new WalletConnectProvider({
+  bridge: 'https://bridge.walletconnect.org',
+  chainId: 1,
+  infuraId: envs.infuraAddress,
+  rpc: {
+    1:
+      process.env.NODE_ENV === 'development'
+        ? 'https://elyfi-test.elyfi.world:8545'
+        : process.env.REACT_APP_JSON_RPC || '',
+    56: 'https://bsc-dataseed.binance.org/',
+    97: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
+  },
+  qrcodeModalOptions: {
+    mobileLinks: [
+      'rainbow',
+      'metamask',
+      'argent',
+      'trust',
+      'imtoken',
+      'pillar',
+    ],
+    desktopLinks: ['encrypted ink'],
+  },
+});
+
 const web3Modal = new Web3Modal({
   cacheProvider: true, // optional
   providerOptions: {
     walletconnect: {
       package: WalletConnectProvider,
       options: {
+        bridge: 'https://bridge.walletconnect.org',
         chainId: 1,
         infuraId: 'd3988071acf74e9cbec7ec15ebca4d7c',
         rpc: {
@@ -73,34 +100,46 @@ const Web3Provider: React.FC = (props) => {
     ...INIT_STATE,
   });
 
-  const subscribeProvider = async (provider: any) => {
+  const subscribeProvider = (provider: any) => {
     if (!provider.on) {
       return;
     }
-    provider.on('connect', async (accounts: string[]) => {
+    window.sessionStorage.setItem('@connect', 'true');
+    provider.on('accountsChanged', (accounts: string[]) => {
       setState({ ...state, account: accounts[0] });
+    });
+    provider.on('chainChanged', (chainId: number) => {
+      setState({
+        ...state,
+        chainId,
+      });
     });
   };
 
   const activate = async () => {
-    const web3ModalConnection = await web3Modal.connect();
-    const web3 = new Web3(web3ModalConnection);
-    const accounts = await web3.eth.getAccounts();
-    const account = accounts[0];
-    const networkId = await web3.eth.net.getId();
-    const chainId = await web3.eth.getChainId();
-    const provider = new ethers.providers.Web3Provider(web3ModalConnection);
-    setState({
-      ...state,
-      web3,
-      provider,
-      active: true,
-      account,
-      chainId,
-      networkId,
-    });
+    try {
+      const web3ModalConnection = await web3Modal.connect();
+      const web3: any = new Web3(web3ModalConnection);
+      const accounts = await web3.eth.getAccounts();
+      const account = accounts[0];
+      const networkId = await web3.eth.net.getId();
+      const chainId = await web3.eth.getChainId();
+      const provider = new ethers.providers.Web3Provider(web3ModalConnection);
 
-    subscribeProvider(provider);
+      setState({
+        ...state,
+        web3,
+        provider,
+        active: true,
+        account,
+        chainId,
+        networkId,
+      });
+
+      subscribeProvider(web3ModalConnection);
+    } catch (e) {
+      console.error('Modal closed by user');
+    }
   };
 
   const deactivate = async () => {
@@ -109,6 +148,7 @@ const Web3Provider: React.FC = (props) => {
       await web3.currentProvider.close();
     }
     await web3Modal.clearCachedProvider();
+    window.sessionStorage.setItem('@connect', 'false');
     setState({
       ...INIT_STATE,
     });
