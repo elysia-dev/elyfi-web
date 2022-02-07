@@ -39,6 +39,7 @@ interface EnvironmentVariables {
   prevUSDTIncentivePool: string;
   currentDaiIncentivePool: string;
   currentUSDTIncentivePool: string;
+  infuraAddress: string;
 }
 
 const vars =
