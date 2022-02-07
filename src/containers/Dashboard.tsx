@@ -1,4 +1,3 @@
-import { useWeb3React } from '@web3-react/core';
 import { reserveTokenData } from 'src/core/data/reserves';
 import { useContext, useState, useMemo } from 'react';
 import { toPercent } from 'src/utiles/formatters';
@@ -32,9 +31,10 @@ import scrollToOffeset from 'src/core/utils/scrollToOffeset';
 import useBalances from 'src/hooks/useBalances';
 import EventImage from 'src/assets/images/event_image.png';
 import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
+import { Web3Context } from 'src/providers/Web3Provider';
 
 const Dashboard: React.FunctionComponent = () => {
-  const { account } = useWeb3React();
+  const { account } = useContext(Web3Context);
   const { data } = useContext(SubgraphContext);
   const { elfiPrice } = useContext(PriceContext);
   const [reserveData, setReserveData] = useState<
@@ -104,10 +104,14 @@ const Dashboard: React.FunctionComponent = () => {
             setIncentiveModalVisible(false);
           }}
           balanceBefore={
-            round === 1 ? selectedBalance.expectedIncentiveBefore : selectedBalance.expectedAdditionalIncentiveBefore
+            round === 1
+              ? selectedBalance.expectedIncentiveBefore
+              : selectedBalance.expectedAdditionalIncentiveBefore
           }
           balanceAfter={
-            round === 1 ? selectedBalance.expectedIncentiveAfter : selectedBalance.expectedAdditionalIncentiveAfter
+            round === 1
+              ? selectedBalance.expectedIncentiveAfter
+              : selectedBalance.expectedAdditionalIncentiveAfter
           }
           incentivePoolAddress={getIncentivePoolAddress(
             round,
@@ -142,17 +146,13 @@ const Dashboard: React.FunctionComponent = () => {
         <div className="deposit__event">
           <div>
             <div className="deposit__event__box">
-              <p>
-                EVENT
-              </p>
+              <p>EVENT</p>
             </div>
             <div>
               <h2>
-                <Trans i18nKey={t("dashboard.event_title")} />
+                <Trans i18nKey={t('dashboard.event_title')} />
               </h2>
-              <p>
-                2022.1.20 19:00:00 ~ 2022.1.26 19:00:00 KST
-              </p>
+              <p>2022.1.20 19:00:00 ~ 2022.1.26 19:00:00 KST</p>
             </div>
           </div>
           <img src={EventImage} />
