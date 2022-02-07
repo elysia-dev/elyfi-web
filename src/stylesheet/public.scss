@@ -881,6 +881,38 @@ input[type='number'] {
         }
       }
     }
+    &__dao {
+      margin: 180px 0;
+      padding: 80px;
+
+      width: 100%;
+      border: 1px solid #0099CC;
+      border-radius: 15px;
+      background-color: #F7FBFF;
+      > div {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        margin-top: 30px;
+        > div {
+          width: 284px;
+          height: 284px;
+          border-radius: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border: 1px solid #0099CC;
+          background-color: #fff;
+          padding: 30px;
+          > p {
+            text-align: center;
+            font-size: 21px;
+          }
+        }
+      }
+    }
   } // main end
 
   .deposit {

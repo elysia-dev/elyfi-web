@@ -280,6 +280,28 @@ const Main = () => {
               <img src={Blocore} alt={Blocore} />
             </div>
           </div>
+          <div className="main__dao">
+            <h2>
+              <Trans i18nKey="main.dao.title" />
+            </h2>
+            <div>
+              <div>
+                <p>
+                  {t("main.dao.content.0")}
+                </p>
+              </div>
+              <div>
+                <p>
+                  {t("main.dao.content.1")}
+                </p>
+              </div>
+              <div>
+                <p>
+                  {t("main.dao.content.2")}
+                </p>
+              </div>
+            </div>
+          </div>
           <div>
             <h2>{t('main.partners.lawfirm')}</h2>
             <div className="main__partners__lawfirm">
