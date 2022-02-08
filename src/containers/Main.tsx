@@ -251,9 +251,7 @@ const Main = () => {
           <h2 ref={serviceGraphPageY}>
             <Trans i18nKey={'main.graph.title'} />
           </h2>
-
           <MainGraph />
-
           <div className="main__service__comment pc-only">
             <p>{t('main.graph.investment-linked-financial')}</p>
             <div
@@ -311,12 +309,6 @@ const Main = () => {
             </div>
           </div>
         </section>
-        <div
-          style={{
-            width: '100%',
-            height: 220,
-          }}
-        />
         <MainGovernanceTable
           governancePageY={governancePageY}
           governancePageBottomY={governancePageBottomY}

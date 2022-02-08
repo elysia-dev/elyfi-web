@@ -948,9 +948,9 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
-        margin-top: 30px;
+        margin-top: 10px;
         > div {
-          margin: 20px;
+          margin: 10px;
           width: 150px;
           height: 150px;
           border-radius: 100%;
@@ -959,10 +959,11 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           align-items: center;
           border: 1px solid #0099CC;
           background-color: #fff;
-          padding: 30px;
+          padding: 0px;
           > p {
             text-align: center;
             font-size: 13px;
+            line-height: 20px;
           }
         }
       }

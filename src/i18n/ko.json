@@ -88,11 +88,11 @@
         "disable_popup": "오늘 그만보기"
       },
       "dao": {
-        "title": "<strong>ELYSIA DAO LLC</strong> 설립",
+        "title": "ELYSIA DAO LLC\n<strong>Registered</strong> in Wyoming, US",
         "content": [
           "아시아 최초 DAO 법인",
-          "미국정부가 인정한 세계 두 번째 DAO 법인",
-          "상장회사 중 최초로 설립된 DAO 법인"
+          "미국정부가 인정한\n세계 두 번째 DAO 법인",
+          "상장회사 중\n최초로 설립된 DAO 법인"
         ]
       }
     },
