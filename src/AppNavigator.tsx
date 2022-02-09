@@ -27,6 +27,7 @@ import MarketDetail from 'src/containers/MarketDetails';
 import PortfolioDetail from 'src/containers/PortfolioDetail';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
+import WalletConnectConnector from 'src/core/connectors/WalletConnector';
 import { Web3Context } from './providers/Web3Provider';
 import MainnetContext from './contexts/MainnetContext';
 
@@ -36,16 +37,47 @@ const AppNavigator: React.FC = () => {
   const { type: getMainnetType, unsupportedChainid } =
     useContext(MainnetContext);
 
-  const { deactivate, activate } = useContext(Web3Context);
+  const { deactivate, activate, library } = useWeb3React();
+
+  const walletTest = new WalletConnectConnector({
+    rpc: {
+      1:
+        process.env.NODE_ENV === 'development'
+          ? 'https://elyfi-test.elyfi.world:8545'
+          : process.env.REACT_APP_JSON_RPC || '',
+      56: 'https://bsc-dataseed.binance.org/',
+      97: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
+    },
+    bridge: 'https://bridge.walletconnect.org',
+    qrcode: true,
+    pollingInterval: 1200,
+    preferredNetworkId: 1337,
+    infuraId: envs.infuraAddress,
+    qrcodeModalOptions: {
+      mobileLinks: [
+        'rainbow',
+        'metamask',
+        'argent',
+        'trust',
+        'imtoken',
+        'pillar',
+      ],
+    },
+  });
+
   usePageTracking();
 
   useEffect(() => {
     if (window.sessionStorage.getItem('@connect') === 'true') {
-      activate();
+      if (window.sessionStorage.getItem('@walletConnect') === 'true') {
+        activate(walletTest);
+        return;
+      }
+      activate(InjectedConnector);
     } else {
       deactivate();
     }
-  }, [getMainnetType]);
+  }, []);
 
   const LanguageDetctionPage = () => {
     const history = useHistory();
