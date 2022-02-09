@@ -4,8 +4,6 @@ import PriceContext, {
   initialPriceContext,
   PriceContextType,
 } from 'src/contexts/PriceContext';
-import Loading from 'src/components/Loading';
-import ErrorPage from 'src/components/ErrorPage';
 import Coingecko from 'src/clients/Coingecko';
 import calcPriceFromSqrtPriceX96 from 'src/utiles/calcPriceFromSqrtPriceX96';
 import CachedUniswapV3 from 'src/clients/CachedUniswapV3';
@@ -95,9 +93,6 @@ const PriceProvider: React.FC = (props) => {
   useEffect(() => {
     fetchPrices();
   }, []);
-
-  if (state.loading) return <Loading />;
-  if (state.error) return <ErrorPage />;
 
   return (
     <PriceContext.Provider

@@ -95,16 +95,8 @@ const UniswapPoolProvider: React.FC = (props) => {
           },
           loading: false,
         });
-        // setState({
-        //   ...state,
-        //   loading: false,
-        //   error: true,
-        // });
       });
   }, []);
-
-  if (state.loading) return <Loading />;
-  if (state.error) return <ErrorPage />;
 
   return (
     <UniswapPoolContext.Provider
