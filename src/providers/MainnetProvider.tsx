@@ -1,19 +1,17 @@
 import { useWeb3React } from '@web3-react/core';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import MainnetContext, {
   IMainnetContextTypes,
 } from 'src/contexts/MainnetContext';
-import envs from 'src/core/envs';
 import MainnetType from 'src/enums/MainnetType';
 import { mainnets } from 'src/core/data/mainnets';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import Loading from 'src/components/Loading';
-import { Web3Context } from './Web3Provider';
 
 // ! FIXME
 // 2. Remove redundant loading(false)
 const MainnetProvider: React.FC = (props) => {
-  const { active } = useContext(Web3Context);
+  const { active } = useWeb3React();
   const currentChain = useCurrentChain();
   const [loading, setLoading] = useState(true);
 
@@ -27,12 +25,17 @@ const MainnetProvider: React.FC = (props) => {
     if (!active) {
       setLoading(false);
       if (currentMainnet.unsupportedChainid) {
-        setMainnet({ ...currentMainnet, unsupportedChainid: false, active });
+        setMainnet({
+          ...currentMainnet,
+          unsupportedChainid: false,
+          active,
+        });
       }
       return;
     }
     currentChain !== undefined
       ? (setMainnet({
+          ...currentMainnet,
           type: currentChain.type,
           unsupportedChainid: false,
           active,
