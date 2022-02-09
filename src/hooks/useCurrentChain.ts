@@ -4,15 +4,10 @@ import { IMainnet, mainnets } from 'src/core/data/mainnets';
 import { Web3Context } from 'src/providers/Web3Provider';
 
 const useCurrentChain = (): IMainnet | undefined => {
-  const { chainId } = useContext(Web3Context);
-
+  const { chainId } = useWeb3React();
   const currentChain = useMemo(() => {
     return mainnets.find((mainnet) => {
-      return (
-        mainnet.chainId === chainId ||
-        (chainId.toString().includes('0x') &&
-          parseInt(chainId.toString(), 16) === mainnet.chainId)
-      );
+      return mainnet.chainId === chainId;
     });
   }, [chainId]);
 
