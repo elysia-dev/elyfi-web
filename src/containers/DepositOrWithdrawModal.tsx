@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useWeb3React } from '@web3-react/core';
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import { GetUser_user } from 'src/queries/__generated__/GetUser';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
@@ -58,7 +59,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   transactionModal,
   round,
 }) => {
-  const { account, chainId } = useContext(Web3Context);
+  const { account, chainId } = useWeb3React();
   const { elfiPrice } = useContext(PriceContext);
 
   const currentMoneypoolAddress = useCurrentMoneypoolAddress();

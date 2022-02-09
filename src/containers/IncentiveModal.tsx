@@ -36,11 +36,11 @@ const IncentiveModal: FunctionComponent<{
   afterTx,
   transactionModal,
 }) => {
-  const { account, provider, chainId } = useContext(Web3Context);
+  const { account, library, chainId } = useWeb3React();
   const { setTransaction, failTransaction } = useContext(TxContext);
 
   const reqeustClaimIncentive = async () => {
-    if (!account || !provider) return;
+    if (!account || !library) return;
 
     const emitter = buildEventEmitter(
       ModalViewType.IncentiveModal,
@@ -55,7 +55,7 @@ const IncentiveModal: FunctionComponent<{
     );
 
     emitter.clicked();
-    IncentivePool__factory.connect(incentivePoolAddress, provider.getSigner())
+    IncentivePool__factory.connect(incentivePoolAddress, library.getSigner())
       .claimIncentive()
       .then((tx) => {
         emitter.created();

@@ -8,7 +8,7 @@ const MainnetSwitch: React.FunctionComponent<{
   mainNetwork: boolean;
   setMainNetwork: (value: React.SetStateAction<boolean>) => void;
 }> = ({ mainNetwork, setMainNetwork }) => {
-  const { active } = useContext(Web3Context);
+  const { active } = useWeb3React();
   const {
     type: getMainnetType,
     changeMainnet,

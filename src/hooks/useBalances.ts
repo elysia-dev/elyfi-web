@@ -128,7 +128,7 @@ type ReturnType = {
 // ! FIXME
 // 1. Use other naming. Balance dose not cover the usefulness
 const useBalances = (refetchUserData: () => void): ReturnType => {
-  const { account, chainId, provider } = useContext(Web3Context);
+  const { account, chainId, library } = useWeb3React();
   const { data } = useContext(SubgraphContext);
   const [balances, setBalances] = useState<BalanceType[]>(
     data.reserves.map((reserve) => {
@@ -162,7 +162,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
               ...(await fetchBalanceFrom(
                 reserve,
                 account,
-                provider,
+                library,
                 balance.tokenName,
               )),
             };
@@ -186,14 +186,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
             const tokenName = getTokenNameFromAddress(
               reserve.id,
             ) as ReserveToken;
-            if (
-              !isSupportedReserveByChainId(
-                tokenName,
-                chainId.toString().includes('0x')
-                  ? parseInt(chainId.toString(), 16)
-                  : chainId,
-              )
-            ) {
+            if (!isSupportedReserveByChainId(tokenName, chainId)) {
               return balances[index];
             }
 
@@ -201,12 +194,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
               id: reserve.id,
               tokenName,
               updatedAt: moment().unix(),
-              ...(await fetchBalanceFrom(
-                reserve,
-                account,
-                provider,
-                tokenName,
-              )),
+              ...(await fetchBalanceFrom(reserve, account, library, tokenName)),
             } as BalanceType;
           }),
         ),
@@ -222,7 +210,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     } finally {
       setLoading(false);
     }
-  }, [account, provider, chainId]);
+  }, [account, library, chainId]);
 
   useEffect(() => {
     // Only called when active.

@@ -6,15 +6,15 @@ import { Web3Context } from 'src/providers/Web3Provider';
 
 const useMoneyPool = () => {
   const currentMoneypoolAddress = useCurrentMoneypoolAddress();
-  const { provider } = useContext(Web3Context);
+  const { library } = useWeb3React();
 
   const contract = useMemo(() => {
-    if (!provider) return;
+    if (!library) return;
     return MoneyPool__factory.connect(
       currentMoneypoolAddress,
-      provider.getSigner(),
+      library.getSigner(),
     );
-  }, [provider, currentMoneypoolAddress]);
+  }, [library, currentMoneypoolAddress]);
 
   return contract;
 };

@@ -22,7 +22,7 @@ const AccountModal: React.FunctionComponent<{
   visible: boolean;
   closeHandler: () => void;
 }> = ({ visible, closeHandler }) => {
-  const { account, deactivate, chainId } = useContext(Web3Context);
+  const { account, deactivate, chainId } = useWeb3React();
   const { t } = useTranslation();
   const { reset, txHash, txStatus, txType } = useContext(TxContext);
   const { type: getMainnetType } = useContext(MainnetContext);
@@ -93,6 +93,7 @@ const AccountModal: React.FunctionComponent<{
                 deactivate();
                 reset();
                 closeHandler();
+                window.sessionStorage.setItem('@connect', 'false');
               }}>
               <p>{t('navigation.disconnect')}</p>
             </div>

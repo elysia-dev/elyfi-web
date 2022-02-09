@@ -18,7 +18,7 @@ const useERC20Info = (
   contractAddress: string,
   targetAddress: string,
 ): IERC20Info => {
-  const { account } = useContext(Web3Context);
+  const { account } = useWeb3React();
   const contract = useERC20(contractAddress);
   const [state, setState] = useState<{
     allowance: BigNumber;

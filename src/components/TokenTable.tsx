@@ -53,7 +53,7 @@ const TokenTable: React.FC<Props> = ({
   id,
   loading,
 }) => {
-  const { account } = useContext(Web3Context);
+  const { account } = useWeb3React();
   const { unsupportedChainid } = useContext(MainnetContext);
   const { t, i18n } = useTranslation();
   const tokenInfo = reserveTokenData[balance.tokenName];

@@ -31,7 +31,7 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
   tokenName,
 }) => {
   const { t, i18n } = useTranslation();
-  const { account } = useContext(Web3Context);
+  const { account } = useWeb3React();
   const { value: mediaQuery } = useMediaQueryType();
   const { unsupportedChainid } = useContext(MainnetContext);
 

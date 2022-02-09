@@ -5,16 +5,16 @@ import { providers } from 'ethers';
 import { Web3Context } from 'src/providers/Web3Provider';
 
 const useERC20 = (address: string) => {
-  const { provider } = useContext(Web3Context);
+  const { library } = useWeb3React();
   const contract = useMemo(() => {
-    if (!provider) {
+    if (!library) {
       return ERC20__factory.connect(
         address,
         new providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC),
       );
     }
-    return ERC20__factory.connect(address, provider.getSigner());
-  }, [provider, address]);
+    return ERC20__factory.connect(address, library.getSigner());
+  }, [library, address]);
 
   return contract;
 };
