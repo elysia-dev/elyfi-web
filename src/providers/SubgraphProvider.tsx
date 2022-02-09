@@ -10,27 +10,20 @@ const SubgraphProvider: React.FC = (props) => {
   const [loading, setLoading] = useState(true)
 
   const fetchSubgraph = async () => {
-    const mainnetData = await ReserveSubgraph.getEthReserveData()
-    const bscData = await ReserveSubgraph.getBscReserveData()
+    const reserves = await Promise.all(
+      [ReserveSubgraph.getEthReserveData, ReserveSubgraph.getBscReserveData].map(async (fetcth) => {
+      const res = await fetcth();
+      return res.data.data.reserves.map((reserve) => {
+        return {
+          ...reserve,
+          assetBondTokens: res.data.data.assetBondTokens.filter((ab) => ab.reserve.id === reserve.id)
+        }
+      })
+    }))
 
-    // FIXME
-    // Our subgraph reserve has no child like asset bond tokens at v0.4.0
     setState({
       data: {
-        reserves: [
-          ...mainnetData.data.data.reserves.map((reserve) => {
-            return {
-              ...reserve,
-              assetBondTokens: mainnetData.data.data.assetBondTokens.filter((ab) => ab.reserve.id === reserve.id)
-            }
-          }),
-          ...bscData.data.data.reserves.map((reserve) => {
-            return {
-              ...reserve,
-              assetBondTokens: bscData.data.data.assetBondTokens.filter((ab) => ab.reserve.id === reserve.id)
-            }
-          }),
-        ],
+        reserves: reserves.flat(),
       }
     })
   }
