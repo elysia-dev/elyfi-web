@@ -9,14 +9,16 @@ import walletconnect from 'src/assets/images/walletconnect.png';
 
 type Props = {
   selectWalletModalVisible: boolean;
+  isWrongNetwork: boolean;
   modalClose: () => void;
 };
 
 const SelectWalletModal: FunctionComponent<Props> = ({
   selectWalletModalVisible,
+  isWrongNetwork,
   modalClose,
 }) => {
-  const { activate, active } = useWeb3React();
+  const { activate, active, deactivate } = useWeb3React();
   const [hoverColor, setHoverColor] = useState('#E6E6E6');
 
   const walletTest = new WalletConnectConnector({
@@ -74,120 +76,132 @@ const SelectWalletModal: FunctionComponent<Props> = ({
           borderRadius: 5,
           boxShadow: '0px 3px 6px #00000029',
         }}>
-        <div
-          style={{
-            paddingLeft: 25,
-            paddingTop: 24.5,
-            paddingRight: 23,
-            paddingBottom: 22.5,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
-          <div>지갑 연결하기</div>
-          <div className="close-button" onClick={() => modalClose()}>
-            <div className="close-button--1">
-              <div className="close-button--2" />
+        {isWrongNetwork ? (
+          <div
+            onClick={() => {
+              modalClose();
+              deactivate();
+            }}>
+            연결끊기
+          </div>
+        ) : (
+          <>
+            <div
+              style={{
+                paddingLeft: 25,
+                paddingTop: 24.5,
+                paddingRight: 23,
+                paddingBottom: 22.5,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}>
+              <div>지갑 연결하기</div>
+              <div className="close-button" onClick={() => modalClose()}>
+                <div className="close-button--1">
+                  <div className="close-button--2" />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div
-          style={{
-            width: '100%',
-            height: 1,
-            border: '1px solid #F0F0F1',
-          }}
-        />
-        <div
-          style={{
-            marginLeft: 25,
-            marginTop: 24.5,
-            marginRight: 23,
-            marginBottom: 22.5,
-            display: 'flex',
-            alignItems: 'center',
-            border: `1px solid ${hoverColor}`,
-            width: 373.75,
-            height: 55,
-            borderRadius: 5,
-            paddingTop: 15,
-            paddingLeft: 36.5,
-            paddingBottom: 13,
-            cursor: 'pointer',
-          }}
-          onClick={async () => {
-            activate(injectedConnector)
-              .then((e) => {
-                window.sessionStorage.setItem('@connect', 'true');
-              })
-              .catch((e) => {
-                console.error('Reject');
-              });
-          }}
-          onMouseEnter={() => {
-            setHoverColor('#00BFFF');
-          }}
-          onMouseLeave={() => {
-            setHoverColor('#E6E6E6');
-          }}>
-          <img
-            style={{
-              width: 28,
-              height: 27,
-              marginRight: 15,
-            }}
-            src={metamask}
-            alt={metamask}
-          />
-          <div
-            style={{
-              fontSize: 15,
-            }}>
-            Metamask
-          </div>
-        </div>
-        <div
-          style={{
-            marginLeft: 25,
-            marginTop: 24.5,
-            marginRight: 23,
-            marginBottom: 22.5,
-            display: 'flex',
-            alignItems: 'center',
-            border: `1px solid ${hoverColor}`,
-            width: 373.75,
-            height: 55,
-            borderRadius: 5,
-            paddingTop: 15,
-            paddingLeft: 36.5,
-            paddingBottom: 13,
-            cursor: 'pointer',
-          }}
-          onClick={async () => {
-            await activate(walletTest);
-          }}
-          onMouseEnter={() => {
-            setHoverColor('#00BFFF');
-          }}
-          onMouseLeave={() => {
-            setHoverColor('#E6E6E6');
-          }}>
-          <img
-            style={{
-              width: 28,
-              height: 27,
-              marginRight: 15,
-            }}
-            src={walletconnect}
-            alt={walletconnect}
-          />
-          <div
-            style={{
-              fontSize: 15,
-            }}>
-            WalletConnect
-          </div>
-        </div>
+            <div
+              style={{
+                width: '100%',
+                height: 1,
+                border: '1px solid #F0F0F1',
+              }}
+            />
+            <div
+              style={{
+                marginLeft: 25,
+                marginTop: 24.5,
+                marginRight: 23,
+                marginBottom: 22.5,
+                display: 'flex',
+                alignItems: 'center',
+                border: `1px solid ${hoverColor}`,
+                width: 373.75,
+                height: 55,
+                borderRadius: 5,
+                paddingTop: 15,
+                paddingLeft: 36.5,
+                paddingBottom: 13,
+                cursor: 'pointer',
+              }}
+              onClick={async () => {
+                activate(injectedConnector)
+                  .then((e) => {
+                    window.sessionStorage.setItem('@connect', 'true');
+                  })
+                  .catch((e) => {
+                    console.error('Reject');
+                  });
+              }}
+              onMouseEnter={() => {
+                setHoverColor('#00BFFF');
+              }}
+              onMouseLeave={() => {
+                setHoverColor('#E6E6E6');
+              }}>
+              <img
+                style={{
+                  width: 28,
+                  height: 27,
+                  marginRight: 15,
+                }}
+                src={metamask}
+                alt={metamask}
+              />
+              <div
+                style={{
+                  fontSize: 15,
+                }}>
+                Metamask
+              </div>
+            </div>
+            <div
+              style={{
+                marginLeft: 25,
+                marginTop: 24.5,
+                marginRight: 23,
+                marginBottom: 22.5,
+                display: 'flex',
+                alignItems: 'center',
+                border: `1px solid ${hoverColor}`,
+                width: 373.75,
+                height: 55,
+                borderRadius: 5,
+                paddingTop: 15,
+                paddingLeft: 36.5,
+                paddingBottom: 13,
+                cursor: 'pointer',
+              }}
+              onClick={async () => {
+                await activate(walletTest);
+              }}
+              onMouseEnter={() => {
+                setHoverColor('#00BFFF');
+              }}
+              onMouseLeave={() => {
+                setHoverColor('#E6E6E6');
+              }}>
+              <img
+                style={{
+                  width: 28,
+                  height: 27,
+                  marginRight: 15,
+                }}
+                src={walletconnect}
+                alt={walletconnect}
+              />
+              <div
+                style={{
+                  fontSize: 15,
+                }}>
+                WalletConnect
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
