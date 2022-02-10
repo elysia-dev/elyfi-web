@@ -11,7 +11,7 @@ import Loading from 'src/components/Loading';
 // ! FIXME
 // 2. Remove redundant loading(false)
 const MainnetProvider: React.FC = (props) => {
-  const { active } = useWeb3React();
+  const { active, library } = useWeb3React();
   const currentChain = useCurrentChain();
   const [loading, setLoading] = useState(true);
 
@@ -52,11 +52,12 @@ const MainnetProvider: React.FC = (props) => {
   };
 
   const changeMainnet = async (mainnetChainId: number) => {
+    if (!library) return;
     const getChainData = mainnets.find((data) => {
       return data.chainId === mainnetChainId;
     });
     try {
-      await window.ethereum?.request({
+      await library.provider.request({
         method: 'wallet_switchEthereumChain',
         params: [
           {
@@ -64,6 +65,8 @@ const MainnetProvider: React.FC = (props) => {
           },
         ],
       });
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       if (getChainData) {
         setMainnet({
           ...currentMainnet,
