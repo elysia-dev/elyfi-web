@@ -156,8 +156,9 @@ export default class WalletConnectConnector extends AbstractConnector {
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async deactivate() {
+    window.sessionStorage.setItem('@walletConnect', 'false');
+    window.sessionStorage.setItem('@connect', 'false');
     if (this.walletConnectProvider) {
-      window.sessionStorage.setItem('@walletConnect', 'false');
       await this.walletConnectProvider.close();
     }
   }
