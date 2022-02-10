@@ -48,6 +48,9 @@ const Wallet = (props: any) => {
         modalClose={() => {
           setSelectWalletModalVisible(false);
         }}
+        isWrongNetwork={
+          window.sessionStorage.getItem('@walletConnect') === 'true' && !active
+        }
         selectWalletModalVisible={selectWalletModalVisible}
       />
       <div
