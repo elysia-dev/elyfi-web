@@ -28,6 +28,7 @@ import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
 import { Web3Context } from 'src/providers/Web3Provider';
+import useCurrentChain from 'src/hooks/useCurrentChain';
 import TableBodyEventReward from './TableBodyEventReward';
 
 interface Props {
@@ -54,13 +55,14 @@ const TokenTable: React.FC<Props> = ({
   loading,
 }) => {
   const { account } = useWeb3React();
-  const { unsupportedChainid } = useContext(MainnetContext);
+  const { unsupportedChainid, type: getMainnetType } =
+    useContext(MainnetContext);
   const { t, i18n } = useTranslation();
   const tokenInfo = reserveTokenData[balance.tokenName];
   const history = useHistory();
   const { lng } = useParams<{ lng: string }>();
   const { value: mediaQuery } = useMediaQueryType();
-  const { type: getMainnetType } = useContext(MainnetContext);
+  const currentChain = useCurrentChain();
   const { elfiPrice } = useContext(PriceContext);
   const assetBondTokensBackedByEstate = reserveData.assetBondTokens.filter(
     (ab) => {
@@ -145,7 +147,9 @@ const TokenTable: React.FC<Props> = ({
                 buttonEvent={reserveData ? onClick : undefined}
                 buttonContent={t('dashboard.deposit_amount--button')}
                 value={
-                  account && !unsupportedChainid
+                  account &&
+                  !unsupportedChainid &&
+                  currentChain?.name === getMainnetType
                     ? toCompactForBignumber(
                         balance.deposit || constants.Zero,
                         tokenInfo?.decimals,
@@ -176,7 +180,9 @@ const TokenTable: React.FC<Props> = ({
                 }}
                 buttonContent={t('dashboard.claim_reward')}
                 value={
-                  account && !unsupportedChainid ? (
+                  account &&
+                  !unsupportedChainid &&
+                  currentChain?.name === getMainnetType ? (
                     <CountUp
                       className="bold amounts"
                       start={parseFloat(
