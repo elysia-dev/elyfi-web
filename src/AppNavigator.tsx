@@ -30,6 +30,7 @@ import MediaQuery from 'src/enums/MediaQuery';
 import WalletConnectConnector from 'src/core/connectors/WalletConnector';
 import { Web3Context } from './providers/Web3Provider';
 import MainnetContext from './contexts/MainnetContext';
+import walletConnectConnector from './utiles/walletConnector';
 
 const AppNavigator: React.FC = () => {
   const [hamburgerBar, setHamburgerBar] = useState(false);
@@ -39,38 +40,14 @@ const AppNavigator: React.FC = () => {
 
   const { deactivate, activate, library } = useWeb3React();
 
-  const walletTest = new WalletConnectConnector({
-    rpc: {
-      1:
-        process.env.NODE_ENV === 'development'
-          ? 'https://elyfi-test.elyfi.world:8545'
-          : process.env.REACT_APP_JSON_RPC || '',
-      56: 'https://bsc-dataseed.binance.org/',
-      97: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
-    },
-    bridge: 'https://bridge.walletconnect.org',
-    qrcode: true,
-    pollingInterval: 1200,
-    preferredNetworkId: 1337,
-    infuraId: envs.infuraAddress,
-    qrcodeModalOptions: {
-      mobileLinks: [
-        'rainbow',
-        'metamask',
-        'argent',
-        'trust',
-        'imtoken',
-        'pillar',
-      ],
-    },
-  });
+  const walletConnectProvider = walletConnectConnector();
 
   usePageTracking();
 
   useEffect(() => {
     if (window.sessionStorage.getItem('@connect') === 'true') {
       if (window.sessionStorage.getItem('@walletConnect') === 'true') {
-        activate(walletTest);
+        activate(walletConnectProvider);
         return;
       }
       activate(InjectedConnector);
