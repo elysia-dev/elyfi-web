@@ -10,12 +10,14 @@ import AccountModal from 'src/components/AccountModal';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetError from 'src/assets/images/network_error.png';
 import { Web3Context } from 'src/providers/Web3Provider';
+import useCurrentChain from 'src/hooks/useCurrentChain';
 import NetworkChangeModal from './NetworkChangeModal';
 import SelectWalletModal from './SelectWalletModal';
 
-const Wallet = (props: any) => {
+const Wallet = (): JSX.Element => {
   const { account, chainId, active } = useWeb3React();
   const [connected, setConnected] = useState<boolean>(false);
+
   const { t } = useTranslation();
   const [accountModalVisible, setAccountModalVisible] = useState(false);
   const [selectWalletModalVisible, setSelectWalletModalVisible] =
@@ -23,12 +25,17 @@ const Wallet = (props: any) => {
   const [networkChangeModalVisible, setNetworkChangeModalVisible] =
     useState(false);
   const { txStatus } = useContext(TxContext);
-
   const WalletRef = useRef<HTMLDivElement>(null);
   const { ensName, ensLoading } = useENS(account || '');
   const shortAddress = `${account?.slice(0, 6)}....${account?.slice(-4)}`;
+  const currentChain = useCurrentChain();
+  const { unsupportedChainid, type: getMainnetType } =
+    useContext(MainnetContext);
 
-  const { unsupportedChainid } = useContext(MainnetContext);
+  const isWalletConnect =
+    window.sessionStorage.getItem('@walletConnect') === 'true';
+  const isWrongNetwork =
+    isWalletConnect && currentChain?.name !== getMainnetType;
 
   useEffect(() => {
     setConnected(!!account);
@@ -48,31 +55,24 @@ const Wallet = (props: any) => {
         modalClose={() => {
           setSelectWalletModalVisible(false);
         }}
-        isWrongNetwork={
-          window.sessionStorage.getItem('@walletConnect') === 'true' && !active
-        }
+        isWrongNetwork={isWrongNetwork}
         selectWalletModalVisible={selectWalletModalVisible}
       />
       <div
         className={`navigation__wallet${
-          connected
-            ? '--connected'
-            : window.sessionStorage.getItem('@walletConnect') === 'true' &&
-              !active
-            ? '--connected'
-            : ''
+          connected ? '--connected' : isWrongNetwork ? '--connected' : ''
         } ${
           unsupportedChainid
             ? 'unknown-chain'
-            : window.sessionStorage.getItem('@walletConnect') === 'true' &&
-              !active
+            : isWrongNetwork
             ? 'unknown-chain'
             : txStatus
         }`}
         ref={WalletRef}
         onClick={async () => {
-          if (!account) {
+          if (!account || isWrongNetwork) {
             setSelectWalletModalVisible(true);
+            return;
           }
           if (unsupportedChainid) {
             setNetworkChangeModalVisible(true);
@@ -86,8 +86,7 @@ const Wallet = (props: any) => {
             <img src={MainnetError} />
             <h2 className="montserrat">Wrong Network</h2>
           </>
-        ) : window.sessionStorage.getItem('@walletConnect') === 'true' &&
-          !active ? (
+        ) : isWrongNetwork ? (
           <>
             <img src={MainnetError} />
             <h2 className="montserrat">Wrong Network</h2>
