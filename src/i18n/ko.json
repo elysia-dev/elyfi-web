@@ -283,7 +283,10 @@
       "onchain_list_zero": "현재 진행중인 온체인 투표가 없습니다.",
       "offchain_list_zero": "현재 진행중인 데이터 검증 투표가 없습니다.",
       "forum_button": "ELYFI 포럼으로 이동하기",
-      "onChain_tally_button": "Tally로 이동하기"
+      "onChain_tally_button": "Tally로 이동하기",
+      "link": {
+        "tally": "https://www.withtally.com/governance/eip155:1:0x0c54629266d7fa40B4BFaF1640ebC2Cd093866C3"
+      }
     },
     "staking": {
       "staking__token": "{{ token }} 스테이킹",
