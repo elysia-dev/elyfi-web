@@ -251,9 +251,7 @@ const Main = () => {
           <h2 ref={serviceGraphPageY}>
             <Trans i18nKey={'main.graph.title'} />
           </h2>
-
           <MainGraph />
-
           <div className="main__service__comment pc-only">
             <p>{t('main.graph.investment-linked-financial')}</p>
             <div
@@ -280,6 +278,28 @@ const Main = () => {
               <img src={Blocore} alt={Blocore} />
             </div>
           </div>
+          <div className="main__dao">
+            <h2>
+              <Trans i18nKey="main.dao.title" />
+            </h2>
+            <div>
+              <div>
+                <p>
+                  {t("main.dao.content.0")}
+                </p>
+              </div>
+              <div>
+                <p>
+                  {t("main.dao.content.1")}
+                </p>
+              </div>
+              <div>
+                <p>
+                  {t("main.dao.content.2")}
+                </p>
+              </div>
+            </div>
+          </div>
           <div>
             <h2>{t('main.partners.lawfirm')}</h2>
             <div className="main__partners__lawfirm">
@@ -289,12 +309,6 @@ const Main = () => {
             </div>
           </div>
         </section>
-        <div
-          style={{
-            width: '100%',
-            height: 220,
-          }}
-        />
         <MainGovernanceTable
           governancePageY={governancePageY}
           governancePageBottomY={governancePageBottomY}

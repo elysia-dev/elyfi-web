@@ -59,7 +59,7 @@ const MigrationModal: React.FunctionComponent<{
     migrationMax: false,
   });
   const [mouseHover, setMouseHover] = useState(false);
-  const stakingPool = useStakingPool(stakedToken, round >= 3);
+  const { contract: stakingPool } = useStakingPool(stakedToken, round >= 3);
   const { waiting, wait } = useWaitingTx();
   const { setTransaction, failTransaction } = useContext(TxContext);
 
