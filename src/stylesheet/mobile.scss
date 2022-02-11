@@ -3229,6 +3229,30 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       }
     }
   }
+  .wallet_select_modal {
+    &__content {
+      width: 320px;
+      height: 263px;
+
+      &__header {
+        padding: 24.5px 23px 22.5px 25px;
+      }
+
+      &__wallet_btn {
+        margin: 25px auto 23px auto;
+        width: 270px;
+        height: 55px;
+        border-radius: 5px;
+        padding: 15px 0px 13px 30.5px;
+
+        img {
+          width: 28px;
+          height: 27px;
+          margin-right: 15px;
+        }
+      }
+    }
+  }
 
   // .header {
   //   min-width: $device-width;
