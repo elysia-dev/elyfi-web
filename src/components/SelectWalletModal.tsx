@@ -45,7 +45,7 @@ const SelectWalletModal: FunctionComponent<Props> = ({
         ) : (
           <>
             <div className="wallet_select_modal__content__header">
-              <div>지갑 연결하기</div>
+              <div>지갑 연결하기 {navigator.userAgent.toLowerCase()}</div>
               <div className="close-button" onClick={() => modalClose()}>
                 <div className="close-button--1">
                   <div className="close-button--2" />
