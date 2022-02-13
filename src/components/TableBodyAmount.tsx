@@ -41,19 +41,18 @@ const TableBodyAmount: React.FunctionComponent<{
             {loading ? <Skeleton width={100} /> : value}
             <span className="bold">&nbsp;{tokenName}</span>
           </h2>
-          {
-            loading ?
-              <Skeleton width={100} /> :
-              <p>
-                {
-                  walletBalance
-                    ? `${t('dashboard.wallet_balance')} : ` +
-                    walletBalance +
-                    ' ' +
-                    tokenName
-                    : moneyPoolTime}
-              </p>
-          }
+          {loading ? (
+            <Skeleton width={100} />
+          ) : (
+            <p>
+              {walletBalance
+                ? `${t('dashboard.wallet_balance')} : ` +
+                  walletBalance +
+                  ' ' +
+                  tokenName
+                : moneyPoolTime}
+            </p>
+          )}
         </div>
       </div>
     </>
@@ -67,28 +66,27 @@ const TableBodyAmount: React.FunctionComponent<{
           <h2>
             {loading ? <Skeleton width={50} /> : value}
             <span className="bold">&nbsp;{tokenName}</span>
-            </h2>
-            {
-              loading ?
-                <Skeleton width={50} /> :
-                <p>
-                  {
-                    walletBalance
-                      ? `${t('dashboard.wallet_balance')} : ` +
-                      walletBalance +
-                      ' ' +
-                      tokenName
-                      : moneyPoolTime}
-                </p>
-            }
-          </div>
+          </h2>
+          {loading ? (
+            <Skeleton width={50} />
+          ) : (
+            <p>
+              {walletBalance
+                ? `${t('dashboard.wallet_balance')} : ` +
+                  walletBalance +
+                  ' ' +
+                  tokenName
+                : moneyPoolTime}
+            </p>
+          )}
         </div>
-        <div
-          onClick={buttonEvent}
-          className="deposit__table__body__amount__button">
-          <p>{buttonContent}</p>
-        </div>
-      </>
+      </div>
+      <div
+        onClick={buttonEvent}
+        className="deposit__table__body__amount__button">
+        <p>{buttonContent}</p>
+      </div>
+    </>
   );
 };
 
