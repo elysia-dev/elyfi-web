@@ -33,6 +33,7 @@ import EventImage from 'src/assets/images/event_image.png';
 import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 import { Web3Context } from 'src/providers/Web3Provider';
 import { useWeb3React } from '@web3-react/core';
+import useCurrentChain from 'src/hooks/useCurrentChain';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();
@@ -42,7 +43,8 @@ const Dashboard: React.FunctionComponent = () => {
     IReserveSubgraphData | undefined
   >();
   const { t } = useTranslation();
-  const { unsupportedChainid } = useContext(MainnetContext);
+  const { unsupportedChainid, type: getMainnetType } =
+    useContext(MainnetContext);
   const [incentiveModalVisible, setIncentiveModalVisible] =
     useState<boolean>(false);
   const { data: userConnection, refetch: refetchUserData } = useQuery<GetUser>(
@@ -58,6 +60,7 @@ const Dashboard: React.FunctionComponent = () => {
     useState<boolean>(false);
   const [round, setRound] = useState(1);
   const walletConnect = isWalletConnect();
+  const currentChain = useCurrentChain();
   const { type: currentNetworkType } = useContext(MainnetContext);
   const supportedTokens = useMemo(() => {
     return MainnetData[currentNetworkType].supportedTokens;
@@ -216,7 +219,14 @@ const Dashboard: React.FunctionComponent = () => {
                 id={`table-${index}`}
                 balance={balance}
                 onClick={(e: any) => {
-                  walletConnect === false
+                  !(
+                    currentChain?.name ===
+                    (process.env.NODE_ENV === 'development'
+                      ? getMainnetType === 'BSC'
+                        ? 'BSC Test'
+                        : 'Ganache'
+                      : getMainnetType)
+                  )
                     ? (setConnectWalletModalvisible(true),
                       ReactGA.modalview(
                         balance.tokenName +
@@ -234,7 +244,14 @@ const Dashboard: React.FunctionComponent = () => {
                 }}
                 reserveData={reserve}
                 setIncentiveModalVisible={() => {
-                  walletConnect === false
+                  !(
+                    currentChain?.name ===
+                    (process.env.NODE_ENV === 'development'
+                      ? getMainnetType === 'BSC'
+                        ? 'BSC Test'
+                        : 'Ganache'
+                      : getMainnetType)
+                  )
                     ? (setConnectWalletModalvisible(true),
                       ReactGA.modalview(
                         balance.tokenName + ModalViewType.IncentiveModal,

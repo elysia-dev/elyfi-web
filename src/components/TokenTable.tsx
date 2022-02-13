@@ -149,7 +149,12 @@ const TokenTable: React.FC<Props> = ({
                 value={
                   account &&
                   !unsupportedChainid &&
-                  currentChain?.name === getMainnetType
+                  currentChain?.name ===
+                    (process.env.NODE_ENV === 'development'
+                      ? getMainnetType === 'BSC'
+                        ? 'BSC Test'
+                        : 'Ganache'
+                      : getMainnetType)
                     ? toCompactForBignumber(
                         balance.deposit || constants.Zero,
                         tokenInfo?.decimals,
@@ -182,7 +187,12 @@ const TokenTable: React.FC<Props> = ({
                 value={
                   account &&
                   !unsupportedChainid &&
-                  currentChain?.name === getMainnetType ? (
+                  currentChain?.name ===
+                    (process.env.NODE_ENV === 'development'
+                      ? getMainnetType === 'BSC'
+                        ? 'BSC Test'
+                        : 'Ganache'
+                      : getMainnetType) ? (
                     <CountUp
                       className="bold amounts"
                       start={parseFloat(
