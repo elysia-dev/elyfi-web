@@ -57,7 +57,7 @@ const MainnetProvider: React.FC = (props) => {
       return data.chainId === mainnetChainId;
     });
     try {
-      await window.ethereum?.request({
+      await library.provider.request({
         method: 'wallet_switchEthereumChain',
         params: [
           {
