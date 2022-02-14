@@ -31,6 +31,7 @@ import WalletConnectConnector from 'src/core/connectors/WalletConnector';
 import { Web3Context } from './providers/Web3Provider';
 import MainnetContext from './contexts/MainnetContext';
 import walletConnectConnector from './utiles/walletConnector';
+import isWalletConnect from './hooks/isWalletConnect';
 
 const AppNavigator: React.FC = () => {
   const [hamburgerBar, setHamburgerBar] = useState(false);
@@ -46,7 +47,7 @@ const AppNavigator: React.FC = () => {
 
   useEffect(() => {
     if (window.sessionStorage.getItem('@connect') === 'true') {
-      if (window.sessionStorage.getItem('@walletConnect') === 'true') {
+      if (isWalletConnect()) {
         activate(walletConnectProvider);
         return;
       }

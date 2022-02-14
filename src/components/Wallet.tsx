@@ -11,6 +11,7 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetError from 'src/assets/images/network_error.png';
 import { Web3Context } from 'src/providers/Web3Provider';
 import useCurrentChain from 'src/hooks/useCurrentChain';
+import isWalletConnect from 'src/hooks/isWalletConnect';
 import NetworkChangeModal from './NetworkChangeModal';
 import SelectWalletModal from './SelectWalletModal';
 import WalletDisconnect from './WalletDisconnect';
@@ -34,10 +35,8 @@ const Wallet = (): JSX.Element => {
   const { unsupportedChainid, type: getMainnetType } =
     useContext(MainnetContext);
 
-  const isWalletConnect =
-    window.sessionStorage.getItem('@walletConnect') === 'true';
   const isWrongNetwork =
-    isWalletConnect &&
+    isWalletConnect() &&
     currentChain?.name !==
       (process.env.NODE_ENV === 'development'
         ? getMainnetType === 'BSC'
