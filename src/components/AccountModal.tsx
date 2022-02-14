@@ -17,6 +17,7 @@ import MainnetType from 'src/enums/MainnetType';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import { Web3Context } from 'src/providers/Web3Provider';
+import { setWalletConnect } from 'src/hooks/isWalletConnect';
 
 const AccountModal: React.FunctionComponent<{
   visible: boolean;
@@ -93,7 +94,7 @@ const AccountModal: React.FunctionComponent<{
                 deactivate();
                 reset();
                 closeHandler();
-                window.sessionStorage.setItem('@connect', 'false');
+                setWalletConnect('');
               }}>
               <p>{t('navigation.disconnect')}</p>
             </div>

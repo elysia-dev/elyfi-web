@@ -3,6 +3,7 @@
 import { ConnectorUpdate } from '@web3-react/types';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import WalletConnectProvider from '@walletconnect/web3-provider';
+import { setWalletConnect } from 'src/hooks/isWalletConnect';
 
 export class UserRejectedRequestError extends Error {
   public constructor() {
@@ -115,13 +116,11 @@ export default class WalletConnectConnector extends AbstractConnector {
     const account = await this.walletConnectProvider
       .enable()
       .then((accounts: string[]): string => {
-        window.sessionStorage.setItem('@connect', 'true');
-        window.sessionStorage.setItem('@walletConnect', 'true');
+        setWalletConnect('walletConnect');
         return accounts[0];
       })
       .catch((error: Error): void => {
-        window.sessionStorage.setItem('@connect', 'false');
-        window.sessionStorage.setItem('@walletConnect', 'false');
+        setWalletConnect('');
         // TODO ideally this would be a better check
         if (error.message === 'User closed modal') {
           throw new UserRejectedRequestError();
@@ -156,8 +155,7 @@ export default class WalletConnectConnector extends AbstractConnector {
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async deactivate() {
-    window.sessionStorage.setItem('@walletConnect', 'false');
-    window.sessionStorage.setItem('@connect', 'false');
+    setWalletConnect('');
     if (this.walletConnectProvider) {
       await this.walletConnectProvider.close();
     }

@@ -2,7 +2,7 @@ import { useWeb3React } from '@web3-react/core';
 import { useContext, useState } from 'react';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { MainnetData, MainnetList } from 'src/core/data/mainnets';
-import isWalletConnect from 'src/hooks/isWalletConnect';
+import { isWalletConnector } from 'src/hooks/isWalletConnect';
 
 const MainnetSwitch: React.FunctionComponent<{
   mainNetwork: boolean;
@@ -14,7 +14,6 @@ const MainnetSwitch: React.FunctionComponent<{
     changeMainnet,
     setCurrentMainnet,
   } = useContext(MainnetContext);
-  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <>
@@ -42,7 +41,7 @@ const MainnetSwitch: React.FunctionComponent<{
                     key={index}
                     className="navigation__mainnet__change-network"
                     onClick={() => {
-                      active && !isWalletConnect()
+                      active && !isWalletConnector()
                         ? changeMainnet(MainnetData[_data.type].chainId).then(
                             () => {
                               setMainNetwork(false);

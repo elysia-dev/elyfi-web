@@ -5,6 +5,7 @@ import metamask from 'src/assets/images/metamask.png';
 import walletconnect from 'src/assets/images/walletconnect.png';
 import walletConnectConnector from 'src/utiles/walletConnector';
 import { ethers } from 'ethers';
+import { setWalletConnect } from 'src/hooks/isWalletConnect';
 
 type Props = {
   selectWalletModalVisible: boolean;
@@ -57,7 +58,7 @@ const SelectWalletModal: FunctionComponent<Props> = ({
               onClick={async () => {
                 activate(injectedConnector)
                   .then((e) => {
-                    window.sessionStorage.setItem('@connect', 'true');
+                    setWalletConnect('metamask');
                   })
                   .catch((e) => {
                     console.error('Reject');

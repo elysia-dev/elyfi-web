@@ -13,7 +13,6 @@ import ReactGA from 'react-ga';
 import TokenTable from 'src/components/TokenTable';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
 import IncentiveModal from 'src/containers/IncentiveModal';
-import isWalletConnect from 'src/hooks/isWalletConnect';
 import ConnectWalletModal from 'src/containers/ConnectWalletModal';
 import NetworkChangeModal from 'src/components/NetworkChangeModal';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
@@ -36,6 +35,7 @@ import { useWeb3React } from '@web3-react/core';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import WalletDisconnect from 'src/components/WalletDisconnect';
 import SelectWalletModal from 'src/components/SelectWalletModal';
+import { isWalletConnector } from 'src/hooks/isWalletConnect';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();
@@ -85,6 +85,8 @@ const Dashboard: React.FunctionComponent = () => {
   const isEnoughWide = useMediaQuery({
     query: '(min-width: 1439px)',
   });
+
+  console.log('name', currentChain?.name, getMainnetType);
 
   return (
     <>
@@ -241,7 +243,7 @@ const Dashboard: React.FunctionComponent = () => {
                         : 'Ganache'
                       : getMainnetType)
                   )
-                    ? (window.sessionStorage.getItem('@connect') === 'true'
+                    ? (isWalletConnector()
                         ? setDisconnectModalVisible(true)
                         : setConnectWalletModalvisible(true),
                       ReactGA.modalview(
@@ -268,7 +270,7 @@ const Dashboard: React.FunctionComponent = () => {
                         : 'Ganache'
                       : getMainnetType)
                   )
-                    ? (window.sessionStorage.getItem('@connect') === 'true'
+                    ? (isWalletConnector()
                         ? setDisconnectModalVisible(true)
                         : setConnectWalletModalvisible(true),
                       ReactGA.modalview(

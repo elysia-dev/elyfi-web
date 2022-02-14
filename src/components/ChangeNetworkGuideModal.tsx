@@ -1,4 +1,5 @@
 import { FunctionComponent } from 'react';
+import { isWalletConnector } from 'src/hooks/isWalletConnect';
 
 type Props = {
   modalVisible: boolean;
@@ -9,9 +10,6 @@ const ChangeNetworkGuideModal: FunctionComponent<Props> = ({
   modalVisible,
   closeModal,
 }) => {
-  const isWalletConnet =
-    window.sessionStorage.getItem('@walletConnect') === 'true';
-
   return (
     <div
       style={{
@@ -21,7 +19,7 @@ const ChangeNetworkGuideModal: FunctionComponent<Props> = ({
         width: '100%',
         height: '100vh',
         background: 'rgba(0,0,0,0.4)',
-        display: modalVisible && isWalletConnet ? 'flex' : 'none',
+        display: modalVisible && isWalletConnector() ? 'flex' : 'none',
         alignItems: 'center',
         justifyContent: 'center',
       }}>
