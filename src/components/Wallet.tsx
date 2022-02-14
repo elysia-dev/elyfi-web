@@ -13,6 +13,7 @@ import { Web3Context } from 'src/providers/Web3Provider';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import NetworkChangeModal from './NetworkChangeModal';
 import SelectWalletModal from './SelectWalletModal';
+import WalletDisconnect from './WalletDisconnect';
 
 const Wallet = (): JSX.Element => {
   const { account, chainId, active } = useWeb3React();
@@ -25,6 +26,7 @@ const Wallet = (): JSX.Element => {
   const [networkChangeModalVisible, setNetworkChangeModalVisible] =
     useState(false);
   const { txStatus } = useContext(TxContext);
+  const [disconnectModalVisible, setDisconnectModalVisible] = useState(false);
   const WalletRef = useRef<HTMLDivElement>(null);
   const { ensName, ensLoading } = useENS(account || '');
   const shortAddress = `${account?.slice(0, 6)}....${account?.slice(-4)}`;
@@ -57,11 +59,14 @@ const Wallet = (): JSX.Element => {
         visible={networkChangeModalVisible}
         closeHandler={() => setNetworkChangeModalVisible(false)}
       />
+      <WalletDisconnect
+        modalVisible={disconnectModalVisible}
+        modalClose={() => setDisconnectModalVisible(false)}
+      />
       <SelectWalletModal
         modalClose={() => {
           setSelectWalletModalVisible(false);
         }}
-        isWrongNetwork={isWrongNetwork}
         selectWalletModalVisible={selectWalletModalVisible}
       />
       <div
@@ -77,7 +82,9 @@ const Wallet = (): JSX.Element => {
         ref={WalletRef}
         onClick={async () => {
           if (!account || isWrongNetwork) {
-            setSelectWalletModalVisible(true);
+            isWrongNetwork
+              ? setDisconnectModalVisible(true)
+              : setSelectWalletModalVisible(true);
             return;
           }
           if (unsupportedChainid) {
