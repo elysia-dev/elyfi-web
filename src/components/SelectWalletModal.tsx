@@ -48,6 +48,7 @@ const SelectWalletModal: FunctionComponent<Props> = ({
               <div>
                 지갑 연결하기 {window.navigator.userAgent.toLowerCase()}
                 <div>meta : {window.ethereum?.isMetaMask}</div>
+                <div>{document.location.href}</div>
               </div>
               <div className="close-button" onClick={() => modalClose()}>
                 <div className="close-button--1">
