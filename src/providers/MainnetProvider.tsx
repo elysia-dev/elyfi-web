@@ -77,7 +77,7 @@ const MainnetProvider: React.FC = (props) => {
       if (e.code === 4902) {
         try {
           getChainData
-            ? await window.ethereum?.request({
+            ? await library.provider.request({
                 method: 'wallet_addEthereumChain',
                 params: [
                   {
