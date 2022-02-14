@@ -64,7 +64,6 @@ const Dashboard: React.FunctionComponent = () => {
   const [selectWalletModalVisible, setSelectWalletModalVisible] =
     useState(false);
   const [round, setRound] = useState(1);
-  const walletConnect = isWalletConnect();
   const currentChain = useCurrentChain();
   const { type: currentNetworkType } = useContext(MainnetContext);
   const supportedTokens = useMemo(() => {
@@ -155,10 +154,10 @@ const Dashboard: React.FunctionComponent = () => {
         modalClose={() => setDisconnectModalVisible(false)}
       />
       <SelectWalletModal
+        selectWalletModalVisible={selectWalletModalVisible}
         modalClose={() => {
           setSelectWalletModalVisible(false);
         }}
-        selectWalletModalVisible={selectWalletModalVisible}
       />
       <div className="deposit">
         <TvlCounter />
@@ -269,7 +268,9 @@ const Dashboard: React.FunctionComponent = () => {
                         : 'Ganache'
                       : getMainnetType)
                   )
-                    ? (setConnectWalletModalvisible(true),
+                    ? (window.sessionStorage.getItem('@connect') === 'true'
+                        ? setDisconnectModalVisible(true)
+                        : setConnectWalletModalvisible(true),
                       ReactGA.modalview(
                         balance.tokenName + ModalViewType.IncentiveModal,
                       ))
