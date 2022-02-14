@@ -19,7 +19,7 @@ const SelectWalletModal: FunctionComponent<Props> = ({
   selectWalletModalVisible,
   modalClose,
 }) => {
-  const { activate, active, deactivate } = useWeb3React();
+  const { activate, active } = useWeb3React();
   const [hoverColor, setHoverColor] = useState('#E6E6E6');
   const global: WindowWithEthereum = window as WindowWithEthereum;
 
