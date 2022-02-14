@@ -28,11 +28,7 @@ const ConnectWalletModal: React.FunctionComponent<{
               selectWalletModalVisible();
               onClose();
             }}>
-            <p>
-              {window.ethereum?.isMetaMask
-                ? t('modal.connect_wallet.button')
-                : t('navigation.install_metamask')}
-            </p>
+            <p>{t('modal.connect_wallet.button')}</p>
           </div>
         </>
       </div>
