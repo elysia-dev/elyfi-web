@@ -87,6 +87,14 @@ const Wallet = (): JSX.Element => {
             return;
           }
           if (unsupportedChainid) {
+            if (
+              /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+                navigator.userAgent,
+              )
+            ) {
+              setDisconnectModalVisible(true);
+              return;
+            }
             setNetworkChangeModalVisible(true);
           }
           if (connected && !unsupportedChainid) {
