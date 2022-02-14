@@ -239,7 +239,7 @@ const Governance = () => {
             action: ButtonEventType.OnChainVoteButtonOnGovernance,
           });
           window.open(
-            `https://www.withtally.com/governance/elyfi/proposal/${data.id}`,
+            `${t("governance.link.tally")}/proposal/${data.id}`,
           );
         }}>
         <div>
@@ -449,7 +449,7 @@ const Governance = () => {
                 <p>{t('governance.on_chain_voting__content')}</p>
                 {mainnetType === MainnetType.Ethereum && (
                   <a
-                    href="https://www.withtally.com/governance/elyfi"
+                    href={`${t("governance.link.tally")}`}
                     target="_blank"
                     rel="noopener noreferer">
                     <div
@@ -473,7 +473,7 @@ const Governance = () => {
                 </h3>
                 {mainnetType === MainnetType.Ethereum && (
                   <a
-                    href="https://www.withtally.com/governance/elyfi"
+                    href={`${t("governance.link.tally")}`}
                     target="_blank"
                     rel="noopener noreferer">
                     <div

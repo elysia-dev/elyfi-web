@@ -282,7 +282,10 @@
       "onchain_list_zero": "There are currently no on-chain votes in progress.",
       "offchain_list_zero": "There are currently no data verification votes in progress.",
       "forum_button": "Go to ELYFI Forum",
-      "onChain_tally_button": "Go to Tally"
+      "onChain_tally_button": "Go to Tally",
+      "link": {
+        "tally": "https://www.withtally.com/governance/eip155:1:0x0c54629266d7fa40B4BFaF1640ebC2Cd093866C3"
+      }
     },
 
     "staking": {
