@@ -9,7 +9,6 @@ import { ethers } from 'ethers';
 type Props = {
   selectWalletModalVisible: boolean;
   modalClose: () => void;
-  isWrongNetwork?: boolean;
 };
 
 interface WindowWithEthereum extends Window {
@@ -18,7 +17,6 @@ interface WindowWithEthereum extends Window {
 
 const SelectWalletModal: FunctionComponent<Props> = ({
   selectWalletModalVisible,
-  isWrongNetwork,
   modalClose,
 }) => {
   const { activate, active, deactivate } = useWeb3React();
@@ -40,62 +38,30 @@ const SelectWalletModal: FunctionComponent<Props> = ({
         display: selectWalletModalVisible ? 'flex' : 'none',
       }}>
       <div className="wallet_select_modal__content">
-        {isWrongNetwork ? (
-          <div
-            onClick={() => {
-              modalClose();
-              deactivate();
-            }}>
-            연결끊기
-          </div>
-        ) : (
-          <>
-            <div className="wallet_select_modal__content__header">
-              <div>지갑 연결하기</div>
-              <div className="close-button" onClick={() => modalClose()}>
-                <div className="close-button--1">
-                  <div className="close-button--2" />
-                </div>
+        <>
+          <div className="wallet_select_modal__content__header">
+            <div>지갑 연결하기</div>
+            <div className="close-button" onClick={() => modalClose()}>
+              <div className="close-button--1">
+                <div className="close-button--2" />
               </div>
             </div>
-            <div className="wallet_select_modal__content__line" />
-            {global.ethereum && typeof global.ethereum === 'object' && (
-              <div
-                className="wallet_select_modal__content__wallet_btn"
-                style={{
-                  border: `1px solid ${hoverColor}`,
-                }}
-                onClick={async () => {
-                  activate(injectedConnector)
-                    .then((e) => {
-                      window.sessionStorage.setItem('@connect', 'true');
-                    })
-                    .catch((e) => {
-                      console.error('Reject');
-                    });
-                }}
-                onMouseEnter={() => {
-                  setHoverColor('#00BFFF');
-                }}
-                onMouseLeave={() => {
-                  setHoverColor('#E6E6E6');
-                }}>
-                <img src={metamask} alt={metamask} />
-                <div
-                  style={{
-                    fontSize: 15,
-                  }}>
-                  Metamask
-                </div>
-              </div>
-            )}
+          </div>
+          <div className="wallet_select_modal__content__line" />
+          {global.ethereum && typeof global.ethereum === 'object' && (
             <div
               className="wallet_select_modal__content__wallet_btn"
               style={{
                 border: `1px solid ${hoverColor}`,
               }}
               onClick={async () => {
-                await activate(walletConnectProvider);
+                activate(injectedConnector)
+                  .then((e) => {
+                    window.sessionStorage.setItem('@connect', 'true');
+                  })
+                  .catch((e) => {
+                    console.error('Reject');
+                  });
               }}
               onMouseEnter={() => {
                 setHoverColor('#00BFFF');
@@ -103,16 +69,39 @@ const SelectWalletModal: FunctionComponent<Props> = ({
               onMouseLeave={() => {
                 setHoverColor('#E6E6E6');
               }}>
-              <img src={walletconnect} alt={walletconnect} />
+              <img src={metamask} alt={metamask} />
               <div
                 style={{
                   fontSize: 15,
                 }}>
-                WalletConnect
+                Metamask
               </div>
             </div>
-          </>
-        )}
+          )}
+          <div
+            className="wallet_select_modal__content__wallet_btn"
+            style={{
+              border: `1px solid ${hoverColor}`,
+            }}
+            onClick={async () => {
+              await activate(walletConnectProvider);
+              modalClose();
+            }}
+            onMouseEnter={() => {
+              setHoverColor('#00BFFF');
+            }}
+            onMouseLeave={() => {
+              setHoverColor('#E6E6E6');
+            }}>
+            <img src={walletconnect} alt={walletconnect} />
+            <div
+              style={{
+                fontSize: 15,
+              }}>
+              WalletConnect
+            </div>
+          </div>
+        </>
       </div>
     </div>
   );
