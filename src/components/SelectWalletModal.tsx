@@ -8,13 +8,12 @@ import { ethers } from 'ethers';
 
 type Props = {
   selectWalletModalVisible: boolean;
-  isWrongNetwork: boolean;
   modalClose: () => void;
+  isWrongNetwork?: boolean;
 };
 
 interface WindowWithEthereum extends Window {
   ethereum?: ethers.providers.Web3Provider;
-  web3?: ethers.providers.Web3Provider;
 }
 
 const SelectWalletModal: FunctionComponent<Props> = ({
