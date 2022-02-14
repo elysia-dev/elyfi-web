@@ -35,7 +35,13 @@ const Wallet = (): JSX.Element => {
   const isWalletConnect =
     window.sessionStorage.getItem('@walletConnect') === 'true';
   const isWrongNetwork =
-    isWalletConnect && currentChain?.name !== getMainnetType;
+    isWalletConnect &&
+    currentChain?.name !==
+      (process.env.NODE_ENV === 'development'
+        ? getMainnetType === 'BSC'
+          ? 'BSC Test'
+          : 'Ganache'
+        : getMainnetType);
 
   useEffect(() => {
     setConnected(!!account);
