@@ -34,6 +34,8 @@ import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 import { Web3Context } from 'src/providers/Web3Provider';
 import { useWeb3React } from '@web3-react/core';
 import useCurrentChain from 'src/hooks/useCurrentChain';
+import WalletDisconnect from 'src/components/WalletDisconnect';
+import SelectWalletModal from 'src/components/SelectWalletModal';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();
@@ -58,6 +60,9 @@ const Dashboard: React.FunctionComponent = () => {
     useState<boolean>(false);
   const [wrongMainnetModalVisible, setWrongMainnetModalVisible] =
     useState<boolean>(false);
+  const [disconnectModalVisible, setDisconnectModalVisible] = useState(false);
+  const [selectWalletModalVisible, setSelectWalletModalVisible] =
+    useState(false);
   const [round, setRound] = useState(1);
   const walletConnect = isWalletConnect();
   const currentChain = useCurrentChain();
@@ -137,6 +142,7 @@ const Dashboard: React.FunctionComponent = () => {
         onClose={() => {
           setConnectWalletModalvisible(false);
         }}
+        selectWalletModalVisible={() => setSelectWalletModalVisible(true)}
       />
       <NetworkChangeModal
         visible={wrongMainnetModalVisible}
@@ -144,7 +150,16 @@ const Dashboard: React.FunctionComponent = () => {
           setWrongMainnetModalVisible(false);
         }}
       />
-
+      <WalletDisconnect
+        modalVisible={disconnectModalVisible}
+        modalClose={() => setDisconnectModalVisible(false)}
+      />
+      <SelectWalletModal
+        modalClose={() => {
+          setSelectWalletModalVisible(false);
+        }}
+        selectWalletModalVisible={selectWalletModalVisible}
+      />
       <div className="deposit">
         <TvlCounter />
         <div className="deposit__event">
@@ -227,7 +242,9 @@ const Dashboard: React.FunctionComponent = () => {
                         : 'Ganache'
                       : getMainnetType)
                   )
-                    ? (setConnectWalletModalvisible(true),
+                    ? (window.sessionStorage.getItem('@connect') === 'true'
+                        ? setDisconnectModalVisible(true)
+                        : setConnectWalletModalvisible(true),
                       ReactGA.modalview(
                         balance.tokenName +
                           ModalViewType.DepositConnectWalletModal,
