@@ -233,14 +233,7 @@ const Dashboard: React.FunctionComponent = () => {
                 id={`table-${index}`}
                 balance={balance}
                 onClick={(e: any) => {
-                  !(
-                    currentChain?.name ===
-                    (process.env.NODE_ENV === 'development'
-                      ? getMainnetType === 'BSC'
-                        ? 'BSC Test'
-                        : 'Ganache'
-                      : getMainnetType)
-                  )
+                  !(currentChain?.name === getMainnetType)
                     ? (isWalletConnector()
                         ? setDisconnectModalVisible(true)
                         : setConnectWalletModalvisible(true),
@@ -260,14 +253,7 @@ const Dashboard: React.FunctionComponent = () => {
                 }}
                 reserveData={reserve}
                 setIncentiveModalVisible={() => {
-                  !(
-                    currentChain?.name ===
-                    (process.env.NODE_ENV === 'development'
-                      ? getMainnetType === 'BSC'
-                        ? 'BSC Test'
-                        : 'Ganache'
-                      : getMainnetType)
-                  )
+                  !(currentChain?.name === getMainnetType)
                     ? (isWalletConnector()
                         ? setDisconnectModalVisible(true)
                         : setConnectWalletModalvisible(true),
