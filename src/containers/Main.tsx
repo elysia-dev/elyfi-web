@@ -30,7 +30,7 @@ import DrawWave from 'src/utiles/drawWave';
 import Fbg from 'src/assets/images/main/fbg.png';
 import Blocore from 'src/assets/images/main/blocore.png';
 
-const Main = () => {
+const Main = (): JSX.Element => {
   const { t } = useTranslation();
   const mainCanvasRef = useRef<HTMLCanvasElement>(null);
   const mainHeaderY = useRef<HTMLParagraphElement>(null);
@@ -284,19 +284,13 @@ const Main = () => {
             </h2>
             <div>
               <div>
-                <p>
-                  {t("main.dao.content.0")}
-                </p>
+                <p>{t('main.dao.content.0')}</p>
               </div>
               <div>
-                <p>
-                  {t("main.dao.content.1")}
-                </p>
+                <p>{t('main.dao.content.1')}</p>
               </div>
               <div>
-                <p>
-                  {t("main.dao.content.2")}
-                </p>
+                <p>{t('main.dao.content.2')}</p>
               </div>
             </div>
           </div>

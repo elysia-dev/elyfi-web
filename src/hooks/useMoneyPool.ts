@@ -1,9 +1,9 @@
 import { useWeb3React } from '@web3-react/core';
 import { useMemo, useContext } from 'react';
-import { MoneyPool__factory } from '@elysia-dev/contract-typechain';
+import { MoneyPool, MoneyPool__factory } from '@elysia-dev/contract-typechain';
 import useCurrentMoneypoolAddress from 'src/hooks/useCurrnetMoneypoolAddress';
 
-const useMoneyPool = () => {
+const useMoneyPool = (): MoneyPool | undefined => {
   const currentMoneypoolAddress = useCurrentMoneypoolAddress();
   const { library } = useWeb3React();
 

@@ -8,7 +8,7 @@ type Props = {
   content: string;
 };
 
-function Guide(props: Props) {
+function Guide(props: Props): JSX.Element {
   const { t, i18n } = useTranslation();
   const [isBoxVisible, setIsBoxVisible] = useState(false);
 
