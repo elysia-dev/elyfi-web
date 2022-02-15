@@ -74,19 +74,6 @@ const MainnetProvider: React.FC = (props) => {
         });
       }
     } catch (e: any) {
-      if (
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent,
-        ) &&
-        getChainData
-      ) {
-        setMainnet({
-          ...currentMainnet,
-          unsupportedChainid: true,
-          type: getChainData.type,
-        });
-        return;
-      }
       if (e.code === 4902) {
         try {
           getChainData
