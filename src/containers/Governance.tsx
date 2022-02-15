@@ -39,11 +39,12 @@ const Governance = () => {
   const History = useHistory();
   const { value: mediaQuery } = useMediaQueryType();
   const { lng } = useParams<{ lng: string }>();
-  const { type: getMainnetType } = useContext(MainnetContext);
   const assetBondTokensBackedByEstate = assetBondTokens.filter((product) => {
     const parsedId = parseTokenId(product.id);
     return CollateralCategory.Others !== parsedId.collateralCategory;
   });
+
+  console.log(offChainNapData)
 
   const draw = () => {
     const dpr = window.devicePixelRatio;
@@ -117,7 +118,7 @@ const Governance = () => {
             const getHTMLStringData: string =
               getNATData.data.post_stream.posts[0].cooked.toString();
             const regexNap = /NAP#: .*(?=<)/;
-            const regexNetwork = /Network: .*(?=<)/;
+            const regexNetwork = /Network: BSC.*(?=<)/;
             setOffChainNapData((napData) => [
               ...napData,
               {
@@ -125,7 +126,7 @@ const Governance = () => {
                 nap:
                   getHTMLStringData.match(regexNap)?.toString().substring(5) ||
                   '',
-                status: getHTMLStringData.match(/Status: .*(?=<)/) || '',
+                status: getHTMLStringData.match(/Status: .*(?=<)/)?.toString().split('Status: ') || '',
                 images:
                   getHTMLStringData
                     .match(

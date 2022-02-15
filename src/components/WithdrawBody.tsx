@@ -7,6 +7,7 @@ import {
 } from 'src/utiles/formatters';
 import { IReserve } from 'src/core/data/reserves';
 import ModalButton from 'src/components/ModalButton';
+import LoadingIndicator from './LoadingIndicator';
 
 const WithdrawBody: React.FunctionComponent<{
   tokenInfo: IReserve;
@@ -15,15 +16,13 @@ const WithdrawBody: React.FunctionComponent<{
   yieldProduced: BigNumber;
   accumulatedYield: BigNumber;
   withdraw: (amount: BigNumber, max: boolean) => void;
-  transactionWait: boolean;
 }> = ({
   tokenInfo,
   depositBalance,
   liquidity,
   yieldProduced,
   accumulatedYield,
-  withdraw,
-  transactionWait
+  withdraw
 }) => {
     const [amount, setAmount] = useState<{ value: string; max: boolean }>({
       value: '',
@@ -131,9 +130,9 @@ const WithdrawBody: React.FunctionComponent<{
           </div>
         </div>
         <ModalButton
-          className={`modal__button${amountGtBalance || amountLteZero || transactionWait ? ' disable' : ''}`}
+          className={`modal__button${amountGtBalance || amountLteZero ? ' disable' : ''}`}
           onClick={() => {
-            if (!(amountLteZero || amountGtBalance || transactionWait)) {
+            if (!(amountLteZero || amountGtBalance)) {
               withdraw(
                 utils.parseUnits(amount.value, tokenInfo.decimals),
                 amount.max,
@@ -141,13 +140,12 @@ const WithdrawBody: React.FunctionComponent<{
             }
           }}
           content={
-            transactionWait ? "Transaction is loading..." : 
             amountLteZero
             ? t('dashboard.enter_amount')
             : amountGtBalance
               ? t('dashboard.insufficient_balance', { tokenName: tokenInfo.name })
               : t('dashboard.withdraw--button')}
-        />
+        />  
       </>
     );
   };

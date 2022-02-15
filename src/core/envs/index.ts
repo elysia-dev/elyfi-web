@@ -42,9 +42,9 @@ interface EnvironmentVariables {
   currentUSDTIncentivePool: string;
 }
 
-const vars =
-  process.env.NODE_ENV === 'production' && !process.env.REACT_APP_TEST_MODE
-    ? (prodVars as unknown as EnvironmentVariables)
-    : (testVars as unknown as EnvironmentVariables);
+const vars = (prodVars as unknown as EnvironmentVariables)
+  // process.env.NODE_ENV === 'production' && !process.env.REACT_APP_TEST_MODE
+  //   ? (prodVars as unknown as EnvironmentVariables)
+  //   : (testVars as unknown as EnvironmentVariables);
 
 export default vars;

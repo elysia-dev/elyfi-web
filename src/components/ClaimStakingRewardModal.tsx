@@ -78,8 +78,8 @@ const ClaimStakingRewardModal: FunctionComponent<{
           onClose={closeHandler}
         />
         <div className="modal__body">
-          {waiting ? (
-            <LoadingIndicator />
+          {transactionWait ? (
+            <LoadingIndicator button={t("modal.indicator.loading_metamask")} />
           ) : (
             <>
               <div className="modal__incentive__body">
@@ -164,7 +164,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
                       failTransaction(emitter, closeHandler, e);
                     });
                 }}>
-                <p>{transactionWait ? "Transaction is loading..." : t('staking.claim_reward')}</p>
+                <p>{t('staking.claim_reward')}</p>
               </div>
             </>
           )}

@@ -14,6 +14,8 @@ import ReserveData from 'src/core/data/reserves';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
+import { useTranslation } from 'react-i18next';
+import LoadingIndicator from 'src/components/LoadingIndicator';
 
 // Create deposit & withdraw
 const IncentiveModal: FunctionComponent<{
@@ -41,6 +43,7 @@ const IncentiveModal: FunctionComponent<{
 }) => {
   const { account, library, chainId } = useWeb3React();
   const { setTransaction, failTransaction } = useContext(TxContext);
+  const { t } = useTranslation();
 
   const reqeustClaimIncentive = async () => {
     setTransactionWait()
@@ -89,30 +92,36 @@ const IncentiveModal: FunctionComponent<{
       <div className="modal__container">
         <ModalHeader title={'ELFI'} image={ElifyTokenImage} onClose={onClose} />
         <div className="modal__body">
-          <div
-            className="modal__incentive__body"
-            style={{
-              height: 140,
-              overflowY: 'clip',
-            }}>
-            <CountUp
-              className="modal__incentive__value bold"
-              start={parseFloat(formatEther(balanceBefore))}
-              end={parseFloat(formatEther(balanceAfter))}
-              formattingFn={(number) => {
-                return formatSixFracionDigit(number);
-              }}
-              decimals={6}
-              duration={1}
-            />
-          </div>
-          <div
-            className={`modal__button ${transactionWait ? "disable" : ""}`}
-            onClick={() => {
-              !transactionWait ? reqeustClaimIncentive() : undefined
-            }}>
-            <p>{!transactionWait ? "CLAIM REWARD" : "Transaction is loading..."}</p>
-          </div>
+          {
+            transactionWait ? (
+              <LoadingIndicator button={t("modal.indicator.loading_metamask")} />
+            ) : (
+              <>
+               <div
+                  className="modal__incentive__body"
+                  style={{
+                    height: 140,
+                    overflowY: 'clip',
+                  }}>
+                  <CountUp
+                    className="modal__incentive__value bold"
+                    start={parseFloat(formatEther(balanceBefore))}
+                    end={parseFloat(formatEther(balanceAfter))}
+                    formattingFn={(number) => {
+                      return formatSixFracionDigit(number);
+                    }}
+                    decimals={6}
+                    duration={1}
+                  />
+                </div>
+                <div
+                  className={`modal__button ${transactionWait ? "disable" : ""}`}
+                  onClick={() => reqeustClaimIncentive()}>
+                  <p>{"CLAIM REWARD"}</p>
+                </div>
+              </>
+            )
+          }
         </div>
       </div>
     </div>

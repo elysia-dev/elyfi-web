@@ -535,6 +535,17 @@
       "borrow": "Borrow"
     },
     "modal": {
+      "indicator": {
+        "permission_check": "Checking permission to your token..",
+        "pending_transaction": "Pending transaction...",
+        "loading_metamask": "Activating metamask..."
+      },
+      "permission": {
+        "title": "Allow the ELYFI Protocol",
+        "content": "To deposit in the money pool, you must auhtorize access so that the app can access the connected wallet.\n\nApproval is required only at the <strong>first</strong> deposit, and if the approval is successfully completed, the deposit can be made without authorization approval.",
+        "button": "Approve",
+        "comment": "<strong>*</strong> Approval of access rights is also a transaction using the network, so gas charges occur."
+      },
       "connect_wallet": {
         "title": "Start ELYFI",
         "content": "A wallet connection is required to use ELYFI.\nDo you want to connect?",

@@ -176,6 +176,7 @@
       "withdraw--button": "출금하기",
       "max": "최대",
       "deposit_available": "예치 가능한 양",
+      "total_deposit_yield": "총 예치 수익률",
       "withdraw_availble": "출금 가능한 양",
       "reserves_elyfi": "ELYFI 내 {{tokenName}} 보유량",
       "yield": "발생 이자",
@@ -467,6 +468,17 @@
       "Withdraw": "출금"
     },
     "modal": {
+      "indicator": {
+        "permission_check": "접근 권한 확인 중..",
+        "pending_transaction": "트랜잭션 처리중..",
+        "loading_metamask": "메타마스크 활성화 중.."
+      },
+      "permission": {
+        "title": "접근 권한을 승인해주세요!",
+        "content": "해당 머니풀에 예치하기 위해서는 연결된 지갑에 해당 앱이 접근할 수 있도록 접근 권한을 승인해야 합니다.\n\n<strong>최초</strong> 예치 시에만 승인이 필요하며, 승인이 성공적으로 완료될 경우, 이후에는 권한 승인 없이 예치할 수 있습니다.",
+        "button": "승인하기",
+        "comment": "<strong>*</strong> 접근 권한 승인 또한 네트워크를 이용한 트랜잭션이기 때문에 가스비가 발생합니다."
+      },
       "connect_wallet": {
         "title": "엘리파이 시작하기",
         "content": "엘리파이를 이용하기 위해서는 지갑 연결이 필요합니다.\n연결하시겠습니까?",

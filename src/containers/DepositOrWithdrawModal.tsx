@@ -31,6 +31,7 @@ import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
 import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import useCurrentMoneypoolAddress from 'src/hooks/useCurrnetMoneypoolAddress';
+import IncreateAllowanceModal from 'src/components/IncreateAllowanceModal';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
 
@@ -73,7 +74,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     contract: reserveERC20,
     refetch,
   } = useERC20Info(reserve.id, currentMoneypoolAddress);
-
+  
   const [liquidity, setLiquidity] = useState<{
     value: BigNumber;
     loaded: boolean;
@@ -147,6 +148,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     reserveERC20
       .approve(currentMoneypoolAddress, constants.MaxUint256)
       .then((tx) => {
+        window.localStorage.setItem('@permissionTxHash', tx.hash);
         setTransaction(
           tx,
           emitter,
@@ -161,8 +163,9 @@ const DepositOrWithdrawModal: FunctionComponent<{
         );
       })
       .catch((error) => {
+        window.localStorage.removeItem('@permissionTxHash');
+        failTransaction(emitter, onClose, error);
         console.error(error);
-        emitter.canceled();
       });
   };
 
@@ -289,41 +292,46 @@ const DepositOrWithdrawModal: FunctionComponent<{
       style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
         <ModalHeader image={tokenImage} title={tokenName} onClose={onClose} />
-        <ModalConverter
-          handlerProps={selected}
-          setState={select}
-          title={[t('dashboard.deposit'), t('dashboard.withdraw')]}
-        />
-        {waiting ? (
-          <LoadingIndicator />
-        ) : selected ? (
-          <DepositBody
-            tokenInfo={tokenInfo!}
-            depositAPY={toPercent(reserve.depositAPY || '0')}
-            miningAPR={toPercent(
-              calcMiningAPR(
-                elfiPrice,
-                BigNumber.from(reserve.totalDeposit),
-                tokenInfo?.decimals,
-              ))}
-            balance={balance}
-            isApproved={!loading && allowance.gt(balance)}
-            increaseAllownace={increateAllowance}
-            deposit={requestDeposit}
-            isLoading={loading}
-            transactionWait={transactionWait}
-          />
-        ) : (
-          <WithdrawBody
-            tokenInfo={tokenInfo!}
-            depositBalance={depositBalance}
-            accumulatedYield={accumulatedYield}
-            yieldProduced={yieldProduced}
-            liquidity={liquidity.value}
-            withdraw={reqeustWithdraw}
-            transactionWait={transactionWait}
-          />
-        )}
+        {
+          transactionWait || loading ? (
+            <LoadingIndicator button={loading ? t("modal.indicator.permission_check") : t("modal.indicator.loading_metamask")}/>
+          ) : (
+            allowance.gt(balance) ? (
+              <>
+                <ModalConverter
+                  handlerProps={selected}
+                  setState={select}
+                  title={[t('dashboard.deposit'), t('dashboard.withdraw')]}
+                />
+                {selected ? (
+                  <DepositBody
+                    tokenInfo={tokenInfo!}
+                    depositAPY={toPercent(reserve.depositAPY || '0')}
+                    miningAPR={toPercent(
+                      calcMiningAPR(
+                        elfiPrice,
+                        BigNumber.from(reserve.totalDeposit),
+                        tokenInfo?.decimals,
+                      ))}
+                    balance={balance}
+                    deposit={requestDeposit}
+                  />
+                ) : (
+                  <WithdrawBody
+                    tokenInfo={tokenInfo!}
+                    depositBalance={depositBalance}
+                    accumulatedYield={accumulatedYield}
+                    yieldProduced={yieldProduced}
+                    liquidity={liquidity.value}
+                    withdraw={reqeustWithdraw}
+                  />
+                )}
+              </>
+            ) : (
+              <IncreateAllowanceModal onClick={increateAllowance} />
+            )
+          )
+        }
       </div>
     </div>
   );

@@ -1,9 +1,8 @@
 import { BigNumber, utils } from 'ethers';
-import { LegacyRef, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  formatCommaWithDigits,
-  formatSixFracionDigit,
+  formatCommaWithDigits
 } from 'src/utiles/formatters';
 import { IReserve } from 'src/core/data/reserves';
 import ModalButton from 'src/components/ModalButton';
@@ -13,25 +12,17 @@ const DepositBody: React.FunctionComponent<{
   depositAPY: string;
   miningAPR: string;
   balance: BigNumber;
-  isApproved: boolean;
-  increaseAllownace: () => void;
   deposit: (amount: BigNumber, max: boolean) => void;
-  isLoading: boolean;
-  transactionWait: boolean;
 }> = ({
   tokenInfo,
   depositAPY,
   miningAPR,
   balance,
-  isApproved,
-  increaseAllownace,
-  deposit,
-  isLoading,
-  transactionWait
+  deposit
 }) => {
   const [amount, setAmount] = useState({ value: '', max: false });
   const inputRef = useRef<HTMLInputElement>(null);
-  console.log(transactionWait)
+
   const amountGtBalance =
     !amount.max &&
     utils.parseUnits(amount.value || '0', tokenInfo.decimals).gt(balance);
@@ -120,35 +111,23 @@ const DepositBody: React.FunctionComponent<{
         </div>
       </div>
       <ModalButton
-        className={
-          (isApproved || isLoading)
-            ? `modal__button${
-                (amountLteZero || amountGtBalance || transactionWait) ? ' disable' : ''
-              }`
-            : undefined
-        }
+        className={`modal__button${(amountLteZero || amountGtBalance) ? ' disable' : ''}`}
         onClick={() => {
-          transactionWait ? undefined :
-          isApproved
-            ? !amountLteZero &&
-              !amountGtBalance &&
-              deposit(
-                utils.parseUnits(amount.value, tokenInfo.decimals),
-                amount.max,
-              )
-            : isLoading ? undefined : increaseAllownace();
+          !amountLteZero &&
+          !amountGtBalance &&
+          deposit(
+            utils.parseUnits(amount.value, tokenInfo.decimals),
+            amount.max,
+          )
         }}
         content={
-          transactionWait ? "Transaction is loading..." : 
-          isApproved
-            ? amountLteZero
-              ? t('dashboard.enter_amount')
-              : amountGtBalance
-              ? t('staking.insufficient_balance', {
-                  tokenName: tokenInfo.name,
-                })
-              : t('dashboard.deposit--button')
-            : isLoading ? "Now Loading...." : t('dashboard.protocol_allow', { tokenName: tokenInfo.name })
+            amountLteZero
+            ? t('dashboard.enter_amount')
+            : amountGtBalance
+            ? t('staking.insufficient_balance', {
+                tokenName: tokenInfo.name,
+              })
+            : t('dashboard.deposit--button')
         }
       />
     </>
