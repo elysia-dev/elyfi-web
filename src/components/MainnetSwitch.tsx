@@ -42,11 +42,16 @@ const MainnetSwitch: React.FunctionComponent<{
                     className="navigation__mainnet__change-network"
                     onClick={() => {
                       active && !isWalletConnector()
-                        ? changeMainnet(MainnetData[_data.type].chainId).then(
-                            () => {
-                              setMainNetwork(false);
-                            },
+                        ? /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+                            navigator.userAgent,
                           )
+                          ? (setMainNetwork(false),
+                            setCurrentMainnet(_data.type))
+                          : changeMainnet(MainnetData[_data.type].chainId).then(
+                              () => {
+                                setMainNetwork(false);
+                              },
+                            )
                         : (setMainNetwork(false),
                           setCurrentMainnet(_data.type));
                     }}>
