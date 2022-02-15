@@ -35,7 +35,7 @@ import { useWeb3React } from '@web3-react/core';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import WalletDisconnect from 'src/components/WalletDisconnect';
 import SelectWalletModal from 'src/components/SelectWalletModal';
-import { isWalletConnector } from 'src/hooks/isWalletConnect';
+import { isMetamask, isWalletConnector } from 'src/hooks/isWalletConnect';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();
@@ -233,9 +233,22 @@ const Dashboard: React.FunctionComponent = () => {
                 id={`table-${index}`}
                 balance={balance}
                 onClick={(e: any) => {
-                  !(currentChain?.name === getMainnetType)
+                  !(
+                    currentChain?.name ===
+                    (process.env.NODE_ENV === 'development'
+                      ? getMainnetType === 'BSC'
+                        ? 'BSC Test'
+                        : 'Ganache'
+                      : getMainnetType)
+                  )
                     ? (isWalletConnector()
                         ? setDisconnectModalVisible(true)
+                        : isMetamask()
+                        ? /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+                            navigator.userAgent,
+                          )
+                          ? setDisconnectModalVisible(true)
+                          : setWrongMainnetModalVisible(true)
                         : setConnectWalletModalvisible(true),
                       ReactGA.modalview(
                         balance.tokenName +
@@ -253,9 +266,22 @@ const Dashboard: React.FunctionComponent = () => {
                 }}
                 reserveData={reserve}
                 setIncentiveModalVisible={() => {
-                  !(currentChain?.name === getMainnetType)
+                  !(
+                    currentChain?.name ===
+                    (process.env.NODE_ENV === 'development'
+                      ? getMainnetType === 'BSC'
+                        ? 'BSC Test'
+                        : 'Ganache'
+                      : getMainnetType)
+                  )
                     ? (isWalletConnector()
                         ? setDisconnectModalVisible(true)
+                        : isMetamask()
+                        ? /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+                            navigator.userAgent,
+                          )
+                          ? setDisconnectModalVisible(true)
+                          : setWrongMainnetModalVisible(true)
                         : setConnectWalletModalvisible(true),
                       ReactGA.modalview(
                         balance.tokenName + ModalViewType.IncentiveModal,
