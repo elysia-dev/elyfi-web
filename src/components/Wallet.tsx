@@ -11,7 +11,7 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetError from 'src/assets/images/network_error.png';
 import { Web3Context } from 'src/providers/Web3Provider';
 import useCurrentChain from 'src/hooks/useCurrentChain';
-import { isWalletConnector } from 'src/hooks/isWalletConnect';
+import { isMetamask, isWalletConnector } from 'src/hooks/isWalletConnect';
 import NetworkChangeModal from './NetworkChangeModal';
 import SelectWalletModal from './SelectWalletModal';
 import WalletDisconnect from './WalletDisconnect';
@@ -36,13 +36,19 @@ const Wallet = (): JSX.Element => {
     useContext(MainnetContext);
 
   const isWrongNetwork =
-    isWalletConnector() &&
-    currentChain?.name !==
-      (process.env.NODE_ENV === 'development'
-        ? getMainnetType === 'BSC'
-          ? 'BSC Test'
-          : 'Ganache'
-        : getMainnetType);
+    isWalletConnector() && currentChain?.name !== getMainnetType;
+
+  const isMetaMaskBrowserWrongNetwork = () => {
+    return (
+      isMetamask() &&
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent,
+      ) &&
+      currentChain?.name !== getMainnetType
+    );
+  };
+
+  console.log(currentChain?.name, getMainnetType);
 
   useEffect(() => {
     setConnected(!!account);
@@ -72,7 +78,7 @@ const Wallet = (): JSX.Element => {
         className={`navigation__wallet${
           connected ? '--connected' : isWrongNetwork ? '--connected' : ''
         } ${
-          unsupportedChainid
+          unsupportedChainid || isMetaMaskBrowserWrongNetwork()
             ? 'unknown-chain'
             : isWrongNetwork
             ? 'unknown-chain'
@@ -86,7 +92,7 @@ const Wallet = (): JSX.Element => {
               : setSelectWalletModalVisible(true);
             return;
           }
-          if (unsupportedChainid) {
+          if (unsupportedChainid || isMetaMaskBrowserWrongNetwork()) {
             if (
               /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
                 navigator.userAgent,
@@ -101,7 +107,7 @@ const Wallet = (): JSX.Element => {
             setAccountModalVisible(true);
           }
         }}>
-        {unsupportedChainid ? (
+        {unsupportedChainid || isMetaMaskBrowserWrongNetwork() ? (
           <>
             <img src={MainnetError} />
             <h2 className="montserrat">Wrong Network</h2>
