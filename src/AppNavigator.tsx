@@ -4,12 +4,10 @@ import { useWeb3React } from '@web3-react/core';
 import ScrollToTop from 'src/hooks/ScrollToTop';
 import usePageTracking from 'src/hooks/usePageTracking';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
-import envs from 'src/core/envs';
 
 import Dashboard from 'src/containers/Dashboard';
 import { StakingEL, StakingELFI } from 'src/containers/Staking';
 import Main from 'src/containers/Main';
-import Guide from 'src/containers/Guide';
 import Governance from 'src/containers/Governance';
 
 import 'src/stylesheet/public.scss';
@@ -27,17 +25,12 @@ import MarketDetail from 'src/containers/MarketDetails';
 import PortfolioDetail from 'src/containers/PortfolioDetail';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import WalletConnectConnector from 'src/core/connectors/WalletConnector';
-import { Web3Context } from './providers/Web3Provider';
-import MainnetContext from './contexts/MainnetContext';
 import walletConnectConnector from './utiles/walletConnector';
 import { isMetamask, isWalletConnector } from './hooks/isWalletConnect';
 
 const AppNavigator: React.FC = () => {
   const [hamburgerBar, setHamburgerBar] = useState(false);
   const { value: mediaQuery } = useMediaQueryType();
-  const { type: getMainnetType, unsupportedChainid } =
-    useContext(MainnetContext);
 
   const { deactivate, activate, library } = useWeb3React();
 
