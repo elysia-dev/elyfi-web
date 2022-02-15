@@ -1,7 +1,7 @@
 import WalletConnectConnector from 'src/core/connectors/WalletConnector';
 import envs from 'src/core/envs';
 
-const walletConnectConnector = () => {
+const walletConnectConnector = (): WalletConnectConnector => {
   return new WalletConnectConnector({
     rpc: {
       1:
