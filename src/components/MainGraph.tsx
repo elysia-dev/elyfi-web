@@ -145,8 +145,8 @@ const MainGraph = (): JSX.Element => {
             <div className="scroll-arrow temp">
               {Array(61)
                 .fill(0)
-                .map((_x) => {
-                  return <span className="arrow--00" />;
+                .map((_x, index) => {
+                  return <span key={`arrow_${index}`} className="arrow--00" />;
                 })}
             </div>
             <div

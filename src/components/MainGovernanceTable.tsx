@@ -80,7 +80,7 @@ const MainGovernanceTable: FunctionComponent<Props> = ({
               {
                 title: data.data.description.match(/NAP.*/)?.toString() || '',
                 created_at: dates,
-                link: `${t("governance.link.tally")}/proposal/${getDataId}`,
+                link: `${t('governance.link.tally')}/proposal/${getDataId}`,
               },
             ]);
           });
@@ -149,6 +149,7 @@ const MainGovernanceTable: FunctionComponent<Props> = ({
           ).map((_data, index) => {
             return (
               <div
+                key={index}
                 className="main__governance__body"
                 style={{ display: index >= 5 && !moreload ? 'none' : 'flex' }}
                 onClick={() => window.open(_data.link)}>
