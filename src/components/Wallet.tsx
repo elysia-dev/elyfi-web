@@ -9,7 +9,6 @@ import { useENS } from 'src/hooks/useENS';
 import AccountModal from 'src/components/AccountModal';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetError from 'src/assets/images/network_error.png';
-import { Web3Context } from 'src/providers/Web3Provider';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import { isMetamask, isWalletConnector } from 'src/hooks/isWalletConnect';
 import NetworkChangeModal from './NetworkChangeModal';

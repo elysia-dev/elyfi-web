@@ -7,7 +7,7 @@ import TxContext, {
 } from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ethersJsErrors from 'src/utiles/ethersJsErrors';
-import { Web3Context } from './Web3Provider';
+import { useWeb3React } from '@web3-react/core';
 
 const clearLocalStorage = () => {
   window.localStorage.removeItem('@txHash');
@@ -17,7 +17,7 @@ const clearLocalStorage = () => {
 };
 
 const TxProvider: React.FunctionComponent = (props) => {
-  const { provider } = useContext(Web3Context);
+  const { library } = useWeb3React();
   const [state, setState] = useState<ITxContext>(initialTxContext);
 
   const reset = () => {
@@ -118,7 +118,7 @@ const TxProvider: React.FunctionComponent = (props) => {
     );
     const txType = window.localStorage.getItem('@txType') as RecentActivityType;
 
-    if (provider && connected !== 'false' && txHash) {
+    if (library && connected !== 'false' && txHash) {
       setState({
         ...state,
         txHash,
@@ -128,7 +128,7 @@ const TxProvider: React.FunctionComponent = (props) => {
         txType,
       });
 
-      provider
+      library
         .waitForTransaction(txHash)
         .then((res: any) => {
           if (res && res.status === 1) {
@@ -164,7 +164,7 @@ const TxProvider: React.FunctionComponent = (props) => {
           }, 5000);
         });
     }
-  }, [provider]);
+  }, [library]);
 
   return (
     <TxContext.Provider

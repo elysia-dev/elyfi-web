@@ -27,7 +27,6 @@ import PriceContext from 'src/contexts/PriceContext';
 import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
-import { Web3Context } from 'src/providers/Web3Provider';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import TableBodyEventReward from './TableBodyEventReward';
 

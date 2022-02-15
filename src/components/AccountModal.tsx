@@ -16,7 +16,6 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import { Web3Context } from 'src/providers/Web3Provider';
 import { setWalletConnect } from 'src/hooks/isWalletConnect';
 
 const AccountModal: React.FunctionComponent<{

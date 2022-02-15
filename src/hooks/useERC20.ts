@@ -2,7 +2,6 @@ import { useWeb3React } from '@web3-react/core';
 import { useContext, useMemo } from 'react';
 import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import { providers } from 'ethers';
-import { Web3Context } from 'src/providers/Web3Provider';
 
 const useERC20 = (address: string) => {
   const { library } = useWeb3React();

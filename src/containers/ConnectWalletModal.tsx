@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import ModalHeader from 'src/components/ModalHeader';
-import { Web3Context } from 'src/providers/Web3Provider';
 
 const ConnectWalletModal: React.FunctionComponent<{
   visible: boolean;

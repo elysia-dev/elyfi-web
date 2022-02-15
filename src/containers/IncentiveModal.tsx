@@ -14,7 +14,6 @@ import ReserveData from 'src/core/data/reserves';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
-import { Web3Context } from 'src/providers/Web3Provider';
 
 // Create deposit & withdraw
 const IncentiveModal: FunctionComponent<{

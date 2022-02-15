@@ -30,7 +30,6 @@ import scrollToOffeset from 'src/core/utils/scrollToOffeset';
 import useBalances from 'src/hooks/useBalances';
 import EventImage from 'src/assets/images/event_image.png';
 import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
-import { Web3Context } from 'src/providers/Web3Provider';
 import { useWeb3React } from '@web3-react/core';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import WalletDisconnect from 'src/components/WalletDisconnect';

@@ -13,7 +13,6 @@ import MediaQuery from 'src/enums/MediaQuery';
 import Token from 'src/enums/Token';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import { formatSixFracionDigit } from 'src/utiles/formatters';
-import { Web3Context } from 'src/providers/Web3Provider';
 
 type Props = {
   moneyPoolTime: string;

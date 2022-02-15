@@ -20,7 +20,6 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import ReserveToken from 'src/core/types/ReserveToken';
 import isSupportedReserveByChainId from 'src/core/utils/isSupportedReserveByChainId';
 import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
-import { Web3Context } from 'src/providers/Web3Provider';
 
 export type BalanceType = {
   id: string;

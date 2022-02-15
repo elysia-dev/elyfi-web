@@ -30,7 +30,6 @@ import ElyfiVersions from 'src/enums/ElyfiVersions';
 import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import useCurrentMoneypoolAddress from 'src/hooks/useCurrnetMoneypoolAddress';
 import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
-import { Web3Context } from 'src/providers/Web3Provider';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
 
