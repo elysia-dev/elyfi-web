@@ -86,8 +86,6 @@ const Dashboard: React.FunctionComponent = () => {
     query: '(min-width: 1439px)',
   });
 
-  console.log('name', currentChain?.name, getMainnetType);
-
   return (
     <>
       {reserveData && selectedBalance && (
