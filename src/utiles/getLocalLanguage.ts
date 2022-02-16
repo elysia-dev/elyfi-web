@@ -10,11 +10,7 @@ const getLocalLanguage = (): LanguageType => {
     localLanguage = LanguageType.KO;
   }
 
-  if (userLang?.includes('zh')) {
-    localLanguage = LanguageType.ZHHANS;
-  }
-
   return language || localLanguage;
-}
+};
 
 export default getLocalLanguage;
