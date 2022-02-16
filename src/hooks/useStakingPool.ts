@@ -19,10 +19,10 @@ const useStakingPool = (
     if (!library) return;
     return StakingPool__factory.connect(
       staked === 'EL'
-        ? envs.elStakingPoolAddress
+        ? envs.staking.elStakingPoolAddress
         : v2
-        ? envs.elfyV2StakingPoolAddress
-        : envs.elfyStakingPoolAddress,
+        ? envs.staking.elfyV2StakingPoolAddress
+        : envs.staking.elfyStakingPoolAddress,
       library.getSigner(),
     );
   }, [library, staked, v2]);
@@ -31,7 +31,7 @@ const useStakingPool = (
     if (!library) return;
     if (staked === Token.ELFI && v2) {
       return StakingPool__factory.connect(
-        envs.elfyV2StakingPoolRewardAddress,
+        envs.staking.elfyV2StakingPoolRewardAddress,
         library.getSigner(),
       );
     }

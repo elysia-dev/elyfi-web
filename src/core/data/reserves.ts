@@ -19,21 +19,21 @@ export const reserveTokenData = {
     name: 'DAI',
     image: dai,
     decimals: 18,
-    address: envs.daiAddress,
-    tokeninzer: envs.daiTokenizerAddress,
+    address: envs.token.daiAddress,
+    tokeninzer: envs.moneyPool.daiTokenizerAddress,
   },
   USDT: {
     name: 'USDT',
     image: usdt,
     decimals: 6,
-    address: envs.usdtAddress,
-    tokeninzer: envs.usdtTokeninzerAddress,
+    address: envs.token.usdtAddress,
+    tokeninzer: envs.moneyPool.usdtTokeninzerAddress,
   },
   EL: {
     name: 'EL',
     image: el,
     decimals: 18,
-    address: envs.elAddress,
+    address: envs.token.elAddress,
   },
   ETH: {
     name: 'ETH',
@@ -51,8 +51,8 @@ export const reserveTokenData = {
     name: 'BUSD',
     image: busd,
     decimals: 18,
-    address: envs.busdAddress,
-  }
+    address: envs.token.busdAddress,
+  },
 };
 
 const reserves: IReserve[] = [
@@ -60,21 +60,21 @@ const reserves: IReserve[] = [
     name: 'USDT',
     image: usdt,
     decimals: 6,
-    address: envs.usdtAddress,
-    tokeninzer: envs.usdtTokeninzerAddress,
+    address: envs.token.usdtAddress,
+    tokeninzer: envs.moneyPool.usdtTokeninzerAddress,
   },
   {
     name: 'DAI',
     image: dai,
     decimals: 18,
-    address: envs.daiAddress,
-    tokeninzer: envs.daiTokenizerAddress,
+    address: envs.token.daiAddress,
+    tokeninzer: envs.moneyPool.daiTokenizerAddress,
   },
   {
     name: 'EL',
     image: el,
     decimals: 18,
-    address: envs.elAddress,
+    address: envs.token.elAddress,
   },
   {
     name: 'ETH',
@@ -92,8 +92,8 @@ const reserves: IReserve[] = [
     name: 'BUSD',
     image: busd,
     decimals: 18,
-    address: envs.busdAddress,
-  }
+    address: envs.token.busdAddress,
+  },
 ];
 
 export default reserves;

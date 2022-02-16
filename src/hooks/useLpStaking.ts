@@ -28,21 +28,25 @@ const useLpStaking: () => (
         ['tuple(address,address,uint256,uint256,address)[]'],
         [
           [
-            lpTokenValues(stakingPoolAdress, envs.governanceAddress, round - 1),
+            lpTokenValues(
+              stakingPoolAdress,
+              envs.token.governanceAddress,
+              round - 1,
+            ),
             lpTokenValues(stakingPoolAdress, rewardTokenAddress, round - 1),
           ],
         ],
       );
 
       const contract = new ethers.Contract(
-        envs.nonFungiblePositionAddress,
+        envs.lpStaking.nonFungiblePositionAddress,
         positionABI,
         library.getSigner(),
       );
 
       const res = await contract[
         'safeTransferFrom(address,address,uint256,bytes)'
-      ](account, envs.stakerAddress, tokenId, encode);
+      ](account, envs.lpStaking.stakerAddress, tokenId, encode);
       const emitter = buildEventEmitter('LpStakingModal', 'LpStaking', ``);
       setTransaction(
         res,

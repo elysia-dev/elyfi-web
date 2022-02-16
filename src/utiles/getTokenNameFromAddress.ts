@@ -1,12 +1,12 @@
-import Token from "src/enums/Token"
-import envs from "src/core/envs";
+import Token from 'src/enums/Token';
+import envs from 'src/core/envs';
 
 const getTokenNameFromAddress = (address: string): Token => {
-	if(address === envs.usdtAddress) return Token.USDT
-	if(address === envs.daiAddress) return Token.DAI
-	if(address === envs.busdAddress) return Token.BUSD
+  if (address === envs.token.usdtAddress) return Token.USDT;
+  if (address === envs.token.daiAddress) return Token.DAI;
+  if (address === envs.token.busdAddress) return Token.BUSD;
 
-	return Token.ETH
-}
+  return Token.ETH;
+};
 
-export default getTokenNameFromAddress
+export default getTokenNameFromAddress;
