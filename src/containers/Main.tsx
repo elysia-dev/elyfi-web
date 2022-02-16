@@ -75,7 +75,7 @@ const Main = () => {
     },
   ];
 
-  const draw = () => {
+  const draw = (isResize: boolean) => {
     const dpr = window.devicePixelRatio;
     const canvas: HTMLCanvasElement | null = mainCanvasRef.current;
     if (
@@ -90,7 +90,7 @@ const Main = () => {
       return;
     if (!canvas) return;
     canvas.width = document.body.clientWidth * dpr;
-    canvas.height = document.body.clientHeight * dpr;
+    canvas.height = document.body.clientHeight * dpr + (isResize ? 0 : 500);
     const browserWidth = canvas.width / dpr + 40;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -102,17 +102,18 @@ const Main = () => {
       serviceGraphPageY.current,
       auditPageY.current,
       governancePageY.current,
+      isResize,
     );
   };
 
   useEffect(() => {
-    draw();
-    window.addEventListener('resize', draw);
+    draw(false);
+    window.addEventListener('resize', () => draw(true));
 
     return () => {
-      window.removeEventListener('resize', draw);
+      window.removeEventListener('resize', () => draw(true));
     };
-  }, [document.body.clientHeight]);
+  }, []);
 
   return (
     <>
@@ -306,7 +307,6 @@ const Main = () => {
         <MainGovernanceTable
           governancePageY={governancePageY}
           governancePageBottomY={governancePageBottomY}
-          draw={() => draw()}
         />
       </div>
     </>
