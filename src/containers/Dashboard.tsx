@@ -150,6 +150,9 @@ const Dashboard: React.FunctionComponent = () => {
       />
       <WalletDisconnect
         modalVisible={disconnectModalVisible}
+        selectWalletModalVisible={() => {
+          setSelectWalletModalVisible(true);
+        }}
         modalClose={() => setDisconnectModalVisible(false)}
       />
       <SelectWalletModal
