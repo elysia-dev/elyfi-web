@@ -284,19 +284,13 @@ const Main = () => {
             </h2>
             <div>
               <div>
-                <p>
-                  {t("main.dao.content.0")}
-                </p>
+                <p>{t('main.dao.content.0')}</p>
               </div>
               <div>
-                <p>
-                  {t("main.dao.content.1")}
-                </p>
+                <p>{t('main.dao.content.1')}</p>
               </div>
               <div>
-                <p>
-                  {t("main.dao.content.2")}
-                </p>
+                <p>{t('main.dao.content.2')}</p>
               </div>
             </div>
           </div>
@@ -312,6 +306,7 @@ const Main = () => {
         <MainGovernanceTable
           governancePageY={governancePageY}
           governancePageBottomY={governancePageBottomY}
+          draw={() => draw()}
         />
       </div>
     </>
