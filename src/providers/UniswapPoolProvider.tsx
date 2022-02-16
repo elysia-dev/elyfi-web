@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import Loading from 'src/components/Loading';
-import ErrorPage from 'src/components/ErrorPage';
 import UniswapPoolContext, {
   initialUniswapPoolContext,
   UniswapPoolContextType,

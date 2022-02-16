@@ -1,6 +1,5 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import TempAssets from 'src/assets/images/temp_assets.png';
-import wave from 'src/assets/images/wave_elyfi.png';
 import OffChainTopic, { INapData } from 'src/clients/OffChainTopic';
 import Skeleton from 'react-loading-skeleton';
 import { IProposals, OnChainTopic } from 'src/clients/OnChainTopic';
@@ -124,7 +123,11 @@ const Governance = () => {
                 nap:
                   getHTMLStringData.match(regexNap)?.toString().substring(5) ||
                   '',
-                status: getHTMLStringData.match(/Status: .*(?=<)/)?.toString().split('Status: ') || '',
+                status:
+                  getHTMLStringData
+                    .match(/Status: .*(?=<)/)
+                    ?.toString()
+                    .split('Status: ') || '',
                 images:
                   getHTMLStringData
                     .match(
@@ -237,9 +240,7 @@ const Governance = () => {
             category: PageEventType.MoveToExternalPage,
             action: ButtonEventType.OnChainVoteButtonOnGovernance,
           });
-          window.open(
-            `${t("governance.link.tally")}/proposal/${data.id}`,
-          );
+          window.open(`${t('governance.link.tally')}/proposal/${data.id}`);
         }}>
         <div>
           <img
@@ -448,7 +449,7 @@ const Governance = () => {
                 <p>{t('governance.on_chain_voting__content')}</p>
                 {mainnetType === MainnetType.Ethereum && (
                   <a
-                    href={`${t("governance.link.tally")}`}
+                    href={`${t('governance.link.tally')}`}
                     target="_blank"
                     rel="noopener noreferer">
                     <div
@@ -472,7 +473,7 @@ const Governance = () => {
                 </h3>
                 {mainnetType === MainnetType.Ethereum && (
                   <a
-                    href={`${t("governance.link.tally")}`}
+                    href={`${t('governance.link.tally')}`}
                     target="_blank"
                     rel="noopener noreferer">
                     <div

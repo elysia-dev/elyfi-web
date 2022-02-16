@@ -5,11 +5,9 @@ import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
 import { formatDecimalFracionDigit } from 'src/utiles/formatters';
 import Token from 'src/enums/Token';
-import RewardTypes from 'src/core/types/RewardTypes';
 import { StakingTitleProps } from 'src/core/types/LpStakingTypeProps';
 import { useWeb3React } from '@web3-react/core';
 import Guide from '../Guide';
-import Button from './Button';
 
 const Reward: FunctionComponent<StakingTitleProps> = (props) => {
   const { account } = useWeb3React();
@@ -19,9 +17,7 @@ const Reward: FunctionComponent<StakingTitleProps> = (props) => {
   return (
     <>
       <div className="staking__lp__reward__header">
-        <h2>
-          {t('lpstaking.reward_amount')}
-        </h2>
+        <h2>{t('lpstaking.reward_amount')}</h2>
         <Guide content={t('guide.receive_reward')} />
       </div>
       <div className="staking__lp__reward__content">
@@ -35,9 +31,7 @@ const Reward: FunctionComponent<StakingTitleProps> = (props) => {
               <h2>
                 {`${formatDecimalFracionDigit(rewardToReceive.elfiReward, 4)} `}
               </h2>
-              <h2>
-                {Token.ELFI}
-              </h2>
+              <h2>{Token.ELFI}</h2>
             </div>
           </div>
           <div className="staking__lp__reward__content__wrapper">
@@ -59,17 +53,17 @@ const Reward: FunctionComponent<StakingTitleProps> = (props) => {
             </div>
             <div className="staking__lp__reward__content__amount">
               <h2>
-              {`${formatDecimalFracionDigit(rewardToReceive.daiReward, 4)} `}
+                {`${formatDecimalFracionDigit(rewardToReceive.daiReward, 4)} `}
               </h2>
               <h2>{Token.DAI}</h2>
             </div>
           </div>
         </div>
         <div className="staking__lp__reward__button__wrapper">
-          <div onClick={() => account && onHandler()} className="staking__lp__reward__button">
-            <p>
-              {t('staking.claim_reward')}
-            </p>
+          <div
+            onClick={() => account && onHandler()}
+            className="staking__lp__reward__button">
+            <p>{t('staking.claim_reward')}</p>
           </div>
         </div>
       </div>

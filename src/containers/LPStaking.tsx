@@ -1,15 +1,12 @@
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber, constants, ethers, utils } from 'ethers';
+import { constants, ethers, utils } from 'ethers';
 import { useEffect, useContext, useState, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import Header from 'src/components/Header';
 import PriceContext from 'src/contexts/PriceContext';
-import wave from 'src/assets/images/wave_elyfi.png';
 import envs from 'src/core/envs';
 import StakedLp from 'src/components/LpStaking/StakedLp';
 import StakerSubgraph, { IPoolPosition } from 'src/clients/StakerSubgraph';
-import Position, { TokenInfo } from 'src/core/types/Position';
-import LpTokenPoolSubgraph from 'src/clients/LpTokenPoolSubgraph';
+import Position from 'src/core/types/Position';
 import Token from 'src/enums/Token';
 import TxContext from 'src/contexts/TxContext';
 import stakerABI from 'src/core/abi/StakerABI.json';

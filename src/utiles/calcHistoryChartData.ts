@@ -5,10 +5,8 @@ import {
   IReserveHistory,
   IReserveSubgraphData,
 } from 'src/contexts/SubgraphContext';
-import Token from 'src/enums/Token';
 import calcMiningAPR from './calcMiningAPR';
 import { toCompact } from './formatters';
-import { busd3xRewardEvent } from './busd3xRewardEvent';
 
 interface ICalculatedData extends IReserveHistory {
   selectedAmount: string;

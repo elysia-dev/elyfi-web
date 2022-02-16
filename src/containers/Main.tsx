@@ -25,7 +25,6 @@ import MainAnimation from 'src/components/MainAnimation';
 import reactGA from 'react-ga';
 import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
-import { contextType } from 'google-map-react';
 import DrawWave from 'src/utiles/drawWave';
 import Fbg from 'src/assets/images/main/fbg.png';
 import Blocore from 'src/assets/images/main/blocore.png';
@@ -284,19 +283,13 @@ const Main = () => {
             </h2>
             <div>
               <div>
-                <p>
-                  {t("main.dao.content.0")}
-                </p>
+                <p>{t('main.dao.content.0')}</p>
               </div>
               <div>
-                <p>
-                  {t("main.dao.content.1")}
-                </p>
+                <p>{t('main.dao.content.1')}</p>
               </div>
               <div>
-                <p>
-                  {t("main.dao.content.2")}
-                </p>
+                <p>{t('main.dao.content.2')}</p>
               </div>
             </div>
           </div>

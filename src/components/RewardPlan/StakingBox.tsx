@@ -11,7 +11,6 @@ import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
 import 'swiper/modules/pagination/pagination.scss';
 import 'swiper/swiper.scss';
-import { useLocation } from 'react-router-dom';
 import SmallProgressBar from './SmallProgressBar';
 import StakingBoxHeader from './StakingBoxHeader';
 import StakingDetailInfo from './StakingDetailInfo';

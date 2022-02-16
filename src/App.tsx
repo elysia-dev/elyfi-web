@@ -1,8 +1,7 @@
 import './i18n';
 
-import { useContext, useEffect, useState } from 'react';
 import { Web3ReactProvider } from '@web3-react/core';
-import { ApolloProvider, InMemoryCache, ApolloClient, useApolloClient, NormalizedCacheObject, HttpLink, ApolloLink } from '@apollo/client';
+import { ApolloProvider, InMemoryCache, ApolloClient } from '@apollo/client';
 import envs from 'src/core/envs';
 import { BrowserRouter as Router } from 'react-router-dom';
 import getLibrary from './core/utils/getLibrary';
@@ -23,7 +22,7 @@ const App: React.FC = () => {
     uri: envs.subgraphURI,
     // uri: envs.bscSubgraphURI,
     cache: new InMemoryCache(),
-  })
+  });
 
   return (
     <ApolloProvider client={client}>
@@ -40,9 +39,9 @@ const App: React.FC = () => {
               </TxProvider>
             </MainnetProvider>
           </Web3ReactProvider>
-          </PriceProvider>
-        </UniswapPoolProvider>
-      </ApolloProvider>
+        </PriceProvider>
+      </UniswapPoolProvider>
+    </ApolloProvider>
   );
 };
 
