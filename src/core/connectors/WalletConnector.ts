@@ -3,7 +3,7 @@
 import { ConnectorUpdate } from '@web3-react/types';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import WalletConnectProvider from '@walletconnect/web3-provider';
-import { setWalletConnect } from 'src/hooks/isWalletConnect';
+import { setWalletConnect } from 'src/utiles/isWalletConnect';
 
 export class UserRejectedRequestError extends Error {
   public constructor() {
