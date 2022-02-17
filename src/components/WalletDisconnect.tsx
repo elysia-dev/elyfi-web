@@ -18,25 +18,39 @@ const WalletDisconnect: FunctionComponent<Props> = ({
 
   return (
     <div
-      className="wallet_select_modal"
+      className="change_network_modal"
       style={{
         display: modalVisible ? 'flex' : 'none',
       }}>
-      <div className="wallet_select_modal__content">
-        <div>네트워크 에러</div>
-        <div>
-          엘리파이에서 {getMainnetType}를이용하기위해서는지갑에서해당
-          네트워크로변경한후에지갑을다시연결해주세요!
+      <div className="change_network_modal__content">
+        <div className="change_network_modal__content__header">
+          <div>네트워크 변경하기</div>
+          <div className="close-button" onClick={() => modalClose()}>
+            <div className="close-button--1">
+              <div className="close-button--2" />
+            </div>
+          </div>
         </div>
-        <div>(연결한 지갑이해당네트워크를 지원하는 지갑인지확인해주세요.)</div>
+        <div className="change_network_modal__content__line" />
+        <div className="change_network_modal__content__guide">
+          <div>
+            엘리파이에서 {getMainnetType}를 이용하기 위해서{'\n'}
+            지갑에서 해당 네트워크로 변경한 후에 지갑을 다시 연결해주세요!
+          </div>
+          <div>
+            (연결한 지갑이해당네트워크를 지원하는 지갑인지확인해주세요.)
+          </div>
+        </div>
+        <div className="change_network_modal__content__line" />
         <div
+          className="change_network_modal__content__button"
           onClick={() => {
             window.sessionStorage.setItem('@connect', 'false');
             deactivate();
             modalClose();
             selectWalletModalVisible();
           }}>
-          지갑 연결하기
+          지갑 다시 연결하기
         </div>
       </div>
     </div>
