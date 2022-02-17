@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { BigNumber } from 'ethers';
+import { request } from 'graphql-request';
 
 export interface IProposals {
   data: {
@@ -14,10 +15,29 @@ export interface IProposals {
   id: string;
 }
 export interface IOnChainToipc {
-  data: {
-    proposals: IProposals[];
-  };
+  proposals: IProposals[];
 }
+
+export const onChainFetcher = (query: string): Promise<IOnChainToipc> =>
+  request(
+    'https://api.thegraph.com/subgraphs/name/withtally/elyfi-finance-protocol',
+    query,
+  );
+export const onChainQuery = `
+{
+  proposals {
+    status
+    data {
+      description
+    }
+    totalVotesCast
+    totalVotesCastAgainst
+    totalVotesCastInSupport
+    totalVotesCastAbstained
+    timestamp
+    id
+  }
+}`;
 
 export class OnChainTopic {
   static getOnChainTopicData = async (): Promise<
