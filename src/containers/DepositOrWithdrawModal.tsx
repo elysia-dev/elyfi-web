@@ -29,7 +29,6 @@ import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
 import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import useCurrentMoneypoolAddress from 'src/hooks/useCurrnetMoneypoolAddress';
-import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
 
@@ -297,8 +296,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
                 elfiPrice,
                 BigNumber.from(reserve.totalDeposit),
                 tokenInfo?.decimals,
-              ).mul(busd3xRewardEvent(tokenInfo?.name)),
-            )}
+              ))}
             balance={balance}
             isApproved={!loading && allowance.gt(balance)}
             increaseAllownace={increateAllowance}

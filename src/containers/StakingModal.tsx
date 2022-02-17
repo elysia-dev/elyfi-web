@@ -52,7 +52,7 @@ const StakingModal: React.FunctionComponent<{
   const [amount, setAmount] = useState({ value: '', max: false });
   const current = moment();
   const { setTransaction, failTransaction } = useContext(TxContext);
-  const stakingPool = useStakingPool(stakedToken, round >= 3);
+  const { contract: stakingPool } = useStakingPool(stakedToken, round >= 3);
   const {
     allowance,
     balance,
@@ -185,9 +185,11 @@ const StakingModal: React.FunctionComponent<{
                         address: account,
                         stakingType: stakedToken,
                         round,
-                        unstakingAmount: utils.formatEther(amount.value),
+                        unstakingAmount: utils.formatEther(
+                          utils.parseEther(amount.value),
+                        ),
                         maxOrNot: amount.max,
-                      })
+                      }),
                     );
 
                     emitter.clicked();
@@ -252,9 +254,11 @@ const StakingModal: React.FunctionComponent<{
                         address: account,
                         stakingType: stakedToken,
                         round,
-                        unstakingAmount: utils.formatEther(amount.value),
+                        unstakingAmount: utils.formatEther(
+                          utils.parseEther(amount.value),
+                        ),
                         maxOrNot: amount.max,
-                      })
+                      }),
                     );
 
                     emitter.clicked();
@@ -303,7 +307,7 @@ const StakingModal: React.FunctionComponent<{
                         address: account,
                         stakingType: stakedToken,
                         round,
-                      })
+                      }),
                     );
 
                     emitter.clicked();

@@ -8,6 +8,7 @@ interface EnvironmentVariables {
   elStakingPoolAddress: string;
   elfyStakingPoolAddress: string;
   elfyV2StakingPoolAddress: string;
+  elfyV2StakingPoolRewardAddress: string;
   elAddress: string;
   requiredNetwork: string;
   requiredChainId: number;

@@ -80,7 +80,7 @@ const MainGovernanceTable: FunctionComponent<Props> = ({
               {
                 title: data.data.description.match(/NAP.*/)?.toString() || '',
                 created_at: dates,
-                link: `https://www.withtally.com/governance/elyfi/proposal/${getDataId}`,
+                link: `${t('governance.link.tally')}/proposal/${getDataId}`,
               },
             ]);
           });

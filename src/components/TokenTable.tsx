@@ -24,7 +24,6 @@ import { BalanceType } from 'src/hooks/useBalances';
 import moment from 'moment';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import PriceContext from 'src/contexts/PriceContext';
-import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
 import useCurrentChain from 'src/hooks/useCurrentChain';
@@ -90,7 +89,7 @@ const TokenTable: React.FC<Props> = ({
           elfiPrice,
           BigNumber.from(reserveData.totalDeposit),
           reserveTokenData[balance.tokenName].decimals,
-        ).mul(busd3xRewardEvent(balance.tokenName)) || '0',
+        ) || '0',
       ) || 0,
     ],
     [t('dashboard.deposit_apy'), toPercent(reserveData.depositAPY) || 0],

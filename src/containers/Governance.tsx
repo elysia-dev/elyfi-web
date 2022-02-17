@@ -39,7 +39,6 @@ const Governance = () => {
   const History = useHistory();
   const { value: mediaQuery } = useMediaQueryType();
   const { lng } = useParams<{ lng: string }>();
-  const { type: getMainnetType } = useContext(MainnetContext);
   const assetBondTokensBackedByEstate = assetBondTokens.filter((product) => {
     const parsedId = parseTokenId(product.id);
     return CollateralCategory.Others !== parsedId.collateralCategory;
@@ -117,7 +116,7 @@ const Governance = () => {
             const getHTMLStringData: string =
               getNATData.data.post_stream.posts[0].cooked.toString();
             const regexNap = /NAP#: .*(?=<)/;
-            const regexNetwork = /Network: .*(?=<)/;
+            const regexNetwork = /Network: BSC.*(?=<)/;
             setOffChainNapData((napData) => [
               ...napData,
               {
@@ -125,7 +124,7 @@ const Governance = () => {
                 nap:
                   getHTMLStringData.match(regexNap)?.toString().substring(5) ||
                   '',
-                status: getHTMLStringData.match(/Status: .*(?=<)/) || '',
+                status: getHTMLStringData.match(/Status: .*(?=<)/)?.toString().split('Status: ') || '',
                 images:
                   getHTMLStringData
                     .match(
@@ -239,7 +238,7 @@ const Governance = () => {
             action: ButtonEventType.OnChainVoteButtonOnGovernance,
           });
           window.open(
-            `https://www.withtally.com/governance/elyfi/proposal/${data.id}`,
+            `${t("governance.link.tally")}/proposal/${data.id}`,
           );
         }}>
         <div>
@@ -449,7 +448,7 @@ const Governance = () => {
                 <p>{t('governance.on_chain_voting__content')}</p>
                 {mainnetType === MainnetType.Ethereum && (
                   <a
-                    href="https://www.withtally.com/governance/elyfi"
+                    href={`${t("governance.link.tally")}`}
                     target="_blank"
                     rel="noopener noreferer">
                     <div
@@ -473,7 +472,7 @@ const Governance = () => {
                 </h3>
                 {mainnetType === MainnetType.Ethereum && (
                   <a
-                    href="https://www.withtally.com/governance/elyfi"
+                    href={`${t("governance.link.tally")}`}
                     target="_blank"
                     rel="noopener noreferer">
                     <div

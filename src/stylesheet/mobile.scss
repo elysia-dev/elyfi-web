@@ -840,6 +840,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     }
     &__partners {
       margin: 20vh 0;
+      height: auto;
       > div {
         width: 100%;
         margin-top: 20vh;
@@ -927,6 +928,43 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         > p {
           font-size: 12px;
           line-height: 50px;
+        }
+      }
+    }
+    &__dao {
+      margin: 0;
+      padding: 20px 10px;
+
+      width: 100%;
+      border: 1px solid #0099CC;
+      border-radius: 15px;
+      background-color: #F7FBFF;
+      > h2 {
+        font-size: 20px !important;
+      }
+      > div {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+        > div {
+          margin: 10px;
+          width: 150px;
+          height: 150px;
+          border-radius: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border: 1px solid #0099CC;
+          background-color: #fff;
+          padding: 0px;
+          > p {
+            text-align: center;
+            font-size: 13px;
+            line-height: 20px;
+          }
         }
       }
     }

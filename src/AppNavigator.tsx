@@ -18,7 +18,6 @@ import Navigation from 'src/components/Navigation';
 import Footer from 'src/components/Footer';
 import getLocalLanauge from 'src/utiles/getLocalLanguage';
 import LanguageProvider from 'src/providers/LanguageProvider';
-// import DarkmodeModal from 'src/components/DarkmodeButton';
 import LPStaking from 'src/containers/LPStaking';
 import RewardPlan from 'src/containers/RewardPlan';
 import MarketDetail from 'src/containers/MarketDetails';
@@ -83,10 +82,6 @@ const AppNavigator: React.FC = () => {
               hamburgerBar={hamburgerBar}
               setHamburgerBar={setHamburgerBar}
             />
-            {/* <DarkmodeModal 
-              isDarkmode={isDarkmodeActivated}
-              setDarkMode={() => setDarkMode()}
-            /> */}
             <Route exact path="/:lng/staking/LP" component={LPStaking} />
             <Route exact path="/:lng/staking/EL" component={StakingEL} />
             <Route exact path="/:lng/staking/ELFI" component={StakingELFI} />

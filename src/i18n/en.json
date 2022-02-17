@@ -86,6 +86,14 @@
       },
       "popup": {
         "disable_popup": "Do not open this window today"
+      },
+      "dao": {
+        "title": "ELYSIA DAO LLC\n<strong>Registered</strong> in Wyoming, US",
+        "content": [
+          "Asia’s first DAO LLC.",
+          "The world’s second DAO LLC qualified by the US government.",
+          "DAO LLC established first among listed projects."
+        ]
       }
     },
     "words": {
@@ -274,7 +282,10 @@
       "onchain_list_zero": "There are currently no on-chain votes in progress.",
       "offchain_list_zero": "There are currently no data verification votes in progress.",
       "forum_button": "Go to ELYFI Forum",
-      "onChain_tally_button": "Go to Tally"
+      "onChain_tally_button": "Go to Tally",
+      "link": {
+        "tally": "https://www.withtally.com/governance/eip155:1:0x0c54629266d7fa40B4BFaF1640ebC2Cd093866C3"
+      }
     },
 
     "staking": {
@@ -545,7 +556,17 @@
       "network_change": {
         "title": "Change network",
         "content": "The wallet is connected to a network not provided by ELYFI.\nPlease select the desired network among the networks below and change it!"
-      } 
+      },
+      "claim_disable": {
+        "title": "Disable button",
+        "content": "The reward claim function has been temporarily disabled due to an error inquiry about the migration function, which is currently provided for convenience.",
+        "button": "OK"
+      },
+      "migration_disable": {
+        "title": "Disable migration",
+        "content": "The ELFI staking migration function has been temporarily disabled due to an error inquiry about the migration function, which is currently provided for convenience.\nIf you participate in the 6th staking, please staking in the 6th pool after unstaking",
+        "button": "OK"
+      }
     },
     "guide": {
       "apr": "APR is an abbreviation of Annual percentage rate, which means the ratio of the total compensation amount to the total liquidity.",

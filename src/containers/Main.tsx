@@ -29,8 +29,6 @@ import { contextType } from 'google-map-react';
 import DrawWave from 'src/utiles/drawWave';
 import Fbg from 'src/assets/images/main/fbg.png';
 import Blocore from 'src/assets/images/main/blocore.png';
-import EventPopupKo from 'src/assets/images/event_popup--ko.png';
-import EventPopupEn from 'src/assets/images/event_popup--en.png';
 
 const Main = () => {
   const { t } = useTranslation();
@@ -76,60 +74,8 @@ const Main = () => {
       },
     },
   ];
-  const [popupVisible, setPopupVisible] = useState(false);
 
-  const dailyPopupDisable = () => {
-    const today = new Date();
-    today.setDate(today.getDate() + 1);
-    window.localStorage.setItem("@disableTime", (today.getDate()).toString());
-    setPopupVisible(true);
-  }
-
-  const showingPopup = () => {
-    const nowTime = new Date();
-    const setTime = window.localStorage.getItem("@disableTime") || "0";
-
-    nowTime.getDate() < parseInt(setTime, 10) && setPopupVisible(true)
-  }
-
-  useEffect(() => {
-    showingPopup()
-  }, [])
-
-  const displayPopup = () => {
-    return (
-      <div className="main__popup">
-        <div className="main__popup__container">
-          <div>
-            <div onClick={() => dailyPopupDisable()}>
-              <div className="main__popup__button" />
-              <p>
-              {
-                t("main.popup.disable_popup")
-              }
-              </p>
-            </div>
-            <div className="close-button" onClick={() => { setPopupVisible(true) }}>
-              <div className="close-button--1">
-                <div className="close-button--2" />
-              </div>
-            </div>
-          </div>
-          <div onClick={() => {
-            reactGA.event({
-              category: PageEventType.MoveToInternalPage,
-              action: ButtonEventType.DepositButtonOnEventModal,
-            });
-            History.push({ pathname: `/${lng}/deposit` })
-          }}>
-            <img src={lng === LanguageType.KO ? EventPopupKo : EventPopupEn} />
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  const draw = () => {
+  const draw = (isResize: boolean) => {
     const dpr = window.devicePixelRatio;
     const canvas: HTMLCanvasElement | null = mainCanvasRef.current;
     if (
@@ -144,7 +90,7 @@ const Main = () => {
       return;
     if (!canvas) return;
     canvas.width = document.body.clientWidth * dpr;
-    canvas.height = document.body.clientHeight * dpr;
+    canvas.height = document.body.clientHeight * dpr + (isResize ? 0 : 500);
     const browserWidth = canvas.width / dpr + 40;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -156,17 +102,18 @@ const Main = () => {
       serviceGraphPageY.current,
       auditPageY.current,
       governancePageY.current,
+      isResize,
     );
   };
 
   useEffect(() => {
-    draw();
-    window.addEventListener('resize', draw);
+    draw(false);
+    window.addEventListener('resize', () => draw(true));
 
     return () => {
-      window.removeEventListener('resize', draw);
+      window.removeEventListener('resize', () => draw(true));
     };
-  }, [document.body.clientHeight]);
+  }, []);
 
   return (
     <>
@@ -180,9 +127,6 @@ const Main = () => {
           zIndex: -1,
         }}
       />
-      {
-        !popupVisible && displayPopup()
-      }
       <div className="main root-container">
         <section className="main__title main__section">
           <div className="main__title__container">
@@ -308,9 +252,7 @@ const Main = () => {
           <h2 ref={serviceGraphPageY}>
             <Trans i18nKey={'main.graph.title'} />
           </h2>
-
           <MainGraph />
-
           <div className="main__service__comment pc-only">
             <p>{t('main.graph.investment-linked-financial')}</p>
             <div
@@ -337,6 +279,22 @@ const Main = () => {
               <img src={Blocore} alt={Blocore} />
             </div>
           </div>
+          <div className="main__dao">
+            <h2>
+              <Trans i18nKey="main.dao.title" />
+            </h2>
+            <div>
+              <div>
+                <p>{t('main.dao.content.0')}</p>
+              </div>
+              <div>
+                <p>{t('main.dao.content.1')}</p>
+              </div>
+              <div>
+                <p>{t('main.dao.content.2')}</p>
+              </div>
+            </div>
+          </div>
           <div>
             <h2>{t('main.partners.lawfirm')}</h2>
             <div className="main__partners__lawfirm">
@@ -346,12 +304,6 @@ const Main = () => {
             </div>
           </div>
         </section>
-        <div
-          style={{
-            width: '100%',
-            height: 220,
-          }}
-        />
         <MainGovernanceTable
           governancePageY={governancePageY}
           governancePageBottomY={governancePageBottomY}

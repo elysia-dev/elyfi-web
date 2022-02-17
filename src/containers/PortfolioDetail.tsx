@@ -22,16 +22,18 @@ import ReserveData from 'src/core/data/reserves';
 import envs from 'src/core/envs';
 import Guide from 'src/components/Guide';
 import Loading from 'src/components/Loading';
-import SubgraphContext from 'src/contexts/SubgraphContext';
-import MainnetContext from 'src/contexts/MainnetContext';
+import SubgraphContext, { IAssetBond } from 'src/contexts/SubgraphContext';
 
 const PortfolioDetail: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
-  const { getAssetBondsByNetwork } = useContext(SubgraphContext);
-  const { type: mainnetType } = useContext(MainnetContext)
-  const assetBondTokens = getAssetBondsByNetwork(mainnetType)
+  const { data: tokenData } = useContext(SubgraphContext);
   const { t } = useTranslation();
   const { lng: language } = useParams<{ lng: LanguageType }>();
+
+  const assetBondTokens = tokenData.reserves.reduce((arr, reserve) => {
+    return [...arr, ...reserve.assetBondTokens]
+  }, [] as IAssetBond[])
+
   const abToken = assetBondTokens.find((ab) => ab.id === id);
   const depositRef = useRef<HTMLParagraphElement>(null);
   const parsedTokenId = useMemo(() => {

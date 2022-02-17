@@ -218,8 +218,7 @@ const Dashboard: React.FunctionComponent = () => {
                                 elfiPrice,
                                 BigNumber.from(reserve.totalDeposit),
                                 reserveTokenData[balance.tokenName].decimals,
-                              ).mul(busd3xRewardEvent(balance.tokenName)) ||
-                                '0',
+                              ) || '0',
                             )}
                           </p>
                         </div>

@@ -6,9 +6,6 @@ type ReturnType = { ensName: string | null, ensLoading: boolean };
 export const useENS = (address: string | null | undefined): ReturnType => {
   const [ensName, setENSName] = useState<string | null>(null);
   const [ensLoading, setEnsLoading] = useState<boolean>(false);
-  const provider = new providers.JsonRpcProvider(
-    process.env.REACT_APP_JSON_RPC,
-  );
 
   useEffect(() => {
     if (address !== (undefined || null)) {
@@ -19,7 +16,10 @@ export const useENS = (address: string | null | undefined): ReturnType => {
   useEffect(() => {
     async function resolveENS() {
       try {
-        if (address && ethers.utils.isAddress(address)) {
+        if (address && ethers.utils.isAddress(address) && !ensLoading) {
+          const provider = new providers.JsonRpcProvider(
+            process.env.REACT_APP_JSON_RPC,
+          );
           const getEnsName = await provider.lookupAddress(address);
           if (getEnsName) setENSName(getEnsName);
         }
@@ -28,6 +28,8 @@ export const useENS = (address: string | null | undefined): ReturnType => {
           return;
         }
         console.error(e)
+      } finally {
+        setEnsLoading(true)
       }
     }
     resolveENS();

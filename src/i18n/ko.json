@@ -86,6 +86,14 @@
       },
       "popup": {
         "disable_popup": "오늘 그만보기"
+      },
+      "dao": {
+        "title": "ELYSIA DAO LLC\n<strong>Registered</strong> in Wyoming, US",
+        "content": [
+          "아시아 최초 DAO 법인",
+          "미국정부가 인정한\n세계 두 번째 DAO 법인",
+          "상장회사 중\n최초로 설립된 DAO 법인"
+        ]
       }
     },
     "words": {
@@ -275,7 +283,10 @@
       "onchain_list_zero": "현재 진행중인 온체인 투표가 없습니다.",
       "offchain_list_zero": "현재 진행중인 데이터 검증 투표가 없습니다.",
       "forum_button": "ELYFI 포럼으로 이동하기",
-      "onChain_tally_button": "Tally로 이동하기"
+      "onChain_tally_button": "Tally로 이동하기",
+      "link": {
+        "tally": "https://www.withtally.com/governance/eip155:1:0x0c54629266d7fa40B4BFaF1640ebC2Cd093866C3"
+      }
     },
     "staking": {
       "staking__token": "{{ token }} 스테이킹",
@@ -477,6 +488,16 @@
       "network_change": {
         "title": "네트워크 변경하기",
         "content": "현재 연결한 지갑이 ELYFI에서 제공하지 않는 네트워크로 연결돼 있습니다.\n아래 네트워크 중 원하는 네트워크를 선택하여 변경해주세요!"
+      },
+      "claim_disable": {
+        "title": "버튼 비활성화",
+        "content": "현재 편의상 제공되던 마이그레이션 기능의 오류 문의로 인해 일시적으로 수령하기 기능이 비활성화 되었습니다.",
+        "button": "확인"
+      },
+      "migration_disable": {
+        "title": "마이그레이션 비활성화",
+        "content": "현재 편의상 제공되던 마이그레이션 기능의 오류 문의로 인해 ELFI 스테이킹 마이그레이션 기능이 비활성화 되었습니다.\n6차 스테이킹 참여 시, 언스테이킹 후 6차 풀에 스테이킹 부탁드립니다.",
+        "button": "확인"
       }
     },
     "guide": {

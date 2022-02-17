@@ -19,7 +19,6 @@ import { useWeb3React } from '@web3-react/core';
 import MainnetContext from 'src/contexts/MainnetContext';
 import ReserveToken from 'src/core/types/ReserveToken';
 import isSupportedReserveByChainId from 'src/core/utils/isSupportedReserveByChainId';
-import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 
 export type BalanceType = {
   id: string;
@@ -240,7 +239,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
                     calcMiningAPR(
                       elfiPrice,
                       BigNumber.from(reserve.totalDeposit),
-                    ).mul(busd3xRewardEvent(balance.tokenName)),
+                    ),
                     balance.updatedAt,
                   ),
                 ),
@@ -258,7 +257,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
                     calcMiningAPR(
                       elfiPrice,
                       BigNumber.from(reserve.totalDeposit),
-                    ).mul(busd3xRewardEvent(balance.tokenName)),
+                    ),
                     balance.updatedAt,
                   ),
                 ),
