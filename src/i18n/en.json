@@ -220,13 +220,11 @@
       "deposit_add_reward_event": "<strong>New</strong> amount of rewards",
       "claim_before_withraw_guide": "Please claim your rewards first to use your deposit/withdrawal! The reward tokens you will receive are ELFI reward tokens accumulated from <strong>2021.7.15 ~ 2022.1.11 KST!</strong>",
       "claim_question": "Do you want to claim rewards?",
-      
+
       "target_running_strategy": "Target running strategy (Target deposit APY: 10%)",
       "real_estate_mortgage": "Real estate mortgage",
       "auto_invest_defi__title": "Auto investment to DeFi",
-      "auto_invest_defi": [
-        "Anchor Protocol"
-      ],
+      "auto_invest_defi": ["Anchor Protocol"],
       "event_title": "ELFI <strong>300%</strong> Reward Event\nDeposit BUSD, Get ELFI Tokens!"
     },
     "loan": {
@@ -566,6 +564,12 @@
         "title": "Disable migration",
         "content": "The ELFI staking migration function has been temporarily disabled due to an error inquiry about the migration function, which is currently provided for convenience.\nIf you participate in the 6th staking, please staking in the 6th pool after unstaking",
         "button": "OK"
+      },
+      "wallet_change_netwrok": {
+        "title": "Network Error",
+        "content": "To use {{network}} in ELYFI, please select the network\nin your wallet and connect your wallet again!",
+        "subContent": "(Please check if the connected wallet supports the network.)",
+        "button": "Connect wallet again"
       }
     },
     "guide": {
