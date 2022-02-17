@@ -27,7 +27,7 @@ import PriceContext from 'src/contexts/PriceContext';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
 import useCurrentChain from 'src/hooks/useCurrentChain';
-import { isWalletConnector } from 'src/utiles/isWalletConnect';
+import { isWrongNetwork } from 'src/utiles/isWalletConnect';
 import TableBodyEventReward from './TableBodyEventReward';
 
 interface Props {
@@ -70,8 +70,7 @@ const TokenTable: React.FC<Props> = ({
     },
   );
 
-  const isWrongNetwork =
-    isWalletConnector() && currentChain?.name !== getMainnetType;
+  const isWrongMainnet = isWrongNetwork(getMainnetType, currentChain?.name);
 
   const tableData = [
     [
@@ -149,12 +148,8 @@ const TokenTable: React.FC<Props> = ({
                 buttonEvent={reserveData ? onClick : undefined}
                 buttonContent={t('dashboard.deposit_amount--button')}
                 value={
-                  account &&
-                  !unsupportedChainid &&
-                  ['BSC', 'BSC Test', 'Ethereum', 'Ganache'].includes(
-                    currentChain?.name || '',
-                  )
-                    ? isWrongNetwork
+                  account && !unsupportedChainid
+                    ? isWrongMainnet
                       ? '-'
                       : toCompactForBignumber(
                           balance.deposit || constants.Zero,
@@ -186,12 +181,8 @@ const TokenTable: React.FC<Props> = ({
                 }}
                 buttonContent={t('dashboard.claim_reward')}
                 value={
-                  account &&
-                  !unsupportedChainid &&
-                  ['BSC', 'BSC Test', 'Ethereum', 'Ganache'].includes(
-                    currentChain?.name || '',
-                  ) ? (
-                    isWrongNetwork ? (
+                  account && !unsupportedChainid ? (
+                    isWrongMainnet ? (
                       '-'
                     ) : (
                       <CountUp
@@ -288,7 +279,7 @@ const TokenTable: React.FC<Props> = ({
                   setRound(2);
                 }}
                 tokenName={balance.tokenName}
-                isWrongNetwork={isWrongNetwork}
+                isWrongMainnet={isWrongMainnet}
               />
             </div>
           )}

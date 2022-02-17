@@ -29,16 +29,11 @@ import getIncentivePoolAddress from 'src/core/utils/getIncentivePoolAddress';
 import scrollToOffeset from 'src/core/utils/scrollToOffeset';
 import useBalances from 'src/hooks/useBalances';
 import EventImage from 'src/assets/images/event_image.png';
-import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 import { useWeb3React } from '@web3-react/core';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import WalletDisconnect from 'src/components/WalletDisconnect';
 import SelectWalletModal from 'src/components/SelectWalletModal';
-import {
-  isMetamask,
-  isMoblie,
-  isWalletConnector,
-} from 'src/utiles/isWalletConnect';
+import { isWrongNetwork } from 'src/utiles/isWalletConnect';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();
@@ -85,8 +80,7 @@ const Dashboard: React.FunctionComponent = () => {
     );
   }, [supportedTokens, balances]);
 
-  const isWrongNetwork =
-    isWalletConnector() && currentChain?.name !== getMainnetType;
+  const isWrongMainnet = isWrongNetwork(getMainnetType, currentChain?.name);
 
   const isEnoughWide = useMediaQuery({
     query: '(min-width: 1439px)',
@@ -241,24 +235,12 @@ const Dashboard: React.FunctionComponent = () => {
                 id={`table-${index}`}
                 balance={balance}
                 onClick={(e: any) => {
-                  !['BSC', 'BSC Test', 'Ethereum', 'Ganache'].includes(
-                    currentChain?.name || '',
-                  )
-                    ? (isWalletConnector()
-                        ? setDisconnectModalVisible(true)
-                        : isMetamask()
-                        ? isMoblie()
-                          ? setDisconnectModalVisible(true)
-                          : setWrongMainnetModalVisible(true)
-                        : setConnectWalletModalvisible(true),
-                      ReactGA.modalview(
-                        balance.tokenName +
-                          ModalViewType.DepositConnectWalletModal,
-                      ))
+                  isWrongMainnet
+                    ? setDisconnectModalVisible(true)
+                    : !account
+                    ? setConnectWalletModalvisible(true)
                     : unsupportedChainid
                     ? setWrongMainnetModalVisible(true)
-                    : isWrongNetwork
-                    ? setDisconnectModalVisible(true)
                     : (e.preventDefault(),
                       setReserveData(reserve),
                       selectBalanceId(balance.id),
@@ -269,23 +251,12 @@ const Dashboard: React.FunctionComponent = () => {
                 }}
                 reserveData={reserve}
                 setIncentiveModalVisible={() => {
-                  !['BSC', 'BSC Test', 'Ethereum', 'Ganache'].includes(
-                    currentChain?.name || '',
-                  )
-                    ? (isWalletConnector()
-                        ? setDisconnectModalVisible(true)
-                        : isMetamask()
-                        ? isMoblie()
-                          ? setDisconnectModalVisible(true)
-                          : setWrongMainnetModalVisible(true)
-                        : setConnectWalletModalvisible(true),
-                      ReactGA.modalview(
-                        balance.tokenName + ModalViewType.IncentiveModal,
-                      ))
+                  isWrongMainnet
+                    ? setDisconnectModalVisible(true)
+                    : !account
+                    ? setConnectWalletModalvisible(true)
                     : unsupportedChainid
                     ? setWrongMainnetModalVisible(true)
-                    : isWrongNetwork
-                    ? setDisconnectModalVisible(true)
                     : setIncentiveModalVisible(true);
                 }}
                 setModalNumber={() => selectBalanceId(balance.id)}

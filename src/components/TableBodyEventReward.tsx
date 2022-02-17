@@ -13,6 +13,7 @@ import MediaQuery from 'src/enums/MediaQuery';
 import Token from 'src/enums/Token';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import { formatSixFracionDigit } from 'src/utiles/formatters';
+import { isMoblie } from 'src/utiles/isWalletConnect';
 
 type Props = {
   moneyPoolTime: string;
@@ -20,7 +21,7 @@ type Props = {
   expectedAdditionalIncentiveAfter: BigNumber;
   buttonEvent: ((e: any) => void) | undefined;
   tokenName: ReserveToken;
-  isWrongNetwork: boolean;
+  isWrongMainnet: boolean;
 };
 
 const TableBodyEventReward: FunctionComponent<Props> = ({
@@ -29,7 +30,7 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
   expectedAdditionalIncentiveBefore,
   buttonEvent,
   tokenName,
-  isWrongNetwork,
+  isWrongMainnet,
 }) => {
   const { t, i18n } = useTranslation();
   const { account } = useWeb3React();
@@ -55,7 +56,7 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
               <div className="bold">
                 {' '}
                 {account && !unsupportedChainid ? (
-                  isWrongNetwork ? (
+                  isWrongMainnet ? (
                     '-'
                   ) : (
                     <CountUp
@@ -93,20 +94,24 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
                 <div className="bold">
                   {' '}
                   {account && !unsupportedChainid ? (
-                    <CountUp
-                      className="bold amounts"
-                      start={parseFloat(
-                        formatEther(expectedAdditionalIncentiveBefore),
-                      )}
-                      end={parseFloat(
-                        formatEther(expectedAdditionalIncentiveAfter),
-                      )}
-                      formattingFn={(number) => {
-                        return formatSixFracionDigit(number);
-                      }}
-                      decimals={6}
-                      duration={1}
-                    />
+                    isWrongMainnet ? (
+                      '-'
+                    ) : (
+                      <CountUp
+                        className="bold amounts"
+                        start={parseFloat(
+                          formatEther(expectedAdditionalIncentiveBefore),
+                        )}
+                        end={parseFloat(
+                          formatEther(expectedAdditionalIncentiveAfter),
+                        )}
+                        formattingFn={(number) => {
+                          return formatSixFracionDigit(number);
+                        }}
+                        decimals={6}
+                        duration={1}
+                      />
+                    )
                   ) : (
                     '-'
                   )}
