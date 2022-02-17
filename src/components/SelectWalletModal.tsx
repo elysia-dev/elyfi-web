@@ -3,9 +3,10 @@ import injectedConnector from 'src/core/connectors/injectedConnector';
 import { FunctionComponent, useEffect, useState } from 'react';
 import metamask from 'src/assets/images/metamask.png';
 import walletconnect from 'src/assets/images/walletconnect.png';
-import walletConnectConnector from 'src/utiles/walletConnector';
+import browserWallet from 'src/assets/images/browserWallet.png';
+import walletConnectConnector from 'src/utiles/walletConnectProvider';
 import { ethers } from 'ethers';
-import { setWalletConnect } from 'src/hooks/isWalletConnect';
+import { setWalletConnect } from 'src/utiles/isWalletConnect';
 
 type Props = {
   selectWalletModalVisible: boolean;
@@ -21,10 +22,19 @@ const SelectWalletModal: FunctionComponent<Props> = ({
   modalClose,
 }) => {
   const { activate, active } = useWeb3React();
-  const [hoverColor, setHoverColor] = useState('#E6E6E6');
+  const [hoverColor, setHoverColor] = useState({
+    metamask: '#E6E6E6',
+    walletconnect: '#E6E6E6',
+  });
   const global: WindowWithEthereum = window as WindowWithEthereum;
 
   const walletConnectProvider = walletConnectConnector();
+
+  const isMoblie =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent,
+    );
+  const walletImg = isMoblie ? browserWallet : metamask;
 
   useEffect(() => {
     if (active) {
@@ -53,7 +63,7 @@ const SelectWalletModal: FunctionComponent<Props> = ({
             <div
               className="wallet_select_modal__content__wallet_btn"
               style={{
-                border: `1px solid ${hoverColor}`,
+                border: `1px solid ${hoverColor.metamask}`,
               }}
               onClick={async () => {
                 activate(injectedConnector)
@@ -65,39 +75,41 @@ const SelectWalletModal: FunctionComponent<Props> = ({
                   });
               }}
               onMouseEnter={() => {
-                setHoverColor('#00BFFF');
+                setHoverColor({ ...hoverColor, metamask: '#00BFFF' });
               }}
               onMouseLeave={() => {
-                setHoverColor('#E6E6E6');
+                setHoverColor({ ...hoverColor, metamask: '#E6E6E6' });
               }}>
-              <img src={metamask} alt={metamask} />
+              <img src={walletImg} alt={walletImg} />
               <div
                 style={{
-                  fontSize: 15,
+                  fontSize: isMoblie ? 12 : 15,
                 }}>
-                Metamask
+                {isMoblie
+                  ? 'Browser Wallet\n(MetaMask / Trust Wallet / imToken)'
+                  : 'Metamask'}
               </div>
             </div>
           )}
           <div
             className="wallet_select_modal__content__wallet_btn"
             style={{
-              border: `1px solid ${hoverColor}`,
+              border: `1px solid ${hoverColor.walletconnect}`,
             }}
             onClick={async () => {
               await activate(walletConnectProvider);
               modalClose();
             }}
             onMouseEnter={() => {
-              setHoverColor('#00BFFF');
+              setHoverColor({ ...hoverColor, walletconnect: '#00BFFF' });
             }}
             onMouseLeave={() => {
-              setHoverColor('#E6E6E6');
+              setHoverColor({ ...hoverColor, walletconnect: '#E6E6E6' });
             }}>
             <img src={walletconnect} alt={walletconnect} />
             <div
               style={{
-                fontSize: 15,
+                fontSize: isMoblie ? 12 : 15,
               }}>
               WalletConnect
             </div>
