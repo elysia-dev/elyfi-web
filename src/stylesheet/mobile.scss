@@ -3254,6 +3254,57 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     }
   }
 
+  .change_network_modal {
+    &__content {
+      width: 320px;
+      height: 263px;
+
+      &__header {
+        font-family: 'SpoqaHanSansNeo-Bold';
+        font-size: 15px;
+        padding: 22.25px 23px 18px 25px;
+      }
+
+      &__guide {
+        > div:first-child {
+          font-family: 'SpoqaHanSansNeo-Medium';
+          color: '#333333';
+          width: 250px;
+          height: 43px;
+          margin: auto;
+          text-align: center;
+          margin-top: 23px;
+          margin-bottom: 13px;
+          font-size: 13px;
+        }
+        > div:last-child {
+          font-family: 'SpoqaHanSansNeo';
+          color: '#333333';
+          width: 300px;
+          height: 16px;
+          margin: auto;
+          text-align: center;
+          margin-bottom: 25px;
+          font-size: 11px;
+        }
+      }
+      &__button {
+        cursor: pointer;
+        font-family: 'Montserrat-bold';
+        width: 230.75px;
+        height: 40px;
+        font-size: 13px;
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 600;
+        border: 1px solid #00bfff;
+        margin-top: 19px;
+      }
+    }
+  }
+
   // .header {
   //   min-width: $device-width;
   //   height: $device-width;
