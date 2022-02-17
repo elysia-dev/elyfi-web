@@ -1,6 +1,6 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 
-interface ICoinPriceResponse {
+export interface ICoinPriceResponse {
   elysia: {
     usd: number;
   };
@@ -15,10 +15,5 @@ interface ICoinPriceResponse {
   };
 }
 
-export default class Coingecko {
-  static getPrices = async (): Promise<AxiosResponse<ICoinPriceResponse>> => {
-    return axios.get(
-      'https://api.coingecko.com/api/v3/simple/price?ids=elysia,dai,ethereum,tether&vs_currencies=usd',
-    );
-  };
-}
+export const pricesFetcher = (url: string): Promise<ICoinPriceResponse> =>
+  axios.get(url).then((res) => res.data);
