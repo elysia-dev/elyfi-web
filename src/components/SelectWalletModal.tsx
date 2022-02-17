@@ -7,6 +7,7 @@ import browserWallet from 'src/assets/images/browserWallet.png';
 import walletConnectConnector from 'src/utiles/walletConnectProvider';
 import { ethers } from 'ethers';
 import { setWalletConnect } from 'src/utiles/isWalletConnect';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   selectWalletModalVisible: boolean;
@@ -21,6 +22,7 @@ const SelectWalletModal: FunctionComponent<Props> = ({
   selectWalletModalVisible,
   modalClose,
 }) => {
+  const { t } = useTranslation();
   const { activate, active } = useWeb3React();
   const [hoverColor, setHoverColor] = useState({
     metamask: '#E6E6E6',
@@ -48,10 +50,15 @@ const SelectWalletModal: FunctionComponent<Props> = ({
       style={{
         display: selectWalletModalVisible ? 'flex' : 'none',
       }}>
-      <div className="wallet_select_modal__content">
+      <div
+        className="wallet_select_modal__content"
+        style={{
+          height:
+            global.ethereum && typeof global.ethereum === 'object' ? 263 : 180,
+        }}>
         <>
           <div className="wallet_select_modal__content__header">
-            <div>지갑 연결하기</div>
+            <div>{t('navigation.connect_wallet')}</div>
             <div className="close-button" onClick={() => modalClose()}>
               <div className="close-button--1">
                 <div className="close-button--2" />
