@@ -94,7 +94,7 @@ const IncentiveModal: FunctionComponent<{
         <div className="modal__body">
           {
             transactionWait ? (
-              <LoadingIndicator />
+              <LoadingIndicator isTxActive={transactionWait} />
             ) : (
               <>
                <div
@@ -114,14 +114,15 @@ const IncentiveModal: FunctionComponent<{
                     duration={1}
                   />
                 </div>
-                <div
-                  className={`modal__button ${transactionWait ? "disable" : ""}`}
-                  onClick={() => reqeustClaimIncentive()}>
-                  <p>{"CLAIM REWARD"}</p>
-                </div>
               </>
             )
           }
+
+          <div
+            className={`modal__button ${transactionWait ? "disable" : ""}`}
+            onClick={() => reqeustClaimIncentive()}>
+            <p>{"CLAIM REWARD"}</p>
+          </div>
         </div>
       </div>
     </div>

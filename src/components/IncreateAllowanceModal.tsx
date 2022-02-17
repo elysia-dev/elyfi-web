@@ -15,9 +15,11 @@ export enum PermissionType {
 const IncreateAllowanceModal: React.FunctionComponent<{
   onClick: () => void;
   type: PermissionType;
+  txWait?: boolean
 }> = ({
   onClick,
-  type
+  type,
+  txWait
 }) => {
   const { library } = useWeb3React();
   const connected = window.sessionStorage.getItem('@connect');
@@ -53,10 +55,14 @@ const IncreateAllowanceModal: React.FunctionComponent<{
   
   return (
     <>
-      <div className="modal__increate-allowance" style={{ padding : status === TxStatus.PENDING ? 0 : 30 }}>
+      <div className="modal__increate-allowance" 
+        style={{ 
+          padding : status === TxStatus.PENDING || txWait ? 0 : 30,
+          borderBottom: status === TxStatus.PENDING || txWait ? "none" : "2px solid #f0f0f1" 
+        }}>
         {
-          status === TxStatus.PENDING ?
-            <LoadingIndicator  />
+          status === TxStatus.PENDING || txWait ?
+            <LoadingIndicator button={t("modal.indicator.loading_metamask")} />
             :
             (
               <>
@@ -76,7 +82,7 @@ const IncreateAllowanceModal: React.FunctionComponent<{
         }
       </div>
       {
-        status !== TxStatus.PENDING && (
+        (status !== TxStatus.PENDING && !txWait) && (
           <ModalButton
             className={`modal__button`}
             onClick={onClick}

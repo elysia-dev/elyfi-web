@@ -317,7 +317,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
                   txWait={transactionWait}
                 />
               ) : (
-                <IncreateAllowanceModal onClick={increateAllowance} type={PermissionType.Deposit} />
+                <IncreateAllowanceModal onClick={increateAllowance} type={PermissionType.Deposit} txWait={transactionWait} />
               )
             ) : (
               <WithdrawBody
@@ -327,6 +327,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
                 yieldProduced={yieldProduced}
                 liquidity={liquidity.value}
                 withdraw={reqeustWithdraw}
+                txWait={transactionWait}
               />
             )
           )

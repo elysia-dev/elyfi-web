@@ -87,15 +87,15 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
             });
           }}
         />
+        <ModalConverter
+          handlerProps={stakingMode}
+          setState={setStakingMode}
+          title={[t('staking.staking')]}
+        />
         {transactionWait ? (
           <LoadingIndicator  />
         ) : (
           <>
-            <ModalConverter
-              handlerProps={stakingMode}
-              setState={setStakingMode}
-              title={[t('staking.staking')]}
-            />
             <div className="modal__lp__staking__body">
               {unstakedPositions.length === 0 ? (
                 <div className="modal__lp__staking__undefined">
