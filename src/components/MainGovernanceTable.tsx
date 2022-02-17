@@ -80,7 +80,7 @@ const MainGovernanceTable: FunctionComponent<Props> = ({
               {
                 title: data.data.description.match(/NAP.*/)?.toString() || '',
                 created_at: dates,
-                link: `${t("governance.link.tally")}/proposal/${getDataId}`,
+                link: `${t('governance.link.tally')}/proposal/${getDataId}`,
               },
             ]);
           });
