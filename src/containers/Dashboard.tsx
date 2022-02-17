@@ -34,7 +34,11 @@ import { useWeb3React } from '@web3-react/core';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import WalletDisconnect from 'src/components/WalletDisconnect';
 import SelectWalletModal from 'src/components/SelectWalletModal';
-import { isMetamask, isWalletConnector } from 'src/hooks/isWalletConnect';
+import {
+  isMetamask,
+  isMoblie,
+  isWalletConnector,
+} from 'src/utiles/isWalletConnect';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();
@@ -80,6 +84,9 @@ const Dashboard: React.FunctionComponent = () => {
       supportedTokens.some((token) => token === balance.id),
     );
   }, [supportedTokens, balances]);
+
+  const isWrongNetwork =
+    isWalletConnector() && currentChain?.name !== getMainnetType;
 
   const isEnoughWide = useMediaQuery({
     query: '(min-width: 1439px)',
@@ -235,20 +242,13 @@ const Dashboard: React.FunctionComponent = () => {
                 id={`table-${index}`}
                 balance={balance}
                 onClick={(e: any) => {
-                  !(
-                    currentChain?.name ===
-                    (process.env.NODE_ENV === 'development'
-                      ? getMainnetType === 'BSC'
-                        ? 'BSC Test'
-                        : 'Ganache'
-                      : getMainnetType)
+                  !['BSC', 'BSC Test', 'Ethereum', 'Ganache'].includes(
+                    currentChain?.name || '',
                   )
                     ? (isWalletConnector()
                         ? setDisconnectModalVisible(true)
                         : isMetamask()
-                        ? /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-                            navigator.userAgent,
-                          )
+                        ? isMoblie()
                           ? setDisconnectModalVisible(true)
                           : setWrongMainnetModalVisible(true)
                         : setConnectWalletModalvisible(true),
@@ -258,6 +258,8 @@ const Dashboard: React.FunctionComponent = () => {
                       ))
                     : unsupportedChainid
                     ? setWrongMainnetModalVisible(true)
+                    : isWrongNetwork
+                    ? setDisconnectModalVisible(true)
                     : (e.preventDefault(),
                       setReserveData(reserve),
                       selectBalanceId(balance.id),
@@ -268,20 +270,13 @@ const Dashboard: React.FunctionComponent = () => {
                 }}
                 reserveData={reserve}
                 setIncentiveModalVisible={() => {
-                  !(
-                    currentChain?.name ===
-                    (process.env.NODE_ENV === 'development'
-                      ? getMainnetType === 'BSC'
-                        ? 'BSC Test'
-                        : 'Ganache'
-                      : getMainnetType)
+                  !['BSC', 'BSC Test', 'Ethereum', 'Ganache'].includes(
+                    currentChain?.name || '',
                   )
                     ? (isWalletConnector()
                         ? setDisconnectModalVisible(true)
                         : isMetamask()
-                        ? /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-                            navigator.userAgent,
-                          )
+                        ? isMoblie()
                           ? setDisconnectModalVisible(true)
                           : setWrongMainnetModalVisible(true)
                         : setConnectWalletModalvisible(true),
@@ -290,6 +285,8 @@ const Dashboard: React.FunctionComponent = () => {
                       ))
                     : unsupportedChainid
                     ? setWrongMainnetModalVisible(true)
+                    : isWrongNetwork
+                    ? setDisconnectModalVisible(true)
                     : setIncentiveModalVisible(true);
                 }}
                 setModalNumber={() => selectBalanceId(balance.id)}

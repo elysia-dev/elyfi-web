@@ -10,7 +10,11 @@ import AccountModal from 'src/components/AccountModal';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetError from 'src/assets/images/network_error.png';
 import useCurrentChain from 'src/hooks/useCurrentChain';
-import { isMetamask, isWalletConnector } from 'src/hooks/isWalletConnect';
+import {
+  isMetamask,
+  isMoblie,
+  isWalletConnector,
+} from 'src/utiles/isWalletConnect';
 import NetworkChangeModal from './NetworkChangeModal';
 import SelectWalletModal from './SelectWalletModal';
 import WalletDisconnect from './WalletDisconnect';
@@ -38,13 +42,7 @@ const Wallet = (): JSX.Element => {
     isWalletConnector() && currentChain?.name !== getMainnetType;
 
   const isMetaMaskBrowserWrongNetwork = () => {
-    return (
-      isMetamask() &&
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent,
-      ) &&
-      currentChain?.name !== getMainnetType
-    );
+    return isMetamask() && isMoblie() && currentChain?.name !== getMainnetType;
   };
 
   console.log(currentChain?.name, getMainnetType);
