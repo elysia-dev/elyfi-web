@@ -1,8 +1,8 @@
 import { useWeb3React } from '@web3-react/core';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { MainnetData, MainnetList } from 'src/core/data/mainnets';
-import { isWalletConnector } from 'src/hooks/isWalletConnect';
+import { isMoblie, isWalletConnector } from 'src/utiles/isWalletConnect';
 
 const MainnetSwitch: React.FunctionComponent<{
   mainNetwork: boolean;
@@ -42,9 +42,7 @@ const MainnetSwitch: React.FunctionComponent<{
                     className="navigation__mainnet__change-network"
                     onClick={() => {
                       active && !isWalletConnector()
-                        ? /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-                            navigator.userAgent,
-                          )
+                        ? isMoblie()
                           ? (setMainNetwork(false),
                             setCurrentMainnet(_data.type))
                           : changeMainnet(MainnetData[_data.type].chainId).then(
