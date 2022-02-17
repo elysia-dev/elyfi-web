@@ -59,26 +59,16 @@ export default class WalletConnectConnector extends AbstractConnector {
   }
 
   private handleChainChanged(chainId: number | string): void {
-    // if (__DEV__) {
-    //   console.log("Handling 'chainChanged' event with payload", chainId);
-    // }
     this.emitUpdate({
-      // chainId: [1, 56, 97].includes(Number(chainId)) ? chainId : 1,
       chainId,
     });
   }
 
   private handleAccountsChanged(accounts: string[]): void {
-    // if (__DEV__) {
-    //   console.log("Handling 'accountsChanged' event with payload", accounts);
-    // }
     this.emitUpdate({ account: accounts[0] });
   }
 
   private handleDisconnect(): void {
-    // if (__DEV__) {
-    //   console.log("Handling 'disconnect' event");
-    // }
     this.emitDeactivate();
     // we have to do this because of a @walletconnect/web3-provider bug
     if (this.walletConnectProvider) {
