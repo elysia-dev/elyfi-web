@@ -348,15 +348,15 @@ function LPStaking(): JSX.Element {
       )
         return;
 
-      const interval = setInterval(() => {
-        updateExpectedReward(
-          stakedPositions,
-          ethPoolTotalLiquidity,
-          daiPoolTotalLiquidity,
-          incentiveIds[round - 1],
-        );
-      }, 1000);
-      return () => clearInterval(interval);
+      // const interval = setInterval(() => {
+      //   updateExpectedReward(
+      //     stakedPositions,
+      //     ethPoolTotalLiquidity,
+      //     daiPoolTotalLiquidity,
+      //     incentiveIds[round - 1],
+      //   );
+      // }, 1000);
+      // return () => clearInterval(interval);
     } catch (error) {
       console.error(error);
     }
