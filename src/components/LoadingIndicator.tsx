@@ -10,19 +10,7 @@ const LoadingIndicator: React.FunctionComponent<{
   return ( 
     <>
       <div className="indicator">
-        <div className="flip-card">
-          <div className="flip-card-inner">
-            <div className="flip-card-front">
-              <img src={Coin} style={{ width: 300, height: 300 }} />
-            </div>
-            <div className="flip-card-thick"></div>
-            <div className="flip-card-back">
-              <h2>
-                ELYFI
-              </h2>
-            </div>
-          </div>
-        </div>
+        <div className="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       </div>
       <ModalButton
         className='modal__button disable'

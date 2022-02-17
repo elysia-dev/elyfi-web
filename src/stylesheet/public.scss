@@ -4081,93 +4081,117 @@ input[type='number'] {
     display: flex;
     justify-content: center;
     padding: 50px;
-    .flip-card {
-      background-color: transparent;
-      width: 300px;
-      height: 300px;
-      perspective: 1000px;
-      transform: scale(0.6);
-    }
-    .flip-card-inner {
+    height: 240px;
+    align-items: center;
+    .lds-spinner {
+      color: official;
+      display: inline-block;
       position: relative;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      background: transparent url('../assets/images/ELFI.png') no-repeat;
-      background-size: 100% 100%;
-      border-radius: 100%;
-      animation: lds-circle 10s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-      transform-style: preserve-3d;
+      width: 80px;
+      height: 80px;
     }
-    .flip-card-thick {
-      background-color: $elysia-color;
-      background-image: -webkit-linear-gradient(hsla(0,0%,100%,.25), hsla(0,0%,0%,.25));
-      bottom: 0;
-      content: '';
-      left: 130px;
+    .lds-spinner div {
+      transform-origin: 40px 40px;
+      animation: lds-spinner 1.2s linear infinite;
+    }
+    .lds-spinner div:after {
+      content: " ";
+      display: block;
       position: absolute;
-      top: 0px;
-      width: 10px;
-      z-index: -10;
-      transform: rotateY(-90deg);
-      transform-origin: 100% 50%;
-    }
-    .flip-card-front, .flip-card-back, .flip-card-inner:before, .flip-card-inner:after  {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 100%;
-      overflow: hidden;
-      z-index: 1;
-      background-color: $elysia-color;
-    }
-    .flip-card-inner:before {
-      content: '';
-      top: 0;
-      left: 0;
-      transform: rotateY(180deg) translateZ(1px);
-      background-image: -webkit-linear-gradient(hsla(0,0%,100%,.25), hsla(0,0%,0%,.25));
-    }
+      top: 3px;
+      left: 37px;
+      width: 6px;
+      height: 18px;
+      border-radius: 20%;
+      background: $elysia-color;
+    }    
+    // .flip-card {
+    //   background-color: transparent;
+    //   width: 300px;
+    //   height: 300px;
+    //   perspective: 1000px;
+    //   transform: scale(0.6);
+    // }
+    // .flip-card-inner {
+    //   position: relative;
+    //   width: 100%;
+    //   height: 100%;
+    //   text-align: center;
+    //   background: transparent url('../assets/images/ELFI.png') no-repeat;
+    //   background-size: 100% 100%;
+    //   border-radius: 100%;
+    //   animation: lds-circle 10s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    //   transform-style: preserve-3d;
+    // }
+    // .flip-card-thick {
+    //   background-color: $elysia-color;
+    //   background-image: -webkit-linear-gradient(hsla(0,0%,100%,.25), hsla(0,0%,0%,.25));
+    //   bottom: 0;
+    //   content: '';
+    //   left: 130px;
+    //   position: absolute;
+    //   top: 0px;
+    //   width: 10px;
+    //   z-index: -10;
+    //   transform: rotateY(-90deg);
+    //   transform-origin: 100% 50%;
+    // }
+    // .flip-card-front, .flip-card-back, .flip-card-inner:before, .flip-card-inner:after  {
+    //   position: absolute;
+    //   width: 100%;
+    //   height: 100%;
+    //   border-radius: 100%;
+    //   overflow: hidden;
+    //   z-index: 1;
+    //   background-color: $elysia-color;
+    // }
+    // .flip-card-inner:before {
+    //   content: '';
+    //   top: 0;
+    //   left: 0;
+    //   transform: rotateY(180deg) translateZ(1px);
+    //   background-image: -webkit-linear-gradient(hsla(0,0%,100%,.25), hsla(0,0%,0%,.25));
+    // }
     
-    .flip-card-inner:after {
-      content: '';
-      top: 0;
-      left: 0;
-      transform: rotateY(180deg) translateZ(10px);
-      background-image: -webkit-linear-gradient(hsla(0,0%,100%,.25), hsla(0,0%,0%,.25));
-    }
-    .flip-card-front {
-      background-color: $elysia-color;
+    // .flip-card-inner:after {
+    //   content: '';
+    //   top: 0;
+    //   left: 0;
+    //   transform: rotateY(180deg) translateZ(10px);
+    //   background-image: -webkit-linear-gradient(hsla(0,0%,100%,.25), hsla(0,0%,0%,.25));
+    // }
+    // .flip-card-front {
+    //   background-color: $elysia-color;
 
-    }
-    .flip-card-back {
-      background-color: $elysia-color;
-      transform: rotateY(180deg) translateZ(11px);
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      > h2 {
-        color: white;
-        font-size: 70px;
-        font-family: $montserrat--bold;
-      }
-    }
-    @keyframes lds-circle {
-      0%, 100% {
-        animation-timing-function: cubic-bezier(0.5, 0, 1, 0.5);
-      }
-      0% {
-        transform: rotateY(90deg);
-      }
-      50% {
-        transform: rotateY(1800deg);
-        animation-timing-function: cubic-bezier(0, 0.5, 0.5, 1);
-      }
-      100% {
-        transform: rotateY(3600deg);
-      }
-    }
+    // }
+    // .flip-card-back {
+    //   background-color: $elysia-color;
+    //   transform: rotateY(180deg) translateZ(11px);
+    //   display: flex;
+    //   flex-direction: row;
+    //   align-items: center;
+    //   justify-content: center;
+    //   > h2 {
+    //     color: white;
+    //     font-size: 70px;
+    //     font-family: $montserrat--bold;
+    //   }
+    // }
+    // @keyframes lds-circle {
+    //   0%, 100% {
+    //     animation-timing-function: cubic-bezier(0.5, 0, 1, 0.5);
+    //   }
+    //   0% {
+    //     transform: rotateY(90deg);
+    //   }
+    //   50% {
+    //     transform: rotateY(1800deg);
+    //     animation-timing-function: cubic-bezier(0, 0.5, 0.5, 1);
+    //   }
+    //   100% {
+    //     transform: rotateY(3600deg);
+    //   }
+    // }
   }
 
 
