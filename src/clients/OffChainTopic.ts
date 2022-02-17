@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import MainnetType from 'src/enums/MainnetType';
+import { request } from 'graphql-request';
 
 export interface TopicList {
   topic_list: {
@@ -28,6 +29,9 @@ export interface INapData {
   endedDate: string;
   network: MainnetType;
 }
+
+export const topicListFetcher = (url: string): Promise<TopicList> =>
+  axios.get(url).then((res) => res.data);
 
 export default class OffChainTopic {
   static getTopicList = async (): Promise<AxiosResponse<TopicList>> => {
