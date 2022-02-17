@@ -1,19 +1,30 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import TempAssets from 'src/assets/images/temp_assets.png';
-import wave from 'src/assets/images/wave_elyfi.png';
-import OffChainTopic, { INapData } from 'src/clients/OffChainTopic';
 import Skeleton from 'react-loading-skeleton';
-import { IProposals, OnChainTopic } from 'src/clients/OnChainTopic';
-import { utils } from 'ethers';
-import AssetList from 'src/containers/AssetList';
 import { useTranslation } from 'react-i18next';
-import GovernanceGuideBox from 'src/components/GovernanceGuideBox';
 import { useParams, useHistory } from 'react-router-dom';
-import LanguageType from 'src/enums/LanguageType';
+import { utils } from 'ethers';
 import moment from 'moment';
+import reactGA from 'react-ga';
+import useSWR from 'swr';
+
+import {
+  IOnChainToipc,
+  IProposals,
+  onChainFetcher,
+  onChainQuery,
+  OnChainTopic,
+} from 'src/clients/OnChainTopic';
+import TempAssets from 'src/assets/images/temp_assets.png';
+import OffChainTopic, {
+  INapData,
+  TopicList,
+  topicListFetcher,
+} from 'src/clients/OffChainTopic';
+import AssetList from 'src/containers/AssetList';
+import GovernanceGuideBox from 'src/components/GovernanceGuideBox';
+import LanguageType from 'src/enums/LanguageType';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import reactGA from 'react-ga';
 import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
 import DrawWave from 'src/utiles/drawWave';
@@ -43,6 +54,15 @@ const Governance = () => {
     const parsedId = parseTokenId(product.id);
     return CollateralCategory.Others !== parsedId.collateralCategory;
   });
+
+  const { data: getOnChainData, error: onChainDataError } = useSWR(
+    onChainQuery,
+    onChainFetcher,
+  );
+  const { data: getOffChainData, error: offChainDataError } = useSWR(
+    '/proxy/c/nap/10.json',
+    topicListFetcher,
+  );
 
   const draw = () => {
     const dpr = window.devicePixelRatio;
@@ -80,27 +100,87 @@ const Governance = () => {
     setPageNumber((prev) => prev + 1);
   }, [pageNumber]);
 
-  const getOnChainNAPDatas = async () => {
-    try {
-      const getOnChainApis = await OnChainTopic.getOnChainTopicData();
-      const getNAPCodes = getOnChainApis.data.data.proposals.filter((topic) => {
-        return topic.data.description.startsWith('NAP');
-      });
-      return getNAPCodes || undefined;
-    } catch (e) {
-      console.log(e);
+  const getOnChainNAPDatas = (getOnChainData: IOnChainToipc) => {
+    const getOnChainApis = getOnChainData;
+    const getNAPCodes = getOnChainApis.proposals.filter((topic) => {
+      return topic.data.description.startsWith('NAP');
+    });
+    if (!getNAPCodes || undefined) {
       setOnChainLoading(false);
+      return;
     }
+    getNAPCodes.map((data) => {
+      return setOnChainData((_data) => {
+        if (!(data.status === 'ACTIVE')) return [..._data];
+        return [
+          ..._data,
+          {
+            data: {
+              description: data.data.description
+                .match(/\d.*(?!NAP)(?=:)/)
+                ?.toString(),
+            },
+            status: data.status,
+            totalVotesCast: data.totalVotesCast,
+            totalVotesCastAbstained: data.totalVotesCastAbstained,
+            totalVotesCastAgainst: data.totalVotesCastAgainst,
+            totalVotesCastInSupport: data.totalVotesCastInSupport,
+            id: data.id.match(/(?=).*(?=-proposal)/)?.toString(),
+          } as IProposals,
+        ];
+      });
+    });
   };
-  const getOffChainNAPTitles = async () => {
+  const getOffChainNAPTitles = async (getOffChainData: TopicList) => {
     try {
-      const getOffChainApis = await OffChainTopic.getTopicList();
-      const getNAPTitles = getOffChainApis.data.topic_list.topics.filter(
-        (topic) => {
-          return topic.title.startsWith('NAP');
-        },
-      );
-      return getNAPTitles.map((title) => title.id) || undefined;
+      const getOffChainApis = getOffChainData;
+      const getNAPTitles = getOffChainApis.topic_list.topics.filter((topic) => {
+        return topic.title.startsWith('NAP');
+      });
+      if (!getNAPTitles.map((title) => title.id) || undefined) {
+        setOffChainLoading(false);
+        return;
+      }
+      getNAPTitles
+        .map((title) => title.id)
+        .map(async (_res, _x) => {
+          const getNATData = await OffChainTopic.getTopicResult(_res);
+          const getHTMLStringData: string =
+            getNATData.data.post_stream.posts[0].cooked.toString();
+          const regexNap = /NAP#: .*(?=<)/;
+          const regexNetwork = /Network: BSC.*(?=<)/;
+          setOffChainNapData((napData) => [
+            ...napData,
+            {
+              id: _x,
+              nap:
+                getHTMLStringData.match(regexNap)?.toString().substring(5) ||
+                '',
+              status:
+                getHTMLStringData
+                  .match(/Status: .*(?=<)/)
+                  ?.toString()
+                  .split('Status: ') || '',
+              images:
+                getHTMLStringData
+                  .match(
+                    /slate.textile.io.*(?=" rel="noopener nofollow ugc">Collateral Image)/,
+                  )
+                  ?.toString() || '',
+              votes:
+                getNATData.data.post_stream.posts[0].polls[0].options || '',
+              totalVoters:
+                getNATData.data.post_stream.posts[0].polls[0].voters || '',
+              link: `https://forum.elyfi.world/t/${getNATData.data.slug}`,
+              endedDate:
+                getNATData.data.post_stream.posts[0].polls[0].close || '',
+              network:
+                !!getHTMLStringData.match(regexNetwork) === true
+                  ? MainnetType.BSC
+                  : MainnetType.Ethereum,
+            } as INapData,
+          ]);
+        });
     } catch (e) {
       console.log(e);
       setOffChainLoading(false);
@@ -108,73 +188,19 @@ const Governance = () => {
   };
 
   useEffect(() => {
-    getOffChainNAPTitles().then((title_res) => {
-      title_res === undefined
-        ? setOffChainLoading(false)
-        : title_res.map(async (_res, _x) => {
-            const getNATData = await OffChainTopic.getTopicResult(_res);
-            const getHTMLStringData: string =
-              getNATData.data.post_stream.posts[0].cooked.toString();
-            const regexNap = /NAP#: .*(?=<)/;
-            const regexNetwork = /Network: BSC.*(?=<)/;
-            setOffChainNapData((napData) => [
-              ...napData,
-              {
-                id: _x,
-                nap:
-                  getHTMLStringData.match(regexNap)?.toString().substring(5) ||
-                  '',
-                status: getHTMLStringData.match(/Status: .*(?=<)/)?.toString().split('Status: ') || '',
-                images:
-                  getHTMLStringData
-                    .match(
-                      /slate.textile.io.*(?=" rel="noopener nofollow ugc">Collateral Image)/,
-                    )
-                    ?.toString() || '',
-                votes:
-                  getNATData.data.post_stream.posts[0].polls[0].options || '',
-                totalVoters:
-                  getNATData.data.post_stream.posts[0].polls[0].voters || '',
-                link: `https://forum.elyfi.world/t/${getNATData.data.slug}`,
-                endedDate:
-                  getNATData.data.post_stream.posts[0].polls[0].close || '',
-                network:
-                  !!getHTMLStringData.match(regexNetwork) === true
-                    ? MainnetType.BSC
-                    : MainnetType.Ethereum,
-              } as INapData,
-            ]);
-          });
+    try {
+      if (onChainDataError || offChainDataError) throw Error;
+      if (getOffChainData && getOnChainData) {
+        getOnChainNAPDatas(getOnChainData);
+        getOffChainNAPTitles(getOffChainData);
+        setOffChainLoading(false);
+        setOnChainLoading(false);
+      }
+    } catch (error) {
       setOffChainLoading(false);
-    });
-
-    getOnChainNAPDatas().then((res) => {
-      res === undefined
-        ? setOnChainLoading(false)
-        : res.map((data) => {
-            return setOnChainData((_data) => {
-              if (!(data.status === 'ACTIVE')) return [..._data];
-              return [
-                ..._data,
-                {
-                  data: {
-                    description: data.data.description
-                      .match(/\d.*(?!NAP)(?=:)/)
-                      ?.toString(),
-                  },
-                  status: data.status,
-                  totalVotesCast: data.totalVotesCast,
-                  totalVotesCastAbstained: data.totalVotesCastAbstained,
-                  totalVotesCastAgainst: data.totalVotesCastAgainst,
-                  totalVotesCastInSupport: data.totalVotesCastInSupport,
-                  id: data.id.match(/(?=).*(?=-proposal)/)?.toString(),
-                } as IProposals,
-              ];
-            });
-          });
       setOnChainLoading(false);
-    });
-  }, []);
+    }
+  }, [getOffChainData, getOnChainData, onChainDataError, offChainDataError]);
 
   useEffect(() => {
     draw();
@@ -237,9 +263,7 @@ const Governance = () => {
             category: PageEventType.MoveToExternalPage,
             action: ButtonEventType.OnChainVoteButtonOnGovernance,
           });
-          window.open(
-            `${t("governance.link.tally")}/proposal/${data.id}`,
-          );
+          window.open(`${t('governance.link.tally')}/proposal/${data.id}`);
         }}>
         <div>
           <img
@@ -448,7 +472,7 @@ const Governance = () => {
                 <p>{t('governance.on_chain_voting__content')}</p>
                 {mainnetType === MainnetType.Ethereum && (
                   <a
-                    href={`${t("governance.link.tally")}`}
+                    href={`${t('governance.link.tally')}`}
                     target="_blank"
                     rel="noopener noreferer">
                     <div
@@ -472,7 +496,7 @@ const Governance = () => {
                 </h3>
                 {mainnetType === MainnetType.Ethereum && (
                   <a
-                    href={`${t("governance.link.tally")}`}
+                    href={`${t('governance.link.tally')}`}
                     target="_blank"
                     rel="noopener noreferer">
                     <div
