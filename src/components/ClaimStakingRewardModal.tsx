@@ -79,7 +79,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
         />
         <div className="modal__body">
           {transactionWait ? (
-            <LoadingIndicator button={t("modal.indicator.loading_metamask")} />
+            <LoadingIndicator />
           ) : (
             <>
               <div className="modal__incentive__body">

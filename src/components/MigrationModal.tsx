@@ -85,7 +85,7 @@ const MigrationModal: React.FunctionComponent<{
           onClose={() => closeHandler()}
         />
         {transactionWait ? (
-          <LoadingIndicator button={t("modal.indicator.loading_metamask")} />
+          <LoadingIndicator  />
         ) : (
           <>
             <div className="modal__migration">

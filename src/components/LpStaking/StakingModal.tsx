@@ -88,7 +88,7 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
           }}
         />
         {transactionWait ? (
-          <LoadingIndicator button={t("modal.indicator.loading_metamask")} />
+          <LoadingIndicator  />
         ) : (
           <>
             <ModalConverter

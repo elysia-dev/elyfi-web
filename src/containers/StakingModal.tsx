@@ -22,7 +22,7 @@ import buildEventEmitter from 'src/utiles/buildEventEmitter';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
-import IncreateAllowanceModal from 'src/components/IncreateAllowanceModal';
+import IncreateAllowanceModal, { PermissionType } from 'src/components/IncreateAllowanceModal';
 
 const StakingModal: React.FunctionComponent<{
   visible: boolean;
@@ -92,7 +92,9 @@ const StakingModal: React.FunctionComponent<{
           onClose={() => closeHandler()}
         />
         {transactionWait || allowanceLoading ? (
-          <LoadingIndicator button={allowanceLoading ? t("modal.indicator.permission_check") : t("modal.indicator.loading_metamask")}/>
+          <LoadingIndicator 
+          // button={allowanceLoading ? t("modal.indicator.permission_check") : t("modal.indicator.loading_metamask")}
+          />
         ) : (
           !allowanceLoading && allowance.gte(balance) ? (
             <>
@@ -308,6 +310,7 @@ const StakingModal: React.FunctionComponent<{
             </>
           ) : (
             <IncreateAllowanceModal
+              type={PermissionType.Staking} 
               onClick={() => {
                 if (transactionWait) return;
 

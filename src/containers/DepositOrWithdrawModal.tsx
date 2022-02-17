@@ -31,7 +31,7 @@ import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
 import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import useCurrentMoneypoolAddress from 'src/hooks/useCurrnetMoneypoolAddress';
-import IncreateAllowanceModal from 'src/components/IncreateAllowanceModal';
+import IncreateAllowanceModal, { PermissionType } from 'src/components/IncreateAllowanceModal';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
 
@@ -292,43 +292,42 @@ const DepositOrWithdrawModal: FunctionComponent<{
       style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
         <ModalHeader image={tokenImage} title={tokenName} onClose={onClose} />
+        <ModalConverter
+          handlerProps={selected}
+          setState={select}
+          title={[t('dashboard.deposit'), t('dashboard.withdraw')]}
+        />
         {
-          transactionWait || loading ? (
-            <LoadingIndicator button={loading ? t("modal.indicator.permission_check") : t("modal.indicator.loading_metamask")}/>
+          loading ? (
+            <LoadingIndicator button={t("modal.indicator.permission_check")} />
           ) : (
-            allowance.gt(balance) ? (
-              <>
-                <ModalConverter
-                  handlerProps={selected}
-                  setState={select}
-                  title={[t('dashboard.deposit'), t('dashboard.withdraw')]}
+            selected ? (
+              allowance.gt(balance) ? (
+                <DepositBody
+                  tokenInfo={tokenInfo!}
+                  depositAPY={toPercent(reserve.depositAPY || '0')}
+                  miningAPR={toPercent(
+                    calcMiningAPR(
+                      elfiPrice,
+                      BigNumber.from(reserve.totalDeposit),
+                      tokenInfo?.decimals,
+                    ))}
+                  balance={balance}
+                  deposit={requestDeposit}
+                  txWait={transactionWait}
                 />
-                {selected ? (
-                  <DepositBody
-                    tokenInfo={tokenInfo!}
-                    depositAPY={toPercent(reserve.depositAPY || '0')}
-                    miningAPR={toPercent(
-                      calcMiningAPR(
-                        elfiPrice,
-                        BigNumber.from(reserve.totalDeposit),
-                        tokenInfo?.decimals,
-                      ))}
-                    balance={balance}
-                    deposit={requestDeposit}
-                  />
-                ) : (
-                  <WithdrawBody
-                    tokenInfo={tokenInfo!}
-                    depositBalance={depositBalance}
-                    accumulatedYield={accumulatedYield}
-                    yieldProduced={yieldProduced}
-                    liquidity={liquidity.value}
-                    withdraw={reqeustWithdraw}
-                  />
-                )}
-              </>
+              ) : (
+                <IncreateAllowanceModal onClick={increateAllowance} type={PermissionType.Deposit} />
+              )
             ) : (
-              <IncreateAllowanceModal onClick={increateAllowance} />
+              <WithdrawBody
+                tokenInfo={tokenInfo!}
+                depositBalance={depositBalance}
+                accumulatedYield={accumulatedYield}
+                yieldProduced={yieldProduced}
+                liquidity={liquidity.value}
+                withdraw={reqeustWithdraw}
+              />
             )
           )
         }

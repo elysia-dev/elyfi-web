@@ -7,10 +7,17 @@ import TxContext from 'src/contexts/TxContext';
 import TxStatus from 'src/enums/TxStatus';
 import LoadingIndicator from './LoadingIndicator';
 
+export enum PermissionType {
+  Deposit = "Deposit",
+  Staking = "Staking"
+}
+
 const IncreateAllowanceModal: React.FunctionComponent<{
   onClick: () => void;
+  type: PermissionType;
 }> = ({
-  onClick
+  onClick,
+  type
 }) => {
   const { library } = useWeb3React();
   const connected = window.sessionStorage.getItem('@connect');
@@ -49,7 +56,7 @@ const IncreateAllowanceModal: React.FunctionComponent<{
       <div className="modal__increate-allowance" style={{ padding : status === TxStatus.PENDING ? 0 : 30 }}>
         {
           status === TxStatus.PENDING ?
-            <LoadingIndicator button={t("modal.pending_transaction")} />
+            <LoadingIndicator  />
             :
             (
               <>
@@ -58,7 +65,7 @@ const IncreateAllowanceModal: React.FunctionComponent<{
                 </h2>
                 <div className="modal__increate-allowance__content">
                   <p>
-                    <Trans i18nKey="modal.permission.content" />
+                    <Trans i18nKey={`modal.permission.content--${type === PermissionType.Deposit ? "deposit" : "staking"}`} />
                   </p>
                 </div>
                 <p>

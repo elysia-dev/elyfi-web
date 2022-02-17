@@ -107,7 +107,7 @@ const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
         />
         {
           transactionWait ? (
-            <LoadingIndicator button={t("modal.indicator.loading_metamask")} />
+            <LoadingIndicator  />
           ) : (
             <>
               <div className="modal__lp__reward__container">

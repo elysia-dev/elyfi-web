@@ -3513,6 +3513,9 @@ input[type='number'] {
       > p {
         font-size: 13px;
         margin: 10px 0 0px;
+        > strong {
+          color: $elysia-color;
+        }
       }
       &__content {
         border: 1px solid $gray-line;
@@ -3522,6 +3525,9 @@ input[type='number'] {
         > p {
           font-size: 15px;
           line-height: 25px;
+          > strong {
+            color: $elysia-color;
+          }
         }
       }
     }
@@ -4079,16 +4085,23 @@ input[type='number'] {
   .indicator {
     border-bottom: 2px solid #f0f0f1;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     padding: 50px;
-    height: 240px;
+    height: 260px;
     align-items: center;
+    > p {
+      bottom: 15px;
+      font-size: 15px;
+      margin-top: 50px;
+    }
     .lds-spinner {
       color: official;
       display: inline-block;
       position: relative;
       width: 80px;
       height: 80px;
+      margin: 0;
     }
     .lds-spinner div {
       transform-origin: 40px 40px;
