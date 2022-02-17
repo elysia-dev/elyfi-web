@@ -16,7 +16,7 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import { setWalletConnect } from 'src/hooks/isWalletConnect';
+import { setWalletConnect } from 'src/utiles/isWalletConnect';
 
 const AccountModal: React.FunctionComponent<{
   visible: boolean;

@@ -25,8 +25,8 @@ import MarketDetail from 'src/containers/MarketDetails';
 import PortfolioDetail from 'src/containers/PortfolioDetail';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import walletConnectConnector from './utiles/walletConnector';
-import { isMetamask, isWalletConnector } from './hooks/isWalletConnect';
+import { isMetamask, isWalletConnector } from './utiles/isWalletConnect';
+import walletConnectConnector from './utiles/walletConnectProvider';
 
 const AppNavigator: React.FC = () => {
   const [hamburgerBar, setHamburgerBar] = useState(false);
