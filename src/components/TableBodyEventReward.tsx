@@ -20,6 +20,7 @@ type Props = {
   expectedAdditionalIncentiveAfter: BigNumber;
   buttonEvent: ((e: any) => void) | undefined;
   tokenName: ReserveToken;
+  isWrongNetwork: boolean;
 };
 
 const TableBodyEventReward: FunctionComponent<Props> = ({
@@ -28,6 +29,7 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
   expectedAdditionalIncentiveBefore,
   buttonEvent,
   tokenName,
+  isWrongNetwork,
 }) => {
   const { t, i18n } = useTranslation();
   const { account } = useWeb3React();
@@ -53,20 +55,24 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
               <div className="bold">
                 {' '}
                 {account && !unsupportedChainid ? (
-                  <CountUp
-                    className="bold amounts"
-                    start={parseFloat(
-                      formatEther(expectedAdditionalIncentiveBefore),
-                    )}
-                    end={parseFloat(
-                      formatEther(expectedAdditionalIncentiveAfter),
-                    )}
-                    formattingFn={(number) => {
-                      return formatSixFracionDigit(number);
-                    }}
-                    decimals={6}
-                    duration={1}
-                  />
+                  isWrongNetwork ? (
+                    '-'
+                  ) : (
+                    <CountUp
+                      className="bold amounts"
+                      start={parseFloat(
+                        formatEther(expectedAdditionalIncentiveBefore),
+                      )}
+                      end={parseFloat(
+                        formatEther(expectedAdditionalIncentiveAfter),
+                      )}
+                      formattingFn={(number) => {
+                        return formatSixFracionDigit(number);
+                      }}
+                      decimals={6}
+                      duration={1}
+                    />
+                  )
                 ) : (
                   '-'
                 )}

@@ -28,6 +28,7 @@ import { busd3xRewardEvent } from 'src/utiles/busd3xRewardEvent';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
 import useCurrentChain from 'src/hooks/useCurrentChain';
+import { isWalletConnector } from 'src/utiles/isWalletConnect';
 import TableBodyEventReward from './TableBodyEventReward';
 
 interface Props {
@@ -69,6 +70,9 @@ const TokenTable: React.FC<Props> = ({
       return CollateralCategory.Others !== parsedId.collateralCategory;
     },
   );
+
+  const isWrongNetwork =
+    isWalletConnector() && currentChain?.name !== getMainnetType;
 
   const tableData = [
     [
@@ -148,16 +152,15 @@ const TokenTable: React.FC<Props> = ({
                 value={
                   account &&
                   !unsupportedChainid &&
-                  currentChain?.name ===
-                    (process.env.NODE_ENV === 'development'
-                      ? getMainnetType === 'BSC'
-                        ? 'BSC Test'
-                        : 'Ganache'
-                      : getMainnetType)
-                    ? toCompactForBignumber(
-                        balance.deposit || constants.Zero,
-                        tokenInfo?.decimals,
-                      )!
+                  ['BSC', 'BSC Test', 'Ethereum', 'Ganache'].includes(
+                    currentChain?.name || '',
+                  )
+                    ? isWrongNetwork
+                      ? '-'
+                      : toCompactForBignumber(
+                          balance.deposit || constants.Zero,
+                          tokenInfo?.decimals,
+                        )!
                     : '-'
                 }
                 tokenName={tokenInfo?.name}
@@ -186,26 +189,27 @@ const TokenTable: React.FC<Props> = ({
                 value={
                   account &&
                   !unsupportedChainid &&
-                  currentChain?.name ===
-                    (process.env.NODE_ENV === 'development'
-                      ? getMainnetType === 'BSC'
-                        ? 'BSC Test'
-                        : 'Ganache'
-                      : getMainnetType) ? (
-                    <CountUp
-                      className="bold amounts"
-                      start={parseFloat(
-                        formatEther(balance.expectedIncentiveBefore),
-                      )}
-                      end={parseFloat(
-                        formatEther(balance.expectedIncentiveAfter),
-                      )}
-                      formattingFn={(number) => {
-                        return formatSixFracionDigit(number);
-                      }}
-                      decimals={6}
-                      duration={1}
-                    />
+                  ['BSC', 'BSC Test', 'Ethereum', 'Ganache'].includes(
+                    currentChain?.name || '',
+                  ) ? (
+                    isWrongNetwork ? (
+                      '-'
+                    ) : (
+                      <CountUp
+                        className="bold amounts"
+                        start={parseFloat(
+                          formatEther(balance.expectedIncentiveBefore),
+                        )}
+                        end={parseFloat(
+                          formatEther(balance.expectedIncentiveAfter),
+                        )}
+                        formattingFn={(number) => {
+                          return formatSixFracionDigit(number);
+                        }}
+                        decimals={6}
+                        duration={1}
+                      />
+                    )
                   ) : (
                     '-'
                   )
@@ -285,6 +289,7 @@ const TokenTable: React.FC<Props> = ({
                   setRound(2);
                 }}
                 tokenName={balance.tokenName}
+                isWrongNetwork={isWrongNetwork}
               />
             </div>
           )}
