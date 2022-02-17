@@ -34,5 +34,7 @@
   "prevDaiIncentivePool": "0xe58158FFea021a5883dd1256f2AFf0b1f07d79b3",
   "prevUSDTIncentivePool": "0x6A93E28A5d3148DcD8b5ca1419C4c9D34fd302eb",
   "currentDaiIncentivePool": "0x3Fed75D8f58A0Ca57ecaB7446580266AC846De06",
-  "currentUSDTIncentivePool": "0x94aa0e263f7fCae5648A1062877FE66788402f71"
+  "currentUSDTIncentivePool": "0x94aa0e263f7fCae5648A1062877FE66788402f71",
+  "cachedUniswapV3URL": "https://external-api-responses.s3.amazonaws.com/prod/uniswap-v3-subgraph.json",
+  "coingackoURL": "https://api.coingecko.com/api/v3/simple/price?ids=elysia,dai,ethereum,tether&vs_currencies=usd"
 }
