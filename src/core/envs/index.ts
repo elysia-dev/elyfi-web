@@ -40,6 +40,8 @@ interface EnvironmentVariables {
   prevUSDTIncentivePool: string;
   currentDaiIncentivePool: string;
   currentUSDTIncentivePool: string;
+  cachedUniswapV3URL: string;
+  coingackoURL: string;
 }
 
 const vars =
