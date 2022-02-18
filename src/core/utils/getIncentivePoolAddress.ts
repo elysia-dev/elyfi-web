@@ -5,16 +5,16 @@ const getIncentivePoolAddress = (round: number, token: Token): string => {
   switch (token) {
     case Token.DAI:
       return round === 1
-        ? envs.prevDaiIncentivePool
-        : envs.currentDaiIncentivePool;
+        ? envs.incentivePool.prevDaiIncentivePool
+        : envs.incentivePool.currentDaiIncentivePool;
     case Token.USDT:
       return round === 1
-        ? envs.prevUSDTIncentivePool
-        : envs.currentUSDTIncentivePool;
+        ? envs.incentivePool.prevUSDTIncentivePool
+        : envs.incentivePool.currentUSDTIncentivePool;
     case Token.BUSD:
-      return envs.busdIncentivePoolAddress;
+      return envs.incentivePool.busdIncentivePoolAddress;
     default:
-      return envs.prevDaiIncentivePool;
+      return envs.incentivePool.prevDaiIncentivePool;
   }
 };
 

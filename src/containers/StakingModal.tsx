@@ -60,7 +60,9 @@ const StakingModal: React.FunctionComponent<{
     refetch,
     contract,
   } = useERC20Info(
-    stakedToken === Token.EL ? envs.elAddress : envs.governanceAddress,
+    stakedToken === Token.EL
+      ? envs.token.elAddress
+      : envs.token.governanceAddress,
     stakingPool ? stakingPool.address : '',
   );
   const { waiting, wait } = useWatingTx();

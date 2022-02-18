@@ -142,7 +142,7 @@ function MarketDetail(): JSX.Element {
       expectedIncentiveBefore: incentive,
       expectedIncentiveAfter: incentive,
       governance: await ERC20__factory.connect(
-        envs.governanceAddress,
+        envs.token.governanceAddress,
         library,
       ).balanceOf(account),
       deposit: await ERC20__factory.connect(
@@ -408,7 +408,9 @@ function MarketDetail(): JSX.Element {
         </div>
         <div className="detail__container">
           <MarketDetailsBody
-            depositReward={toPercent(BigNumber.from(data.depositAPY).add(miningAPR))}
+            depositReward={toPercent(
+              BigNumber.from(data.depositAPY).add(miningAPR),
+            )}
             totalDeposit={toUsd(data.totalDeposit, tokenInfo?.decimals)}
             depositAPY={toPercent(data.depositAPY)}
             miningAPRs={toPercent(miningAPR)}

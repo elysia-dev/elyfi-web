@@ -15,6 +15,6 @@ export const lpTokenValues: (
     poolAddress,
     lpUnixTimestamp[round].startedAt,
     lpUnixTimestamp[round].endedAt,
-    envs.refundedAddress,
+    envs.lpStaking.refundedAddress,
   ];
 };

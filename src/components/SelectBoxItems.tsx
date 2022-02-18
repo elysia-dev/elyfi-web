@@ -24,7 +24,7 @@ const SelectBoxItems: FunctionComponent<Props> = (props) => {
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const { t } = useTranslation();
   const poolPrice =
-    position.token1.toLowerCase() === envs.wEthAddress.toLowerCase()
+    position.token1.toLowerCase() === envs.token.wEthAddress.toLowerCase()
       ? pricePerEthLiquidity
       : pricePerDaiLiquidity;
   const liquidity =

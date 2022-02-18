@@ -32,27 +32,27 @@ const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
 
   const claim = async () => {
     const staker = new ethers.Contract(
-      envs.stakerAddress,
+      envs.lpStaking.stakerAddress,
       stakerABI,
       library.getSigner(),
     );
     try {
       const res = await staker.multicall([
         iFace.encodeFunctionData('claimReward', [
-          envs.governanceAddress,
+          envs.token.governanceAddress,
           account,
           0,
         ]),
         iFace.encodeFunctionData('claimReward', [
-          envs.daiAddress,
+          envs.token.daiAddress,
           account,
           0,
         ]),
         iFace.encodeFunctionData('claimReward', [
-          envs.wEthAddress,
+          envs.token.wEthAddress,
           account,
           0,
-        ])
+        ]),
       ]);
 
       setTransaction(
@@ -66,8 +66,8 @@ const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
             address: account,
             incentiveDaiAmount: rewardToReceive.daiReward,
             incentiveEthAmount: rewardToReceive.ethReward,
-            incentiveElfiAmount: rewardToReceive.elfiReward
-          })
+            incentiveElfiAmount: rewardToReceive.elfiReward,
+          }),
         ),
         'Claim' as RecentActivityType,
         () => {},
@@ -94,7 +94,9 @@ const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
   }, [txWaiting]);
 
   return (
-    <div className="modal modal__lp__reward" style={{ display: visible ? 'block' : 'none' }}>
+    <div
+      className="modal modal__lp__reward"
+      style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
         <ModalHeader
           title={t('lpstaking.receive_reward')}
@@ -104,24 +106,18 @@ const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
           <div>
             <div>
               <img src={elfi} />
-              <h2>
-                {Token.ELFI}
-              </h2>
+              <h2>{Token.ELFI}</h2>
             </div>
             <h2>
               {formatSixFracionDigit(rewardToReceive.elfiReward)}
-              <span className="bold">
-                {Token.ELFI}
-              </span>
+              <span className="bold">{Token.ELFI}</span>
             </h2>
           </div>
-          
+
           <div>
             <div>
               <img src={eth} />
-              <h2>
-                {Token.ETH}
-              </h2>
+              <h2>{Token.ETH}</h2>
             </div>
             <h2>
               {formatSixFracionDigit(rewardToReceive.ethReward)}
@@ -131,9 +127,7 @@ const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
           <div>
             <div>
               <img src={dai} />
-              <h2>
-                {Token.DAI}
-              </h2>
+              <h2>{Token.DAI}</h2>
             </div>
             <h2>
               {formatSixFracionDigit(rewardToReceive.daiReward)}
