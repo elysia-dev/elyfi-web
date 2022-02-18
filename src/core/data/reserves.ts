@@ -20,14 +20,14 @@ export const reserveTokenData = {
     image: dai,
     decimals: 18,
     address: envs.token.daiAddress,
-    tokeninzer: envs.moneyPool.daiTokenizerAddress,
+    tokeninzer: envs.tokenizer.daiTokenizerAddress,
   },
   USDT: {
     name: 'USDT',
     image: usdt,
     decimals: 6,
     address: envs.token.usdtAddress,
-    tokeninzer: envs.moneyPool.usdtTokeninzerAddress,
+    tokeninzer: envs.tokenizer.usdtTokeninzerAddress,
   },
   EL: {
     name: 'EL',

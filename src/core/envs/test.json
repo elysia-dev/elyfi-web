@@ -1,9 +1,7 @@
 {
   "moneyPool": {
     "bscMoneyPoolAddress": "0xBdbCC95abF4172a54e24Dc9A9e5E7f966cB6C9fC",
-    "moneyPoolAddress": "0xa93008fD32EB24E488DDAA6C0aA152559fDa9E8c",
-    "daiTokenizerAddress": "0xc6701e7be98A79485364419961838EB141141aAf",
-    "usdtTokeninzerAddress": "0x68f69Ab21242e194ebd7534B598e26180dD92616"
+    "moneyPoolAddress": "0xa93008fD32EB24E488DDAA6C0aA152559fDa9E8c"
   },
   "incentivePool": {
     "prevDaiIncentivePool": "0xe58158FFea021a5883dd1256f2AFf0b1f07d79b3",
@@ -47,7 +45,10 @@
   },
   "externalApiEndpoint": {
     "etherscanURI": "https://etherscan.io",
-    "appURI": "https://app.elyfi.world",
     "bscscanURI": "https://testnet.bscscan.com"
+  },
+  "tokenizer": {
+    "daiTokenizerAddress": "0xc6701e7be98A79485364419961838EB141141aAf",
+    "usdtTokeninzerAddress": "0x68f69Ab21242e194ebd7534B598e26180dD92616"
   }
 }

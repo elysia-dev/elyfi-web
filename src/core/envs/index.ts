@@ -51,9 +51,11 @@ interface EnvironmentVariables {
   externalApiEndpoint: {
     etherscanURI: string;
     bscscanURI: string;
-    appURI: string;
   };
-  testStableAddress: string;
+  tokenizer: {
+    daiTokenizerAddress: string;
+    usdtTokeninzerAddress: string;
+  };
 }
 
 const vars =
