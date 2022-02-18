@@ -85,7 +85,7 @@ const MigrationModal: React.FunctionComponent<{
           onClose={() => closeHandler()}
         />
         {transactionWait ? (
-          <LoadingIndicator  />
+          <LoadingIndicator isTxActive={transactionWait} />
         ) : (
           <>
             <div className="modal__migration">
@@ -258,90 +258,90 @@ const MigrationModal: React.FunctionComponent<{
                 </div>
               </div>
             </div>
-            <div
-              className={`modal__button${
-                stakedBalance.isZero() ||
-                amountGtStakedBalance ||
-                migrationAmountGtStakedBalance ||
-                transactionWait
-                  ? ' disable'
-                  : ''
-              }`}
-              onClick={() => {
-                if (
-                  stakedBalance.isZero() ||
-                  !account ||
-                  amountGtStakedBalance ||
-                  migrationAmountGtStakedBalance ||
-                  transactionWait
-                )
-                  return;
-
-                setTransactionWait()
-
-                const emitter = buildEventEmitter(
-                  ModalViewType.MigrationOrUnstakingModal,
-                  TransactionType.Migrate,
-                  JSON.stringify({
-                    version: ElyfiVersions.V1,
-                    chainId,
-                    address: account,
-                    stakingType: stakedToken,
-                    round,
-                    migrationAmount: utils.formatEther(
-                      utils.parseEther(state.migrationAmount) || '0',
-                    ),
-                    unstakingAmount: utils.formatEther(
-                      utils.parseEther(state.withdrawAmount) || '0',
-                    ),
-                    incentiveAmount: utils.formatEther(rewardBalance),
-                  }),
-                );
-
-                emitter.clicked();
-
-                // TRICKY
-                // ELFI V2 StakingPool need round - 2 value
-                stakingPool
-                  ?.migrate(
-                    state.migrationMax
-                      ? stakedBalance
-                      : state.withdrawMax
-                      ? constants.Zero
-                      : utils.parseEther(state.migrationAmount),
-                    (round >= 3 && stakedToken === Token.ELFI
-                      ? round - 2
-                      : round
-                    ).toString(),
-                  )
-                  .then((tx) => {
-                    setTransaction(
-                      tx,
-                      emitter,
-                      (stakedToken + 'Migration') as RecentActivityType,
-                      () => {
-                        transactionModal();
-                        closeHandler();
-                      },
-                      () => {
-                        afterTx();
-                      },
-                    );
-                  })
-                  .catch((e) => {
-                    console.error(e);
-                    failTransaction(emitter, closeHandler, e);
-                  });
-              }}>
-              <p>
-                {
-                amountGtStakedBalance
-                  ? t('staking.insufficient_balance')
-                  : t('staking.transfer')}
-              </p>
-            </div>
           </>
         )}
+        <div
+          className={`modal__button${
+            stakedBalance.isZero() ||
+            amountGtStakedBalance ||
+            migrationAmountGtStakedBalance ||
+            transactionWait
+              ? ' disable'
+              : ''
+          }`}
+          onClick={() => {
+            if (
+              stakedBalance.isZero() ||
+              !account ||
+              amountGtStakedBalance ||
+              migrationAmountGtStakedBalance ||
+              transactionWait
+            )
+              return;
+
+            setTransactionWait()
+
+            const emitter = buildEventEmitter(
+              ModalViewType.MigrationOrUnstakingModal,
+              TransactionType.Migrate,
+              JSON.stringify({
+                version: ElyfiVersions.V1,
+                chainId,
+                address: account,
+                stakingType: stakedToken,
+                round,
+                migrationAmount: utils.formatEther(
+                  utils.parseEther(state.migrationAmount) || '0',
+                ),
+                unstakingAmount: utils.formatEther(
+                  utils.parseEther(state.withdrawAmount) || '0',
+                ),
+                incentiveAmount: utils.formatEther(rewardBalance),
+              }),
+            );
+
+            emitter.clicked();
+
+            // TRICKY
+            // ELFI V2 StakingPool need round - 2 value
+            stakingPool
+              ?.migrate(
+                state.migrationMax
+                  ? stakedBalance
+                  : state.withdrawMax
+                  ? constants.Zero
+                  : utils.parseEther(state.migrationAmount),
+                (round >= 3 && stakedToken === Token.ELFI
+                  ? round - 2
+                  : round
+                ).toString(),
+              )
+              .then((tx) => {
+                setTransaction(
+                  tx,
+                  emitter,
+                  (stakedToken + 'Migration') as RecentActivityType,
+                  () => {
+                    transactionModal();
+                    closeHandler();
+                  },
+                  () => {
+                    afterTx();
+                  },
+                );
+              })
+              .catch((e) => {
+                console.error(e);
+                failTransaction(emitter, closeHandler, e);
+              });
+          }}>
+          <p>
+            {
+            amountGtStakedBalance
+              ? t('staking.insufficient_balance')
+              : t('staking.transfer')}
+          </p>
+        </div>
       </div>
     </div>
   );
