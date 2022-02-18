@@ -26,10 +26,10 @@ const useStakingRoundData = (
   const stakingPool = useMemo(() => {
     return StakingPool__factory.connect(
       stakedToken === Token.EL
-        ? envs.elStakingPoolAddress
+        ? envs.staking.elStakingPoolAddress
         : round <= 1
-        ? envs.elfyStakingPoolAddress
-        : envs.elfyV2StakingPoolAddress,
+        ? envs.staking.elfyStakingPoolAddress
+        : envs.staking.elfyV2StakingPoolAddress,
       new providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC),
     );
   }, [stakedToken, round]);

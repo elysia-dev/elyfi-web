@@ -135,7 +135,7 @@ const calcHistoryChartData = (
   );
 
   const busd3xRewardEventYield = (date: number) => {
-    return data.id === envs.busdAddress && historyType === 'deposit'
+    return data.id === envs.token.busdAddress && historyType === 'deposit'
       ? moment(date * 1000).isBetween(
           '2022.01.20 19:00:00 +09:00',
           '2022.01.26 19:00:00 +09:00',
@@ -155,13 +155,17 @@ const calcHistoryChartData = (
         (((d.calculatedAPY * busd3xRewardEventYield(d.timestamp)) / divider) *
           base +
           base * 1.2) *
-        (data.id === envs.busdAddress && historyType === 'deposit' ? 1.3 : 1.4),
+        (data.id === envs.token.busdAddress && historyType === 'deposit'
+          ? 1.3
+          : 1.4),
       total:
         '$ ' +
         toCompact(parseInt(utils.formatUnits(d.selectedAmount, decimals), 10)),
       barTotal:
         parseInt(utils.formatUnits(d.selectedAmount, decimals), 10) *
-        (data.id === envs.busdAddress && historyType === 'deposit' ? 2.4 : 2),
+        (data.id === envs.token.busdAddress && historyType === 'deposit'
+          ? 2.4
+          : 2),
       // c: (d.calculatedAPY / divider) * base + base * 1.2,
       yield: toCompact(d.calculatedAPY * busd3xRewardEventYield(d.timestamp)),
     });

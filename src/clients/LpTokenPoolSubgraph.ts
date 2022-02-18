@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { BigNumber } from 'ethers';
-import Position, { TokenInfo } from 'src/core/types/Position';
+import { TokenInfo } from 'src/core/types/Position';
 import envs from 'src/core/envs';
 
 export interface ITokenInfo {
@@ -9,7 +8,7 @@ export interface ITokenInfo {
   };
 }
 
-const baseUrl = envs.lpTokenPoolSubgraphURL;
+const baseUrl = envs.subgraphApiEndpoint.lpTokenPoolSubgraphURL;
 
 export class LpTokenPoolSubgraph {
   static getPositionsByOwner = async (

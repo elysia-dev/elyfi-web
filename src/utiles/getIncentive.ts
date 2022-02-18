@@ -6,19 +6,22 @@ const getIncentiveId = (): {
   daiIncentiveId: string;
   ethIncentiveId: string;
 }[] => {
-  const poolAddress = [envs.daiElfiPoolAddress, envs.ethElfiPoolAddress];
+  const poolAddress = [
+    envs.lpStaking.daiElfiPoolAddress,
+    envs.lpStaking.ethElfiPoolAddress,
+  ];
   const incentiveIds: { daiIncentiveId: string; ethIncentiveId: string }[] = [];
 
   const get = (time: { startedAt: number; endedAt: number }) => {
     return poolAddress.map((address) => {
       const incentives = [
-        address === envs.daiElfiPoolAddress
-          ? envs.daiAddress
-          : envs.wEthAddress, // rewardToken
+        address === envs.lpStaking.daiElfiPoolAddress
+          ? envs.token.daiAddress
+          : envs.token.wEthAddress, // rewardToken
         address, // pool
         time.startedAt, // start
         time.endedAt, // end
-        envs.refundedAddress, // refundee
+        envs.lpStaking.refundedAddress, // refundee
       ];
       const incentiveIdEncoded = ethers.utils.defaultAbiCoder.encode(
         ['tuple(address,address,uint256,uint256,address)'],

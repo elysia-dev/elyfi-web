@@ -31,7 +31,7 @@ export interface IPoolPosition {
   };
 }
 
-const baseUrl = envs.stakerSubgraphURL;
+const baseUrl = envs.subgraphApiEndpoint.stakerSubgraphURL;
 
 export class StakerSubgraph {
   static getPositionsByOwner = async (
