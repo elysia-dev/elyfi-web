@@ -103,7 +103,7 @@ const MainGovernanceTable: FunctionComponent<Props> = ({
     } catch (error) {
       console.error(error);
     }
-  }, [getOnChainData, getOffChainData]);
+  }, [getOnChainData, getOffChainData, onChainDataError, offChainDataError]);
 
   return (
     <div ref={governancePageY} className="main__governance main__section">
