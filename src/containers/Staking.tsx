@@ -329,7 +329,7 @@ const Staking: React.FunctionComponent<IProps> = ({
       <MigrationDisableModal
         visible={modalVisible(StakingModalType.MigrationDisable)}
         onClose={() => {
-          modalVisible(StakingModalType.Staking);
+          setModalType(StakingModalType.Staking);
         }}
       />
       {/* <img
@@ -649,6 +649,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                               StakingModalType.Migration,
                                             );
                                           }
+                                          return;
                                         }
                                         if (
                                           current.diff(
