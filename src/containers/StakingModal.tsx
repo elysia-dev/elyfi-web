@@ -31,8 +31,6 @@ const StakingModal: React.FunctionComponent<{
   stakedBalance: BigNumber;
   round: number;
   endedModal: () => void;
-  setTxStatus: (status: txStatus) => void;
-  setTxWaiting: (status: boolean) => void;
   transactionModal: () => void;
 }> = ({
   visible,
@@ -42,8 +40,6 @@ const StakingModal: React.FunctionComponent<{
   stakedToken,
   round,
   endedModal,
-  setTxStatus,
-  setTxWaiting,
   transactionModal,
 }) => {
   const { t, i18n } = useTranslation();
