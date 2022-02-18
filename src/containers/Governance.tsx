@@ -24,7 +24,7 @@ import SubgraphContext, { IAssetBond } from 'src/contexts/SubgraphContext';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
 
-const Governance = () => {
+const Governance = (): JSX.Element => {
   const [onChainLoading, setOnChainLoading] = useState(true);
   const [offChainLoading, setOffChainLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
@@ -237,9 +237,7 @@ const Governance = () => {
             category: PageEventType.MoveToExternalPage,
             action: ButtonEventType.OnChainVoteButtonOnGovernance,
           });
-          window.open(
-            `${t("governance.link.tally")}/proposal/${data.id}`,
-          );
+          window.open(`${t('governance.link.tally')}/proposal/${data.id}`);
         }}>
         <div>
           <img
@@ -448,7 +446,7 @@ const Governance = () => {
                 <p>{t('governance.on_chain_voting__content')}</p>
                 {mainnetType === MainnetType.Ethereum && (
                   <a
-                    href={`${t("governance.link.tally")}`}
+                    href={`${t('governance.link.tally')}`}
                     target="_blank"
                     rel="noopener noreferer">
                     <div
@@ -472,7 +470,7 @@ const Governance = () => {
                 </h3>
                 {mainnetType === MainnetType.Ethereum && (
                   <a
-                    href={`${t("governance.link.tally")}`}
+                    href={`${t('governance.link.tally')}`}
                     target="_blank"
                     rel="noopener noreferer">
                     <div

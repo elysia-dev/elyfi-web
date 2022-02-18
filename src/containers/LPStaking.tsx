@@ -437,6 +437,7 @@ function LPStaking(): JSX.Element {
                   .map((_x, index) => {
                     return (
                       <div
+                        key={index}
                         className={index + 1 === round ? 'active' : ''}
                         onClick={() => setRound(index + 1)}>
                         <p>

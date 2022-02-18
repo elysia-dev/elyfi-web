@@ -19,7 +19,12 @@ const UniswapV3NFT = new Contract(
   provider,
 );
 
-const usePositions = (owner: string | undefined | null) => {
+const usePositions = (
+  owner: string | undefined | null,
+): {
+  positions: Position[];
+  fetchPositions: () => Promise<void>;
+} => {
   const [positions, setPositions] = useState<Position[]>([]);
 
   const fetchPositions = useCallback(async () => {

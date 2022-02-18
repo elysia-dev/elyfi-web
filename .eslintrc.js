@@ -79,6 +79,7 @@ module.exports = {
     'no-unneeded-ternary': 'off',
     'no-unused-expressions': 'off',
     'no-param-reassign': 'off',
+    'no-console': 'off',
     camelcase: 'off',
   },
   parser: '@typescript-eslint/parser',
