@@ -104,8 +104,8 @@ const AccountModal: React.FunctionComponent<{
             <a
               href={`${
                 getMainnetType === MainnetType.Ethereum
-                  ? envs.etherscanURI
-                  : envs.bscscanURI
+                  ? envs.externalApiEndpoint.etherscanURI
+                  : envs.externalApiEndpoint.bscscanURI
               }/address/${account}`}
               target="_blank"
               className="link">
@@ -148,8 +148,8 @@ const AccountModal: React.FunctionComponent<{
                 txHash
                   ? `${
                       getMainnetType === MainnetType.Ethereum
-                        ? envs.etherscanURI
-                        : envs.bscscanURI
+                        ? envs.externalApiEndpoint.etherscanURI
+                        : envs.externalApiEndpoint.bscscanURI
                     }/tx/${txHash}`
                   : undefined
               }

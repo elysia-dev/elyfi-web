@@ -8,7 +8,7 @@ export interface ITokenInfo {
   };
 }
 
-const baseUrl = envs.lpTokenPoolSubgraphURL;
+const baseUrl = envs.subgraphApiEndpoint.lpTokenPoolSubgraphURL;
 
 export class LpTokenPoolSubgraph {
   static getPositionsByOwner = async (

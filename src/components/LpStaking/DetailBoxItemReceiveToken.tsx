@@ -29,8 +29,8 @@ const DetailBoxItemReceiveToken: FunctionComponent<tokenTypes> = (props) => {
           rel="noopener noreferrer"
           href={
             token1 === 'ETH'
-              ? `https://app.uniswap.org/#/add/${envs.governanceAddress}/${envs.wEthAddress}`
-              : `https://app.uniswap.org/#/add/${envs.governanceAddress}/${envs.daiAddress}`
+              ? `https://app.uniswap.org/#/add/${envs.token.governanceAddress}/${envs.token.wEthAddress}`
+              : `https://app.uniswap.org/#/add/${envs.token.governanceAddress}/${envs.token.daiAddress}`
           }>
           <p>{t('lpstaking.receive_lp_token')}</p>
         </a>
@@ -77,8 +77,8 @@ const DetailBoxItemReceiveToken: FunctionComponent<tokenTypes> = (props) => {
         rel="noopener noreferrer"
         href={
           token1 === 'ETH'
-            ? `https://app.uniswap.org/#/add/${envs.governanceAddress}/${envs.wEthAddress}`
-            : `https://app.uniswap.org/#/add/${envs.governanceAddress}/${envs.daiAddress}`
+            ? `https://app.uniswap.org/#/add/${envs.token.governanceAddress}/${envs.token.wEthAddress}`
+            : `https://app.uniswap.org/#/add/${envs.token.governanceAddress}/${envs.token.daiAddress}`
         }>
         <p>{t('lpstaking.receive_lp_token')}</p>
       </a>

@@ -250,8 +250,8 @@ const RewardPlan: FunctionComponent = () => {
 
   const getAllStakedPositions = () => {
     StakerSubgraph.getIncentivesWithPositionsByPoolId(
-      envs.ethElfiPoolAddress,
-      envs.daiElfiPoolAddress,
+      envs.lpStaking.ethElfiPoolAddress,
+      envs.lpStaking.daiElfiPoolAddress,
     ).then((res) => {
       setTotalStakedPositions(res.data);
     });
