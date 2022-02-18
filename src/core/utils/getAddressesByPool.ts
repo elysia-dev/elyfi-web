@@ -4,7 +4,7 @@ import Position from '../types/Position';
 export const isEthElfiPoolAddress = (position: Position): boolean => {
   return (
     position.incentivePotisions[0].incentive.pool.toLowerCase() ===
-    envs.ethElfiPoolAddress.toLowerCase()
+    envs.lpStaking.ethElfiPoolAddress.toLowerCase()
   );
 };
 
@@ -15,11 +15,11 @@ const getAddressesByPool = (
   rewardTokenAddress: string;
 } => {
   const poolAddress = isEthElfiPoolAddress(position)
-    ? envs.ethElfiPoolAddress
-    : envs.daiElfiPoolAddress;
+    ? envs.lpStaking.ethElfiPoolAddress
+    : envs.lpStaking.daiElfiPoolAddress;
   const rewardTokenAddress = isEthElfiPoolAddress(position)
-    ? envs.wEthAddress
-    : envs.daiAddress;
+    ? envs.token.wEthAddress
+    : envs.token.daiAddress;
 
   return { poolAddress, rewardTokenAddress };
 };

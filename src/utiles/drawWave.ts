@@ -17,13 +17,14 @@ class DrawWave {
     serviceGraphPageY: HTMLParagraphElement,
     auditPageY: HTMLParagraphElement,
     governancePageY: HTMLParagraphElement,
+    isResize: boolean,
   ): void {
     const headerY = mainHeaderY.offsetTop;
     const mainMoblieY = mainHeaderMoblieY.offsetTop;
     const guidePageY = guideY.offsetTop;
     const serviceGraphY = serviceGraphPageY.offsetTop;
     const auditY = auditPageY.offsetTop;
-    const governanceY = governancePageY.offsetTop;
+    const governanceY = governancePageY.offsetTop + (isResize ? 0 : 300);
     const governanceBottomY = governancePageY.offsetHeight;
 
     this.ctx.strokeStyle = '#00BFFF';
@@ -408,7 +409,7 @@ class DrawWave {
         this.browserWidth / 1.2,
         browserHeghit - 330,
         this.browserWidth / 1.3,
-        browserHeghit - 48,
+        browserHeghit - 84,
         this.browserWidth / 2,
         browserHeghit - 94,
       );
@@ -430,13 +431,13 @@ class DrawWave {
         browserHeghit - 300,
         this.browserWidth / 4,
         browserHeghit - 70,
-        this.browserWidth / 1.7,
-        browserHeghit - 94,
+        this.browserWidth / 1.68,
+        browserHeghit - 100,
       );
       this.ctx.bezierCurveTo(
-        this.browserWidth / 1.1,
-        browserHeghit - 170,
-        this.browserWidth / 1.17,
+        this.browserWidth / 1.11,
+        browserHeghit - 210,
+        this.browserWidth / 1.19,
         browserHeghit - 240,
         this.browserWidth,
         browserHeghit - 170,
@@ -464,10 +465,10 @@ class DrawWave {
         Math.PI * 2,
       );
 
-      this.ctx.moveTo(this.browserWidth / 1.46 + 5, browserHeghit - 115.5);
+      this.ctx.moveTo(this.browserWidth / 1.64 + 5, browserHeghit - 104.5);
       this.ctx.arc(
-        this.browserWidth / 1.46,
-        browserHeghit - 115.5,
+        this.browserWidth / 1.64,
+        browserHeghit - 104.5,
         5,
         0,
         Math.PI * 2,
@@ -494,10 +495,10 @@ class DrawWave {
           : '#00BFFF'
         : color;
 
-      this.ctx.moveTo(this.browserWidth / 1.5 + 10, browserHeghit - 116);
+      this.ctx.moveTo(this.browserWidth / 1.7 + 10, browserHeghit - 101);
       this.ctx.arc(
-        this.browserWidth / 1.5,
-        browserHeghit - 116,
+        this.browserWidth / 1.7,
+        browserHeghit - 101,
         10,
         0,
         Math.PI * 2,

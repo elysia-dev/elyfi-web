@@ -47,7 +47,7 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
   const { account, library, chainId } = useWeb3React();
   const { setTransaction } = useContext(TxContext);
   const staker = new ethers.Contract(
-    envs.stakerAddress,
+    envs.lpStaking.stakerAddress,
     stakerABI,
     library.getSigner(),
   );
@@ -62,7 +62,7 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
     try {
       const res = await staker.multicall([
         iFace.encodeFunctionData('unstakeToken', [
-          lpTokenValues(poolAddress, envs.governanceAddress, round - 1),
+          lpTokenValues(poolAddress, envs.token.governanceAddress, round - 1),
           tokenId,
         ]),
         iFace.encodeFunctionData('unstakeToken', [
@@ -101,7 +101,7 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
     try {
       const res = await staker.multicall([
         iFace.encodeFunctionData('unstakeToken', [
-          lpTokenValues(poolAddress, envs.governanceAddress, round - 1),
+          lpTokenValues(poolAddress, envs.token.governanceAddress, round - 1),
           tokenId,
         ]),
         iFace.encodeFunctionData('unstakeToken', [
@@ -109,7 +109,7 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
           tokenId,
         ]),
         iFace.encodeFunctionData('stakeToken', [
-          lpTokenValues(poolAddress, envs.governanceAddress, round),
+          lpTokenValues(poolAddress, envs.token.governanceAddress, round),
           tokenId,
         ]),
         iFace.encodeFunctionData('stakeToken', [

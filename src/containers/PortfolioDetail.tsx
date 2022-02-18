@@ -282,7 +282,7 @@ const PortfolioDetail: FunctionComponent = () => {
                   className="link"
                   onClick={() => {
                     window.open(
-                      `${envs.etherscanURI}/token/${tokenInfo.tokeninzer}?a=${abToken?.id}`,
+                      `${envs.externalApiEndpoint.etherscanURI}/token/${tokenInfo.tokeninzer}?a=${abToken?.id}`,
                       '_blank',
                     );
                   }}>
@@ -331,7 +331,7 @@ const PortfolioDetail: FunctionComponent = () => {
                   t('loan.collateral_nft__abtoken_id'),
                   `${abToken?.id.slice(0, 12)} ... ${abToken?.id.slice(-12)}`,
                   '',
-                  `${envs.etherscanURI}/token/${tokenInfo.tokeninzer}?a=${abToken?.id}`,
+                  `${envs.externalApiEndpoint.etherscanURI}/token/${tokenInfo.tokeninzer}?a=${abToken?.id}`,
                 ],
                 [t('loan.collateral_nft__borrower'), 'Elyloan Inc', '', ''],
                 [

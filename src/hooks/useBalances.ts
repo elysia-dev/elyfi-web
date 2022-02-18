@@ -50,10 +50,10 @@ const getIncentiveByRound = async (
 ) => {
   const incentiveRound1 = await IncentivePool__factory.connect(
     tokenName === Token.DAI
-      ? envs.prevDaiIncentivePool
+      ? envs.incentivePool.prevDaiIncentivePool
       : tokenName === Token.USDT
-      ? envs.prevUSDTIncentivePool
-      : envs.busdIncentivePoolAddress,
+      ? envs.incentivePool.prevUSDTIncentivePool
+      : envs.incentivePool.busdIncentivePoolAddress,
     library.getSigner(),
   ).getUserIncentive(account);
 
@@ -64,10 +64,10 @@ const getIncentiveByRound = async (
       ? incentiveRound1
       : await IncentivePool__factory.connect(
           tokenName === Token.DAI
-            ? envs.currentDaiIncentivePool
+            ? envs.incentivePool.currentDaiIncentivePool
             : tokenName === Token.USDT
-            ? envs.currentUSDTIncentivePool
-            : envs.busdIncentivePoolAddress,
+            ? envs.incentivePool.currentUSDTIncentivePool
+            : envs.incentivePool.busdIncentivePoolAddress,
           library.getSigner(),
         ).getUserIncentive(account);
 
@@ -181,12 +181,13 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
       refetchUserData();
       setBalances(
         await Promise.all(
-          data.reserves
-            .map(async (reserve, index) => {
-							const tokenName = getTokenNameFromAddress(reserve.id) as ReserveToken;
-							if (!isSupportedReserveByChainId(tokenName, chainId)) {
-								return balances[index];
-							}
+          data.reserves.map(async (reserve, index) => {
+            const tokenName = getTokenNameFromAddress(
+              reserve.id,
+            ) as ReserveToken;
+            if (!isSupportedReserveByChainId(tokenName, chainId)) {
+              return balances[index];
+            }
 
             return {
               id: reserve.id,
@@ -208,7 +209,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     } finally {
       setLoading(false);
     }
-  }, [account, library, chainId])
+  }, [account, library, chainId]);
 
   useEffect(() => {
     // Only called when active.
@@ -233,16 +234,16 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
             expectedIncentiveAfter: isEndedIncentive(balance.tokenName, 0)
               ? balance.expectedIncentiveAfter
               : balance.expectedIncentiveAfter.add(
-                calcExpectedIncentive(
-                  elfiPrice,
-                  balance.deposit,
-                  calcMiningAPR(
+                  calcExpectedIncentive(
                     elfiPrice,
-                    BigNumber.from(reserve.totalDeposit),
+                    balance.deposit,
+                    calcMiningAPR(
+                      elfiPrice,
+                      BigNumber.from(reserve.totalDeposit),
+                    ),
+                    balance.updatedAt,
                   ),
-                  balance.updatedAt,
                 ),
-              ),
             expectedAdditionalIncentiveBefore:
               balance.expectedAdditionalIncentiveAfter,
             expectedAdditionalIncentiveAfter: isEndedIncentive(
@@ -251,16 +252,16 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
             )
               ? balance.expectedAdditionalIncentiveAfter
               : balance.expectedAdditionalIncentiveAfter.add(
-                calcExpectedIncentive(
-                  elfiPrice,
-                  balance.deposit,
-                  calcMiningAPR(
+                  calcExpectedIncentive(
                     elfiPrice,
-                    BigNumber.from(reserve.totalDeposit),
+                    balance.deposit,
+                    calcMiningAPR(
+                      elfiPrice,
+                      BigNumber.from(reserve.totalDeposit),
+                    ),
+                    balance.updatedAt,
                   ),
-                  balance.updatedAt,
                 ),
-              ),
             updatedAt: moment().unix(),
           };
         }),

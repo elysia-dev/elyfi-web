@@ -83,20 +83,20 @@ const query = `
     signerOpinionHash
   }
 }
-`
+`;
 
 interface IResponse {
   data: {
-    reserves: IReserveSubgraphData[],
-    assetBondTokens: IAssetBond[]
-  }
+    reserves: IReserveSubgraphData[];
+    assetBondTokens: IAssetBond[];
+  };
 }
 
 export class ReserveSubgraph {
   static getBscReserveData = async (): Promise<AxiosResponse<IResponse>> => {
-    return axios.post(envs.bscSubgraphURI, { query })
-  }
+    return axios.post(envs.subgraphApiEndpoint.bscSubgraphURI, { query });
+  };
   static getEthReserveData = async (): Promise<AxiosResponse<IResponse>> => {
-    return axios.post(envs.subgraphURI, { query })
-  }
+    return axios.post(envs.subgraphApiEndpoint.subgraphURI, { query });
+  };
 }

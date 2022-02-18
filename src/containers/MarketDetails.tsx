@@ -3,7 +3,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { reserveTokenData } from 'src/core/data/reserves';
 
 import { toUsd, toPercent } from 'src/utiles/formatters';
-import { BigNumber, constants } from 'ethers';
+import { BigNumber } from 'ethers';
 import Chart from 'react-google-charts';
 
 import ErrorPage from 'src/components/ErrorPage';
@@ -43,16 +43,11 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
 import isSupportedReserve from 'src/core/utils/isSupportedReserve';
 import ReserveToken from 'src/core/types/ReserveToken';
-
-const initialBalanceState = {
-  loading: true,
-  value: constants.Zero,
-  incentive: constants.Zero,
-  expectedIncentiveBefore: constants.Zero,
-  expectedIncentiveAfter: constants.Zero,
-  deposit: constants.Zero,
-  updatedAt: moment().unix(),
-};
+import {
+  setDatePositionX,
+  setTooltipBoxPositionX,
+} from 'src/utiles/graphTooltipPosition';
+import useCurrentChain from 'src/hooks/useCurrentChain';
 
 interface ITokencolor {
   name: string;
@@ -78,15 +73,7 @@ const tokenColorData: ITokencolor[] = [
   },
 ];
 
-const ChartComponent = styled(Chart)`
-  .google-visualization-tooltip {
-    position: absolute !important;
-    top: 30px !important;
-  }
-`;
-
 function MarketDetail(): JSX.Element {
-  const { account, library } = useWeb3React();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const [mouseHover, setMouseHover] = useState(0);
@@ -98,6 +85,7 @@ function MarketDetail(): JSX.Element {
   const { lng, id } = useParams<{ lng: string; id: Token.DAI | Token.USDT }>();
   const history = useHistory();
   const { value: mediaQuery } = useMediaQueryType();
+  const currentChain = useCurrentChain();
   const tokenInfo = reserveTokenData[id];
   const data = getSubgraphData.reserves.find(
     (reserve) => reserve.id === tokenInfo.address,
@@ -106,51 +94,12 @@ function MarketDetail(): JSX.Element {
   const [date, setDate] = useState('');
   const { t, i18n } = useTranslation();
   const [cellInBarIdx, setCellInBarIdx] = useState(-1);
+  const [token, setToken] = useState(id);
   const { type: getMainnetType } = useContext(MainnetContext);
 
   const selectToken = tokenColorData.find((color) => {
     return color.name === id;
   });
-
-  const [balances, setBalances] = useState<{
-    loading: boolean;
-    tokenName: ReserveToken;
-    value: BigNumber;
-    incentive: BigNumber;
-    expectedIncentiveBefore: BigNumber;
-    expectedIncentiveAfter: BigNumber;
-    deposit: BigNumber;
-    updatedAt: number;
-  }>({
-    ...initialBalanceState,
-    tokenName: id,
-  });
-
-  const fetchBalanceFrom = async (
-    reserve: IReserveSubgraphData,
-    account: string,
-  ) => {
-    const incentive = await IncentivePool__factory.connect(
-      reserve.incentivePool.id,
-      library.getSigner(),
-    ).getUserIncentive(account);
-    return {
-      value: await ERC20__factory.connect(reserve.id, library).balanceOf(
-        account,
-      ),
-      incentive,
-      expectedIncentiveBefore: incentive,
-      expectedIncentiveAfter: incentive,
-      governance: await ERC20__factory.connect(
-        envs.governanceAddress,
-        library,
-      ).balanceOf(account),
-      deposit: await ERC20__factory.connect(
-        reserve.lToken.id,
-        library,
-      ).balanceOf(account),
-    };
-  };
 
   const draw = () => {
     const dpr = window.devicePixelRatio;
@@ -192,51 +141,8 @@ function MarketDetail(): JSX.Element {
     );
   };
 
-  const loadBalance = async () => {
-    if (!account) return;
-
-    setBalances({
-      ...balances,
-      ...(await fetchBalanceFrom(
-        getSubgraphData.reserves[
-          getSubgraphData.reserves.findIndex((reserve) => {
-            return reserve.id === tokenInfo.address;
-          })
-        ],
-        account,
-      )),
-      updatedAt: moment().unix(),
-    });
-  };
-
-  const loadBalances = async () => {
-    if (!account) {
-      return;
-    }
-    try {
-      setBalances({
-        ...balances,
-        loading: false,
-        ...(await fetchBalanceFrom(
-          getSubgraphData.reserves[
-            getSubgraphData.reserves.findIndex((reserve) => {
-              return reserve.id === tokenInfo.address;
-            })
-          ],
-          account,
-        )),
-        updatedAt: moment().unix(),
-      });
-    } catch (error) {
-      console.error(error);
-      setBalances({
-        ...balances,
-        loading: false,
-      });
-    }
-  };
-
   useEffect(() => {
+    draw();
     window.addEventListener('resize', () => draw());
 
     return () => {
@@ -245,18 +151,12 @@ function MarketDetail(): JSX.Element {
   }, []);
 
   useEffect(() => {
-    draw();
-    loadBalances();
-  }, [account]);
-
-  useEffect(() => {
-    // need refactoring!!!
-    if (!isSupportedReserve(balances.tokenName, getMainnetType)) {
+    if (!isSupportedReserve(token, getMainnetType)) {
       history.push({
         pathname: `/${lng}/deposit`,
       });
     }
-  }, [balances, getMainnetType]);
+  }, [getMainnetType]);
 
   // FIXME
   // const miningAPR = utils.parseUnits('10', 25);
@@ -273,45 +173,6 @@ function MarketDetail(): JSX.Element {
         .mul(100)
         .div(data.totalDeposit)
         .toNumber();
-
-  const isLeftTextOverFlowX = useCallback(
-    (x: number) => {
-      return tooltipPositionX < x;
-    },
-    [tooltipPositionX],
-  );
-
-  const isRightTextOverFlowX = useCallback(
-    (x: number) => {
-      return tooltipPositionX > x;
-    },
-    [tooltipPositionX],
-  );
-
-  const calculationPositionX = useCallback(
-    (x: number) => tooltipPositionX - x,
-    [tooltipPositionX],
-  );
-
-  const setTooltipPostionX = () => {
-    return isRightTextOverFlowX(1080)
-      ? calculationPositionX(210)
-      : isLeftTextOverFlowX(110)
-      ? calculationPositionX(20)
-      : mediaQuery === MediaQuery.Mobile && isRightTextOverFlowX(250)
-      ? calculationPositionX(220)
-      : calculationPositionX(113);
-  };
-
-  const setDatePositionX = () => {
-    return isLeftTextOverFlowX(25)
-      ? calculationPositionX(48)
-      : isRightTextOverFlowX(1150)
-      ? calculationPositionX(80)
-      : mediaQuery === MediaQuery.Mobile && isRightTextOverFlowX(330)
-      ? calculationPositionX(80)
-      : calculationPositionX(60);
-  };
 
   const CustomTooltip = (e: any) => {
     if (!(cellInBarIdx === -1)) setCellInBarIdx(e.label);
@@ -375,40 +236,12 @@ function MarketDetail(): JSX.Element {
         <div ref={headerRef} className="detail__header">
           <img src={tokenInfo?.image} alt="Token image" />
           <h2 ref={tokenRef}>{tokenInfo?.name.toLocaleUpperCase()}</h2>
-          {/* <div>
-            <div
-              className={`detail__header__round ${tokenInfo?.name.toLocaleUpperCase()}`}>
-              {Array(2)
-                .fill(0)
-                .map((_x, index) => {
-                  return (
-                    <div
-                      className={index + 1 === round ? 'active' : ''}
-                      onClick={() => setRound(index + 1)}>
-                      <p>
-                        {t(
-                          mediaQuery === MediaQuery.PC
-                            ? 'staking.nth--short'
-                            : 'staking.nth--short',
-                          {
-                            nth: toOrdinalNumber(i18n.language, index + 1),
-                          },
-                        )}
-                      </p>
-                      <p>
-                        {index === 0
-                          ? `(~ 2022.01.11 KST)`
-                          : `(2022.01.11 KST ~)`}
-                      </p>
-                    </div>
-                  );
-                })}
-            </div>
-          </div> */}
         </div>
         <div className="detail__container">
           <MarketDetailsBody
-            depositReward={toPercent(BigNumber.from(data.depositAPY).add(miningAPR))}
+            depositReward={toPercent(
+              BigNumber.from(data.depositAPY).add(miningAPR),
+            )}
             totalDeposit={toUsd(data.totalDeposit, tokenInfo?.decimals)}
             depositAPY={toPercent(data.depositAPY)}
             miningAPRs={toPercent(miningAPR)}
@@ -470,7 +303,7 @@ function MarketDetail(): JSX.Element {
                     <Tooltip
                       content={<CustomTooltip />}
                       position={{
-                        x: setTooltipPostionX(),
+                        x: setTooltipBoxPositionX(mediaQuery, tooltipPositionX),
                         y: -70,
                       }}
                       cursor={{
@@ -515,14 +348,13 @@ function MarketDetail(): JSX.Element {
                   }}>
                   <div
                     style={{
-                      left: setDatePositionX(),
+                      left: setDatePositionX(mediaQuery, tooltipPositionX),
                     }}>
                     {date}
                   </div>
                 </div>
               </div>
             </div>
-            {/* </div> */}
           </div>
         </div>
         <Loan id={tokenInfo.address} />
