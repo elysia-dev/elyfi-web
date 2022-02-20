@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import miningValueByToken from 'src/utiles/stakingInfoBytoken';
 
 type Props = {
   nth: string;
@@ -15,18 +16,20 @@ type Props = {
 
 const StakingProgressFill: FunctionComponent<Props> = (props) => {
   const { t } = useTranslation();
-  const isDai = props.unit === 'DAI';
+  const isElfi = props.unit === 'ELFI';
   const { value: mediaQuery } = useMediaQueryType();
+
+  const miningValue = miningValueByToken(props.unit, props.staking);
 
   return (
     <div className="reward__progress-bar__wrapper">
       <progress
         className="reward__progress-bar"
         value={props.end}
-        max={isDai ? (props.staking > 1 ? 50000 : 25000) : 5000000}
+        max={miningValue}
       />
       <div className="reward__progress-bar__content">
-        {isDai ? (
+        {!isElfi ? (
           <div className={`reward__progress-bar__content__fill`}>
             <p className="spoqa">
               {t('reward.nth_reward', {
@@ -44,15 +47,13 @@ const StakingProgressFill: FunctionComponent<Props> = (props) => {
                 key={`elfi-reward-progress-${index}`}
                 style={{ flex: index < 2 ? 1 : 2 }}>
                 <p className="spoqa">
-                  {mediaQuery === MediaQuery.PC ? (
-                    t('reward.nth_mining', {
-                      nth: props.OrdinalNumberConverter!(index + 1),
-                    })
-                  ) : (
-                    t('staking.nth--short', {
-                      nth: props.OrdinalNumberConverter!(index + 1),
-                    })
-                  )}
+                  {mediaQuery === MediaQuery.PC
+                    ? t('reward.nth_mining', {
+                        nth: props.OrdinalNumberConverter!(index + 1),
+                      })
+                    : t('staking.nth--short', {
+                        nth: props.OrdinalNumberConverter!(index + 1),
+                      })}
                 </p>
               </div>
             );
