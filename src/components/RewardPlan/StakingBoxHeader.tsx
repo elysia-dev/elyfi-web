@@ -20,15 +20,18 @@ type Props = {
 
 const StakingBoxHeader: FunctionComponent<Props> = (props) => {
   const current = moment();
-  const { t, i18n } = useTranslation();
-  const tokenImg = props.unit === Token.DAI ? elfi : el;
-  const tokenName = props.unit === 'DAI' ? 'ELFI' : 'EL';
+  const { t } = useTranslation();
+  const tokenImg = props.unit !== Token.ELFI ? elfi : el;
+  const tokenName = props.unit !== Token.ELFI ? 'ELFI' : 'EL';
   const currentNth = props.nth;
   return (
     <>
       <div className="reward__token__header">
         <img src={tokenImg} />
-        <h2 className={`reward__token__header__token ${tokenName === "EL" ? "el" : ""}`}>
+        <h2
+          className={`reward__token__header__token ${
+            tokenName === 'EL' ? 'el' : ''
+          }`}>
           <Trans
             i18nKey={'reward.staking__nth'}
             values={{
@@ -68,7 +71,7 @@ const StakingBoxHeader: FunctionComponent<Props> = (props) => {
                 formatComma(props.poolPrincipal)
               )}
             </h2>
-            <span className="bold">{props.unit === 'DAI' ? 'ELFI' : 'EL'}</span>
+            <span className="bold">{tokenName}</span>
           </div>
         </div>
       </div>
