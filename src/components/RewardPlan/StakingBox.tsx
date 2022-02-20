@@ -1,9 +1,17 @@
 import { BigNumber } from 'ethers';
-import { FunctionComponent, useEffect, useRef, useState } from 'react';
+import {
+  FunctionComponent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import Token from 'src/enums/Token';
 import elfi from 'src/assets/images/ELFI.png';
 import el from 'src/assets/images/el.png';
-import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
+import stakingRoundTimes, {
+  busdStakingRoundTimes,
+} from 'src/core/data/stakingRoundTimes';
 import { useTranslation } from 'react-i18next';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
@@ -11,7 +19,8 @@ import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
 import 'swiper/modules/pagination/pagination.scss';
 import 'swiper/swiper.scss';
-import { useLocation } from 'react-router-dom';
+import miningValueByToken, { countValue } from 'src/utiles/stakingInfoBytoken';
+import MainnetContext from 'src/contexts/MainnetContext';
 import SmallProgressBar from './SmallProgressBar';
 import StakingBoxHeader from './StakingBoxHeader';
 import StakingDetailInfo from './StakingDetailInfo';
@@ -27,36 +36,41 @@ type Props = {
   start: number[] | number;
   end: number[] | number;
   state: {
-    elStaking: number;
-    currentElfiLevel: number;
+    round: number;
   };
   setState: (
     value: React.SetStateAction<{
-      elStaking: number;
-      currentElfiLevel: number;
+      round: number;
     }>,
   ) => void;
   OrdinalNumberConverter: (value: number) => string;
+  stakingToken: string;
   miningStart?: number[];
   miningEnd?: number[];
   currentPhase?: number;
 };
 
 const StakingBox: FunctionComponent<Props> = (props: Props) => {
-  const isDai = props.unit === 'DAI';
-  const rewardOrMining = isDai ? 'reward' : 'mining';
-  const tokenImg = props.unit === Token.DAI ? elfi : el;
+  const isElfi = !(props.unit === 'ELFI');
+  const rewardOrMining = isElfi ? 'reward' : 'mining';
+  const tokenImg = isElfi ? elfi : el;
   const { t } = useTranslation();
   const { value: mediaQuery } = useMediaQueryType();
   const [currentSwipe, setCurrnetSwipe] = useState(props.staking);
+  const { type: getMainnetType } = useContext(MainnetContext);
   const prevNavigation = useRef<HTMLDivElement>(null);
   const nextNavigation = useRef<HTMLDivElement>(null);
   const pagination = useRef<HTMLDivElement>(null);
 
+  const roundTimes =
+    props.stakingToken === 'ELFI' && getMainnetType === 'BSC'
+      ? busdStakingRoundTimes
+      : stakingRoundTimes;
+
   useEffect(() => {
     props.setState({
-      elStaking: isDai ? props.state.elStaking : currentSwipe,
-      currentElfiLevel: isDai ? currentSwipe : props.state.currentElfiLevel,
+      ...props.state,
+      round: currentSwipe,
     });
   }, [currentSwipe]);
 
@@ -67,7 +81,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
         <img src={tokenImg} />
         <h2>
           {t(`reward.token_staking__reward_plan`, {
-            token: props.unit === 'DAI' ? 'ELFI' : 'EL',
+            token: !(props.unit === 'ELFI') ? 'ELFI' : 'EL',
           })}
         </h2>
       </div>
@@ -109,37 +123,26 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
           style={{
             height:
               mediaQuery === 'PC'
-                ? props.unit === Token.DAI
-                  ? '240px'
-                  : '280px'
+                ? props.unit === Token.ELFI
+                  ? '280px'
+                  : '240px'
                 : undefined,
           }}>
-          {stakingRoundTimes.map((_x, index) => {
+          {roundTimes.map((_x, index) => {
+            const miningValue = miningValueByToken(props.unit, props.staking);
+            const { start, end } = countValue(props.start, props.end, index);
+
             return (
               <SwiperSlide key={`slide-${index}`}>
                 <div className="reward__token__data">
                   <SmallProgressBar
-                    start={
-                      typeof props.start === 'number'
-                        ? props.start
-                        : props.start[props.staking]
-                    }
-                    end={
-                      typeof props.end === 'number'
-                        ? props.end
-                        : props.end[props.staking]
-                    }
+                    start={start}
+                    end={end}
                     rewardOrMining={rewardOrMining}
-                    totalMiningValue={
-                      isDai
-                        ? props.staking > 1
-                          ? '50,000'
-                          : '25,000'
-                        : (5000000)
-                            .toString()
-                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                    }
-                    max={isDai ? (props.staking > 1 ? 50000 : 25000) : 5000000}
+                    totalMiningValue={miningValue
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    max={miningValue}
                     unit={props.unit}
                     nth={props.nth}
                     stakingRoundFill={
@@ -147,11 +150,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
                         nth={props.nth}
                         staking={props.staking}
                         unit={props.unit}
-                        end={
-                          typeof props.end === 'number'
-                            ? props.end
-                            : props.end[props.staking]
-                        }
+                        end={end}
                         currentPhase={props.currentPhase}
                         OrdinalNumberConverter={props.OrdinalNumberConverter}
                       />
@@ -159,19 +158,11 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
                   />
                   <StakingDetailInfo
                     nth={props.OrdinalNumberConverter(index + 1)}
-                    isDai={props.unit === 'DAI'}
+                    isELFI={!(props.unit === 'ELFI')}
                     staking={index}
                     unit={props.unit}
-                    start={
-                      typeof props.start === 'number'
-                        ? props.start
-                        : props.start[index]
-                    }
-                    end={
-                      typeof props.end === 'number'
-                        ? props.end
-                        : props.end[index]
-                    }
+                    start={start}
+                    end={end}
                     state={props.state}
                     setState={props.setState}
                     miningStart={
@@ -184,6 +175,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
                         ? props.miningEnd[index]
                         : undefined
                     }
+                    roundTimes={roundTimes}
                   />
                 </div>
               </SwiperSlide>
