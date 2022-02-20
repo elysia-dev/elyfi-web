@@ -1,57 +1,61 @@
-import { BigNumber } from 'ethers';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useMemo } from 'react';
 import CountUp from 'react-countup';
 import { useTranslation } from 'react-i18next';
-import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
+import { IStakingPoolRound } from 'src/core/data/stakingRoundTimes';
 import { formatCommaSmallFourDisits } from 'src/utiles/formatters';
+import { rewardLimit } from 'src/utiles/stakingInfoBytoken';
 
 type Props = {
   nth: string;
-  isDai: boolean;
+  isELFI: boolean;
   staking: number;
   unit: string;
   start: number;
   end: number;
   state: {
-    elStaking: number;
-    currentElfiLevel: number;
+    round: number;
   };
   setState: (
     value: React.SetStateAction<{
-      elStaking: number;
-      currentElfiLevel: number;
+      round: number;
     }>,
   ) => void;
+  roundTimes: IStakingPoolRound[];
   miningStart?: number;
   miningEnd?: number;
 };
 
 const StakingDetailInfo: FunctionComponent<Props> = (props: Props) => {
   const { t } = useTranslation();
-  const { nth, isDai, staking, unit, start, end, miningEnd, miningStart } =
+  const { nth, isELFI, staking, unit, start, end, miningEnd, miningStart } =
     props;
 
-  const miningDescription = isDai
-    ? [
-        [
-          t('reward.reward_term'),
-          `${stakingRoundTimes[staking].startedAt.format(
-            'yyyy.MM.DD HH:mm:ss',
-          )} ~ ${stakingRoundTimes[staking].endedAt.format(
-            'yyyy.MM.DD HH:mm:ss',
-          )} KST`,
-        ],
-        [t('reward.daily_reward'), '1,250 DAI'],
-      ]
+  const accumulateReward = useMemo(() => {
+    return {
+      start: isELFI ? start : miningStart!,
+      end: isELFI ? end : miningEnd!,
+    };
+  }, [start, miningStart, end, miningEnd]);
+
+  const calcRewardLimit = useMemo(() => {
+    return {
+      start: rewardLimit(unit, staking) - accumulateReward.start,
+      end: rewardLimit(unit, staking) - accumulateReward.end,
+    };
+  }, [start, miningStart, end, miningEnd]);
+
+  const roundDate = [
+    t(isELFI ? 'reward.reward_term' : 'reward.mining_term'),
+    `${props.roundTimes[staking].startedAt.format(
+      'yyyy.MM.DD HH:mm:ss',
+    )} ~ ${props.roundTimes[staking].endedAt.format(
+      'yyyy.MM.DD HH:mm:ss',
+    )} KST`,
+  ];
+
+  const miningDescription = isELFI
+    ? [[t('reward.daily_reward'), `1,250 ${props.unit}`]]
     : [
-        [
-          t('reward.mining_term'),
-          `${stakingRoundTimes[staking].startedAt.format(
-            'yyyy.MM.DD HH:mm:ss',
-          )} ~ ${stakingRoundTimes[staking].endedAt.format(
-            'yyyy.MM.DD HH:mm:ss',
-          )} KST`,
-        ],
         [
           t('reward.nth_total_mining', {
             nth,
@@ -60,19 +64,20 @@ const StakingDetailInfo: FunctionComponent<Props> = (props: Props) => {
         ],
         [t('reward.daily_mining'), '25,000 ELFI'],
       ];
+  miningDescription.unshift(roundDate);
+
   return (
     <div className="reward__token__data__content">
       <h2>
-        {t(isDai ? 'reward.nth_reward' : 'reward.nth_mining', {
+        {t(isELFI ? 'reward.nth_reward' : 'reward.nth_mining', {
           nth,
         })}
       </h2>
       {miningDescription.map((data, index) => {
         return (
-          <div
-            key={`reward-term-${index}`}>
+          <div key={`reward-term-${index}`}>
             <p>{data[0]}</p>
-            {isDai ? (
+            {isELFI ? (
               <p>{data[1]}</p>
             ) : (
               <p>
@@ -90,12 +95,14 @@ const StakingDetailInfo: FunctionComponent<Props> = (props: Props) => {
       })}
       <div>
         <p>
-          {t(isDai ? 'reward.accumulated_reward' : 'reward.accumulated_mining')}
+          {t(
+            isELFI ? 'reward.accumulated_reward' : 'reward.accumulated_mining',
+          )}
         </p>
         <p>
           <CountUp
-            start={isDai ? start : miningStart}
-            end={isDai ? end : miningEnd!}
+            start={accumulateReward.start}
+            end={accumulateReward.end}
             decimals={4}
             duration={1}
             formattingFn={(number) => formatCommaSmallFourDisits(number)}
@@ -104,27 +111,11 @@ const StakingDetailInfo: FunctionComponent<Props> = (props: Props) => {
         </p>
       </div>
       <div>
-        <p>{t(isDai ? 'reward.reward_limit' : 'reward.mining_limit')}</p>
+        <p>{t(isELFI ? 'reward.reward_limit' : 'reward.mining_limit')}</p>
         <p>
           <CountUp
-            start={
-              staking <= 1
-                ? isDai
-                  ? 25000
-                  : 500000
-                : isDai
-                ? 50000 - start
-                : 1000000 - miningStart!
-            }
-            end={
-              staking <= 1
-                ? isDai
-                  ? 25000
-                  : 500000
-                : isDai
-                ? 50000 - end
-                : 1000000 - miningEnd!
-            }
+            start={calcRewardLimit.start}
+            end={calcRewardLimit.end}
             decimals={4}
             duration={1}
             formattingFn={(number) => formatCommaSmallFourDisits(number)}
