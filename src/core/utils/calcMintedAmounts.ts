@@ -1,9 +1,14 @@
 import moment from 'moment';
-import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
+import stakingRoundTimes, {
+  IStakingPoolRound,
+} from 'src/core/data/stakingRoundTimes';
 
-const calcMintedAmounts = (mintedPerDay: number): Array<number> => {
+const calcMintedAmounts = (
+  mintedPerDay: number,
+  roundTimes: IStakingPoolRound[],
+): Array<number> => {
   const current = moment();
-  return stakingRoundTimes.map((round) => {
+  return roundTimes.map((round) => {
     if (current.diff(round.endedAt) > 0) {
       return round.endedAt.diff(round.startedAt, 'days') * mintedPerDay;
     }
