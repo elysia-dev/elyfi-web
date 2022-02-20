@@ -45,3 +45,17 @@ export const ordinalNumberConverter = (value: number): string => {
       return '';
   }
 };
+export const busdOrdinalNumberConverter = (value: number): string => {
+  const { i18n } = useTranslation();
+
+  switch (value) {
+    case 1:
+      return i18n.language === LanguageType.EN ? '1st' : '1';
+    case 2:
+      return i18n.language === LanguageType.EN ? '2nd' : '2';
+    case 3:
+      return i18n.language === LanguageType.EN ? '3rd' : '3';
+    default:
+      return i18n.language === LanguageType.EN ? '1st' : '1';
+  }
+};
