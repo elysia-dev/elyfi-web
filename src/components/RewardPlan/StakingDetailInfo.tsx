@@ -3,7 +3,7 @@ import CountUp from 'react-countup';
 import { useTranslation } from 'react-i18next';
 import { IStakingPoolRound } from 'src/core/data/stakingRoundTimes';
 import { formatCommaSmallFourDisits } from 'src/utiles/formatters';
-import { rewardLimit } from 'src/utiles/stakingInfoBytoken';
+import { rewardLimit } from 'src/utiles/stakingReward';
 
 type Props = {
   nth: string;

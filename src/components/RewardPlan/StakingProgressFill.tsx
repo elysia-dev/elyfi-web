@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
-import miningValueByToken from 'src/utiles/stakingInfoBytoken';
+import miningValueByToken from 'src/utiles/stakingReward';
 
 type Props = {
   nth: string;

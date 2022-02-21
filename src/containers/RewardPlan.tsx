@@ -36,10 +36,7 @@ import {
 } from 'src/core/utils/calcLpReward';
 import Token from 'src/enums/Token';
 import useStakingRoundData from 'src/hooks/useStakingRoundData';
-import {
-  busdOrdinalNumberConverter,
-  ordinalNumberConverter,
-} from 'src/utiles/ordinalNumberConverter';
+import { ordinalNumberConverter } from 'src/utiles/ordinalNumberConverter';
 import ELFI from 'src/assets/images/ELFI.png';
 import ETH from 'src/assets/images/eth-color.png';
 import DAI from 'src/assets/images/dai.png';
@@ -58,7 +55,7 @@ import MainnetType from 'src/enums/MainnetType';
 import MainnetContext from 'src/contexts/MainnetContext';
 import getTokenNameByAddress from 'src/core/utils/getTokenNameByAddress';
 import useCalcReward from 'src/hooks/useCalcReward';
-import { rewardToken } from 'src/utiles/stakingInfoBytoken';
+import { rewardToken } from 'src/utiles/stakingReward';
 
 const RewardPlan: FunctionComponent = () => {
   const { t } = useTranslation();

@@ -19,7 +19,7 @@ import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
 import 'swiper/modules/pagination/pagination.scss';
 import 'swiper/swiper.scss';
-import miningValueByToken, { countValue } from 'src/utiles/stakingInfoBytoken';
+import miningValueByToken, { countValue } from 'src/utiles/stakingReward';
 import MainnetContext from 'src/contexts/MainnetContext';
 import SmallProgressBar from './SmallProgressBar';
 import StakingBoxHeader from './StakingBoxHeader';
