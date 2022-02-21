@@ -13,7 +13,7 @@ $governance-progress-00: #0099cc;
 $governance-progress-01: #cc0000;
 $governance-progress-02: #888888;
 
-$bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
+$bold: 'Inter-Bold', 'Montserrat-bold';
 
 @mixin page-container {
   width: $device-width;
@@ -1661,7 +1661,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             justify-content: space-between;
             margin-bottom: 7px;
             > div:first-child {
-              font-family: 'SpoqaHanSansNeo';
+              font-family: 'Inter';
               font-size: 12px;
               color: $gray-font-color;
             }
@@ -2622,7 +2622,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             font-size: 12px;
           }
           &__wrapper {
-            margin: 12px auto 14px;
+            padding: 12px 0 14px;
           }
         }
         &__header {

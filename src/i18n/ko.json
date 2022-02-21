@@ -241,7 +241,7 @@
       "loan__number": "대출 번호",
       "loan__status": "대출 상태",
       "loan__info": "대출 정보",
-      "loan__interest_rate": "대출이자율",
+      "loan__interest_rate": "대출 APY",
       "loan__date": "대출일",
       "loan__borrowed": "대출금",
       "borrower": "차입자",

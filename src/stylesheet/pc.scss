@@ -12,7 +12,7 @@ $governance-progress-00: #0099cc;
 $governance-progress-01: #cc0000;
 $governance-progress-02: #888888;
 
-$bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
+$bold: 'Inter-Bold', 'Montserrat-bold';
 $device-width: 1190px;
 
 @mixin page-container {
@@ -741,7 +741,6 @@ $device-width: 1190px;
           }
         }
         &__more {
-          height: 60px;
           margin-top: 20px;
           > p {
             font-size: 18px;
@@ -1498,7 +1497,7 @@ $device-width: 1190px;
               justify-content: space-between;
               margin-bottom: 7px;
               > div:first-child {
-                font-family: 'SpoqaHanSansNeo';
+                font-family: 'Inter';
                 font-size: 12px;
                 color: $gray-font-color;
               }
