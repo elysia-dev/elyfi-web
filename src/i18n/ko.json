@@ -383,7 +383,7 @@
       "total_borrowed": "총 대출금",
       "estimated_repayments": "상환 예정 금액",
       "borrow_apy": "대출 APY",
-      "borrow_apy--loan": "대출 이자율",
+      "borrow_apy--loan": "대출 APY",
       "accumulated_borrowed": "누적 대출금",
       "accumulated_repayment": "누적 상환 완료 금액",
       "accumulated_yield": "누적 수익",

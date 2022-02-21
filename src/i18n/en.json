@@ -394,7 +394,7 @@
       "total_borrowed": "Total Borrowed",
       "estimated_repayments": "Estimated Repayments",
       "borrow_apy": "Borrow APY",
-      "borrow_apy--loan": "Loan Interest Rate",
+      "borrow_apy--loan": "Borrow APY",
       "accumulated_borrowed": "Accumulated Borrowed",
       "accumulated_repayment": "Accumulated Repayments",
       "accumulated_yield": "Accumulated Yield",
