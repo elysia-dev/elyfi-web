@@ -73,6 +73,7 @@ const RewardPlan: FunctionComponent = () => {
   const current = moment();
   const { value: mediaQuery } = useMediaQueryType();
 
+  const isEl = stakingType === 'EL';
   const roundTimes =
     stakingType === 'ELFI' && getMainnetType === 'BSC'
       ? busdStakingRoundTimes
@@ -388,59 +389,29 @@ const RewardPlan: FunctionComponent = () => {
               setLpStakingRound={setLpStakingRound}
             />
           </>
-        ) : stakingType === 'ELFI' && getMainnetType === 'Ethereum' ? (
-          <section className="reward__elfi">
+        ) : ['EL', 'ELFI'].includes(stakingType) ? (
+          <section className={`reward__${stakingType.toLowerCase()}`}>
             <StakingBox
               nth={ordinalNumberConverter(state.round + 1)}
               loading={poolLoading}
               poolApr={poolApr}
               poolPrincipal={poolPrincipal}
               staking={state.round}
-              unit={'DAI'}
-              start={rewardInfo.beforeStakingPool}
-              end={rewardInfo.afterStakingPool}
+              unit={rewardToken(stakingType, getMainnetType)}
+              start={
+                isEl
+                  ? beforeTotalMintedByElStakingPool
+                  : rewardInfo.beforeStakingPool
+              }
+              end={
+                isEl ? totalMintedByElStakingPool : rewardInfo.afterStakingPool
+              }
               state={state}
               setState={setState}
               OrdinalNumberConverter={ordinalNumberConverter}
               stakingToken={stakingType}
-            />
-          </section>
-        ) : stakingType === 'EL' ? (
-          <section className="reward__el">
-            <StakingBox
-              nth={ordinalNumberConverter(state.round + 1)}
-              loading={poolLoading}
-              poolApr={poolApr}
-              poolPrincipal={poolPrincipal}
-              staking={state.round}
-              unit={'ELFI'}
-              start={beforeTotalMintedByElStakingPool}
-              end={totalMintedByElStakingPool}
-              state={state}
-              setState={setState}
-              miningStart={rewardInfo.beforeStakingPool}
-              miningEnd={rewardInfo.afterStakingPool}
-              currentPhase={currentPhase}
-              OrdinalNumberConverter={ordinalNumberConverter}
-              stakingToken={stakingType}
-            />
-          </section>
-        ) : stakingType === 'ELFI' && getMainnetType === 'BSC' ? (
-          <section className="reward__elfi">
-            <StakingBox
-              nth={busdOrdinalNumberConverter(state.round + 1)}
-              loading={poolLoading}
-              poolApr={poolApr}
-              poolPrincipal={poolPrincipal}
-              staking={state.round}
-              unit={'BUSD'}
-              start={rewardInfo.beforeStakingPool}
-              end={rewardInfo.afterStakingPool}
-              state={state}
-              setState={setState}
-              currentPhase={currentPhase}
-              OrdinalNumberConverter={ordinalNumberConverter}
-              stakingToken={stakingType}
+              miningStart={isEl ? rewardInfo.beforeStakingPool : undefined}
+              miningEnd={isEl ? rewardInfo.afterStakingPool : undefined}
             />
           </section>
         ) : (
