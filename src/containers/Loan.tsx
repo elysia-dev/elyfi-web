@@ -6,7 +6,9 @@ import SubgraphContext from 'src/contexts/SubgraphContext';
 import MainnetType from 'src/enums/MainnetType';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
-import AssetList from './AssetList';
+import AssetList from 'src/containers/AssetList';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import MediaQuery from 'src/enums/MediaQuery';
 
 const usdFormatter = new Intl.NumberFormat('en', {
   style: 'currency',
@@ -19,6 +21,8 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
   const assetBondTokens = getAssetBondsByNetwork(mainnetType)
   const [pageNumber, setPageNumber] = useState(1);
   const { t } = useTranslation();
+  const { value: mediaQuery } = useMediaQueryType();
+  const defaultShowingLoanData = mediaQuery === MediaQuery.Mobile ? 8 : 9;
   // true -> byLatest, false -> byLoanAmount
   const [sortMode, setSortMode] = useState(false);
   const totalBorrow = parseFloat(
@@ -80,7 +84,7 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
                   <AssetList
                     assetBondTokens={
                       /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
-                      [...(assetBondTokensBackedByEstate || [])].slice(0, pageNumber * 9).sort((a, b) => {
+                      [...(assetBondTokensBackedByEstate || [])].slice(0, pageNumber * defaultShowingLoanData).sort((a, b) => {
                         if (sortMode) {
                           return BigNumber.from(b.principal).gte(
                             BigNumber.from(a.principal),
@@ -95,7 +99,7 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
                       }) || []
                     }
                   />
-                  {assetBondTokensBackedByEstate.length && assetBondTokensBackedByEstate.length >= pageNumber * 9 && (
+                  {assetBondTokensBackedByEstate.length && assetBondTokensBackedByEstate.length >= pageNumber * defaultShowingLoanData && (
                     <div>
                       <button
                         className="portfolio__view-button"

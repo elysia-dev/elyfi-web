@@ -138,6 +138,7 @@ const PortfolioDetail: FunctionComponent = () => {
       fontFamily: 'SpoqaHanSansNeo',
       color: '#888888',
       fontSize: mediaQuery === MediaQuery.PC ? '15px' : '12px',
+      letterSpacing: -0.5
     }),
     [mediaQuery],
   );
@@ -205,8 +206,8 @@ const PortfolioDetail: FunctionComponent = () => {
                 target="_blank"
                 rel="noopener noreferer">
                 <p className="link">
-                  {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(0, 12)}{' '}
-                  ... {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(-12)}
+                  {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(0, 8)}{' '}
+                  ... {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(-8)}
                 </p>
               </a>
             </div>
@@ -241,8 +242,8 @@ const PortfolioDetail: FunctionComponent = () => {
                     {!!abToken?.borrower?.id === true
                       ? `${abToken?.borrower?.id.slice(
                           0,
-                          12,
-                        )} ... ${abToken?.borrower?.id.slice(-12)}`
+                          8,
+                        )} ... ${abToken?.borrower?.id.slice(-8)}`
                       : '-'}
                   </p>
                 </a>
@@ -286,7 +287,7 @@ const PortfolioDetail: FunctionComponent = () => {
                       '_blank',
                     );
                   }}>
-                  {abToken?.id.slice(0, 12)} ... {abToken?.id.slice(-12)}
+                  {abToken?.id.slice(0, 8)} ... {abToken?.id.slice(-8)}
                 </p>
               </div>
             </div>
@@ -329,7 +330,7 @@ const PortfolioDetail: FunctionComponent = () => {
                 [t('loan.collateral_nft__type'), 'ABToken', '', ''],
                 [
                   t('loan.collateral_nft__abtoken_id'),
-                  `${abToken?.id.slice(0, 12)} ... ${abToken?.id.slice(-12)}`,
+                  `${abToken?.id.slice(0, 8)} ... ${abToken?.id.slice(-8)}`,
                   '',
                   `${envs.externalApiEndpoint.etherscanURI}/token/${tokenInfo.tokeninzer}?a=${abToken?.id}`,
                 ],
@@ -387,8 +388,8 @@ const PortfolioDetail: FunctionComponent = () => {
                   contractImage[1]?.hash
                     ? `${contractImage[1].hash.slice(
                         0,
-                        12,
-                      )} ... ${contractImage[1].hash.slice(-12)}`
+                        8,
+                      )} ... ${contractImage[1].hash.slice(-8)}`
                     : '-',
                   '',
                   contractImage[1]?.link,
@@ -398,8 +399,8 @@ const PortfolioDetail: FunctionComponent = () => {
                   contractImage[0]?.hash
                     ? `${contractImage[0].hash.slice(
                         0,
-                        12,
-                      )} ... ${contractImage[0].hash.slice(-12)}`
+                        8,
+                      )} ... ${contractImage[0].hash.slice(-8)}`
                     : '-',
                   '',
                   contractImage[0]?.link,
@@ -409,8 +410,8 @@ const PortfolioDetail: FunctionComponent = () => {
                   contractImage[2]?.hash
                     ? `${contractImage[2]?.hash.slice(
                         0,
-                        12,
-                      )} ... ${contractImage[2]?.hash.slice(-12)}`
+                        8,
+                      )} ... ${contractImage[2]?.hash.slice(-8)}`
                     : '-',
                   '',
                   contractImage[2]?.link,
@@ -437,7 +438,8 @@ const PortfolioDetail: FunctionComponent = () => {
                       style={{
                         fontFamily: 'SpoqaHanSansNeo',
                         color: '#333333',
-                        fontSize: '15px',
+                        fontSize: mediaQuery === MediaQuery.PC ? '15px' : '12px',
+                        letterSpacing: -0.8
                       }}
                       onClick={() => {
                         !!data[3] === true

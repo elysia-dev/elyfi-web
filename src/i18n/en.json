@@ -272,6 +272,8 @@
       ],
       "data_verification": "Data verification list ({{ count }} case)",
       "data_verification_plural": "Data verification list ({{ count }} cases)",
+      "data_verification--mobile": "Data verification list\n({{ count }} case)",
+      "data_verification--mobile_plural": "Data verification list\n({{ count }} cases)",
       "data_verification__content": "This is a list of proposals for which voting is in progress in off-chain governance(DAO).",
       "on_chain_voting": "On-chain voting ({{ count }} case)",
       "on_chain_voting_plural": "On-chain voting ({{ count }} cases)",

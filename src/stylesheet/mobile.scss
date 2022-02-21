@@ -40,7 +40,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           width: 30px;
         }
         > h2 {
-          font-size: 12px;
+          font-size: 11px;
         }
       }
       &__change-network {
@@ -403,6 +403,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       width: 310px;
       > img {
         width: 310px;
+        object-fit: scale-down;
       }
       .dom {
         top: -50px;
@@ -423,12 +424,14 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     }
     &__section {
       flex-direction: column;
-      min-height: 100vh;
+      min-height: 80vh;
       justify-content: center;
     }
     &__title {
       flex-direction: column;
       margin-top: 60px;
+      height: 100vh;
+      gap: 3vh;
       &__text-container {
         margin-bottom: 20px;
         text-align: center;
@@ -490,7 +493,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         margin-bottom: 20px;
       }
       &__image-container {
-        height: 500px;
+        height: 400px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -692,7 +695,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin: 60px 0;
+        margin: 30px 0;
         transform: scale(0.85);
         .scroll-arrow {
           position: initial;
@@ -839,7 +842,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       }
     }
     &__partners {
-      margin: 20vh 0;
+      margin: 0;
       height: auto;
       > div {
         width: 100%;
@@ -865,8 +868,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           > img {
             width: 125px;
             height: 52px;
-          }
-          > img:first-child {
+            object-fit: scale-down;
           }
         }
       }
@@ -887,6 +889,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     }
     &__governance {
       align-items: flex-start;
+      margin-top: 20vh;
       > h2 {
         font-size: 23px;
       }
@@ -923,7 +926,6 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         }
       }
       &__more {
-        height: 50px;
         margin-top: 12px;
         > p {
           font-size: 12px;
@@ -1594,6 +1596,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             }
           }
           &__strategy {
+            position: relative;
             width: calc(100% - 40px) !important;
             margin: 0px 0 0 20px;
             padding: 10px 15px !important;
@@ -1778,7 +1781,10 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     &__elyfi-graph {
       padding: 10px;
       margin-bottom: 50px;
+      flex-direction: column;
       > div {
+        width: 100%;
+        justify-content: center !important;
         &:first-child {
           > div {
             border-radius: 15px;
@@ -1790,6 +1796,8 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           }
         }
         > div {
+          flex: 2;
+          text-align: center;
           > p {
             font-size: 12px;
           }
@@ -1802,6 +1810,34 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
               line-height: 30px;
               font-size: 12px;
             }
+          }
+        }
+      }
+      &__arrow-container {
+        flex-direction: row;
+        align-items: center;
+        width: 90% !important;
+        > .arrow-wrapper {
+          flex-direction: column;
+          height: 80px;
+          width: 10px;
+          flex: .5;
+          > .line {
+            height: 100%;
+            width: 0;
+            border-right: 1px dashed $elysia-color;
+          }
+          > .right-arrow {
+            border-top: 10px solid #00bfff;
+            border-right: 5px solid transparent;
+            border-left: 5px solid transparent;
+            border-bottom: 0;
+          }
+          > .left-arrow {
+            border-bottom: 10px solid #00bfff;
+            border-right: 5px solid transparent;
+            border-left: 5px solid transparent;
+            border-top: 0;
           }
         }
       }
@@ -1849,6 +1885,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 
   .portfolio {
     @include page-container;
+    position: relative;
     &__view-button {
       height: 50px;
       font-size: 13px;
@@ -1872,9 +1909,13 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           flex-direction: row;
           display: flex;
           justify-content: space-between;
+          align-items: center;
           > p {
             font-size: 12px;
             line-height: 25px;
+          }
+          > a { 
+            font-size: 12px;
           }
         }
       }
@@ -1894,7 +1935,11 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             border: none;
           }
           > div {
+            align-items: center;
             > p {
+              font-size: 12px;
+            }
+            > a {
               font-size: 12px;
             }
           }
@@ -1942,7 +1987,9 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 
   .staking {
     @include page-container;
+    padding-top: 10px;
     &__title {
+      padding-top: 60px;
       > h2 {
         font-size: 18px;
         margin-bottom: 11px;
@@ -2060,6 +2107,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
             justify-content: space-between;
             > h2 {
               font-size: 12px;
+              letter-spacing: -0.5px;
             }
             > p {
               font-size: 12px;
@@ -2136,10 +2184,14 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
               display: flex;
               flex-direction: column;
               align-items: flex-start;
-              > p {
+              > div {
                 margin-top: 8px;
-                > br {
-                  display: none;
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                > p {
+                  font-size: 12px;
+                  line-height: 17px;
                 }
               }
             }
@@ -2210,6 +2262,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 
     &__lp {
       &__header {
+        margin-top: 60px;
         > h2 {
           font-size: 18px;
           margin-bottom: 11px;
@@ -2235,6 +2288,9 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         flex-direction: column;
         margin-top: 10px;
         gap: 25px;
+        &__body {
+          position: relative;
+        }
         &__container {
           flex: 1;
         }
@@ -2336,6 +2392,8 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       } // detail-box end
 
       &__staked {
+        margin-top: 60px;
+        position: relative;
         &__wrapper {
           display: flex;
           flex-direction: column-reverse;
@@ -2349,9 +2407,9 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         }
         &__table {
           border-radius: 0;
-          margin-top: 30px;
-          padding: none;
           border: none;
+          display: flex;
+          flex-direction: column-reverse;
           &__header {
             display: none;
             &__container {
@@ -2433,6 +2491,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
                 &:nth-child(4) {
                   flex: 4;
                   gap: 18px;
+                  justify-content: center;
                 }
               }
             }
@@ -2482,6 +2541,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
               &__reward {
                 &__amount {
                   font-size: 15px;
+                  font-family: $bold;
                 }
                 &__unit {
                   font-size: 15px;
@@ -2493,12 +2553,13 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         &__reward {
           margin-top: 12px;
           flex-direction: column;
+          margin-bottom: 15px;
           &__total-liquidity {
             width: 100%;
             justify-content: space-between;
             flex: none;
             border-bottom: 1px solid $gray-line;
-            padding: 18px 15px;
+            padding: 15px;
             > h2 {
               font-size: 12px;
             }
@@ -2535,6 +2596,9 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
               > div {
                 display: flex;
                 flex-direction: row;
+                text-align: right;
+                justify-content: flex-end;
+                width: 100%;
                 > span {
                   font-size: 12px;
                 }
@@ -2563,6 +2627,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         }
         &__header {
           padding-bottom: 10px;
+          position: relative;
           > h2 {
             font-size: 13px;
           }
@@ -3188,6 +3253,16 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
   }
   .footer {
     margin-top: 80px;
+    &__lang {
+      flex: 1;
+    }
+    &__link {
+      > a { 
+        width: 38px;
+        height: 38px;
+        margin-left: 15px;
+      }
+    }
     > div {
       width: $device-width;
       margin: 0 auto;
