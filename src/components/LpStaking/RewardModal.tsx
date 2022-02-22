@@ -107,7 +107,7 @@ const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
         />
         {
           transactionWait ? (
-            <LoadingIndicator  />
+            <LoadingIndicator isTxActive={transactionWait} />
           ) : (
             <>
               <div className="modal__lp__reward__container">
@@ -151,16 +151,16 @@ const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
                   </h2>
                 </div>
               </div>
-              <div>
-                <div
-                  className={`modal__button`}
-                  onClick={() => receiveRewardHandler()}>
-                  <p>{t('staking.claim_reward')}</p>
-                </div>
-              </div>
             </>
           )
         }
+        <div>
+          <div
+            className={`modal__button`}
+            onClick={() => receiveRewardHandler()}>
+            <p>{t('staking.claim_reward')}</p>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -3268,6 +3268,17 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     }
   }
 
+  .indicator {
+    height: 200px;
+    padding: 15px 20px;
+    .lds-spinner {
+      transform: scale(0.7);
+    }
+    > p {
+      font-size: 12px;
+    }
+  }
+
   // .header {
   //   min-width: $device-width;
   //   height: $device-width;

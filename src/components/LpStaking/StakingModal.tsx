@@ -93,7 +93,7 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
           title={[t('staking.staking')]}
         />
         {transactionWait ? (
-          <LoadingIndicator  />
+          <LoadingIndicator isTxActive={transactionWait} />
         ) : (
           <>
             <div className="modal__lp__staking__body">
@@ -109,29 +109,29 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
                 />
               )}
             </div>
-            <div
-              className={`modal__button${
-                transactionWait 
-                  ? " disable" 
-                  : unstakedPositions.length === 0
-                  ? ' disable'
-                  : selectedToken.id
-                  ? ''
-                  : ' disable'
-              }`}
-              onClick={() =>
-                transactionWait 
-                  ? '' 
-                  : unstakedPositions.length === 0
-                  ? ''
-                  : selectedToken.id
-                  ? lpStakingHandler()
-                  : ''
-              }>
-              <p>{t('staking.staking')}</p>
-            </div>
           </>
         )}
+        <div
+          className={`modal__button${
+            transactionWait 
+              ? " disable" 
+              : unstakedPositions.length === 0
+              ? ' disable'
+              : selectedToken.id
+              ? ''
+              : ' disable'
+          }`}
+          onClick={() =>
+            transactionWait 
+              ? '' 
+              : unstakedPositions.length === 0
+              ? ''
+              : selectedToken.id
+              ? lpStakingHandler()
+              : ''
+          }>
+          <p>{t('staking.staking')}</p>
+        </div>
       </div>
     </div>
   );
