@@ -94,9 +94,9 @@ const SelectWalletModal: FunctionComponent<Props> = ({
               <img src={walletImg} alt={walletImg} />
               <div
                 style={{
-                  fontSize: isMoblie ? 12 : 15,
+                  fontSize: isMoblie() ? 12 : 15,
                 }}>
-                {isMoblie
+                {isMoblie()
                   ? 'Browser Wallet\n(MetaMask / Trust Wallet / imToken)'
                   : 'Metamask'}
               </div>
@@ -126,7 +126,7 @@ const SelectWalletModal: FunctionComponent<Props> = ({
             <img src={walletconnect} alt={walletconnect} />
             <div
               style={{
-                fontSize: isMoblie ? 12 : 15,
+                fontSize: isMoblie() ? 12 : 15,
               }}>
               WalletConnect
             </div>
