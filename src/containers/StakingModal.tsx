@@ -102,7 +102,7 @@ const StakingModal: React.FunctionComponent<{
             button={allowanceLoading ? t("modal.indicator.permission_check") : undefined}
           />
         ) : (
-          !allowanceLoading && allowance.gte(balance) ? (
+          (!allowanceLoading && allowance.gte(balance) || !stakingMode) ? (
             <>
               <div className="modal__body">
                 <div className="modal__input">
@@ -227,7 +227,7 @@ const StakingModal: React.FunctionComponent<{
         )}
         <section>
         {
-          !allowanceLoading && (
+          (!allowanceLoading && allowance.gte(balance) || transactionWait || !stakingMode) && (
             !stakingMode ? (
               <div
                 className={`modal__button${

@@ -265,7 +265,8 @@ const MigrationModal: React.FunctionComponent<{
             stakedBalance.isZero() ||
             amountGtStakedBalance ||
             migrationAmountGtStakedBalance ||
-            transactionWait
+            transactionWait ||
+            (state.withdrawAmount.length === 0 && state.migrationAmount.length === 0)
               ? ' disable'
               : ''
           }`}
@@ -275,7 +276,8 @@ const MigrationModal: React.FunctionComponent<{
               !account ||
               amountGtStakedBalance ||
               migrationAmountGtStakedBalance ||
-              transactionWait
+              transactionWait ||
+              (state.withdrawAmount.length === 0 && state.migrationAmount.length === 0)
             )
               return;
 
