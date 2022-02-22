@@ -401,6 +401,7 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
     }
     &__image-wrapper {
       width: 310px;
+      transform: scale(0.8);
       > img {
         width: 310px;
         object-fit: scale-down;
@@ -431,9 +432,8 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
       flex-direction: column;
       margin-top: 60px;
       height: 100vh;
-      gap: 3vh;
       &__text-container {
-        margin-bottom: 20px;
+        margin-bottom: 0px;
         text-align: center;
         > p {
           &:first-child {
@@ -441,12 +441,12 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
             margin-bottom: 25px;
             strong {
               font-size: 23px;
-              line-height: 32px;
+              line-height: 20px;
             }
           }
           &:last-child {
-            font-size: 12px;
-            line-height: 20px;
+            font-size: 11px;
+            line-height: 18px;
           }
         }
         > h2 {
@@ -848,7 +848,7 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
         width: 100%;
         margin-top: 20vh;
         > h2 {
-          font-size: 23px;
+          font-size: 21px;
         }
         &:first-child {
           > img {

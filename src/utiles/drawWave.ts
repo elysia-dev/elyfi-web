@@ -629,13 +629,13 @@ class DrawWave {
     this.ctx.beginPath();
     this.ctx.fillStyle = '#ffffff';
     this.ctx.moveTo(this.browserWidth / 7 + 10, headerY * 1.6);
-    this.ctx.arc(this.browserWidth / 7, headerY * 1.6, 10, 0, Math.PI * 2);
+    this.ctx.arc(this.browserWidth / 7, headerY * 1.6, 7, 0, Math.PI * 2);
 
     this.ctx.moveTo(this.browserWidth / 1.44 + 5, headerY * 1.595);
     this.ctx.arc(this.browserWidth / 1.44, headerY * 1.595, 5, 0, Math.PI * 2);
 
     this.ctx.moveTo(this.browserWidth / 3 + 10, headerY * 1.65);
-    this.ctx.arc(this.browserWidth / 3, headerY * 1.65, 10, 0, Math.PI * 2);
+    this.ctx.arc(this.browserWidth / 3, headerY * 1.65, 8, 0, Math.PI * 2);
 
     this.ctx.fill();
     this.ctx.stroke();
@@ -650,13 +650,13 @@ class DrawWave {
       : color;
 
     this.ctx.moveTo(this.browserWidth / 1.55 + 10, headerY * 1.62);
-    this.ctx.arc(this.browserWidth / 1.55, headerY * 1.62, 10, 0, Math.PI * 2);
+    this.ctx.arc(this.browserWidth / 1.55, headerY * 1.62, 7, 0, Math.PI * 2);
 
     this.ctx.moveTo(this.browserWidth / 10 + 5, headerY * 1.627);
     this.ctx.arc(this.browserWidth / 10, headerY * 1.627, 5, 0, Math.PI * 2);
 
     this.ctx.moveTo(this.browserWidth / 1.18 + 10, headerY * 1.625);
-    this.ctx.arc(this.browserWidth / 1.18, headerY * 1.625, 10, 0, Math.PI * 2);
+    this.ctx.arc(this.browserWidth / 1.18, headerY * 1.625, 8, 0, Math.PI * 2);
 
     this.ctx.fill();
 
