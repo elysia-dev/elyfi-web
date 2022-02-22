@@ -6,7 +6,7 @@ import walletconnect from 'src/assets/images/walletconnect.png';
 import browserWallet from 'src/assets/images/browserWallet.png';
 import walletConnectConnector from 'src/utiles/walletConnectProvider';
 import { ethers } from 'ethers';
-import { setWalletConnect } from 'src/utiles/isWalletConnect';
+import { isMoblie, setWalletConnect } from 'src/utiles/isWalletConnect';
 import { useTranslation } from 'react-i18next';
 import AppColors from 'src/enums/AppColors';
 
@@ -34,11 +34,7 @@ const SelectWalletModal: FunctionComponent<Props> = ({
     walletconnect: AppColors.selectWalletBorderColor,
   });
 
-  const isMoblie =
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent,
-    );
-  const walletImg = isMoblie ? browserWallet : metamask;
+  const walletImg = isMoblie() ? browserWallet : metamask;
 
   useEffect(() => {
     if (active) {
