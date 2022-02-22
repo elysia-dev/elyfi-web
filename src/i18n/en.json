@@ -220,13 +220,11 @@
       "deposit_add_reward_event": "<strong>New</strong> amount of rewards",
       "claim_before_withraw_guide": "Please claim your rewards first to use your deposit/withdrawal! The reward tokens you will receive are ELFI reward tokens accumulated from <strong>2021.7.15 ~ 2022.1.11 KST!</strong>",
       "claim_question": "Do you want to claim rewards?",
-      
+
       "target_running_strategy": "Target running strategy (Target deposit APY: 10%)",
       "real_estate_mortgage": "Real estate mortgage",
       "auto_invest_defi__title": "Auto investment to DeFi",
-      "auto_invest_defi": [
-        "Anchor Protocol"
-      ],
+      "auto_invest_defi": ["Anchor Protocol"],
       "event_title": "ELFI <strong>300%</strong> Reward Event\nDeposit BUSD, Get ELFI Tokens!"
     },
     "loan": {
@@ -290,7 +288,10 @@
 
     "staking": {
       "staking__token": "{{ token }} Staking",
-      "staking__notice": "{{ stakedToken }} Staking will be carried out in six separate sessions according to the {{ rewardToken }} mining plan.\nStaking {{ stakedToken }} tokens reward the {{ rewardToken }} tokens, and the staked {{ stakedToken }} tokens can be unstaken at any time.\n\n* In addition, {{ stakedToken }} tokens staked in the previous round and the rewarded {{ rewardToken }} tokens are not automatically sent to the next staking pool.",
+      "staking__notice": {
+        "DAI": "{{ stakedToken }} Staking will be carried out in eight separate sessions according to the {{ rewardToken }} mining plan.\nStaking {{ stakedToken }} tokens reward the {{ rewardToken }} tokens, and the staked {{ stakedToken }} tokens can be unstaken at any time.\n\n* In addition, {{ stakedToken }} tokens staked in the previous round and the rewarded {{ rewardToken }} tokens are not automatically sent to the next staking pool.",
+        "BUSD": "{{ stakedToken }} Staking will be carried out in three separate sessions according to the {{ rewardToken }} mining plan.\nStaking {{ stakedToken }} tokens reward the {{ rewardToken }} tokens, and the staked {{ stakedToken }} tokens can be unstaken at any time.\n\n* In addition, {{ stakedToken }} tokens staked in the previous round and the rewarded {{ rewardToken }} tokens are not automatically sent to the next staking pool."
+      },
       "staking__nth": "{{ nth }} round staking",
       "current_round_null": "There is no current rounds in progress.",
       "staking__in_progress": "<strong>{{ nth }}</strong> round In Progress",
