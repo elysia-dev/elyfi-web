@@ -1,4 +1,4 @@
-import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
+import { useWeb3React } from '@web3-react/core';
 import { BigNumber, utils } from 'ethers';
 import { FunctionComponent, useContext } from 'react';
 import LoadingIndicator from 'src/components/LoadingIndicator';
@@ -18,11 +18,12 @@ import buildEventEmitter from 'src/utiles/buildEventEmitter';
 import TransactionType from 'src/enums/TransactionType';
 import ModalViewType from 'src/enums/ModalViewType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
+import MainnetContext from 'src/contexts/MainnetContext';
 import ModalHeader from './ModalHeader';
 
 const ClaimStakingRewardModal: FunctionComponent<{
   stakedToken: Token.ELFI | Token.EL;
-  token: Token.ELFI | Token.DAI;
+  token: Token.ELFI | Token.DAI | Token.BUSD;
   balance?: {
     before: BigNumber;
     value: BigNumber;
@@ -57,10 +58,13 @@ const ClaimStakingRewardModal: FunctionComponent<{
   const { waiting } = useWatingTx();
   const { t } = useTranslation();
   const { setTransaction, failTransaction } = useContext(TxContext);
+  const { type: mainnet } = useContext(MainnetContext);
 
   const claimAddress = rewardContractForV2 ? rewardContractForV2 : stakingPool;
   const claimRound = (
-    round >= 3 && stakedToken === Token.ELFI ? round - 2 : round
+    round >= 3 && stakedToken === Token.ELFI && mainnet === 'Ethereum'
+      ? round - 2
+      : round
   ).toString();
 
   return (
