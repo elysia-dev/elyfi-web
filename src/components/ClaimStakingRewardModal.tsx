@@ -79,7 +79,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
         />
         <div className="modal__body">
           {transactionWait ? (
-            <LoadingIndicator />
+            <LoadingIndicator  />
           ) : (
             <>
               <div className="modal__incentive__body">
