@@ -1,5 +1,7 @@
 import moment from 'moment';
 import 'moment-timezone';
+import MainnetType from 'src/enums/MainnetType';
+import Token from 'src/enums/Token';
 
 export interface IStakingPoolRound {
   startedAt: moment.Moment;
@@ -53,11 +55,28 @@ const stakingRoundTimes: IStakingPoolRound[] = [
     startedAt: '2022.01.26 19:00:00 +9:00',
     endedAt: '2022.03.07 19:00:00 +9:00',
   },
+  {
+    startedAt: '2022.03.08 19:00:00 +9:00',
+    endedAt: '2022.04.17 19:00:00 +9:00',
+  },
+  {
+    startedAt: '2022.04.18 19:00:00 +9:00',
+    endedAt: '2022.05.27 19:00:00 +9:00',
+  },
 ].map((item) => {
   return {
     startedAt: moment(item.startedAt, format).tz('Asia/Seoul', true),
     endedAt: moment(item.endedAt, format).tz('Asia/Seoul', true),
   };
 });
+
+export const roundTimes = (
+  stakedToken: string,
+  mainnet: string,
+): IStakingPoolRound[] => {
+  return stakedToken === Token.ELFI && mainnet === MainnetType.BSC
+    ? busdStakingRoundTimes
+    : stakingRoundTimes;
+};
 
 export default stakingRoundTimes;
