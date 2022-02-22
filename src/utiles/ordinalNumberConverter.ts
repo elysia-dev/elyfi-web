@@ -1,9 +1,8 @@
+import { i18n } from 'i18next';
 import { useTranslation } from 'react-i18next';
 import LanguageType from 'src/enums/LanguageType';
 
-export const ordinalNumberConverter = (value: number): string => {
-  const { i18n } = useTranslation();
-
+export const ordinalNumberConverter = (value: number, i18n: i18n): string => {
   switch (value) {
     case 1:
       return i18n.language === LanguageType.EN
@@ -41,6 +40,10 @@ export const ordinalNumberConverter = (value: number): string => {
         : i18n.language === LanguageType.ZHHANS
         ? '四'
         : '6';
+    case 7:
+      return i18n.language === LanguageType.EN ? '7th' : '7';
+    case 8:
+      return i18n.language === LanguageType.EN ? '8th' : '8';
     default:
       return '';
   }
