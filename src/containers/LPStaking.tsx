@@ -257,7 +257,7 @@ function LPStaking(): JSX.Element {
     if (!headerRef.current) return;
     const headerY =
       headerRef.current.offsetTop +
-      (document.body.clientWidth > 1190 ? 90 : 15);
+      (document.body.clientWidth > 1190 ? 90 : 45);
     if (!canvas) return;
     canvas.width = document.body.clientWidth * dpr;
     canvas.height = document.body.clientHeight * dpr;
