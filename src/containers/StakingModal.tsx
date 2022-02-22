@@ -22,6 +22,8 @@ import buildEventEmitter from 'src/utiles/buildEventEmitter';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
+import { tokenAddress } from 'src/utiles/stakingPoolAddress';
+import MainnetContext from 'src/contexts/MainnetContext';
 
 const StakingModal: React.FunctionComponent<{
   visible: boolean;
@@ -49,6 +51,7 @@ const StakingModal: React.FunctionComponent<{
   const current = moment();
   const { setTransaction, failTransaction } = useContext(TxContext);
   const { contract: stakingPool } = useStakingPool(stakedToken, round >= 3);
+  const { type: getMainnetType } = useContext(MainnetContext);
   const {
     allowance,
     balance,
@@ -56,9 +59,7 @@ const StakingModal: React.FunctionComponent<{
     refetch,
     contract,
   } = useERC20Info(
-    stakedToken === Token.EL
-      ? envs.token.elAddress
-      : envs.token.governanceAddress,
+    tokenAddress(getMainnetType, stakedToken),
     stakingPool ? stakingPool.address : '',
   );
   const { waiting, wait } = useWatingTx();
