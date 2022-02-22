@@ -1,3 +1,4 @@
+import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants, utils } from 'ethers';
 import {
   useContext,
@@ -7,7 +8,6 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useWeb3React } from '@web3-react/core';
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import { GetUser_user } from 'src/queries/__generated__/GetUser';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
@@ -296,7 +296,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
                 elfiPrice,
                 BigNumber.from(reserve.totalDeposit),
                 tokenInfo?.decimals,
-              ))}
+              ),
+            )}
             balance={balance}
             isApproved={!loading && allowance.gt(balance)}
             increaseAllownace={increateAllowance}
