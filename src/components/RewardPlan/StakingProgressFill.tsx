@@ -1,3 +1,4 @@
+import { i18n } from 'i18next';
 import { FunctionComponent } from 'react';
 import { useTranslation } from 'react-i18next';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
@@ -11,11 +12,11 @@ type Props = {
   unit: string;
   end: number;
   currentPhase?: number;
-  OrdinalNumberConverter?: (value: number) => string;
+  OrdinalNumberConverter?: (value: number, i18n: i18n) => string;
 };
 
 const StakingProgressFill: FunctionComponent<Props> = (props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isElfi = props.unit === 'ELFI';
   const { value: mediaQuery } = useMediaQueryType();
 
@@ -49,10 +50,10 @@ const StakingProgressFill: FunctionComponent<Props> = (props) => {
                 <p className="spoqa">
                   {mediaQuery === MediaQuery.PC
                     ? t('reward.nth_mining', {
-                        nth: props.OrdinalNumberConverter!(index + 1),
+                        nth: props.OrdinalNumberConverter!(index + 1, i18n),
                       })
                     : t('staking.nth--short', {
-                        nth: props.OrdinalNumberConverter!(index + 1),
+                        nth: props.OrdinalNumberConverter!(index + 1, i18n),
                       })}
                 </p>
               </div>
