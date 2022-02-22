@@ -27,13 +27,13 @@ import MediaQuery from 'src/enums/MediaQuery';
 import { isMetamask, isWalletConnector } from './utiles/isWalletConnect';
 import walletConnectConnector from './utiles/walletConnectProvider';
 
+const walletConnectProvider = walletConnectConnector();
+
 const AppNavigator: React.FC = () => {
   const [hamburgerBar, setHamburgerBar] = useState(false);
   const { value: mediaQuery } = useMediaQueryType();
 
   const { deactivate, activate, library } = useWeb3React();
-
-  const walletConnectProvider = walletConnectConnector();
 
   usePageTracking();
 
