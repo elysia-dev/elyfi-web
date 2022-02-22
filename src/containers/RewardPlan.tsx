@@ -22,9 +22,7 @@ import {
   tetherMoneyPoolTime,
   busdMoneyPoolTime,
 } from 'src/core/data/moneypoolTimes';
-import stakingRoundTimes, {
-  busdStakingRoundTimes,
-} from 'src/core/data/stakingRoundTimes';
+import { roundTimes } from 'src/core/data/stakingRoundTimes';
 import {
   DAI_REWARD_PER_POOL,
   ELFI_REWARD_PER_POOL,
@@ -57,7 +55,7 @@ import useCalcReward from 'src/hooks/useCalcReward';
 import { rewardToken } from 'src/utiles/stakingReward';
 
 const RewardPlan: FunctionComponent = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { stakingType } = useParams<{ stakingType: string }>();
   const history = useHistory();
   const { latestPrice, ethPool, daiPool } = useContext(UniswapPoolContext);
@@ -70,14 +68,12 @@ const RewardPlan: FunctionComponent = () => {
   const { value: mediaQuery } = useMediaQueryType();
 
   const isEl = stakingType === 'EL';
-  const roundTimes =
-    stakingType === 'ELFI' && getMainnetType === 'BSC'
-      ? busdStakingRoundTimes
-      : stakingRoundTimes;
+  const stakingRoundDate = roundTimes(stakingType, getMainnetType);
 
   const currentPhase = useMemo(() => {
-    return roundTimes.filter((round) => current.diff(round.startedAt) >= 0)
-      .length;
+    return stakingRoundDate.filter(
+      (round) => current.diff(round.startedAt) >= 0,
+    ).length;
   }, [current]);
   const { state: rewardInfo } = useCalcReward(stakingType);
 
@@ -388,7 +384,7 @@ const RewardPlan: FunctionComponent = () => {
         ) : ['EL', 'ELFI'].includes(stakingType) ? (
           <section className={`reward__${stakingType.toLowerCase()}`}>
             <StakingBox
-              nth={ordinalNumberConverter(state.round + 1)}
+              nth={ordinalNumberConverter(state.round + 1, i18n)}
               loading={poolLoading}
               poolApr={poolApr}
               poolPrincipal={poolPrincipal}
@@ -405,7 +401,7 @@ const RewardPlan: FunctionComponent = () => {
               state={state}
               setState={setState}
               OrdinalNumberConverter={ordinalNumberConverter}
-              stakingToken={stakingType}
+              stakedToken={stakingType}
               miningStart={isEl ? rewardInfo.beforeStakingPool : undefined}
               miningEnd={isEl ? rewardInfo.afterStakingPool : undefined}
             />
