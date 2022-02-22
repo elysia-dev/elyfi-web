@@ -289,6 +289,7 @@
     "staking": {
       "staking__token": "{{ token }} Staking",
       "staking__notice": {
+        "ELFI": "{{ stakedToken }} Staking will be carried out in eight separate sessions according to the {{ rewardToken }} mining plan.\nStaking {{ stakedToken }} tokens reward the {{ rewardToken }} tokens, and the staked {{ stakedToken }} tokens can be unstaken at any time.\n\n* In addition, {{ stakedToken }} tokens staked in the previous round and the rewarded {{ rewardToken }} tokens are not automatically sent to the next staking pool.",
         "DAI": "{{ stakedToken }} Staking will be carried out in eight separate sessions according to the {{ rewardToken }} mining plan.\nStaking {{ stakedToken }} tokens reward the {{ rewardToken }} tokens, and the staked {{ stakedToken }} tokens can be unstaken at any time.\n\n* In addition, {{ stakedToken }} tokens staked in the previous round and the rewarded {{ rewardToken }} tokens are not automatically sent to the next staking pool.",
         "BUSD": "{{ stakedToken }} Staking will be carried out in three separate sessions according to the {{ rewardToken }} mining plan.\nStaking {{ stakedToken }} tokens reward the {{ rewardToken }} tokens, and the staked {{ stakedToken }} tokens can be unstaken at any time.\n\n* In addition, {{ stakedToken }} tokens staked in the previous round and the rewarded {{ rewardToken }} tokens are not automatically sent to the next staking pool."
       },
