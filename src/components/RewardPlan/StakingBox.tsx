@@ -6,12 +6,11 @@ import {
   useRef,
   useState,
 } from 'react';
+import { i18n } from 'i18next';
 import Token from 'src/enums/Token';
 import elfi from 'src/assets/images/ELFI.png';
 import el from 'src/assets/images/el.png';
-import stakingRoundTimes, {
-  busdStakingRoundTimes,
-} from 'src/core/data/stakingRoundTimes';
+import { roundTimes } from 'src/core/data/stakingRoundTimes';
 import { useTranslation } from 'react-i18next';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
@@ -43,8 +42,8 @@ type Props = {
       round: number;
     }>,
   ) => void;
-  OrdinalNumberConverter: (value: number) => string;
-  stakingToken: string;
+  OrdinalNumberConverter: (value: number, i18n: i18n) => string;
+  stakedToken: string;
   miningStart?: number[];
   miningEnd?: number[];
   currentPhase?: number;
@@ -54,7 +53,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
   const isElfi = !(props.unit === 'ELFI');
   const rewardOrMining = isElfi ? 'reward' : 'mining';
   const tokenImg = isElfi ? elfi : el;
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { value: mediaQuery } = useMediaQueryType();
   const [currentSwipe, setCurrnetSwipe] = useState(props.staking);
   const { type: getMainnetType } = useContext(MainnetContext);
@@ -62,10 +61,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
   const nextNavigation = useRef<HTMLDivElement>(null);
   const pagination = useRef<HTMLDivElement>(null);
 
-  const roundTimes =
-    props.stakingToken === 'ELFI' && getMainnetType === 'BSC'
-      ? busdStakingRoundTimes
-      : stakingRoundTimes;
+  const stakingRoundDate = roundTimes(props.stakedToken, getMainnetType);
 
   useEffect(() => {
     props.setState({
@@ -128,7 +124,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
                   : '240px'
                 : undefined,
           }}>
-          {roundTimes.map((_x, index) => {
+          {stakingRoundDate.map((_x, index) => {
             const miningValue = miningValueByToken(props.unit, props.staking);
             const { start, end } = countValue(props.start, props.end, index);
 
@@ -157,7 +153,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
                     }
                   />
                   <StakingDetailInfo
-                    nth={props.OrdinalNumberConverter(index + 1)}
+                    nth={props.OrdinalNumberConverter(index + 1, i18n)}
                     isELFI={!(props.unit === 'ELFI')}
                     staking={index}
                     unit={props.unit}
@@ -175,7 +171,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
                         ? props.miningEnd[index]
                         : undefined
                     }
-                    roundTimes={roundTimes}
+                    stakingRoundDate={stakingRoundDate}
                   />
                 </div>
               </SwiperSlide>
