@@ -1,18 +1,19 @@
 import { BigNumber, constants, utils } from 'ethers';
 import { useState, useContext, useMemo } from 'react';
-import ELFI from 'src/assets/images/ELFI.png';
-import { formatComma } from 'src/utiles/formatters';
 import { useTranslation } from 'react-i18next';
 import { useWeb3React } from '@web3-react/core';
+import { formatEther, parseEther } from 'ethers/lib/utils';
+import moment from 'moment';
+
+import { formatComma } from 'src/utiles/formatters';
+import ELFI from 'src/assets/images/ELFI.png';
 import Token from 'src/enums/Token';
 import ArrowUp from 'src/assets/images/arrow-up.png';
 import ArrowDown from 'src/assets/images/arrow-down.png';
 import ArrowLeft from 'src/assets/images/arrow-left.png';
 import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
-import moment from 'moment';
 import useStakingPool from 'src/hooks/useStakingPool';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
-import { formatEther, parseEther } from 'ethers/lib/utils';
 import useWaitingTx from 'src/hooks/useWaitingTx';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
@@ -20,6 +21,7 @@ import buildEventEmitter from 'src/utiles/buildEventEmitter';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
+import MainnetContext from 'src/contexts/MainnetContext';
 import LoadingIndicator from './LoadingIndicator';
 import ModalHeader from './ModalHeader';
 import Popupinfo from './PopupInfo';
@@ -29,7 +31,7 @@ const MigrationModal: React.FunctionComponent<{
   closeHandler: () => void;
   afterTx: () => void;
   stakedToken: Token.ELFI | Token.EL;
-  rewardToken: Token.ELFI | Token.DAI;
+  rewardToken: Token.ELFI | Token.DAI | Token.BUSD;
   stakedBalance: BigNumber;
   rewardBalance: BigNumber;
   round: number;
@@ -58,6 +60,7 @@ const MigrationModal: React.FunctionComponent<{
   const { contract: stakingPool } = useStakingPool(stakedToken, round >= 3);
   const { waiting, wait } = useWaitingTx();
   const { setTransaction, failTransaction } = useContext(TxContext);
+  const { type: getMainnetType } = useContext(MainnetContext);
 
   const amountGtStakedBalance =
     !state.withdrawMax &&
@@ -301,7 +304,9 @@ const MigrationModal: React.FunctionComponent<{
                   : state.withdrawMax
                   ? constants.Zero
                   : utils.parseEther(state.migrationAmount),
-                (round >= 3 && stakedToken === Token.ELFI
+                (round >= 3 &&
+                stakedToken === Token.ELFI &&
+                getMainnetType === 'Ethereum'
                   ? round - 2
                   : round
                 ).toString(),
