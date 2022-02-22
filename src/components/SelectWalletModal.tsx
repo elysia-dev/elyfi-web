@@ -19,6 +19,10 @@ interface WindowWithEthereum extends Window {
   ethereum?: ethers.providers.Web3Provider;
 }
 
+const global: WindowWithEthereum = window as WindowWithEthereum;
+
+const walletConnectProvider = walletConnectConnector();
+
 const SelectWalletModal: FunctionComponent<Props> = ({
   selectWalletModalVisible,
   modalClose,
@@ -29,9 +33,6 @@ const SelectWalletModal: FunctionComponent<Props> = ({
     metamask: AppColors.selectWalletBorderColor,
     walletconnect: AppColors.selectWalletBorderColor,
   });
-  const global: WindowWithEthereum = window as WindowWithEthereum;
-
-  const walletConnectProvider = walletConnectConnector();
 
   const isMoblie =
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
