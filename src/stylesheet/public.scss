@@ -2968,6 +2968,7 @@ input[type='number'] {
     background: rgba(0, 0, 0, 0.4);
     z-index: 999;
     overflow: hidden;
+    backdrop-filter: blur(4px);
     &__button {
       box-shadow: 0px 0px 6px #00000029;
       background: $elysia-color;

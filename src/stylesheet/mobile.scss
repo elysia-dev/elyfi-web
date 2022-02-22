@@ -3048,6 +3048,22 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
         margin-right: 8px;
       }
     }
+    &__increate-allowance {
+      &__content {
+        padding: 15px 10px;
+        > p {
+          font-size: 10px;
+          line-height: 18px;
+        }
+      }
+      > p {
+        font-size: 10px;
+      }
+      > h2 {
+        font-size: 14px;
+        padding: 10px 0 20px;
+      }
+    }
   } // modal end
 
   .component {
