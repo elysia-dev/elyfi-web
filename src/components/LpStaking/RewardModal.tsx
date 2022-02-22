@@ -156,8 +156,8 @@ const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
         }
         <div>
           <div
-            className={`modal__button`}
-            onClick={() => receiveRewardHandler()}>
+            className={`modal__button ${transactionWait ? "disable" : ""}`}
+            onClick={() => transactionWait ? undefined : receiveRewardHandler()}>
             <p>{t('staking.claim_reward')}</p>
           </div>
         </div>
