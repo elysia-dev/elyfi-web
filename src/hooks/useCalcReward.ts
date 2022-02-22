@@ -1,15 +1,14 @@
+import { BigNumber } from '@elysia-dev/contract-typechain/node_modules/ethers';
 import { utils } from 'ethers';
 import { useContext, useEffect, useState } from 'react';
 import MainnetContext from 'src/contexts/MainnetContext';
 import stakingRoundTimes, {
   busdStakingRoundTimes,
+  IStakingPoolRound,
+  roundTimes,
 } from 'src/core/data/stakingRoundTimes';
-import {
-  BUSDPerDayOnELFIStakingPool,
-  DAIPerDayOnELFIStakingPool,
-  ELFIPerDayOnELStakingPool,
-  TETHERPerDayOnELFIStakingPool,
-} from 'src/core/data/stakings';
+import { TETHERPerDayOnELFIStakingPool } from 'src/core/data/stakings';
+import RoundRewardType from 'src/core/types/RoundRewardType';
 import {
   calcDaiRewardByLp,
   calcElfiRewardByLp,
@@ -21,73 +20,68 @@ import {
   calcMintedByDaiMoneypool,
   calcMintedByTetherMoneypool,
 } from 'src/core/utils/calcMintedByDaiMoneypool';
-import { rewardPerDayByToken } from 'src/utiles/stakingInfoBytoken';
+import { rewardPerDayByToken } from 'src/utiles/stakingReward';
 
-const useCalcReward = (token: string) => {
-  const { type: getMainnetType } = useContext(MainnetContext);
-  const roundTimes =
-    token === 'ELFI' && getMainnetType === 'BSC'
-      ? busdStakingRoundTimes
-      : stakingRoundTimes;
-  const rewardPerDay = rewardPerDayByToken(token, getMainnetType);
-
-  const [state, setState] = useState({
-    beforeStakingPool: roundTimes.map(() => 0),
+const initState = (
+  stakingRoundDate: IStakingPoolRound[],
+  rewardPerDay: BigNumber,
+  state?: RoundRewardType,
+) => {
+  return {
+    beforeStakingPool: state
+      ? state.afterStakingPool
+      : stakingRoundDate.map(() => 0),
     afterStakingPool: calcMintedAmounts(
       parseFloat(utils.formatEther(rewardPerDay)),
-      roundTimes,
+      stakingRoundDate,
     ),
-    beforeMintedByDaiMoneypool: 0,
+    beforeMintedByDaiMoneypool: state ? state.mintedByDaiMoneypool : 0,
     mintedByDaiMoneypool: calcMintedByDaiMoneypool(),
-    beforeTetherRewardByElFiStakingPool: [0, 0, 0],
+    beforeTetherRewardByElFiStakingPool: state
+      ? state.tetherRewardByElFiStakingPool
+      : [0, 0, 0],
     tetherRewardByElFiStakingPool: calcMintedAmounts(
       parseFloat(utils.formatEther(TETHERPerDayOnELFIStakingPool)),
-      roundTimes,
+      stakingRoundDate,
     ),
-    beforeMintedByTetherMoneypool: 0,
+    beforeMintedByTetherMoneypool: state ? state.mintedByTetherMoneypool : 0,
     mintedByTetherMoneypool: calcMintedByTetherMoneypool(),
-    beforeElfiRewardByLp: [0, 0, 0],
+    beforeElfiRewardByLp: state ? state.elfiRewardByLp : [0, 0, 0],
     elfiRewardByLp: calcElfiRewardByLp(),
-    beforeDaiRewardByLp: [0, 0, 0],
+    beforeDaiRewardByLp: state ? state.daiRewardByLp : [0, 0, 0],
     daiRewardByLp: calcDaiRewardByLp(),
-    beforeEthRewardByLp: [0, 0, 0],
+    beforeEthRewardByLp: state ? state.ethRewardByLp : [0, 0, 0],
     ethRewardByLp: calcEthRewardByLp(),
-    beforeMintedByBuscMoneypool: 0,
+    beforeMintedByBuscMoneypool: state ? state.mintedByBusdMoneypool : 0,
     mintedByBusdMoneypool: calcMintedByBusdMoneypool(),
-  });
+  };
+};
+
+const useCalcReward = (
+  token: string,
+): {
+  state: RoundRewardType;
+} => {
+  const { type: getMainnetType } = useContext(MainnetContext);
+  const stakingRoundDate = roundTimes(token, getMainnetType);
+  const rewardPerDay = rewardPerDayByToken(token, getMainnetType);
+
+  const [state, setState] = useState<RoundRewardType>(
+    initState(stakingRoundDate, rewardPerDay),
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setState({
-        beforeStakingPool: state.afterStakingPool,
-        afterStakingPool: calcMintedAmounts(
-          parseFloat(utils.formatEther(rewardPerDay)),
-          roundTimes,
-        ),
-        beforeMintedByDaiMoneypool: state.mintedByDaiMoneypool,
-        mintedByDaiMoneypool: calcMintedByDaiMoneypool(),
-        beforeTetherRewardByElFiStakingPool:
-          state.tetherRewardByElFiStakingPool,
-        tetherRewardByElFiStakingPool: calcMintedAmounts(
-          Number(utils.formatEther(TETHERPerDayOnELFIStakingPool)),
-          roundTimes,
-        ),
-        beforeMintedByTetherMoneypool: state.mintedByTetherMoneypool,
-        mintedByTetherMoneypool: calcMintedByTetherMoneypool(),
-        beforeElfiRewardByLp: state.elfiRewardByLp,
-        elfiRewardByLp: calcElfiRewardByLp(),
-        beforeDaiRewardByLp: state.daiRewardByLp,
-        daiRewardByLp: calcDaiRewardByLp(),
-        beforeEthRewardByLp: state.ethRewardByLp,
-        ethRewardByLp: calcEthRewardByLp(),
-        beforeMintedByBuscMoneypool: state.mintedByBusdMoneypool,
-        mintedByBusdMoneypool: calcMintedByBusdMoneypool(),
-      });
+      setState(initState(stakingRoundDate, rewardPerDay, state));
     }, 2000);
     return () => {
       clearInterval(interval);
     };
   }, [state]);
+
+  useEffect(() => {
+    setState(initState(stakingRoundDate, rewardPerDay));
+  }, [getMainnetType]);
 
   return { state };
 };
