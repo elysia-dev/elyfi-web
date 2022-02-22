@@ -38,6 +38,10 @@ const toOrdinalNumber = (language: string, value: number): string => {
         : language === LanguageType.ZHHANS
         ? '六'
         : '6';
+    case 7:
+      return language === LanguageType.EN ? '7th' : '7';
+    case 8:
+      return language === LanguageType.EN ? '8th' : '8';
     default:
       return '';
   }
