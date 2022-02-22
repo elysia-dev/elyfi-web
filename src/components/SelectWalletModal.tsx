@@ -8,6 +8,7 @@ import walletConnectConnector from 'src/utiles/walletConnectProvider';
 import { ethers } from 'ethers';
 import { setWalletConnect } from 'src/utiles/isWalletConnect';
 import { useTranslation } from 'react-i18next';
+import AppColors from 'src/enums/AppColors';
 
 type Props = {
   selectWalletModalVisible: boolean;
@@ -25,8 +26,8 @@ const SelectWalletModal: FunctionComponent<Props> = ({
   const { t } = useTranslation();
   const { activate, active } = useWeb3React();
   const [hoverColor, setHoverColor] = useState({
-    metamask: '#E6E6E6',
-    walletconnect: '#E6E6E6',
+    metamask: AppColors.selectWalletBorderColor,
+    walletconnect: AppColors.selectWalletBorderColor,
   });
   const global: WindowWithEthereum = window as WindowWithEthereum;
 
@@ -82,10 +83,16 @@ const SelectWalletModal: FunctionComponent<Props> = ({
                   });
               }}
               onMouseEnter={() => {
-                setHoverColor({ ...hoverColor, metamask: '#00BFFF' });
+                setHoverColor({
+                  ...hoverColor,
+                  metamask: AppColors.hoverColor,
+                });
               }}
               onMouseLeave={() => {
-                setHoverColor({ ...hoverColor, metamask: '#E6E6E6' });
+                setHoverColor({
+                  ...hoverColor,
+                  metamask: AppColors.selectWalletBorderColor,
+                });
               }}>
               <img src={walletImg} alt={walletImg} />
               <div
@@ -108,10 +115,16 @@ const SelectWalletModal: FunctionComponent<Props> = ({
               modalClose();
             }}
             onMouseEnter={() => {
-              setHoverColor({ ...hoverColor, walletconnect: '#00BFFF' });
+              setHoverColor({
+                ...hoverColor,
+                walletconnect: AppColors.hoverColor,
+              });
             }}
             onMouseLeave={() => {
-              setHoverColor({ ...hoverColor, walletconnect: '#E6E6E6' });
+              setHoverColor({
+                ...hoverColor,
+                walletconnect: AppColors.selectWalletBorderColor,
+              });
             }}>
             <img src={walletconnect} alt={walletconnect} />
             <div
