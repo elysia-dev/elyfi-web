@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { useContext, useMemo } from 'react';
+import { useMemo } from 'react';
 import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import { providers } from 'ethers';
 
