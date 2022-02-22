@@ -20,7 +20,7 @@ type Props = {
       round: number;
     }>,
   ) => void;
-  roundTimes: IStakingPoolRound[];
+  stakingRoundDate: IStakingPoolRound[];
   miningStart?: number;
   miningEnd?: number;
 };
@@ -46,9 +46,9 @@ const StakingDetailInfo: FunctionComponent<Props> = (props: Props) => {
 
   const roundDate = [
     t(isELFI ? 'reward.reward_term' : 'reward.mining_term'),
-    `${props.roundTimes[staking].startedAt.format(
+    `${props.stakingRoundDate[staking].startedAt.format(
       'yyyy.MM.DD HH:mm:ss',
-    )} ~ ${props.roundTimes[staking].endedAt.format(
+    )} ~ ${props.stakingRoundDate[staking].endedAt.format(
       'yyyy.MM.DD HH:mm:ss',
     )} KST`,
   ];
