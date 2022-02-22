@@ -39,12 +39,12 @@ export const countValue = (
 export const rewardToken = (
   stakedToken: string,
   mainnet: string,
-): Token.ELFI | Token.DAI => {
+): Token.ELFI | Token.DAI | Token.BUSD => {
   switch (stakedToken) {
     case 'ELFI':
-      //   if (mainnet === 'BSC') {
-      //     return Token.BUSD;
-      //   }
+      if (mainnet === 'BSC') {
+        return Token.BUSD;
+      }
       return Token.DAI;
     case 'EL':
     default:
