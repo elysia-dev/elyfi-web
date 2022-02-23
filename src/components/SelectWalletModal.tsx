@@ -13,7 +13,6 @@ import AppColors from 'src/enums/AppColors';
 type Props = {
   selectWalletModalVisible: boolean;
   modalClose: () => void;
-  // isNavBtn: boolean;
 };
 
 interface WindowWithEthereum extends Window {
@@ -21,8 +20,6 @@ interface WindowWithEthereum extends Window {
 }
 
 const global: WindowWithEthereum = window as WindowWithEthereum;
-
-const walletConnectProvider = walletConnectConnector();
 
 const SelectWalletModal: FunctionComponent<Props> = ({
   selectWalletModalVisible,
@@ -34,14 +31,9 @@ const SelectWalletModal: FunctionComponent<Props> = ({
     metamask: AppColors.selectWalletBorderColor,
     walletconnect: AppColors.selectWalletBorderColor,
   });
+  const walletConnectProvider = walletConnectConnector();
 
   const walletImg = isMoblie() ? browserWallet : metamask;
-
-  // useEffect(() => {
-  //   if (active) {
-  //     modalClose();
-  //   }
-  // }, [active]);
 
   return (
     <div
