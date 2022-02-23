@@ -1,19 +1,15 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber } from 'ethers';
 import { formatEther } from 'ethers/lib/utils';
-import moment from 'moment';
 import { FunctionComponent, useContext } from 'react';
 import CountUp from 'react-countup';
 import { Trans, useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 import ReserveToken from 'src/core/types/ReserveToken';
 import MainnetContext from 'src/contexts/MainnetContext';
 // import ReservesContext from 'src/contexts/ReservesContext';
 import MediaQuery from 'src/enums/MediaQuery';
-import Token from 'src/enums/Token';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import { formatSixFracionDigit } from 'src/utiles/formatters';
-import { isMoblie } from 'src/utiles/isWalletConnect';
 
 type Props = {
   moneyPoolTime: string;
