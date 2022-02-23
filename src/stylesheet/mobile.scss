@@ -936,9 +936,9 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       padding: 20px 10px;
 
       width: 100%;
-      border: 1px solid #0099CC;
+      border: 1px solid #0099cc;
       border-radius: 15px;
-      background-color: #F7FBFF;
+      background-color: #f7fbff;
       > h2 {
         font-size: 20px !important;
       }
@@ -957,7 +957,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           display: flex;
           justify-content: center;
           align-items: center;
-          border: 1px solid #0099CC;
+          border: 1px solid #0099cc;
           background-color: #fff;
           padding: 0px;
           > p {
@@ -3199,6 +3199,26 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
     > h2 {
       font-size: 12px;
       color: $sub-font-color;
+    }
+    &__lang {
+      &__image-handler {
+        &__wrapper {
+          > img {
+            margin-left: 5px;
+          }
+          > p {
+            margin-right: 5px;
+          }
+        }
+      }
+      &__wrapper {
+        > img {
+          margin-left: 8px;
+        }
+        > p {
+          margin-right: 8px;
+        }
+      }
     }
   }
   .error {
