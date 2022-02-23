@@ -7,12 +7,14 @@ type Props = {
   modalVisible: boolean;
   selectWalletModalVisible: () => void;
   modalClose: () => void;
+  isNavBtn?: boolean;
 };
 
 const WalletDisconnect: FunctionComponent<Props> = ({
   modalVisible,
   selectWalletModalVisible,
   modalClose,
+  isNavBtn,
 }) => {
   const { deactivate } = useWeb3React();
   const { t } = useTranslation();
@@ -48,7 +50,7 @@ const WalletDisconnect: FunctionComponent<Props> = ({
           onClick={() => {
             window.sessionStorage.setItem('@connect', 'false');
             deactivate();
-            modalClose();
+            isNavBtn && modalClose();
             selectWalletModalVisible();
           }}>
           {t('modal.wallet_change_netwrok.button')}
