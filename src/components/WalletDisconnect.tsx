@@ -37,11 +37,11 @@ const WalletDisconnect: FunctionComponent<Props> = ({
         </div>
         <div className="change_network_modal__content__line" />
         <div className="change_network_modal__content__guide">
-          <div>
+          <p>
             {t('modal.wallet_change_netwrok.content', {
               network: getMainnetType,
             })}
-          </div>
+          </p>
           <div>{t('modal.wallet_change_netwrok.subContent')}</div>
         </div>
         <div className="change_network_modal__content__line" />
