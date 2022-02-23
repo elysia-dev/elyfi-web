@@ -3324,8 +3324,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
       }
 
       &__guide {
-        > div:first-child {
-          font-family: 'SpoqaHanSansNeo-Medium';
+        > p:first-child {
           color: '#333333';
           width: 250px;
           height: 43px;
@@ -3334,6 +3333,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
           margin-top: 23px;
           margin-bottom: 13px;
           font-size: 13px;
+          font-weight: 600;
         }
         > div:last-child {
           font-family: 'SpoqaHanSansNeo';
