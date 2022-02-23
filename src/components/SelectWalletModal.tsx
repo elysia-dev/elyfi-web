@@ -1,9 +1,9 @@
 import { useWeb3React } from '@web3-react/core';
 import injectedConnector from 'src/core/connectors/injectedConnector';
-import { FunctionComponent, useEffect, useState } from 'react';
-import metamask from 'src/assets/images/metamask.png';
-import walletconnect from 'src/assets/images/walletconnect.png';
-import browserWallet from 'src/assets/images/browserWallet.png';
+import { FunctionComponent, useState } from 'react';
+import metamask from 'src/assets/images/metamask@2x.png';
+import walletconnect from 'src/assets/images/walletconnect@2x.png';
+import browserWallet from 'src/assets/images/browserWallet@2x.png';
 import walletConnectConnector from 'src/utiles/walletConnectProvider';
 import { ethers } from 'ethers';
 import { isMoblie, setWalletConnect } from 'src/utiles/connectWallet';
@@ -26,7 +26,7 @@ const SelectWalletModal: FunctionComponent<Props> = ({
   modalClose,
 }) => {
   const { t } = useTranslation();
-  const { activate, active } = useWeb3React();
+  const { activate } = useWeb3React();
   const [hoverColor, setHoverColor] = useState({
     metamask: AppColors.selectWalletBorderColor,
     walletconnect: AppColors.selectWalletBorderColor,
