@@ -48,7 +48,7 @@ function useExpectedReward(): {
   const getReward = async (position: Position, round: number) => {
     try {
       const staker = new ethers.Contract(
-        envs.stakerAddress,
+        envs.lpStaking.stakerAddress,
         stakerABI,
         library.getSigner(),
       );
@@ -56,7 +56,7 @@ function useExpectedReward(): {
       const { poolAddress, rewardTokenAddress } = getAddressesByPool(position);
 
       const rewardToken0 = await staker.getRewardInfo(
-        lpTokenValues(poolAddress, envs.governanceAddress, round - 1),
+        lpTokenValues(poolAddress, envs.token.governanceAddress, round - 1),
         position.tokenId,
       );
 
@@ -108,7 +108,7 @@ function useExpectedReward(): {
       const positionsByRound = positions.filter((position) =>
         position.incentivePotisions.some((pool) =>
           pool.incentive.rewardToken.toLowerCase() ===
-          envs.daiAddress.toLowerCase()
+          envs.token.daiAddress.toLowerCase()
             ? pool.incentive.id.toLowerCase() ===
               incentiveIds[round - 1].daiIncentiveId
             : pool.incentive.id.toLowerCase() ===
@@ -154,7 +154,7 @@ function useExpectedReward(): {
       const positionsByRound = positions.filter((position) =>
         position.incentivePotisions.some((pool) =>
           pool.incentive.rewardToken.toLowerCase() ===
-          envs.daiAddress.toLowerCase()
+          envs.token.daiAddress.toLowerCase()
             ? pool.incentive.id.toLowerCase() === incentiveId.daiIncentiveId
             : pool.incentive.id.toLowerCase() === incentiveId.ethIncentiveId,
         ),
@@ -162,7 +162,7 @@ function useExpectedReward(): {
       positionsByRound.forEach((position, idx) => {
         const isEthElfiPoolAddress =
           position.incentivePotisions[0].incentive.pool.toLowerCase() ===
-          envs.ethElfiPoolAddress.toLowerCase();
+          envs.lpStaking.ethElfiPoolAddress.toLowerCase();
         const pricePerLiquidity = isEthElfiPoolAddress
           ? pricePerEthLiquidity
           : pricePerDaiLiquidity;

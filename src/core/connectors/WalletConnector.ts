@@ -151,7 +151,7 @@ export default class WalletConnectConnector extends AbstractConnector {
     }
   }
 
-  public async close() {
+  public async close(): Promise<void> {
     await this.walletConnectProvider?.close();
   }
 }

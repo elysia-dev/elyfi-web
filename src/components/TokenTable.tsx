@@ -116,9 +116,9 @@ const TokenTable: React.FC<Props> = ({
           {mediaQuery === MediaQuery.PC && (
             <div className="deposit__table__header__data-grid">
               <div />
-              {tableData.map((data) => {
+              {tableData.map((data, index) => {
                 return (
-                  <div>
+                  <div key={index}>
                     <p>{data[0]}</p>
                     <p className="bold">{data[1]}</p>
                   </div>
@@ -132,9 +132,9 @@ const TokenTable: React.FC<Props> = ({
             {mediaQuery === MediaQuery.Mobile && (
               <div className="deposit__table__header__data-grid">
                 <div />
-                {tableData.map((data) => {
+                {tableData.map((data, index) => {
                   return (
-                    <div>
+                    <div key={index}>
                       <p>{data[0]}</p>
                       <p className="bold">{data[1]}</p>
                     </div>

@@ -118,9 +118,11 @@ const Navigation: React.FunctionComponent<{
   const localNavInnerContainer = (
     _data: ISubNavigation,
     isExternalLink: boolean,
+    index: number,
   ) => {
     return (
       <Link
+        key={`nav_${index}`}
         to={{
           pathname: !isExternalLink
             ? `/${lng + _data.location}`
@@ -142,9 +144,13 @@ const Navigation: React.FunctionComponent<{
     );
   };
 
-  const globalNavInnerContainer = (_data: INavigation, _index: number) => {
+  const globalNavInnerContainer = (
+    _data: INavigation,
+    _index: number,
+    isExternalLink?: boolean,
+  ) => {
     return (
-      <div className="navigation__link__wrapper">
+      <div key={_index} className="navigation__link__wrapper">
         <div
           className="navigation__link"
           onMouseEnter={() => {
@@ -190,14 +196,16 @@ const Navigation: React.FunctionComponent<{
                 borderBottom:
                   scrollTop > 125 ? '1px solid #e6e6e6' : '1px solid #e6e6e6',
               }}>
-              {getHoveredLNBData.map((getData) => {
-                return getData.subNavigation!.map((subData) => {
-                  return localNavInnerContainer(
-                    subData,
-                    subData.type === NavigationType.Link ? false : true,
-                  );
-                });
-              })}
+              {isExternalLink &&
+                getHoveredLNBData.map((getData) => {
+                  return getData.subNavigation!.map((subData, index) => {
+                    return localNavInnerContainer(
+                      subData,
+                      subData.type === NavigationType.Link ? false : true,
+                      index,
+                    );
+                  });
+                })}
             </div>
           </div>
         </div>
@@ -210,8 +218,28 @@ const Navigation: React.FunctionComponent<{
     _index: number,
     isExternalLink?: boolean,
   ) => {
-    return (
+    return isExternalLink ? (
+      <div
+        key={`linkNavigation_${_index}`}
+        onMouseEnter={() => {
+          setGlobalNavHover(_index + 1);
+
+          setSelectedLocalNavIndex(0);
+        }}
+        onClick={() => {
+          if (_index === 0) {
+            reactGA.event({
+              category: PageEventType.MoveToInternalPage,
+              action: ButtonEventType.DepositButtonOnTop,
+            });
+          }
+          initialNavigationState();
+        }}>
+        {globalNavInnerContainer(_data as INavigation, _index, isExternalLink)}
+      </div>
+    ) : (
       <Link
+        key={_index}
         to={{
           pathname:
             _data.type === NavigationType.Link
@@ -242,6 +270,7 @@ const Navigation: React.FunctionComponent<{
     const LNBNavigation = () => {
       return (
         <div
+          key={index}
           onMouseEnter={() => {
             setSelectedLocalNavIndex(index + 1);
           }}>
@@ -250,11 +279,14 @@ const Navigation: React.FunctionComponent<{
       );
     };
 
+    // return data.type === NavigationType.Link
+    //   ? linkNavigation(data, index, false)
+    //   : data.type === NavigationType.Href
+    //   ? linkNavigation(data, index, true)
+    //   : LNBNavigation();
     return data.type === NavigationType.Link
       ? linkNavigation(data, index, false)
-      : data.type === NavigationType.Href
-      ? linkNavigation(data, index, true)
-      : LNBNavigation();
+      : linkNavigation(data, index, true);
   };
 
   const setNavigationLink = () => {
@@ -300,6 +332,7 @@ const Navigation: React.FunctionComponent<{
                   {data.subNavigation!.map((_data, index) => {
                     return (
                       <Link
+                        key={`hamburgerBar_${index}`}
                         to={{
                           pathname:
                             _data.type === NavigationType.Link

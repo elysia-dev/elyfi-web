@@ -21,7 +21,7 @@ import MainnetProvider from './providers/MainnetProvider';
 
 const App: React.FC = () => {
   const client = new ApolloClient({
-    uri: envs.subgraphURI,
+    uri: envs.subgraphApiEndpoint.subgraphURI,
     // uri: envs.bscSubgraphURI,
     cache: new InMemoryCache(),
   });

@@ -50,10 +50,10 @@ const getIncentiveByRound = async (
 ) => {
   const incentiveRound1 = await IncentivePool__factory.connect(
     tokenName === Token.DAI
-      ? envs.prevDaiIncentivePool
+      ? envs.incentivePool.prevDaiIncentivePool
       : tokenName === Token.USDT
-      ? envs.prevUSDTIncentivePool
-      : envs.busdIncentivePoolAddress,
+      ? envs.incentivePool.prevUSDTIncentivePool
+      : envs.incentivePool.busdIncentivePoolAddress,
     library.getSigner(),
   ).getUserIncentive(account);
 
@@ -64,10 +64,10 @@ const getIncentiveByRound = async (
       ? incentiveRound1
       : await IncentivePool__factory.connect(
           tokenName === Token.DAI
-            ? envs.currentDaiIncentivePool
+            ? envs.incentivePool.currentDaiIncentivePool
             : tokenName === Token.USDT
-            ? envs.currentUSDTIncentivePool
-            : envs.busdIncentivePoolAddress,
+            ? envs.incentivePool.currentUSDTIncentivePool
+            : envs.incentivePool.busdIncentivePoolAddress,
           library.getSigner(),
         ).getUserIncentive(account);
 

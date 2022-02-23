@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import LanguageType from 'src/enums/LanguageType';
 
-export const ordinalNumberConverter = (value: number) => {
+export const ordinalNumberConverter = (value: number): string => {
   const { i18n } = useTranslation();
 
   switch (value) {

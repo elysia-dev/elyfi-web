@@ -1,4 +1,11 @@
-import { FunctionComponent, useMemo, useEffect, useState, useRef, useContext } from 'react';
+import {
+  FunctionComponent,
+  useMemo,
+  useEffect,
+  useState,
+  useRef,
+  useContext,
+} from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import TempAssets from 'src/assets/images/temp_assets.png';
 import wave from 'src/assets/images/wave_elyfi.png';
@@ -23,6 +30,8 @@ import envs from 'src/core/envs';
 import Guide from 'src/components/Guide';
 import Loading from 'src/components/Loading';
 import SubgraphContext, { IAssetBond } from 'src/contexts/SubgraphContext';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import MediaQuery from 'src/enums/MediaQuery';
 
 const PortfolioDetail: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
@@ -31,11 +40,12 @@ const PortfolioDetail: FunctionComponent = () => {
   const { lng: language } = useParams<{ lng: LanguageType }>();
 
   const assetBondTokens = tokenData.reserves.reduce((arr, reserve) => {
-    return [...arr, ...reserve.assetBondTokens]
-  }, [] as IAssetBond[])
+    return [...arr, ...reserve.assetBondTokens];
+  }, [] as IAssetBond[]);
 
   const abToken = assetBondTokens.find((ab) => ab.id === id);
   const depositRef = useRef<HTMLParagraphElement>(null);
+  const { value: mediaQuery } = useMediaQueryType();
   const parsedTokenId = useMemo(() => {
     return parseTokenId(abToken?.id);
   }, [abToken]);
@@ -123,6 +133,15 @@ const PortfolioDetail: FunctionComponent = () => {
       </div>
     );
 
+  const divStyle = useMemo(
+    () => ({
+      fontFamily: 'SpoqaHanSansNeo',
+      color: '#888888',
+      fontSize: mediaQuery === MediaQuery.PC ? '15px' : '12px',
+    }),
+    [mediaQuery],
+  );
+
   const AddressCopy = (add: string | undefined) => {
     if (!document.queryCommandSupported('copy')) {
       return alert('This browser does not support the copy function.');
@@ -186,12 +205,8 @@ const PortfolioDetail: FunctionComponent = () => {
                 target="_blank"
                 rel="noopener noreferer">
                 <p className="link">
-                  {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(
-                    0,
-                    12,
-                  )}{' '}
-                  ...{' '}
-                  {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(-12)}
+                  {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(0, 12)}{' '}
+                  ... {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(-12)}
                 </p>
               </a>
             </div>
@@ -199,29 +214,22 @@ const PortfolioDetail: FunctionComponent = () => {
           <div className="portfolio__borrower__data">
             <div className="portfolio__borrower__data--left">
               <div>
-                <p>
+                <div style={divStyle}>
                   {t('loan.loan__number')}{' '}
                   <Guide content={t('portfolio.infomation_popup.0')} />
-                </p>
+                </div>
                 <p>{parsedTokenId.nonce}</p>
               </div>
               <div>
-                <p>
+                <div style={divStyle}>
                   {t('loan.loan__status')}
                   <Guide
                     content={`${t('portfolio.infomation_popup.1')} \n ${t(
                       'portfolio.infomation_popup.3',
                     )} \n ${t('portfolio.infomation_popup.5')}`}
                   />
-                </p>
-                <p>
-                  {t(
-                    `words.${LoanStatus[
-                    toLoanStatus(abToken.state)
-                    ]
-                    }`,
-                  )}
-                </p>
+                </div>
+                <p>{t(`words.${LoanStatus[toLoanStatus(abToken.state)]}`)}</p>
               </div>
               <div>
                 <p>{t('loan.receiving_address')}</p>
@@ -232,18 +240,16 @@ const PortfolioDetail: FunctionComponent = () => {
                   <p className={abToken?.borrower?.id ? 'link' : ''}>
                     {!!abToken?.borrower?.id === true
                       ? `${abToken?.borrower?.id.slice(
-                        0,
-                        12,
-                      )} ... ${abToken?.borrower?.id.slice(-12)}`
+                          0,
+                          12,
+                        )} ... ${abToken?.borrower?.id.slice(-12)}`
                       : '-'}
                   </p>
                 </a>
               </div>
               <div>
                 <p>{t('loan.loan__borrowed')}</p>
-                <p>
-                  {toUsd(abToken?.principal || '0', tokenInfo.decimals)}
-                </p>
+                <p>{toUsd(abToken?.principal || '0', tokenInfo.decimals)}</p>
               </div>
             </div>
 
@@ -257,8 +263,8 @@ const PortfolioDetail: FunctionComponent = () => {
                 <p>
                   {abToken?.loanStartTimestamp
                     ? moment(abToken.loanStartTimestamp * 1000).format(
-                      'YYYY.MM.DD',
-                    )
+                        'YYYY.MM.DD',
+                      )
                     : '-'}
                 </p>
               </div>
@@ -267,16 +273,16 @@ const PortfolioDetail: FunctionComponent = () => {
                 <p>{maturityFormmater(abToken)}</p>
               </div>
               <div>
-                <p>
+                <div style={divStyle}>
                   {t('loan.collateral_nft')}{' '}
                   <Guide content={t('portfolio.infomation_popup.7')} />
-                </p>
+                </div>
                 <p
                   title={abToken?.id}
                   className="link"
                   onClick={() => {
                     window.open(
-                      `${envs.etherscanURI}/token/${tokenInfo.tokeninzer}?a=${abToken?.id}`,
+                      `${envs.externalApiEndpoint.etherscanURI}/token/${tokenInfo.tokeninzer}?a=${abToken?.id}`,
                       '_blank',
                     );
                   }}>
@@ -323,19 +329,16 @@ const PortfolioDetail: FunctionComponent = () => {
                 [t('loan.collateral_nft__type'), 'ABToken', '', ''],
                 [
                   t('loan.collateral_nft__abtoken_id'),
-                  `${abToken?.id.slice(0, 12)} ... ${abToken?.id.slice(
-                    -12,
-                  )}`,
+                  `${abToken?.id.slice(0, 12)} ... ${abToken?.id.slice(-12)}`,
                   '',
-                  `${envs.etherscanURI}/token/${tokenInfo.tokeninzer}?a=${abToken?.id}`,
+                  `${envs.externalApiEndpoint.etherscanURI}/token/${tokenInfo.tokeninzer}?a=${abToken?.id}`,
                 ],
                 [t('loan.collateral_nft__borrower'), 'Elyloan Inc', '', ''],
                 [
                   t('loan.collateral_nft__loan_product'),
                   t(
-                    `words.${LoanProduct[
-                    parsedTokenId.productNumber as LoanProduct
-                    ]
+                    `words.${
+                      LoanProduct[parsedTokenId.productNumber as LoanProduct]
                     }`,
                   ),
                   '',
@@ -359,12 +362,7 @@ const PortfolioDetail: FunctionComponent = () => {
                   '',
                   '',
                 ],
-                [
-                  t('loan.maturity_date'),
-                  maturityFormmater(abToken),
-                  '',
-                  '',
-                ],
+                [t('loan.maturity_date'), maturityFormmater(abToken), '', ''],
                 [
                   t('loan.collateral_nft__maximum_amount'),
                   toUsd(abToken?.debtCeiling || '0', tokenInfo.decimals),
@@ -374,9 +372,10 @@ const PortfolioDetail: FunctionComponent = () => {
                 [
                   t('loan.collateral_nft__loan_type'),
                   t(
-                    `words.${CollateralCategory[
-                    parsedTokenId.collateralCategory as CollateralCategory
-                    ]
+                    `words.${
+                      CollateralCategory[
+                        parsedTokenId.collateralCategory as CollateralCategory
+                      ]
                     }`,
                   ),
                   '',
@@ -387,9 +386,9 @@ const PortfolioDetail: FunctionComponent = () => {
                   t('loan.collateral_nft__contract_image'),
                   contractImage[1]?.hash
                     ? `${contractImage[1].hash.slice(
-                      0,
-                      12,
-                    )} ... ${contractImage[1].hash.slice(-12)}`
+                        0,
+                        12,
+                      )} ... ${contractImage[1].hash.slice(-12)}`
                     : '-',
                   '',
                   contractImage[1]?.link,
@@ -398,9 +397,9 @@ const PortfolioDetail: FunctionComponent = () => {
                   t('portfolio.Real_estate_registration_information'),
                   contractImage[0]?.hash
                     ? `${contractImage[0].hash.slice(
-                      0,
-                      12,
-                    )} ... ${contractImage[0].hash.slice(-12)}`
+                        0,
+                        12,
+                      )} ... ${contractImage[0].hash.slice(-12)}`
                     : '-',
                   '',
                   contractImage[0]?.link,
@@ -409,24 +408,21 @@ const PortfolioDetail: FunctionComponent = () => {
                   t('portfolio.Certified_corporate_registration'),
                   contractImage[2]?.hash
                     ? `${contractImage[2]?.hash.slice(
-                      0,
-                      12,
-                    )} ... ${contractImage[2]?.hash.slice(-12)}`
+                        0,
+                        12,
+                      )} ... ${contractImage[2]?.hash.slice(-12)}`
                     : '-',
                   '',
                   contractImage[2]?.link,
                 ],
-              ].map((data) => {
+              ].map((data, index) => {
                 return (
-                  <div>
-                    <p>
-                      {data[0] ===
-                        t('loan.collateral_nft__loan_product') ? (
+                  <div key={`conten_${index}`}>
+                    <div style={divStyle}>
+                      {data[0] === t('loan.collateral_nft__loan_product') ? (
                         <>
                           {data[0]}
-                          <Guide
-                            content={t('portfolio.infomation_popup.8')}
-                          />
+                          <Guide content={t('portfolio.infomation_popup.8')} />
                         </>
                       ) : data[1] === 'ABToken' ? (
                         <>
@@ -436,8 +432,13 @@ const PortfolioDetail: FunctionComponent = () => {
                       ) : (
                         data[0]
                       )}
-                    </p>
-                    <p
+                    </div>
+                    <div
+                      style={{
+                        fontFamily: 'SpoqaHanSansNeo',
+                        color: '#333333',
+                        fontSize: '15px',
+                      }}
                       onClick={() => {
                         !!data[3] === true
                           ? window.open(data[3], '_blank')
@@ -445,36 +446,34 @@ const PortfolioDetail: FunctionComponent = () => {
                       }}
                       className={!!data[3] === true ? 'link' : ''}>
                       {data[2] ? (
-                        <>
-                          <a
-                            href={`https://www.google.com/maps/place/${address}/@${lat},${lng},18.12z`}
-                            rel="noopener noreferer"
-                            target="_blank"
+                        <a
+                          href={`https://www.google.com/maps/place/${address}/@${lat},${lng},18.12z`}
+                          rel="noopener noreferer"
+                          target="_blank"
+                          style={{
+                            cursor: 'pointer',
+                          }}>
+                          <div
                             style={{
-                              cursor: 'pointer',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
                             }}>
-                            <div
+                            <img
+                              src={locationMark}
+                              alt={locationMark}
                               style={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }}>
-                              <img
-                                src={locationMark}
-                                alt={locationMark}
-                                style={{
-                                  width: 23.5,
-                                  height: 23.5,
-                                }}
-                              />
-                              {data[1]}
-                            </div>
-                          </a>
-                        </>
+                                width: 23.5,
+                                height: 23.5,
+                              }}
+                            />
+                            {data[1]}
+                          </div>
+                        </a>
                       ) : (
                         data[1]
                       )}
-                    </p>
+                    </div>
                   </div>
                 );
               })}

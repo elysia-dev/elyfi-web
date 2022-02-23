@@ -15,7 +15,7 @@ const walletConnectConnector = (): WalletConnectConnector => {
     qrcode: true,
     pollingInterval: 1200,
     preferredNetworkId: 1337,
-    infuraId: envs.infuraAddress,
+    infuraId: process.env.REACT_APP_INFURA_ADDRESS,
     qrcodeModalOptions: {
       mobileLinks: [
         'rainbow',
