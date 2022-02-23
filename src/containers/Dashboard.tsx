@@ -33,7 +33,7 @@ import { useWeb3React } from '@web3-react/core';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import WalletDisconnect from 'src/components/WalletDisconnect';
 import SelectWalletModal from 'src/components/SelectWalletModal';
-import { isWrongNetwork } from 'src/utiles/isWalletConnect';
+import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();
@@ -86,6 +86,8 @@ const Dashboard: React.FunctionComponent = () => {
     query: '(min-width: 1439px)',
   });
 
+  const [isModals, setIsModals] = useState(false);
+
   return (
     <>
       {reserveData && selectedBalance && (
@@ -136,32 +138,43 @@ const Dashboard: React.FunctionComponent = () => {
           setTransactionModal(false);
         }}
       />
-      <ConnectWalletModal
-        visible={connectWalletModalvisible}
-        onClose={() => {
-          setConnectWalletModalvisible(false);
-        }}
-        selectWalletModalVisible={() => setSelectWalletModalVisible(true)}
-      />
-      <NetworkChangeModal
-        visible={wrongMainnetModalVisible}
-        closeHandler={() => {
-          setWrongMainnetModalVisible(false);
-        }}
-      />
-      <WalletDisconnect
-        modalVisible={disconnectModalVisible}
-        selectWalletModalVisible={() => {
-          setSelectWalletModalVisible(true);
-        }}
-        modalClose={() => setDisconnectModalVisible(false)}
-      />
-      <SelectWalletModal
-        selectWalletModalVisible={selectWalletModalVisible}
-        modalClose={() => {
-          setSelectWalletModalVisible(false);
-        }}
-      />
+      {isModals && (
+        <>
+          <NetworkChangeModal
+            visible={unsupportedChainid}
+            closeHandler={() => {
+              setWrongMainnetModalVisible(false);
+              setIsModals(false);
+            }}
+          />
+          <ConnectWalletModal
+            visible={!account && !selectWalletModalVisible}
+            onClose={() => {
+              setConnectWalletModalvisible(false);
+              setIsModals(false);
+            }}
+            selectWalletModalVisible={() => setSelectWalletModalVisible(true)}
+          />
+          <WalletDisconnect
+            modalVisible={isWrongMainnet && !selectWalletModalVisible}
+            selectWalletModalVisible={() => {
+              setSelectWalletModalVisible(true);
+            }}
+            modalClose={() => {
+              setDisconnectModalVisible(false);
+              setIsModals(false);
+            }}
+          />
+          <SelectWalletModal
+            selectWalletModalVisible={selectWalletModalVisible}
+            modalClose={() => {
+              setSelectWalletModalVisible(false);
+              setIsModals(false);
+            }}
+          />
+        </>
+      )}
+
       <div className="deposit">
         <TvlCounter />
         <div className="deposit__event">
@@ -235,29 +248,24 @@ const Dashboard: React.FunctionComponent = () => {
                 id={`table-${index}`}
                 balance={balance}
                 onClick={(e: any) => {
-                  isWrongMainnet
-                    ? setDisconnectModalVisible(true)
-                    : !account
-                    ? setConnectWalletModalvisible(true)
-                    : unsupportedChainid
-                    ? setWrongMainnetModalVisible(true)
-                    : (e.preventDefault(),
-                      setReserveData(reserve),
-                      selectBalanceId(balance.id),
-                      ReactGA.modalview(
-                        balance.tokenName +
-                          ModalViewType.DepositOrWithdrawModal,
-                      ));
+                  if (!isWrongMainnet && account && !unsupportedChainid) {
+                    e.preventDefault();
+                    setReserveData(reserve);
+                    selectBalanceId(balance.id);
+                    ReactGA.modalview(
+                      balance.tokenName + ModalViewType.DepositOrWithdrawModal,
+                    );
+                    return;
+                  }
+                  setIsModals(true);
                 }}
                 reserveData={reserve}
                 setIncentiveModalVisible={() => {
-                  isWrongMainnet
-                    ? setDisconnectModalVisible(true)
-                    : !account
-                    ? setConnectWalletModalvisible(true)
-                    : unsupportedChainid
-                    ? setWrongMainnetModalVisible(true)
-                    : setIncentiveModalVisible(true);
+                  if (!isWrongMainnet && account && !unsupportedChainid) {
+                    setIncentiveModalVisible(true);
+                    return;
+                  }
+                  setIsModals(true);
                 }}
                 setModalNumber={() => selectBalanceId(balance.id)}
                 modalview={() =>
