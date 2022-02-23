@@ -14,21 +14,3 @@ export const isMoblie = (): boolean =>
   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     navigator.userAgent,
   );
-
-export const isWrongNetwork = (
-  mainnetType: string,
-  currentChain?: string,
-): boolean => {
-  return (
-    ((isMetamask() && isMoblie()) || isWalletConnector()) &&
-    !(
-      (process.env.NODE_ENV === 'development'
-        ? currentChain === 'Ganache' || currentChain === 'Ethereum'
-          ? 'Ethereum'
-          : currentChain === 'BSC Test' || currentChain === 'BSC'
-          ? 'BSC'
-          : undefined
-        : currentChain) === mainnetType
-    )
-  );
-};
