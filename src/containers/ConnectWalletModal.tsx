@@ -25,7 +25,7 @@ const ConnectWalletModal: React.FunctionComponent<{
             className={`modal__button`}
             onClick={() => {
               selectWalletModalVisible();
-              onClose();
+              // onClose();
             }}>
             <p>{t('modal.connect_wallet.button')}</p>
           </div>
