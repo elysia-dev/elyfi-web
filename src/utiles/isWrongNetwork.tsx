@@ -7,12 +7,10 @@ export const isWrongNetwork = (
   return (
     ((isMetamask() && isMoblie()) || isWalletConnector()) &&
     !(
-      (process.env.NODE_ENV === 'development'
-        ? currentChain === 'Ganache' || currentChain === 'Ethereum'
-          ? 'Ethereum'
-          : currentChain === 'BSC Test' || currentChain === 'BSC'
-          ? 'BSC'
-          : undefined
+      (currentChain === 'Ganache' || currentChain === 'Ethereum'
+        ? 'Ethereum'
+        : currentChain === 'BSC Test' || currentChain === 'BSC'
+        ? 'BSC'
         : currentChain) === mainnetType
     )
   );
