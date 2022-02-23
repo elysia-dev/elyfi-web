@@ -2,7 +2,7 @@ import { useWeb3React } from '@web3-react/core';
 import { useContext } from 'react';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { MainnetData, MainnetList } from 'src/core/data/mainnets';
-import { isMoblie, isWalletConnector } from 'src/utiles/isWalletConnect';
+import { isMoblie, isWalletConnector } from 'src/utiles/connectWallet';
 
 const MainnetSwitch: React.FunctionComponent<{
   mainNetwork: boolean;

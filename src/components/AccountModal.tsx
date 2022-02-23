@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import mainnetConverter from 'src/utiles/mainnetConverter';
 import TxContext from 'src/contexts/TxContext';
@@ -16,7 +16,7 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import { setWalletConnect } from 'src/utiles/isWalletConnect';
+import { setWalletConnect } from 'src/utiles/connectWallet';
 
 const AccountModal: React.FunctionComponent<{
   visible: boolean;

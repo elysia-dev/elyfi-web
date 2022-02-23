@@ -50,7 +50,7 @@ import MainnetType from 'src/enums/MainnetType';
 import ClaimDisableModal from 'src/components/ClaimDisableModal';
 import MigrationDisableModal from 'src/components/MigrationDisableModal';
 import useCurrentChain from 'src/hooks/useCurrentChain';
-import { isWrongNetwork } from 'src/utiles/isWalletConnect';
+import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI;

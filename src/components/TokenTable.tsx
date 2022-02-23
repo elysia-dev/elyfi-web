@@ -27,7 +27,7 @@ import PriceContext from 'src/contexts/PriceContext';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
 import useCurrentChain from 'src/hooks/useCurrentChain';
-import { isWrongNetwork } from 'src/utiles/isWalletConnect';
+import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
 import TableBodyEventReward from './TableBodyEventReward';
 
 interface Props {

@@ -24,7 +24,7 @@ import MarketDetail from 'src/containers/MarketDetails';
 import PortfolioDetail from 'src/containers/PortfolioDetail';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import { isMetamask, isWalletConnector } from './utiles/isWalletConnect';
+import { isMetamask, isWalletConnector } from './utiles/connectWallet';
 import walletConnectConnector from './utiles/walletConnectProvider';
 
 const walletConnectProvider = walletConnectConnector();

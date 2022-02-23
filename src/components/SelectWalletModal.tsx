@@ -6,13 +6,14 @@ import walletconnect from 'src/assets/images/walletconnect.png';
 import browserWallet from 'src/assets/images/browserWallet.png';
 import walletConnectConnector from 'src/utiles/walletConnectProvider';
 import { ethers } from 'ethers';
-import { isMoblie, setWalletConnect } from 'src/utiles/isWalletConnect';
+import { isMoblie, setWalletConnect } from 'src/utiles/connectWallet';
 import { useTranslation } from 'react-i18next';
 import AppColors from 'src/enums/AppColors';
 
 type Props = {
   selectWalletModalVisible: boolean;
   modalClose: () => void;
+  // isNavBtn: boolean;
 };
 
 interface WindowWithEthereum extends Window {
@@ -36,11 +37,11 @@ const SelectWalletModal: FunctionComponent<Props> = ({
 
   const walletImg = isMoblie() ? browserWallet : metamask;
 
-  useEffect(() => {
-    if (active) {
-      modalClose();
-    }
-  }, [active]);
+  // useEffect(() => {
+  //   if (active) {
+  //     modalClose();
+  //   }
+  // }, [active]);
 
   return (
     <div
@@ -74,6 +75,7 @@ const SelectWalletModal: FunctionComponent<Props> = ({
                 activate(injectedConnector)
                   .then((e) => {
                     setWalletConnect('metamask');
+                    modalClose();
                   })
                   .catch((e) => {
                     console.error('Reject');
