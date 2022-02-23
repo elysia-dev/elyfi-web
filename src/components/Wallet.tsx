@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWeb3React } from '@web3-react/core';
 import Davatar from '@davatar/react';
-import envs from 'src/core/envs';
 import TxContext from 'src/contexts/TxContext';
 import TxStatus from 'src/enums/TxStatus';
 import { useENS } from 'src/hooks/useENS';
@@ -10,7 +9,8 @@ import AccountModal from 'src/components/AccountModal';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetError from 'src/assets/images/network_error.png';
 import useCurrentChain from 'src/hooks/useCurrentChain';
-import { isMoblie, isWrongNetwork } from 'src/utiles/isWalletConnect';
+import { isMoblie } from 'src/utiles/connectWallet';
+import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
 import NetworkChangeModal from './NetworkChangeModal';
 import SelectWalletModal from './SelectWalletModal';
 import WalletDisconnect from './WalletDisconnect';
@@ -54,6 +54,7 @@ const Wallet = (): JSX.Element => {
         modalVisible={disconnectModalVisible}
         selectWalletModalVisible={() => setSelectWalletModalVisible(true)}
         modalClose={() => setDisconnectModalVisible(false)}
+        isNavBtn={true}
       />
       <SelectWalletModal
         modalClose={() => {
