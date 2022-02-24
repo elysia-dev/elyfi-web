@@ -89,6 +89,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
           poolPrincipal={props.poolPrincipal}
           staking={props.staking}
           unit={props.unit}
+          stakingRoundDate={stakingRoundDate}
         />
 
         <Swiper

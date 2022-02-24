@@ -103,7 +103,7 @@ const Staking: React.FunctionComponent<IProps> = ({
   const [modalValue, setModalValue] = useState(constants.Zero);
 
   const { roundData, loading, error, fetchRoundData } =
-    useStakingFetchRoundData(stakedToken, poolApr);
+    useStakingFetchRoundData(stakedToken, poolApr, currentPhase);
 
   const currentRound = useMemo(() => {
     return roundData[roundInProgress];
@@ -292,6 +292,7 @@ const Staking: React.FunctionComponent<IProps> = ({
               account && fetchRoundData(account);
             }}
             transactionModal={() => setTransactionModal(true)}
+            stakingRoundDate={stakingRoundDate}
           />
           <StakingEnded
             visible={modalVisible(StakingModalType.StakingEnded)}
@@ -300,6 +301,7 @@ const Staking: React.FunctionComponent<IProps> = ({
               setState({ ...state, selectPhase: currentPhase });
             }}
             round={selectModalRound + 1}
+            stakingRoundDate={stakingRoundDate}
           />
           <MigrationEnded
             visible={modalVisible(StakingModalType.MigrationEnded)}
@@ -308,6 +310,7 @@ const Staking: React.FunctionComponent<IProps> = ({
               setState({ ...state, selectPhase: currentPhase });
             }}
             round={selectModalRound + 1}
+            stakingRoundDate={stakingRoundDate}
           />
           <ClaimDisableModal
             visible={modalVisible(StakingModalType.ClaimDisable)}
@@ -517,6 +520,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   item={item}
                                   stakedToken={stakedToken}
                                   rewardToken={rewardToken}
+                                  roundInProgress={roundInProgress}
                                   setModalType={setModalType}
                                   setRoundModal={setRoundModal}
                                   setModalValue={setModalValue}
@@ -549,6 +553,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                             if (current.diff(item.startedAt) < 0) {
                               return (
                                 <NextStaking
+                                  key={`nextStaking_${index}`}
                                   index={index}
                                   stakedToken={stakedToken}
                                   rewardToken={rewardToken}

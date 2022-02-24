@@ -11,7 +11,7 @@ import Token from 'src/enums/Token';
 import ArrowUp from 'src/assets/images/arrow-up.png';
 import ArrowDown from 'src/assets/images/arrow-down.png';
 import ArrowLeft from 'src/assets/images/arrow-left.png';
-import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
+import { IStakingPoolRound } from 'src/core/data/stakingRoundTimes';
 import useStakingPool from 'src/hooks/useStakingPool';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import useWaitingTx from 'src/hooks/useWaitingTx';
@@ -36,6 +36,7 @@ const MigrationModal: React.FunctionComponent<{
   rewardBalance: BigNumber;
   round: number;
   transactionModal: () => void;
+  stakingRoundDate: IStakingPoolRound[];
 }> = ({
   visible,
   closeHandler,
@@ -46,6 +47,7 @@ const MigrationModal: React.FunctionComponent<{
   rewardToken,
   round,
   transactionModal,
+  stakingRoundDate,
 }) => {
   const current = moment();
   const { t, i18n } = useTranslation();
@@ -70,7 +72,7 @@ const MigrationModal: React.FunctionComponent<{
     utils.parseEther(state.migrationAmount || '0').gt(stakedBalance);
 
   const currentRound = useMemo(() => {
-    return stakingRoundTimes.filter(
+    return stakingRoundDate.filter(
       (round) => current.diff(round.startedAt) >= 0,
     ).length;
   }, [current]);

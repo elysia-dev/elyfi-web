@@ -1,7 +1,7 @@
 import { BigNumber, constants, utils } from 'ethers';
 import moment from 'moment';
 import Skeleton from 'react-loading-skeleton';
-import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
+import { IStakingPoolRound } from 'src/core/data/stakingRoundTimes';
 import { formatComma, toCompact } from 'src/utiles/formatters';
 import { Trans, useTranslation } from 'react-i18next';
 import { FunctionComponent } from 'react';
@@ -16,6 +16,7 @@ type Props = {
   poolPrincipal: BigNumber;
   staking: number;
   unit: string;
+  stakingRoundDate: IStakingPoolRound[];
 };
 
 const StakingBoxHeader: FunctionComponent<Props> = (props) => {
@@ -51,7 +52,9 @@ const StakingBoxHeader: FunctionComponent<Props> = (props) => {
               {props.loading ? (
                 <Skeleton width={50} />
               ) : props.poolApr.eq(constants.MaxUint256) ||
-                current.isAfter(stakingRoundTimes[props.staking].endedAt) ? (
+                current.isAfter(
+                  props.stakingRoundDate[props.staking].endedAt,
+                ) ? (
                 '-'
               ) : (
                 toCompact(parseFloat(utils.formatUnits(props.poolApr, 25)))

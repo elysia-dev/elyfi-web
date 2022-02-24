@@ -1,25 +1,22 @@
 import { useTranslation } from 'react-i18next';
-import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
+import { IStakingPoolRound } from 'src/core/data/stakingRoundTimes';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import ModalHeader from 'src/components/ModalHeader';
 
 const StakingEnded: React.FunctionComponent<{
   visible: boolean;
   round: number;
+  stakingRoundDate: IStakingPoolRound[];
   onClose: () => void;
-}> = ({ visible, round, onClose }) => {
+}> = ({ visible, round, onClose, stakingRoundDate }) => {
   const { t, i18n } = useTranslation();
 
   return (
     <div
       className="modal modal__alert"
-      style={{ display: visible ? 'block' : 'none' }}
-    >
+      style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
-        <ModalHeader
-          title={""}
-          onClose={onClose}
-        />
+        <ModalHeader title={''} onClose={onClose} />
         <div className="modal__alert__content">
           <h2>
             {t('staking.nth_staking_round_ended', {
@@ -34,13 +31,13 @@ const StakingEnded: React.FunctionComponent<{
             </p>
             <div>
               <p>
-                {stakingRoundTimes[round - 1].startedAt.format(
+                {stakingRoundDate[round - 1].startedAt.format(
                   'YYYY.MM.DD HH:mm:ss',
                 )}
               </p>
               <p>~</p>
               <p>
-                {stakingRoundTimes[round - 1].endedAt.format(
+                {stakingRoundDate[round - 1].endedAt.format(
                   'YYYY.MM.DD HH:mm:ss',
                 ) + ` (KST)`}
               </p>
