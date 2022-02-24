@@ -143,7 +143,7 @@ const StakingProgress: FunctionComponent<Props> = (props) => {
               <h2>{t('staking.reward_amount')}</h2>
               <div>
                 <h2>
-                  {expectedReward.before.isZero() ? (
+                  {expectedReward.before.isZero() || !account ? (
                     '-'
                   ) : (
                     <CountUp
@@ -166,10 +166,10 @@ const StakingProgress: FunctionComponent<Props> = (props) => {
                 </h2>
                 <div
                   className={`staking__round__button ${
-                    expectedReward.value.isZero() ? ' disable' : ''
+                    expectedReward.value.isZero() || !account ? ' disable' : ''
                   }`}
                   onClick={(e) => {
-                    if (expectedReward.value.isZero()) {
+                    if (expectedReward.value.isZero() || !account) {
                       return;
                     }
 
@@ -214,7 +214,7 @@ const StakingProgress: FunctionComponent<Props> = (props) => {
               <div>
                 <p>{t('staking.reward_amount')}</p>
                 <h2>
-                  {expectedReward.before.isZero() ? (
+                  {expectedReward.before.isZero() || !account ? (
                     '-'
                   ) : (
                     <CountUp
@@ -261,10 +261,10 @@ const StakingProgress: FunctionComponent<Props> = (props) => {
               </div>
               <div
                 className={`staking__round__button ${
-                  expectedReward.value.isZero() ? ' disable' : ''
+                  expectedReward.before.isZero() || !account ? ' disable' : ''
                 }`}
                 onClick={(e) => {
-                  if (expectedReward.value.isZero()) {
+                  if (expectedReward.before.isZero() || !account) {
                     return;
                   }
                   ReactGA.modalview(
