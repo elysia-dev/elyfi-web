@@ -37,6 +37,7 @@ const AppNavigator: React.FC = () => {
       activate(InjectedConnector);
     } else {
       deactivate();
+      window.sessionStorage.removeItem('@network');
     }
   }, []);
 
