@@ -28,7 +28,6 @@ const useStakingRoundData = (
 
   const { type: mainnet } = useContext(MainnetContext);
   const stakingPool = useMemo(() => {
-    console.log(poolAddress(mainnet, stakedToken, round <= 1));
     return StakingPool__factory.connect(
       poolAddress(mainnet, stakedToken, round > 1),
       new providers.JsonRpcProvider(
