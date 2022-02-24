@@ -34,6 +34,8 @@ const MigrationModal: React.FunctionComponent<{
   rewardBalance: BigNumber;
   round: number;
   transactionModal: () => void;
+  transactionWait: boolean;
+  setTransactionWait: () => void;
 }> = ({
   visible,
   closeHandler,
@@ -44,6 +46,8 @@ const MigrationModal: React.FunctionComponent<{
   rewardToken,
   round,
   transactionModal,
+  transactionWait,
+  setTransactionWait,
 }) => {
   const current = moment();
   const { t, i18n } = useTranslation();
@@ -80,185 +84,189 @@ const MigrationModal: React.FunctionComponent<{
           image={ELFI}
           onClose={() => closeHandler()}
         />
-        {waiting ? (
-          <LoadingIndicator />
+        {transactionWait ? (
+          <LoadingIndicator isTxActive={transactionWait} />
         ) : (
-          <div className="modal__migration">
-            <div className="modal__migration__wrapper">
-              <div>
-                <h2>{t('staking.unstaking')}</h2>
-                <div className="modal__migration__input">
-                  <h2
-                    className="modal__input__maximum"
-                    onClick={() => {
-                      setState({
-                        migrationAmount: '0',
-                        migrationMax: false,
-                        withdrawAmount: Math.floor(
-                          parseFloat(utils.formatEther(stakedBalance)),
-                        ).toFixed(8),
-                        withdrawMax: true,
-                      });
-                    }}>
-                    {t('staking.max')}
-                  </h2>
-                  <h2 className="modal__input__value">
-                    <input
-                      type="number"
-                      className="modal__input__value__amount"
-                      placeholder="0"
-                      value={state.withdrawAmount}
-                      style={{
-                        fontSize:
-                          state.withdrawAmount.length < 8
-                            ? 40
-                            : state.withdrawAmount.length > 12
-                            ? 40
-                            : 40,
-                      }}
-                      onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
-                        ['-', '+', 'e'].includes(e.key) && e.preventDefault();
-                      }}
-                      onChange={({ target }) => {
-                        target.value = target.value.replace(
-                          /(\.\d{18})\d+/g,
-                          '$1',
-                        );
+          <>
+            <div className="modal__migration">
+              <div className="modal__migration__wrapper">
+                <div>
+                  <h2>{t('staking.unstaking')}</h2>
+                  <div className="modal__migration__input">
+                    <h2
+                      className="modal__input__maximum"
+                      onClick={() => {
+                        setState({
+                          migrationAmount: '0',
+                          migrationMax: false,
+                          withdrawAmount: Math.floor(
+                            parseFloat(utils.formatEther(stakedBalance)),
+                          ).toFixed(8),
+                          withdrawMax: true,
+                        });
+                      }}>
+                      {t('staking.max')}
+                    </h2>
+                    <h2 className="modal__input__value">
+                      <input
+                        type="number"
+                        className="modal__input__value__amount"
+                        placeholder="0"
+                        value={state.withdrawAmount}
+                        style={{
+                          fontSize:
+                            state.withdrawAmount.length < 8
+                              ? 40
+                              : state.withdrawAmount.length > 12
+                              ? 40
+                              : 40,
+                        }}
+                        onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+                          ['-', '+', 'e'].includes(e.key) && e.preventDefault();
+                        }}
+                        onChange={({ target }) => {
+                          target.value = target.value.replace(
+                            /(\.\d{18})\d+/g,
+                            '$1',
+                          );
 
-                        if (target.value) {
-                          setState({
-                            withdrawAmount: target.value,
-                            migrationAmount: formatEther(
-                              stakedBalance.sub(parseEther(target.value)),
-                            ),
-                            withdrawMax: false,
-                            migrationMax: false,
-                          });
-                        } else {
-                          setState({
-                            migrationAmount: '',
-                            withdrawAmount: '',
-                            withdrawMax: false,
-                            migrationMax: false,
-                          });
-                        }
-                      }}
-                    />
-                  </h2>
+                          if (target.value) {
+                            setState({
+                              withdrawAmount: target.value,
+                              migrationAmount: formatEther(
+                                stakedBalance.sub(parseEther(target.value)),
+                              ),
+                              withdrawMax: false,
+                              migrationMax: false,
+                            });
+                          } else {
+                            setState({
+                              migrationAmount: '',
+                              withdrawAmount: '',
+                              withdrawMax: false,
+                              migrationMax: false,
+                            });
+                          }
+                        }}
+                      />
+                    </h2>
+                  </div>
+                </div>
+                <div className="arrow-wrapper">
+                  <img src={ArrowUp} />
+                  <img src={ArrowDown} />
+                </div>
+                <div>
+                  <div className="modal__migration__popup__info">
+                    <h2>{t('staking.migration')}</h2>
+                    <Popupinfo content={t('staking.migration--content')} />
+                  </div>
+                  <div className="modal__migration__input">
+                    <h2
+                      className="modal__input__maximum"
+                      onClick={() => {
+                        setState({
+                          withdrawAmount: '0',
+                          withdrawMax: false,
+                          migrationAmount: Math.floor(
+                            parseFloat(utils.formatEther(stakedBalance)),
+                          ).toFixed(8),
+                          migrationMax: true,
+                        });
+                      }}>
+                      {t('staking.max')}
+                    </h2>
+                    <h2 className="modal__input__value">
+                      <input
+                        type="number"
+                        className="modal__input__value__amount"
+                        placeholder="0"
+                        value={state.migrationAmount}
+                        style={{
+                          fontSize:
+                            state.migrationAmount.length < 8
+                              ? 40
+                              : state.migrationAmount.length > 12
+                              ? 40
+                              : 40,
+                        }}
+                        onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+                          ['-', '+', 'e'].includes(e.key) && e.preventDefault();
+                        }}
+                        onChange={({ target }) => {
+                          target.value = target.value.replace(
+                            /(\.\d{18})\d+/g,
+                            '$1',
+                          );
+
+                          if (target.value) {
+                            setState({
+                              migrationAmount: target.value,
+                              withdrawAmount: formatEther(
+                                stakedBalance.sub(parseEther(target.value)),
+                              ),
+                              withdrawMax: false,
+                              migrationMax: false,
+                            });
+                          } else {
+                            setState({
+                              migrationAmount: '',
+                              withdrawAmount: '',
+                              withdrawMax: false,
+                              migrationMax: false,
+                            });
+                          }
+                        }}
+                      />
+                    </h2>
+                  </div>
+                  <div className="modal__migration__nth">
+                    <p>{t('staking.migration_location')} : </p>
+                    <p>
+                      {t('staking.nth', {
+                        nth: toOrdinalNumber(i18n.language, round),
+                      })}
+                    </p>
+                    <img src={ArrowLeft} />
+                    <p>
+                      {t('staking.nth', {
+                        nth: toOrdinalNumber(i18n.language, currentRound),
+                      })}
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div className="arrow-wrapper">
-                <img src={ArrowUp} />
-                <img src={ArrowDown} />
-              </div>
-              <div>
-                <div className="modal__migration__popup__info">
-                  <h2>{t('staking.migration')}</h2>
-                  <Popupinfo content={t('staking.migration--content')} />
-                </div>
-                <div className="modal__migration__input">
-                  <h2
-                    className="modal__input__maximum"
-                    onClick={() => {
-                      setState({
-                        withdrawAmount: '0',
-                        withdrawMax: false,
-                        migrationAmount: Math.floor(
-                          parseFloat(utils.formatEther(stakedBalance)),
-                        ).toFixed(8),
-                        migrationMax: true,
-                      });
-                    }}>
-                    {t('staking.max')}
-                  </h2>
-                  <h2 className="modal__input__value">
-                    <input
-                      type="number"
-                      className="modal__input__value__amount"
-                      placeholder="0"
-                      value={state.migrationAmount}
-                      style={{
-                        fontSize:
-                          state.migrationAmount.length < 8
-                            ? 40
-                            : state.migrationAmount.length > 12
-                            ? 40
-                            : 40,
-                      }}
-                      onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
-                        ['-', '+', 'e'].includes(e.key) && e.preventDefault();
-                      }}
-                      onChange={({ target }) => {
-                        target.value = target.value.replace(
-                          /(\.\d{18})\d+/g,
-                          '$1',
-                        );
 
-                        if (target.value) {
-                          setState({
-                            migrationAmount: target.value,
-                            withdrawAmount: formatEther(
-                              stakedBalance.sub(parseEther(target.value)),
-                            ),
-                            withdrawMax: false,
-                            migrationMax: false,
-                          });
-                        } else {
-                          setState({
-                            migrationAmount: '',
-                            withdrawAmount: '',
-                            withdrawMax: false,
-                            migrationMax: false,
-                          });
-                        }
-                      }}
-                    />
-                  </h2>
-                </div>
-                <div className="modal__migration__nth">
-                  <p>{t('staking.migration_location')} : </p>
-                  <p>
-                    {t('staking.nth', {
+              <div className="modal__migration__content">
+                <p>{t('staking.available_amount')}</p>
+                <div>
+                  <h2>
+                    {t('staking.nth_staking_amount', {
                       nth: toOrdinalNumber(i18n.language, round),
                     })}
-                  </p>
-                  <img src={ArrowLeft} />
-                  <p>
-                    {t('staking.nth', {
-                      nth: toOrdinalNumber(i18n.language, currentRound),
+                  </h2>
+                  <h2>{`${formatComma(stakedBalance)} ${stakedToken}`}</h2>
+                </div>
+                <p>{t('staking.reward_token_claim')}</p>
+                <div>
+                  <h2>
+                    {t('staking.nth_reward_amount', {
+                      nth: toOrdinalNumber(i18n.language, round),
                     })}
-                  </p>
+                  </h2>
+                  <h2>{`${formatComma(rewardBalance)} ${rewardToken}`}</h2>
                 </div>
               </div>
             </div>
-
-            <div className="modal__migration__content">
-              <p>{t('staking.available_amount')}</p>
-              <div>
-                <h2>
-                  {t('staking.nth_staking_amount', {
-                    nth: toOrdinalNumber(i18n.language, round),
-                  })}
-                </h2>
-                <h2>{`${formatComma(stakedBalance)} ${stakedToken}`}</h2>
-              </div>
-              <p>{t('staking.reward_token_claim')}</p>
-              <div>
-                <h2>
-                  {t('staking.nth_reward_amount', {
-                    nth: toOrdinalNumber(i18n.language, round),
-                  })}
-                </h2>
-                <h2>{`${formatComma(rewardBalance)} ${rewardToken}`}</h2>
-              </div>
-            </div>
-          </div>
+          </>
         )}
         <div
           className={`modal__button${
             stakedBalance.isZero() ||
             amountGtStakedBalance ||
-            migrationAmountGtStakedBalance
+            migrationAmountGtStakedBalance ||
+            transactionWait ||
+            (state.withdrawAmount.length === 0 && state.migrationAmount.length === 0)
               ? ' disable'
               : ''
           }`}
@@ -267,9 +275,13 @@ const MigrationModal: React.FunctionComponent<{
               stakedBalance.isZero() ||
               !account ||
               amountGtStakedBalance ||
-              migrationAmountGtStakedBalance
+              migrationAmountGtStakedBalance ||
+              transactionWait ||
+              (state.withdrawAmount.length === 0 && state.migrationAmount.length === 0)
             )
               return;
+
+            setTransactionWait()
 
             const emitter = buildEventEmitter(
               ModalViewType.MigrationOrUnstakingModal,
@@ -326,7 +338,8 @@ const MigrationModal: React.FunctionComponent<{
               });
           }}>
           <p>
-            {amountGtStakedBalance
+            {
+            amountGtStakedBalance
               ? t('staking.insufficient_balance')
               : t('staking.transfer')}
           </p>

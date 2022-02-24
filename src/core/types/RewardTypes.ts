@@ -20,4 +20,6 @@ export type LpRewardModalProps = {
   visible: boolean;
   closeHandler: () => void;
   rewardToReceive: RewardTypes;
+  transactionWait: boolean;
+  setTransactionWait: () => void;
 };

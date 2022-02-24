@@ -52,6 +52,7 @@ function LPStaking(): JSX.Element {
     useUpdateExpectedReward();
   const [rewardVisibleModal, setRewardVisibleModal] = useState(false);
   const [stakingVisibleModal, setStakingVisibleModal] = useState(false);
+  const [transactionWait, setTransactionWait] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const [stakedPositions, setStakedPositions] = useState<Position[]>([]);
   const { positions, fetchPositions } = usePositions(account);
@@ -388,12 +389,20 @@ function LPStaking(): JSX.Element {
       />
       <RewardModal
         visible={rewardVisibleModal}
-        closeHandler={() => setRewardVisibleModal(false)}
+        closeHandler={() => {
+          setTransactionWait(false)
+          setRewardVisibleModal(false)
+        }}
         rewardToReceive={rewardToReceive}
+        transactionWait={transactionWait}
+        setTransactionWait={() => setTransactionWait(true)}
       />
       <StakingModal
         visible={stakingVisibleModal}
-        closeHandler={() => setStakingVisibleModal(false)}
+        closeHandler={() => {
+          setTransactionWait(false)
+          setStakingVisibleModal(false)
+        }}
         token0={Token.ELFI}
         token1={stakeToken}
         unstakedPositions={positions.filter((position) => {
@@ -420,6 +429,8 @@ function LPStaking(): JSX.Element {
             : envs.token.daiAddress
         }
         round={round}
+        transactionWait={transactionWait}
+        setTransactionWait={() => setTransactionWait(true)}
       />
 
       <section className="staking">

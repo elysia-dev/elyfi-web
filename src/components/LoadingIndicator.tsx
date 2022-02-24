@@ -1,39 +1,37 @@
-const LoadingIndicator: React.FunctionComponent = () => {
-  return (
-    <div className="loading-indicator">
-      <div className="loader">
-        <div className="l_main">
-          <div className="l_square">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-          <div className="l_square">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-          <div className="l_square">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-          <div className="l_square">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </div>
+
+import { useTranslation } from 'react-i18next';
+import ModalButton from 'src/components/ModalButton';
+
+const LoadingIndicator: React.FunctionComponent<{
+  button?: string;
+  isTxActive?: boolean;
+}> = ({
+  button,
+  isTxActive
+}) => {
+  const { t } = useTranslation();
+  return ( 
+    <>
+      <div className="indicator">
+        <div className="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        {
+          isTxActive && (
+            <p>
+              {t("modal.indicator.loading_metamask")}
+            </p>
+          )
+        }
       </div>
-      <div className="loading-indicator__text">
-        <p className="bold">Transaction is now loading</p>
-      </div>
-      <div className="loading-indicator__text2">
-        <p className="spoqa">
-          this pop-up window will close in about 15-30 seconds.
-        </p>
-      </div>
-    </div>
+      {
+        button && (
+          <ModalButton
+            className='modal__button disable'
+            onClick={() => { }}
+            content={button}
+          />
+        )
+      }
+    </>
   );
 };
 

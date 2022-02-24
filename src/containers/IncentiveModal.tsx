@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, utils } from 'ethers';
-import { FunctionComponent, useContext } from 'react';
+import { FunctionComponent, useContext, useState } from 'react';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
 import { formatSixFracionDigit } from 'src/utiles/formatters';
 import { formatEther } from 'ethers/lib/utils';
@@ -12,6 +12,8 @@ import ModalHeader from 'src/components/ModalHeader';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
+import { useTranslation } from 'react-i18next';
+import LoadingIndicator from 'src/components/LoadingIndicator';
 import buildEventEmitter from 'src/utiles/buildEventEmitter';
 
 // Create deposit & withdraw
@@ -24,6 +26,8 @@ const IncentiveModal: FunctionComponent<{
   onClose: () => void;
   afterTx: () => void;
   transactionModal: () => void;
+  transactionWait: boolean;
+  setTransactionWait: () => void;
 }> = ({
   visible,
   balanceBefore,
@@ -33,11 +37,15 @@ const IncentiveModal: FunctionComponent<{
   onClose,
   afterTx,
   transactionModal,
+  transactionWait,
+  setTransactionWait,
 }) => {
   const { account, library, chainId } = useWeb3React();
   const { setTransaction, failTransaction } = useContext(TxContext);
+  const { t } = useTranslation();
 
   const reqeustClaimIncentive = async () => {
+    setTransactionWait()
     if (!account) return;
 
     const emitter = buildEventEmitter(
@@ -83,29 +91,36 @@ const IncentiveModal: FunctionComponent<{
       <div className="modal__container">
         <ModalHeader title={'ELFI'} image={ElifyTokenImage} onClose={onClose} />
         <div className="modal__body">
+          {
+            transactionWait ? (
+              <LoadingIndicator isTxActive={transactionWait} />
+            ) : (
+              <>
+               <div
+                  className="modal__incentive__body"
+                  style={{
+                    height: 140,
+                    overflowY: 'clip',
+                  }}>
+                  <CountUp
+                    className="modal__incentive__value bold"
+                    start={parseFloat(formatEther(balanceBefore))}
+                    end={parseFloat(formatEther(balanceAfter))}
+                    formattingFn={(number) => {
+                      return formatSixFracionDigit(number);
+                    }}
+                    decimals={6}
+                    duration={1}
+                  />
+                </div>
+              </>
+            )
+          }
+
           <div
-            className="modal__incentive__body"
-            style={{
-              height: 140,
-              overflowY: 'clip',
-            }}>
-            <CountUp
-              className="modal__incentive__value bold"
-              start={parseFloat(formatEther(balanceBefore))}
-              end={parseFloat(formatEther(balanceAfter))}
-              formattingFn={(number) => {
-                return formatSixFracionDigit(number);
-              }}
-              decimals={6}
-              duration={1}
-            />
-          </div>
-          <div
-            className="modal__button"
-            onClick={() => {
-              reqeustClaimIncentive();
-            }}>
-            <p>CLAIM REWARD</p>
+            className={`modal__button ${transactionWait ? "disable" : ""}`}
+            onClick={() => reqeustClaimIncentive()}>
+            <p>{"CLAIM REWARD"}</p>
           </div>
         </div>
       </div>

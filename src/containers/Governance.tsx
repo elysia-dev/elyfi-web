@@ -44,6 +44,8 @@ const Governance = (): JSX.Element => {
     return CollateralCategory.Others !== parsedId.collateralCategory;
   });
 
+  console.log(offChainNapData)
+
   const draw = () => {
     const dpr = window.devicePixelRatio;
     const canvas: HTMLCanvasElement | null = canvasRef.current;
@@ -124,11 +126,7 @@ const Governance = (): JSX.Element => {
                 nap:
                   getHTMLStringData.match(regexNap)?.toString().substring(5) ||
                   '',
-                status:
-                  getHTMLStringData
-                    .match(/Status: .*(?=<)/)
-                    ?.toString()
-                    .split('Status: ') || '',
+                status: getHTMLStringData.match(/Status: .*(?=<)/)?.toString().split('Status: ') || '',
                 images:
                   getHTMLStringData
                     .match(

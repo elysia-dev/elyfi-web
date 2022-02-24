@@ -21,6 +21,8 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
     stakingPoolAddress,
     rewardTokenAddress,
     round,
+    transactionWait,
+    setTransactionWait,
   } = props;
   const { t } = useTranslation();
   const [stakingMode, setStakingMode] = useState<boolean>(true);
@@ -39,6 +41,7 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
 
   const lpStakingHandler = async () => {
     try {
+      setTransactionWait()
       await staking(
         stakingPoolAddress,
         rewardTokenAddress,
@@ -89,33 +92,39 @@ const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
           setState={setStakingMode}
           title={[t('staking.staking')]}
         />
-        {waiting ? (
-          <LoadingIndicator />
+        {transactionWait ? (
+          <LoadingIndicator isTxActive={transactionWait} />
         ) : (
-          <div className="modal__lp__staking__body">
-            {unstakedPositions.length === 0 ? (
-              <div className="modal__lp__staking__undefined">
-                <h2>{t('lpstaking.no_lp_token')}</h2>
-              </div>
-            ) : (
-              <SelectBox
-                selectedToken={selectedToken}
-                setSelectedToken={setSelectedToken}
-                unstakedPositions={unstakedPositions}
-              />
-            )}
-          </div>
+          <>
+            <div className="modal__lp__staking__body">
+              {unstakedPositions.length === 0 ? (
+                <div className="modal__lp__staking__undefined">
+                  <h2>{t('lpstaking.no_lp_token')}</h2>
+                </div>
+              ) : (
+                <SelectBox
+                  selectedToken={selectedToken}
+                  setSelectedToken={setSelectedToken}
+                  unstakedPositions={unstakedPositions}
+                />
+              )}
+            </div>
+          </>
         )}
         <div
           className={`modal__button${
-            unstakedPositions.length === 0
+            transactionWait 
+              ? " disable" 
+              : unstakedPositions.length === 0
               ? ' disable'
               : selectedToken.id
               ? ''
               : ' disable'
           }`}
           onClick={() =>
-            unstakedPositions.length === 0
+            transactionWait 
+              ? '' 
+              : unstakedPositions.length === 0
               ? ''
               : selectedToken.id
               ? lpStakingHandler()
