@@ -11,6 +11,7 @@ import useStakingPool from './useStakingPool';
 const useStakingFetchRoundData = (
   stakedToken: Token.EL | Token.ELFI,
   poolApr: BigNumber,
+  currentPhase: number,
 ): {
   roundData: RoundData[];
   loading: boolean;
@@ -19,10 +20,11 @@ const useStakingFetchRoundData = (
 } => {
   const { type: getMainnetType } = useContext(MainnetContext);
   const { account } = useWeb3React();
-  const { contract: stakingPool, rewardContractForV2 } = useStakingPool(
-    stakedToken,
-    true,
-  );
+  const {
+    contract: stakingPool,
+    rewardContractForV2,
+    elfiV2StakingContract,
+  } = useStakingPool(stakedToken, true);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -53,7 +55,6 @@ const useStakingFetchRoundData = (
   };
 
   const fetchRoundData = async (account: string | null | undefined) => {
-    setLoading(true);
     try {
       const data = await Promise.all(
         roundTime.map(async (_item, round) => {
@@ -62,20 +63,27 @@ const useStakingFetchRoundData = (
           let rewardPool;
           let modifiedRound;
           let accountReward;
-          if (stakingPool && account) {
+          let stakingContract;
+          if (stakingPool && account && round <= currentPhase - 1) {
             if (
               round >= v2Threshold &&
               stakedToken === Token.ELFI &&
-              rewardContractForV2
+              rewardContractForV2 &&
+              elfiV2StakingContract
             ) {
+              stakingContract = elfiV2StakingContract;
               rewardPool = rewardContractForV2;
               modifiedRound = (round + 1 - v2Threshold).toString();
             } else {
+              stakingContract = stakingPool;
               rewardPool = stakingPool;
               modifiedRound = (round + 1).toString();
             }
-            poolData = await stakingPool.getPoolData(modifiedRound);
-            userData = await stakingPool.getUserData(modifiedRound, account);
+            poolData = await stakingContract.getPoolData(modifiedRound);
+            userData = await stakingContract.getUserData(
+              modifiedRound,
+              account,
+            );
             accountReward = await rewardPool.getUserReward(
               account,
               modifiedRound,
@@ -109,6 +117,10 @@ const useStakingFetchRoundData = (
   useEffect(() => {
     fetchRoundData(account);
   }, [account, poolApr, getMainnetType]);
+
+  useEffect(() => {
+    setLoading(true);
+  }, [account, getMainnetType]);
 
   return { roundData, loading, error, fetchRoundData };
 };
