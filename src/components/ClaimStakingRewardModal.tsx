@@ -1,6 +1,9 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, utils } from 'ethers';
 import { FunctionComponent, useContext } from 'react';
+import CountUp from 'react-countup';
+import { formatEther } from '@ethersproject/units';
+
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
 import DaiImage from 'src/assets/images/dai.png';
@@ -12,13 +15,12 @@ import useWatingTx from 'src/hooks/useWaitingTx';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import RoundData from 'src/core/types/RoundData';
-import CountUp from 'react-countup';
-import { formatEther } from '@ethersproject/units';
 import buildEventEmitter from 'src/utiles/buildEventEmitter';
 import TransactionType from 'src/enums/TransactionType';
 import ModalViewType from 'src/enums/ModalViewType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
 import MainnetContext from 'src/contexts/MainnetContext';
+import { roundForElfiV2Staking } from 'src/utiles/roundForV2Staking';
 import ModalHeader from './ModalHeader';
 
 const ClaimStakingRewardModal: FunctionComponent<{
@@ -61,10 +63,10 @@ const ClaimStakingRewardModal: FunctionComponent<{
   const { type: mainnet } = useContext(MainnetContext);
 
   const claimAddress = rewardContractForV2 ? rewardContractForV2 : stakingPool;
-  const claimRound = (
-    round >= 3 && stakedToken === Token.ELFI && mainnet === 'Ethereum'
-      ? round - 2
-      : round
+  const claimRound = roundForElfiV2Staking(
+    round,
+    stakedToken,
+    mainnet,
   ).toString();
 
   return (

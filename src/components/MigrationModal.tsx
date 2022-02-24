@@ -22,6 +22,7 @@ import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
 import MainnetContext from 'src/contexts/MainnetContext';
+import { roundForElfiV2Staking } from 'src/utiles/roundForV2Staking';
 import LoadingIndicator from './LoadingIndicator';
 import ModalHeader from './ModalHeader';
 import Popupinfo from './PopupInfo';
@@ -306,11 +307,10 @@ const MigrationModal: React.FunctionComponent<{
                   : state.withdrawMax
                   ? constants.Zero
                   : utils.parseEther(state.migrationAmount),
-                (round >= 3 &&
-                stakedToken === Token.ELFI &&
-                getMainnetType === 'Ethereum'
-                  ? round - 2
-                  : round
+                roundForElfiV2Staking(
+                  round,
+                  stakedToken,
+                  getMainnetType,
                 ).toString(),
               )
               .then((tx) => {
