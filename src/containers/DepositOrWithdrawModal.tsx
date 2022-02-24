@@ -46,6 +46,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   transactionModal: () => void;
   transactionWait: boolean;
   setTransactionWait: () => void;
+  disableTransactionWait: () => void;
   round: number;
 }> = ({
   tokenName,
@@ -60,6 +61,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   transactionWait,
   setTransactionWait,
   transactionModal,
+  disableTransactionWait,
   round,
 }) => {
   const { account, chainId, library } = useWeb3React();
@@ -88,7 +90,6 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const { t } = useTranslation();
   const moneyPool = useMoneyPool();
   const { setTransaction, failTransaction } = useContext(TxContext);
-
   const tokenInfo = ReserveData.find(
     (_reserve) => _reserve.address === reserve.id,
   );
@@ -151,11 +152,9 @@ const DepositOrWithdrawModal: FunctionComponent<{
           tx,
           emitter,
           RecentActivityType.Approve,
+          () => { },
           () => {
-            transactionModal();
-            onClose();
-          },
-          () => {
+            disableTransactionWait();
             refetch();
           },
         );

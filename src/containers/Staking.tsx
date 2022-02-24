@@ -300,6 +300,7 @@ const Staking: React.FunctionComponent<IProps> = ({
         transactionModal={() => setTransactionModal(true)}
         transactionWait={transactionWait}
         setTransactionWait={() => setTransactionWait(true)}
+        disableTransactionWait={() => setTransactionWait(false)}
       />
       <MigrationModal
         visible={modalVisible(StakingModalType.Migration)}

@@ -97,6 +97,7 @@ const Dashboard: React.FunctionComponent = () => {
           round={round}
           transactionWait={transactionWait}
           setTransactionWait={() => setTransactionWait(true)}
+          disableTransactionWait={() => setTransactionWait(false)}
         />
       )}
       {selectedBalance && selectedReserve && (

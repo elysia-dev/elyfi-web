@@ -35,6 +35,7 @@ const StakingModal: React.FunctionComponent<{
   transactionModal: () => void;
   transactionWait: boolean;
   setTransactionWait: () => void;
+  disableTransactionWait: () => void;
 }> = ({
   visible,
   closeHandler,
@@ -46,6 +47,7 @@ const StakingModal: React.FunctionComponent<{
   transactionModal,
   transactionWait,
   setTransactionWait,
+  disableTransactionWait
 }) => {
   const { t, i18n } = useTranslation();
   const { account, chainId } = useWeb3React();
@@ -204,13 +206,10 @@ const StakingModal: React.FunctionComponent<{
                       tx,
                       emitter,
                       RecentActivityType.Approve,
+                      () => { },
                       () => {
-                        closeHandler();
-                        transactionModal();
-                      },
-                      () => {
+                        disableTransactionWait();
                         refetch();
-                        afterTx();
                       },
                     );
                   })
