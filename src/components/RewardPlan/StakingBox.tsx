@@ -30,7 +30,7 @@ type Props = {
   loading: boolean;
   poolApr: BigNumber;
   poolPrincipal: BigNumber;
-  staking: number;
+  stakedRound: number;
   unit: string;
   start: number[] | number;
   end: number[] | number;
@@ -55,7 +55,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
   const tokenImg = isElfi ? elfi : el;
   const { t, i18n } = useTranslation();
   const { value: mediaQuery } = useMediaQueryType();
-  const [currentSwipe, setCurrnetSwipe] = useState(props.staking);
+  const [currentSwipe, setCurrnetSwipe] = useState(props.stakedRound);
   const { type: getMainnetType } = useContext(MainnetContext);
   const prevNavigation = useRef<HTMLDivElement>(null);
   const nextNavigation = useRef<HTMLDivElement>(null);
@@ -87,7 +87,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
           loading={props.loading}
           poolApr={props.poolApr}
           poolPrincipal={props.poolPrincipal}
-          staking={props.staking}
+          stakedRound={props.stakedRound}
           unit={props.unit}
           stakingRoundDate={stakingRoundDate}
         />
@@ -126,7 +126,10 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
                 : undefined,
           }}>
           {stakingRoundDate.map((_x, index) => {
-            const miningValue = miningValueByToken(props.unit, props.staking);
+            const miningValue = miningValueByToken(
+              props.unit,
+              props.stakedRound,
+            );
             const { start, end } = countValue(props.start, props.end, index);
 
             return (
@@ -145,7 +148,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
                     stakingRoundFill={
                       <StakingProgressFill
                         nth={props.nth}
-                        staking={props.staking}
+                        stakedRound={props.stakedRound}
                         unit={props.unit}
                         end={end}
                         currentPhase={props.currentPhase}

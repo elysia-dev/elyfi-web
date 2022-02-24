@@ -14,7 +14,7 @@ type Props = {
   loading: boolean;
   poolApr: BigNumber;
   poolPrincipal: BigNumber;
-  staking: number;
+  stakedRound: number;
   unit: string;
   stakingRoundDate: IStakingPoolRound[];
 };
@@ -50,11 +50,11 @@ const StakingBoxHeader: FunctionComponent<Props> = (props) => {
           <div>
             <h2 className="percent">
               {props.loading ||
-              props.stakingRoundDate.length - 1 < props.staking ? (
+              props.stakingRoundDate.length - 1 < props.stakedRound ? (
                 <Skeleton width={50} />
               ) : props.poolApr.eq(constants.MaxUint256) ||
                 current.isAfter(
-                  props.stakingRoundDate[props.staking].endedAt,
+                  props.stakingRoundDate[props.stakedRound].endedAt,
                 ) ? (
                 '-'
               ) : (

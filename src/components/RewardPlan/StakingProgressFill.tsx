@@ -8,7 +8,7 @@ import miningValueByToken from 'src/utiles/stakingReward';
 
 type Props = {
   nth: string;
-  staking: number;
+  stakedRound: number;
   unit: string;
   end: number;
   currentPhase?: number;
@@ -20,7 +20,7 @@ const StakingProgressFill: FunctionComponent<Props> = (props) => {
   const isElfi = props.unit === 'ELFI';
   const { value: mediaQuery } = useMediaQueryType();
 
-  const miningValue = miningValueByToken(props.unit, props.staking);
+  const miningValue = miningValueByToken(props.unit, props.stakedRound);
 
   return (
     <div className="reward__progress-bar__wrapper">

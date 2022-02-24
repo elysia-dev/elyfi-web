@@ -388,7 +388,7 @@ const RewardPlan: FunctionComponent = () => {
               loading={poolLoading}
               poolApr={poolApr}
               poolPrincipal={poolPrincipal}
-              staking={state.round}
+              stakedRound={state.round}
               unit={rewardToken(stakingType, getMainnetType)}
               start={
                 isEl
