@@ -270,7 +270,6 @@ const Staking: React.FunctionComponent<IProps> = ({
         closeHandler={() => {
           setModalType('')
           setTransactionWait(false)
-          setClaimStakingRewardModalVisible(false)
         }}
         afterTx={() => {
           account && fetchRoundData(account);
@@ -284,7 +283,6 @@ const Staking: React.FunctionComponent<IProps> = ({
         closeHandler={() => {
           setModalType('')
           setTransactionWait(false)
-          setStakingModalVisible(false)
         }}
         stakedToken={stakedToken}
         stakedBalance={
@@ -308,7 +306,6 @@ const Staking: React.FunctionComponent<IProps> = ({
         closeHandler={() => {  
           setModalType('')
           setTransactionWait(false)
-          setMigrationModalVisible(false)
         }}
         stakedToken={stakedToken}
         rewardToken={rewardToken}
