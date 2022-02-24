@@ -3,6 +3,7 @@ import {
   FunctionComponent,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -20,13 +21,13 @@ import 'swiper/modules/pagination/pagination.scss';
 import 'swiper/swiper.scss';
 import miningValueByToken, { countValue } from 'src/utiles/stakingReward';
 import MainnetContext from 'src/contexts/MainnetContext';
+import { ordinalNumberConverter } from 'src/utiles/ordinalNumberConverter';
 import SmallProgressBar from './SmallProgressBar';
 import StakingBoxHeader from './StakingBoxHeader';
 import StakingDetailInfo from './StakingDetailInfo';
 import StakingProgressFill from './StakingProgressFill';
 
 type Props = {
-  nth: string;
   loading: boolean;
   poolApr: BigNumber;
   poolPrincipal: BigNumber;
@@ -63,6 +64,11 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
 
   const stakingRoundDate = roundTimes(props.stakedToken, getMainnetType);
 
+  const nth = useMemo(
+    () => ordinalNumberConverter(props.stakedRound + 1, i18n),
+    [props.stakedRound],
+  );
+
   useEffect(() => {
     props.setState({
       ...props.state,
@@ -83,7 +89,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
       </div>
       <div className="reward__token__container">
         <StakingBoxHeader
-          nth={props.nth}
+          nth={nth}
           loading={props.loading}
           poolApr={props.poolApr}
           poolPrincipal={props.poolPrincipal}
@@ -144,10 +150,10 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     max={miningValue}
                     unit={props.unit}
-                    nth={props.nth}
+                    nth={nth}
                     stakingRoundFill={
                       <StakingProgressFill
-                        nth={props.nth}
+                        nth={nth}
                         stakedRound={props.stakedRound}
                         unit={props.unit}
                         end={end}
