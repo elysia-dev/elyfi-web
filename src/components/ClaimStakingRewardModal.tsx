@@ -7,6 +7,7 @@ import { formatEther } from '@ethersproject/units';
 import LoadingIndicator from 'src/components/LoadingIndicator';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
 import DaiImage from 'src/assets/images/dai.png';
+import BusdImage from 'src/assets/images/busd@2x.png';
 import { formatCommaSmall, formatSixFracionDigit } from 'src/utiles/formatters';
 import Token from 'src/enums/Token';
 import { useTranslation } from 'react-i18next';
@@ -21,6 +22,7 @@ import ModalViewType from 'src/enums/ModalViewType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { roundForElfiV2Staking } from 'src/utiles/roundForElfiV2Staking';
+import MainnetType from 'src/enums/MainnetType';
 import ModalHeader from './ModalHeader';
 
 const ClaimStakingRewardModal: FunctionComponent<{
@@ -75,7 +77,13 @@ const ClaimStakingRewardModal: FunctionComponent<{
       style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
         <ModalHeader
-          image={token === Token.ELFI ? ElifyTokenImage : DaiImage}
+          image={
+            token === Token.ELFI
+              ? ElifyTokenImage
+              : mainnet === MainnetType.BSC
+              ? BusdImage
+              : DaiImage
+          }
           title={token}
           onClose={closeHandler}
         />
