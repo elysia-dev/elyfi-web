@@ -15,16 +15,17 @@ const useStakingPool = (
 ): {
   contract: StakingPool | undefined;
   rewardContractForV2: StakingPool | undefined;
+  elfiV2StakingContract: StakingPool | undefined;
 } => {
   const { library } = useWeb3React();
   const { type: getMainnetType } = useContext(MainnetContext);
   const contract = useMemo(() => {
     if (!library) return;
     return StakingPool__factory.connect(
-      poolAddress(getMainnetType, staked, v2),
+      poolAddress(getMainnetType, staked),
       library.getSigner(),
     );
-  }, [library, staked, v2]);
+  }, [library, staked, v2, getMainnetType]);
 
   const rewardContractForV2 = useMemo(() => {
     if (!library) return;
@@ -36,7 +37,17 @@ const useStakingPool = (
     }
   }, [library, staked, v2, getMainnetType]);
 
-  return { contract, rewardContractForV2 };
+  const elfiV2StakingContract = useMemo(() => {
+    if (!library) return;
+    if (staked === Token.ELFI && v2 && getMainnetType === 'Ethereum') {
+      return StakingPool__factory.connect(
+        envs.staking.elfyV2StakingPoolAddress,
+        library.getSigner(),
+      );
+    }
+  }, [library, staked, v2, getMainnetType]);
+
+  return { contract, rewardContractForV2, elfiV2StakingContract };
 };
 
 export default useStakingPool;
