@@ -11,7 +11,7 @@ const useERC20 = (address: string): ERC20 => {
       return ERC20__factory.connect(
         address,
         new providers.JsonRpcProvider(
-          address === envs.token.bscElfiAddress
+          address === envs.token.testBscElfiAddress
             ? process.env.REACT_APP_JSON_RPC_BSC
             : process.env.REACT_APP_JSON_RPC,
         ),
