@@ -124,7 +124,11 @@ const Governance = (): JSX.Element => {
                 nap:
                   getHTMLStringData.match(regexNap)?.toString().substring(5) ||
                   '',
-                status: getHTMLStringData.match(/Status: .*(?=<)/)?.toString().split('Status: ') || '',
+                status:
+                  getHTMLStringData
+                    .match(/Status: .*(?=<)/)
+                    ?.toString()
+                    .split('Status: ') || '',
                 images:
                   getHTMLStringData
                     .match(
@@ -186,6 +190,33 @@ const Governance = (): JSX.Element => {
       window.removeEventListener('resize', () => draw());
     };
   }, [document.body.clientHeight]);
+
+  useEffect(() => {
+    (async () => {
+      const testOnChain = await OnChainTopic.getBscOnChainTopicData();
+      console.log(testOnChain.data.data.proposals);
+      console.log(
+        testOnChain.data.data.proposals
+          .filter((proposal) => {
+            return proposal.state === 'active';
+          })
+          .map((data) => {
+            return {
+              data: {
+                // description: data.title.match(/\d.*(?!NAP)(?=:)/)?.toString(),
+                description: data.title.match(/\d.*(?!NAP)(?=:)/)?.toString(),
+              },
+              status: data.state,
+              totalVotesCast: data.scores_total,
+              totalVotesCastAbstained: data.scores[0],
+              totalVotesCastAgainst: data.scores[0],
+              totalVotesCastInSupport: data.scores[0],
+              id: data.author,
+            };
+          }),
+      );
+    })();
+  }, []);
 
   const offChainContainer = (data: INapData) => {
     return (
