@@ -2,7 +2,6 @@ import { BigNumber, constants, logger, utils } from 'ethers';
 import { useContext, useState, useEffect } from 'react';
 import ELFI from 'src/assets/images/ELFI.png';
 import { formatComma } from 'src/utiles/formatters';
-import envs from 'src/core/envs';
 import { useTranslation } from 'react-i18next';
 import useWatingTx from 'src/hooks/useWaitingTx';
 import LoadingIndicator from 'src/components/LoadingIndicator';
@@ -13,7 +12,6 @@ import { roundTimes } from 'src/core/data/stakingRoundTimes';
 import useStakingPool from 'src/hooks/useStakingPool';
 import useERC20Info from 'src/hooks/useERC20Info';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
-import txStatus from 'src/enums/TxStatus';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ModalHeader from 'src/components/ModalHeader';
@@ -22,7 +20,7 @@ import buildEventEmitter from 'src/utiles/buildEventEmitter';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
-import { tokenAddress } from 'src/utiles/stakingPoolAddress';
+import { stakingRewardTokenAddress } from 'src/utiles/stakingPoolAddress';
 import MainnetContext from 'src/contexts/MainnetContext';
 
 const StakingModal: React.FunctionComponent<{
@@ -59,7 +57,7 @@ const StakingModal: React.FunctionComponent<{
     refetch,
     contract,
   } = useERC20Info(
-    tokenAddress(getMainnetType, stakedToken),
+    stakingRewardTokenAddress(getMainnetType, stakedToken),
     stakingPool ? stakingPool.address : '',
   );
   const { waiting, wait } = useWatingTx();
