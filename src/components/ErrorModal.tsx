@@ -1,4 +1,3 @@
-import { utils } from 'ethers';
 import { FunctionComponent, useContext, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import TxContext from 'src/contexts/TxContext';

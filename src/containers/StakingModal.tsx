@@ -1,4 +1,4 @@
-import { BigNumber, constants, logger, utils } from 'ethers';
+import { BigNumber, constants, utils } from 'ethers';
 import { useContext, useState, useEffect } from 'react';
 import ELFI from 'src/assets/images/ELFI.png';
 import { formatComma } from 'src/utiles/formatters';
@@ -32,8 +32,6 @@ const StakingModal: React.FunctionComponent<{
   stakedBalance: BigNumber;
   round: number;
   endedModal: () => void;
-  setTxStatus: (status: txStatus) => void;
-  setTxWaiting: (status: boolean) => void;
   transactionModal: () => void;
   transactionWait: boolean;
   setTransactionWait: () => void;
@@ -45,8 +43,6 @@ const StakingModal: React.FunctionComponent<{
   stakedToken,
   round,
   endedModal,
-  setTxStatus,
-  setTxWaiting,
   transactionModal,
   transactionWait,
   setTransactionWait,
@@ -65,7 +61,9 @@ const StakingModal: React.FunctionComponent<{
     refetch,
     contract,
   } = useERC20Info(
-    stakedToken === Token.EL ? envs.elAddress : envs.governanceAddress,
+    stakedToken === Token.EL
+      ? envs.token.elAddress
+      : envs.token.governanceAddress,
     stakingPool ? stakingPool.address : '',
   );
   const { waiting, wait } = useWatingTx();

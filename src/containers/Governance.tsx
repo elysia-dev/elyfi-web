@@ -1,6 +1,5 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import TempAssets from 'src/assets/images/temp_assets.png';
-import wave from 'src/assets/images/wave_elyfi.png';
 import OffChainTopic, { INapData } from 'src/clients/OffChainTopic';
 import Skeleton from 'react-loading-skeleton';
 import { IProposals, OnChainTopic } from 'src/clients/OnChainTopic';
@@ -24,7 +23,7 @@ import SubgraphContext, { IAssetBond } from 'src/contexts/SubgraphContext';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
 
-const Governance = () => {
+const Governance = (): JSX.Element => {
   const [onChainLoading, setOnChainLoading] = useState(true);
   const [offChainLoading, setOffChainLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
@@ -39,6 +38,7 @@ const Governance = () => {
   const History = useHistory();
   const { value: mediaQuery } = useMediaQueryType();
   const { lng } = useParams<{ lng: string }>();
+  const defaultShowingLoanData = mediaQuery === MediaQuery.Mobile ? 8 : 9;
   const assetBondTokensBackedByEstate = assetBondTokens.filter((product) => {
     const parsedId = parseTokenId(product.id);
     return CollateralCategory.Others !== parsedId.collateralCategory;
@@ -239,9 +239,7 @@ const Governance = () => {
             category: PageEventType.MoveToExternalPage,
             action: ButtonEventType.OnChainVoteButtonOnGovernance,
           });
-          window.open(
-            `https://www.withtally.com/governance/elyfi/proposal/${data.id}`,
-          );
+          window.open(`${t('governance.link.tally')}/proposal/${data.id}`);
         }}>
         <div>
           <img
@@ -394,7 +392,7 @@ const Governance = () => {
             <div>
               <div>
                 <h3>
-                  {t('governance.data_verification', {
+                  {t('governance.data_verification--mobile', {
                     count: offChainNapData
                       .filter((data) => data.network === mainnetType)
                       .filter((data) => moment().isBefore(data.endedDate))
@@ -450,7 +448,7 @@ const Governance = () => {
                 <p>{t('governance.on_chain_voting__content')}</p>
                 {mainnetType === MainnetType.Ethereum && (
                   <a
-                    href="https://www.withtally.com/governance/elyfi"
+                    href={`${t('governance.link.tally')}`}
                     target="_blank"
                     rel="noopener noreferer">
                     <div
@@ -474,7 +472,7 @@ const Governance = () => {
                 </h3>
                 {mainnetType === MainnetType.Ethereum && (
                   <a
-                    href="https://www.withtally.com/governance/elyfi"
+                    href={`${t('governance.link.tally')}`}
                     target="_blank"
                     rel="noopener noreferer">
                     <div
@@ -544,7 +542,7 @@ const Governance = () => {
                   assetBondTokens={
                     /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
                     [...((assetBondTokensBackedByEstate as IAssetBond[]) || [])]
-                      .slice(0, pageNumber * 9)
+                      .slice(0, pageNumber * defaultShowingLoanData)
                       .sort((a, b) => {
                         return b.loanStartTimestamp! - a.loanStartTimestamp! >=
                           0
@@ -554,7 +552,7 @@ const Governance = () => {
                   }
                 />
                 {assetBondTokensBackedByEstate.length &&
-                  assetBondTokensBackedByEstate.length >= pageNumber * 9 && (
+                  assetBondTokensBackedByEstate.length >= pageNumber * defaultShowingLoanData && (
                     <div>
                       <button
                         className="portfolio__view-button"

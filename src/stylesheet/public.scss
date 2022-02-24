@@ -11,21 +11,26 @@
 @font-face {
   font-family: 'SpoqaHanSansNeo';
   src: url('../assets/fonts/SpoqaHanSansNeo-Regular.ttf') format('truetype');
-  unicode-range: U+0030-0039 U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
+  // unicode-range: U+0030-0039 U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
 }
 @font-face {
   font-family: 'SpoqaHanSansNeo-Bold';
   src: url('../assets/fonts/SpoqaHanSansNeo-Bold.ttf') format('truetype');
-  unicode-range: U+0030-0039 U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
+  // unicode-range: U+0030-0039 U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
 }
 @font-face {
   font-family: 'SpoqaHanSansNeo-Medium';
   src: url('../assets/fonts/SpoqaHanSansNeo-Medium.ttf') format('truetype');
+  // unicode-range: U+0030-0039 U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/Inter-Regular.ttf') format('truetype');
   unicode-range: U+0030-0039 U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
 }
 @font-face {
-  font-family: 'Inter-Regular';
-  src: url('../assets/fonts/Inter-Regular.ttf') format('truetype');
+  font-family: 'Inter-Bold';
+  src: url('../assets/fonts/Inter-Bold.ttf') format('truetype');
   unicode-range: U+0030-0039 U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
 }
 
@@ -52,7 +57,7 @@ $governance-progress-00: #0099cc;
 $governance-progress-01: #3d5299;
 $governance-progress-02: #707070;
 
-$bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
+$bold: 'Inter-Bold', 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 
 @mixin hover__soft-background {
   transition: all 0.2s ease;
@@ -127,7 +132,7 @@ $bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 
 h1,
 h2 {
-  font-family: 'SpoqaHanSansNeo-Bold';
+  font-family: 'Inter-Bold';
   color: $font-color;
   font-weight: bold;
   cursor: default;
@@ -141,7 +146,7 @@ h2 {
 p,
 a,
 span {
-  font-family: 'SpoqaHanSansNeo';
+  font-family: 'Inter';
   color: $font-color;
   text-decoration: none;
   cursor: default;
@@ -160,7 +165,7 @@ span {
 }
 .bold,
 strong {
-  font-family: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
+  font-family: 'Inter-Bold', 'Montserrat-bold';
 }
 i {
   font-style: initial;
@@ -357,11 +362,11 @@ input[type='number'] {
       }
       &__status {
         color: #ffffff;
-        font-family: 'Montserrat-bold', 'SpoqaHanSansNeo-Bold';
+        font-family: 'Montserrat-bold', 'Inter-Bold';
         cursor: pointer;
         &--connected {
           color: $font-color;
-          font-family: 'Montserrat-bold', 'SpoqaHanSansNeo-Bold';
+          font-family: 'Montserrat-bold', 'Inter-Bold';
           text-align: right;
           margin: 0;
           cursor: pointer;
@@ -390,7 +395,7 @@ input[type='number'] {
           height: 1px;
         }
         &__item {
-          font-family: 'Montserrat', 'SpoqaHanSansNeo';
+          font-family: 'Montserrat', 'Inter';
           white-space: normal;
           margin: 0;
           padding: 10px 20px;
@@ -508,7 +513,7 @@ input[type='number'] {
           &:first-child {
             i {
               color: $elysia-color;
-              font-family: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
+              font-family: 'Inter-Bold', 'Montserrat-bold';
             }
           }
         }
@@ -997,7 +1002,7 @@ input[type='number'] {
           &.active {
             border: 1px solid $elysia-color;
             > p {
-              font-family: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
+              font-family: 'Inter-Bold', 'Montserrat-bold';
             }
           }
         }
@@ -1580,7 +1585,7 @@ input[type='number'] {
           &.active {
             border: 1px solid #f9ae18;
             > p {
-              font-family: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
+              font-family: 'Inter-Bold', 'Montserrat-bold';
             }
           }
         }
@@ -1602,7 +1607,7 @@ input[type='number'] {
           &.active {
             border: 1px solid #26a17b;
             > p {
-              font-family: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
+              font-family: 'Inter-Bold', 'Montserrat-bold';
             }
           }
         }
@@ -2436,7 +2441,7 @@ input[type='number'] {
             &.active {
               border: 1px solid $elysia-color;
               > p {
-                font-family: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
+                font-family: 'Inter-Bold', 'Montserrat-bold';
               }
             }
           }
@@ -2911,7 +2916,7 @@ input[type='number'] {
       color: #00bfff;
       text-decoration: underline;
       cursor: pointer;
-      font-family: 'Montserrat-bold', 'SpoqaHanSansNeo-Bold';
+      font-family: 'Montserrat-bold', 'Inter-Bold';
     }
     &__container {
       border-bottom: 1px solid #b7b7b7;
@@ -3683,7 +3688,7 @@ input[type='number'] {
     align-items: center;
     justify-content: space-evenly;
     > h2 {
-      font-family: 'SpoqaHanSansNeo';
+      font-family: 'Inter';
       color: $font-color;
       font-weight: normal;
       font-size: 13px;
@@ -4058,10 +4063,10 @@ input[type='number'] {
       padding: 0px 10px;
       > span {
         color: #888888 !important;
-        font-family: 'SpoqaHanSansNeo-Bold' !important;
+        font-family: 'Inter-Bold' !important;
         &:nth-child(2) {
           flex: 1;
-          font-family: 'SpoqaHanSansNeo-Bold' !important;
+          font-family: 'Inter-Bold' !important;
         }
         &:last-child {
           color: #00bfff !important;
@@ -4077,7 +4082,7 @@ input[type='number'] {
         &::after {
           content: '%';
           color: #00bfff;
-          font-family: 'Montserrat-bold', 'SpoqaHanSansNeo-Bold';
+          font-family: 'Montserrat-bold', 'Inter-Bold';
         }
       }
     }
@@ -4765,7 +4770,7 @@ input[type='number'] {
     color: #333333 !important;
   }
   textarea {
-    font-family: 'Inter-Regular';
+    font-family: 'Inter';
   }
   .down_arrow {
     content: '';

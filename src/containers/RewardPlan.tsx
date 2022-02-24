@@ -61,7 +61,6 @@ import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import SubgraphContext from 'src/contexts/SubgraphContext';
 import isSupportedReserve from 'src/core/utils/isSupportedReserve';
-import MainnetType from 'src/enums/MainnetType';
 import MainnetContext from 'src/contexts/MainnetContext';
 import getTokenNameByAddress from 'src/core/utils/getTokenNameByAddress';
 
@@ -251,8 +250,8 @@ const RewardPlan: FunctionComponent = () => {
 
   const getAllStakedPositions = () => {
     StakerSubgraph.getIncentivesWithPositionsByPoolId(
-      envs.ethElfiPoolAddress,
-      envs.daiElfiPoolAddress,
+      envs.lpStaking.ethElfiPoolAddress,
+      envs.lpStaking.daiElfiPoolAddress,
     ).then((res) => {
       setTotalStakedPositions(res.data);
     });

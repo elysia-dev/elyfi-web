@@ -13,32 +13,27 @@ const PriceProvider: React.FC = (props) => {
 
   const fetchPrices = async () => {
     try {
-      const uniswapPoolData = (await CachedUniswapV3.getPoolData()).data.data.data.data;
+      const uniswapPoolData = (await CachedUniswapV3.getPoolData()).data.data
+        .data.data;
       const priceData = await Coingecko.getPrices();
 
       setState({
         ...state,
         elfiPrice: parseFloat(
-          uniswapPoolData.daiPool.poolDayData[
-            uniswapPoolData.daiPool.poolDayData.length - 1
-          ].token1Price,
+          uniswapPoolData.daiPool.poolDayData[0].token1Price,
         ),
         elPrice: priceData.data.elysia.usd,
         daiPrice: priceData.data.dai.usd,
         tetherPrice: priceData.data.tether.usd,
         ethPrice: priceData.data.ethereum.usd,
         elfiDaiPool: {
-          price: calcPriceFromSqrtPriceX96(
-            uniswapPoolData.daiPool.sqrtPrice,
-          ),
+          price: calcPriceFromSqrtPriceX96(uniswapPoolData.daiPool.sqrtPrice),
           liquidity: parseFloat(
             utils.formatEther(uniswapPoolData.daiPool.liquidity),
           ),
         },
         elfiEthPool: {
-          price: calcPriceFromSqrtPriceX96(
-           uniswapPoolData.ethPool.sqrtPrice,
-          ),
+          price: calcPriceFromSqrtPriceX96(uniswapPoolData.ethPool.sqrtPrice),
           liquidity: parseFloat(
             utils.formatEther(uniswapPoolData.ethPool.liquidity),
           ),
@@ -46,7 +41,7 @@ const PriceProvider: React.FC = (props) => {
         loading: false,
       });
     } catch (e) {
-      console.log(e)
+      console.log(e);
       Coingecko.getPrices()
         .then((priceData) => {
           setState({

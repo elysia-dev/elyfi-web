@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react';
+import { useContext } from 'react';
 import PriceContext from 'src/contexts/PriceContext';
 import { toCompact } from 'src/utiles/formatters';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
@@ -8,7 +8,10 @@ const DAI_AMOUNT_PER_POOL = 25000;
 const ETH_AMOUNT_PER_POOL = 6.437; // FIXME
 const DAYS = 40;
 
-const useLpApr = () => {
+const useLpApr = (): {
+  calcDaiElfiPoolApr: (totalValue: number) => string;
+  calcEthElfiPoolApr: (totalValue: number) => string;
+} => {
   const { daiPrice, ethPrice } = useContext(PriceContext);
   const { latestPrice: elfiPrice } = useContext(UniswapPoolContext);
 

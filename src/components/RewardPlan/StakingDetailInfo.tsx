@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers';
 import { FunctionComponent } from 'react';
 import CountUp from 'react-countup';
 import { useTranslation } from 'react-i18next';
@@ -69,8 +68,7 @@ const StakingDetailInfo: FunctionComponent<Props> = (props: Props) => {
       </h2>
       {miningDescription.map((data, index) => {
         return (
-          <div
-            key={`reward-term-${index}`}>
+          <div key={`reward-term-${index}`}>
             <p>{data[0]}</p>
             {isDai ? (
               <p>{data[1]}</p>

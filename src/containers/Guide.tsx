@@ -1,6 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import Navigation from 'src/components/Navigation';
-import Footer from 'src/components/Footer';
 
 import Guide02 from 'src/assets/images/guide/01.png';
 import Guide03 from 'src/assets/images/guide/02.png';
@@ -15,7 +13,6 @@ import Guide11 from 'src/assets/images/guide/11.png';
 import Guide12 from 'src/assets/images/guide/12.png';
 import Guide13 from 'src/assets/images/guide/13.png';
 import Guide14 from 'src/assets/images/guide/14.png';
-import Guide15 from 'src/assets/images/guide/15.png';
 import Guide16 from 'src/assets/images/guide/16.png';
 import Guide17 from 'src/assets/images/guide/17.png';
 import Guide18 from 'src/assets/images/guide/18.png';
@@ -36,34 +33,12 @@ import Guide11Eng from 'src/assets/images/guide/Eng/11.png';
 import Guide12Eng from 'src/assets/images/guide/Eng/12.png';
 import Guide13Eng from 'src/assets/images/guide/Eng/13.png';
 import Guide14Eng from 'src/assets/images/guide/Eng/14.png';
-import Guide15Eng from 'src/assets/images/guide/Eng/15.png';
 import Guide16Eng from 'src/assets/images/guide/Eng/16.png';
 import Guide17Eng from 'src/assets/images/guide/Eng/17.png';
 import Guide18Eng from 'src/assets/images/guide/Eng/18.png';
 import Guide19Eng from 'src/assets/images/guide/Eng/19.png';
 import Guide20Eng from 'src/assets/images/guide/Eng/20.png';
 import Guide21Eng from 'src/assets/images/guide/Eng/21.png';
-
-import Guide02Chn from 'src/assets/images/guide/Chn/01.png';
-import Guide03Chn from 'src/assets/images/guide/Chn/02.png';
-import Guide04Chn from 'src/assets/images/guide/Chn/03.png';
-import Guide05Chn from 'src/assets/images/guide/Chn/04.png';
-import Guide06Chn from 'src/assets/images/guide/Chn/05.png';
-import Guide07Chn from 'src/assets/images/guide/Chn/06.png';
-import Guide08Chn from 'src/assets/images/guide/Chn/07.png';
-import Guide09Chn from 'src/assets/images/guide/Chn/08.png';
-import Guide10Chn from 'src/assets/images/guide/Chn/10.png';
-import Guide11Chn from 'src/assets/images/guide/Chn/11.png';
-import Guide12Chn from 'src/assets/images/guide/Chn/12.png';
-import Guide13Chn from 'src/assets/images/guide/Chn/13.png';
-import Guide14Chn from 'src/assets/images/guide/Chn/14.png';
-import Guide15Chn from 'src/assets/images/guide/Chn/15.png';
-import Guide16Chn from 'src/assets/images/guide/Chn/16.png';
-import Guide17Chn from 'src/assets/images/guide/Chn/17.png';
-import Guide18Chn from 'src/assets/images/guide/Chn/18.png';
-import Guide19Chn from 'src/assets/images/guide/Chn/19.png';
-import Guide20Chn from 'src/assets/images/guide/Chn/20.png';
-import Guide21Chn from 'src/assets/images/guide/Chn/21.png';
 
 import YouTube from 'react-youtube';
 
@@ -137,17 +112,6 @@ const Guide: React.FunctionComponent = () => {
                       여기
                     </a>
                     에서 Metamask 크롬 확장 프로그램을 설치할 수 있습니다.
-                  </>
-                ) : i18n.language === LanguageType.ZHHANS ? (
-                  <>
-                    您可以在点击
-                    <a
-                      className="guide__link"
-                      href={'https://metamask.io/download.html'}
-                      target="_blank">
-                      此处
-                    </a>
-                    安装MetamaskChrome扩展程序。
                   </>
                 ) : (
                   <>
@@ -325,11 +289,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide02
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide02Chn
-                        : Guide02Eng
+                      i18n.language === LanguageType.KO ? Guide02 : Guide02Eng
                     }
                     alt="Guide"
                   />
@@ -351,11 +311,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide03
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide03Chn
-                        : Guide03Eng
+                      i18n.language === LanguageType.KO ? Guide03 : Guide03Eng
                     }
                     alt="Guide"
                   />
@@ -395,11 +351,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide04
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide04Chn
-                        : Guide04Eng
+                      i18n.language === LanguageType.KO ? Guide04 : Guide04Eng
                     }
                     alt="Guide"
                   />
@@ -420,11 +372,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide06
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide06Chn
-                        : Guide06Eng
+                      i18n.language === LanguageType.KO ? Guide06 : Guide06Eng
                     }
                     alt="Guide"
                   />
@@ -443,11 +391,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide05
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide05Chn
-                        : Guide05Eng
+                      i18n.language === LanguageType.KO ? Guide05 : Guide05Eng
                     }
                     alt="Guide"
                   />
@@ -487,11 +431,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide04
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide04Chn
-                        : Guide04Eng
+                      i18n.language === LanguageType.KO ? Guide04 : Guide04Eng
                     }
                     alt="Guide"
                   />
@@ -512,11 +452,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide07
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide07Chn
-                        : Guide07Eng
+                      i18n.language === LanguageType.KO ? Guide07 : Guide07Eng
                     }
                     alt="Guide"
                   />
@@ -574,11 +510,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide08
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide08Chn
-                        : Guide08Eng
+                      i18n.language === LanguageType.KO ? Guide08 : Guide08Eng
                     }
                     alt="Guide"
                   />
@@ -599,11 +531,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide09
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide09Chn
-                        : Guide09Eng
+                      i18n.language === LanguageType.KO ? Guide09 : Guide09Eng
                     }
                     alt="Guide"
                   />
@@ -647,11 +575,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide17
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide17Chn
-                        : Guide17Eng
+                      i18n.language === LanguageType.KO ? Guide17 : Guide17Eng
                     }
                     alt="Guide"
                   />
@@ -672,11 +596,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide18
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide18Chn
-                        : Guide18Eng
+                      i18n.language === LanguageType.KO ? Guide18 : Guide18Eng
                     }
                     alt="Guide"
                   />
@@ -697,11 +617,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide19
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide19Chn
-                        : Guide19Eng
+                      i18n.language === LanguageType.KO ? Guide19 : Guide19Eng
                     }
                     alt="Guide"
                   />
@@ -755,11 +671,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide10
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide10Chn
-                        : Guide10Eng
+                      i18n.language === LanguageType.KO ? Guide10 : Guide10Eng
                     }
                     alt="Guide"
                   />
@@ -780,11 +692,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide11
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide11Chn
-                        : Guide11Eng
+                      i18n.language === LanguageType.KO ? Guide11 : Guide11Eng
                     }
                     alt="Guide"
                   />
@@ -805,11 +713,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide12
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide12Chn
-                        : Guide12Eng
+                      i18n.language === LanguageType.KO ? Guide12 : Guide12Eng
                     }
                     alt="Guide"
                   />
@@ -864,11 +768,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide10
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide10Chn
-                        : Guide10Eng
+                      i18n.language === LanguageType.KO ? Guide10 : Guide10Eng
                     }
                     alt="Guide"
                   />
@@ -889,11 +789,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide11
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide11Chn
-                        : Guide11Eng
+                      i18n.language === LanguageType.KO ? Guide11 : Guide11Eng
                     }
                     alt="Guide"
                   />
@@ -914,11 +810,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide16
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide16Chn
-                        : Guide16Eng
+                      i18n.language === LanguageType.KO ? Guide16 : Guide16Eng
                     }
                     alt="Guide"
                   />
@@ -957,11 +849,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide20
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide20Chn
-                        : Guide20Eng
+                      i18n.language === LanguageType.KO ? Guide20 : Guide20Eng
                     }
                     alt="Guide"
                   />
@@ -982,11 +870,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide21
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide21Chn
-                        : Guide21Eng
+                      i18n.language === LanguageType.KO ? Guide21 : Guide21Eng
                     }
                     alt="Guide"
                   />
@@ -1037,11 +921,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide13
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide13Chn
-                        : Guide13Eng
+                      i18n.language === LanguageType.KO ? Guide13 : Guide13Eng
                     }
                     alt="Guide"
                   />
@@ -1062,11 +942,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide14
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide14Chn
-                        : Guide14Eng
+                      i18n.language === LanguageType.KO ? Guide14 : Guide14Eng
                     }
                     alt="Guide"
                   />
@@ -1110,11 +986,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide17
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide17Chn
-                        : Guide17Eng
+                      i18n.language === LanguageType.KO ? Guide17 : Guide17Eng
                     }
                     alt="Guide"
                   />
@@ -1135,11 +1007,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide18
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide18Chn
-                        : Guide18Eng
+                      i18n.language === LanguageType.KO ? Guide18 : Guide18Eng
                     }
                     alt="Guide"
                   />
@@ -1160,11 +1028,7 @@ const Guide: React.FunctionComponent = () => {
                   <img
                     className="guide__image"
                     src={
-                      i18n.language === LanguageType.KO
-                        ? Guide19
-                        : i18n.language === LanguageType.ZHHANS
-                        ? Guide19Chn
-                        : Guide19Eng
+                      i18n.language === LanguageType.KO ? Guide19 : Guide19Eng
                     }
                     alt="Guide"
                   />

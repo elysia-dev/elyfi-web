@@ -17,13 +17,14 @@ class DrawWave {
     serviceGraphPageY: HTMLParagraphElement,
     auditPageY: HTMLParagraphElement,
     governancePageY: HTMLParagraphElement,
+    isResize: boolean,
   ): void {
     const headerY = mainHeaderY.offsetTop;
     const mainMoblieY = mainHeaderMoblieY.offsetTop;
     const guidePageY = guideY.offsetTop;
     const serviceGraphY = serviceGraphPageY.offsetTop;
     const auditY = auditPageY.offsetTop;
-    const governanceY = governancePageY.offsetTop;
+    const governanceY = governancePageY.offsetTop + (isResize ? 0 : 300);
     const governanceBottomY = governancePageY.offsetHeight;
 
     this.ctx.strokeStyle = '#00BFFF';
@@ -408,7 +409,7 @@ class DrawWave {
         this.browserWidth / 1.2,
         browserHeghit - 330,
         this.browserWidth / 1.3,
-        browserHeghit - 48,
+        browserHeghit - 84,
         this.browserWidth / 2,
         browserHeghit - 94,
       );
@@ -430,13 +431,13 @@ class DrawWave {
         browserHeghit - 300,
         this.browserWidth / 4,
         browserHeghit - 70,
-        this.browserWidth / 1.7,
-        browserHeghit - 94,
+        this.browserWidth / 1.68,
+        browserHeghit - 100,
       );
       this.ctx.bezierCurveTo(
-        this.browserWidth / 1.1,
-        browserHeghit - 170,
-        this.browserWidth / 1.17,
+        this.browserWidth / 1.11,
+        browserHeghit - 210,
+        this.browserWidth / 1.19,
         browserHeghit - 240,
         this.browserWidth,
         browserHeghit - 170,
@@ -464,10 +465,10 @@ class DrawWave {
         Math.PI * 2,
       );
 
-      this.ctx.moveTo(this.browserWidth / 1.46 + 5, browserHeghit - 115.5);
+      this.ctx.moveTo(this.browserWidth / 1.64 + 5, browserHeghit - 104.5);
       this.ctx.arc(
-        this.browserWidth / 1.46,
-        browserHeghit - 115.5,
+        this.browserWidth / 1.64,
+        browserHeghit - 104.5,
         5,
         0,
         Math.PI * 2,
@@ -494,10 +495,10 @@ class DrawWave {
           : '#00BFFF'
         : color;
 
-      this.ctx.moveTo(this.browserWidth / 1.5 + 10, browserHeghit - 116);
+      this.ctx.moveTo(this.browserWidth / 1.7 + 10, browserHeghit - 101);
       this.ctx.arc(
-        this.browserWidth / 1.5,
-        browserHeghit - 116,
+        this.browserWidth / 1.7,
+        browserHeghit - 101,
         10,
         0,
         Math.PI * 2,
@@ -628,13 +629,13 @@ class DrawWave {
     this.ctx.beginPath();
     this.ctx.fillStyle = '#ffffff';
     this.ctx.moveTo(this.browserWidth / 7 + 10, headerY * 1.6);
-    this.ctx.arc(this.browserWidth / 7, headerY * 1.6, 10, 0, Math.PI * 2);
+    this.ctx.arc(this.browserWidth / 7, headerY * 1.6, 7, 0, Math.PI * 2);
 
     this.ctx.moveTo(this.browserWidth / 1.44 + 5, headerY * 1.595);
     this.ctx.arc(this.browserWidth / 1.44, headerY * 1.595, 5, 0, Math.PI * 2);
 
     this.ctx.moveTo(this.browserWidth / 3 + 10, headerY * 1.65);
-    this.ctx.arc(this.browserWidth / 3, headerY * 1.65, 10, 0, Math.PI * 2);
+    this.ctx.arc(this.browserWidth / 3, headerY * 1.65, 8, 0, Math.PI * 2);
 
     this.ctx.fill();
     this.ctx.stroke();
@@ -649,13 +650,13 @@ class DrawWave {
       : color;
 
     this.ctx.moveTo(this.browserWidth / 1.55 + 10, headerY * 1.62);
-    this.ctx.arc(this.browserWidth / 1.55, headerY * 1.62, 10, 0, Math.PI * 2);
+    this.ctx.arc(this.browserWidth / 1.55, headerY * 1.62, 7, 0, Math.PI * 2);
 
     this.ctx.moveTo(this.browserWidth / 10 + 5, headerY * 1.627);
     this.ctx.arc(this.browserWidth / 10, headerY * 1.627, 5, 0, Math.PI * 2);
 
     this.ctx.moveTo(this.browserWidth / 1.18 + 10, headerY * 1.625);
-    this.ctx.arc(this.browserWidth / 1.18, headerY * 1.625, 10, 0, Math.PI * 2);
+    this.ctx.arc(this.browserWidth / 1.18, headerY * 1.625, 8, 0, Math.PI * 2);
 
     this.ctx.fill();
 

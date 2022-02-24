@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-function ScrollToTop() {
+function ScrollToTop(): null {
   const history = useHistory();
 
   useEffect(() => {

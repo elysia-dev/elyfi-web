@@ -2,9 +2,9 @@ import MainnetType from 'src/enums/MainnetType';
 import { createContext } from 'react';
 
 export interface IMainnetContextTypes {
-  type: MainnetType,
-  unsupportedChainid: boolean,
-  active: boolean,
+  type: MainnetType;
+  unsupportedChainid: boolean;
+  active: boolean;
 }
 
 export interface IMainnetContext extends IMainnetContextTypes {
@@ -15,16 +15,15 @@ export interface IMainnetContext extends IMainnetContextTypes {
 export const initialMainnetData: IMainnetContextTypes = {
   type: MainnetType.Ethereum,
   unsupportedChainid: false,
-  active: false
-}
+  active: false,
+};
 
 export const initialMainnetContext = {
   ...initialMainnetData,
-  changeMainnet: async (mainnetChainId: number) => {},
-  setCurrentMainnet: (data: MainnetType) => {}
-}
+  changeMainnet: async (mainnetChainId: number): Promise<void> => {},
+  setCurrentMainnet: (data: MainnetType): void => {},
+};
 
-
-const MainnetContext = createContext<IMainnetContext>(initialMainnetContext)
+const MainnetContext = createContext<IMainnetContext>(initialMainnetContext);
 
 export default MainnetContext;

@@ -25,12 +25,11 @@ import MainAnimation from 'src/components/MainAnimation';
 import reactGA from 'react-ga';
 import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
-import { contextType } from 'google-map-react';
 import DrawWave from 'src/utiles/drawWave';
 import Fbg from 'src/assets/images/main/fbg.png';
 import Blocore from 'src/assets/images/main/blocore.png';
 
-const Main = () => {
+const Main = (): JSX.Element => {
   const { t } = useTranslation();
   const mainCanvasRef = useRef<HTMLCanvasElement>(null);
   const mainHeaderY = useRef<HTMLParagraphElement>(null);
@@ -75,7 +74,7 @@ const Main = () => {
     },
   ];
 
-  const draw = () => {
+  const draw = (isResize: boolean) => {
     const dpr = window.devicePixelRatio;
     const canvas: HTMLCanvasElement | null = mainCanvasRef.current;
     if (
@@ -90,7 +89,7 @@ const Main = () => {
       return;
     if (!canvas) return;
     canvas.width = document.body.clientWidth * dpr;
-    canvas.height = document.body.clientHeight * dpr;
+    canvas.height = document.body.clientHeight * dpr + (isResize ? 0 : 500);
     const browserWidth = canvas.width / dpr + 40;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -102,17 +101,18 @@ const Main = () => {
       serviceGraphPageY.current,
       auditPageY.current,
       governancePageY.current,
+      isResize,
     );
   };
 
   useEffect(() => {
-    draw();
-    window.addEventListener('resize', draw);
+    draw(false);
+    window.addEventListener('resize', () => draw(true));
 
     return () => {
-      window.removeEventListener('resize', draw);
+      window.removeEventListener('resize', () => draw(true));
     };
-  }, [document.body.clientHeight]);
+  }, []);
 
   return (
     <>
@@ -194,7 +194,13 @@ const Main = () => {
           </div>
         </section>
         {sectionEvent.map((_data, _index) => {
-          return <MainContent index={_index} data={_data} />;
+          return (
+            <MainContent
+              key={`sectionEvent_${_index}`}
+              index={_index}
+              data={_data}
+            />
+          );
         })}
         <section className="main__advantages main__section">
           <h2 ref={guideY}>
@@ -234,15 +240,13 @@ const Main = () => {
               ],
             ].map((data, _index) => {
               return (
-                <>
+                <div key={`advantage_${_index}`}>
+                  <img src={data[0]} />
                   <div>
-                    <img src={data[0]} />
-                    <div>
-                      <h2>{data[1]}</h2>
-                      <p>{data[2]}</p>
-                    </div>
+                    <h2>{data[1]}</h2>
+                    <p>{data[2]}</p>
                   </div>
-                </>
+                </div>
               );
             })}
           </div>
@@ -284,27 +288,21 @@ const Main = () => {
             </h2>
             <div>
               <div>
-                <p>
-                  {t("main.dao.content.0")}
-                </p>
+                <p>{t('main.dao.content.0')}</p>
               </div>
               <div>
-                <p>
-                  {t("main.dao.content.1")}
-                </p>
+                <p>{t('main.dao.content.1')}</p>
               </div>
               <div>
-                <p>
-                  {t("main.dao.content.2")}
-                </p>
+                <p>{t('main.dao.content.2')}</p>
               </div>
             </div>
           </div>
           <div>
             <h2>{t('main.partners.lawfirm')}</h2>
             <div className="main__partners__lawfirm">
-              {[SHIN, BKI, FocusLaw, HUB, HOW, TSMP].map((LawFirm) => {
-                return <img src={LawFirm} />;
+              {[SHIN, BKI, FocusLaw, HUB, HOW, TSMP].map((LawFirm, _index) => {
+                return <img key={`partner_${_index}`} src={LawFirm} />;
               })}
             </div>
           </div>

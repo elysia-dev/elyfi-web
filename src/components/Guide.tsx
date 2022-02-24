@@ -8,14 +8,13 @@ type Props = {
   content: string;
 };
 
-function Guide(props: Props) {
+function Guide(props: Props): JSX.Element {
   const { t, i18n } = useTranslation();
   const [isBoxVisible, setIsBoxVisible] = useState(false);
 
   return (
     <div
       style={{
-        position: 'relative',
         display: 'inline-block',
         border: '1.5px solid #4C4D72',
         width: 15,
@@ -38,8 +37,8 @@ function Guide(props: Props) {
         <div
           style={{
             position: 'absolute',
-            width: props.content === 'ABToken' ? 'auto' : '330px',
-            left: props.content === 'ABToken' ? '-200px' : '0px',
+            width: props.content === 'ABToken' ? '330px' : '330px',
+            left: props.content === 'ABToken' ? '-5px' : '-5px',
             padding: '5px 15px',
             background: '#fff',
             boxShadow: '0 0 6px rgb(0 0 0/16%)',
@@ -56,16 +55,20 @@ function Guide(props: Props) {
                   <img
                     src={PortfolioInfoKor}
                     style={{
-                      width: '330px',
-                      marginTop: '10px',
+                      width: '300px',
+                      marginTop: '20px',
+                      marginBottom: 10,
+                      objectFit: 'scale-down'
                     }}
                   />
                 ) : (
                   <img
                     src={PortfolioInfoEng}
                     style={{
-                      width: '330px',
-                      marginTop: '10px',
+                      width: '300px',
+                      marginTop: '20px',
+                      marginBottom: 10,
+                      objectFit: 'scale-down'
                     }}
                   />
                 )}

@@ -6,7 +6,7 @@ export interface ILanguageContext {
 }
 
 export const initialLanguageContext = {
-  setLanguage: (language: LanguageType) => {},
+  setLanguage: (language: LanguageType): void => {},
 };
 
 const LanguageContext = createContext<ILanguageContext>(initialLanguageContext);

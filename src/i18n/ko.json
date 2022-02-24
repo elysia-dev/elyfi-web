@@ -242,7 +242,7 @@
       "loan__number": "대출 번호",
       "loan__status": "대출 상태",
       "loan__info": "대출 정보",
-      "loan__interest_rate": "대출이자율",
+      "loan__interest_rate": "대출 APY",
       "loan__date": "대출일",
       "loan__borrowed": "대출금",
       "borrower": "차입자",
@@ -274,6 +274,7 @@
       "graph": ["ELYFI", "프로토콜 순 이익", "거버넌스 참여", "ELYFI Holder"],
       "data_verification": "데이터 검증 리스트 ({{ count }} 건)",
       "data_verification_plural": "데이터 검증 리스트 ({{ count }} 건)",
+      "data_verification_plural--mobile": "데이터 검증 리스트 ({{ count }} 건)",
       "data_verification__content": "오프체인 거버넌스(DAO)에서 투표가 진행중인 제안서 리스트입니다.",
       "on_chain_voting": "온체인 투표 ({{ count }} 건)",
       "on_chain_voting_plural": "온체인 투표 ({{ count }} 건)",
@@ -284,7 +285,10 @@
       "onchain_list_zero": "현재 진행중인 온체인 투표가 없습니다.",
       "offchain_list_zero": "현재 진행중인 데이터 검증 투표가 없습니다.",
       "forum_button": "ELYFI 포럼으로 이동하기",
-      "onChain_tally_button": "Tally로 이동하기"
+      "onChain_tally_button": "Tally로 이동하기",
+      "link": {
+        "tally": "https://www.withtally.com/governance/eip155:1:0x0c54629266d7fa40B4BFaF1640ebC2Cd093866C3"
+      }
     },
     "staking": {
       "staking__token": "{{ token }} 스테이킹",
@@ -380,7 +384,7 @@
       "total_borrowed": "총 대출금",
       "estimated_repayments": "상환 예정 금액",
       "borrow_apy": "대출 APY",
-      "borrow_apy--loan": "대출 이자율",
+      "borrow_apy--loan": "대출 APY",
       "accumulated_borrowed": "누적 대출금",
       "accumulated_repayment": "누적 상환 완료 금액",
       "accumulated_yield": "누적 수익",

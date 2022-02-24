@@ -55,9 +55,9 @@ const TokenDeposit: FunctionComponent<Props> = ({
 }) => {
   const { t } = useTranslation();
   const token =
-    reserve.id === envs.daiAddress
+    reserve.id === envs.token.daiAddress
       ? Token.DAI
-      : reserve.id === envs.usdtAddress
+      : reserve.id === envs.token.usdtAddress
       ? Token.USDT
       : Token.BUSD;
   const { latestPrice } = useContext(UniswapPoolContext);
@@ -119,7 +119,8 @@ const TokenDeposit: FunctionComponent<Props> = ({
                         latestPrice,
                         BigNumber.from(reserve.totalDeposit || 0),
                         reserveTokenData[token].decimals,
-                      )) || 0}
+                      ),
+                    ) || 0}
                   </h2>
                 </div>
               </div>

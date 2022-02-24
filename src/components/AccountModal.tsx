@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import mainnetConverter from 'src/utiles/mainnetConverter';
 import TxContext from 'src/contexts/TxContext';
@@ -25,7 +25,7 @@ const AccountModal: React.FunctionComponent<{
   const { t } = useTranslation();
   const { reset, txHash, txStatus, txType } = useContext(TxContext);
   const { type: getMainnetType } = useContext(MainnetContext);
-  const { ensName, ensLoading } = useENS(account || "");
+  const { ensName, ensLoading } = useENS(account || '');
   const shortAddress = `${account?.slice(0, 8)}....${account?.slice(-6)}`;
   const { value: mediaQuery } = useMediaQueryType();
 
@@ -41,7 +41,7 @@ const AccountModal: React.FunctionComponent<{
     document.body.removeChild(area);
     alert('Copied!!');
   };
-  
+
   const addELFIToken = async (data: string[]) => {
     try {
       await window.ethereum?.request({
@@ -59,7 +59,7 @@ const AccountModal: React.FunctionComponent<{
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <div
@@ -76,19 +76,15 @@ const AccountModal: React.FunctionComponent<{
               <p>{mainnetConverter(chainId)}</p>
               <div>
                 <div className="navigation__davatar">
-                  {
-                    (ensLoading && account) && (
-                      <Davatar
-                        size={mediaQuery === MediaQuery.PC ? 14 : 9}
-                        address={account}
-                        generatedAvatarType="jazzicon"
-                      />
-                    )
-                  }
+                  {ensLoading && account && (
+                    <Davatar
+                      size={mediaQuery === MediaQuery.PC ? 14 : 9}
+                      address={account}
+                      generatedAvatarType="jazzicon"
+                    />
+                  )}
                 </div>
-                <p className="bold">
-                  {ensName || shortAddress}
-                </p>
+                <p className="bold">{ensName || shortAddress}</p>
               </div>
             </div>
             <div
@@ -106,18 +102,19 @@ const AccountModal: React.FunctionComponent<{
               <p>{t('transaction.copy_address')}</p>
             </div>
             <a
-              href={`${getMainnetType === MainnetType.Ethereum ? envs.etherscanURI : envs.bscscanURI}/address/${account}`}
+              href={`${
+                getMainnetType === MainnetType.Ethereum
+                  ? envs.externalApiEndpoint.etherscanURI
+                  : envs.externalApiEndpoint.bscscanURI
+              }/address/${account}`}
               target="_blank"
               className="link">
               <div>
                 <img src={NewTab} alt="On View" />
                 <p>
-                {
-                  getMainnetType === MainnetType.Ethereum ?
-                  t('transaction.on_etherscan')
-                  :
-                  t('transaction.on_bscscan')
-                }
+                  {getMainnetType === MainnetType.Ethereum
+                    ? t('transaction.on_etherscan')
+                    : t('transaction.on_bscscan')}
                 </p>
               </div>
             </a>
@@ -147,7 +144,15 @@ const AccountModal: React.FunctionComponent<{
             </p>
 
             <a
-              href={txHash ? `${getMainnetType === MainnetType.Ethereum ? envs.etherscanURI : envs.bscscanURI}/tx/${txHash}` : undefined}
+              href={
+                txHash
+                  ? `${
+                      getMainnetType === MainnetType.Ethereum
+                        ? envs.externalApiEndpoint.etherscanURI
+                        : envs.externalApiEndpoint.bscscanURI
+                    }/tx/${txHash}`
+                  : undefined
+              }
               target="_blank"
               className={txHash ? '' : 'disable'}>
               <div>

@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import Loading from 'src/components/Loading';
-import ErrorPage from 'src/components/ErrorPage';
 import UniswapPoolContext, {
   initialUniswapPoolContext,
   UniswapPoolContextType,
@@ -16,12 +14,10 @@ const UniswapPoolProvider: React.FC = (props) => {
   useEffect(() => {
     CachedUniswapV3.getPoolData()
       .then((res) => {
-        const data = res.data.data.data.data
+        const data = res.data.data.data.data;
         setState({
           ...state,
-          totalValueLockedUSD: parseFloat(
-            data.daiPool.totalValueLockedUSD,
-          ),
+          totalValueLockedUSD: parseFloat(data.daiPool.totalValueLockedUSD),
           totalValueLockedToken0: parseFloat(
             data.daiPool.totalValueLockedToken0,
           ),
@@ -29,11 +25,7 @@ const UniswapPoolProvider: React.FC = (props) => {
             data.daiPool.totalValueLockedToken1,
           ),
           poolDayData: data.daiPool.poolDayData,
-          latestPrice: parseFloat(
-            data.daiPool.poolDayData[
-              data.daiPool.poolDayData.length - 1
-            ].token1Price,
-          ),
+          latestPrice: parseFloat(data.daiPool.poolDayData[0].token1Price),
           ethPool: {
             liquidity: data.ethPool.liquidity,
             totalValueLockedToken0: parseFloat(

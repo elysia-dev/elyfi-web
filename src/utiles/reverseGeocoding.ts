@@ -67,7 +67,7 @@ const reverseGeocoding = async (
         lat.toString(),
         lng.toString(),
         process.env.REACT_APP_GOOGLE_MAP_API_KEY!,
-        languageType === LanguageType.ZHHANS ? 'zh-CN' : languageType,
+        languageType,
       );
       return res?.results[0]?.formatted_address;
     }
