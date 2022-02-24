@@ -62,57 +62,33 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
           </div>
         ) : (
           <>
-            {/* <div className="text__title" >
-                <div
-                  className="loan__select-box"
-                  onClick={() => {
-                    setSortMode(!sortMode);
-                  }}>
-                  <p>
-                    {sortMode ? t('loan.order_by_loan') : t('loan.order_by_latest')}
-                  </p>
-                  <div
-                    className="loan__select-box__attribute"
-                    style={{ display: false ? 'block' : 'none' }}>
-                    <p onClick={() => setSortMode(true)}>
-                      {t('loan.order_by_latest')}
-                    </p>
-                    <p onClick={() => setSortMode(false)}>
-                      {t('loan.order_by_loan')}
-                    </p>
-                  </div>
-                </div>
-              </div> */}
-              <>
-                <AssetList
-                  assetBondTokens={
-                    /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
-                    [...(assetBondTokensBackedByEstate || [])].slice(0, pageNumber * defaultShowingLoanData).sort((a, b) => {
-                      if (sortMode) {
-                        return BigNumber.from(b.principal).gte(
-                          BigNumber.from(a.principal),
-                        )
-                          ? 1
-                          : -1;
-                      } else {
-                        return b.loanStartTimestamp! - a.loanStartTimestamp! >= 0
-                          ? 1
-                          : -1;
-                      }
-                    }) || []
+            <AssetList
+              assetBondTokens={
+                /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
+                [...(assetBondTokensBackedByEstate || [])].slice(0, pageNumber * defaultShowingLoanData).sort((a, b) => {
+                  if (sortMode) {
+                    return BigNumber.from(b.principal).gte(
+                      BigNumber.from(a.principal),
+                    )
+                      ? 1
+                      : -1;
+                  } else {
+                    return b.loanStartTimestamp! - a.loanStartTimestamp! >= 0
+                      ? 1
+                      : -1;
                   }
-                />
-                {assetBondTokensBackedByEstate.length && assetBondTokensBackedByEstate.length >= pageNumber * defaultShowingLoanData && (
-                  <div>
-                    <button
-                      className="portfolio__view-button"
-                      onClick={() => viewMoreHandler()}>
-                      {t('loan.view-more')}
-                    </button>
-                  </div>
-                )}
-              </>
-            </>
+                }) || []
+              }
+            />
+            {assetBondTokensBackedByEstate.length && assetBondTokensBackedByEstate.length >= pageNumber * defaultShowingLoanData && (
+              <div>
+                <button
+                  className="portfolio__view-button"
+                  onClick={() => viewMoreHandler()}>
+                  {t('loan.view-more')}
+                </button>
+              </div>
+            )}
           </>
         )}
       </section>
