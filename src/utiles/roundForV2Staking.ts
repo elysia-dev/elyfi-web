@@ -1,6 +1,6 @@
 import Token from 'src/enums/Token';
 
-export const roundForV2ElfiStaking = (
+export const roundForElfiV2Staking = (
   round: number,
   stakedToken: string,
   mainnet: string,
