@@ -8,12 +8,6 @@ import RoundData from 'src/core/types/RoundData';
 import Token from 'src/enums/Token';
 import useStakingPool from './useStakingPool';
 
-let poolData;
-let userData;
-let rewardPool;
-let modifiedRound;
-let accountReward;
-
 const useStakingFetchRoundData = (
   stakedToken: Token.EL | Token.ELFI,
   poolApr: BigNumber,
@@ -63,6 +57,11 @@ const useStakingFetchRoundData = (
     try {
       const data = await Promise.all(
         roundTime.map(async (_item, round) => {
+          let poolData;
+          let userData;
+          let rewardPool;
+          let modifiedRound;
+          let accountReward;
           if (stakingPool && account) {
             if (
               round >= v2Threshold &&
