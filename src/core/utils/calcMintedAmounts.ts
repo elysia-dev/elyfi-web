@@ -1,7 +1,5 @@
 import moment from 'moment';
-import stakingRoundTimes, {
-  IStakingPoolRound,
-} from 'src/core/data/stakingRoundTimes';
+import { IStakingPoolRound } from 'src/core/data/stakingRoundTimes';
 
 const calcMintedAmounts = (
   mintedPerDay: number,
