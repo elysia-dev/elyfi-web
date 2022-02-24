@@ -1,5 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import { FunctionComponent, SetStateAction, useContext } from 'react';
+import {
+  FunctionComponent,
+  SetStateAction,
+  useCallback,
+  useContext,
+} from 'react';
 import ReactGA from 'react-ga';
 import { formatEther } from 'ethers/lib/utils';
 import CountUp from 'react-countup';
@@ -46,16 +51,19 @@ const FinishedStaking: FunctionComponent<Props> = (props) => {
   const stakingRoundDate = roundTimes(stakedToken, getMainnetType);
   const current = moment();
 
-  const migratable = (staked: Token, round: number): boolean => {
-    if (round >= roundInProgress) return false;
-    if (staked === Token.ELFI && getMainnetType === MainnetType.Ethereum) {
-      return (
-        round >= 2 && moment().diff(stakingRoundDate[round + 1].startedAt) > 0
-      );
-    } else {
-      return moment().diff(stakingRoundDate[round + 1].startedAt) > 0;
-    }
-  };
+  const migratable = useCallback(
+    (staked: Token, round: number): boolean => {
+      if (round >= roundInProgress) return false;
+      if (staked === Token.ELFI && getMainnetType === MainnetType.Ethereum) {
+        return (
+          round >= 2 && moment().diff(stakingRoundDate[round + 1].startedAt) > 0
+        );
+      } else {
+        return moment().diff(stakingRoundDate[round + 1].startedAt) > 0;
+      }
+    },
+    [getMainnetType],
+  );
 
   return (
     <div className="staking__round__previous">
