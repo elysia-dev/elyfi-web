@@ -12,8 +12,6 @@ const useTvl = (): { value: number; loading: boolean } => {
   const subgraphContext = useContext(SubgraphContext);
   const [loading, setLoading] = useState(true);
   const {
-    totalValueLockedToken0,
-    totalValueLockedToken1,
     latestPrice: elfiPrice,
     daiPool,
     ethPool,
@@ -52,8 +50,6 @@ const useTvl = (): { value: number; loading: boolean } => {
     elPrice,
     elfiPrice,
     loading,
-    totalValueLockedToken0,
-    totalValueLockedToken1,
   ]);
 
   const loadBalances = async () => {
