@@ -2,11 +2,7 @@ import { BigNumber } from '@elysia-dev/contract-typechain/node_modules/ethers';
 import { utils } from 'ethers';
 import { useContext, useEffect, useState } from 'react';
 import MainnetContext from 'src/contexts/MainnetContext';
-import stakingRoundTimes, {
-  busdStakingRoundTimes,
-  IStakingPoolRound,
-  roundTimes,
-} from 'src/core/data/stakingRoundTimes';
+import { IStakingPoolRound, roundTimes } from 'src/core/data/stakingRoundTimes';
 import { TETHERPerDayOnELFIStakingPool } from 'src/core/data/stakings';
 import RoundRewardType from 'src/core/types/RoundRewardType';
 import {
