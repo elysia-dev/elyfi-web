@@ -11,7 +11,7 @@ export const poolAddress = (
       return envs.staking.elStakingPoolAddress;
     case Token.ELFI:
       if (mainnet === 'BSC') {
-        return envs.staking.elStakingPoolAddress; // elfi busd pool address
+        return envs.staking.elfyBscStakingPoolAddress; // elfi busd pool address
       }
       if (v2) {
         return envs.staking.elfyV2StakingPoolAddress;
@@ -28,7 +28,7 @@ export const tokenAddress = (mainnet: string, stakedToken: string): string => {
       return envs.token.elAddress;
     case Token.ELFI:
       if (mainnet === 'BSC') {
-        return envs.token.bscElfiAddress;
+        return envs.token.testBscElfiAddress;
       }
       return envs.token.governanceAddress;
     default:
