@@ -15,7 +15,10 @@ export const poolAddress = (mainnet: string, stakedToken: string): string => {
   }
 };
 
-export const tokenAddress = (mainnet: string, stakedToken: string): string => {
+export const stakingRewardTokenAddress = (
+  mainnet: string,
+  stakedToken: string,
+): string => {
   switch (stakedToken) {
     case Token.EL:
       return envs.token.elAddress;
