@@ -1,6 +1,6 @@
 import LanguageType from 'src/enums/LanguageType';
 
-const toOrdinalNumber = (language: string, value: number) => {
+const toOrdinalNumber = (language: string, value: number): string => {
   switch (value) {
     case 1:
       return language === LanguageType.EN ? '1st' : '1';

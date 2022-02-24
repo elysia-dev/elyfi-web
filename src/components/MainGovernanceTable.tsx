@@ -141,6 +141,7 @@ const MainGovernanceTable: FunctionComponent<Props> = ({
           ).map((_data, index) => {
             return (
               <div
+                key={index}
                 className="main__governance__body"
                 style={{ display: index >= 5 && !moreload ? 'none' : 'flex' }}
                 onClick={() => window.open(_data.link)}>

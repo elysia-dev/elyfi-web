@@ -60,10 +60,12 @@ const TokenTable: React.FC<Props> = ({
   const { value: mediaQuery } = useMediaQueryType();
   const { type: getMainnetType } = useContext(MainnetContext);
   const { elfiPrice } = useContext(PriceContext);
-  const assetBondTokensBackedByEstate = reserveData.assetBondTokens.filter((ab) => {
-    const parsedId = parseTokenId(ab.id);
-    return CollateralCategory.Others !== parsedId.collateralCategory
-  })
+  const assetBondTokensBackedByEstate = reserveData.assetBondTokens.filter(
+    (ab) => {
+      const parsedId = parseTokenId(ab.id);
+      return CollateralCategory.Others !== parsedId.collateralCategory;
+    },
+  );
 
   const tableData = [
     [
@@ -109,9 +111,9 @@ const TokenTable: React.FC<Props> = ({
           {mediaQuery === MediaQuery.PC && (
             <div className="deposit__table__header__data-grid">
               <div />
-              {tableData.map((data) => {
+              {tableData.map((data, index) => {
                 return (
-                  <div>
+                  <div key={index}>
                     <p>{data[0]}</p>
                     <p className="bold">{data[1]}</p>
                   </div>
@@ -125,9 +127,9 @@ const TokenTable: React.FC<Props> = ({
             {mediaQuery === MediaQuery.Mobile && (
               <div className="deposit__table__header__data-grid">
                 <div />
-                {tableData.map((data) => {
+                {tableData.map((data, index) => {
                   return (
-                    <div>
+                    <div key={index}>
                       <p>{data[0]}</p>
                       <p className="bold">{data[1]}</p>
                     </div>
@@ -238,15 +240,11 @@ const TokenTable: React.FC<Props> = ({
 
                 <div className="deposit__table__body__strategy__text-info">
                   <div />
-                  <p>
-                    {t('dashboard.real_estate_mortgage')}
-                  </p>
+                  <p>{t('dashboard.real_estate_mortgage')}</p>
                 </div>
                 <div className="deposit__table__body__strategy__text-info">
-                  <div className="last"/>
-                  <p>
-                    {t('dashboard.auto_invest_defi__title')}
-                  </p>
+                  <div className="last" />
+                  <p>{t('dashboard.auto_invest_defi__title')}</p>
                 </div>
               </div>
             )
@@ -277,37 +275,41 @@ const TokenTable: React.FC<Props> = ({
             <div>
               <div>
                 <h2>{t('dashboard.recent_loan')}</h2>
-                <Link to={`/${lng}/deposits/${balance.tokenName}`} style={{ display: assetBondTokensBackedByEstate.length === 0 ? 'none' : 'block'}}>
+                <Link
+                  to={`/${lng}/deposits/${balance.tokenName}`}
+                  style={{
+                    display:
+                      assetBondTokensBackedByEstate.length === 0
+                        ? 'none'
+                        : 'block',
+                  }}>
                   <div className="deposit__table__body__loan-list__button">
                     <p>{t('main.governance.view-more')}</p>
                   </div>
                 </Link>
               </div>
-              {
-                (assetBondTokensBackedByEstate.length === 0) ? (
-                  <div className="loan__list--null" style={{ marginTop: 30 }}>
-                    <p>
-                      {t("loan.loan_list--null")}
-                    </p>
-                  </div>
-                ) : (
-                  <div>
-                    <AssetList
-                      assetBondTokens={
-                        // Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다.
-                        [...(assetBondTokensBackedByEstate || [])]
-                          .sort((a, b) => {
-                            return b.loanStartTimestamp! - a.loanStartTimestamp! >=
-                              0
-                              ? 1
-                              : -1;
-                          })
-                          .slice(0, mediaQuery === MediaQuery.PC ? 3 : 2) || []
-                      }
-                    />
-                  </div>
-                )
-              }
+              {assetBondTokensBackedByEstate.length === 0 ? (
+                <div className="loan__list--null" style={{ marginTop: 30 }}>
+                  <p>{t('loan.loan_list--null')}</p>
+                </div>
+              ) : (
+                <div>
+                  <AssetList
+                    assetBondTokens={
+                      // Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다.
+                      [...(assetBondTokensBackedByEstate || [])]
+                        .sort((a, b) => {
+                          return b.loanStartTimestamp! -
+                            a.loanStartTimestamp! >=
+                            0
+                            ? 1
+                            : -1;
+                        })
+                        .slice(0, mediaQuery === MediaQuery.PC ? 3 : 2) || []
+                    }
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>

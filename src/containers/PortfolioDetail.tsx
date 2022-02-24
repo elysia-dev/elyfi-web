@@ -30,6 +30,8 @@ import envs from 'src/core/envs';
 import Guide from 'src/components/Guide';
 import Loading from 'src/components/Loading';
 import SubgraphContext, { IAssetBond } from 'src/contexts/SubgraphContext';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import MediaQuery from 'src/enums/MediaQuery';
 
 const PortfolioDetail: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
@@ -43,6 +45,7 @@ const PortfolioDetail: FunctionComponent = () => {
 
   const abToken = assetBondTokens.find((ab) => ab.id === id);
   const depositRef = useRef<HTMLParagraphElement>(null);
+  const { value: mediaQuery } = useMediaQueryType();
   const parsedTokenId = useMemo(() => {
     return parseTokenId(abToken?.id);
   }, [abToken]);
@@ -130,6 +133,15 @@ const PortfolioDetail: FunctionComponent = () => {
       </div>
     );
 
+  const divStyle = useMemo(
+    () => ({
+      fontFamily: 'SpoqaHanSansNeo',
+      color: '#888888',
+      fontSize: mediaQuery === MediaQuery.PC ? '15px' : '12px',
+    }),
+    [mediaQuery],
+  );
+
   const AddressCopy = (add: string | undefined) => {
     if (!document.queryCommandSupported('copy')) {
       return alert('This browser does not support the copy function.');
@@ -202,21 +214,21 @@ const PortfolioDetail: FunctionComponent = () => {
           <div className="portfolio__borrower__data">
             <div className="portfolio__borrower__data--left">
               <div>
-                <p>
+                <div style={divStyle}>
                   {t('loan.loan__number')}{' '}
                   <Guide content={t('portfolio.infomation_popup.0')} />
-                </p>
+                </div>
                 <p>{parsedTokenId.nonce}</p>
               </div>
               <div>
-                <p>
+                <div style={divStyle}>
                   {t('loan.loan__status')}
                   <Guide
                     content={`${t('portfolio.infomation_popup.1')} \n ${t(
                       'portfolio.infomation_popup.3',
                     )} \n ${t('portfolio.infomation_popup.5')}`}
                   />
-                </p>
+                </div>
                 <p>{t(`words.${LoanStatus[toLoanStatus(abToken.state)]}`)}</p>
               </div>
               <div>
@@ -261,10 +273,10 @@ const PortfolioDetail: FunctionComponent = () => {
                 <p>{maturityFormmater(abToken)}</p>
               </div>
               <div>
-                <p>
+                <div style={divStyle}>
                   {t('loan.collateral_nft')}{' '}
                   <Guide content={t('portfolio.infomation_popup.7')} />
-                </p>
+                </div>
                 <p
                   title={abToken?.id}
                   className="link"
@@ -403,10 +415,10 @@ const PortfolioDetail: FunctionComponent = () => {
                   '',
                   contractImage[2]?.link,
                 ],
-              ].map((data) => {
+              ].map((data, index) => {
                 return (
-                  <div>
-                    <p>
+                  <div key={`conten_${index}`}>
+                    <div style={divStyle}>
                       {data[0] === t('loan.collateral_nft__loan_product') ? (
                         <>
                           {data[0]}
@@ -420,8 +432,13 @@ const PortfolioDetail: FunctionComponent = () => {
                       ) : (
                         data[0]
                       )}
-                    </p>
-                    <p
+                    </div>
+                    <div
+                      style={{
+                        fontFamily: 'SpoqaHanSansNeo',
+                        color: '#333333',
+                        fontSize: '15px',
+                      }}
                       onClick={() => {
                         !!data[3] === true
                           ? window.open(data[3], '_blank')
@@ -429,36 +446,34 @@ const PortfolioDetail: FunctionComponent = () => {
                       }}
                       className={!!data[3] === true ? 'link' : ''}>
                       {data[2] ? (
-                        <>
-                          <a
-                            href={`https://www.google.com/maps/place/${address}/@${lat},${lng},18.12z`}
-                            rel="noopener noreferer"
-                            target="_blank"
+                        <a
+                          href={`https://www.google.com/maps/place/${address}/@${lat},${lng},18.12z`}
+                          rel="noopener noreferer"
+                          target="_blank"
+                          style={{
+                            cursor: 'pointer',
+                          }}>
+                          <div
                             style={{
-                              cursor: 'pointer',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
                             }}>
-                            <div
+                            <img
+                              src={locationMark}
+                              alt={locationMark}
                               style={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }}>
-                              <img
-                                src={locationMark}
-                                alt={locationMark}
-                                style={{
-                                  width: 23.5,
-                                  height: 23.5,
-                                }}
-                              />
-                              {data[1]}
-                            </div>
-                          </a>
-                        </>
+                                width: 23.5,
+                                height: 23.5,
+                              }}
+                            />
+                            {data[1]}
+                          </div>
+                        </a>
                       ) : (
                         data[1]
                       )}
-                    </p>
+                    </div>
                   </div>
                 );
               })}
