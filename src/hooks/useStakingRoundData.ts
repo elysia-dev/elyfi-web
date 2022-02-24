@@ -1,6 +1,8 @@
 import { StakingPool__factory } from '@elysia-dev/contract-typechain';
 import { BigNumber, constants, providers } from 'ethers';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+
+import envs from 'src/core/envs';
 import PriceContext from 'src/contexts/PriceContext';
 import Token from 'src/enums/Token';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
@@ -29,7 +31,9 @@ const useStakingRoundData = (
   const { type: mainnet } = useContext(MainnetContext);
   const stakingPool = useMemo(() => {
     return StakingPool__factory.connect(
-      poolAddress(mainnet, stakedToken, round > 1),
+      stakedToken === Token.ELFI && round > 1
+        ? envs.staking.elfyV2StakingPoolAddress
+        : poolAddress(mainnet, stakedToken),
       new providers.JsonRpcProvider(
         mainnet === 'BSC'
           ? process.env.REACT_APP_JSON_RPC_BSC
@@ -62,7 +66,6 @@ const useStakingRoundData = (
         const res = await stakingPool.getPoolData(
           (currentRound + 1).toString(),
         );
-
         setState({
           totalPrincipal: res.totalPrincipal,
           apr: calcAPR(
