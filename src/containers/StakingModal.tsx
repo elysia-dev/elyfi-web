@@ -9,7 +9,7 @@ import LoadingIndicator from 'src/components/LoadingIndicator';
 import { useWeb3React } from '@web3-react/core';
 import Token from 'src/enums/Token';
 import moment from 'moment';
-import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
+import { roundTimes } from 'src/core/data/stakingRoundTimes';
 import useStakingPool from 'src/hooks/useStakingPool';
 import useERC20Info from 'src/hooks/useERC20Info';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
@@ -69,6 +69,8 @@ const StakingModal: React.FunctionComponent<{
     !amount.max && utils.parseEther(amount.value || '0').gt(balance);
   const amountGtStakedBalance =
     !amount.max && utils.parseEther(amount.value || '0').gt(stakedBalance);
+
+  const stakingRoundDate = roundTimes(stakedToken, getMainnetType);
 
   useEffect(() => {
     setAmount({
@@ -236,9 +238,7 @@ const StakingModal: React.FunctionComponent<{
                   }`}
                   onClick={() => {
                     if (!account || amountLteZero || amountGtBalance) return;
-                    if (
-                      current.diff(stakingRoundTimes[round - 1].endedAt) > 0
-                    ) {
+                    if (current.diff(stakingRoundDate[round - 1].endedAt) > 0) {
                       endedModal();
                       closeHandler();
                       return;
