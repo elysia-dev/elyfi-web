@@ -1,6 +1,5 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import TempAssets from 'src/assets/images/temp_assets.png';
-import wave from 'src/assets/images/wave_elyfi.png';
 import OffChainTopic, { INapData } from 'src/clients/OffChainTopic';
 import Skeleton from 'react-loading-skeleton';
 import { IProposals, OnChainTopic } from 'src/clients/OnChainTopic';
@@ -125,7 +124,11 @@ const Governance = (): JSX.Element => {
                 nap:
                   getHTMLStringData.match(regexNap)?.toString().substring(5) ||
                   '',
-                status: getHTMLStringData.match(/Status: .*(?=<)/)?.toString().split('Status: ') || '',
+                status:
+                  getHTMLStringData
+                    .match(/Status: .*(?=<)/)
+                    ?.toString()
+                    .split('Status: ') || '',
                 images:
                   getHTMLStringData
                     .match(

@@ -1,7 +1,5 @@
-import { useWeb3React } from '@web3-react/core';
 import { useTranslation } from 'react-i18next';
 import ModalHeader from 'src/components/ModalHeader';
-import InjectedConnector from 'src/core/connectors/injectedConnector';
 
 const WrongMainnetModal: React.FunctionComponent<{
   visible: boolean;
@@ -13,19 +11,12 @@ const WrongMainnetModal: React.FunctionComponent<{
       className="modal modal__wrong-mainnet"
       style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
-        <ModalHeader
-          title={t("modal.wrong_mainnet.title")}
-          onClose={onClose}
-        />
+        <ModalHeader title={t('modal.wrong_mainnet.title')} onClose={onClose} />
         <div className="modal__connect__content">
-          <p>{t("modal.wrong_mainnet.content")}</p>
+          <p>{t('modal.wrong_mainnet.content')}</p>
         </div>
-        <div
-          className={`modal__button`}
-          onClick={onClose}>
-          <p>
-            {t("modal.wrong_mainnet.button")}
-          </p>
+        <div className={`modal__button`} onClick={onClose}>
+          <p>{t('modal.wrong_mainnet.button')}</p>
         </div>
       </div>
     </div>

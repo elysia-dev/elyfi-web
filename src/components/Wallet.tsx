@@ -4,7 +4,6 @@ import InjectedConnector from 'src/core/connectors/injectedConnector';
 import { useTranslation } from 'react-i18next';
 import TxContext from 'src/contexts/TxContext';
 import Davatar from '@davatar/react';
-import envs from 'src/core/envs';
 import TxStatus from 'src/enums/TxStatus';
 import { useENS } from 'src/hooks/useENS';
 import AccountModal from 'src/components/AccountModal';

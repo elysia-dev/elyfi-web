@@ -1,4 +1,3 @@
-import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
 import LanguageConverter from 'src/components/LanguageConverter';
 import Twitter from 'src/assets/images/twitter.png';
 import Telegram from 'src/assets/images/telegram.png';

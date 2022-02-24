@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import mainnetConverter from 'src/utiles/mainnetConverter';
 import TxContext from 'src/contexts/TxContext';

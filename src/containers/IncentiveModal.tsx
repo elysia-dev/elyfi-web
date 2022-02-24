@@ -2,18 +2,17 @@ import { useWeb3React } from '@web3-react/core';
 import { BigNumber, utils } from 'ethers';
 import { FunctionComponent, useContext } from 'react';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
-import { formatCommaSmall, formatSixFracionDigit } from 'src/utiles/formatters';
+import { formatSixFracionDigit } from 'src/utiles/formatters';
 import { formatEther } from 'ethers/lib/utils';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import { IncentivePool__factory } from '@elysia-dev/contract-typechain';
 import CountUp from 'react-countup';
 import ModalHeader from 'src/components/ModalHeader';
-import buildEventEmitter from 'src/utiles/buildEventEmitter';
-import ReserveData from 'src/core/data/reserves';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
 
 // Create deposit & withdraw
 const IncentiveModal: FunctionComponent<{
@@ -50,7 +49,7 @@ const IncentiveModal: FunctionComponent<{
         address: account,
         moneypoolType: tokenName,
         incentiveAmount: utils.formatEther(balanceAfter),
-      })
+      }),
     );
 
     emitter.clicked();
