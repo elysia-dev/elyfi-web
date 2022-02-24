@@ -96,7 +96,7 @@ const useStakingRoundData = (
 
   useEffect(() => {
     loadRound(round);
-  }, [round, elfiPrice, mainnet]);
+  }, [round, elfiPrice, mainnet, stakingPool]);
 
   return {
     ...state,
