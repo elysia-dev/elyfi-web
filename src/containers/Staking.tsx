@@ -103,7 +103,7 @@ const Staking: React.FunctionComponent<IProps> = ({
   const [modalValue, setModalValue] = useState(constants.Zero);
 
   const { roundData, loading, error, fetchRoundData } =
-    useStakingFetchRoundData(stakedToken, poolApr, currentPhase);
+    useStakingFetchRoundData(stakedToken, rewardToken, poolApr, currentPhase);
 
   const currentRound = useMemo(() => {
     return roundData[roundInProgress];
@@ -205,6 +205,10 @@ const Staking: React.FunctionComponent<IProps> = ({
 
   useEffect(() => {
     setRoundModal(0);
+    setExpectedReward({
+      before: constants.Zero,
+      value: constants.Zero,
+    });
   }, [getMainnetType]);
 
   return (
