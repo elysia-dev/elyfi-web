@@ -22,7 +22,7 @@ import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
 import MainnetContext from 'src/contexts/MainnetContext';
-import { roundForElfiV2Staking } from 'src/utiles/roundForV2Staking';
+import { roundForElfiV2Staking } from 'src/utiles/roundForElfiV2Staking';
 import LoadingIndicator from './LoadingIndicator';
 import ModalHeader from './ModalHeader';
 import Popupinfo from './PopupInfo';
