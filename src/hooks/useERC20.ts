@@ -12,7 +12,7 @@ const useERC20 = (address: string): ERC20 => {
         address,
         new providers.JsonRpcProvider(
           address === envs.token.testBscElfiAddress
-            ? process.env.REACT_APP_JSON_RPC_BSC
+            ? envs.jsonRpcUrl.bsc
             : process.env.REACT_APP_JSON_RPC,
         ),
       );

@@ -36,7 +36,7 @@ const useStakingRoundData = (
         : poolAddress(mainnet, stakedToken),
       new providers.JsonRpcProvider(
         mainnet === 'BSC'
-          ? process.env.REACT_APP_JSON_RPC_BSC
+          ? envs.jsonRpcUrl.bsc
           : process.env.REACT_APP_JSON_RPC,
       ),
     );
