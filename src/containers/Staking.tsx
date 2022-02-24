@@ -715,17 +715,36 @@ const Staking: React.FunctionComponent<IProps> = ({
                                 nth: toOrdinalNumber(i18n.language, 6),
                               })}
                             </h2>
-                            <p>
-                              {stakingRoundTimes[5].startedAt.format(
-                                'YYYY.MM.DD HH:mm:ss',
-                              )}
-                              <br />
-                              ~&nbsp;
-                              {stakingRoundTimes[5].endedAt.format(
-                                'YYYY.MM.DD HH:mm:ss',
-                              )}{' '}
-                              (KST)
-                            </p>
+                            {mediaQuery === MediaQuery.PC ? (
+                              <p>
+                                {stakingRoundTimes[5].startedAt.format(
+                                  'YYYY.MM.DD HH:mm:ss',
+                                )}
+                                <br />
+                                ~&nbsp;
+                                {stakingRoundTimes[5].endedAt.format(
+                                  'YYYY.MM.DD HH:mm:ss',
+                                )}{' '}
+                                (KST)
+                              </p>
+                            ) : (
+                              <div>
+                                <p>
+                                {stakingRoundTimes[5].startedAt.format(
+                                  'YYYY.MM.DD HH:mm:ss',
+                                )}
+                                </p>
+                                <p>
+                                  ~&nbsp;
+                                </p>
+                                <p>
+                                {stakingRoundTimes[5].endedAt.format(
+                                  'YYYY.MM.DD HH:mm:ss',
+                                )}{' '}
+                                (KST)
+                                </p>
+                              </div>
+                            )}
                           </div>
                           {mediaQuery === MediaQuery.PC && (
                             <div>
