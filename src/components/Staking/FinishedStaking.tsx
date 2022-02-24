@@ -9,36 +9,24 @@ import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MainnetContext from 'src/contexts/MainnetContext';
 import Token from 'src/enums/Token';
-import stakingRoundTimes, {
-  busdStakingRoundTimes,
-} from 'src/core/data/stakingRoundTimes';
-import MainnetType from 'src/enums/MainnetType';
+import { roundTimes } from 'src/core/data/stakingRoundTimes';
 import { formatCommaSmall, formatSixFracionDigit } from 'src/utiles/formatters';
 import RoundData from 'src/core/types/RoundData';
 import moment from 'moment';
 import StakingModalType from 'src/enums/StakingModalType';
 import ModalViewType from 'src/enums/ModalViewType';
 import { BigNumber } from 'ethers';
+import MainnetType from 'src/enums/MainnetType';
 
 type Props = {
   index: number;
   item: RoundData;
   stakedToken: Token.EL | Token.ELFI;
   rewardToken: Token.ELFI | Token.DAI | Token.BUSD;
+  roundInProgress: number;
   setModalType: (value: SetStateAction<string>) => void;
   setRoundModal: (value: SetStateAction<number>) => void;
   setModalValue: (value: SetStateAction<BigNumber>) => void;
-};
-
-const migratable = (staked: Token, round: number): boolean => {
-  if (round >= 5) return false;
-  if (staked === Token.ELFI) {
-    return (
-      round >= 2 && moment().diff(stakingRoundTimes[round + 1].startedAt) > 0
-    );
-  } else {
-    return moment().diff(stakingRoundTimes[round + 1].startedAt) > 0;
-  }
 };
 
 const FinishedStaking: FunctionComponent<Props> = (props) => {
@@ -47,6 +35,7 @@ const FinishedStaking: FunctionComponent<Props> = (props) => {
     item,
     stakedToken,
     rewardToken,
+    roundInProgress,
     setModalType,
     setRoundModal,
     setModalValue,
@@ -54,11 +43,19 @@ const FinishedStaking: FunctionComponent<Props> = (props) => {
   const { t, i18n } = useTranslation();
   const { value: mediaQuery } = useMediaQueryType();
   const { type: getMainnetType } = useContext(MainnetContext);
-  const roundTimes =
-    getMainnetType === MainnetType.BSC
-      ? busdStakingRoundTimes
-      : stakingRoundTimes;
+  const stakingRoundDate = roundTimes(stakedToken, getMainnetType);
   const current = moment();
+
+  const migratable = (staked: Token, round: number): boolean => {
+    if (round >= roundInProgress) return false;
+    if (staked === Token.ELFI && getMainnetType === MainnetType.Ethereum) {
+      return (
+        round >= 2 && moment().diff(stakingRoundDate[round + 1].startedAt) > 0
+      );
+    } else {
+      return moment().diff(stakingRoundDate[round + 1].startedAt) > 0;
+    }
+  };
 
   return (
     <div className="staking__round__previous">
@@ -71,21 +68,25 @@ const FinishedStaking: FunctionComponent<Props> = (props) => {
           </h2>
           {mediaQuery === MediaQuery.PC ? (
             <p>
-              {roundTimes[index].startedAt.format('YYYY.MM.DD HH:mm:ss')}
+              {stakingRoundDate[index].startedAt.format('YYYY.MM.DD HH:mm:ss')}
               <br />
               ~&nbsp;
-              {roundTimes[index].endedAt.format('YYYY.MM.DD HH:mm:ss')}
+              {stakingRoundDate[index].endedAt.format('YYYY.MM.DD HH:mm:ss')}
               &nbsp;(KST)
             </p>
           ) : (
             <div>
-              <p>{roundTimes[index].startedAt.format('YYYY.MM.DD HH:mm:ss')}</p>
+              <p>
+                {stakingRoundDate[index].startedAt.format(
+                  'YYYY.MM.DD HH:mm:ss',
+                )}
+              </p>
               <p>
                 <br />
                 ~&nbsp;
               </p>
               <p>
-                {roundTimes[index].endedAt.format('YYYY.MM.DD HH:mm:ss')}
+                {stakingRoundDate[index].endedAt.format('YYYY.MM.DD HH:mm:ss')}
                 &nbsp;(KST)
               </p>
             </div>
@@ -144,7 +145,7 @@ const FinishedStaking: FunctionComponent<Props> = (props) => {
               }
               return;
             }
-            if (current.diff(stakingRoundTimes[index].startedAt) > 0) {
+            if (current.diff(stakingRoundDate[index].startedAt) > 0) {
               ReactGA.modalview(
                 stakedToken + ModalViewType.StakingOrUnstakingModal,
               );
@@ -174,7 +175,7 @@ const FinishedStaking: FunctionComponent<Props> = (props) => {
             ReactGA.modalview(
               stakedToken + ModalViewType.StakingIncentiveModal,
             );
-            current.diff(stakingRoundTimes[index].startedAt) > 0 &&
+            current.diff(stakingRoundDate[index].startedAt) > 0 &&
               setRoundModal(index);
             setModalValue(item.accountReward);
             setModalType(StakingModalType.Claim);
