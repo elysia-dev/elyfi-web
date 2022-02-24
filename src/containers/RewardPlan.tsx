@@ -384,7 +384,6 @@ const RewardPlan: FunctionComponent = () => {
         ) : ['EL', 'ELFI'].includes(stakingType) ? (
           <section className={`reward__${stakingType.toLowerCase()}`}>
             <StakingBox
-              nth={ordinalNumberConverter(state.round + 1, i18n)}
               loading={poolLoading}
               poolApr={poolApr}
               poolPrincipal={poolPrincipal}
