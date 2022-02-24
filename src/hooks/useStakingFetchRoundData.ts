@@ -3,13 +3,20 @@ import { BigNumber, constants } from 'ethers';
 import moment from 'moment';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import MainnetContext from 'src/contexts/MainnetContext';
+import PriceContext from 'src/contexts/PriceContext';
 import { roundTimes } from 'src/core/data/stakingRoundTimes';
+import {
+  DAIPerDayOnELFIStakingPool,
+  ELFIPerDayOnELStakingPool,
+} from 'src/core/data/stakings';
 import RoundData from 'src/core/types/RoundData';
+import calcAPR from 'src/core/utils/calcAPR';
 import Token from 'src/enums/Token';
 import useStakingPool from './useStakingPool';
 
 const useStakingFetchRoundData = (
   stakedToken: Token.EL | Token.ELFI,
+  rewardToken: string,
   poolApr: BigNumber,
   currentPhase: number,
 ): {
@@ -29,6 +36,7 @@ const useStakingFetchRoundData = (
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [roundData, setroundData] = useState<RoundData[]>([]);
+  const { elPrice, elfiPrice } = useContext(PriceContext);
 
   const roundTime = useMemo(
     () => roundTimes(stakedToken, getMainnetType),
@@ -47,7 +55,16 @@ const useStakingFetchRoundData = (
       accountReward: accountReward ? accountReward : constants.Zero,
       totalPrincipal: totalPrincipal ? totalPrincipal : constants.Zero,
       accountPrincipal: accountPrincipal ? accountPrincipal : constants.Zero,
-      apr: poolApr,
+      apr: totalPrincipal
+        ? calcAPR(
+            totalPrincipal,
+            stakedToken === Token.EL ? elPrice : elfiPrice,
+            rewardToken === Token.ELFI
+              ? ELFIPerDayOnELStakingPool
+              : DAIPerDayOnELFIStakingPool,
+            rewardToken === Token.ELFI ? elfiPrice : 1,
+          )
+        : poolApr,
       loadedAt: moment(),
       startedAt: roundTime[round].startedAt,
       endedAt: roundTime[round].endedAt,
