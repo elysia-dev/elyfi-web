@@ -1,4 +1,4 @@
-import { BigNumber, constants, logger, utils } from 'ethers';
+import { BigNumber, constants, utils } from 'ethers';
 import { useContext, useState, useEffect } from 'react';
 import ELFI from 'src/assets/images/ELFI.png';
 import { formatComma } from 'src/utiles/formatters';

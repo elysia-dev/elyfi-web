@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { BigNumber, constants, utils } from 'ethers';
 import MainnetContext from 'src/contexts/MainnetContext';
 import SubgraphContext from 'src/contexts/SubgraphContext';
-import MainnetType from 'src/enums/MainnetType';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
 import AssetList from './AssetList';
@@ -15,8 +14,8 @@ const usdFormatter = new Intl.NumberFormat('en', {
 
 const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
   const { getAssetBondsByNetwork } = useContext(SubgraphContext);
-  const { type: mainnetType } = useContext(MainnetContext)
-  const assetBondTokens = getAssetBondsByNetwork(mainnetType)
+  const { type: mainnetType } = useContext(MainnetContext);
+  const assetBondTokens = getAssetBondsByNetwork(mainnetType);
   const [pageNumber, setPageNumber] = useState(1);
   const { t } = useTranslation();
   // true -> byLatest, false -> byLoanAmount
@@ -32,8 +31,11 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
 
   const assetBondTokensBackedByEstate = assetBondTokens.filter((product) => {
     const parsedId = parseTokenId(product.id);
-    return (CollateralCategory.Others !== parsedId.collateralCategory && product.reserve.id === id)
-  })
+    return (
+      CollateralCategory.Others !== parsedId.collateralCategory &&
+      product.reserve.id === id
+    );
+  });
 
   const viewMoreHandler = useCallback(() => {
     setPageNumber((prev) => prev + 1);
@@ -43,19 +45,20 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
     <>
       <section className="loan">
         <div>
-          <h2>{t('governance.loan_list', { count: assetBondTokensBackedByEstate.length })}</h2>
+          <h2>
+            {t('governance.loan_list', {
+              count: assetBondTokensBackedByEstate.length,
+            })}
+          </h2>
           <p>{t('loan.loan__content')}</p>
         </div>
-        {
-          (assetBondTokensBackedByEstate.length === 0) ? (
-            <div className="loan__list--null">
-              <p>
-                {t("loan.loan_list--null")}
-              </p>
-            </div>
-          ) : (
-            <>
-              {/* <div className="text__title" >
+        {assetBondTokensBackedByEstate.length === 0 ? (
+          <div className="loan__list--null">
+            <p>{t('loan.loan_list--null')}</p>
+          </div>
+        ) : (
+          <>
+            {/* <div className="text__title" >
                 <div
                   className="loan__select-box"
                   onClick={() => {
@@ -76,38 +79,41 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
                   </div>
                 </div>
               </div> */}
-                <>
-                  <AssetList
-                    assetBondTokens={
-                      /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
-                      [...(assetBondTokensBackedByEstate || [])].slice(0, pageNumber * 9).sort((a, b) => {
-                        if (sortMode) {
-                          return BigNumber.from(b.principal).gte(
-                            BigNumber.from(a.principal),
-                          )
-                            ? 1
-                            : -1;
-                        } else {
-                          return b.loanStartTimestamp! - a.loanStartTimestamp! >= 0
-                            ? 1
-                            : -1;
-                        }
-                      }) || []
-                    }
-                  />
-                  {assetBondTokensBackedByEstate.length && assetBondTokensBackedByEstate.length >= pageNumber * 9 && (
-                    <div>
-                      <button
-                        className="portfolio__view-button"
-                        onClick={() => viewMoreHandler()}>
-                        {t('loan.view-more')}
-                      </button>
-                    </div>
-                  )}
-                </>
+            <>
+              <AssetList
+                assetBondTokens={
+                  /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
+                  [...(assetBondTokensBackedByEstate || [])]
+                    .slice(0, pageNumber * 9)
+                    .sort((a, b) => {
+                      if (sortMode) {
+                        return BigNumber.from(b.principal).gte(
+                          BigNumber.from(a.principal),
+                        )
+                          ? 1
+                          : -1;
+                      } else {
+                        return b.loanStartTimestamp! - a.loanStartTimestamp! >=
+                          0
+                          ? 1
+                          : -1;
+                      }
+                    }) || []
+                }
+              />
+              {assetBondTokensBackedByEstate.length &&
+                assetBondTokensBackedByEstate.length >= pageNumber * 9 && (
+                  <div>
+                    <button
+                      className="portfolio__view-button"
+                      onClick={() => viewMoreHandler()}>
+                      {t('loan.view-more')}
+                    </button>
+                  </div>
+                )}
             </>
-          )
-        }
+          </>
+        )}
       </section>
     </>
   );

@@ -1,4 +1,4 @@
-import { useHistory, useParams, Redirect } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { reserveTokenData } from 'src/core/data/reserves';
 
@@ -25,7 +25,6 @@ import MarketDetailsBody from 'src/components/MarketDetailsBody';
 import styled from 'styled-components';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
-import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
 import SubgraphContext, {
@@ -40,7 +39,6 @@ import {
   Tooltip,
 } from 'recharts';
 import MainnetContext from 'src/contexts/MainnetContext';
-import MainnetType from 'src/enums/MainnetType';
 import isSupportedReserve from 'src/core/utils/isSupportedReserve';
 import ReserveToken from 'src/core/types/ReserveToken';
 import {
