@@ -18,13 +18,16 @@ export const poolAddress = (mainnet: string, stakedToken: string): string => {
 export const stakingRewardTokenAddress = (
   mainnet: string,
   stakedToken: string,
+  currentChain?: string,
 ): string => {
   switch (stakedToken) {
     case Token.EL:
       return envs.token.elAddress;
     case Token.ELFI:
       if (mainnet === 'BSC') {
-        return envs.token.testBscElfiAddress;
+        return currentChain === 'BSC Test'
+          ? envs.token.testBscElfiAddress
+          : envs.token.bscElfiAddress;
       }
       return envs.token.governanceAddress;
     default:
