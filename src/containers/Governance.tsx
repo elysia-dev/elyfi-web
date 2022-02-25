@@ -44,8 +44,6 @@ const Governance = (): JSX.Element => {
     return CollateralCategory.Others !== parsedId.collateralCategory;
   });
 
-  console.log(offChainNapData)
-
   const draw = () => {
     const dpr = window.devicePixelRatio;
     const canvas: HTMLCanvasElement | null = canvasRef.current;
@@ -126,7 +124,11 @@ const Governance = (): JSX.Element => {
                 nap:
                   getHTMLStringData.match(regexNap)?.toString().substring(5) ||
                   '',
-                status: getHTMLStringData.match(/Status: .*(?=<)/)?.toString().split('Status: ') || '',
+                status:
+                  getHTMLStringData
+                    .match(/Status: .*(?=<)/)
+                    ?.toString()
+                    .split('Status: ') || '',
                 images:
                   getHTMLStringData
                     .match(
@@ -445,21 +447,41 @@ const Governance = (): JSX.Element => {
                 {t('governance.on_chain_voting', { count: onChainData.length })}
               </h3>
               <div>
-                <p>{t('governance.on_chain_voting__content')}</p>
-                {mainnetType === MainnetType.Ethereum && (
-                  <a
-                    href={`${t('governance.link.tally')}`}
-                    target="_blank"
-                    rel="noopener noreferer">
-                    <div
-                      className="deposit__table__body__amount__button"
-                      style={{
-                        width: 230,
-                      }}>
-                      <p>{t('governance.onChain_tally_button')}</p>
-                    </div>
-                  </a>
-                )}
+                <p>
+                  {t(
+                    `governance.on_chain_voting__content.${
+                      mainnetType === MainnetType.Ethereum
+                        ? 'tally'
+                        : 'snapshot'
+                    }`,
+                  )}
+                </p>
+                <a
+                  href={`${t(
+                    `governance.link.${
+                      mainnetType === MainnetType.Ethereum
+                        ? 'tally'
+                        : 'snapshot'
+                    }`,
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferer">
+                  <div
+                    className="deposit__table__body__amount__button"
+                    style={{
+                      width: 230,
+                    }}>
+                    <p>
+                      {t(
+                        `governance.onChain_button.${
+                          mainnetType === MainnetType.Ethereum
+                            ? 'tally'
+                            : 'snapshot'
+                        }`,
+                      )}
+                    </p>
+                  </div>
+                </a>
               </div>
             </div>
           ) : (
@@ -470,20 +492,32 @@ const Governance = (): JSX.Element => {
                     count: onChainData.length,
                   })}
                 </h3>
-                {mainnetType === MainnetType.Ethereum && (
-                  <a
-                    href={`${t('governance.link.tally')}`}
-                    target="_blank"
-                    rel="noopener noreferer">
-                    <div
-                      className="deposit__table__body__amount__button"
-                      style={{
-                        width: 150,
-                      }}>
-                      <p>{t('governance.onChain_tally_button')}</p>
-                    </div>
-                  </a>
-                )}
+                <a
+                  href={`${t(
+                    `governance.link.${
+                      mainnetType === MainnetType.Ethereum
+                        ? 'tally'
+                        : 'snapshot'
+                    }`,
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferer">
+                  <div
+                    className="deposit__table__body__amount__button"
+                    style={{
+                      width: 150,
+                    }}>
+                    <p>
+                      {t(
+                        `governance.onChain_button.${
+                          mainnetType === MainnetType.Ethereum
+                            ? 'tally'
+                            : 'snapshot'
+                        }`,
+                      )}
+                    </p>
+                  </div>
+                </a>
               </div>
               <p>{t('governance.data_verification__content')}</p>
             </div>
@@ -504,7 +538,7 @@ const Governance = (): JSX.Element => {
             )
           ) : (
             <div className="governance__onchain-vote zero">
-              <h2>COMING SOON!</h2>
+              <p>{t('governance.onchain_list_zero')}</p>
             </div>
           )}
         </section>
@@ -552,7 +586,8 @@ const Governance = (): JSX.Element => {
                   }
                 />
                 {assetBondTokensBackedByEstate.length &&
-                  assetBondTokensBackedByEstate.length >= pageNumber * defaultShowingLoanData && (
+                  assetBondTokensBackedByEstate.length >=
+                    pageNumber * defaultShowingLoanData && (
                     <div>
                       <button
                         className="portfolio__view-button"

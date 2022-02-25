@@ -20,6 +20,7 @@ interface EnvironmentVariables {
     elfyStakingPoolAddress: string;
     elfyV2StakingPoolAddress: string;
     elfyV2StakingPoolRewardAddress: string;
+    elfyBscStakingPoolAddress: string;
   };
   lpStaking: {
     daiElfiPoolAddress: string;
@@ -36,6 +37,7 @@ interface EnvironmentVariables {
     wEthAddress: string;
     bscElfiAddress: string;
     busdAddress: string;
+    testBscElfiAddress: string;
   };
   network: {
     requiredNetwork: string;
@@ -55,6 +57,9 @@ interface EnvironmentVariables {
   tokenizer: {
     daiTokenizerAddress: string;
     usdtTokeninzerAddress: string;
+  };
+  jsonRpcUrl: {
+    bsc: string;
   };
 }
 

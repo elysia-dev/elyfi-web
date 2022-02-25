@@ -1,21 +1,25 @@
 import { StakingPool__factory } from '@elysia-dev/contract-typechain';
 import { BigNumber, constants, providers } from 'ethers';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+
+import envs from 'src/core/envs';
 import PriceContext from 'src/contexts/PriceContext';
 import Token from 'src/enums/Token';
-import envs from 'src/core/envs';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import {
   DAIPerDayOnELFIStakingPool,
   ELFIPerDayOnELStakingPool,
 } from 'src/core/data/stakings';
 import calcAPR from 'src/core/utils/calcAPR';
+import MainnetContext from 'src/contexts/MainnetContext';
+import { poolAddress } from 'src/utiles/stakingPoolAddress';
+import { rewardPerDayByToken } from 'src/utiles/stakingReward';
 
 // round 0, 1, 2, 3
 const useStakingRoundData = (
   round: number,
-  stakedToken: Token.EL | Token.ELFI,
-  rewardToken: Token.ELFI | Token.DAI,
+  stakedToken: string,
+  rewardToken: Token.ELFI | Token.DAI | Token.BUSD,
 ): {
   totalPrincipal: BigNumber;
   apr: BigNumber;
@@ -23,16 +27,20 @@ const useStakingRoundData = (
 } => {
   // Why?
   // ELFI 스테이킹풀의 경우 3 round부터 v2로 바뀜
+
+  const { type: mainnet } = useContext(MainnetContext);
   const stakingPool = useMemo(() => {
     return StakingPool__factory.connect(
-      stakedToken === Token.EL
-        ? envs.staking.elStakingPoolAddress
-        : round <= 1
-        ? envs.staking.elfyStakingPoolAddress
-        : envs.staking.elfyV2StakingPoolAddress,
-      new providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC),
+      stakedToken === Token.ELFI && round > 1
+        ? envs.staking.elfyV2StakingPoolAddress
+        : poolAddress(mainnet, stakedToken),
+      new providers.JsonRpcProvider(
+        mainnet === 'BSC'
+          ? envs.jsonRpcUrl.bsc
+          : process.env.REACT_APP_JSON_RPC,
+      ),
     );
-  }, [stakedToken, round]);
+  }, [stakedToken, round, mainnet]);
 
   const { latestPrice: elfiPrice } = useContext(UniswapPoolContext);
   const { elPrice } = useContext(PriceContext);
@@ -52,20 +60,18 @@ const useStakingRoundData = (
 
       // ELFI 스테이킹풀의 경우 3 round부터 v2로 바뀜
       let currentRound = round;
-      if (round >= 2 && stakedToken === Token.ELFI) currentRound -= 2;
+      if (round >= 2 && stakedToken === Token.ELFI && mainnet === 'Ethereum')
+        currentRound -= 2;
       try {
         const res = await stakingPool.getPoolData(
           (currentRound + 1).toString(),
         );
-
         setState({
           totalPrincipal: res.totalPrincipal,
           apr: calcAPR(
             res.totalPrincipal,
             stakedToken === Token.EL ? elPrice : elfiPrice,
-            rewardToken === Token.ELFI
-              ? ELFIPerDayOnELStakingPool
-              : DAIPerDayOnELFIStakingPool,
+            rewardPerDayByToken(stakedToken, mainnet),
             rewardToken === Token.ELFI ? elfiPrice : 1,
           ),
           loading: false,
@@ -85,12 +91,12 @@ const useStakingRoundData = (
         });
       }
     },
-    [stakingPool, elfiPrice, elPrice, round],
+    [stakingPool, elfiPrice, elPrice, round, mainnet],
   );
 
   useEffect(() => {
     loadRound(round);
-  }, [round, elfiPrice]);
+  }, [round, elfiPrice, mainnet, stakingPool]);
 
   return {
     ...state,

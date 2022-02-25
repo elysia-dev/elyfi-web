@@ -18,11 +18,12 @@ const SmallProgressBar: FunctionComponent<Props> = (props) => {
   const { t } = useTranslation();
   const { nth, unit, start, end, rewardOrMining, totalMiningValue, max } =
     props;
-  const isDai = unit !== 'ELFI';
+  const isElfi = unit !== 'ELFI';
+
   return (
     <div className="component__progress-bar">
       <div>
-        {isDai && rewardOrMining === 'reward' ? (
+        {isElfi && rewardOrMining === 'reward' ? (
           nth ? (
             <>
               <p>

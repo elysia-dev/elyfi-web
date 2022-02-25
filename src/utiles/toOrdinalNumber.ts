@@ -14,6 +14,10 @@ const toOrdinalNumber = (language: string, value: number): string => {
       return language === LanguageType.EN ? '5th' : '5';
     case 6:
       return language === LanguageType.EN ? '6th' : '6';
+    case 7:
+      return language === LanguageType.EN ? '7th' : '7';
+    case 8:
+      return language === LanguageType.EN ? '8th' : '8';
     default:
       return '';
   }

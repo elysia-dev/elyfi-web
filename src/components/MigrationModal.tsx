@@ -1,18 +1,19 @@
 import { BigNumber, constants, utils } from 'ethers';
 import { useState, useContext, useMemo } from 'react';
-import ELFI from 'src/assets/images/ELFI.png';
-import { formatComma } from 'src/utiles/formatters';
 import { useTranslation } from 'react-i18next';
 import { useWeb3React } from '@web3-react/core';
+import { formatEther, parseEther } from 'ethers/lib/utils';
+import moment from 'moment';
+
+import { formatComma } from 'src/utiles/formatters';
+import ELFI from 'src/assets/images/ELFI.png';
 import Token from 'src/enums/Token';
 import ArrowUp from 'src/assets/images/arrow-up.png';
 import ArrowDown from 'src/assets/images/arrow-down.png';
 import ArrowLeft from 'src/assets/images/arrow-left.png';
-import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
-import moment from 'moment';
+import { IStakingPoolRound } from 'src/core/data/stakingRoundTimes';
 import useStakingPool from 'src/hooks/useStakingPool';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
-import { formatEther, parseEther } from 'ethers/lib/utils';
 import useWaitingTx from 'src/hooks/useWaitingTx';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
@@ -20,6 +21,9 @@ import buildEventEmitter from 'src/utiles/buildEventEmitter';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
+import MainnetContext from 'src/contexts/MainnetContext';
+import { roundForElfiV2Staking } from 'src/utiles/roundForElfiV2Staking';
+import TxStatus from 'src/enums/TxStatus';
 import LoadingIndicator from './LoadingIndicator';
 import ModalHeader from './ModalHeader';
 import Popupinfo from './PopupInfo';
@@ -29,11 +33,12 @@ const MigrationModal: React.FunctionComponent<{
   closeHandler: () => void;
   afterTx: () => void;
   stakedToken: Token.ELFI | Token.EL;
-  rewardToken: Token.ELFI | Token.DAI;
+  rewardToken: Token.ELFI | Token.DAI | Token.BUSD;
   stakedBalance: BigNumber;
   rewardBalance: BigNumber;
   round: number;
   transactionModal: () => void;
+  stakingRoundDate: IStakingPoolRound[];
   transactionWait: boolean;
   setTransactionWait: () => void;
 }> = ({
@@ -46,6 +51,7 @@ const MigrationModal: React.FunctionComponent<{
   rewardToken,
   round,
   transactionModal,
+  stakingRoundDate,
   transactionWait,
   setTransactionWait,
 }) => {
@@ -61,7 +67,8 @@ const MigrationModal: React.FunctionComponent<{
   const [mouseHover, setMouseHover] = useState(false);
   const { contract: stakingPool } = useStakingPool(stakedToken, round >= 3);
   const { waiting, wait } = useWaitingTx();
-  const { setTransaction, failTransaction } = useContext(TxContext);
+  const { setTransaction, failTransaction, txStatus } = useContext(TxContext);
+  const { type: getMainnetType } = useContext(MainnetContext);
 
   const amountGtStakedBalance =
     !state.withdrawMax &&
@@ -71,7 +78,7 @@ const MigrationModal: React.FunctionComponent<{
     utils.parseEther(state.migrationAmount || '0').gt(stakedBalance);
 
   const currentRound = useMemo(() => {
-    return stakingRoundTimes.filter(
+    return stakingRoundDate.filter(
       (round) => current.diff(round.startedAt) >= 0,
     ).length;
   }, [current]);
@@ -266,7 +273,8 @@ const MigrationModal: React.FunctionComponent<{
             amountGtStakedBalance ||
             migrationAmountGtStakedBalance ||
             transactionWait ||
-            (state.withdrawAmount.length === 0 && state.migrationAmount.length === 0)
+            (state.withdrawAmount.length === 0 &&
+              state.migrationAmount.length === 0)
               ? ' disable'
               : ''
           }`}
@@ -277,11 +285,12 @@ const MigrationModal: React.FunctionComponent<{
               amountGtStakedBalance ||
               migrationAmountGtStakedBalance ||
               transactionWait ||
-              (state.withdrawAmount.length === 0 && state.migrationAmount.length === 0)
+              (state.withdrawAmount.length === 0 &&
+                state.migrationAmount.length === 0)
             )
               return;
 
-            setTransactionWait()
+            setTransactionWait();
 
             const emitter = buildEventEmitter(
               ModalViewType.MigrationOrUnstakingModal,
@@ -313,9 +322,10 @@ const MigrationModal: React.FunctionComponent<{
                   : state.withdrawMax
                   ? constants.Zero
                   : utils.parseEther(state.migrationAmount),
-                (round >= 3 && stakedToken === Token.ELFI
-                  ? round - 2
-                  : round
+                roundForElfiV2Staking(
+                  round,
+                  stakedToken,
+                  getMainnetType,
                 ).toString(),
               )
               .then((tx) => {
@@ -338,8 +348,7 @@ const MigrationModal: React.FunctionComponent<{
               });
           }}>
           <p>
-            {
-            amountGtStakedBalance
+            {amountGtStakedBalance
               ? t('staking.insufficient_balance')
               : t('staking.transfer')}
           </p>
