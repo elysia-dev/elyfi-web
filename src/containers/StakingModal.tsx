@@ -105,7 +105,7 @@ const StakingModal: React.FunctionComponent<{
         />
         {transactionWait ||
         allowanceLoading ||
-        txStatus === TxStatus.PENDING ? (
+        (txStatus === TxStatus.PENDING && !allowance.gte(balance)) ? (
           <LoadingIndicator
             isTxActive={transactionWait || txStatus === TxStatus.PENDING}
             button={
@@ -114,8 +114,7 @@ const StakingModal: React.FunctionComponent<{
                 : undefined
             }
             isApproveLoading={
-              txStatus === TxStatus.PENDING &&
-              !(!allowanceLoading && allowance.gte(balance))
+              txStatus === TxStatus.PENDING && !allowance.gte(balance)
             }
           />
         ) : (!allowanceLoading && allowance.gte(balance)) || !stakingMode ? (
@@ -241,9 +240,7 @@ const StakingModal: React.FunctionComponent<{
           />
         )}
         <section>
-          {((!allowanceLoading && allowance.gte(balance)) ||
-            transactionWait ||
-            !stakingMode) &&
+          {!allowanceLoading &&
             (!stakingMode ? (
               <div
                 className={`modal__button${
@@ -315,75 +312,78 @@ const StakingModal: React.FunctionComponent<{
                 </p>
               </div>
             ) : (
-              <div
-                className={`modal__button${
-                  amountLteZero || amountGtBalance || transactionWait
-                    ? ' disable'
-                    : ''
-                }`}
-                onClick={() => {
-                  if (
-                    !account ||
-                    amountLteZero ||
-                    amountGtBalance ||
-                    transactionWait
-                  )
-                    return;
-                  if (current.diff(stakingRoundDate[round - 1].endedAt) > 0) {
-                    endedModal();
-                    closeHandler();
-                    return;
-                  }
-                  setTransactionWait();
-                  const emitter = buildEventEmitter(
-                    ModalViewType.StakingOrUnstakingModal,
-                    TransactionType.Stake,
-                    JSON.stringify({
-                      version: ElyfiVersions.V1,
-                      chainId,
-                      address: account,
-                      stakingType: stakedToken,
-                      round,
-                      unstakingAmount: utils.formatEther(
-                        utils.parseEther(amount.value),
-                      ),
-                      maxOrNot: amount.max,
-                    }),
-                  );
-
-                  emitter.clicked();
-
-                  // setTxWaiting(true)
-
-                  stakingPool
-                    ?.stake(
-                      amount.max ? balance : utils.parseEther(amount.value),
+              stakingMode &&
+              (allowance.gte(balance) || transactionWait) && (
+                <div
+                  className={`modal__button${
+                    amountLteZero || amountGtBalance || transactionWait
+                      ? ' disable'
+                      : ''
+                  }`}
+                  onClick={() => {
+                    if (
+                      !account ||
+                      amountLteZero ||
+                      amountGtBalance ||
+                      transactionWait
                     )
-                    .then((tx) => {
-                      setTransaction(
-                        tx,
-                        emitter,
-                        (stakedToken + 'Stake') as RecentActivityType,
-                        () => {
-                          closeHandler();
-                          transactionModal();
-                        },
-                        () => {
-                          refetch();
-                          afterTx();
-                        },
-                      );
-                    })
-                    .catch((e) => {
-                      failTransaction(emitter, closeHandler, e);
-                    });
-                }}>
-                <p>
-                  {amountGtBalance
-                    ? t('staking.insufficient_balance')
-                    : t('staking.staking')}
-                </p>
-              </div>
+                      return;
+                    if (current.diff(stakingRoundDate[round - 1].endedAt) > 0) {
+                      endedModal();
+                      closeHandler();
+                      return;
+                    }
+                    setTransactionWait();
+                    const emitter = buildEventEmitter(
+                      ModalViewType.StakingOrUnstakingModal,
+                      TransactionType.Stake,
+                      JSON.stringify({
+                        version: ElyfiVersions.V1,
+                        chainId,
+                        address: account,
+                        stakingType: stakedToken,
+                        round,
+                        unstakingAmount: utils.formatEther(
+                          utils.parseEther(amount.value),
+                        ),
+                        maxOrNot: amount.max,
+                      }),
+                    );
+
+                    emitter.clicked();
+
+                    // setTxWaiting(true)
+
+                    stakingPool
+                      ?.stake(
+                        amount.max ? balance : utils.parseEther(amount.value),
+                      )
+                      .then((tx) => {
+                        setTransaction(
+                          tx,
+                          emitter,
+                          (stakedToken + 'Stake') as RecentActivityType,
+                          () => {
+                            closeHandler();
+                            transactionModal();
+                          },
+                          () => {
+                            refetch();
+                            afterTx();
+                          },
+                        );
+                      })
+                      .catch((e) => {
+                        failTransaction(emitter, closeHandler, e);
+                      });
+                  }}>
+                  <p>
+                    {amountGtBalance
+                      ? t('staking.insufficient_balance')
+                      : t('staking.staking')}
+                  </p>
+                </div>
+              )
             ))}
         </section>
       </div>

@@ -12,7 +12,7 @@ const format = 'YYYY.MM.DD hh:mm:ss Z';
 
 export const busdStakingRoundTimes: IStakingPoolRound[] = [
   {
-    startedAt: '2022.02.23 19:00:00 +9:00',
+    startedAt: '2022.02.25 19:00:00 +9:00',
     endedAt: '2022.03.07 19:00:00 +9:00',
   },
   {
