@@ -91,7 +91,7 @@ const MigrationModal: React.FunctionComponent<{
           image={ELFI}
           onClose={() => closeHandler()}
         />
-        {transactionWait || txStatus === TxStatus.PENDING ? (
+        {transactionWait ? (
           <LoadingIndicator isTxActive={transactionWait} />
         ) : (
           <>
