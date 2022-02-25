@@ -553,7 +553,8 @@
         "permission_check": "Checking permission to your token..",
         "pending_transaction": "Pending transaction...",
         "loading_metamask": "Confirm this transaction in your wallet",
-        "loading_metamask__title": "Waiting for Confirmation"
+        "loading_metamask__title": "Waiting for Confirmation",
+        "loading_approve": "An approvement transaction is being processed."
       },
       "permission": {
         "title": "Approve the access",

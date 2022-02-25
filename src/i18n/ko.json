@@ -485,7 +485,8 @@
         "permission_check": "접근 권한 확인 중..",
         "pending_transaction": "트랜잭션 처리중..",
         "loading_metamask": "지갑에서 해당 트랜잭션을 확인해주세요",
-        "loading_metamask__title": "확인 대기 중"
+        "loading_metamask__title": "확인 대기 중",
+        "loading_approve": "접근 권한 승인 트랜잭션이 처리중입니다."
       },
       "permission": {
         "title": "접근 권한을 승인해주세요!",
