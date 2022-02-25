@@ -270,22 +270,29 @@
       "button--staking": "ELFI 스테이킹 하기",
       "button--governance_faq": "거버넌스 FAQ",
       "graph": ["ELYFI", "프로토콜 순 이익", "거버넌스 참여", "ELYFI Holder"],
-      "data_verification": "데이터 검증 리스트 ({{ count }} 건)",
-      "data_verification_plural": "데이터 검증 리스트 ({{ count }} 건)",
-      "data_verification_plural--mobile": "데이터 검증 리스트 ({{ count }} 건)",
+      "data_verification": "데이터 검증 투표 ({{ count }} 건)",
+      "data_verification_plural": "데이터 검증 투표 ({{ count }} 건)",
+      "data_verification_plural--mobile": "데이터 검증 투표 ({{ count }} 건)",
       "data_verification__content": "오프체인 거버넌스(DAO)에서 투표가 진행중인 제안서 리스트입니다.",
-      "on_chain_voting": "온체인 투표 ({{ count }} 건)",
-      "on_chain_voting_plural": "온체인 투표 ({{ count }} 건)",
-      "on_chain_voting__content": "온체인 거버넌스(DAO)에서 투표가 진행중인 제안서 리스트 입니다.",
+      "on_chain_voting": "의사결정 투표 ({{ count }} 건)",
+      "on_chain_voting_plural": "의사결정 투표 ({{ count }} 건)",
+      "on_chain_voting__content": {
+        "tally": "Tally에서 투표가 진행중인 제안서 리스트 입니다.",
+        "snapshot": "Snapshot에서 투표가 진행중인 제안서 리스트 입니다."
+      },
       "loan_list": "대출리스트 ({{ count }} 건)",
       "loan_list_plural": "대출리스트 ({{ count }} 건)",
       "loan_list__content": "거버넌스(DAO)의 결정에 따라 머니풀에서 실행된 대출입니다.",
-      "onchain_list_zero": "현재 진행중인 온체인 투표가 없습니다.",
+      "onchain_list_zero": "현재 진행중인 의사결정 투표가 없습니다.",
       "offchain_list_zero": "현재 진행중인 데이터 검증 투표가 없습니다.",
       "forum_button": "ELYFI 포럼으로 이동하기",
-      "onChain_tally_button": "Tally로 이동하기",
+      "onChain_button": {
+        "tally": "Tally로 이동하기",
+        "snapshot": "Snapshot으로 이동하기"
+      },
       "link": {
-        "tally": "https://www.withtally.com/governance/eip155:1:0x0c54629266d7fa40B4BFaF1640ebC2Cd093866C3"
+        "tally": "https://www.withtally.com/governance/eip155:1:0x0c54629266d7fa40B4BFaF1640ebC2Cd093866C3",
+        "snapshot": "https://snapshot.org/#/elyfi-bsc.eth"
       }
     },
     "staking": {
