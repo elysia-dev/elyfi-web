@@ -90,8 +90,6 @@ const StakingModal: React.FunctionComponent<{
     });
   }, [stakingMode, visible]);
 
-  console.log(!allowanceLoading && allowance.gte(balance));
-
   return (
     <div className="modal" style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
