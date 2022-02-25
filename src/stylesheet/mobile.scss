@@ -358,6 +358,7 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
       z-index: 9999;
       background: rgba(0, 0, 0, 0.7);
       overflow: hidden;
+      backdrop-filter: blur(4px);
       &__container {
         top: 50%;
         left: 50%;
