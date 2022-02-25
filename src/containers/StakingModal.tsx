@@ -312,7 +312,6 @@ const StakingModal: React.FunctionComponent<{
                 </p>
               </div>
             ) : (
-              stakingMode &&
               (allowance.gte(balance) || transactionWait) && (
                 <div
                   className={`modal__button${
