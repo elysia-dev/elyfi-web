@@ -22,6 +22,7 @@ import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
 import { stakingRewardTokenAddress } from 'src/utiles/stakingPoolAddress';
 import MainnetContext from 'src/contexts/MainnetContext';
+import useCurrentChain from 'src/hooks/useCurrentChain';
 
 const StakingModal: React.FunctionComponent<{
   visible: boolean;
@@ -50,6 +51,7 @@ const StakingModal: React.FunctionComponent<{
   const { setTransaction, failTransaction } = useContext(TxContext);
   const { contract: stakingPool } = useStakingPool(stakedToken, round >= 3);
   const { type: getMainnetType } = useContext(MainnetContext);
+  const currentChain = useCurrentChain();
   const {
     allowance,
     balance,
@@ -57,7 +59,7 @@ const StakingModal: React.FunctionComponent<{
     refetch,
     contract,
   } = useERC20Info(
-    stakingRewardTokenAddress(getMainnetType, stakedToken),
+    stakingRewardTokenAddress(getMainnetType, stakedToken, currentChain?.name),
     stakingPool ? stakingPool.address : '',
   );
   const { waiting, wait } = useWatingTx();
