@@ -23,6 +23,7 @@ import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { roundForElfiV2Staking } from 'src/utiles/roundForElfiV2Staking';
+import TxStatus from 'src/enums/TxStatus';
 import LoadingIndicator from './LoadingIndicator';
 import ModalHeader from './ModalHeader';
 import Popupinfo from './PopupInfo';
@@ -66,7 +67,7 @@ const MigrationModal: React.FunctionComponent<{
   const [mouseHover, setMouseHover] = useState(false);
   const { contract: stakingPool } = useStakingPool(stakedToken, round >= 3);
   const { waiting, wait } = useWaitingTx();
-  const { setTransaction, failTransaction } = useContext(TxContext);
+  const { setTransaction, failTransaction, txStatus } = useContext(TxContext);
   const { type: getMainnetType } = useContext(MainnetContext);
 
   const amountGtStakedBalance =
@@ -90,7 +91,7 @@ const MigrationModal: React.FunctionComponent<{
           image={ELFI}
           onClose={() => closeHandler()}
         />
-        {transactionWait ? (
+        {transactionWait || txStatus === TxStatus.PENDING ? (
           <LoadingIndicator isTxActive={transactionWait} />
         ) : (
           <>

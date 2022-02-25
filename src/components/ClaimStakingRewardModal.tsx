@@ -23,6 +23,7 @@ import ElyfiVersions from 'src/enums/ElyfiVersions';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { roundForElfiV2Staking } from 'src/utiles/roundForElfiV2Staking';
 import MainnetType from 'src/enums/MainnetType';
+import TxStatus from 'src/enums/TxStatus';
 import ModalHeader from './ModalHeader';
 
 const ClaimStakingRewardModal: FunctionComponent<{
@@ -65,7 +66,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
 
   const { waiting } = useWatingTx();
   const { t } = useTranslation();
-  const { setTransaction, failTransaction } = useContext(TxContext);
+  const { setTransaction, failTransaction, txStatus } = useContext(TxContext);
   const { type: mainnet } = useContext(MainnetContext);
 
   const claimAddress = rewardContractForV2 ? rewardContractForV2 : stakingPool;
@@ -92,7 +93,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
           onClose={closeHandler}
         />
         <div className="modal__body">
-          {transactionWait ? (
+          {transactionWait || txStatus === TxStatus.PENDING ? (
             <LoadingIndicator isTxActive={transactionWait} />
           ) : (
             <>
@@ -132,11 +133,9 @@ const ClaimStakingRewardModal: FunctionComponent<{
             </>
           )}
           <div
-            className={`modal__button ${transactionWait ? "disable" : ""}`}
+            className={`modal__button ${transactionWait ? 'disable' : ''}`}
             onClick={() => {
-              transactionWait ? undefined :
-
-              setTransactionWait()
+              transactionWait ? undefined : setTransactionWait();
               if (!account) return;
 
               const emitter = buildEventEmitter(
