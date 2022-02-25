@@ -233,7 +233,7 @@
       "loan__number": "Loan Number",
       "loan__status": "Loan Status",
       "loan__info": "Loan Details",
-      "loan__interest_rate": "Loan Interest Rate",
+      "loan__interest_rate": "Borrow APY",
       "loan__date": "Loan Date",
       "loan__borrowed": "Borrowed",
       "borrower": "Borrower",
@@ -270,6 +270,8 @@
       ],
       "data_verification": "Data verification list ({{ count }} case)",
       "data_verification_plural": "Data verification list ({{ count }} cases)",
+      "data_verification--mobile": "Data verification list\n({{ count }} case)",
+      "data_verification--mobile_plural": "Data verification list\n({{ count }} cases)",
       "data_verification__content": "This is a list of proposals for which voting is in progress in off-chain governance(DAO).",
       "on_chain_voting": "On-chain voting ({{ count }} case)",
       "on_chain_voting_plural": "On-chain voting ({{ count }} cases)",
@@ -394,7 +396,7 @@
       "total_borrowed": "Total Borrowed",
       "estimated_repayments": "Estimated Repayments",
       "borrow_apy": "Borrow APY",
-      "borrow_apy--loan": "Loan Interest Rate",
+      "borrow_apy--loan": "Borrow APY",
       "accumulated_borrowed": "Accumulated Borrowed",
       "accumulated_repayment": "Accumulated Repayments",
       "accumulated_yield": "Accumulated Yield",
@@ -426,7 +428,7 @@
       "loan_product": "Loan Product",
       "loan_name": "Loan Name",
       "loans": "Loans",
-      "loan_interest_rate": "Loan Interest Rate",
+      "loan_interest_rate": "Borrow APY",
       "overdue_interest_rate": "Overdue Interest Rate",
       "maximum_amount": "Maximum Pledge Amount",
       "collateral_type": "Collateral Type",
@@ -540,6 +542,19 @@
       "borrow": "Borrow"
     },
     "modal": {
+      "indicator": {
+        "permission_check": "Checking permission to your token..",
+        "pending_transaction": "Pending transaction...",
+        "loading_metamask": "Confirm this transaction in your wallet",
+        "loading_metamask__title": "Waiting for Confirmation"
+      },
+      "permission": {
+        "title": "Approve the access",
+        "content--deposit": "In order to deposit to the money pool, you need to approve access so that the app can access the connected wallet.\n\nApproval is <strong>required only at the time of initial deposit</strong>, and upon successful completion of the approvement, deposits can be made without subsequent approval process.",
+        "content--staking": "In order to stake to the money pool, you need to approve access so that the app can access the connected wallet.\n\nApproval is <strong>required only at the time of initial staking</strong>, and upon successful completion of the approvement, staking can be made without subsequent approval process.",
+        "button": "Approve",
+        "comment": "<strong>*</strong> Approval of access rights is also a transaction using the network, so gas charges occur."
+      },
       "connect_wallet": {
         "title": "Start ELYFI",
         "content": "A wallet connection is required to use ELYFI.\nDo you want to connect?",

@@ -1,9 +1,8 @@
 import { useWeb3React } from '@web3-react/core';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import MainnetContext, {
   IMainnetContextTypes,
 } from 'src/contexts/MainnetContext';
-import envs from 'src/core/envs';
 import MainnetType from 'src/enums/MainnetType';
 import { mainnets } from 'src/core/data/mainnets';
 import useCurrentChain from 'src/hooks/useCurrentChain';
@@ -66,7 +65,7 @@ const MainnetProvider: React.FC = (props) => {
           },
         ],
       });
-    } catch (e) {
+    } catch (e: any) {
       if (e.code === 4902) {
         try {
           getChainData

@@ -40,6 +40,8 @@ const ClaimStakingRewardModal: FunctionComponent<{
   closeHandler: () => void;
   afterTx: () => void;
   transactionModal: () => void;
+  transactionWait: boolean;
+  setTransactionWait: () => void;
 }> = ({
   visible,
   stakedToken,
@@ -52,6 +54,8 @@ const ClaimStakingRewardModal: FunctionComponent<{
   closeHandler,
   afterTx,
   transactionModal,
+  transactionWait,
+  setTransactionWait,
 }) => {
   const { account, chainId } = useWeb3React();
   const { contract: stakingPool, rewardContractForV2 } = useStakingPool(
@@ -88,8 +92,8 @@ const ClaimStakingRewardModal: FunctionComponent<{
           onClose={closeHandler}
         />
         <div className="modal__body">
-          {waiting ? (
-            <LoadingIndicator />
+          {transactionWait ? (
+            <LoadingIndicator isTxActive={transactionWait} />
           ) : (
             <>
               <div className="modal__incentive__body">
@@ -125,56 +129,59 @@ const ClaimStakingRewardModal: FunctionComponent<{
                       )}
                 </p>
               </div>
-              <div
-                className="modal__button"
-                onClick={() => {
-                  if (!account) return;
-
-                  const emitter = buildEventEmitter(
-                    ModalViewType.StakingIncentiveModal,
-                    TransactionType.Claim,
-                    JSON.stringify({
-                      version: ElyfiVersions.V1,
-                      chainId,
-                      address: account,
-                      stakingType: stakedToken,
-                      stakingAmount: utils.formatEther(stakingBalance),
-                      incentiveAmount: utils.formatEther(
-                        balance?.value || endedBalance,
-                      ),
-                      round,
-                    }),
-                  );
-
-                  emitter.clicked();
-
-                  // TRICKY
-                  // ELFI V2 StakingPool need round - 2 value
-
-                  claimAddress
-                    ?.claim(claimRound)
-                    .then((tx) => {
-                      setTransaction(
-                        tx,
-                        emitter,
-                        (stakedToken + 'Claim') as RecentActivityType,
-                        () => {
-                          transactionModal();
-                          closeHandler();
-                        },
-                        () => {
-                          afterTx();
-                        },
-                      );
-                    })
-                    .catch((e) => {
-                      failTransaction(emitter, closeHandler, e);
-                    });
-                }}>
-                <p>{t('staking.claim_reward')}</p>
-              </div>
             </>
           )}
+          <div
+            className={`modal__button ${transactionWait ? "disable" : ""}`}
+            onClick={() => {
+              transactionWait ? undefined :
+
+              setTransactionWait()
+              if (!account) return;
+
+              const emitter = buildEventEmitter(
+                ModalViewType.StakingIncentiveModal,
+                TransactionType.Claim,
+                JSON.stringify({
+                  version: ElyfiVersions.V1,
+                  chainId,
+                  address: account,
+                  stakingType: stakedToken,
+                  stakingAmount: utils.formatEther(stakingBalance),
+                  incentiveAmount: utils.formatEther(
+                    balance?.value || endedBalance,
+                  ),
+                  round,
+                }),
+              );
+
+              emitter.clicked();
+
+              // TRICKY
+              // ELFI V2 StakingPool need round - 2 value
+
+              claimAddress
+                ?.claim(claimRound)
+                .then((tx) => {
+                  setTransaction(
+                    tx,
+                    emitter,
+                    (stakedToken + 'Claim') as RecentActivityType,
+                    () => {
+                      transactionModal();
+                      closeHandler();
+                    },
+                    () => {
+                      afterTx();
+                    },
+                  );
+                })
+                .catch((e) => {
+                  failTransaction(emitter, closeHandler, e);
+                });
+            }}>
+            <p>{t('staking.claim_reward')}</p>
+          </div>
         </div>
       </div>
     </div>

@@ -1,6 +1,5 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import TempAssets from 'src/assets/images/temp_assets.png';
-import wave from 'src/assets/images/wave_elyfi.png';
 import OffChainTopic, { INapData } from 'src/clients/OffChainTopic';
 import Skeleton from 'react-loading-skeleton';
 import { IProposals, OnChainTopic } from 'src/clients/OnChainTopic';
@@ -39,6 +38,7 @@ const Governance = (): JSX.Element => {
   const History = useHistory();
   const { value: mediaQuery } = useMediaQueryType();
   const { lng } = useParams<{ lng: string }>();
+  const defaultShowingLoanData = mediaQuery === MediaQuery.Mobile ? 8 : 9;
   const assetBondTokensBackedByEstate = assetBondTokens.filter((product) => {
     const parsedId = parseTokenId(product.id);
     return CollateralCategory.Others !== parsedId.collateralCategory;
@@ -394,7 +394,7 @@ const Governance = (): JSX.Element => {
             <div>
               <div>
                 <h3>
-                  {t('governance.data_verification', {
+                  {t('governance.data_verification--mobile', {
                     count: offChainNapData
                       .filter((data) => data.network === mainnetType)
                       .filter((data) => moment().isBefore(data.endedDate))
@@ -544,7 +544,7 @@ const Governance = (): JSX.Element => {
                   assetBondTokens={
                     /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
                     [...((assetBondTokensBackedByEstate as IAssetBond[]) || [])]
-                      .slice(0, pageNumber * 9)
+                      .slice(0, pageNumber * defaultShowingLoanData)
                       .sort((a, b) => {
                         return b.loanStartTimestamp! - a.loanStartTimestamp! >=
                           0
@@ -554,7 +554,8 @@ const Governance = (): JSX.Element => {
                   }
                 />
                 {assetBondTokensBackedByEstate.length &&
-                  assetBondTokensBackedByEstate.length >= pageNumber * 9 && (
+                  assetBondTokensBackedByEstate.length >=
+                    pageNumber * defaultShowingLoanData && (
                     <div>
                       <button
                         className="portfolio__view-button"

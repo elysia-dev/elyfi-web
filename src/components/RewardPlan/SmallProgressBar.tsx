@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers';
 import { FunctionComponent, ReactElement } from 'react';
 import CountUp from 'react-countup';
 import { useTranslation } from 'react-i18next';

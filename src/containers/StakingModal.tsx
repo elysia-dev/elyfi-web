@@ -1,4 +1,4 @@
-import { BigNumber, constants, logger, utils } from 'ethers';
+import { BigNumber, constants, utils } from 'ethers';
 import { useContext, useState, useEffect } from 'react';
 import ELFI from 'src/assets/images/ELFI.png';
 import { formatComma } from 'src/utiles/formatters';
@@ -23,6 +23,9 @@ import ElyfiVersions from 'src/enums/ElyfiVersions';
 import { stakingRewardTokenAddress } from 'src/utiles/stakingPoolAddress';
 import MainnetContext from 'src/contexts/MainnetContext';
 import useCurrentChain from 'src/hooks/useCurrentChain';
+import IncreateAllowanceModal, {
+  PermissionType,
+} from 'src/components/IncreateAllowanceModal';
 
 const StakingModal: React.FunctionComponent<{
   visible: boolean;
@@ -33,6 +36,9 @@ const StakingModal: React.FunctionComponent<{
   round: number;
   endedModal: () => void;
   transactionModal: () => void;
+  transactionWait: boolean;
+  setTransactionWait: () => void;
+  disableTransactionWait: () => void;
 }> = ({
   visible,
   closeHandler,
@@ -42,6 +48,9 @@ const StakingModal: React.FunctionComponent<{
   round,
   endedModal,
   transactionModal,
+  transactionWait,
+  setTransactionWait,
+  disableTransactionWait,
 }) => {
   const { t, i18n } = useTranslation();
   const { account, chainId } = useWeb3React();
@@ -92,254 +101,283 @@ const StakingModal: React.FunctionComponent<{
           setState={setStakingMode}
           title={[t('staking.staking'), t('staking.unstaking')]}
         />
-        {waiting ? (
-          <LoadingIndicator />
-        ) : (
-          <div className="modal__body">
-            <div className="modal__input">
-              <h2
-                className="modal__input__maximum"
-                onClick={() => {
-                  if (stakingMode ? balance.isZero() : stakedBalance.isZero()) {
-                    return;
-                  }
-                  setAmount({
-                    value: Math.floor(
-                      parseFloat(
-                        utils.formatEther(
-                          stakingMode ? balance : stakedBalance,
-                        ),
-                      ),
-                    ).toFixed(8),
-                    max: true,
-                  });
-                }}>
-                {t('staking.max')}
-              </h2>
-              <h2 className="modal__input__value">
-                <input
-                  type="number"
-                  className="modal__input__value__amount"
-                  placeholder="0"
-                  value={amount.value}
-                  style={{
-                    fontSize:
-                      amount.value.length < 8
-                        ? 60
-                        : amount.value.length > 12
-                        ? 35
-                        : 45,
-                  }}
-                  onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
-                    ['-', '+', 'e'].includes(e.key) && e.preventDefault();
-                  }}
-                  onChange={({ target }) => {
-                    target.value = target.value.replace(/(\.\d{18})\d+/g, '$1');
-
-                    setAmount({
-                      value: target.value,
-                      max: false,
-                    });
-                  }}
-                />
-              </h2>
-            </div>
-
-            <div className="modal__staking__container">
-              <p>
-                {!stakingMode
-                  ? t('staking.available_unstaking_amount')
-                  : t('staking.available_staking_amount')}
-              </p>
-              <div>
-                <h2>
-                  {stakingMode
-                    ? t('staking.wallet_balance')
-                    : t('staking.nth_staking_amount', {
-                        nth: toOrdinalNumber(i18n.language, round),
-                      })}
-                </h2>
-                <h2>
-                  {`${formatComma(
-                    stakingMode ? balance : stakedBalance,
-                  )} ${stakedToken}`}
-                </h2>
-              </div>
-            </div>
-
-            <section>
-              {!stakingMode ? (
-                <div
-                  className={`modal__button${
-                    amountLteZero || amountGtStakedBalance ? ' disable' : ''
-                  }`}
+        {transactionWait || allowanceLoading ? (
+          <LoadingIndicator
+            isTxActive={transactionWait}
+            button={
+              allowanceLoading
+                ? t('modal.indicator.permission_check')
+                : undefined
+            }
+          />
+        ) : (!allowanceLoading && allowance.gte(balance)) || !stakingMode ? (
+          <>
+            <div className="modal__body">
+              <div className="modal__input">
+                <h2
+                  className="modal__input__maximum"
                   onClick={() => {
-                    if (!account || amountLteZero || amountGtStakedBalance)
-                      return;
-
-                    const emitter = buildEventEmitter(
-                      ModalViewType.StakingOrUnstakingModal,
-                      TransactionType.Unstake,
-                      JSON.stringify({
-                        version: ElyfiVersions.V1,
-                        chainId,
-                        address: account,
-                        stakingType: stakedToken,
-                        round,
-                        unstakingAmount: utils.formatEther(
-                          utils.parseEther(amount.value),
-                        ),
-                        maxOrNot: amount.max,
-                      }),
-                    );
-
-                    emitter.clicked();
-
-                    stakingPool
-                      ?.withdraw(
-                        amount.max
-                          ? constants.MaxUint256
-                          : utils.parseEther(amount.value),
-                        (round >= 3 && stakedToken === Token.ELFI
-                          ? round - 2
-                          : round
-                        ).toString(),
-                      )
-                      .then((tx) => {
-                        setTransaction(
-                          tx,
-                          emitter,
-                          (stakedToken +
-                            'StakingWithdraw') as RecentActivityType,
-                          () => {
-                            closeHandler();
-                            transactionModal();
-                          },
-                          () => {
-                            refetch();
-                            afterTx();
-                          },
-                        );
-                      })
-                      .catch((e) => {
-                        failTransaction(emitter, closeHandler, e);
-                      });
-                  }}>
-                  <p>
-                    {amountGtStakedBalance
-                      ? t('staking.insufficient_balance')
-                      : t('staking.unstaking')}
-                  </p>
-                </div>
-              ) : !allowanceLoading && allowance.gte(balance) ? (
-                <div
-                  className={`modal__button${
-                    amountLteZero || amountGtBalance ? ' disable' : ''
-                  }`}
-                  onClick={() => {
-                    if (!account || amountLteZero || amountGtBalance) return;
-                    if (current.diff(stakingRoundDate[round - 1].endedAt) > 0) {
-                      endedModal();
-                      closeHandler();
+                    if (
+                      stakingMode ? balance.isZero() : stakedBalance.isZero()
+                    ) {
                       return;
                     }
-
-                    const emitter = buildEventEmitter(
-                      ModalViewType.StakingOrUnstakingModal,
-                      TransactionType.Stake,
-                      JSON.stringify({
-                        version: ElyfiVersions.V1,
-                        chainId,
-                        address: account,
-                        stakingType: stakedToken,
-                        round,
-                        unstakingAmount: utils.formatEther(
-                          utils.parseEther(amount.value),
+                    setAmount({
+                      value: Math.floor(
+                        parseFloat(
+                          utils.formatEther(
+                            stakingMode ? balance : stakedBalance,
+                          ),
                         ),
-                        maxOrNot: amount.max,
-                      }),
-                    );
-
-                    emitter.clicked();
-
-                    // setTxWaiting(true)
-
-                    stakingPool
-                      ?.stake(
-                        amount.max ? balance : utils.parseEther(amount.value),
-                      )
-                      .then((tx) => {
-                        setTransaction(
-                          tx,
-                          emitter,
-                          (stakedToken + 'Stake') as RecentActivityType,
-                          () => {
-                            closeHandler();
-                            transactionModal();
-                          },
-                          () => {
-                            refetch();
-                            afterTx();
-                          },
-                        );
-                      })
-                      .catch((e) => {
-                        failTransaction(emitter, closeHandler, e);
-                      });
+                      ).toFixed(8),
+                      max: true,
+                    });
                   }}>
-                  <p>
-                    {amountGtBalance
-                      ? t('staking.insufficient_balance')
-                      : t('staking.staking')}
-                  </p>
-                </div>
-              ) : (
-                <div
-                  className={'modal__button'}
-                  onClick={() => {
-                    const emitter = buildEventEmitter(
-                      ModalViewType.StakingOrUnstakingModal,
-                      TransactionType.Approve,
-                      JSON.stringify({
-                        version: ElyfiVersions.V1,
-                        chainId,
-                        address: account,
-                        stakingType: stakedToken,
-                        round,
-                      }),
-                    );
+                  {t('staking.max')}
+                </h2>
+                <h2 className="modal__input__value">
+                  <input
+                    type="number"
+                    className="modal__input__value__amount"
+                    placeholder="0"
+                    value={amount.value}
+                    style={{
+                      fontSize:
+                        amount.value.length < 8
+                          ? 60
+                          : amount.value.length > 12
+                          ? 35
+                          : 45,
+                    }}
+                    onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+                      ['-', '+', 'e'].includes(e.key) && e.preventDefault();
+                    }}
+                    onChange={({ target }) => {
+                      target.value = target.value.replace(
+                        /(\.\d{18})\d+/g,
+                        '$1',
+                      );
 
-                    emitter.clicked();
-
-                    contract
-                      .approve(stakingPool!.address, constants.MaxUint256)
-                      .then((tx) => {
-                        setTransaction(
-                          tx,
-                          emitter,
-                          RecentActivityType.Approve,
-                          () => {
-                            closeHandler();
-                            transactionModal();
-                          },
-                          () => {
-                            refetch();
-                            afterTx();
-                          },
-                        );
-                      })
-                      .catch((e) => {
-                        failTransaction(emitter, closeHandler, e);
+                      setAmount({
+                        value: target.value,
+                        max: false,
                       });
-                  }}>
-                  <p>
-                    {t('dashboard.protocol_allow', { tokenName: stakedToken })}
-                  </p>
+                    }}
+                  />
+                </h2>
+              </div>
+
+              <div className="modal__staking__container">
+                <p>
+                  {!stakingMode
+                    ? t('staking.available_unstaking_amount')
+                    : t('staking.available_staking_amount')}
+                </p>
+                <div>
+                  <h2>
+                    {stakingMode
+                      ? t('staking.wallet_balance')
+                      : t('staking.nth_staking_amount', {
+                          nth: toOrdinalNumber(i18n.language, round),
+                        })}
+                  </h2>
+                  <h2>
+                    {`${formatComma(
+                      stakingMode ? balance : stakedBalance,
+                    )} ${stakedToken}`}
+                  </h2>
                 </div>
-              )}
-            </section>
-          </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <IncreateAllowanceModal
+            type={PermissionType.Staking}
+            onClick={() => {
+              if (transactionWait) return;
+
+              setTransactionWait();
+
+              const emitter = buildEventEmitter(
+                ModalViewType.StakingOrUnstakingModal,
+                TransactionType.Approve,
+                JSON.stringify({
+                  version: ElyfiVersions.V1,
+                  chainId,
+                  address: account,
+                  stakingType: stakedToken,
+                  round,
+                }),
+              );
+
+              emitter.clicked();
+
+              contract
+                .approve(stakingPool!.address, constants.MaxUint256)
+                .then((tx) => {
+                  setTransaction(
+                    tx,
+                    emitter,
+                    RecentActivityType.Approve,
+                    () => {},
+                    () => {
+                      disableTransactionWait();
+                      refetch();
+                    },
+                  );
+                })
+                .catch((e) => {
+                  failTransaction(emitter, closeHandler, e);
+                });
+            }}
+          />
         )}
+        <section>
+          {((!allowanceLoading && allowance.gte(balance)) ||
+            transactionWait ||
+            !stakingMode) &&
+            (!stakingMode ? (
+              <div
+                className={`modal__button${
+                  amountLteZero || amountGtStakedBalance || transactionWait
+                    ? ' disable'
+                    : ''
+                }`}
+                onClick={() => {
+                  if (
+                    !account ||
+                    amountLteZero ||
+                    amountGtStakedBalance ||
+                    transactionWait
+                  )
+                    return;
+
+                  setTransactionWait();
+                  const emitter = buildEventEmitter(
+                    ModalViewType.StakingOrUnstakingModal,
+                    TransactionType.Unstake,
+                    JSON.stringify({
+                      version: ElyfiVersions.V1,
+                      chainId,
+                      address: account,
+                      stakingType: stakedToken,
+                      round,
+                      unstakingAmount: utils.formatEther(
+                        utils.parseEther(amount.value),
+                      ),
+                      maxOrNot: amount.max,
+                    }),
+                  );
+
+                  emitter.clicked();
+
+                  stakingPool
+                    ?.withdraw(
+                      amount.max
+                        ? constants.MaxUint256
+                        : utils.parseEther(amount.value),
+                      (round >= 3 && stakedToken === Token.ELFI
+                        ? round - 2
+                        : round
+                      ).toString(),
+                    )
+                    .then((tx) => {
+                      setTransaction(
+                        tx,
+                        emitter,
+                        (stakedToken + 'StakingWithdraw') as RecentActivityType,
+                        () => {
+                          closeHandler();
+                          transactionModal();
+                        },
+                        () => {
+                          refetch();
+                          afterTx();
+                        },
+                      );
+                    })
+                    .catch((e) => {
+                      failTransaction(emitter, closeHandler, e);
+                    });
+                }}>
+                <p>
+                  {amountGtStakedBalance
+                    ? t('staking.insufficient_balance')
+                    : t('staking.unstaking')}
+                </p>
+              </div>
+            ) : (
+              <div
+                className={`modal__button${
+                  amountLteZero || amountGtBalance || transactionWait
+                    ? ' disable'
+                    : ''
+                }`}
+                onClick={() => {
+                  if (
+                    !account ||
+                    amountLteZero ||
+                    amountGtBalance ||
+                    transactionWait
+                  )
+                    return;
+                  if (current.diff(stakingRoundDate[round - 1].endedAt) > 0) {
+                    endedModal();
+                    closeHandler();
+                    return;
+                  }
+                  setTransactionWait();
+                  const emitter = buildEventEmitter(
+                    ModalViewType.StakingOrUnstakingModal,
+                    TransactionType.Stake,
+                    JSON.stringify({
+                      version: ElyfiVersions.V1,
+                      chainId,
+                      address: account,
+                      stakingType: stakedToken,
+                      round,
+                      unstakingAmount: utils.formatEther(
+                        utils.parseEther(amount.value),
+                      ),
+                      maxOrNot: amount.max,
+                    }),
+                  );
+
+                  emitter.clicked();
+
+                  // setTxWaiting(true)
+
+                  stakingPool
+                    ?.stake(
+                      amount.max ? balance : utils.parseEther(amount.value),
+                    )
+                    .then((tx) => {
+                      setTransaction(
+                        tx,
+                        emitter,
+                        (stakedToken + 'Stake') as RecentActivityType,
+                        () => {
+                          closeHandler();
+                          transactionModal();
+                        },
+                        () => {
+                          refetch();
+                          afterTx();
+                        },
+                      );
+                    })
+                    .catch((e) => {
+                      failTransaction(emitter, closeHandler, e);
+                    });
+                }}>
+                <p>
+                  {amountGtBalance
+                    ? t('staking.insufficient_balance')
+                    : t('staking.staking')}
+                </p>
+              </div>
+            ))}
+        </section>
       </div>
     </div>
   );

@@ -99,6 +99,8 @@ const Staking: React.FunctionComponent<IProps> = ({
 
   const [transactionModal, setTransactionModal] = useState(false);
 
+  const [transactionWait, setTransactionWait] = useState<boolean>(false);
+
   const [selectModalRound, setRoundModal] = useState(0);
   const [modalValue, setModalValue] = useState(constants.Zero);
 
@@ -258,15 +260,23 @@ const Staking: React.FunctionComponent<IProps> = ({
             }
             currentRound={currentRound}
             round={selectModalRound + 1}
-            closeHandler={() => setModalType('')}
+            closeHandler={() => {
+              setModalType('');
+              setTransactionWait(false);
+            }}
             afterTx={() => {
               account && fetchRoundData(account);
             }}
             transactionModal={() => setTransactionModal(true)}
+            transactionWait={transactionWait}
+            setTransactionWait={() => setTransactionWait(true)}
           />
           <StakingModal
             visible={modalVisible(StakingModalType.Staking)}
-            closeHandler={() => setModalType('')}
+            closeHandler={() => {
+              setModalType('');
+              setTransactionWait(false);
+            }}
             stakedToken={stakedToken}
             stakedBalance={
               loading
@@ -281,10 +291,16 @@ const Staking: React.FunctionComponent<IProps> = ({
               setModalType(StakingModalType.StakingEnded);
             }}
             transactionModal={() => setTransactionModal(true)}
+            transactionWait={transactionWait}
+            setTransactionWait={() => setTransactionWait(true)}
+            disableTransactionWait={() => setTransactionWait(false)}
           />
           <MigrationModal
             visible={modalVisible(StakingModalType.Migration)}
-            closeHandler={() => setModalType('')}
+            closeHandler={() => {
+              setModalType('');
+              setTransactionWait(false);
+            }}
             stakedToken={stakedToken}
             rewardToken={rewardToken}
             stakedBalance={loading ? constants.Zero : modalValue}
@@ -296,6 +312,8 @@ const Staking: React.FunctionComponent<IProps> = ({
               account && fetchRoundData(account);
             }}
             transactionModal={() => setTransactionModal(true)}
+            transactionWait={transactionWait}
+            setTransactionWait={() => setTransactionWait(true)}
             stakingRoundDate={stakingRoundDate}
           />
           <StakingEnded
@@ -330,7 +348,17 @@ const Staking: React.FunctionComponent<IProps> = ({
           />
         </>
       )}
-
+      {/* <img
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: tokenRef.current?.offsetTop,
+          width: '100%',
+          zIndex: -1,
+        }}
+        src={wave}
+        alt={wave}
+      /> */}
       <section className="staking">
         <section>
           <div ref={headerRef} className="staking__title">
