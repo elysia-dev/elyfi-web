@@ -26,6 +26,7 @@ import useCurrentChain from 'src/hooks/useCurrentChain';
 import IncreateAllowanceModal, {
   PermissionType,
 } from 'src/components/IncreateAllowanceModal';
+import TxStatus from 'src/enums/TxStatus';
 
 const StakingModal: React.FunctionComponent<{
   visible: boolean;
@@ -57,7 +58,7 @@ const StakingModal: React.FunctionComponent<{
   const [stakingMode, setStakingMode] = useState<boolean>(true);
   const [amount, setAmount] = useState({ value: '', max: false });
   const current = moment();
-  const { setTransaction, failTransaction } = useContext(TxContext);
+  const { setTransaction, failTransaction, txStatus } = useContext(TxContext);
   const { contract: stakingPool } = useStakingPool(stakedToken, round >= 3);
   const { type: getMainnetType } = useContext(MainnetContext);
   const currentChain = useCurrentChain();
@@ -70,6 +71,7 @@ const StakingModal: React.FunctionComponent<{
   } = useERC20Info(
     stakingRewardTokenAddress(getMainnetType, stakedToken, currentChain?.name),
     stakingPool ? stakingPool.address : '',
+    visible,
   );
   const { waiting, wait } = useWatingTx();
   const amountLteZero =
@@ -101,7 +103,9 @@ const StakingModal: React.FunctionComponent<{
           setState={setStakingMode}
           title={[t('staking.staking'), t('staking.unstaking')]}
         />
-        {transactionWait || allowanceLoading ? (
+        {transactionWait ||
+        allowanceLoading ||
+        txStatus === TxStatus.PENDING ? (
           <LoadingIndicator
             isTxActive={transactionWait}
             button={
