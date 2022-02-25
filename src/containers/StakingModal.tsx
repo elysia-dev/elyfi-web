@@ -90,6 +90,8 @@ const StakingModal: React.FunctionComponent<{
     });
   }, [stakingMode, visible]);
 
+  console.log(!allowanceLoading && allowance.gte(balance));
+
   return (
     <div className="modal" style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
@@ -107,11 +109,15 @@ const StakingModal: React.FunctionComponent<{
         allowanceLoading ||
         txStatus === TxStatus.PENDING ? (
           <LoadingIndicator
-            isTxActive={transactionWait}
+            isTxActive={transactionWait || txStatus === TxStatus.PENDING}
             button={
               allowanceLoading
                 ? t('modal.indicator.permission_check')
                 : undefined
+            }
+            isApproveLoading={
+              txStatus === TxStatus.PENDING &&
+              !(!allowanceLoading && allowance.gte(balance))
             }
           />
         ) : (!allowanceLoading && allowance.gte(balance)) || !stakingMode ? (
