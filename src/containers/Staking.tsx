@@ -445,7 +445,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                     </div>
                     <div className="staking__title__content">
                       <p>
-                        {t('staking.staking__notice', {
+                        {t(`staking.staking__notice.${rewardToken}`, {
                           stakedToken,
                           rewardToken,
                         })}
