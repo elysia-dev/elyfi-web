@@ -28,9 +28,11 @@ import ButtonEventType from 'src/enums/ButtonEventType';
 import DrawWave from 'src/utiles/drawWave';
 import Fbg from 'src/assets/images/main/fbg.png';
 import Blocore from 'src/assets/images/main/blocore.png';
+import ShowingPopup from 'src/components/ShowingPopup';
 
 const Main = (): JSX.Element => {
   const { t } = useTranslation();
+  const [popupVisible, setPopupVisible] = useState(false);
   const mainCanvasRef = useRef<HTMLCanvasElement>(null);
   const mainHeaderY = useRef<HTMLParagraphElement>(null);
   const mainHeaderMoblieY = useRef<HTMLParagraphElement>(null);
@@ -124,6 +126,12 @@ const Main = (): JSX.Element => {
           top: 0,
           left: 0,
           zIndex: -1,
+        }}
+      />
+      <ShowingPopup 
+        visible={popupVisible}
+        closeHandler={() => {
+          setPopupVisible(true)
         }}
       />
       <div className="main root-container">
