@@ -574,7 +574,6 @@ const Staking: React.FunctionComponent<IProps> = ({
             </section>
           ) : (
             <>
-              <div style={{ marginTop: 300 }} />
               <div
                 className={`staking__coming-soon ${
                   stakedToken === Token.EL ? 'el' : 'elfi'
