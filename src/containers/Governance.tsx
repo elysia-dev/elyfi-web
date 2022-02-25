@@ -124,7 +124,11 @@ const Governance = (): JSX.Element => {
                 nap:
                   getHTMLStringData.match(regexNap)?.toString().substring(5) ||
                   '',
-                status: getHTMLStringData.match(/Status: .*(?=<)/)?.toString().split('Status: ') || '',
+                status:
+                  getHTMLStringData
+                    .match(/Status: .*(?=<)/)
+                    ?.toString()
+                    .split('Status: ') || '',
                 images:
                   getHTMLStringData
                     .match(
@@ -502,7 +506,7 @@ const Governance = (): JSX.Element => {
             )
           ) : (
             <div className="governance__onchain-vote zero">
-              <h2>COMING SOON!</h2>
+              <p>{t('governance.onchain_list_zero')}</p>
             </div>
           )}
         </section>
