@@ -94,7 +94,9 @@ const ClaimStakingRewardModal: FunctionComponent<{
         />
         <div className="modal__body">
           {transactionWait || txStatus === TxStatus.PENDING ? (
-            <LoadingIndicator isTxActive={transactionWait} />
+            <LoadingIndicator
+              isTxActive={transactionWait || txStatus === TxStatus.PENDING}
+            />
           ) : (
             <>
               <div className="modal__incentive__body">
@@ -133,9 +135,13 @@ const ClaimStakingRewardModal: FunctionComponent<{
             </>
           )}
           <div
-            className={`modal__button ${transactionWait ? 'disable' : ''}`}
+            className={`modal__button ${
+              transactionWait || txStatus === TxStatus.PENDING ? 'disable' : ''
+            }`}
             onClick={() => {
-              transactionWait ? undefined : setTransactionWait();
+              transactionWait || txStatus === TxStatus.PENDING
+                ? undefined
+                : setTransactionWait();
               if (!account) return;
 
               const emitter = buildEventEmitter(
