@@ -59,7 +59,8 @@ const StakingModal: React.FunctionComponent<{
   const [amount, setAmount] = useState({ value: '', max: false });
   const current = moment();
   const { setTransaction, failTransaction, txStatus } = useContext(TxContext);
-  const { contract: stakingPool } = useStakingPool(stakedToken, round >= 3);
+  const { contract: stakingPool, elfiV2StakingContract } = useStakingPool(stakedToken, round >= 3);
+  const stakingAddress = elfiV2StakingContract ? elfiV2StakingContract : stakingPool;
   const { type: getMainnetType } = useContext(MainnetContext);
   const currentChain = useCurrentChain();
   const {
@@ -70,10 +71,10 @@ const StakingModal: React.FunctionComponent<{
     contract,
   } = useERC20Info(
     stakingRewardTokenAddress(getMainnetType, stakedToken, currentChain?.name),
-    stakingPool ? stakingPool.address : '',
+    stakingAddress ? stakingAddress.address : '',
     visible,
   );
-  const { waiting, wait } = useWatingTx();
+
   const amountLteZero =
     !amount.value || utils.parseEther(amount.value || '0').isZero();
   const amountGtBalance =
@@ -220,7 +221,7 @@ const StakingModal: React.FunctionComponent<{
               emitter.clicked();
 
               contract
-                .approve(stakingPool!.address, constants.MaxUint256)
+                .approve(stakingAddress!.address, constants.MaxUint256)
                 .then((tx) => {
                   setTransaction(
                     tx,
@@ -276,7 +277,7 @@ const StakingModal: React.FunctionComponent<{
 
                   emitter.clicked();
 
-                  stakingPool
+                  stakingAddress
                     ?.withdraw(
                       amount.max
                         ? constants.MaxUint256
@@ -353,7 +354,7 @@ const StakingModal: React.FunctionComponent<{
 
                     // setTxWaiting(true)
 
-                    stakingPool
+                    stakingAddress
                       ?.stake(
                         amount.max ? balance : utils.parseEther(amount.value),
                       )
