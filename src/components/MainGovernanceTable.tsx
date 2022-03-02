@@ -3,9 +3,10 @@ import { useTranslation, Trans } from 'react-i18next';
 import useSWR from 'swr';
 
 import { topicListFetcher } from 'src/clients/OffChainTopic';
-import { onChainFetcher, onChainQuery } from 'src/clients/OnChainTopic';
+import { onChainFetcher } from 'src/clients/OnChainTopic';
 import onChainMainMiddleware from 'src/middleware/onChainMiddleware';
 import offChainMainMiddleware from 'src/middleware/offChainMiddleware';
+import { onChainQuery } from 'src/queries/onChainQuery';
 
 type Props = {
   governancePageY: RefObject<HTMLParagraphElement>;
