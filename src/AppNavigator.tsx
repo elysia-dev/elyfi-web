@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import ScrollToTop from 'src/hooks/ScrollToTop';
@@ -44,9 +44,12 @@ const AppNavigator: React.FC = () => {
     }
     if (isMetamask()) {
       activate(InjectedConnector);
-      return;
+      // return;
+    } else {
+      deactivate();
+      window.sessionStorage.removeItem('@network');
     }
-    deactivate();
+    // deactivate();
   }, []);
 
   const LanguageDetctionPage = () => {

@@ -1,6 +1,5 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import TempAssets from 'src/assets/images/temp_assets.png';
-import wave from 'src/assets/images/wave_elyfi.png';
 import OffChainTopic, { INapData } from 'src/clients/OffChainTopic';
 import Skeleton from 'react-loading-skeleton';
 import { IProposals, OnChainTopic } from 'src/clients/OnChainTopic';
@@ -39,6 +38,7 @@ const Governance = (): JSX.Element => {
   const History = useHistory();
   const { value: mediaQuery } = useMediaQueryType();
   const { lng } = useParams<{ lng: string }>();
+  const defaultShowingLoanData = mediaQuery === MediaQuery.Mobile ? 8 : 9;
   const assetBondTokensBackedByEstate = assetBondTokens.filter((product) => {
     const parsedId = parseTokenId(product.id);
     return CollateralCategory.Others !== parsedId.collateralCategory;
@@ -124,7 +124,11 @@ const Governance = (): JSX.Element => {
                 nap:
                   getHTMLStringData.match(regexNap)?.toString().substring(5) ||
                   '',
-                status: getHTMLStringData.match(/Status: .*(?=<)/)?.toString().split('Status: ') || '',
+                status:
+                  getHTMLStringData
+                    .match(/Status: .*(?=<)/)
+                    ?.toString()
+                    .split('Status: ') || '',
                 images:
                   getHTMLStringData
                     .match(
@@ -390,7 +394,7 @@ const Governance = (): JSX.Element => {
             <div>
               <div>
                 <h3>
-                  {t('governance.data_verification', {
+                  {t('governance.data_verification--mobile', {
                     count: offChainNapData
                       .filter((data) => data.network === mainnetType)
                       .filter((data) => moment().isBefore(data.endedDate))
@@ -443,21 +447,41 @@ const Governance = (): JSX.Element => {
                 {t('governance.on_chain_voting', { count: onChainData.length })}
               </h3>
               <div>
-                <p>{t('governance.on_chain_voting__content')}</p>
-                {mainnetType === MainnetType.Ethereum && (
-                  <a
-                    href={`${t('governance.link.tally')}`}
-                    target="_blank"
-                    rel="noopener noreferer">
-                    <div
-                      className="deposit__table__body__amount__button"
-                      style={{
-                        width: 230,
-                      }}>
-                      <p>{t('governance.onChain_tally_button')}</p>
-                    </div>
-                  </a>
-                )}
+                <p>
+                  {t(
+                    `governance.on_chain_voting__content.${
+                      mainnetType === MainnetType.Ethereum
+                        ? 'tally'
+                        : 'snapshot'
+                    }`,
+                  )}
+                </p>
+                <a
+                  href={`${t(
+                    `governance.link.${
+                      mainnetType === MainnetType.Ethereum
+                        ? 'tally'
+                        : 'snapshot'
+                    }`,
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferer">
+                  <div
+                    className="deposit__table__body__amount__button"
+                    style={{
+                      width: 230,
+                    }}>
+                    <p>
+                      {t(
+                        `governance.onChain_button.${
+                          mainnetType === MainnetType.Ethereum
+                            ? 'tally'
+                            : 'snapshot'
+                        }`,
+                      )}
+                    </p>
+                  </div>
+                </a>
               </div>
             </div>
           ) : (
@@ -468,20 +492,32 @@ const Governance = (): JSX.Element => {
                     count: onChainData.length,
                   })}
                 </h3>
-                {mainnetType === MainnetType.Ethereum && (
-                  <a
-                    href={`${t('governance.link.tally')}`}
-                    target="_blank"
-                    rel="noopener noreferer">
-                    <div
-                      className="deposit__table__body__amount__button"
-                      style={{
-                        width: 150,
-                      }}>
-                      <p>{t('governance.onChain_tally_button')}</p>
-                    </div>
-                  </a>
-                )}
+                <a
+                  href={`${t(
+                    `governance.link.${
+                      mainnetType === MainnetType.Ethereum
+                        ? 'tally'
+                        : 'snapshot'
+                    }`,
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferer">
+                  <div
+                    className="deposit__table__body__amount__button"
+                    style={{
+                      width: 150,
+                    }}>
+                    <p>
+                      {t(
+                        `governance.onChain_button.${
+                          mainnetType === MainnetType.Ethereum
+                            ? 'tally'
+                            : 'snapshot'
+                        }`,
+                      )}
+                    </p>
+                  </div>
+                </a>
               </div>
               <p>{t('governance.data_verification__content')}</p>
             </div>
@@ -502,7 +538,7 @@ const Governance = (): JSX.Element => {
             )
           ) : (
             <div className="governance__onchain-vote zero">
-              <h2>COMING SOON!</h2>
+              <p>{t('governance.onchain_list_zero')}</p>
             </div>
           )}
         </section>
@@ -540,7 +576,7 @@ const Governance = (): JSX.Element => {
                   assetBondTokens={
                     /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
                     [...((assetBondTokensBackedByEstate as IAssetBond[]) || [])]
-                      .slice(0, pageNumber * 9)
+                      .slice(0, pageNumber * defaultShowingLoanData)
                       .sort((a, b) => {
                         return b.loanStartTimestamp! - a.loanStartTimestamp! >=
                           0
@@ -550,7 +586,8 @@ const Governance = (): JSX.Element => {
                   }
                 />
                 {assetBondTokensBackedByEstate.length &&
-                  assetBondTokensBackedByEstate.length >= pageNumber * 9 && (
+                  assetBondTokensBackedByEstate.length >=
+                    pageNumber * defaultShowingLoanData && (
                     <div>
                       <button
                         className="portfolio__view-button"

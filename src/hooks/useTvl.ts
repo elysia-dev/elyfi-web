@@ -6,21 +6,17 @@ import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import envs from 'src/core/envs';
 import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import ReserveData from 'src/core/data/reserves';
-import SubgraphContext, {
-  initialReserveSubgraph,
-  IReserveSubgraph,
-} from 'src/contexts/SubgraphContext';
-import { ReserveSubgraph } from 'src/clients/ReserveSubgraph';
+import SubgraphContext from 'src/contexts/SubgraphContext';
 
 const useTvl = (): { value: number; loading: boolean } => {
   const subgraphContext = useContext(SubgraphContext);
   const [loading, setLoading] = useState(true);
   const {
-    totalValueLockedToken0,
-    totalValueLockedToken1,
     latestPrice: elfiPrice,
+    daiPool,
+    ethPool,
   } = useContext(UniswapPoolContext);
-  const { elPrice } = useContext(PriceContext);
+  const { elPrice, daiPrice, ethPrice } = useContext(PriceContext);
 
   const [state, setState] = useState({
     stakedEl: constants.Zero,
@@ -42,8 +38,10 @@ const useTvl = (): { value: number; loading: boolean } => {
           )
         );
       }, 0) +
-      totalValueLockedToken0 * elfiPrice +
-      totalValueLockedToken1 +
+      ethPool.totalValueLockedToken0 * elfiPrice +
+      ethPool.totalValueLockedToken1 * ethPrice +
+      daiPool.totalValueLockedToken0 * elfiPrice +
+      daiPool.totalValueLockedToken1 * daiPrice +
       parseInt(formatEther(state.stakedEl), 10) * elPrice +
       parseInt(formatEther(state.stakedElfi), 10) * elfiPrice
     );
@@ -52,8 +50,6 @@ const useTvl = (): { value: number; loading: boolean } => {
     elPrice,
     elfiPrice,
     loading,
-    totalValueLockedToken0,
-    totalValueLockedToken1,
   ]);
 
   const loadBalances = async () => {

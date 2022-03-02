@@ -29,6 +29,9 @@ import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
 import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import useCurrentMoneypoolAddress from 'src/hooks/useCurrnetMoneypoolAddress';
+import IncreateAllowanceModal, {
+  PermissionType,
+} from 'src/components/IncreateAllowanceModal';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
 
@@ -43,6 +46,9 @@ const DepositOrWithdrawModal: FunctionComponent<{
   onClose: () => void;
   afterTx: () => void;
   transactionModal: () => void;
+  transactionWait: boolean;
+  setTransactionWait: () => void;
+  disableTransactionWait: () => void;
   round: number;
 }> = ({
   tokenName,
@@ -54,14 +60,15 @@ const DepositOrWithdrawModal: FunctionComponent<{
   userData,
   onClose,
   afterTx,
+  transactionWait,
+  setTransactionWait,
   transactionModal,
+  disableTransactionWait,
   round,
 }) => {
   const { account, chainId } = useWeb3React();
   const { elfiPrice } = useContext(PriceContext);
-
   const currentMoneypoolAddress = useCurrentMoneypoolAddress();
-
   const [selected, select] = useState<boolean>(true);
   const {
     allowance,
@@ -85,7 +92,6 @@ const DepositOrWithdrawModal: FunctionComponent<{
   const { t } = useTranslation();
   const moneyPool = useMoneyPool();
   const { setTransaction, failTransaction } = useContext(TxContext);
-
   const tokenInfo = ReserveData.find(
     (_reserve) => _reserve.address === reserve.id,
   );
@@ -125,6 +131,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   }, [accumulatedYield, reserve, userData]);
 
   const increateAllowance = async () => {
+    setTransactionWait();
     if (!account) return;
     const emitter = buildEventEmitter(
       ModalViewType.DepositOrWithdrawModal,
@@ -142,26 +149,28 @@ const DepositOrWithdrawModal: FunctionComponent<{
     reserveERC20
       .approve(currentMoneypoolAddress, constants.MaxUint256)
       .then((tx) => {
+        window.localStorage.setItem('@permissionTxHash', tx.hash);
         setTransaction(
           tx,
           emitter,
           RecentActivityType.Approve,
+          () => {},
           () => {
-            transactionModal();
-            onClose();
-          },
-          () => {
+            disableTransactionWait();
             refetch();
           },
         );
       })
       .catch((error) => {
+        window.localStorage.removeItem('@permissionTxHash');
+        failTransaction(emitter, onClose, error);
         console.error(error);
-        emitter.canceled();
       });
   };
 
   const requestDeposit = async (amount: BigNumber, max: boolean) => {
+    setTransactionWait();
+
     if (!account) return;
 
     const emitter = buildEventEmitter(
@@ -202,6 +211,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
   };
 
   const reqeustWithdraw = (amount: BigNumber, max: boolean) => {
+    setTransactionWait();
+
     if (!account) return;
 
     const emitter = buildEventEmitter(
@@ -285,25 +296,31 @@ const DepositOrWithdrawModal: FunctionComponent<{
           setState={select}
           title={[t('dashboard.deposit'), t('dashboard.withdraw')]}
         />
-        {waiting ? (
-          <LoadingIndicator />
+        {loading ? (
+          <LoadingIndicator button={t('modal.indicator.permission_check')} />
         ) : selected ? (
-          <DepositBody
-            tokenInfo={tokenInfo!}
-            depositAPY={toPercent(reserve.depositAPY || '0')}
-            miningAPR={toPercent(
-              calcMiningAPR(
-                elfiPrice,
-                BigNumber.from(reserve.totalDeposit),
-                tokenInfo?.decimals,
-              ),
-            )}
-            balance={balance}
-            isApproved={!loading && allowance.gt(balance)}
-            increaseAllownace={increateAllowance}
-            deposit={requestDeposit}
-            isLoading={loading}
-          />
+          allowance.gt(balance) ? (
+            <DepositBody
+              tokenInfo={tokenInfo!}
+              depositAPY={toPercent(reserve.depositAPY || '0')}
+              miningAPR={toPercent(
+                calcMiningAPR(
+                  elfiPrice,
+                  BigNumber.from(reserve.totalDeposit),
+                  tokenInfo?.decimals,
+                ),
+              )}
+              balance={balance}
+              deposit={requestDeposit}
+              txWait={transactionWait}
+            />
+          ) : (
+            <IncreateAllowanceModal
+              onClick={increateAllowance}
+              type={PermissionType.Deposit}
+              txWait={transactionWait}
+            />
+          )
         ) : (
           <WithdrawBody
             tokenInfo={tokenInfo!}
@@ -312,6 +329,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
             yieldProduced={yieldProduced}
             liquidity={liquidity.value}
             withdraw={reqeustWithdraw}
+            txWait={transactionWait}
           />
         )}
       </div>

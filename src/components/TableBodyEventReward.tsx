@@ -6,7 +6,6 @@ import CountUp from 'react-countup';
 import { Trans, useTranslation } from 'react-i18next';
 import ReserveToken from 'src/core/types/ReserveToken';
 import MainnetContext from 'src/contexts/MainnetContext';
-// import ReservesContext from 'src/contexts/ReservesContext';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import { formatSixFracionDigit } from 'src/utiles/formatters';

@@ -1,13 +1,5 @@
-import {
-  Dispatch,
-  FunctionComponent,
-  RefObject,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react';
+import { FunctionComponent, RefObject, useEffect, useState } from 'react';
 import OffChainTopic from 'src/clients/OffChainTopic';
-import Skeleton from 'react-loading-skeleton';
 import { OnChainTopic } from 'src/clients/OnChainTopic';
 import { useTranslation, Trans } from 'react-i18next';
 

@@ -14,7 +14,8 @@
     "elStakingPoolAddress": "0xd804e198d25a1920522ca0094a670184a9c972d7",
     "elfyStakingPoolAddress": "0xb41bcd480fbd986331eeed516c52e447b50dacb4",
     "elfyV2StakingPoolAddress": "0xCD668B44C7Cf3B63722D5cE5F655De68dD8f2750",
-    "elfyV2StakingPoolRewardAddress": "0x775096DAd666f5c395835475c253554e8D4aD6E8"
+    "elfyV2StakingPoolRewardAddress": "0xc3e45e479078ce78aba08beafd0f57460a96f494",
+    "elfyBscStakingPoolAddress": "0xF648b06B275675E767bB98Da98adF180c39A29Cb"
   },
   "lpStaking": {
     "daiElfiPoolAddress": "0xbde484db131bd2ae80e44a57f865c1dfebb7e31f",
@@ -30,7 +31,8 @@
     "usdtAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
     "wEthAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
     "bscElfiAddress": "0x9803cd5851b24C8CAE5ebbAD46D69C400553cf4b",
-    "busdAddress": "0xc93b97b01455454fba11b806ea645d021212c4c9"
+    "busdAddress": "0xc93b97b01455454fba11b806ea645d021212c4c9",
+    "testBscElfiAddress": "0xA1Dd9cDb09871e7dC0E050E7aE18BA385D192C75"
   },
   "network": {
     "requiredNetwork": "ganache",
@@ -50,5 +52,8 @@
   "tokenizer": {
     "daiTokenizerAddress": "0xc6701e7be98A79485364419961838EB141141aAf",
     "usdtTokeninzerAddress": "0x68f69Ab21242e194ebd7534B598e26180dD92616"
+  },
+  "jsonRpcUrl": {
+    "bsc": "https://data-seed-prebsc-1-s1.binance.org:8545/"
   }
 }

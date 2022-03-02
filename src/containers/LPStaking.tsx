@@ -1,15 +1,12 @@
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber, constants, ethers, utils } from 'ethers';
+import { constants, ethers, utils } from 'ethers';
 import { useEffect, useContext, useState, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import Header from 'src/components/Header';
 import PriceContext from 'src/contexts/PriceContext';
-import wave from 'src/assets/images/wave_elyfi.png';
 import envs from 'src/core/envs';
 import StakedLp from 'src/components/LpStaking/StakedLp';
 import StakerSubgraph, { IPoolPosition } from 'src/clients/StakerSubgraph';
-import Position, { TokenInfo } from 'src/core/types/Position';
-import LpTokenPoolSubgraph from 'src/clients/LpTokenPoolSubgraph';
+import Position from 'src/core/types/Position';
 import Token from 'src/enums/Token';
 import TxContext from 'src/contexts/TxContext';
 import stakerABI from 'src/core/abi/StakerABI.json';
@@ -55,6 +52,7 @@ function LPStaking(): JSX.Element {
     useUpdateExpectedReward();
   const [rewardVisibleModal, setRewardVisibleModal] = useState(false);
   const [stakingVisibleModal, setStakingVisibleModal] = useState(false);
+  const [transactionWait, setTransactionWait] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const [stakedPositions, setStakedPositions] = useState<Position[]>([]);
   const { positions, fetchPositions } = usePositions(account);
@@ -257,7 +255,7 @@ function LPStaking(): JSX.Element {
     if (!headerRef.current) return;
     const headerY =
       headerRef.current.offsetTop +
-      (document.body.clientWidth > 1190 ? 90 : 15);
+      (document.body.clientWidth > 1190 ? 90 : 45);
     if (!canvas) return;
     canvas.width = document.body.clientWidth * dpr;
     canvas.height = document.body.clientHeight * dpr;
@@ -391,12 +389,20 @@ function LPStaking(): JSX.Element {
       />
       <RewardModal
         visible={rewardVisibleModal}
-        closeHandler={() => setRewardVisibleModal(false)}
+        closeHandler={() => {
+          setTransactionWait(false)
+          setRewardVisibleModal(false)
+        }}
         rewardToReceive={rewardToReceive}
+        transactionWait={transactionWait}
+        setTransactionWait={() => setTransactionWait(true)}
       />
       <StakingModal
         visible={stakingVisibleModal}
-        closeHandler={() => setStakingVisibleModal(false)}
+        closeHandler={() => {
+          setTransactionWait(false)
+          setStakingVisibleModal(false)
+        }}
         token0={Token.ELFI}
         token1={stakeToken}
         unstakedPositions={positions.filter((position) => {
@@ -423,6 +429,8 @@ function LPStaking(): JSX.Element {
             : envs.token.daiAddress
         }
         round={round}
+        transactionWait={transactionWait}
+        setTransactionWait={() => setTransactionWait(true)}
       />
 
       <section className="staking">

@@ -16,7 +16,11 @@ const MainnetProvider: React.FC = (props) => {
   const [loading, setLoading] = useState(true);
 
   const [currentMainnet, setMainnet] = useState<IMainnetContextTypes>({
-    type: MainnetType.BSC,
+    type: window.sessionStorage.getItem('@network')
+      ? window.sessionStorage.getItem('@network') === 'Ethereum'
+        ? MainnetType.Ethereum
+        : MainnetType.BSC
+      : MainnetType.BSC,
     unsupportedChainid: true,
     active: false,
   });
@@ -40,6 +44,7 @@ const MainnetProvider: React.FC = (props) => {
           unsupportedChainid: false,
           active,
         }),
+        window.sessionStorage.setItem('@network', currentChain.type),
         setLoading(false))
       : (setMainnet({ ...currentMainnet, unsupportedChainid: true, active }),
         console.log('Error!'),

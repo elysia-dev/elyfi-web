@@ -1028,58 +1028,7 @@ $footer-height: 100px;
       height: 26px;
     }
   }
-  .loading-indicator {
-    height: 450px;
-    &__text {
-      bottom: 60px;
-      font-size: 24px;
-      right: 10px;
-      &::after {
-        width: 30px;
-        margin-left: 5px;
-      }
-    }
-    &__text2 {
-      bottom: 20px;
-      font-size: 24px;
-      width: 100%;
-      right: 10px;
-      > p {
-        font-size: 15px;
-      }
-    }
-
-    .loader .l_main {
-      width: 172px;
-      height: 128px;
-    }
-    .l_square:nth-child(1) {
-      margin-left: 0px;
-    }
-    .l_square:nth-child(2) {
-      margin-left: 44px;
-    }
-    .l_square:nth-child(3) {
-      margin-left: 88px;
-    }
-    .l_square:nth-child(4) {
-      margin-left: 132px;
-    }
-    .l_square span {
-      left: 20px;
-      height: 36px;
-      width: 36px;
-    }
-    .l_square span:nth-child(1) {
-      top: 0px;
-    }
-    .l_square span:nth-child(2) {
-      top: 44px;
-    }
-    .l_square span:nth-child(3) {
-      top: 88px;
-    }
-  }
+  
   .lptoken_reward_Modal_body {
     border-top: 1px solid #f0f0f1;
     border-bottom: 1px solid #f0f0f1;

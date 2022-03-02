@@ -22,28 +22,16 @@ import {
   tetherMoneyPoolTime,
   busdMoneyPoolTime,
 } from 'src/core/data/moneypoolTimes';
-import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
+import { roundTimes } from 'src/core/data/stakingRoundTimes';
 import {
-  DAIPerDayOnELFIStakingPool,
   DAI_REWARD_PER_POOL,
-  ELFIPerDayOnELStakingPool,
   ELFI_REWARD_PER_POOL,
   ETH_REWARD_PER_POOL,
-  TETHERPerDayOnELFIStakingPool,
 } from 'src/core/data/stakings';
 import {
-  calcDaiRewardByLp,
-  calcElfiRewardByLp,
-  calcEthRewardByLp,
   ETH_REWARD_PER_POOL_2,
   ETH_REWARD_PER_POOL_3,
 } from 'src/core/utils/calcLpReward';
-import calcMintedAmounts from 'src/core/utils/calcMintedAmounts';
-import {
-  calcMintedByBusdMoneypool,
-  calcMintedByDaiMoneypool,
-  calcMintedByTetherMoneypool,
-} from 'src/core/utils/calcMintedByDaiMoneypool';
 import Token from 'src/enums/Token';
 import useStakingRoundData from 'src/hooks/useStakingRoundData';
 import { ordinalNumberConverter } from 'src/utiles/ordinalNumberConverter';
@@ -54,19 +42,20 @@ import useLpApr from 'src/hooks/useLpApy';
 import StakerSubgraph, { IPoolPosition } from 'src/clients/StakerSubgraph';
 import getIncentiveId from 'src/utiles/getIncentive';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
-import { lpRoundDate, lpUnixTimestamp } from 'src/core/data/lpStakingTime';
+import { lpRoundDate } from 'src/core/data/lpStakingTime';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import SubgraphContext from 'src/contexts/SubgraphContext';
 import isSupportedReserve from 'src/core/utils/isSupportedReserve';
-import MainnetType from 'src/enums/MainnetType';
 import MainnetContext from 'src/contexts/MainnetContext';
 import getTokenNameByAddress from 'src/core/utils/getTokenNameByAddress';
+import useCalcReward from 'src/hooks/useCalcReward';
+import { rewardToken } from 'src/utiles/stakingReward';
 
 const RewardPlan: FunctionComponent = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { stakingType } = useParams<{ stakingType: string }>();
   const history = useHistory();
   const { latestPrice, ethPool, daiPool } = useContext(UniswapPoolContext);
@@ -77,11 +66,16 @@ const RewardPlan: FunctionComponent = () => {
   const { type: getMainnetType } = useContext(MainnetContext);
   const current = moment();
   const { value: mediaQuery } = useMediaQueryType();
+
+  const isEl = stakingType === 'EL';
+  const stakingRoundDate = roundTimes(stakingType, getMainnetType);
+
   const currentPhase = useMemo(() => {
-    return stakingRoundTimes.filter(
+    return stakingRoundDate.filter(
       (round) => current.diff(round.startedAt) >= 0,
     ).length;
   }, [current]);
+  const { state: rewardInfo } = useCalcReward(stakingType);
 
   const lpCurrentPhase = useMemo(() => {
     return lpRoundDate.filter((round) => current.diff(round.startedAt) >= 0)
@@ -99,8 +93,7 @@ const RewardPlan: FunctionComponent = () => {
   };
 
   const [state, setState] = useState({
-    elStaking: currentPhase - 1,
-    currentElfiLevel: currentPhase - 1,
+    round: currentPhase - 1,
   });
 
   const [lpStakingRound, setLpStakingRound] = useState({
@@ -130,42 +123,16 @@ const RewardPlan: FunctionComponent = () => {
   const incentiveIds = getIncentiveId();
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const { calcEthElfiPoolApr, calcDaiElfiPoolApr } = useLpApr();
+
   const {
-    totalPrincipal: elPoolPrincipal,
-    apr: elPoolApr,
-    loading: elPoolLoading,
-  } = useStakingRoundData(state.elStaking, Token.EL, Token.ELFI);
-  const {
-    totalPrincipal: elfiPoolPrincipal,
-    apr: elfiPoolApr,
-    loading: elfiPoolLoading,
-  } = useStakingRoundData(state.currentElfiLevel, Token.ELFI, Token.DAI);
-  const [amountData, setAmountData] = useState({
-    beforeMintedByElStakingPool: [0, 0, 0, 0, 0, 0],
-    mintedByElStakingPool: calcMintedAmounts(
-      parseFloat(utils.formatEther(ELFIPerDayOnELStakingPool)),
-    ),
-    beforeDaiRewardByElFiStakingPool: [0, 0, 0, 0, 0, 0],
-    daiRewardByElFiStakingPool: calcMintedAmounts(
-      parseFloat(utils.formatEther(DAIPerDayOnELFIStakingPool)),
-    ),
-    beforeMintedByDaiMoneypool: 0,
-    mintedByDaiMoneypool: calcMintedByDaiMoneypool(),
-    beforeTetherRewardByElFiStakingPool: [0, 0, 0],
-    tetherRewardByElFiStakingPool: calcMintedAmounts(
-      parseFloat(utils.formatEther(TETHERPerDayOnELFIStakingPool)),
-    ),
-    beforeMintedByTetherMoneypool: 0,
-    mintedByTetherMoneypool: calcMintedByTetherMoneypool(),
-    beforeElfiRewardByLp: [0, 0, 0],
-    elfiRewardByLp: calcElfiRewardByLp(),
-    beforeDaiRewardByLp: [0, 0, 0],
-    daiRewardByLp: calcDaiRewardByLp(),
-    beforeEthRewardByLp: [0, 0, 0],
-    ethRewardByLp: calcEthRewardByLp(),
-    beforeMintedByBuscMoneypool: 0,
-    mintedByBusdMoneypool: calcMintedByBusdMoneypool(),
-  });
+    totalPrincipal: poolPrincipal,
+    apr: poolApr,
+    loading: poolLoading,
+  } = useStakingRoundData(
+    state.round,
+    stakingType,
+    rewardToken(stakingType, getMainnetType),
+  );
 
   const moneyPoolInfo = {
     DAI: {
@@ -184,32 +151,29 @@ const RewardPlan: FunctionComponent = () => {
   };
 
   const beforeMintedMoneypool = {
-    DAI: { beforeMintedToken: amountData.beforeMintedByDaiMoneypool },
+    DAI: { beforeMintedToken: rewardInfo.beforeMintedByDaiMoneypool },
     USDT: {
-      beforeMintedToken: amountData.beforeMintedByTetherMoneypool,
+      beforeMintedToken: rewardInfo.beforeMintedByTetherMoneypool,
     },
     BUSD: {
-      beforeMintedToken: amountData.beforeMintedByBuscMoneypool,
+      beforeMintedToken: rewardInfo.beforeMintedByBuscMoneypool,
     },
   };
   const mintedMoneypool = {
-    DAI: { mintedToken: amountData.mintedByDaiMoneypool },
-    USDT: { mintedToken: amountData.mintedByTetherMoneypool },
+    DAI: { mintedToken: rewardInfo.mintedByDaiMoneypool },
+    USDT: { mintedToken: rewardInfo.mintedByTetherMoneypool },
     BUSD: {
-      mintedToken: amountData.mintedByBusdMoneypool,
+      mintedToken: rewardInfo.mintedByBusdMoneypool,
     },
   };
 
   const beforeTotalMintedByElStakingPool = useMemo(() => {
-    return amountData.beforeMintedByElStakingPool.reduce(
-      (res, cur) => res + cur,
-      0,
-    );
-  }, [amountData.beforeMintedByElStakingPool]);
+    return rewardInfo.beforeStakingPool.reduce((res, cur) => res + cur, 0);
+  }, [rewardInfo.beforeStakingPool]);
 
   const totalMintedByElStakingPool = useMemo(() => {
-    return amountData.mintedByElStakingPool.reduce((res, cur) => res + cur, 0);
-  }, [amountData.mintedByElStakingPool]);
+    return rewardInfo.afterStakingPool.reduce((res, cur) => res + cur, 0);
+  }, [rewardInfo.afterStakingPool]);
 
   const draw = () => {
     const dpr = window.devicePixelRatio;
@@ -309,41 +273,6 @@ const RewardPlan: FunctionComponent = () => {
   }, [totalStakedPositions, lpStakingRound]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setAmountData({
-        beforeMintedByElStakingPool: amountData.mintedByElStakingPool,
-        mintedByElStakingPool: calcMintedAmounts(
-          parseFloat(utils.formatEther(ELFIPerDayOnELStakingPool)),
-        ),
-        beforeDaiRewardByElFiStakingPool: amountData.daiRewardByElFiStakingPool,
-        daiRewardByElFiStakingPool: calcMintedAmounts(
-          parseFloat(utils.formatEther(DAIPerDayOnELFIStakingPool)),
-        ),
-        beforeMintedByDaiMoneypool: amountData.mintedByDaiMoneypool,
-        mintedByDaiMoneypool: calcMintedByDaiMoneypool(),
-        beforeTetherRewardByElFiStakingPool:
-          amountData.tetherRewardByElFiStakingPool,
-        tetherRewardByElFiStakingPool: calcMintedAmounts(
-          Number(utils.formatEther(TETHERPerDayOnELFIStakingPool)),
-        ),
-        beforeMintedByTetherMoneypool: amountData.mintedByTetherMoneypool,
-        mintedByTetherMoneypool: calcMintedByTetherMoneypool(),
-        beforeElfiRewardByLp: amountData.elfiRewardByLp,
-        elfiRewardByLp: calcElfiRewardByLp(),
-        beforeDaiRewardByLp: amountData.daiRewardByLp,
-        daiRewardByLp: calcDaiRewardByLp(),
-        beforeEthRewardByLp: amountData.ethRewardByLp,
-        ethRewardByLp: calcEthRewardByLp(),
-        beforeMintedByBuscMoneypool: amountData.mintedByBusdMoneypool,
-        mintedByBusdMoneypool: calcMintedByBusdMoneypool(),
-      });
-    }, 2000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [amountData]);
-
-  useEffect(() => {
     draw();
     window.addEventListener('resize', () => draw());
 
@@ -410,8 +339,8 @@ const RewardPlan: FunctionComponent = () => {
               token0={'ELFI'}
               firstTokenValue={{
                 total: ELFI_REWARD_PER_POOL,
-                start: amountData.beforeElfiRewardByLp,
-                end: amountData.elfiRewardByLp,
+                start: rewardInfo.beforeElfiRewardByLp,
+                end: rewardInfo.elfiRewardByLp,
               }}
               token1={'ETH'}
               secondTokenValue={{
@@ -421,8 +350,8 @@ const RewardPlan: FunctionComponent = () => {
                       ? ETH_REWARD_PER_POOL_3
                       : ETH_REWARD_PER_POOL_2
                     : ETH_REWARD_PER_POOL,
-                start: amountData.beforeEthRewardByLp,
-                end: amountData.ethRewardByLp,
+                start: rewardInfo.beforeEthRewardByLp,
+                end: rewardInfo.ethRewardByLp,
               }}
               currentRound={currentPhase}
               selectedRound={lpStakingRound.ethElfiRound}
@@ -437,14 +366,14 @@ const RewardPlan: FunctionComponent = () => {
               token0={'ELFI'}
               firstTokenValue={{
                 total: ELFI_REWARD_PER_POOL,
-                start: amountData.beforeElfiRewardByLp,
-                end: amountData.elfiRewardByLp,
+                start: rewardInfo.beforeElfiRewardByLp,
+                end: rewardInfo.elfiRewardByLp,
               }}
               token1={'DAI'}
               secondTokenValue={{
                 total: DAI_REWARD_PER_POOL,
-                start: amountData.beforeDaiRewardByLp,
-                end: amountData.daiRewardByLp,
+                start: rewardInfo.beforeDaiRewardByLp,
+                end: rewardInfo.daiRewardByLp,
               }}
               currentRound={currentPhase}
               selectedRound={lpStakingRound.daiElfiRound}
@@ -452,39 +381,28 @@ const RewardPlan: FunctionComponent = () => {
               setLpStakingRound={setLpStakingRound}
             />
           </>
-        ) : stakingType === 'ELFI' ? (
-          <section className="reward__elfi">
+        ) : ['EL', 'ELFI'].includes(stakingType) ? (
+          <section className={`reward__${stakingType.toLowerCase()}`}>
             <StakingBox
-              nth={ordinalNumberConverter(state.currentElfiLevel + 1)}
-              loading={elfiPoolLoading}
-              poolApr={elfiPoolApr}
-              poolPrincipal={elfiPoolPrincipal}
-              staking={state.currentElfiLevel}
-              unit={'DAI'}
-              start={amountData.beforeDaiRewardByElFiStakingPool}
-              end={amountData.daiRewardByElFiStakingPool}
+              loading={poolLoading}
+              poolApr={poolApr}
+              poolPrincipal={poolPrincipal}
+              stakedRound={state.round}
+              unit={rewardToken(stakingType, getMainnetType)}
+              start={
+                isEl
+                  ? beforeTotalMintedByElStakingPool
+                  : rewardInfo.beforeStakingPool
+              }
+              end={
+                isEl ? totalMintedByElStakingPool : rewardInfo.afterStakingPool
+              }
               state={state}
               setState={setState}
               OrdinalNumberConverter={ordinalNumberConverter}
-            />
-          </section>
-        ) : stakingType === 'EL' ? (
-          <section className="reward__el">
-            <StakingBox
-              nth={ordinalNumberConverter(state.elStaking + 1)}
-              loading={elPoolLoading}
-              poolApr={elPoolApr}
-              poolPrincipal={elPoolPrincipal}
-              staking={state.elStaking}
-              unit={'ELFI'}
-              start={beforeTotalMintedByElStakingPool}
-              end={totalMintedByElStakingPool}
-              state={state}
-              setState={setState}
-              miningStart={amountData.beforeMintedByElStakingPool}
-              miningEnd={amountData.mintedByElStakingPool}
-              currentPhase={currentPhase}
-              OrdinalNumberConverter={ordinalNumberConverter}
+              stakedToken={stakingType}
+              miningStart={isEl ? rewardInfo.beforeStakingPool : undefined}
+              miningEnd={isEl ? rewardInfo.afterStakingPool : undefined}
             />
           </section>
         ) : (

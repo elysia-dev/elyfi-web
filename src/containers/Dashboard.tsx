@@ -1,5 +1,5 @@
 import { reserveTokenData } from 'src/core/data/reserves';
-import { useContext, useState, useMemo } from 'react';
+import { useContext, useState, useMemo, useEffect } from 'react';
 import { toPercent } from 'src/utiles/formatters';
 import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
 import { BigNumber } from 'ethers';
@@ -63,6 +63,7 @@ const Dashboard: React.FunctionComponent = () => {
     useState(false);
   const [round, setRound] = useState(1);
   const currentChain = useCurrentChain();
+  const [transactionWait, setTransactionWait] = useState<boolean>(false);
   const { type: currentNetworkType } = useContext(MainnetContext);
   const supportedTokens = useMemo(() => {
     return MainnetData[currentNetworkType].supportedTokens;
@@ -99,12 +100,16 @@ const Dashboard: React.FunctionComponent = () => {
           visible={!!reserveData}
           onClose={() => {
             setReserveData(undefined);
+            setTransactionWait(false);
           }}
           balance={selectedBalance.value}
           depositBalance={BigNumber.from(selectedBalance.deposit)}
           afterTx={() => loadBalance(selectedBalanceId)}
           transactionModal={() => setTransactionModal(true)}
           round={round}
+          transactionWait={transactionWait}
+          setTransactionWait={() => setTransactionWait(true)}
+          disableTransactionWait={() => setTransactionWait(false)}
         />
       )}
       {selectedBalance && selectedReserve && (
@@ -112,6 +117,7 @@ const Dashboard: React.FunctionComponent = () => {
           visible={incentiveModalVisible}
           onClose={() => {
             setIncentiveModalVisible(false);
+            setTransactionWait(false);
           }}
           balanceBefore={
             round === 1
@@ -130,6 +136,8 @@ const Dashboard: React.FunctionComponent = () => {
           tokenName={selectedBalance.tokenName}
           afterTx={() => loadBalance(selectedBalanceId)}
           transactionModal={() => setTransactionModal(true)}
+          transactionWait={transactionWait}
+          setTransactionWait={() => setTransactionWait(true)}
         />
       )}
       <TransactionConfirmModal

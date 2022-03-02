@@ -20,6 +20,7 @@ interface EnvironmentVariables {
     elfyStakingPoolAddress: string;
     elfyV2StakingPoolAddress: string;
     elfyV2StakingPoolRewardAddress: string;
+    elfyBscStakingPoolAddress: string;
   };
   lpStaking: {
     daiElfiPoolAddress: string;
@@ -36,6 +37,7 @@ interface EnvironmentVariables {
     wEthAddress: string;
     bscElfiAddress: string;
     busdAddress: string;
+    testBscElfiAddress: string;
   };
   network: {
     requiredNetwork: string;
@@ -56,9 +58,12 @@ interface EnvironmentVariables {
     daiTokenizerAddress: string;
     usdtTokeninzerAddress: string;
   };
+  jsonRpcUrl: {
+    bsc: string;
+  };
 }
 
-const vars =
+const vars = 
   process.env.NODE_ENV === 'production' && !process.env.REACT_APP_TEST_MODE
     ? (prodVars as unknown as EnvironmentVariables)
     : (testVars as unknown as EnvironmentVariables);
