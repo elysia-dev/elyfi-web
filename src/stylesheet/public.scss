@@ -1,22 +1,22 @@
 @font-face {
   font-family: 'Montserrat';
   src: url('../assets/fonts/Montserrat-Regular.ttf') format('truetype');
-  unicode-range: U+0041-005A, U+0061-007A;
+  // unicode-range: U+0041-005A, U+0061-007A;
 }
 @font-face {
   font-family: 'Montserrat-bold';
   src: url('../assets/fonts/Montserrat-Bold.ttf') format('truetype');
-  unicode-range: U+0041-005A, U+0061-007A;
+  // unicode-range: U+0041-005A, U+0061-007A;
 }
 @font-face {
   font-family: 'SpoqaHanSansNeo';
   src: url('../assets/fonts/SpoqaHanSansNeo-Regular.ttf') format('truetype');
-  // unicode-range: U+0030-0039 U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
+  unicode-range: U+0030-0039;
 }
 @font-face {
   font-family: 'SpoqaHanSansNeo-Bold';
   src: url('../assets/fonts/SpoqaHanSansNeo-Bold.ttf') format('truetype');
-  // unicode-range: U+0030-0039 U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
+  unicode-range: U+0030-0039;
 }
 @font-face {
   font-family: 'SpoqaHanSansNeo-Medium';
@@ -26,12 +26,12 @@
 @font-face {
   font-family: 'Inter';
   src: url('../assets/fonts/Inter-Regular.ttf') format('truetype');
-  unicode-range: U+0030-0039 U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
+  unicode-range: U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E, U+0041-005A, U+0061-007A;
 }
 @font-face {
   font-family: 'Inter-Bold';
   src: url('../assets/fonts/Inter-Bold.ttf') format('truetype');
-  unicode-range: U+0030-0039 U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
+  unicode-range: U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E, U+0041-005A, U+0061-007A;
 }
 
 * {
@@ -57,7 +57,7 @@ $governance-progress-00: #0099cc;
 $governance-progress-01: #3d5299;
 $governance-progress-02: #707070;
 
-$bold: 'Inter-Bold', 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
+$bold: 'Inter-Bold', 'SpoqaHanSansNeo-Bold', 'Montserrat-bold', 'Inter-Bold';
 
 @mixin hover__soft-background {
   transition: all 0.2s ease;
@@ -132,7 +132,7 @@ $bold: 'Inter-Bold', 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
 
 h1,
 h2 {
-  font-family: 'Inter-Bold';
+  font-family: $bold;
   color: $font-color;
   font-weight: bold;
   cursor: default;
@@ -146,7 +146,7 @@ h2 {
 p,
 a,
 span {
-  font-family: 'Inter';
+  font-family: 'Inter', "SpoqaHanSansNeo";
   color: $font-color;
   text-decoration: none;
   cursor: default;
@@ -165,7 +165,7 @@ span {
 }
 .bold,
 strong {
-  font-family: 'Inter-Bold', 'Montserrat-bold';
+  font-family: $bold;
 }
 i {
   font-style: initial;
@@ -362,11 +362,11 @@ input[type='number'] {
       }
       &__status {
         color: #ffffff;
-        font-family: 'Montserrat-bold', 'Inter-Bold';
+        font-family: $bold;
         cursor: pointer;
         &--connected {
           color: $font-color;
-          font-family: 'Montserrat-bold', 'Inter-Bold';
+          font-family: $bold;
           text-align: right;
           margin: 0;
           cursor: pointer;
@@ -513,7 +513,7 @@ input[type='number'] {
           &:first-child {
             i {
               color: $elysia-color;
-              font-family: 'Inter-Bold', 'Montserrat-bold';
+              font-family: $bold;
             }
           }
         }
@@ -1002,7 +1002,7 @@ input[type='number'] {
           &.active {
             border: 1px solid $elysia-color;
             > p {
-              font-family: 'Inter-Bold', 'Montserrat-bold';
+              font-family: $bold;
             }
           }
         }
@@ -1585,7 +1585,7 @@ input[type='number'] {
           &.active {
             border: 1px solid #f9ae18;
             > p {
-              font-family: 'Inter-Bold', 'Montserrat-bold';
+              font-family: $bold;
             }
           }
         }
@@ -1607,7 +1607,7 @@ input[type='number'] {
           &.active {
             border: 1px solid #26a17b;
             > p {
-              font-family: 'Inter-Bold', 'Montserrat-bold';
+              font-family: $bold;
             }
           }
         }
@@ -2442,7 +2442,7 @@ input[type='number'] {
             &.active {
               border: 1px solid $elysia-color;
               > p {
-                font-family: 'Inter-Bold', 'Montserrat-bold';
+                font-family: $bold;
               }
             }
           }
@@ -2917,7 +2917,7 @@ input[type='number'] {
       color: #00bfff;
       text-decoration: underline;
       cursor: pointer;
-      font-family: 'Montserrat-bold', 'Inter-Bold';
+      font-family: $bold;
     }
     &__container {
       border-bottom: 1px solid #b7b7b7;
@@ -4083,7 +4083,7 @@ input[type='number'] {
         &::after {
           content: '%';
           color: #00bfff;
-          font-family: 'Montserrat-bold', 'Inter-Bold';
+          font-family: $bold !important;
         }
       }
     }
