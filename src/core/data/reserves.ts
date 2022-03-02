@@ -11,7 +11,7 @@ export interface IReserve {
   image: string;
   decimals: number;
   address: string;
-  tokeninzer?: string;
+  tokenizer?: string;
 }
 
 export const reserveTokenData = {
@@ -20,14 +20,14 @@ export const reserveTokenData = {
     image: dai,
     decimals: 18,
     address: envs.token.daiAddress,
-    tokeninzer: envs.tokenizer.daiTokenizerAddress,
+    tokenizer: envs.tokenizer.daiTokenizerAddress,
   },
   USDT: {
     name: 'USDT',
     image: usdt,
     decimals: 6,
     address: envs.token.usdtAddress,
-    tokeninzer: envs.tokenizer.usdtTokeninzerAddress,
+    tokenizer: envs.tokenizer.usdtTokeninzerAddress,
   },
   EL: {
     name: 'EL',
@@ -61,14 +61,14 @@ const reserves: IReserve[] = [
     image: usdt,
     decimals: 6,
     address: envs.token.usdtAddress,
-    tokeninzer: envs.moneyPool.usdtTokeninzerAddress,
+    tokenizer: envs.tokenizer.usdtTokeninzerAddress,
   },
   {
     name: 'DAI',
     image: dai,
     decimals: 18,
     address: envs.token.daiAddress,
-    tokeninzer: envs.moneyPool.daiTokenizerAddress,
+    tokenizer: envs.tokenizer.daiTokenizerAddress,
   },
   {
     name: 'EL',
