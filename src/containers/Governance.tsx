@@ -34,15 +34,13 @@ import MainnetType from 'src/enums/MainnetType';
 import SubgraphContext, { IAssetBond } from 'src/contexts/SubgraphContext';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
+import { onChainGovernanceMiddleware } from 'src/middleware/onChainMiddleware';
+import { offChainGovernanceMiddleware } from 'src/middleware/offChainMiddleware';
 
 const Governance = () => {
-  const [onChainLoading, setOnChainLoading] = useState(true);
-  const [offChainLoading, setOffChainLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const [onChainData, setOnChainData] = useState<IProposals[]>([]);
-  const [offChainNapData, setOffChainNapData] = useState<INapData[]>([]);
   const { getAssetBondsByNetwork } = useContext(SubgraphContext);
   const { type: mainnetType } = useContext(MainnetContext);
   const assetBondTokens = getAssetBondsByNetwork(mainnetType);
@@ -55,13 +53,20 @@ const Governance = () => {
     return CollateralCategory.Others !== parsedId.collateralCategory;
   });
 
-  const { data: getOnChainData, error: onChainDataError } = useSWR(
+  const { data: onChainData, isValidating: onChainLoading } = useSWR(
     onChainQuery,
     onChainFetcher,
+    {
+      use: [onChainGovernanceMiddleware],
+    },
   );
-  const { data: getOffChainData, error: offChainDataError } = useSWR(
+
+  const { data: offChainNapData, isValidating: offChainLoading } = useSWR(
     '/proxy/c/nap/10.json',
     topicListFetcher,
+    {
+      use: [offChainGovernanceMiddleware],
+    },
   );
 
   const draw = () => {
@@ -99,108 +104,6 @@ const Governance = () => {
   const viewMoreHandler = useCallback(() => {
     setPageNumber((prev) => prev + 1);
   }, [pageNumber]);
-
-  const getOnChainNAPDatas = (getOnChainData: IOnChainToipc) => {
-    const getOnChainApis = getOnChainData;
-    const getNAPCodes = getOnChainApis.proposals.filter((topic) => {
-      return topic.data.description.startsWith('NAP');
-    });
-    if (!getNAPCodes || undefined) {
-      setOnChainLoading(false);
-      return;
-    }
-    getNAPCodes.map((data) => {
-      return setOnChainData((_data) => {
-        if (!(data.status === 'ACTIVE')) return [..._data];
-        return [
-          ..._data,
-          {
-            data: {
-              description: data.data.description
-                .match(/\d.*(?!NAP)(?=:)/)
-                ?.toString(),
-            },
-            status: data.status,
-            totalVotesCast: data.totalVotesCast,
-            totalVotesCastAbstained: data.totalVotesCastAbstained,
-            totalVotesCastAgainst: data.totalVotesCastAgainst,
-            totalVotesCastInSupport: data.totalVotesCastInSupport,
-            id: data.id.match(/(?=).*(?=-proposal)/)?.toString(),
-          } as IProposals,
-        ];
-      });
-    });
-  };
-  const getOffChainNAPTitles = async (getOffChainData: TopicList) => {
-    try {
-      const getOffChainApis = getOffChainData;
-      const getNAPTitles = getOffChainApis.topic_list.topics.filter((topic) => {
-        return topic.title.startsWith('NAP');
-      });
-      if (!getNAPTitles.map((title) => title.id) || undefined) {
-        setOffChainLoading(false);
-        return;
-      }
-      getNAPTitles
-        .map((title) => title.id)
-        .map(async (_res, _x) => {
-          const getNATData = await OffChainTopic.getTopicResult(_res);
-          const getHTMLStringData: string =
-            getNATData.data.post_stream.posts[0].cooked.toString();
-          const regexNap = /NAP#: .*(?=<)/;
-          const regexNetwork = /Network: BSC.*(?=<)/;
-          setOffChainNapData((napData) => [
-            ...napData,
-            {
-              id: _x,
-              nap:
-                getHTMLStringData.match(regexNap)?.toString().substring(5) ||
-                '',
-              status:
-                getHTMLStringData
-                  .match(/Status: .*(?=<)/)
-                  ?.toString()
-                  .split('Status: ') || '',
-              images:
-                getHTMLStringData
-                  .match(
-                    /slate.textile.io.*(?=" rel="noopener nofollow ugc">Collateral Image)/,
-                  )
-                  ?.toString() || '',
-              votes:
-                getNATData.data.post_stream.posts[0].polls[0].options || '',
-              totalVoters:
-                getNATData.data.post_stream.posts[0].polls[0].voters || '',
-              link: `https://forum.elyfi.world/t/${getNATData.data.slug}`,
-              endedDate:
-                getNATData.data.post_stream.posts[0].polls[0].close || '',
-              network:
-                !!getHTMLStringData.match(regexNetwork) === true
-                  ? MainnetType.BSC
-                  : MainnetType.Ethereum,
-            } as INapData,
-          ]);
-        });
-    } catch (e) {
-      console.log(e);
-      setOffChainLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    try {
-      if (onChainDataError || offChainDataError) throw Error;
-      if (getOffChainData && getOnChainData) {
-        getOnChainNAPDatas(getOnChainData);
-        getOffChainNAPTitles(getOffChainData);
-        setOffChainLoading(false);
-        setOnChainLoading(false);
-      }
-    } catch (error) {
-      setOffChainLoading(false);
-      setOnChainLoading(false);
-    }
-  }, [getOffChainData, getOnChainData, onChainDataError, offChainDataError]);
 
   useEffect(() => {
     draw();
@@ -268,11 +171,12 @@ const Governance = () => {
         <div>
           <img
             src={
-              offChainNapData.filter((offChainData) => {
+              offChainNapData &&
+              offChainNapData.filter((offChainData: any) => {
                 return offChainData.nap.substring(1) === data.data.description;
               })[0]?.images
                 ? 'https://' +
-                  offChainNapData.filter((offChainData) => {
+                  offChainNapData.filter((offChainData: any) => {
                     return (
                       offChainData.nap.substring(1) === data.data.description
                     );
@@ -389,11 +293,13 @@ const Governance = () => {
             <div>
               <h3>
                 {t('governance.data_verification', {
-                  count: offChainNapData
-                    .filter((data) => data.network === mainnetType)
-                    .filter((data) => {
-                      return moment().isBefore(data.endedDate);
-                    }).length,
+                  count:
+                    offChainNapData &&
+                    offChainNapData
+                      .filter((data: any) => data.network === mainnetType)
+                      .filter((data: any) => {
+                        return moment().isBefore(data.endedDate);
+                      }).length,
                 })}
               </h3>
               <div>
@@ -417,10 +323,13 @@ const Governance = () => {
               <div>
                 <h3>
                   {t('governance.data_verification', {
-                    count: offChainNapData
-                      .filter((data) => data.network === mainnetType)
-                      .filter((data) => moment().isBefore(data.endedDate))
-                      .length,
+                    count:
+                      offChainNapData &&
+                      offChainNapData
+                        .filter((data: any) => data.network === mainnetType)
+                        .filter((data: any) =>
+                          moment().isBefore(data.endedDate),
+                        ).length,
                   })}
                 </h3>
                 <a
@@ -442,19 +351,21 @@ const Governance = () => {
 
           {offChainLoading ? (
             <Skeleton width={'100%'} height={600} />
-          ) : offChainNapData
-              .filter((data) => data.network === mainnetType)
-              .filter((data) => moment().isBefore(data.endedDate)).length >
-            0 ? (
+          ) : offChainNapData &&
+            offChainNapData
+              .filter((data: any) => data.network === mainnetType)
+              .filter((data: any) => moment().isBefore(data.endedDate)).length >
+              0 ? (
             <div className="governance__grid">
-              {offChainNapData
-                .filter((data) => data.network === mainnetType)
-                .map((data, index) => {
-                  if (data.endedDate && moment().isBefore(data.endedDate)) {
-                    return offChainContainer(data);
-                  }
-                  return null;
-                })}
+              {offChainNapData &&
+                offChainNapData
+                  .filter((data: any) => data.network === mainnetType)
+                  .map((data: any) => {
+                    if (data.endedDate && moment().isBefore(data.endedDate)) {
+                      return offChainContainer(data);
+                    }
+                    return null;
+                  })}
             </div>
           ) : (
             <div className="governance__validation zero">
@@ -466,7 +377,9 @@ const Governance = () => {
           {mediaQuery === MediaQuery.PC ? (
             <div>
               <h3>
-                {t('governance.on_chain_voting', { count: onChainData.length })}
+                {t('governance.on_chain_voting', {
+                  count: onChainData?.length,
+                })}
               </h3>
               <div>
                 <p>{t('governance.on_chain_voting__content')}</p>
@@ -491,7 +404,7 @@ const Governance = () => {
               <div>
                 <h3>
                   {t('governance.on_chain_voting', {
-                    count: onChainData.length,
+                    count: onChainData?.length,
                   })}
                 </h3>
                 {mainnetType === MainnetType.Ethereum && (
@@ -515,9 +428,9 @@ const Governance = () => {
           {mainnetType === MainnetType.Ethereum ? (
             onChainLoading ? (
               <Skeleton width={'100%'} height={600} />
-            ) : onChainData.length > 0 ? (
+            ) : onChainData && onChainData.length > 0 ? (
               <div className="governance__grid">
-                {onChainData.map((data, index) => {
+                {onChainData.map((data: any) => {
                   return onChainConatainer(data);
                 })}
               </div>
