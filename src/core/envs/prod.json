@@ -51,7 +51,8 @@
   },
   "tokenizer": {
     "daiTokenizerAddress": "0xc6701e7be98A79485364419961838EB141141aAf",
-    "usdtTokeninzerAddress": "0x68f69Ab21242e194ebd7534B598e26180dD92616"
+    "usdtTokenizerAddress": "0x68f69Ab21242e194ebd7534B598e26180dD92616",
+    "busdTokenizerAddress": "0x0d768c1507B5099CB37e5D28B1959B831B5EbF9e"
   },
   "jsonRpcUrl": {
     "bsc": "https://bsc-dataseed.binance.org/"
