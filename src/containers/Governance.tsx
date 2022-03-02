@@ -7,19 +7,9 @@ import moment from 'moment';
 import reactGA from 'react-ga';
 import useSWR from 'swr';
 
-import {
-  IOnChainToipc,
-  IProposals,
-  onChainFetcher,
-  onChainQuery,
-  OnChainTopic,
-} from 'src/clients/OnChainTopic';
+import { IProposals, onChainFetcher } from 'src/clients/OnChainTopic';
 import TempAssets from 'src/assets/images/temp_assets.png';
-import OffChainTopic, {
-  INapData,
-  TopicList,
-  topicListFetcher,
-} from 'src/clients/OffChainTopic';
+import { INapData, topicListFetcher } from 'src/clients/OffChainTopic';
 import AssetList from 'src/containers/AssetList';
 import GovernanceGuideBox from 'src/components/GovernanceGuideBox';
 import LanguageType from 'src/enums/LanguageType';
@@ -36,6 +26,7 @@ import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
 import { onChainGovernanceMiddleware } from 'src/middleware/onChainMiddleware';
 import { offChainGovernanceMiddleware } from 'src/middleware/offChainMiddleware';
+import { onChainQuery } from 'src/queries/onChainQuery';
 
 const Governance = () => {
   const [pageNumber, setPageNumber] = useState(1);
