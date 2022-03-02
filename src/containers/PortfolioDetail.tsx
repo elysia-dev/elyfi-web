@@ -68,6 +68,12 @@ const PortfolioDetail: FunctionComponent = () => {
   );
   const history = useHistory();
 
+  const blockExplorerUrls = 
+    tokenInfo?.tokenizer === envs.tokenizer.busdTokenizerAddress ? 
+      envs.externalApiEndpoint.bscscanURI 
+      : 
+      envs.externalApiEndpoint.etherscanURI;
+
   const loadAddress = async (
     lat: number,
     lng: number,
@@ -234,7 +240,7 @@ const PortfolioDetail: FunctionComponent = () => {
               <div>
                 <p>{t('loan.receiving_address')}</p>
                 <a
-                  href="https://etherscan.io/address/0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7"
+                  href={`${blockExplorerUrls}/address/${abToken?.borrower?.id}`}
                   target="_blank"
                   rel="noopener noreferer">
                   <p className={abToken?.borrower?.id ? 'link' : ''}>
@@ -282,7 +288,7 @@ const PortfolioDetail: FunctionComponent = () => {
                   className="link"
                   onClick={() => {
                     window.open(
-                      `${envs.externalApiEndpoint.etherscanURI}/token/${tokenInfo.tokenizer}?a=${abToken?.id}`,
+                      `${blockExplorerUrls}/token/${tokenInfo.tokenizer}?a=${abToken?.id}`,
                       '_blank',
                     );
                   }}>
@@ -331,7 +337,7 @@ const PortfolioDetail: FunctionComponent = () => {
                   t('loan.collateral_nft__abtoken_id'),
                   `${abToken?.id.slice(0, 8)} ... ${abToken?.id.slice(-8)}`,
                   '',
-                  `${envs.externalApiEndpoint.etherscanURI}/token/${tokenInfo.tokenizer}?a=${abToken?.id}`,
+                  `${blockExplorerUrls}/token/${tokenInfo.tokenizer}?a=${abToken?.id}`,
                 ],
                 [t('loan.collateral_nft__borrower'), 'Elyloan Inc', '', ''],
                 [

@@ -6,7 +6,7 @@ interface EnvironmentVariables {
     bscMoneyPoolAddress: string;
     moneyPoolAddress: string;
     daiTokenizerAddress: string;
-    usdtTokeninzerAddress: string;
+    usdtTokenizerAddress: string;
   };
   incentivePool: {
     prevDaiIncentivePool: string;
@@ -56,7 +56,8 @@ interface EnvironmentVariables {
   };
   tokenizer: {
     daiTokenizerAddress: string;
-    usdtTokeninzerAddress: string;
+    usdtTokenizerAddress: string;
+    busdTokenizerAddress: string;
   };
   jsonRpcUrl: {
     bsc: string;
