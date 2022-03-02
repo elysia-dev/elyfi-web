@@ -135,7 +135,6 @@ const PortfolioDetail: FunctionComponent = () => {
 
   const divStyle = useMemo(
     () => ({
-      fontFamily: 'SpoqaHanSansNeo',
       color: '#888888',
       fontSize: mediaQuery === MediaQuery.PC ? '15px' : '12px',
       letterSpacing: -0.5
@@ -283,7 +282,7 @@ const PortfolioDetail: FunctionComponent = () => {
                   className="link"
                   onClick={() => {
                     window.open(
-                      `${envs.externalApiEndpoint.etherscanURI}/token/${tokenInfo.tokeninzer}?a=${abToken?.id}`,
+                      `${envs.externalApiEndpoint.etherscanURI}/token/${tokenInfo.tokenizer}?a=${abToken?.id}`,
                       '_blank',
                     );
                   }}>
@@ -332,7 +331,7 @@ const PortfolioDetail: FunctionComponent = () => {
                   t('loan.collateral_nft__abtoken_id'),
                   `${abToken?.id.slice(0, 8)} ... ${abToken?.id.slice(-8)}`,
                   '',
-                  `${envs.externalApiEndpoint.etherscanURI}/token/${tokenInfo.tokeninzer}?a=${abToken?.id}`,
+                  `${envs.externalApiEndpoint.etherscanURI}/token/${tokenInfo.tokenizer}?a=${abToken?.id}`,
                 ],
                 [t('loan.collateral_nft__borrower'), 'Elyloan Inc', '', ''],
                 [

@@ -1683,9 +1683,11 @@ $device-width: 1190px;
             }
           }
           &--left {
+            position: relative;
             padding-right: 25px;
           }
           &--right {
+            position: relative;
             padding-left: 25px;
           }
         }
@@ -1708,6 +1710,7 @@ $device-width: 1190px;
             padding-left: 25px;
             padding-top: 30px;
             padding-bottom: 30px;
+            position: relative;
             > div {
               margin-bottom: 20px;
               > p {
@@ -1721,6 +1724,7 @@ $device-width: 1190px;
 
     .staking {
       @include page-container;
+      position: relative;
       &__title {
         > h2 {
           font-size: 30px;
@@ -1932,6 +1936,7 @@ $device-width: 1190px;
           gap: 25px;
           &__container {
             flex: 1;
+            position: relative;
           }
           &__header {
             padding: 20px 30px;
