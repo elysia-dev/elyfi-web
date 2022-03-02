@@ -24,6 +24,7 @@ import SubgraphContext, { IAssetBond } from 'src/contexts/SubgraphContext';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
 
+
 const Governance = (): JSX.Element => {
   const [onChainLoading, setOnChainLoading] = useState(true);
   const [offChainLoading, setOffChainLoading] = useState(true);
@@ -80,18 +81,6 @@ const Governance = (): JSX.Element => {
     setPageNumber((prev) => prev + 1);
   }, [pageNumber]);
 
-  const getOnChainNAPDatas = async () => {
-    try {
-      const getOnChainApis = await OnChainTopic.getOnChainTopicData();
-      const getNAPCodes = getOnChainApis.data.data.proposals.filter((topic) => {
-        return topic.data.description.startsWith('NAP');
-      });
-      return getNAPCodes || undefined;
-    } catch (e) {
-      console.log(e);
-      setOnChainLoading(false);
-    }
-  };
   const getOffChainNAPTitles = async () => {
     try {
       const getOffChainApis = await OffChainTopic.getTopicList();
@@ -106,6 +95,48 @@ const Governance = (): JSX.Element => {
       setOffChainLoading(false);
     }
   };
+
+  const getETHFinalDecisionDatas = async () => {
+    try {
+      const getOnChainApis = await OnChainTopic.getOnChainTopicData();
+      const getNAPCodes = getOnChainApis.data.data.proposals.filter((topic) => {
+        return topic.status === "ACTIVE";
+      });
+      return getNAPCodes || undefined;
+    } catch (e) {
+      console.log(e);
+      setOnChainLoading(false);
+    }
+  };
+  const getBSCFinalDecisionDatas = async () => {
+    try {
+      const testOnChain = await OnChainTopic.getBscOnChainTopicData();
+      const getNAPDatas = testOnChain.data.data.proposals.filter((proposal) => {
+        return proposal.state === "active";
+      })
+      .map((data, index) => {
+        return {
+          data: {
+            description: data.title,
+          },
+          status: data.state,
+          totalVotesCast: data.scores_total,
+          totalVotesCastAbstained: data.scores[0],
+          totalVotesCastAgainst: data.scores[0],
+          totalVotesCastInSupport: data.scores[0],
+          timestamp: data.start.toString(),
+          id: data.author,
+        } as IProposals
+      })
+      return getNAPDatas || undefined;
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  const getFinalDecisionNAPDatas = async () => {
+    return (mainnetType === MainnetType.BSC) ? getBSCFinalDecisionDatas() : getETHFinalDecisionDatas() 
+  }
 
   useEffect(() => {
     getOffChainNAPTitles().then((title_res) => {
@@ -152,19 +183,20 @@ const Governance = (): JSX.Element => {
       setOffChainLoading(false);
     });
 
-    getOnChainNAPDatas().then((res) => {
+    getFinalDecisionNAPDatas().then((res) => {
       res === undefined
         ? setOnChainLoading(false)
-        : res.map((data) => {
+        : (
+          setOnChainData([]),
+          res.map((data) => {
             return setOnChainData((_data) => {
-              if (!(data.status === 'ACTIVE')) return [..._data];
+              // if (!(data.status === 'ACTIVE')) return [..._data];
               return [
                 ..._data,
                 {
                   data: {
                     description: data.data.description
-                      .match(/\d.*(?!NAP)(?=:)/)
-                      ?.toString(),
+                      .match(/\d.*(?!NAP)(?=:)/)?.toString(),
                   },
                   status: data.status,
                   totalVotesCast: data.totalVotesCast,
@@ -175,10 +207,10 @@ const Governance = (): JSX.Element => {
                 } as IProposals,
               ];
             });
-          });
+          }))
       setOnChainLoading(false);
     });
-  }, []);
+  }, [mainnetType]);
 
   useEffect(() => {
     draw();
@@ -191,32 +223,6 @@ const Governance = (): JSX.Element => {
     };
   }, [document.body.clientHeight]);
 
-  useEffect(() => {
-    (async () => {
-      const testOnChain = await OnChainTopic.getBscOnChainTopicData();
-      console.log(testOnChain.data.data.proposals);
-      console.log(
-        testOnChain.data.data.proposals
-          .filter((proposal) => {
-            return proposal.state === 'active';
-          })
-          .map((data) => {
-            return {
-              data: {
-                // description: data.title.match(/\d.*(?!NAP)(?=:)/)?.toString(),
-                description: data.title.match(/\d.*(?!NAP)(?=:)/)?.toString(),
-              },
-              status: data.state,
-              totalVotesCast: data.scores_total,
-              totalVotesCastAbstained: data.scores[0],
-              totalVotesCastAgainst: data.scores[0],
-              totalVotesCastInSupport: data.scores[0],
-              id: data.author,
-            };
-          }),
-      );
-    })();
-  }, []);
 
   const offChainContainer = (data: INapData) => {
     return (
@@ -517,23 +523,17 @@ const Governance = (): JSX.Element => {
               <p>{t('governance.data_verification__content')}</p>
             </div>
           )}
-          {mainnetType === MainnetType.Ethereum ? (
-            onChainLoading ? (
-              <Skeleton width={'100%'} height={600} />
-            ) : onChainData.length > 0 ? (
-              <div className="governance__grid">
-                {onChainData.map((data, index) => {
-                  return onChainConatainer(data);
-                })}
-              </div>
-            ) : (
-              <div className="governance__onchain-vote zero">
-                <p>{t('governance.onchain_list_zero')}</p>
-              </div>
-            )
+          {onChainLoading ? (
+            <Skeleton width={'100%'} height={600} />
+          ) : onChainData.length > 0 ? (
+            <div className="governance__grid">
+              {onChainData.map((data, index) => {
+                return onChainConatainer(data);
+              })}
+            </div>
           ) : (
             <div className="governance__onchain-vote zero">
-              <h2>COMING SOON!</h2>
+              <p>{t('governance.onchain_list_zero')}</p>
             </div>
           )}
         </section>
