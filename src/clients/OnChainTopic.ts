@@ -81,7 +81,7 @@ export class OnChainTopic {
       variables: {
         first: 10,
         skip: 0,
-        space: 'test-elyfi-bsc.eth',
+        space: process.env.NODE_ENV === 'production' && !process.env.REACT_APP_TEST_MODE ? 'elyfi-bsc.eth' : "test-elyfi-bsc.eth",
         state: 'all',
         author_in: [],
       },
