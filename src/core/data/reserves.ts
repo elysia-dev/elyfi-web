@@ -27,7 +27,7 @@ export const reserveTokenData = {
     image: usdt,
     decimals: 6,
     address: envs.token.usdtAddress,
-    tokenizer: envs.tokenizer.usdtTokeninzerAddress,
+    tokenizer: envs.tokenizer.usdtTokenizerAddress,
   },
   EL: {
     name: 'EL',
@@ -52,6 +52,7 @@ export const reserveTokenData = {
     image: busd,
     decimals: 18,
     address: envs.token.busdAddress,
+    tokenizer: envs.tokenizer.busdTokenizerAddress,
   },
 };
 
@@ -61,7 +62,7 @@ const reserves: IReserve[] = [
     image: usdt,
     decimals: 6,
     address: envs.token.usdtAddress,
-    tokenizer: envs.tokenizer.usdtTokeninzerAddress,
+    tokenizer: envs.tokenizer.usdtTokenizerAddress,
   },
   {
     name: 'DAI',
@@ -93,6 +94,7 @@ const reserves: IReserve[] = [
     image: busd,
     decimals: 18,
     address: envs.token.busdAddress,
+    tokenizer: envs.tokenizer.busdTokenizerAddress,
   },
 ];
 
