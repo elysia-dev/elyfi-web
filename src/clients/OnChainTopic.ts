@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { BigNumber } from 'ethers';
+import { request } from 'graphql-request';
 
 export interface IProposals {
   data: {
@@ -13,6 +14,15 @@ export interface IProposals {
   timestamp: string;
   id: string;
 }
+export interface IOnChainToipc {
+  proposals: IProposals[];
+}
+
+export const onChainFetcher = (query: string): Promise<IOnChainToipc[]> =>
+  request(
+    'https://api.thegraph.com/subgraphs/name/withtally/elyfi-finance-protocol',
+    query,
+  );
 export interface IOnChainTopic {
   data: {
     proposals: IProposals[];
@@ -47,53 +57,72 @@ export interface IBSCOnChainTopic {
   };
 }
 
-export class OnChainTopic {
-  static getOnChainTopicData = async (): Promise<
-    AxiosResponse<IOnChainTopic>
-  > => {
-    return axios.post(
-      'https://api.thegraph.com/subgraphs/name/withtally/elyfi-finance-protocol',
-      {
-        query: `
-      {
-        proposals {
-          status
-          data {
-            description
-          }
-          totalVotesCast
-          totalVotesCastAgainst
-          totalVotesCastInSupport
-          totalVotesCastAbstained
-          timestamp
-          id
-        }
-      }`,
-      },
-    );
-  };
+export const onChainBscFetcher = (query: string): Promise<IBSCOnChainTopic[]> =>
+  request('https://hub.snapshot.org/graphql', query);
 
+export const bscOnChainQuery = (
+  space: string,
+): string => `query Proposals($space_in: [String]) {
+  proposals(
+        first: 10
+        skip: 0
+        where: {
+          space: "${space}", 
+          state: "all", 
+          space_in: $space_in, 
+          author_in: []
+        }
+          ) {
+                id
+                ipfs
+                title
+                body
+                start 
+                end  
+                state
+                author
+                created
+                choices
+                space {
+                        id
+                        name
+                        members
+                        avatar    
+                        symbol    
+                      }    
+                scores_state
+                scores_total
+                scores
+                votes
+            }
+        }`;
+
+export class OnChainTopic {
   static getBscOnChainTopicData = async (): Promise<
     AxiosResponse<IBSCOnChainTopic>
   > => {
     return axios.post('https://hub.snapshot.org/graphql', {
-      operationName: 'Proposals',
+      // operationName: 'Proposals',
       variables: {
-        first: 10,
-        skip: 0,
-        space: process.env.NODE_ENV === 'production' && !process.env.REACT_APP_TEST_MODE ? 'elyfi-bsc.eth' : "test-elyfi-bsc.eth",
-        state: 'all',
-        author_in: [],
+        // first: 10,
+        // skip: 0,
+        // space:
+        // process.env.NODE_ENV === 'production' &&
+        // !process.env.REACT_APP_TEST_MODE
+        //   ? 'elyfi-bsc.eth'
+        //   : 'test-elyfi-bsc.eth',
+        // state: 'all',
+        // author_in: [],
       },
-      query: `query Proposals($first: Int!, $skip: Int!, $state: String!, $space: String, $space_in: [String], $author_in: [String]) {
+      query: `query Proposals($space_in: [String]) {
               proposals(
-                    first: $first
-                    skip: $skip
+                    first: 10
+                    skip: 0
                     where: {
-                      space: $space, 
-                      state: $state, 
+                      space: "test-elyfi-bsc.eth", 
+                      state: "all", 
                       space_in: $space_in, 
-                      author_in: $author_in
+                      author_in: []
                     }
                       ) {
                             id

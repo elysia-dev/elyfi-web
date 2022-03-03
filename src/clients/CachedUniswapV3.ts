@@ -1,6 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { BigNumber } from 'ethers';
-
 interface IPool {
   totalValueLockedUSD: string;
   totalValueLockedToken0: string; // ELFI
@@ -19,7 +18,7 @@ interface IPosition {
   depositedToken1: string;
 }
 
-interface ILpInfo {
+export interface ILpInfo {
   data: {
     data: {
       data: {
@@ -28,14 +27,9 @@ interface ILpInfo {
         stakedDaiPositions: IPosition[];
         stakedEthPositions: IPosition[];
       };
-    }
-  }
-}
-
-export class CachedUniswapV3 {
-  static getPoolData = async (): Promise<AxiosResponse<ILpInfo>> => {
-    return axios.get("https://external-api-responses.s3.amazonaws.com/prod/uniswap-v3-subgraph.json")
+    };
   };
 }
 
-export default CachedUniswapV3;
+export const poolDataFetcher = (url: string): Promise<ILpInfo> =>
+  axios.get(url).then((res) => res.data);

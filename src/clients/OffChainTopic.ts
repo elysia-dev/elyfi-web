@@ -1,7 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
 import MainnetType from 'src/enums/MainnetType';
+import { request } from 'graphql-request';
 
 export interface TopicList {
+  images: TopicList[] | undefined;
   topic_list: {
     topics: {
       id: number;
@@ -29,10 +31,10 @@ export interface INapData {
   network: MainnetType;
 }
 
+export const topicListFetcher = (url: string): Promise<TopicList[]> =>
+  axios.get(url).then((res) => res.data);
+
 export default class OffChainTopic {
-  static getTopicList = async (): Promise<AxiosResponse<TopicList>> => {
-    return axios.get(`/proxy/c/nap/10.json`);
-  };
   static getTopicResult = async (topicID: number): Promise<AxiosResponse> => {
     return axios.get(`/proxy/t/${topicID}.json`);
   };

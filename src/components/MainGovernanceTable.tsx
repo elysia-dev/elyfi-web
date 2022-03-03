@@ -1,7 +1,12 @@
 import { FunctionComponent, RefObject, useEffect, useState } from 'react';
-import OffChainTopic from 'src/clients/OffChainTopic';
-import { OnChainTopic } from 'src/clients/OnChainTopic';
 import { useTranslation, Trans } from 'react-i18next';
+import useSWR from 'swr';
+
+import { topicListFetcher } from 'src/clients/OffChainTopic';
+import { onChainFetcher } from 'src/clients/OnChainTopic';
+import onChainMainMiddleware from 'src/middleware/onChainMiddleware';
+import offChainMainMiddleware from 'src/middleware/offChainMiddleware';
+import { onChainQuery } from 'src/queries/onChainQuery';
 
 type Props = {
   governancePageY: RefObject<HTMLParagraphElement>;
@@ -12,92 +17,20 @@ const MainGovernanceTable: FunctionComponent<Props> = ({
   governancePageY,
   governancePageBottomY,
 }) => {
+  const { data: onChainData } = useSWR(onChainQuery, onChainFetcher, {
+    use: [onChainMainMiddleware],
+  });
+
+  const { data: offChainData } = useSWR(
+    '/proxy/c/nap/10.json',
+    topicListFetcher,
+    { use: [offChainMainMiddleware] },
+  );
   const [selectButton, setSelectButton] = useState(false);
-  const [onChainLoading, setOnChainLoading] = useState(true);
-  const [offChainLoading, setOffChainLoading] = useState(true);
-  const [onChainData, setOnChainData] = useState<
-    {
-      title: string;
-      created_at: Date;
-      link: string;
-    }[]
-  >([]);
-  const [offChainNapData, setOffChainNapData] = useState<
-    {
-      title: string;
-      created_at: Date;
-      link: string;
-    }[]
-  >([]);
+
   const [moreload, setMoreload] = useState(false);
 
   const { t } = useTranslation();
-
-  const getOnChainNAPDatas = async () => {
-    try {
-      const getOnChainApis = await OnChainTopic.getOnChainTopicData();
-      const getNAPCodes = getOnChainApis.data.data.proposals.filter((topic) => {
-        return topic.data.description.startsWith('NAP');
-      });
-      return getNAPCodes || undefined;
-    } catch (e) {
-      console.log(e);
-      setOnChainLoading(false);
-    }
-  };
-  const getOffChainNAPTitles = async () => {
-    try {
-      const getOffChainApis = await OffChainTopic.getTopicList();
-      const getNAPTitles = getOffChainApis.data.topic_list.topics.filter(
-        (topic) => {
-          return topic.title.startsWith('NAP');
-        },
-      );
-      return getNAPTitles.map((title) => title.id) || undefined;
-    } catch (e) {
-      console.log(e);
-      setOffChainLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getOnChainNAPDatas().then((res) => {
-      res === undefined
-        ? setOnChainLoading(false)
-        : res.map((data) => {
-            const dates: Date = new Date(parseInt(data.timestamp, 10) * 1000);
-            const getDataId = data.id.match(/(?=).*(?=-proposal)/)?.toString();
-            return setOnChainData((_data) => [
-              ..._data,
-              {
-                title: data.data.description.match(/NAP.*/)?.toString() || '',
-                created_at: dates,
-                link: `${t('governance.link.tally')}/proposal/${getDataId}`,
-              },
-            ]);
-          });
-      setOnChainLoading(false);
-    });
-
-    getOffChainNAPTitles().then((title_res) => {
-      title_res === undefined
-        ? setOffChainLoading(false)
-        : title_res.map(async (_res, _x) => {
-            const getNATData = await OffChainTopic.getTopicResult(_res);
-            const dates: Date = new Date(getNATData.data.created_at);
-            setOffChainNapData((napData) => [
-              ...napData,
-              {
-                title: getNATData.data.title,
-                created_at: dates,
-                link: `https://forum.elyfi.world/t/${getNATData.data.slug}`,
-              },
-            ]);
-          });
-
-      setOffChainLoading(false);
-    });
-  }, []);
 
   return (
     <div ref={governancePageY} className="main__governance main__section">
@@ -132,13 +65,15 @@ const MainGovernanceTable: FunctionComponent<Props> = ({
             <p>{t('main.governance.table--date')}</p>
           </div>
           {(!selectButton
-            ? [...(offChainNapData || [])].sort((a, b) => {
+            ? [...(offChainData || [])].sort((a: any, b: any) => {
                 return b.created_at! > a.created_at! ? 1 : -1;
               }) || []
-            : [...(onChainData || [])].sort((a, b) => {
+            : onChainData
+            ? [...(onChainData || [])].sort((a: any, b: any) => {
                 return b.created_at! > a.created_at! ? 1 : -1;
-              }) || []
-          ).map((_data, index) => {
+              })
+            : []
+          ).map((_data: any, index) => {
             return (
               <div
                 key={index}

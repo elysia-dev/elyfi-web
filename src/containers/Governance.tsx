@@ -1,18 +1,26 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import TempAssets from 'src/assets/images/temp_assets.png';
-import OffChainTopic, { INapData } from 'src/clients/OffChainTopic';
 import Skeleton from 'react-loading-skeleton';
-import { IProposals, OnChainTopic } from 'src/clients/OnChainTopic';
-import { utils } from 'ethers';
-import AssetList from 'src/containers/AssetList';
 import { useTranslation } from 'react-i18next';
-import GovernanceGuideBox from 'src/components/GovernanceGuideBox';
 import { useParams, useHistory } from 'react-router-dom';
-import LanguageType from 'src/enums/LanguageType';
+import { utils } from 'ethers';
 import moment from 'moment';
+import reactGA from 'react-ga';
+import useSWR from 'swr';
+
+import {
+  bscOnChainQuery,
+  IProposals,
+  onChainBscFetcher,
+  onChainFetcher,
+  OnChainTopic,
+} from 'src/clients/OnChainTopic';
+import { INapData, topicListFetcher } from 'src/clients/OffChainTopic';
+import AssetList from 'src/containers/AssetList';
+import GovernanceGuideBox from 'src/components/GovernanceGuideBox';
+import LanguageType from 'src/enums/LanguageType';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import reactGA from 'react-ga';
 import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
 import DrawWave from 'src/utiles/drawWave';
@@ -22,16 +30,17 @@ import MainnetType from 'src/enums/MainnetType';
 import SubgraphContext, { IAssetBond } from 'src/contexts/SubgraphContext';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
-
+import {
+  onChainGovernancBsceMiddleware,
+  onChainGovernanceMiddleware,
+} from 'src/middleware/onChainMiddleware';
+import { offChainGovernanceMiddleware } from 'src/middleware/offChainMiddleware';
+import { onChainQuery } from 'src/queries/onChainQuery';
 
 const Governance = (): JSX.Element => {
-  const [onChainLoading, setOnChainLoading] = useState(true);
-  const [offChainLoading, setOffChainLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const [onChainData, setOnChainData] = useState<IProposals[]>([]);
-  const [offChainNapData, setOffChainNapData] = useState<INapData[]>([]);
   const { getAssetBondsByNetwork } = useContext(SubgraphContext);
   const { type: mainnetType } = useContext(MainnetContext);
   const assetBondTokens = getAssetBondsByNetwork(mainnetType);
@@ -44,6 +53,34 @@ const Governance = (): JSX.Element => {
     const parsedId = parseTokenId(product.id);
     return CollateralCategory.Others !== parsedId.collateralCategory;
   });
+
+  const { data: onChainData, isValidating: onChainLoading } = useSWR(
+    onChainQuery,
+    onChainFetcher,
+    {
+      use: [onChainGovernanceMiddleware],
+    },
+  );
+
+  const { data: offChainNapData, isValidating: offChainLoading } = useSWR(
+    '/proxy/c/nap/10.json',
+    topicListFetcher,
+    {
+      use: [offChainGovernanceMiddleware],
+    },
+  );
+
+  const { data: onChainBscData, isValidating: onChainBscLoading } = useSWR(
+    bscOnChainQuery(
+      process.env.NODE_ENV === 'production' && !process.env.REACT_APP_TEST_MODE
+        ? 'elyfi-bsc.eth'
+        : 'test-elyfi-bsc.eth',
+    ),
+    onChainBscFetcher,
+    {
+      use: [onChainGovernancBsceMiddleware],
+    },
+  );
 
   const draw = () => {
     const dpr = window.devicePixelRatio;
@@ -81,137 +118,6 @@ const Governance = (): JSX.Element => {
     setPageNumber((prev) => prev + 1);
   }, [pageNumber]);
 
-  const getOffChainNAPTitles = async () => {
-    try {
-      const getOffChainApis = await OffChainTopic.getTopicList();
-      const getNAPTitles = getOffChainApis.data.topic_list.topics.filter(
-        (topic) => {
-          return topic.title.startsWith('NAP');
-        },
-      );
-      return getNAPTitles.map((title) => title.id) || undefined;
-    } catch (e) {
-      console.log(e);
-      setOffChainLoading(false);
-    }
-  };
-
-  const getETHFinalDecisionDatas = async () => {
-    try {
-      const getOnChainApis = await OnChainTopic.getOnChainTopicData();
-      const getNAPCodes = getOnChainApis.data.data.proposals.filter((topic) => {
-        return topic.status === "ACTIVE";
-      });
-      return getNAPCodes || undefined;
-    } catch (e) {
-      console.log(e);
-      setOnChainLoading(false);
-    }
-  };
-  const getBSCFinalDecisionDatas = async () => {
-    try {
-      const testOnChain = await OnChainTopic.getBscOnChainTopicData();
-      const getNAPDatas = testOnChain.data.data.proposals.filter((proposal) => {
-        return proposal.state === "active";
-      })
-      .map((data, index) => {
-        return {
-          data: {
-            description: data.title,
-          },
-          status: data.state,
-          totalVotesCast: data.scores_total,
-          totalVotesCastAbstained: data.scores[0],
-          totalVotesCastAgainst: data.scores[0],
-          totalVotesCastInSupport: data.scores[0],
-          timestamp: data.start.toString(),
-          id: data.author,
-        } as IProposals
-      })
-      return getNAPDatas || undefined;
-    } catch (e) {
-      console.error(e)
-    }
-  }
-
-  const getFinalDecisionNAPDatas = async () => {
-    return (mainnetType === MainnetType.BSC) ? getBSCFinalDecisionDatas() : getETHFinalDecisionDatas() 
-  }
-
-  useEffect(() => {
-    getOffChainNAPTitles().then((title_res) => {
-      title_res === undefined
-        ? setOffChainLoading(false)
-        : title_res.map(async (_res, _x) => {
-            const getNATData = await OffChainTopic.getTopicResult(_res);
-            const getHTMLStringData: string =
-              getNATData.data.post_stream.posts[0].cooked.toString();
-            const regexNap = /NAP#: .*(?=<)/;
-            const regexNetwork = /Network: BSC.*(?=<)/;
-            setOffChainNapData((napData) => [
-              ...napData,
-              {
-                id: _x,
-                nap:
-                  getHTMLStringData.match(regexNap)?.toString().substring(5) ||
-                  '',
-                status:
-                  getHTMLStringData
-                    .match(/Status: .*(?=<)/)
-                    ?.toString()
-                    .split('Status: ') || '',
-                images:
-                  getHTMLStringData
-                    .match(
-                      /slate.textile.io.*(?=" rel="noopener nofollow ugc">Collateral Image)/,
-                    )
-                    ?.toString() || '',
-                votes:
-                  getNATData.data.post_stream.posts[0].polls[0].options || '',
-                totalVoters:
-                  getNATData.data.post_stream.posts[0].polls[0].voters || '',
-                link: `https://forum.elyfi.world/t/${getNATData.data.slug}`,
-                endedDate:
-                  getNATData.data.post_stream.posts[0].polls[0].close || '',
-                network:
-                  !!getHTMLStringData.match(regexNetwork) === true
-                    ? MainnetType.BSC
-                    : MainnetType.Ethereum,
-              } as INapData,
-            ]);
-          });
-      setOffChainLoading(false);
-    });
-
-    getFinalDecisionNAPDatas().then((res) => {
-      res === undefined
-        ? setOnChainLoading(false)
-        : (
-          setOnChainData([]),
-          res.map((data) => {
-            return setOnChainData((_data) => {
-              // if (!(data.status === 'ACTIVE')) return [..._data];
-              return [
-                ..._data,
-                {
-                  data: {
-                    description: data.data.description
-                      .match(/\d.*(?!NAP)(?=:)/)?.toString(),
-                  },
-                  status: data.status,
-                  totalVotesCast: data.totalVotesCast,
-                  totalVotesCastAbstained: data.totalVotesCastAbstained,
-                  totalVotesCastAgainst: data.totalVotesCastAgainst,
-                  totalVotesCastInSupport: data.totalVotesCastInSupport,
-                  id: data.id.match(/(?=).*(?=-proposal)/)?.toString(),
-                } as IProposals,
-              ];
-            });
-          }))
-      setOnChainLoading(false);
-    });
-  }, [mainnetType]);
-
   useEffect(() => {
     draw();
     window.addEventListener('scroll', () => draw());
@@ -222,7 +128,6 @@ const Governance = (): JSX.Element => {
       window.removeEventListener('resize', () => draw());
     };
   }, [document.body.clientHeight]);
-
 
   const offChainContainer = (data: INapData) => {
     return (
@@ -279,11 +184,12 @@ const Governance = (): JSX.Element => {
         <div>
           <img
             src={
-              offChainNapData.filter((offChainData) => {
+              offChainNapData &&
+              offChainNapData.filter((offChainData: any) => {
                 return offChainData.nap.substring(1) === data.data.description;
               })[0]?.images
                 ? 'https://' +
-                  offChainNapData.filter((offChainData) => {
+                  offChainNapData.filter((offChainData: any) => {
                     return (
                       offChainData.nap.substring(1) === data.data.description
                     );
@@ -306,30 +212,52 @@ const Governance = (): JSX.Element => {
               <h2>For</h2>
               <progress
                 className="governance__asset__progress-bar index-0"
-                value={parseFloat(
-                  utils.formatEther(data.totalVotesCastInSupport),
-                )}
-                max={parseFloat(utils.formatEther(data.totalVotesCast))}
+                value={
+                  typeof data.totalVotesCastInSupport === 'number'
+                    ? data.totalVotesCastInSupport
+                    : parseFloat(
+                        utils.formatEther(data.totalVotesCastInSupport),
+                      )
+                }
+                max={
+                  typeof data.totalVotesCast === 'number'
+                    ? data.totalVotesCast
+                    : parseFloat(utils.formatEther(data.totalVotesCast))
+                }
               />
             </div>
             <div>
               <h2>Against</h2>
               <progress
                 className="governance__asset__progress-bar index-1"
-                value={parseFloat(
-                  utils.formatEther(data.totalVotesCastAgainst),
-                )}
-                max={parseFloat(utils.formatEther(data.totalVotesCast))}
+                value={
+                  typeof data.totalVotesCastAgainst === 'number'
+                    ? data.totalVotesCastAgainst
+                    : parseFloat(utils.formatEther(data.totalVotesCastAgainst))
+                }
+                max={
+                  typeof data.totalVotesCast === 'number'
+                    ? data.totalVotesCast
+                    : parseFloat(utils.formatEther(data.totalVotesCast))
+                }
               />
             </div>
             <div>
               <h2>Abstain</h2>
               <progress
                 className="governance__asset__progress-bar index-2"
-                value={parseFloat(
-                  utils.formatEther(data.totalVotesCastAbstained),
-                )}
-                max={parseFloat(utils.formatEther(data.totalVotesCast))}
+                value={
+                  typeof data.totalVotesCastAbstained === 'number'
+                    ? data.totalVotesCastAbstained
+                    : parseFloat(
+                        utils.formatEther(data.totalVotesCastAbstained),
+                      )
+                }
+                max={
+                  typeof data.totalVotesCast === 'number'
+                    ? data.totalVotesCast
+                    : parseFloat(utils.formatEther(data.totalVotesCast))
+                }
               />
             </div>
           </div>
@@ -350,18 +278,6 @@ const Governance = (): JSX.Element => {
           zIndex: -1,
         }}
       />
-      {/* <img
-        style={{
-          position: 'absolute',
-          left: 0,
-          top: governanceRef.current?.offsetTop,
-          width: '100%',
-          zIndex: -1,
-        }}
-        src={wave}
-        alt={wave}
-      /> */}
-      ;
       <div className="governance">
         <section
           ref={headerRef}
@@ -400,11 +316,13 @@ const Governance = (): JSX.Element => {
             <div>
               <h3>
                 {t('governance.data_verification', {
-                  count: offChainNapData
-                    .filter((data) => data.network === mainnetType)
-                    .filter((data) => {
-                      return moment().isBefore(data.endedDate);
-                    }).length,
+                  count:
+                    offChainNapData &&
+                    offChainNapData
+                      .filter((data: any) => data.network === mainnetType)
+                      .filter((data: any) => {
+                        return moment().isBefore(data.endedDate);
+                      }).length,
                 })}
               </h3>
               <div>
@@ -427,11 +345,14 @@ const Governance = (): JSX.Element => {
             <div>
               <div>
                 <h3>
-                  {t('governance.data_verification--mobile', {
-                    count: offChainNapData
-                      .filter((data) => data.network === mainnetType)
-                      .filter((data) => moment().isBefore(data.endedDate))
-                      .length,
+                  {t('governance.data_verification', {
+                    count:
+                      offChainNapData &&
+                      offChainNapData
+                        .filter((data: any) => data.network === mainnetType)
+                        .filter((data: any) =>
+                          moment().isBefore(data.endedDate),
+                        ).length,
                   })}
                 </h3>
                 <a
@@ -453,19 +374,21 @@ const Governance = (): JSX.Element => {
 
           {offChainLoading ? (
             <Skeleton width={'100%'} height={600} />
-          ) : offChainNapData
-              .filter((data) => data.network === mainnetType)
-              .filter((data) => moment().isBefore(data.endedDate)).length >
-            0 ? (
+          ) : offChainNapData &&
+            offChainNapData
+              .filter((data: any) => data.network === mainnetType)
+              .filter((data: any) => moment().isBefore(data.endedDate)).length >
+              0 ? (
             <div className="governance__grid">
-              {offChainNapData
-                .filter((data) => data.network === mainnetType)
-                .map((data, index) => {
-                  if (data.endedDate && moment().isBefore(data.endedDate)) {
-                    return offChainContainer(data);
-                  }
-                  return null;
-                })}
+              {offChainNapData &&
+                offChainNapData
+                  .filter((data: any) => data.network === mainnetType)
+                  .map((data: any) => {
+                    if (data.endedDate && moment().isBefore(data.endedDate)) {
+                      return offChainContainer(data);
+                    }
+                    return null;
+                  })}
             </div>
           ) : (
             <div className="governance__validation zero">
@@ -477,7 +400,12 @@ const Governance = (): JSX.Element => {
           {mediaQuery === MediaQuery.PC ? (
             <div>
               <h3>
-                {t('governance.on_chain_voting', { count: onChainData.length })}
+                {t('governance.on_chain_voting', {
+                  count:
+                    mainnetType === MainnetType.Ethereum
+                      ? onChainData?.length
+                      : onChainBscData?.length,
+                })}
               </h3>
               <div>
                 <p>
@@ -522,7 +450,7 @@ const Governance = (): JSX.Element => {
               <div>
                 <h3>
                   {t('governance.on_chain_voting', {
-                    count: onChainData.length,
+                    count: onChainData?.length,
                   })}
                 </h3>
                 <a
@@ -555,11 +483,25 @@ const Governance = (): JSX.Element => {
               <p>{t('governance.data_verification__content')}</p>
             </div>
           )}
-          {onChainLoading ? (
+          {mainnetType === MainnetType.Ethereum ? (
+            onChainLoading ? (
+              <Skeleton width={'100%'} height={600} />
+            ) : onChainData && onChainData.length > 0 ? (
+              <div className="governance__grid">
+                {onChainData.map((data: any) => {
+                  return onChainConatainer(data);
+                })}
+              </div>
+            ) : (
+              <div className="governance__onchain-vote zero">
+                <p>{t('governance.onchain_list_zero')}</p>
+              </div>
+            )
+          ) : onChainBscLoading ? (
             <Skeleton width={'100%'} height={600} />
-          ) : onChainData.length > 0 ? (
+          ) : onChainBscData && onChainBscData.length > 0 ? (
             <div className="governance__grid">
-              {onChainData.map((data, index) => {
+              {onChainBscData.map((data: any) => {
                 return onChainConatainer(data);
               })}
             </div>

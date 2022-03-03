@@ -47,7 +47,9 @@
   },
   "externalApiEndpoint": {
     "etherscanURI": "https://etherscan.io",
-    "bscscanURI": "https://testnet.bscscan.com"
+    "bscscanURI": "https://testnet.bscscan.com",
+    "cachedUniswapV3URL": "https://external-api-responses.s3.amazonaws.com/prod/uniswap-v3-subgraph.json",
+    "coingackoURL": "https://api.coingecko.com/api/v3/simple/price?ids=elysia,dai,ethereum,tether&vs_currencies=usd"
   },
   "tokenizer": {
     "daiTokenizerAddress": "0xc6701e7be98A79485364419961838EB141141aAf",

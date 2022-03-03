@@ -21,7 +21,7 @@ const useERC20 = (address: string): ERC20 => {
             : address === envs.token.bscElfiAddress
             ? envs.jsonRpcUrl.bsc
             : process.env.REACT_APP_JSON_RPC,
-        ),
+        ) as any,
       );
     }
     return ERC20__factory.connect(address, library.getSigner());
