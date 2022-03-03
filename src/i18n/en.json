@@ -311,7 +311,11 @@
       },
       "elfi": {
         "staking__content": "Stake ELFI tokens and get reward tokens and voting rights!\nELFI holders can participate in decentralized governance(DAO) by staking their ELFI and receive a distribution of protocol net profits when staking ELFI",
-        "staking__content--button": "Buy ELFI on Uniswap"
+        "staking__content--button": {
+          "uniswap": "Buy ELFI on Uniswap",
+          "pancakeswap": "Buy ELFI on PancakeSwap",
+          "wormhole": "Wormhole 토큰 브릿지 이용하기"
+        }
       },
       "receive_reward": "보상 수령",
       "loacation_staking": "스테이킹",
