@@ -38,7 +38,7 @@ const useStakingRoundData = (
         mainnet === 'BSC'
           ? envs.jsonRpcUrl.bsc
           : process.env.REACT_APP_JSON_RPC,
-      ),
+      ) as any,
     );
   }, [stakedToken, round, mainnet]);
 
