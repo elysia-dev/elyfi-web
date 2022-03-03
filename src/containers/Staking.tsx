@@ -348,17 +348,6 @@ const Staking: React.FunctionComponent<IProps> = ({
           />
         </>
       )}
-      {/* <img
-        style={{
-          position: 'absolute',
-          left: 0,
-          top: tokenRef.current?.offsetTop,
-          width: '100%',
-          zIndex: -1,
-        }}
-        src={wave}
-        alt={wave}
-      /> */}
       <section className="staking">
         <section>
           <div ref={headerRef} className="staking__title">
