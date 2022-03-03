@@ -118,6 +118,7 @@ const useStakingFetchRoundData = (
       );
       setroundData(data);
       setLoading(false);
+      setError(false);
     } catch (error) {
       console.log(error);
       const data = await Promise.all(
@@ -133,10 +134,18 @@ const useStakingFetchRoundData = (
 
   useEffect(() => {
     fetchRoundData(account);
-  }, [account, poolApr, getMainnetType]);
+  }, [
+    account,
+    poolApr,
+    getMainnetType,
+    stakingPool,
+    rewardContractForV2,
+    elfiV2StakingContract,
+  ]);
 
   useEffect(() => {
     setLoading(true);
+    setError(false);
   }, [account, getMainnetType]);
 
   return { roundData, loading, error, fetchRoundData };

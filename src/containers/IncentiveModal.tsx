@@ -45,7 +45,7 @@ const IncentiveModal: FunctionComponent<{
   const { t } = useTranslation();
 
   const reqeustClaimIncentive = async () => {
-    setTransactionWait()
+    setTransactionWait();
     if (!account) return;
 
     const emitter = buildEventEmitter(
@@ -91,36 +91,34 @@ const IncentiveModal: FunctionComponent<{
       <div className="modal__container">
         <ModalHeader title={'ELFI'} image={ElifyTokenImage} onClose={onClose} />
         <div className="modal__body">
-          {
-            transactionWait ? (
-              <LoadingIndicator isTxActive={transactionWait} />
-            ) : (
-              <>
-               <div
-                  className="modal__incentive__body"
-                  style={{
-                    height: 140,
-                    overflowY: 'clip',
-                  }}>
-                  <CountUp
-                    className="modal__incentive__value bold"
-                    start={parseFloat(formatEther(balanceBefore))}
-                    end={parseFloat(formatEther(balanceAfter))}
-                    formattingFn={(number) => {
-                      return formatSixFracionDigit(number);
-                    }}
-                    decimals={6}
-                    duration={1}
-                  />
-                </div>
-              </>
-            )
-          }
+          {transactionWait ? (
+            <LoadingIndicator isTxActive={transactionWait} />
+          ) : (
+            <>
+              <div
+                className="modal__incentive__body"
+                style={{
+                  height: 140,
+                  overflowY: 'clip',
+                }}>
+                <CountUp
+                  className="modal__incentive__value bold"
+                  start={parseFloat(formatEther(balanceBefore))}
+                  end={parseFloat(formatEther(balanceAfter))}
+                  formattingFn={(number) => {
+                    return formatSixFracionDigit(number);
+                  }}
+                  decimals={6}
+                  duration={1}
+                />
+              </div>
+            </>
+          )}
 
           <div
-            className={`modal__button ${transactionWait ? "disable" : ""}`}
+            className={`modal__button ${transactionWait ? 'disable' : ''}`}
             onClick={() => reqeustClaimIncentive()}>
-            <p>{"CLAIM REWARD"}</p>
+            <p>{'CLAIM REWARD'}</p>
           </div>
         </div>
       </div>

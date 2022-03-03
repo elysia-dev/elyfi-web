@@ -591,6 +591,12 @@
         "title": "Disable migration",
         "content": "The ELFI staking migration function has been temporarily disabled due to an error inquiry about the migration function, which is currently provided for convenience.\nIf you participate in the 6th staking, please staking in the 6th pool after unstaking",
         "button": "OK"
+      },
+      "wallet_change_netwrok": {
+        "title": "Network Error",
+        "content": "To use {{network}} in ELYFI, please select the network\nin your wallet and connect your wallet again!",
+        "subContent": "(Please check if the connected wallet supports the network.)",
+        "button": "Connect wallet again"
       }
     },
     "guide": {

@@ -109,7 +109,8 @@ const Navigation: React.FunctionComponent<{
           setGlobalNavHover(0);
           setSelectedLocalNavIndex(0);
         }}>
-        {window.ethereum?.isMetaMask ? <Wallet /> : <InstallMetamask />}
+        {/* {window.ethereum?.isMetaMask ? <Wallet /> : <InstallMetamask />} */}
+        <Wallet />
       </div>
     );
   };
