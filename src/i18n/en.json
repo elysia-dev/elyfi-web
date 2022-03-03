@@ -314,7 +314,7 @@
         "staking__content--button": {
           "uniswap": "Buy ELFI on Uniswap",
           "pancakeswap": "Buy ELFI on PancakeSwap",
-          "wormhole": "Wormhole 토큰 브릿지 이용하기"
+          "wormhole": "Use Wormhole Token Bridge"
         }
       },
       "receive_reward": "보상 수령",
