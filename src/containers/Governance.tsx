@@ -1,4 +1,5 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import TempAssets from 'src/assets/images/temp_assets.png';
 import Skeleton from 'react-loading-skeleton';
 import { useTranslation } from 'react-i18next';
 import { useParams, useHistory } from 'react-router-dom';
@@ -7,8 +8,13 @@ import moment from 'moment';
 import reactGA from 'react-ga';
 import useSWR from 'swr';
 
-import { IProposals, onChainFetcher } from 'src/clients/OnChainTopic';
-import TempAssets from 'src/assets/images/temp_assets.png';
+import {
+  bscOnChainQuery,
+  IProposals,
+  onChainBscFetcher,
+  onChainFetcher,
+  OnChainTopic,
+} from 'src/clients/OnChainTopic';
 import { INapData, topicListFetcher } from 'src/clients/OffChainTopic';
 import AssetList from 'src/containers/AssetList';
 import GovernanceGuideBox from 'src/components/GovernanceGuideBox';
@@ -24,11 +30,14 @@ import MainnetType from 'src/enums/MainnetType';
 import SubgraphContext, { IAssetBond } from 'src/contexts/SubgraphContext';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
-import { onChainGovernanceMiddleware } from 'src/middleware/onChainMiddleware';
+import {
+  onChainGovernancBsceMiddleware,
+  onChainGovernanceMiddleware,
+} from 'src/middleware/onChainMiddleware';
 import { offChainGovernanceMiddleware } from 'src/middleware/offChainMiddleware';
 import { onChainQuery } from 'src/queries/onChainQuery';
 
-const Governance = () => {
+const Governance = (): JSX.Element => {
   const [pageNumber, setPageNumber] = useState(1);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -39,6 +48,7 @@ const Governance = () => {
   const History = useHistory();
   const { value: mediaQuery } = useMediaQueryType();
   const { lng } = useParams<{ lng: string }>();
+  const defaultShowingLoanData = mediaQuery === MediaQuery.Mobile ? 8 : 9;
   const assetBondTokensBackedByEstate = assetBondTokens.filter((product) => {
     const parsedId = parseTokenId(product.id);
     return CollateralCategory.Others !== parsedId.collateralCategory;
@@ -57,6 +67,18 @@ const Governance = () => {
     topicListFetcher,
     {
       use: [offChainGovernanceMiddleware],
+    },
+  );
+
+  const { data: onChainBscData, isValidating: onChainBscLoading } = useSWR(
+    bscOnChainQuery(
+      process.env.NODE_ENV === 'production' && !process.env.REACT_APP_TEST_MODE
+        ? 'elyfi-bsc.eth'
+        : 'test-elyfi-bsc.eth',
+    ),
+    onChainBscFetcher,
+    {
+      use: [onChainGovernancBsceMiddleware],
     },
   );
 
@@ -190,30 +212,52 @@ const Governance = () => {
               <h2>For</h2>
               <progress
                 className="governance__asset__progress-bar index-0"
-                value={parseFloat(
-                  utils.formatEther(data.totalVotesCastInSupport),
-                )}
-                max={parseFloat(utils.formatEther(data.totalVotesCast))}
+                value={
+                  typeof data.totalVotesCastInSupport === 'number'
+                    ? data.totalVotesCastInSupport
+                    : parseFloat(
+                        utils.formatEther(data.totalVotesCastInSupport),
+                      )
+                }
+                max={
+                  typeof data.totalVotesCast === 'number'
+                    ? data.totalVotesCast
+                    : parseFloat(utils.formatEther(data.totalVotesCast))
+                }
               />
             </div>
             <div>
               <h2>Against</h2>
               <progress
                 className="governance__asset__progress-bar index-1"
-                value={parseFloat(
-                  utils.formatEther(data.totalVotesCastAgainst),
-                )}
-                max={parseFloat(utils.formatEther(data.totalVotesCast))}
+                value={
+                  typeof data.totalVotesCastAgainst === 'number'
+                    ? data.totalVotesCastAgainst
+                    : parseFloat(utils.formatEther(data.totalVotesCastAgainst))
+                }
+                max={
+                  typeof data.totalVotesCast === 'number'
+                    ? data.totalVotesCast
+                    : parseFloat(utils.formatEther(data.totalVotesCast))
+                }
               />
             </div>
             <div>
               <h2>Abstain</h2>
               <progress
                 className="governance__asset__progress-bar index-2"
-                value={parseFloat(
-                  utils.formatEther(data.totalVotesCastAbstained),
-                )}
-                max={parseFloat(utils.formatEther(data.totalVotesCast))}
+                value={
+                  typeof data.totalVotesCastAbstained === 'number'
+                    ? data.totalVotesCastAbstained
+                    : parseFloat(
+                        utils.formatEther(data.totalVotesCastAbstained),
+                      )
+                }
+                max={
+                  typeof data.totalVotesCast === 'number'
+                    ? data.totalVotesCast
+                    : parseFloat(utils.formatEther(data.totalVotesCast))
+                }
               />
             </div>
           </div>
@@ -234,18 +278,6 @@ const Governance = () => {
           zIndex: -1,
         }}
       />
-      {/* <img
-        style={{
-          position: 'absolute',
-          left: 0,
-          top: governanceRef.current?.offsetTop,
-          width: '100%',
-          zIndex: -1,
-        }}
-        src={wave}
-        alt={wave}
-      /> */}
-      ;
       <div className="governance">
         <section
           ref={headerRef}
@@ -369,25 +401,48 @@ const Governance = () => {
             <div>
               <h3>
                 {t('governance.on_chain_voting', {
-                  count: onChainData?.length,
+                  count:
+                    mainnetType === MainnetType.Ethereum
+                      ? onChainData?.length
+                      : onChainBscData?.length,
                 })}
               </h3>
               <div>
-                <p>{t('governance.on_chain_voting__content')}</p>
-                {mainnetType === MainnetType.Ethereum && (
-                  <a
-                    href={`${t('governance.link.tally')}`}
-                    target="_blank"
-                    rel="noopener noreferer">
-                    <div
-                      className="deposit__table__body__amount__button"
-                      style={{
-                        width: 230,
-                      }}>
-                      <p>{t('governance.onChain_tally_button')}</p>
-                    </div>
-                  </a>
-                )}
+                <p>
+                  {t(
+                    `governance.on_chain_voting__content.${
+                      mainnetType === MainnetType.Ethereum
+                        ? 'tally'
+                        : 'snapshot'
+                    }`,
+                  )}
+                </p>
+                <a
+                  href={`${t(
+                    `governance.link.${
+                      mainnetType === MainnetType.Ethereum
+                        ? 'tally'
+                        : 'snapshot'
+                    }`,
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferer">
+                  <div
+                    className="deposit__table__body__amount__button"
+                    style={{
+                      width: 230,
+                    }}>
+                    <p>
+                      {t(
+                        `governance.onChain_button.${
+                          mainnetType === MainnetType.Ethereum
+                            ? 'tally'
+                            : 'snapshot'
+                        }`,
+                      )}
+                    </p>
+                  </div>
+                </a>
               </div>
             </div>
           ) : (
@@ -398,20 +453,32 @@ const Governance = () => {
                     count: onChainData?.length,
                   })}
                 </h3>
-                {mainnetType === MainnetType.Ethereum && (
-                  <a
-                    href={`${t('governance.link.tally')}`}
-                    target="_blank"
-                    rel="noopener noreferer">
-                    <div
-                      className="deposit__table__body__amount__button"
-                      style={{
-                        width: 150,
-                      }}>
-                      <p>{t('governance.onChain_tally_button')}</p>
-                    </div>
-                  </a>
-                )}
+                <a
+                  href={`${t(
+                    `governance.link.${
+                      mainnetType === MainnetType.Ethereum
+                        ? 'tally'
+                        : 'snapshot'
+                    }`,
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferer">
+                  <div
+                    className="deposit__table__body__amount__button"
+                    style={{
+                      width: 150,
+                    }}>
+                    <p>
+                      {t(
+                        `governance.onChain_button.${
+                          mainnetType === MainnetType.Ethereum
+                            ? 'tally'
+                            : 'snapshot'
+                        }`,
+                      )}
+                    </p>
+                  </div>
+                </a>
               </div>
               <p>{t('governance.data_verification__content')}</p>
             </div>
@@ -430,9 +497,17 @@ const Governance = () => {
                 <p>{t('governance.onchain_list_zero')}</p>
               </div>
             )
+          ) : onChainBscLoading ? (
+            <Skeleton width={'100%'} height={600} />
+          ) : onChainBscData && onChainBscData.length > 0 ? (
+            <div className="governance__grid">
+              {onChainBscData.map((data: any) => {
+                return onChainConatainer(data);
+              })}
+            </div>
           ) : (
             <div className="governance__onchain-vote zero">
-              <h2>COMING SOON!</h2>
+              <p>{t('governance.onchain_list_zero')}</p>
             </div>
           )}
         </section>
@@ -470,7 +545,7 @@ const Governance = () => {
                   assetBondTokens={
                     /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
                     [...((assetBondTokensBackedByEstate as IAssetBond[]) || [])]
-                      .slice(0, pageNumber * 9)
+                      .slice(0, pageNumber * defaultShowingLoanData)
                       .sort((a, b) => {
                         return b.loanStartTimestamp! - a.loanStartTimestamp! >=
                           0
@@ -480,7 +555,8 @@ const Governance = () => {
                   }
                 />
                 {assetBondTokensBackedByEstate.length &&
-                  assetBondTokensBackedByEstate.length >= pageNumber * 9 && (
+                  assetBondTokensBackedByEstate.length >=
+                    pageNumber * defaultShowingLoanData && (
                     <div>
                       <button
                         className="portfolio__view-button"

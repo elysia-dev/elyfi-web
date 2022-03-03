@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import getLocalLanauge from 'src/utiles/getLocalLanguage';
@@ -24,11 +24,7 @@ const LanguageProvider: React.FC = (props) => {
   };
 
   useEffect(() => {
-    if (
-      [LanguageType.EN, LanguageType.KO, LanguageType.ZHHANS].includes(
-        lng as LanguageType,
-      )
-    ) {
+    if ([LanguageType.EN, LanguageType.KO].includes(lng as LanguageType)) {
       i18n.changeLanguage(lng);
     } else {
       history.replace(`/${getLocalLanauge()}`);

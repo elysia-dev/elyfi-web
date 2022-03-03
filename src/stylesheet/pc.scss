@@ -12,7 +12,7 @@ $governance-progress-00: #0099cc;
 $governance-progress-01: #cc0000;
 $governance-progress-02: #888888;
 
-$bold: 'SpoqaHanSansNeo-Bold', 'Montserrat-bold';
+$bold: 'Inter-Bold', 'Montserrat-bold';
 $device-width: 1190px;
 
 @mixin page-container {
@@ -174,6 +174,7 @@ $device-width: 1190px;
         z-index: 9999;
         background: rgba(0, 0, 0, 0.7);
         overflow: hidden;
+        backdrop-filter: blur(4px);
         &__container {
           top: 50%;
           left: 50%;
@@ -741,7 +742,6 @@ $device-width: 1190px;
           }
         }
         &__more {
-          height: 60px;
           margin-top: 20px;
           > p {
             font-size: 18px;
@@ -1096,6 +1096,7 @@ $device-width: 1190px;
         &__container {
           margin-top: 130px;
           padding: 31px 29px 15px;
+          background: #ffffff;
         }
         &__header {
           padding-bottom: 27px;
@@ -1498,7 +1499,7 @@ $device-width: 1190px;
               justify-content: space-between;
               margin-bottom: 7px;
               > div:first-child {
-                font-family: 'SpoqaHanSansNeo';
+                font-family: 'Inter';
                 font-size: 12px;
                 color: $gray-font-color;
               }
@@ -1682,9 +1683,11 @@ $device-width: 1190px;
             }
           }
           &--left {
+            position: relative;
             padding-right: 25px;
           }
           &--right {
+            position: relative;
             padding-left: 25px;
           }
         }
@@ -1707,6 +1710,7 @@ $device-width: 1190px;
             padding-left: 25px;
             padding-top: 30px;
             padding-bottom: 30px;
+            position: relative;
             > div {
               margin-bottom: 20px;
               > p {
@@ -1720,6 +1724,7 @@ $device-width: 1190px;
 
     .staking {
       @include page-container;
+      position: relative;
       &__title {
         > h2 {
           font-size: 30px;
@@ -1931,6 +1936,7 @@ $device-width: 1190px;
           gap: 25px;
           &__container {
             flex: 1;
+            position: relative;
           }
           &__header {
             padding: 20px 30px;

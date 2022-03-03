@@ -2,11 +2,9 @@ import moment from 'moment';
 import {
   moneyPoolStartedAt,
   tetherMoneyPoolStartedAt,
-  tetherMoneyPoolEndedAt,
   busdMoneypoolStartedAt,
   busdMoneypoolEndedAt,
 } from 'src/core/data/moneypoolTimes';
-import Token from 'src/enums/Token';
 
 const daiDepositRewardPerSecond = (3000000 * 2) / (365 * 24 * 3600);
 

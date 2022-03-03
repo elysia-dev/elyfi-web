@@ -16,6 +16,7 @@ interface IERC20Info {
 const useERC20Info = (
   contractAddress: string,
   targetAddress: string,
+  visible?: boolean,
 ): IERC20Info => {
   const { account } = useWeb3React();
   const contract = useERC20(contractAddress);
@@ -60,7 +61,7 @@ const useERC20Info = (
   );
 
   useEffect(() => {
-    if (account) {
+    if (account && visible) {
       load(account);
     } else {
       setState({
@@ -71,7 +72,7 @@ const useERC20Info = (
         error: null,
       });
     }
-  }, [account, targetAddress]);
+  }, [account, targetAddress, visible]);
 
   return {
     ...state,

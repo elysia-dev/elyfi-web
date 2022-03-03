@@ -11,7 +11,7 @@ export interface IReserve {
   image: string;
   decimals: number;
   address: string;
-  tokeninzer?: string;
+  tokenizer?: string;
 }
 
 export const reserveTokenData = {
@@ -19,21 +19,21 @@ export const reserveTokenData = {
     name: 'DAI',
     image: dai,
     decimals: 18,
-    address: envs.daiAddress,
-    tokeninzer: envs.daiTokenizerAddress,
+    address: envs.token.daiAddress,
+    tokenizer: envs.tokenizer.daiTokenizerAddress,
   },
   USDT: {
     name: 'USDT',
     image: usdt,
     decimals: 6,
-    address: envs.usdtAddress,
-    tokeninzer: envs.usdtTokeninzerAddress,
+    address: envs.token.usdtAddress,
+    tokenizer: envs.tokenizer.usdtTokenizerAddress,
   },
   EL: {
     name: 'EL',
     image: el,
     decimals: 18,
-    address: envs.elAddress,
+    address: envs.token.elAddress,
   },
   ETH: {
     name: 'ETH',
@@ -51,8 +51,9 @@ export const reserveTokenData = {
     name: 'BUSD',
     image: busd,
     decimals: 18,
-    address: envs.busdAddress,
-  }
+    address: envs.token.busdAddress,
+    tokenizer: envs.tokenizer.busdTokenizerAddress,
+  },
 };
 
 const reserves: IReserve[] = [
@@ -60,21 +61,21 @@ const reserves: IReserve[] = [
     name: 'USDT',
     image: usdt,
     decimals: 6,
-    address: envs.usdtAddress,
-    tokeninzer: envs.usdtTokeninzerAddress,
+    address: envs.token.usdtAddress,
+    tokenizer: envs.tokenizer.usdtTokenizerAddress,
   },
   {
     name: 'DAI',
     image: dai,
     decimals: 18,
-    address: envs.daiAddress,
-    tokeninzer: envs.daiTokenizerAddress,
+    address: envs.token.daiAddress,
+    tokenizer: envs.tokenizer.daiTokenizerAddress,
   },
   {
     name: 'EL',
     image: el,
     decimals: 18,
-    address: envs.elAddress,
+    address: envs.token.elAddress,
   },
   {
     name: 'ETH',
@@ -92,8 +93,9 @@ const reserves: IReserve[] = [
     name: 'BUSD',
     image: busd,
     decimals: 18,
-    address: envs.busdAddress,
-  }
+    address: envs.token.busdAddress,
+    tokenizer: envs.tokenizer.busdTokenizerAddress,
+  },
 ];
 
 export default reserves;

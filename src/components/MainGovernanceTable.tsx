@@ -1,4 +1,4 @@
-import { FunctionComponent, RefObject, useState } from 'react';
+import { FunctionComponent, RefObject, useEffect, useState } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import useSWR from 'swr';
 
@@ -76,6 +76,7 @@ const MainGovernanceTable: FunctionComponent<Props> = ({
           ).map((_data: any, index) => {
             return (
               <div
+                key={index}
                 className="main__governance__body"
                 style={{ display: index >= 5 && !moreload ? 'none' : 'flex' }}
                 onClick={() => window.open(_data.link)}>

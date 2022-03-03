@@ -15,7 +15,7 @@ const UniswapPoolProvider: React.FC = (props) => {
   );
 
   const { data: poolData, error: cachedUniswapError } = useSWR(
-    envs.cachedUniswapV3URL,
+    envs.externalApiEndpoint.cachedUniswapV3URL,
     poolDataFetcher,
   );
 

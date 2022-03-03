@@ -1,15 +1,27 @@
 import { useWeb3React } from '@web3-react/core';
 import { useMemo } from 'react';
-import { ERC20__factory } from '@elysia-dev/contract-typechain';
+import envs from 'src/core/envs';
+import { ERC20, ERC20__factory } from '@elysia-dev/contract-typechain';
 import { providers } from 'ethers';
+import useCurrentChain from './useCurrentChain';
 
-const useERC20 = (address: string) => {
+const useERC20 = (address: string): ERC20 => {
   const { library } = useWeb3React();
+  const currentChain = useCurrentChain();
+
   const contract = useMemo(() => {
     if (!library) {
       return ERC20__factory.connect(
         address,
-        new providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC)
+        new providers.JsonRpcProvider(
+          currentChain?.name === 'BSC Test'
+            ? address === envs.token.testBscElfiAddress
+              ? envs.jsonRpcUrl.bsc
+              : process.env.REACT_APP_JSON_RPC
+            : address === envs.token.bscElfiAddress
+            ? envs.jsonRpcUrl.bsc
+            : process.env.REACT_APP_JSON_RPC,
+        ),
       );
     }
     return ERC20__factory.connect(address, library.getSigner());

@@ -1,7 +1,7 @@
 import { BigNumber, constants, utils } from 'ethers';
 import moment from 'moment';
 import Skeleton from 'react-loading-skeleton';
-import stakingRoundTimes from 'src/core/data/stakingRoundTimes';
+import { IStakingPoolRound } from 'src/core/data/stakingRoundTimes';
 import { formatComma, toCompact } from 'src/utiles/formatters';
 import { Trans, useTranslation } from 'react-i18next';
 import { FunctionComponent } from 'react';
@@ -14,21 +14,25 @@ type Props = {
   loading: boolean;
   poolApr: BigNumber;
   poolPrincipal: BigNumber;
-  staking: number;
+  stakedRound: number;
   unit: string;
+  stakingRoundDate: IStakingPoolRound[];
 };
 
 const StakingBoxHeader: FunctionComponent<Props> = (props) => {
   const current = moment();
-  const { t, i18n } = useTranslation();
-  const tokenImg = props.unit === Token.DAI ? elfi : el;
-  const tokenName = props.unit === 'DAI' ? 'ELFI' : 'EL';
+  const { t } = useTranslation();
+  const tokenName = props.unit !== Token.ELFI ? 'ELFI' : 'EL';
   const currentNth = props.nth;
+
   return (
     <>
       <div className="reward__token__header">
-        <img src={tokenImg} />
-        <h2 className={`reward__token__header__token ${tokenName === "EL" ? "el" : ""}`}>
+        <img src={props.unit === Token.ELFI ? el : elfi} />
+        <h2
+          className={`reward__token__header__token ${
+            props.unit === Token.ELFI ? 'el' : ''
+          }`}>
           <Trans
             i18nKey={'reward.staking__nth'}
             values={{
@@ -45,10 +49,13 @@ const StakingBoxHeader: FunctionComponent<Props> = (props) => {
           })} `}</p>
           <div>
             <h2 className="percent">
-              {props.loading ? (
+              {props.loading ||
+              props.stakingRoundDate.length - 1 < props.stakedRound ? (
                 <Skeleton width={50} />
               ) : props.poolApr.eq(constants.MaxUint256) ||
-                current.isAfter(stakingRoundTimes[props.staking].endedAt) ? (
+                current.isAfter(
+                  props.stakingRoundDate[props.stakedRound].endedAt,
+                ) ? (
                 '-'
               ) : (
                 toCompact(parseFloat(utils.formatUnits(props.poolApr, 25)))
@@ -68,7 +75,7 @@ const StakingBoxHeader: FunctionComponent<Props> = (props) => {
                 formatComma(props.poolPrincipal)
               )}
             </h2>
-            <span className="bold">{props.unit === 'DAI' ? 'ELFI' : 'EL'}</span>
+            <span className="bold">{tokenName}</span>
           </div>
         </div>
       </div>
