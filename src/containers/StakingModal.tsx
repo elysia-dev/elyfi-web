@@ -106,7 +106,7 @@ const StakingModal: React.FunctionComponent<{
         />
         {transactionWait ||
         allowanceLoading ||
-        (txStatus === TxStatus.PENDING && !allowance.gte(balance)) ? (
+        (txStatus === TxStatus.PENDING && !allowance.gt(balance)) ? (
           <LoadingIndicator
             isTxActive={transactionWait || txStatus === TxStatus.PENDING}
             button={
@@ -115,10 +115,10 @@ const StakingModal: React.FunctionComponent<{
                 : undefined
             }
             isApproveLoading={
-              txStatus === TxStatus.PENDING && !allowance.gte(balance)
+              txStatus === TxStatus.PENDING && !allowance.gt(balance)
             }
           />
-        ) : (!allowanceLoading && allowance.gte(balance)) || !stakingMode ? (
+        ) : (!allowanceLoading && allowance.gt(balance)) || !stakingMode ? (
           <>
             <div className="modal__body">
               <div className="modal__input">
@@ -313,7 +313,7 @@ const StakingModal: React.FunctionComponent<{
                 </p>
               </div>
             ) : (
-              (allowance.gte(balance) || transactionWait) && (
+              (allowance.gt(balance) || transactionWait) && (
                 <div
                   className={`modal__button${
                     amountLteZero || amountGtBalance || transactionWait
