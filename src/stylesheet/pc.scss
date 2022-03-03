@@ -753,47 +753,7 @@ $device-width: 1190px;
     .deposit {
       @include page-container;
       padding-top: 100px;
-      &__event {
-        border: 1px solid $gray-line;
-        border-radius: 5px;
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        height: 152px;
-        align-items: center;
-        margin-bottom: 40px;
-        justify-content: space-between;
-        &__box {
-          background: $elysia-color;
-          width: 90px;
-          height: 90px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-left: 30px;
-          border-radius: 10px;
-          > p {
-            color: $background-color;
-            font-size: 15px;
-          }
-        }
-        > div {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          > h2 {
-            font-size: 20px;
-            margin-left: 20px;
-            line-height: 35px;
-            strong {
-              color: $elysia-color;
-            }
-          }
-        }
-        > img {
-          height: 152px;
-        }
-      }
+      
       &__title {
         .react-loading-skeleton {
           margin-top: 20px;
