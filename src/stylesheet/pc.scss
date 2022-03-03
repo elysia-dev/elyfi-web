@@ -1734,6 +1734,11 @@ $device-width: 1190px;
           line-height: 25px;
           font-size: 15px;
         }
+        &__token {
+          display: flex;
+          width: 583px;
+          justify-content: space-between;
+        }
         &__button {
           min-width: 220px;
           min-height: 35px;
@@ -1749,6 +1754,7 @@ $device-width: 1190px;
               width: 34px;
               height: 34px;
               margin-left: -10px;
+              margin-right: 5px;
             }
           }
         }
