@@ -4,7 +4,6 @@ import { IMainnet, mainnets } from 'src/core/data/mainnets';
 
 const useCurrentChain = (): IMainnet | undefined => {
   const { chainId } = useWeb3React();
-
   const currentChain = useMemo(() => {
     return mainnets.find((mainnet) => {
       return mainnet.chainId === chainId;

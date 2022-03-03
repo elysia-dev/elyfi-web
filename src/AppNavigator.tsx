@@ -24,21 +24,32 @@ import MarketDetail from 'src/containers/MarketDetails';
 import PortfolioDetail from 'src/containers/PortfolioDetail';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
+import { isMetamask, isWalletConnector } from './utiles/connectWallet';
+import walletConnectConnector from './utiles/walletConnectProvider';
+
+const walletConnectProvider = walletConnectConnector();
 
 const AppNavigator: React.FC = () => {
   const [hamburgerBar, setHamburgerBar] = useState(false);
   const { value: mediaQuery } = useMediaQueryType();
 
-  const { deactivate, activate } = useWeb3React();
+  const { deactivate, activate, library } = useWeb3React();
+
   usePageTracking();
 
   useEffect(() => {
-    if (window.sessionStorage.getItem('@connect') === 'true') {
+    if (isWalletConnector()) {
+      activate(walletConnectProvider);
+      return;
+    }
+    if (isMetamask()) {
       activate(InjectedConnector);
+      // return;
     } else {
       deactivate();
       window.sessionStorage.removeItem('@network');
     }
+    // deactivate();
   }, []);
 
   const LanguageDetctionPage = () => {

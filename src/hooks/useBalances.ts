@@ -126,7 +126,7 @@ type ReturnType = {
 // ! FIXME
 // 1. Use other naming. Balance dose not cover the usefulness
 const useBalances = (refetchUserData: () => void): ReturnType => {
-  const { account, library, chainId } = useWeb3React();
+  const { account, chainId, library } = useWeb3React();
   const { data } = useContext(SubgraphContext);
   const [balances, setBalances] = useState<BalanceType[]>(
     data.reserves.map((reserve) => {
@@ -176,7 +176,6 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     if (!account) {
       return;
     }
-
     try {
       refetchUserData();
       setBalances(

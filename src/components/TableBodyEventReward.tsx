@@ -16,6 +16,7 @@ type Props = {
   expectedAdditionalIncentiveAfter: BigNumber;
   buttonEvent: ((e: any) => void) | undefined;
   tokenName: ReserveToken;
+  isWrongMainnet: boolean;
 };
 
 const TableBodyEventReward: FunctionComponent<Props> = ({
@@ -24,6 +25,7 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
   expectedAdditionalIncentiveBefore,
   buttonEvent,
   tokenName,
+  isWrongMainnet,
 }) => {
   const { t, i18n } = useTranslation();
   const { account } = useWeb3React();
@@ -49,20 +51,24 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
               <div className="bold">
                 {' '}
                 {account && !unsupportedChainid ? (
-                  <CountUp
-                    className="bold amounts"
-                    start={parseFloat(
-                      formatEther(expectedAdditionalIncentiveBefore),
-                    )}
-                    end={parseFloat(
-                      formatEther(expectedAdditionalIncentiveAfter),
-                    )}
-                    formattingFn={(number) => {
-                      return formatSixFracionDigit(number);
-                    }}
-                    decimals={6}
-                    duration={1}
-                  />
+                  isWrongMainnet ? (
+                    '-'
+                  ) : (
+                    <CountUp
+                      className="bold amounts"
+                      start={parseFloat(
+                        formatEther(expectedAdditionalIncentiveBefore),
+                      )}
+                      end={parseFloat(
+                        formatEther(expectedAdditionalIncentiveAfter),
+                      )}
+                      formattingFn={(number) => {
+                        return formatSixFracionDigit(number);
+                      }}
+                      decimals={6}
+                      duration={1}
+                    />
+                  )
                 ) : (
                   '-'
                 )}
@@ -83,20 +89,24 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
                 <div className="bold">
                   {' '}
                   {account && !unsupportedChainid ? (
-                    <CountUp
-                      className="bold amounts"
-                      start={parseFloat(
-                        formatEther(expectedAdditionalIncentiveBefore),
-                      )}
-                      end={parseFloat(
-                        formatEther(expectedAdditionalIncentiveAfter),
-                      )}
-                      formattingFn={(number) => {
-                        return formatSixFracionDigit(number);
-                      }}
-                      decimals={6}
-                      duration={1}
-                    />
+                    isWrongMainnet ? (
+                      '-'
+                    ) : (
+                      <CountUp
+                        className="bold amounts"
+                        start={parseFloat(
+                          formatEther(expectedAdditionalIncentiveBefore),
+                        )}
+                        end={parseFloat(
+                          formatEther(expectedAdditionalIncentiveAfter),
+                        )}
+                        formattingFn={(number) => {
+                          return formatSixFracionDigit(number);
+                        }}
+                        decimals={6}
+                        duration={1}
+                      />
+                    )
                   ) : (
                     '-'
                   )}

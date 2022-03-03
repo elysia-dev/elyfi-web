@@ -1,4 +1,3 @@
-import { useWeb3React } from '@web3-react/core';
 import { reserveTokenData } from 'src/core/data/reserves';
 import { useContext, useState, useMemo, useEffect } from 'react';
 import { toPercent } from 'src/utiles/formatters';
@@ -14,7 +13,6 @@ import ReactGA from 'react-ga';
 import TokenTable from 'src/components/TokenTable';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
 import IncentiveModal from 'src/containers/IncentiveModal';
-import isWalletConnect from 'src/hooks/isWalletConnect';
 import ConnectWalletModal from 'src/containers/ConnectWalletModal';
 import NetworkChangeModal from 'src/components/NetworkChangeModal';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
@@ -30,6 +28,12 @@ import { MainnetData } from 'src/core/data/mainnets';
 import getIncentivePoolAddress from 'src/core/utils/getIncentivePoolAddress';
 import scrollToOffeset from 'src/core/utils/scrollToOffeset';
 import useBalances from 'src/hooks/useBalances';
+import EventImage from 'src/assets/images/event_image.png';
+import { useWeb3React } from '@web3-react/core';
+import useCurrentChain from 'src/hooks/useCurrentChain';
+import WalletDisconnect from 'src/components/WalletDisconnect';
+import SelectWalletModal from 'src/components/SelectWalletModal';
+import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();
@@ -39,7 +43,8 @@ const Dashboard: React.FunctionComponent = () => {
     IReserveSubgraphData | undefined
   >();
   const { t } = useTranslation();
-  const { unsupportedChainid } = useContext(MainnetContext);
+  const { unsupportedChainid, type: getMainnetType } =
+    useContext(MainnetContext);
   const [incentiveModalVisible, setIncentiveModalVisible] =
     useState<boolean>(false);
   const { data: userConnection, refetch: refetchUserData } = useQuery<GetUser>(
@@ -53,9 +58,12 @@ const Dashboard: React.FunctionComponent = () => {
     useState<boolean>(false);
   const [wrongMainnetModalVisible, setWrongMainnetModalVisible] =
     useState<boolean>(false);
+  const [disconnectModalVisible, setDisconnectModalVisible] = useState(false);
+  const [selectWalletModalVisible, setSelectWalletModalVisible] =
+    useState(false);
   const [round, setRound] = useState(1);
+  const currentChain = useCurrentChain();
   const [transactionWait, setTransactionWait] = useState<boolean>(false);
-  const walletConnect = isWalletConnect();
   const { type: currentNetworkType } = useContext(MainnetContext);
   const supportedTokens = useMemo(() => {
     return MainnetData[currentNetworkType].supportedTokens;
@@ -73,9 +81,13 @@ const Dashboard: React.FunctionComponent = () => {
     );
   }, [supportedTokens, balances]);
 
+  const isWrongMainnet = isWrongNetwork(getMainnetType, currentChain?.name);
+
   const isEnoughWide = useMediaQuery({
     query: '(min-width: 1439px)',
   });
+
+  const [isModals, setIsModals] = useState(false);
 
   return (
     <>
@@ -108,10 +120,14 @@ const Dashboard: React.FunctionComponent = () => {
             setTransactionWait(false);
           }}
           balanceBefore={
-            round === 1 ? selectedBalance.expectedIncentiveBefore : selectedBalance.expectedAdditionalIncentiveBefore
+            round === 1
+              ? selectedBalance.expectedIncentiveBefore
+              : selectedBalance.expectedAdditionalIncentiveBefore
           }
           balanceAfter={
-            round === 1 ? selectedBalance.expectedIncentiveAfter : selectedBalance.expectedAdditionalIncentiveAfter
+            round === 1
+              ? selectedBalance.expectedIncentiveAfter
+              : selectedBalance.expectedAdditionalIncentiveAfter
           }
           incentivePoolAddress={getIncentivePoolAddress(
             round,
@@ -130,21 +146,59 @@ const Dashboard: React.FunctionComponent = () => {
           setTransactionModal(false);
         }}
       />
-      <ConnectWalletModal
-        visible={connectWalletModalvisible}
-        onClose={() => {
-          setConnectWalletModalvisible(false);
-        }}
-      />
-      <NetworkChangeModal
-        visible={wrongMainnetModalVisible}
-        closeHandler={() => {
-          setWrongMainnetModalVisible(false);
-        }}
-      />
+      {isModals && (
+        <>
+          <NetworkChangeModal
+            visible={unsupportedChainid}
+            closeHandler={() => {
+              setWrongMainnetModalVisible(false);
+              setIsModals(false);
+            }}
+          />
+          <ConnectWalletModal
+            visible={!account && !selectWalletModalVisible}
+            onClose={() => {
+              setConnectWalletModalvisible(false);
+              setIsModals(false);
+            }}
+            selectWalletModalVisible={() => setSelectWalletModalVisible(true)}
+          />
+          <WalletDisconnect
+            modalVisible={isWrongMainnet && !selectWalletModalVisible}
+            selectWalletModalVisible={() => {
+              setSelectWalletModalVisible(true);
+            }}
+            modalClose={() => {
+              setDisconnectModalVisible(false);
+              setIsModals(false);
+            }}
+          />
+          <SelectWalletModal
+            selectWalletModalVisible={selectWalletModalVisible}
+            modalClose={() => {
+              setSelectWalletModalVisible(false);
+              setIsModals(false);
+            }}
+          />
+        </>
+      )}
 
       <div className="deposit">
         <TvlCounter />
+        <div className="deposit__event">
+          <div>
+            <div className="deposit__event__box">
+              <p>EVENT</p>
+            </div>
+            <div>
+              <h2>
+                <Trans i18nKey={t('dashboard.event_title')} />
+              </h2>
+              <p>2022.1.20 19:00:00 ~ 2022.1.26 19:00:00 KST</p>
+            </div>
+          </div>
+          <img src={EventImage} />
+        </div>
         <RewardPlanButton stakingType={'deposit'} />
         <div className="deposit__table__wrapper">
           {isEnoughWide && (
@@ -202,32 +256,24 @@ const Dashboard: React.FunctionComponent = () => {
                 id={`table-${index}`}
                 balance={balance}
                 onClick={(e: any) => {
-                  walletConnect === false
-                    ? (setConnectWalletModalvisible(true),
-                      ReactGA.modalview(
-                        balance.tokenName +
-                          ModalViewType.DepositConnectWalletModal,
-                      ))
-                    : unsupportedChainid
-                    ? setWrongMainnetModalVisible(true)
-                    : (e.preventDefault(),
-                      setReserveData(reserve),
-                      selectBalanceId(balance.id),
-                      ReactGA.modalview(
-                        balance.tokenName +
-                          ModalViewType.DepositOrWithdrawModal,
-                      ));
+                  if (!isWrongMainnet && account && !unsupportedChainid) {
+                    e.preventDefault();
+                    setReserveData(reserve);
+                    selectBalanceId(balance.id);
+                    ReactGA.modalview(
+                      balance.tokenName + ModalViewType.DepositOrWithdrawModal,
+                    );
+                    return;
+                  }
+                  setIsModals(true);
                 }}
                 reserveData={reserve}
                 setIncentiveModalVisible={() => {
-                  walletConnect === false
-                    ? (setConnectWalletModalvisible(true),
-                      ReactGA.modalview(
-                        balance.tokenName + ModalViewType.IncentiveModal,
-                      ))
-                    : unsupportedChainid
-                    ? setWrongMainnetModalVisible(true)
-                    : setIncentiveModalVisible(true);
+                  if (!isWrongMainnet && account && !unsupportedChainid) {
+                    setIncentiveModalVisible(true);
+                    return;
+                  }
+                  setIsModals(true);
                 }}
                 setModalNumber={() => selectBalanceId(balance.id)}
                 modalview={() =>

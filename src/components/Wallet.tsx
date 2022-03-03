@@ -1,30 +1,40 @@
 import { useState, useEffect, useRef, useContext } from 'react';
-import { useWeb3React } from '@web3-react/core';
-import InjectedConnector from 'src/core/connectors/injectedConnector';
 import { useTranslation } from 'react-i18next';
-import TxContext from 'src/contexts/TxContext';
+import { useWeb3React } from '@web3-react/core';
 import Davatar from '@davatar/react';
+import TxContext from 'src/contexts/TxContext';
 import TxStatus from 'src/enums/TxStatus';
 import { useENS } from 'src/hooks/useENS';
 import AccountModal from 'src/components/AccountModal';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetError from 'src/assets/images/network_error.png';
+import useCurrentChain from 'src/hooks/useCurrentChain';
+import { isMoblie } from 'src/utiles/connectWallet';
+import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
 import NetworkChangeModal from './NetworkChangeModal';
+import SelectWalletModal from './SelectWalletModal';
+import WalletDisconnect from './WalletDisconnect';
 
 const Wallet = (): JSX.Element => {
-  const { account, activate, active, chainId } = useWeb3React();
+  const { account, chainId, active } = useWeb3React();
   const [connected, setConnected] = useState<boolean>(false);
+
   const { t } = useTranslation();
   const [accountModalVisible, setAccountModalVisible] = useState(false);
+  const [selectWalletModalVisible, setSelectWalletModalVisible] =
+    useState(false);
   const [networkChangeModalVisible, setNetworkChangeModalVisible] =
     useState(false);
   const { txStatus } = useContext(TxContext);
-
+  const [disconnectModalVisible, setDisconnectModalVisible] = useState(false);
   const WalletRef = useRef<HTMLDivElement>(null);
   const { ensName, ensLoading } = useENS(account || '');
   const shortAddress = `${account?.slice(0, 6)}....${account?.slice(-4)}`;
+  const currentChain = useCurrentChain();
+  const { unsupportedChainid, type: getMainnetType } =
+    useContext(MainnetContext);
 
-  const { unsupportedChainid } = useContext(MainnetContext);
+  const isWrongMainnet = isWrongNetwork(getMainnetType, currentChain?.name);
 
   useEffect(() => {
     setConnected(!!account);
@@ -40,25 +50,47 @@ const Wallet = (): JSX.Element => {
         visible={networkChangeModalVisible}
         closeHandler={() => setNetworkChangeModalVisible(false)}
       />
+      <WalletDisconnect
+        modalVisible={disconnectModalVisible}
+        selectWalletModalVisible={() => setSelectWalletModalVisible(true)}
+        modalClose={() => setDisconnectModalVisible(false)}
+        isNavBtn={true}
+      />
+      <SelectWalletModal
+        modalClose={() => {
+          setSelectWalletModalVisible(false);
+        }}
+        selectWalletModalVisible={selectWalletModalVisible}
+      />
       <div
-        className={`navigation__wallet${connected ? '--connected' : ''} ${
-          unsupportedChainid ? 'unknown-chain' : txStatus
-        }`}
+        className={`navigation__wallet${
+          connected ? '--connected' : isWrongMainnet ? '--connected' : ''
+        } ${unsupportedChainid || isWrongMainnet ? 'unknown-chain' : txStatus}`}
         ref={WalletRef}
-        onClick={() => {
-          if (!active) {
-            activate(InjectedConnector).then(() => {
-              window.sessionStorage.setItem('@connect', 'true');
-            });
+        onClick={async () => {
+          if (!account || isWrongMainnet) {
+            isWrongMainnet
+              ? setDisconnectModalVisible(true)
+              : setSelectWalletModalVisible(true);
+            return;
           }
-          if (unsupportedChainid) {
+          if (unsupportedChainid || isWrongMainnet) {
+            if (isMoblie()) {
+              setDisconnectModalVisible(true);
+              return;
+            }
             setNetworkChangeModalVisible(true);
           }
           if (connected && !unsupportedChainid) {
             setAccountModalVisible(true);
           }
         }}>
-        {unsupportedChainid ? (
+        {unsupportedChainid || isWrongMainnet ? (
+          <>
+            <img src={MainnetError} />
+            <h2 className="montserrat">Wrong Network</h2>
+          </>
+        ) : isWrongMainnet ? (
           <>
             <img src={MainnetError} />
             <h2 className="montserrat">Wrong Network</h2>

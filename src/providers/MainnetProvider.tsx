@@ -9,10 +9,9 @@ import useCurrentChain from 'src/hooks/useCurrentChain';
 import Loading from 'src/components/Loading';
 
 // ! FIXME
-// 1. Provid more details information of current mainnet. Do not use MainnetData[type].data...
 // 2. Remove redundant loading(false)
 const MainnetProvider: React.FC = (props) => {
-  const { active, account } = useWeb3React();
+  const { active, library } = useWeb3React();
   const currentChain = useCurrentChain();
   const [loading, setLoading] = useState(true);
 
@@ -30,12 +29,17 @@ const MainnetProvider: React.FC = (props) => {
     if (!active) {
       setLoading(false);
       if (currentMainnet.unsupportedChainid) {
-        setMainnet({ ...currentMainnet, unsupportedChainid: false, active });
+        setMainnet({
+          ...currentMainnet,
+          unsupportedChainid: false,
+          active,
+        });
       }
       return;
     }
     currentChain !== undefined
       ? (setMainnet({
+          ...currentMainnet,
           type: currentChain.type,
           unsupportedChainid: false,
           active,
@@ -53,11 +57,12 @@ const MainnetProvider: React.FC = (props) => {
   };
 
   const changeMainnet = async (mainnetChainId: number) => {
+    if (!library) return;
     const getChainData = mainnets.find((data) => {
       return data.chainId === mainnetChainId;
     });
     try {
-      await window.ethereum?.request({
+      await library.provider.request({
         method: 'wallet_switchEthereumChain',
         params: [
           {
@@ -65,11 +70,19 @@ const MainnetProvider: React.FC = (props) => {
           },
         ],
       });
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (getChainData) {
+        setMainnet({
+          ...currentMainnet,
+          type: getChainData.type,
+        });
+      }
     } catch (e: any) {
       if (e.code === 4902) {
         try {
           getChainData
-            ? await window.ethereum?.request({
+            ? await library.provider.request({
                 method: 'wallet_addEthereumChain',
                 params: [
                   {

@@ -1,7 +1,7 @@
 import { ERC20 } from '@elysia-dev/contract-typechain';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants } from 'ethers';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import useERC20 from './useERC20';
 
 interface IERC20Info {

@@ -39,6 +39,8 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
 import ClaimDisableModal from 'src/components/ClaimDisableModal';
 import MigrationDisableModal from 'src/components/MigrationDisableModal';
+import useCurrentChain from 'src/hooks/useCurrentChain';
+import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
 import StakingModalType from 'src/enums/StakingModalType';
 import useStakingFetchRoundData from 'src/hooks/useStakingFetchRoundData';
 import FinishedStaking from 'src/components/Staking/FinishedStaking';
@@ -62,6 +64,7 @@ const Staking: React.FunctionComponent<IProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const { type: getMainnetType } = useContext(MainnetContext);
+  const currentChain = useCurrentChain();
 
   const stakingRoundDate = roundTimes(stakedToken, getMainnetType);
 
@@ -127,6 +130,8 @@ const Staking: React.FunctionComponent<IProps> = ({
 
   const { value: mediaQuery } = useMediaQueryType();
   const { lng } = useParams<{ lng: string }>();
+
+  const isWrongMainnet = isWrongNetwork(getMainnetType, currentChain?.name);
 
   const draw = () => {
     const dpr = window.devicePixelRatio;
@@ -573,6 +578,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                             setModalType={setModalType}
                             setModalValue={setModalValue}
                             setRoundModal={setRoundModal}
+                            isWrongMainnet={isWrongMainnet}
                           />
                         )}
 
