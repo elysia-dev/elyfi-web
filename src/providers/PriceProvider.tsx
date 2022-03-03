@@ -15,11 +15,11 @@ const PriceProvider: React.FC = (props) => {
   const [state, setState] = useState<PriceContextType>(initialPriceContext);
 
   const { data: poolData, error: cachedUniswapError } = useSWR(
-    envs.cachedUniswapV3URL,
+    envs.externalApiEndpoint.cachedUniswapV3URL,
     poolDataFetcher,
   );
   const { data: priceData, error: coingeckoError } = useSWR(
-    envs.coingackoURL,
+    envs.externalApiEndpoint.coingackoURL,
     pricesFetcher,
   );
 
