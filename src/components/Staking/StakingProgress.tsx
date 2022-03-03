@@ -35,6 +35,7 @@ type Props = {
     before: BigNumber;
     value: BigNumber;
   };
+  isWrongMainnet: boolean;
 };
 const current = moment();
 
@@ -48,6 +49,7 @@ const StakingProgress: FunctionComponent<Props> = (props) => {
     setModalValue,
     currentRound,
     expectedReward,
+    isWrongMainnet,
   } = props;
   const { t, i18n } = useTranslation();
   const { account } = useWeb3React();
@@ -118,13 +120,16 @@ const StakingProgress: FunctionComponent<Props> = (props) => {
                 </h2>
                 <div
                   className={`staking__round__button ${
-                    current.diff(startedAt) <= 0 || !account ? ' disable' : ''
+                    current.diff(startedAt) <= 0 || !account || isWrongMainnet
+                      ? ' disable'
+                      : ''
                   }`}
                   onClick={(e) => {
                     if (
                       current.diff(startedAt) < 0 ||
                       current.diff(endedAt) > 0 ||
-                      !account
+                      !account ||
+                      isWrongMainnet
                     ) {
                       return;
                     }
@@ -240,13 +245,16 @@ const StakingProgress: FunctionComponent<Props> = (props) => {
             <div>
               <div
                 className={`staking__round__button ${
-                  current.diff(startedAt) <= 0 || !account ? ' disable' : ''
+                  current.diff(startedAt) <= 0 || !account || isWrongMainnet
+                    ? ' disable'
+                    : ''
                 }`}
                 onClick={(e) => {
                   if (
                     current.diff(startedAt) < 0 ||
                     current.diff(endedAt) > 0 ||
-                    !account
+                    !account ||
+                    isWrongMainnet
                   ) {
                     return;
                   }

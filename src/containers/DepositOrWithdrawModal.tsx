@@ -29,7 +29,9 @@ import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
 import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import useCurrentMoneypoolAddress from 'src/hooks/useCurrnetMoneypoolAddress';
-import IncreateAllowanceModal, { PermissionType } from 'src/components/IncreateAllowanceModal';
+import IncreateAllowanceModal, {
+  PermissionType,
+} from 'src/components/IncreateAllowanceModal';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
 
@@ -64,7 +66,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   disableTransactionWait,
   round,
 }) => {
-  const { account, chainId, library } = useWeb3React();
+  const { account, chainId } = useWeb3React();
   const { elfiPrice } = useContext(PriceContext);
   const currentMoneypoolAddress = useCurrentMoneypoolAddress();
   const [selected, select] = useState<boolean>(true);
@@ -74,8 +76,6 @@ const DepositOrWithdrawModal: FunctionComponent<{
     contract: reserveERC20,
     refetch,
   } = useERC20Info(reserve.id, currentMoneypoolAddress, visible);
-
-  
   const [liquidity, setLiquidity] = useState<{
     value: BigNumber;
     loaded: boolean;
@@ -130,7 +130,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   }, [accumulatedYield, reserve, userData]);
 
   const increateAllowance = async () => {
-    setTransactionWait()
+    setTransactionWait();
     if (!account) return;
     const emitter = buildEventEmitter(
       ModalViewType.DepositOrWithdrawModal,
@@ -153,7 +153,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
           tx,
           emitter,
           RecentActivityType.Approve,
-          () => { },
+          () => {},
           () => {
             disableTransactionWait();
             refetch();
@@ -168,7 +168,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   };
 
   const requestDeposit = async (amount: BigNumber, max: boolean) => {
-    setTransactionWait()
+    setTransactionWait();
 
     if (!account) return;
 
@@ -210,8 +210,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
   };
 
   const reqeustWithdraw = (amount: BigNumber, max: boolean) => {
-    setTransactionWait()
-    
+    setTransactionWait();
+
     if (!account) return;
 
     const emitter = buildEventEmitter(
@@ -295,41 +295,42 @@ const DepositOrWithdrawModal: FunctionComponent<{
           setState={select}
           title={[t('dashboard.deposit'), t('dashboard.withdraw')]}
         />
-        {
-          loading ? (
-            <LoadingIndicator button={t("modal.indicator.permission_check")} />
+        {loading ? (
+          <LoadingIndicator button={t('modal.indicator.permission_check')} />
+        ) : selected ? (
+          allowance.gt(balance) ? (
+            <DepositBody
+              tokenInfo={tokenInfo!}
+              depositAPY={toPercent(reserve.depositAPY || '0')}
+              miningAPR={toPercent(
+                calcMiningAPR(
+                  elfiPrice,
+                  BigNumber.from(reserve.totalDeposit),
+                  tokenInfo?.decimals,
+                ),
+              )}
+              balance={balance}
+              deposit={requestDeposit}
+              txWait={transactionWait}
+            />
           ) : (
-            selected ? (
-              allowance.gt(balance) ? (
-                <DepositBody
-                  tokenInfo={tokenInfo!}
-                  depositAPY={toPercent(reserve.depositAPY || '0')}
-                  miningAPR={toPercent(
-                    calcMiningAPR(
-                      elfiPrice,
-                      BigNumber.from(reserve.totalDeposit),
-                      tokenInfo?.decimals,
-                    ))}
-                  balance={balance}
-                  deposit={requestDeposit}
-                  txWait={transactionWait}
-                />
-              ) : (
-                <IncreateAllowanceModal onClick={increateAllowance} type={PermissionType.Deposit} txWait={transactionWait} />
-              )
-            ) : (
-              <WithdrawBody
-                tokenInfo={tokenInfo!}
-                depositBalance={depositBalance}
-                accumulatedYield={accumulatedYield}
-                yieldProduced={yieldProduced}
-                liquidity={liquidity.value}
-                withdraw={reqeustWithdraw}
-                txWait={transactionWait}
-              />
-            )
+            <IncreateAllowanceModal
+              onClick={increateAllowance}
+              type={PermissionType.Deposit}
+              txWait={transactionWait}
+            />
           )
-        }
+        ) : (
+          <WithdrawBody
+            tokenInfo={tokenInfo!}
+            depositBalance={depositBalance}
+            accumulatedYield={accumulatedYield}
+            yieldProduced={yieldProduced}
+            liquidity={liquidity.value}
+            withdraw={reqeustWithdraw}
+            txWait={transactionWait}
+          />
+        )}
       </div>
     </div>
   );

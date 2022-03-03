@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ContractTransaction } from 'ethers';
 import TxStatus from 'src/enums/TxStatus';
 import TxContext, {
@@ -6,8 +6,8 @@ import TxContext, {
   ITxContext,
 } from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
-import { useWeb3React } from '@web3-react/core';
 import ethersJsErrors from 'src/utiles/ethersJsErrors';
+import { useWeb3React } from '@web3-react/core';
 
 const clearLocalStorage = () => {
   window.localStorage.removeItem('@txHash');
