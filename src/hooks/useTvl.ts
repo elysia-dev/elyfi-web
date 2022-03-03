@@ -6,12 +6,11 @@ import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import envs from 'src/core/envs';
 import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import ReserveData from 'src/core/data/reserves';
-import SubgraphContext, { initialReserveSubgraph, IReserveSubgraph } from 'src/contexts/SubgraphContext';
-import { ReserveSubgraph } from 'src/clients/ReserveSubgraph';
+import SubgraphContext from 'src/contexts/SubgraphContext';
 
 const useTvl = (): { value: number; loading: boolean } => {
   const subgraphContext = useContext(SubgraphContext);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const {
     totalValueLockedToken0,
     totalValueLockedToken1,
@@ -32,7 +31,10 @@ const useTvl = (): { value: number; loading: boolean } => {
         return (
           res +
           parseFloat(
-            formatUnits(BigNumber.from(loading ? 0 : cur.totalDeposit), tokenInfo?.decimals),
+            formatUnits(
+              BigNumber.from(loading ? 0 : cur.totalDeposit),
+              tokenInfo?.decimals,
+            ),
           )
         );
       }, 0) +
