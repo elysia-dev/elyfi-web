@@ -73,7 +73,8 @@ const DepositOrWithdrawModal: FunctionComponent<{
     loading,
     contract: reserveERC20,
     refetch,
-  } = useERC20Info(reserve.id, currentMoneypoolAddress);
+  } = useERC20Info(reserve.id, currentMoneypoolAddress, visible);
+
   
   const [liquidity, setLiquidity] = useState<{
     value: BigNumber;
