@@ -1,5 +1,6 @@
 import Geocode from 'react-geocode';
 import LanguageType from 'src/enums/LanguageType';
+import { cord2address } from 'src/clients/KakaoMap';
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAP_API_KEY!);
 
@@ -16,18 +17,6 @@ const getHardKorGeocoding = (lat: number, lng: number) => {
   }
 };
 
-declare global {
-  interface Window {
-    kakao: any;
-  }
-}
-
-interface IKakaoCord2AddressResult {
-  road_address: {
-    address_name: string;
-  };
-}
-
 const reverseGeocoding = async (
   lat: number,
   lng: number,
@@ -36,28 +25,9 @@ const reverseGeocoding = async (
   try {
     if (languageType === LanguageType.KO) {
       try {
-        const geocoder = new window.kakao.maps.services.Geocoder();
-        const coord = new window.kakao.maps.LatLng(lat, lng);
+        const data = await cord2address(lng, lat);
 
-        return new Promise((resolve, reject) => {
-          geocoder.coord2Address(
-            coord.getLng(),
-            coord.getLat(),
-            (
-              result: IKakaoCord2AddressResult[],
-              status: 'OK' | 'ZERO_RESULT' | 'ERROR',
-            ) => {
-              if (status === 'OK') {
-                return resolve(
-                  result[0].road_address?.address_name ||
-                    getHardKorGeocoding(lat, lng),
-                );
-              }
-
-              reject();
-            },
-          );
-        });
+        return data.documents[0].road_address?.address_name || getHardKorGeocoding(lat, lng)
       } catch (error) {
         console.error(error);
         return '-';
