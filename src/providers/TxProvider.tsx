@@ -8,6 +8,9 @@ import TxContext, {
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ethersJsErrors from 'src/utiles/ethersJsErrors';
 import { useWeb3React } from '@web3-react/core';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
+import TransactionType from 'src/enums/TransactionType';
+import ElyfiVersions from 'src/enums/ElyfiVersions';
 
 const clearLocalStorage = () => {
   window.localStorage.removeItem('@txHash');
@@ -17,7 +20,7 @@ const clearLocalStorage = () => {
 };
 
 const TxProvider: React.FunctionComponent = (props) => {
-  const { library } = useWeb3React();
+  const { library, chainId, account } = useWeb3React();
   const [state, setState] = useState<ITxContext>(initialTxContext);
 
   const reset = () => {
@@ -30,9 +33,22 @@ const TxProvider: React.FunctionComponent = (props) => {
     setState({ ...state, txStatus, txWaiting, error: '' });
   };
 
-  const failTransaction = (emitter: any, onEvent: () => void, error: any) => {
+  const failTransaction = (emitter: any, onEvent: () => void, error: any, transaction: TransactionType) => {
     onEvent();
     emitter.canceled();
+
+    const newEmitter = buildEventEmitter(
+      "EncounteredAnError",
+      transaction,
+      JSON.stringify({
+        version: ElyfiVersions.V1,
+        chainId,
+        address: account,
+        errorType: error
+      }),
+    );
+
+    newEmitter.failed();
 
     setState({
       ...state,

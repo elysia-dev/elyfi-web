@@ -1,6 +1,7 @@
 import { ContractTransaction } from 'ethers';
 import { createContext } from 'react';
 import RecentActivityType from 'src/enums/RecentActivityType';
+import TransactionType from 'src/enums/TransactionType';
 import TxStatus from '../enums/TxStatus';
 
 export type TxContextType = {
@@ -24,7 +25,7 @@ export interface ITxContext extends TxContextType {
     callback: () => void,
   ) => void;
   initTransaction: (txStatus: TxStatus, txWaiting: boolean) => void;
-  failTransaction: (emitter: any, onEvent: () => void, e: any) => void;
+  failTransaction: (emitter: any, onEvent: () => void, e: any, transaction: TransactionType) => void;
   reset: () => void;
 }
 
@@ -48,6 +49,7 @@ export const initialTxContext = {
       clicked: () => void;
       created: () => void;
       canceled: () => void;
+      failed: () => void;
     },
     type: RecentActivityType,
     pending: () => void,
@@ -59,9 +61,11 @@ export const initialTxContext = {
       clicked: () => void;
       created: () => void;
       canceled: () => void;
+      failed: () => void;
     },
     onEvent: () => void,
     e: Error,
+    transaction: TransactionType
   ): void => {},
   reset: (): void => {},
 };
