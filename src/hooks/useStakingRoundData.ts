@@ -14,6 +14,7 @@ import calcAPR from 'src/core/utils/calcAPR';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { poolAddress } from 'src/utiles/stakingPoolAddress';
 import { rewardPerDayByToken } from 'src/utiles/stakingReward';
+import MainnetType from 'src/enums/MainnetType';
 
 // round 0, 1, 2, 3
 const useStakingRoundData = (
@@ -57,7 +58,6 @@ const useStakingRoundData = (
         ...state,
         loading: true,
       });
-
       // ELFI 스테이킹풀의 경우 3 round부터 v2로 바뀜
       let currentRound = round;
       if (round >= 2 && stakedToken === Token.ELFI && mainnet === 'Ethereum')
@@ -95,6 +95,14 @@ const useStakingRoundData = (
   );
 
   useEffect(() => {
+    if (
+      (stakedToken === Token.ELFI &&
+        mainnet === MainnetType.Ethereum &&
+        round === 0) ||
+      (mainnet === MainnetType.BSC &&
+        stakingPool.address === envs.staking.elfyV2StakingPoolAddress)
+    )
+      return;
     loadRound(round);
   }, [round, elfiPrice, mainnet, stakingPool]);
 
