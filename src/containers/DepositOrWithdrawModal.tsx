@@ -162,7 +162,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
       })
       .catch((error) => {
         window.localStorage.removeItem('@permissionTxHash');
-        failTransaction(emitter, onClose, error);
+        failTransaction(emitter, onClose, error, TransactionType.Approve);
         console.error(error);
       });
   };
@@ -204,7 +204,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
         );
       })
       .catch((error) => {
-        failTransaction(emitter, onClose, error);
+        failTransaction(emitter, onClose, error, TransactionType.Deposit);
         console.error(error);
       });
   };
@@ -246,7 +246,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
         );
       })
       .catch((error) => {
-        failTransaction(emitter, onClose, error);
+        failTransaction(emitter, onClose, error, TransactionType.Withdraw);
         console.error(error);
       });
   };
