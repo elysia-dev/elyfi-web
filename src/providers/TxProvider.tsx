@@ -44,7 +44,17 @@ const TxProvider: React.FunctionComponent = (props) => {
         version: ElyfiVersions.V1,
         chainId,
         address: account,
-        errorType: error
+        errorType: Number(error.code)
+        ? error.message
+        : ethersJsErrors.includes(error.code)
+        ? error.code
+        : JSON.parse(
+            '{' +
+              error.message.substring(
+                error.message.indexOf('"message"'),
+                error.message.lastIndexOf('}'),
+              ),
+          ).message,
       }),
     );
 
