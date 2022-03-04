@@ -418,9 +418,10 @@ const Navigation: React.FunctionComponent<{
   useEffect(() => {
     setScrollTrigger();
   }, [scrollTop]);
+
   return (
     <>
-      {txStatus === TxStatus.FAIL && error && <ErrorModal error={error} />}
+      {txStatus === TxStatus.FAIL && error && error !== "MetaMask Tx Signature: User denied transaction signature." && <ErrorModal error={error} />}
       <nav
         className={`navigation`}
         style={{
