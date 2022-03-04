@@ -1783,7 +1783,7 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
           flex-direction: column;
           height: 80px;
           width: 10px;
-          flex: .5;
+          flex: 0.5;
           > .line {
             height: 100%;
             width: 0;
@@ -1876,7 +1876,7 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
             font-size: 12px;
             line-height: 25px;
           }
-          > a { 
+          > a {
             font-size: 12px;
           }
         }
@@ -1966,7 +1966,7 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
         border-radius: 35px;
         padding: 5px 10px;
         margin-top: 15px;
-        margin-bottom: 100px;
+        margin-bottom: 10px;
         > a {
           > img {
             width: 22px;
@@ -3235,7 +3235,7 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
       flex: 1;
     }
     &__link {
-      > a { 
+      > a {
         width: 38px;
         height: 38px;
         margin-left: 15px;

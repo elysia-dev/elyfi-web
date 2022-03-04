@@ -311,7 +311,11 @@
       },
       "elfi": {
         "staking__content": "ELFI 토큰을 스테이킹하고 보상 토큰과 투표권을 받아가세요!\nELFI 홀더들은 보유한 ELFI를 스테이킹함으로써 탈중앙 거버넌스에 참여할 수 있으며,\n스테이킹시 프로토콜 순이익을 분배 받을 수 있습니다.",
-        "staking__content--button": "유니스왑에서 ELFI 토큰 구매하기"
+        "staking__content--button": {
+          "uniswap": "유니스왑에서 ELFI 토큰 구매하기",
+          "pancakeswap": "팬케이크스왑에서 ELFI 토큰 구매하기",
+          "wormhole": "Wormhole 토큰 브릿지 이용하기"
+        }
       },
       "staking_amount": "스테이킹 수량",
       "reward_amount": "보상 수량",

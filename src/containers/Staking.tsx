@@ -11,10 +11,10 @@ import {
 import { useWeb3React } from '@web3-react/core';
 import { constants } from 'ethers';
 import Skeleton from 'react-loading-skeleton';
+import moment from 'moment';
+
 import { toPercentWithoutSign } from 'src/utiles/formatters';
 import { roundTimes } from 'src/core/data/stakingRoundTimes';
-
-import moment from 'moment';
 import ClaimStakingRewardModal from 'src/components/ClaimStakingRewardModal';
 import StakingModal from 'src/containers/StakingModal';
 import Token from 'src/enums/Token';
@@ -48,6 +48,9 @@ import StakingProgress from 'src/components/Staking/StakingProgress';
 import NextStaking from 'src/components/Staking/NextStaking';
 import { rewardPerDayByToken } from 'src/utiles/stakingReward';
 import calcExpectedReward from 'src/core/utils/calcExpectedReward';
+import PancakeSwap from 'src/assets/images/pancakeswapcake@2x.png';
+import Wormhole from 'src/assets/images/wormhole@2x.png';
+import TitleButton from 'src/components/Staking/TitleButton';
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI;
@@ -373,34 +376,47 @@ const Staking: React.FunctionComponent<IProps> = ({
                   : t('staking.elfi.staking__content')}
               </p>
               {getMainnetType === MainnetType.Ethereum ? (
-                <div className="staking__title__button">
-                  <a
-                    href={
-                      stakedToken === Token.ELFI
-                        ? 'https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4'
-                        : lng === LanguageType.KO
-                        ? 'https://coinmarketcap.com/ko/currencies/elysia/markets/'
-                        : 'https://coinmarketcap.com/currencies/elysia/markets/'
-                    }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    {stakedToken === Token.ELFI && (
-                      <img src={Uniswap} alt="Uniswap" />
-                    )}
-                    <p>
-                      {stakedToken === Token.EL
-                        ? t('staking.el.staking__content--button')
-                        : t('staking.elfi.staking__content--button')}
-                    </p>
-                  </a>
+                <TitleButton
+                  buttonName={
+                    stakedToken === Token.EL
+                      ? t('staking.el.staking__content--button')
+                      : t('staking.elfi.staking__content--button.uniswap')
+                  }
+                  link={
+                    stakedToken === Token.ELFI
+                      ? 'https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4'
+                      : lng === LanguageType.KO
+                      ? 'https://coinmarketcap.com/ko/currencies/elysia/markets/'
+                      : 'https://coinmarketcap.com/currencies/elysia/markets/'
+                  }
+                  linkName={stakedToken === Token.ELFI ? Token.ELFI : Token.EL}
+                  linkImage={stakedToken === Token.ELFI ? Uniswap : undefined}
+                />
+              ) : stakedToken === Token.ELFI ? (
+                <div className="staking__title__token">
+                  {[
+                    {
+                      linkName: 'pancakeswap',
+                      link: 'https://pancakeswap.finance/swap?inputCurrency=0xe9e7cea3dedca5984780bafc599bd69add087d56&outputCurrency=0x6c619006043eab742355395690c7b42d3411e8c0',
+                      linkImage: PancakeSwap,
+                    },
+                    // { linkName: 'wormhole', link: '', linkImage: Wormhole },
+                  ].map((value, index) => {
+                    return (
+                      <TitleButton
+                        key={`btn_${index}`}
+                        buttonName={t(
+                          `staking.elfi.staking__content--button.${value.linkName}`,
+                        )}
+                        link={value.link}
+                        linkName={value.linkName}
+                        linkImage={value.linkImage}
+                      />
+                    );
+                  })}
                 </div>
               ) : (
-                <div style={{ height: 174 }}></div>
+                <div style={{ height: 120 }} />
               )}
             </>
           </div>
