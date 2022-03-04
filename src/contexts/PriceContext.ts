@@ -6,16 +6,6 @@ export type PriceContextType = {
   tetherPrice: number;
   daiPrice: number;
   ethPrice: number;
-  elfiDaiPool: {
-    liquidity: number;
-    price: number;
-  };
-  elfiEthPool: {
-    liquidity: number;
-    price: number;
-  };
-  loading: boolean;
-  error: boolean;
 };
 
 export const initialPriceContext = {
@@ -24,16 +14,6 @@ export const initialPriceContext = {
   tetherPrice: 0,
   daiPrice: 0,
   ethPrice: 0,
-  elfiDaiPool: {
-    liquidity: 0,
-    price: 0,
-  },
-  elfiEthPool: {
-    liquidity: 0,
-    price: 0,
-  },
-  loading: true,
-  error: false,
 };
 
 const PriceContext = createContext<PriceContextType>(initialPriceContext);

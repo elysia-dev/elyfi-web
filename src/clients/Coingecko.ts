@@ -4,6 +4,9 @@ export interface ICoinPriceResponse {
   elysia: {
     usd: number;
   };
+  elyfi: {
+    usd: number;
+  };
   dai: {
     usd: number;
   };
