@@ -141,8 +141,12 @@ const FinishedStaking: FunctionComponent<Props> = (props) => {
             }
 
             if (migratable(stakedToken, index)) {
-              if (stakedToken === Token.ELFI) {
+              if (
+                stakedToken === Token.ELFI &&
+                getMainnetType === MainnetType.Ethereum
+              ) {
                 setModalType(StakingModalType.MigrationDisable);
+                return;
               } else {
                 ReactGA.modalview(
                   stakedToken + ModalViewType.MigrationOrUnstakingModal,
@@ -159,13 +163,12 @@ const FinishedStaking: FunctionComponent<Props> = (props) => {
               );
               setRoundModal(index);
               setModalValue(item.accountPrincipal);
-              if (stakedToken === Token.EL) {
-                setModalType(StakingModalType.Staking);
-              }
+              setModalType(StakingModalType.Staking);
             }
           }}>
           <p>
-            {stakedToken === Token.ELFI
+            {stakedToken === Token.ELFI &&
+            getMainnetType === MainnetType.Ethereum
               ? t('staking.unstaking')
               : migratable(stakedToken, index)
               ? t('staking.unstaking_migration')
