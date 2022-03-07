@@ -40,7 +40,7 @@ const DetailBoxItemStaking: FunctionComponent<DetailBoxItemStakingProps> = (
         <div
           onClick={() => isStakingDate && account && setModalAndSetStakeToken()}
           className={`staking__lp__detail-box__staking__button ${
-            !isStakingDate ? 'disable' : ''
+            !isStakingDate || !account  ? 'disable' : ''
           }`}>
           <p>{t('staking.staking')}</p>
         </div>
