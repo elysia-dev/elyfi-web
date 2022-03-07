@@ -207,21 +207,36 @@ input[type='number'] {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      top: 25px;
-      box-shadow: 0px 0px 6px #00000029;
-      border: 1px solid #e6e6e6;
-      border-radius: 5px;
+      top: 60px;
+      border: 1px solid $gray-line;
+      background: #FFF;
+      transition: all .3s ease;
+      z-index: 1;
+      &.disabled {
+        overflow: hidden;
+        padding-top: 0;
+        padding: 0;
+        height: 0;
+        opacity: 0;
+        background: #FFF;
+        z-index: 1;
+      }
       &__link {
         min-width: 196px;
         padding: 20px 15px;
         border-bottom: 1px solid $gray-line;
         cursor: pointer;
         &:hover {
-          background: $gray-line;
+          background: #F7FBFF;
+          border-left: 2px solid $elysia-color;
+          padding: 20px 13px;
           > div > p {
             color: $elysia-color;
             font-weight: bold;
           }
+        }
+        &:last-child {
+          border-bottom: 2px solid $elysia-color;
         }
         > div {
           display: flex;
@@ -483,6 +498,16 @@ input[type='number'] {
     }
     &__metamask-add-el-button {
       cursor: pointer;
+    }
+    &__arrow {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin-left: 2px;
+      margin-bottom: 2px;
+      border-top: 1px solid #333333;
+      border-right: 1px solid #333333;
     }
   } // navigation end
 
@@ -4726,17 +4751,7 @@ input[type='number'] {
   textarea {
     font-family: 'Inter';
   }
-  .down_arrow {
-    content: '';
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    margin-left: 2px;
-    margin-bottom: 2px;
-    border-top: 1px solid #333333;
-    border-right: 1px solid #333333;
-    transform: rotate(135deg);
-  }
+
 
   .error {
     width: 100%;
