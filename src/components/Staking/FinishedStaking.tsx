@@ -163,12 +163,7 @@ const FinishedStaking: FunctionComponent<Props> = (props) => {
               );
               setRoundModal(index);
               setModalValue(item.accountPrincipal);
-              // if (
-              //   stakedToken === Token.EL ||
-              //   getMainnetType === MainnetType.BSC
-              // ) {
               setModalType(StakingModalType.Staking);
-              // }
             }
           }}>
           <p>
