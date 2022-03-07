@@ -79,7 +79,7 @@ const IncentiveModal: FunctionComponent<{
         );
       })
       .catch((error) => {
-        failTransaction(emitter, onClose, error);
+        failTransaction(emitter, onClose, error, TransactionType.Claim);
         console.error(error);
       });
   };
