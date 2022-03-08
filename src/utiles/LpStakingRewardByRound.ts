@@ -27,7 +27,7 @@ const lpStakingPerRewardByRound = (round: number): string => {
     case 2:
       return '0.255 ETH';
     default:
-      return 'TBD';
+      return '0.2464 ETH';
   }
 };
 
