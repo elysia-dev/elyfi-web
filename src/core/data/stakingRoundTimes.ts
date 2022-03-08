@@ -52,7 +52,7 @@ const stakingRoundTimes: IStakingPoolRound[] = [
     endedAt: '2022.03.07 19:00:00 +9:00',
   },
   {
-    startedAt: '2022.03.08 15:00:00 +9:00',
+    startedAt: '2022.03.08 19:00:00 +9:00',
     endedAt: '2022.04.17 19:00:00 +9:00',
   },
   // {
