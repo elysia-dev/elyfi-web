@@ -235,7 +235,7 @@ const StakingModal: React.FunctionComponent<{
                   );
                 })
                 .catch((e) => {
-                  failTransaction(emitter, closeHandler, e);
+                  failTransaction(emitter, closeHandler, e, TransactionType.Approve);
                 });
             }}
           />
@@ -303,7 +303,7 @@ const StakingModal: React.FunctionComponent<{
                       );
                     })
                     .catch((e) => {
-                      failTransaction(emitter, closeHandler, e);
+                      failTransaction(emitter, closeHandler, e, TransactionType.Unstake);
                     });
                 }}>
                 <p>
@@ -374,7 +374,7 @@ const StakingModal: React.FunctionComponent<{
                         );
                       })
                       .catch((e) => {
-                        failTransaction(emitter, closeHandler, e);
+                        failTransaction(emitter, closeHandler, e, TransactionType.Stake);
                       });
                   }}>
                   <p>

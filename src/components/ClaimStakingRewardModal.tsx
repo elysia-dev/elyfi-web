@@ -176,7 +176,7 @@ const ClaimStakingRewardModal: FunctionComponent<{
                   );
                 })
                 .catch((e) => {
-                  failTransaction(emitter, closeHandler, e);
+                  failTransaction(emitter, closeHandler, e, TransactionType.Claim);
                 });
             }}>
             <p>{t('staking.claim_reward')}</p>

@@ -3,7 +3,6 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
 import NavigationType from 'src/enums/NavigationType';
 import Wallet from 'src/components/Wallet';
-import InstallMetamask from 'src/components/InstallMetamask';
 import {
   INavigation,
   ISubNavigation,
@@ -69,9 +68,6 @@ const Navigation: React.FunctionComponent<{
     return getPath.length === 0 ? InitialNavigation : getPath;
   }, [location]);
 
-  const getHoveredLNBData = useMemo(() => {
-    return getLNBData.filter((subNav) => subNav.id === globalNavHover);
-  }, [globalNavHover]);
 
   const { setLanguage } = useContext(LanguageContext);
 
@@ -109,7 +105,6 @@ const Navigation: React.FunctionComponent<{
           setGlobalNavHover(0);
           setSelectedLocalNavIndex(0);
         }}>
-        {/* {window.ethereum?.isMetaMask ? <Wallet /> : <InstallMetamask />} */}
         <Wallet />
       </div>
     );
@@ -155,9 +150,6 @@ const Navigation: React.FunctionComponent<{
           className="navigation__link"
           onMouseEnter={() => {
             setGlobalNavHover(_index + 1);
-          }}
-          style={{
-            color: scrollTop > 125 ? '#000000' : '#000000',
           }}>
           <div
             style={{
@@ -175,37 +167,28 @@ const Navigation: React.FunctionComponent<{
             </div>
             {!['navigation.dashboard', 'navigation.governance'].includes(
               _data.i18nKeyword.toLowerCase(),
-            ) && <div className="down_arrow" />}
+            ) && <div className="navigation__arrow" style={{ transform: isBold(_index) && globalNavHover === _index + 1 ? `rotate(135deg)` : `rotate(-45deg) translateX(-2px) translateY(2px)`}} />}
           </div>
           <div>
             <div
-              className="navigation__bottom"
+              className={`navigation__bottom ${isBold(_index) && globalNavHover === _index + 1 ? "" : " disabled"}`}
               ref={localNavigationRef}
-              style={{
-                backgroundColor:
-                  scrollTop > 125
-                    ? '#FFFFFF'
-                    : // 'transparent',
-                      '#FFFFFF',
-                display:
-                  isBold(_index) && globalNavHover === _index + 1
-                    ? 'flex'
-                    : 'none',
-                borderTop:
-                  scrollTop > 125 ? '1px solid #e6e6e6' : '1px solid #e6e6e6',
-                borderBottom:
-                  scrollTop > 125 ? '1px solid #e6e6e6' : '1px solid #e6e6e6',
-              }}>
+            >
               {isExternalLink &&
-                getHoveredLNBData.map((getData) => {
-                  return getData.subNavigation!.map((subData, index) => {
-                    return localNavInnerContainer(
-                      subData,
-                      subData.type === NavigationType.Link ? false : true,
-                      index,
-                    );
-                  });
-                })}
+                _data.subNavigation && (
+                  getLNBData.filter((data) => {
+                    return data.id === _data.id
+                  }).map((__data) => {
+                    return __data.subNavigation!.map((subData, index) => {
+                      return localNavInnerContainer(
+                        subData,
+                        subData.type === NavigationType.Link ? false : true,
+                        index,
+                      );
+                    })
+                  })
+                )
+              }
             </div>
           </div>
         </div>
@@ -233,7 +216,6 @@ const Navigation: React.FunctionComponent<{
               action: ButtonEventType.DepositButtonOnTop,
             });
           }
-          initialNavigationState();
         }}>
         {globalNavInnerContainer(_data as INavigation, _index, isExternalLink)}
       </div>
@@ -266,34 +248,13 @@ const Navigation: React.FunctionComponent<{
     );
   };
 
-  const setNavigation = (data: INavigation, index: number) => {
-    const LNBNavigation = () => {
-      return (
-        <div
-          key={index}
-          onMouseEnter={() => {
-            setSelectedLocalNavIndex(index + 1);
-          }}>
-          {globalNavInnerContainer(data, index)}
-        </div>
-      );
-    };
-
-    // return data.type === NavigationType.Link
-    //   ? linkNavigation(data, index, false)
-    //   : data.type === NavigationType.Href
-    //   ? linkNavigation(data, index, true)
-    //   : LNBNavigation();
-    return data.type === NavigationType.Link
-      ? linkNavigation(data, index, false)
-      : linkNavigation(data, index, true);
-  };
-
   const setNavigationLink = () => {
     return (
       <div className="navigation__link__container">
         {navigationLink.map((data, index) => {
-          return setNavigation(data, index);
+          return data.type === NavigationType.Link
+            ? linkNavigation(data, index, false)
+            : linkNavigation(data, index, true);
         })}
       </div>
     );
@@ -418,13 +379,13 @@ const Navigation: React.FunctionComponent<{
   useEffect(() => {
     setScrollTrigger();
   }, [scrollTop]);
+
   return (
     <>
-      {txStatus === TxStatus.FAIL && error && <ErrorModal error={error} />}
+      {txStatus === TxStatus.FAIL && error && error !== "MetaMask Tx Signature: User denied transaction signature." && <ErrorModal error={error} />}
       <nav
         className={`navigation`}
         style={{
-          backgroundColor: scrollTop > 125 ? '#FFFFFF' : '#FFFFFF',
           height: hamburgerBar ? '100%' : 'auto',
           overflowY:
             mediaQuery === MediaQuery.PC
