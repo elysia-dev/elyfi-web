@@ -19,6 +19,9 @@ export const onChainGovernancBsceMiddleware: Middleware =
     useEffect(() => {
       try {
         if (swr.data !== undefined) {
+          if (onChainData.length !== 0) {
+            setOnChainData([]);
+          }
           dataRef.current = swr.data;
           const data: any = swr.data;
           const getNAPDatas = data.proposals
@@ -88,6 +91,9 @@ export const onChainGovernanceMiddleware: Middleware =
     useEffect(() => {
       try {
         if (swr.data !== undefined) {
+          if (onChainData.length !== 0) {
+            setOnChainData([]);
+          }
           dataRef.current = swr.data;
           const getOnChainApis: any = swr.data;
           const getNAPCodes = getOnChainApis.proposals.filter((topic: any) => {
@@ -141,6 +147,9 @@ const onChainMainMiddleware: Middleware =
 
     useEffect(() => {
       if (swr.data !== undefined) {
+        if (onChainData.length !== 0) {
+          setOnChainData([]);
+        }
         dataRef.current = swr.data;
         const getOnChainApis: any = swr.data;
         const getNAPCodes = getOnChainApis.proposals.filter((topic: any) => {
