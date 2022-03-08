@@ -400,7 +400,11 @@ const Staking: React.FunctionComponent<IProps> = ({
                       link: 'https://pancakeswap.finance/swap?inputCurrency=0xe9e7cea3dedca5984780bafc599bd69add087d56&outputCurrency=0x6c619006043eab742355395690c7b42d3411e8c0',
                       linkImage: PancakeSwap,
                     },
-                    // { linkName: 'wormhole', link: '', linkImage: Wormhole },
+                    {
+                      linkName: 'wormhole',
+                      link: 'https://portalbridge.com/#/transfer',
+                      linkImage: Wormhole,
+                    },
                   ].map((value, index) => {
                     return (
                       <TitleButton
