@@ -95,7 +95,7 @@ const Staking: React.FunctionComponent<IProps> = ({
   );
 
   const [modalType, setModalType] = useState('');
-
+  const [isUnstaking, setIsUnstaking] = useState(true);
   const modalVisible = useCallback(
     (type: StakingModalType) => {
       return modalType === type;
@@ -307,6 +307,7 @@ const Staking: React.FunctionComponent<IProps> = ({
             transactionWait={transactionWait}
             setTransactionWait={() => setTransactionWait(true)}
             disableTransactionWait={() => setTransactionWait(false)}
+            isUnstaking={isUnstaking}
           />
           <MigrationModal
             visible={modalVisible(StakingModalType.Migration)}
@@ -575,6 +576,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   setModalType={setModalType}
                                   setRoundModal={setRoundModal}
                                   setModalValue={setModalValue}
+                                  setIsUnstaking={() => setIsUnstaking(false)}
                                 />
                               );
                             }
@@ -593,6 +595,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                             setModalValue={setModalValue}
                             setRoundModal={setRoundModal}
                             isWrongMainnet={isWrongMainnet}
+                            setIsUnstaking={() => setIsUnstaking(true)}
                           />
                         )}
 
