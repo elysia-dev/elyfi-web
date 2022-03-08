@@ -70,7 +70,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
 
   const nth = useMemo(
     () => ordinalNumberConverter(props.stakedRound + 1, i18n),
-    [props.stakedRound],
+    [props.stakedRound, i18n.language],
   );
 
   useEffect(() => {
