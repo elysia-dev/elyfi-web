@@ -390,8 +390,8 @@ function LPStaking(): JSX.Element {
       <RewardModal
         visible={rewardVisibleModal}
         closeHandler={() => {
-          setTransactionWait(false)
-          setRewardVisibleModal(false)
+          setTransactionWait(false);
+          setRewardVisibleModal(false);
         }}
         rewardToReceive={rewardToReceive}
         transactionWait={transactionWait}
@@ -400,8 +400,8 @@ function LPStaking(): JSX.Element {
       <StakingModal
         visible={stakingVisibleModal}
         closeHandler={() => {
-          setTransactionWait(false)
-          setStakingVisibleModal(false)
+          setTransactionWait(false);
+          setStakingVisibleModal(false);
         }}
         token0={Token.ELFI}
         token1={stakeToken}
@@ -440,7 +440,7 @@ function LPStaking(): JSX.Element {
             <>
               <p>{t('lpstaking.lp_token_staking__content')}</p>
               <div>
-                {Array(3)
+                {Array(4)
                   .fill(0)
                   .map((_x, index) => {
                     return (
