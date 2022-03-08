@@ -593,7 +593,7 @@
       },
       "migration_disable": {
         "title": "Disable migration",
-        "content": "The ELFI staking migration function has been temporarily disabled due to an error inquiry about the migration function, which is currently provided for convenience.\nIf you participate in the 6th staking, please staking in the 6th pool after unstaking",
+        "content": " Migration function is disabled.\nWhen participating in the 7th staking, please stake in the 7th pool after unstaking.",
         "button": "OK"
       },
       "wallet_change_netwrok": {

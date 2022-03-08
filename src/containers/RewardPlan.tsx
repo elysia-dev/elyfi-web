@@ -26,12 +26,7 @@ import { roundTimes } from 'src/core/data/stakingRoundTimes';
 import {
   DAI_REWARD_PER_POOL,
   ELFI_REWARD_PER_POOL,
-  ETH_REWARD_PER_POOL,
 } from 'src/core/data/stakings';
-import {
-  ETH_REWARD_PER_POOL_2,
-  ETH_REWARD_PER_POOL_3,
-} from 'src/core/utils/calcLpReward';
 import Token from 'src/enums/Token';
 import useStakingRoundData from 'src/hooks/useStakingRoundData';
 import { ordinalNumberConverter } from 'src/utiles/ordinalNumberConverter';
@@ -53,6 +48,7 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import getTokenNameByAddress from 'src/core/utils/getTokenNameByAddress';
 import useCalcReward from 'src/hooks/useCalcReward';
 import { rewardToken } from 'src/utiles/stakingReward';
+import { ethRewardByRound } from 'src/utiles/LpStakingRewardByRound';
 
 const RewardPlan: FunctionComponent = () => {
   const { t, i18n } = useTranslation();
@@ -344,12 +340,7 @@ const RewardPlan: FunctionComponent = () => {
               }}
               token1={'ETH'}
               secondTokenValue={{
-                total:
-                  lpStakingRound.ethElfiRound <= 1
-                    ? lpStakingRound.ethElfiRound === 2
-                      ? ETH_REWARD_PER_POOL_3
-                      : ETH_REWARD_PER_POOL_2
-                    : ETH_REWARD_PER_POOL,
+                total: ethRewardByRound(lpStakingRound.ethElfiRound + 1),
                 start: rewardInfo.beforeEthRewardByLp,
                 end: rewardInfo.ethRewardByLp,
               }}
@@ -357,7 +348,6 @@ const RewardPlan: FunctionComponent = () => {
               selectedRound={lpStakingRound.ethElfiRound}
               lpStakingRound={lpStakingRound}
               setLpStakingRound={setLpStakingRound}
-              ethReward={[ETH_REWARD_PER_POOL, ETH_REWARD_PER_POOL_2]}
             />
             <LpStakingBox
               index={1}

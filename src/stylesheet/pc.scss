@@ -753,7 +753,7 @@ $device-width: 1190px;
     .deposit {
       @include page-container;
       padding-top: 100px;
-      
+
       &__title {
         .react-loading-skeleton {
           margin-top: 20px;
@@ -1694,8 +1694,8 @@ $device-width: 1190px;
           font-size: 15px;
         }
         &__token {
-          // display: flex;
-          // width: 583px;
+          display: flex;
+          width: 583px;
           justify-content: space-between;
         }
         &__button {
@@ -1760,7 +1760,7 @@ $device-width: 1190px;
           line-height: 30px;
           padding: 0px 20px;
           > p {
-            font-size: 15px;
+            font-size: 13.5px;
           }
         }
         &__current-data {

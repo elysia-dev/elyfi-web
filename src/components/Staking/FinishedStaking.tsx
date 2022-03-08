@@ -32,6 +32,7 @@ type Props = {
   setModalType: (value: SetStateAction<string>) => void;
   setRoundModal: (value: SetStateAction<number>) => void;
   setModalValue: (value: SetStateAction<BigNumber>) => void;
+  setIsUnstaking: () => void;
 };
 
 const FinishedStaking: FunctionComponent<Props> = (props) => {
@@ -44,6 +45,7 @@ const FinishedStaking: FunctionComponent<Props> = (props) => {
     setModalType,
     setRoundModal,
     setModalValue,
+    setIsUnstaking,
   } = props;
   const { t, i18n } = useTranslation();
   const { value: mediaQuery } = useMediaQueryType();
@@ -145,7 +147,9 @@ const FinishedStaking: FunctionComponent<Props> = (props) => {
                 stakedToken === Token.ELFI &&
                 getMainnetType === MainnetType.Ethereum
               ) {
+                setRoundModal(index);
                 setModalType(StakingModalType.MigrationDisable);
+                setIsUnstaking();
                 return;
               } else {
                 ReactGA.modalview(
@@ -164,6 +168,7 @@ const FinishedStaking: FunctionComponent<Props> = (props) => {
               setRoundModal(index);
               setModalValue(item.accountPrincipal);
               setModalType(StakingModalType.Staking);
+              setIsUnstaking();
             }
           }}>
           <p>

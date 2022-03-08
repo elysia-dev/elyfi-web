@@ -21,22 +21,11 @@ export const lpRoundDate = [
     startedAt: moment('2022.01.26 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
     endedAt: moment('2022.03.07 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
   },
+  {
+    startedAt: moment('2022.03.08 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
+    endedAt: moment('2022.04.17 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
+  },
 ];
-
-// export const lpUnixTimestamp = [
-//   {
-//     startedAt: 1638880500,
-//     endedAt: 1640950200,
-//   },
-//   {
-//     startedAt: 1638880800,
-//     endedAt: 1640950200,
-//   },
-//   {
-//     startedAt: 1638880801,
-//     endedAt: 1640950200,
-//   },
-// ];
 
 export const lpUnixTimestamp = lpRoundDate.map((item) => {
   return { startedAt: item.startedAt.unix(), endedAt: item.endedAt.unix() };

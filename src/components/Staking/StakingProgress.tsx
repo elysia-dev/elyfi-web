@@ -36,6 +36,7 @@ type Props = {
     value: BigNumber;
   };
   isWrongMainnet: boolean;
+  setIsUnstaking: () => void;
 };
 const current = moment();
 
@@ -50,6 +51,7 @@ const StakingProgress: FunctionComponent<Props> = (props) => {
     currentRound,
     expectedReward,
     isWrongMainnet,
+    setIsUnstaking,
   } = props;
   const { t, i18n } = useTranslation();
   const { account } = useWeb3React();
@@ -139,6 +141,7 @@ const StakingProgress: FunctionComponent<Props> = (props) => {
                     setRoundModal(round);
                     setModalValue(currentRound.accountPrincipal);
                     setModalType(StakingModalType.Staking);
+                    setIsUnstaking();
                   }}>
                   <p>{t('staking.staking_btn')}</p>
                 </div>
@@ -264,6 +267,7 @@ const StakingProgress: FunctionComponent<Props> = (props) => {
                   setRoundModal(round);
                   setModalValue(currentRound.accountPrincipal);
                   setModalType(StakingModalType.Staking);
+                  setIsUnstaking();
                 }}>
                 <p>{t('staking.staking_btn')}</p>
               </div>

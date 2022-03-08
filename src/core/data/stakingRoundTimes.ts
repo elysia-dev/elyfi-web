@@ -19,10 +19,6 @@ export const busdStakingRoundTimes: IStakingPoolRound[] = [
     startedAt: '2022.03.08 19:00:00 +9:00',
     endedAt: '2022.04.17 19:00:00 +9:00',
   },
-  // {
-  //   startedAt: '2022.04.18 19:00:00 +9:00',
-  //   endedAt: '2022.05.28 19:00:00 +9:00',
-  // },
 ].map((item) => {
   return {
     startedAt: moment(item.startedAt, format).tz('Asia/Seoul', true),
@@ -55,10 +51,10 @@ const stakingRoundTimes: IStakingPoolRound[] = [
     startedAt: '2022.01.26 19:00:00 +9:00',
     endedAt: '2022.03.07 19:00:00 +9:00',
   },
-  // {
-  //   startedAt: '2022.03.08 19:00:00 +9:00',
-  //   endedAt: '2022.04.17 19:00:00 +9:00',
-  // },
+  {
+    startedAt: '2022.03.08 19:00:00 +9:00',
+    endedAt: '2022.04.17 19:00:00 +9:00',
+  },
   // {
   //   startedAt: '2022.04.18 19:00:00 +9:00',
   //   endedAt: '2022.05.27 19:00:00 +9:00',

@@ -95,7 +95,7 @@ const Staking: React.FunctionComponent<IProps> = ({
   );
 
   const [modalType, setModalType] = useState('');
-
+  const [isUnstaking, setIsUnstaking] = useState(true);
   const modalVisible = useCallback(
     (type: StakingModalType) => {
       return modalType === type;
@@ -307,6 +307,7 @@ const Staking: React.FunctionComponent<IProps> = ({
             transactionWait={transactionWait}
             setTransactionWait={() => setTransactionWait(true)}
             disableTransactionWait={() => setTransactionWait(false)}
+            isUnstaking={isUnstaking}
           />
           <MigrationModal
             visible={modalVisible(StakingModalType.Migration)}
@@ -400,7 +401,11 @@ const Staking: React.FunctionComponent<IProps> = ({
                       link: 'https://pancakeswap.finance/swap?inputCurrency=0xe9e7cea3dedca5984780bafc599bd69add087d56&outputCurrency=0x6c619006043eab742355395690c7b42d3411e8c0',
                       linkImage: PancakeSwap,
                     },
-                    // { linkName: 'wormhole', link: '', linkImage: Wormhole },
+                    {
+                      linkName: 'wormhole',
+                      link: 'https://portalbridge.com/#/transfer',
+                      linkImage: Wormhole,
+                    },
                   ].map((value, index) => {
                     return (
                       <TitleButton
@@ -571,6 +576,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                                   setModalType={setModalType}
                                   setRoundModal={setRoundModal}
                                   setModalValue={setModalValue}
+                                  setIsUnstaking={() => setIsUnstaking(false)}
                                 />
                               );
                             }
@@ -589,6 +595,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                             setModalValue={setModalValue}
                             setRoundModal={setRoundModal}
                             isWrongMainnet={isWrongMainnet}
+                            setIsUnstaking={() => setIsUnstaking(true)}
                           />
                         )}
 

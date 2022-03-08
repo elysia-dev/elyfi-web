@@ -67,7 +67,7 @@ export const rewardLimit = (rewardToken: string, round: number): number => {
 const miningValueByToken = (rewardToken: string, round: number): number => {
   switch (rewardToken) {
     case 'ELFI':
-      return 5000000;
+      return 6000000;
     case 'DAI':
       return round > 1 ? 50000 : 25000;
     case 'BUSD':

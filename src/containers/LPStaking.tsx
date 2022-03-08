@@ -24,7 +24,6 @@ import dai from 'src/assets/images/dai.png';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
-import Guide from 'src/components/Guide';
 import moment from 'moment';
 import { lpRoundDate, lpUnixTimestamp } from 'src/core/data/lpStakingTime';
 import getIncentiveId from 'src/utiles/getIncentive';
@@ -48,7 +47,7 @@ function LPStaking(): JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
-  const { setExpecteReward, expectedReward, updateExpectedReward, isError } =
+  const { setExpecteReward, expectedReward, isError } =
     useUpdateExpectedReward();
   const [rewardVisibleModal, setRewardVisibleModal] = useState(false);
   const [stakingVisibleModal, setStakingVisibleModal] = useState(false);
@@ -390,8 +389,8 @@ function LPStaking(): JSX.Element {
       <RewardModal
         visible={rewardVisibleModal}
         closeHandler={() => {
-          setTransactionWait(false)
-          setRewardVisibleModal(false)
+          setTransactionWait(false);
+          setRewardVisibleModal(false);
         }}
         rewardToReceive={rewardToReceive}
         transactionWait={transactionWait}
@@ -400,8 +399,8 @@ function LPStaking(): JSX.Element {
       <StakingModal
         visible={stakingVisibleModal}
         closeHandler={() => {
-          setTransactionWait(false)
-          setStakingVisibleModal(false)
+          setTransactionWait(false);
+          setStakingVisibleModal(false);
         }}
         token0={Token.ELFI}
         token1={stakeToken}
@@ -440,7 +439,7 @@ function LPStaking(): JSX.Element {
             <>
               <p>{t('lpstaking.lp_token_staking__content')}</p>
               <div>
-                {Array(3)
+                {Array(4)
                   .fill(0)
                   .map((_x, index) => {
                     return (
