@@ -1695,8 +1695,9 @@ $device-width: 1190px;
         }
         &__token {
           display: flex;
-          width: 583px;
+          width: 680px;
           justify-content: space-between;
+          gap: 50px;
         }
         &__button {
           min-width: 220px;
