@@ -1,5 +1,6 @@
 import moment from 'moment';
 import Token from 'src/enums/Token';
+import { ethRewardByRound } from 'src/utiles/LpStakingRewardByRound';
 import { lpRoundDate } from '../data/lpStakingTime';
 
 export const ELFI_REWARD_PER_POOL = 300000;
@@ -7,13 +8,10 @@ export const DAI_REWARD_PER_POOL = 25000;
 export const ETH_REWARD_PER_POOL = 5.507;
 export const ETH_REWARD_PER_POOL_2 = 6.437;
 export const ETH_REWARD_PER_POOL_3 = 10.203;
+export const ETH_REWARD_PER_POOL_4 = 9.855;
 
 const ethRewardPerPool = (index: number, max: number, token?: string) => {
-  return token === Token.ETH && index >= 1
-    ? index === 2
-      ? ETH_REWARD_PER_POOL_3
-      : ETH_REWARD_PER_POOL_2
-    : max;
+  return token === Token.ETH && index >= 1 ? ethRewardByRound(index + 1) : max;
 };
 
 const calcReward = (max: number, token?: string) => {
