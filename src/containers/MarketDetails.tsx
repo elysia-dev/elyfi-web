@@ -46,6 +46,7 @@ import {
   setTooltipBoxPositionX,
 } from 'src/utiles/graphTooltipPosition';
 import useCurrentChain from 'src/hooks/useCurrentChain';
+import PriceContext from 'src/contexts/PriceContext';
 
 interface ITokencolor {
   name: string;
@@ -79,7 +80,8 @@ function MarketDetail(): JSX.Element {
   const [transactionModal, setTransactionModal] = useState(false);
   const tokenRef = useRef<HTMLParagraphElement>(null);
   const { data: getSubgraphData } = useContext(SubgraphContext);
-  const { latestPrice, poolDayData } = useContext(UniswapPoolContext);
+  const { elfiPrice } = useContext(PriceContext);
+  const { poolDayData } = useContext(UniswapPoolContext);
   const { lng, id } = useParams<{ lng: string; id: Token.DAI | Token.USDT }>();
   const history = useHistory();
   const { value: mediaQuery } = useMediaQueryType();
@@ -161,7 +163,7 @@ function MarketDetail(): JSX.Element {
   if (!data || !tokenInfo) return <ErrorPage />;
 
   const miningAPR = calcMiningAPR(
-    latestPrice,
+    elfiPrice,
     BigNumber.from(data.totalDeposit),
     tokenInfo?.decimals,
   );
