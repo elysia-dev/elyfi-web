@@ -1,14 +1,17 @@
 import { FunctionComponent, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { lpRoundDate } from 'src/core/data/lpStakingTime';
-import { ETH_REWARD_PER_POOL_3 } from 'src/core/utils/calcLpReward';
-import MediaQuery from 'src/enums/MediaQuery';
-import Token from 'src/enums/Token';
-import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
 import 'swiper/modules/pagination/pagination.scss';
 import 'swiper/swiper.scss';
+
+import { lpRoundDate } from 'src/core/data/lpStakingTime';
+import MediaQuery from 'src/enums/MediaQuery';
+import Token from 'src/enums/Token';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import lpStakingPerRewardByRound, {
+  ethRewardByRound,
+} from 'src/utiles/LpStakingRewardByRound';
 import LpStakingHeader from './LpStakingHeader';
 import RewardDetailInfo from './RewardDetailInfo';
 import SmallProgressBar from './SmallProgressBar';
@@ -86,13 +89,7 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
           ],
           [
             t('reward.daily_reward'),
-            `${
-              lpStakingRound.ethElfiRound >= 2
-                ? '0.255 ETH'
-                : lpStakingRound.ethElfiRound === 1
-                ? '0.1609 ETH'
-                : '0.1376 ETH'
-            }`,
+            lpStakingPerRewardByRound(lpStakingRound.ethElfiRound),
           ],
         ]
       : [
@@ -216,22 +213,10 @@ const LpStakingBox: FunctionComponent<Props> = (props) => {
                     rewardOrMining={'reward'}
                     totalMiningValue={
                       token1 === Token.DAI
-                        ? (props.ethReward
-                            ? index === 0
-                              ? props.ethReward[0]
-                              : props.ethReward[1]
-                            : secondTokenValue.total
-                          )
+                        ? secondTokenValue.total
                             .toString()
                             .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                        : lpStakingRound.ethElfiRound >= 2
-                        ? ETH_REWARD_PER_POOL_3
-                        : (props.ethReward
-                            ? index === 0
-                              ? props.ethReward[0]
-                              : props.ethReward[1]
-                            : secondTokenValue.total
-                          )
+                        : ethRewardByRound(lpStakingRound.ethElfiRound + 1)
                             .toString()
                             .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                     }
