@@ -97,6 +97,39 @@ export const bscOnChainQuery = (
             }
         }`;
 
+type VotesType = {
+  votes: {
+    id: string;
+    voter: string;
+    created: number;
+    choice: number;
+    space: {
+      id: string;
+    };
+  }[];
+};
+
+export const onChainBscVoteFetcher = (query: string): Promise<VotesType> =>
+  request('https://hub.snapshot.org/graphql ', query);
+
+export const bscOnChainVoteQuery = (id: string): string => `
+   query Votes {
+  votes (
+    first: 1000
+    where: {
+      proposal: "${id}"
+    }
+  ) {
+    id
+    voter
+    created
+    choice
+    space {
+      id
+    }
+  }
+}
+  `;
 export class OnChainTopic {
   static getBscOnChainTopicData = async (): Promise<
     AxiosResponse<IBSCOnChainTopic>
