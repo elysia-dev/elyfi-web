@@ -39,8 +39,8 @@ export const onChainGovernancBsceMiddleware: Middleware =
                 id: data.id,
               } as IProposals;
             });
+          if (getNAPDatas.length === onChainData.length) return;
           getNAPDatas.map((data: any, index: any) => {
-            // if (index !== 0) return;
             return setOnChainData((_data: any) => {
               return [
                 ..._data,
@@ -48,7 +48,8 @@ export const onChainGovernancBsceMiddleware: Middleware =
                   data: {
                     description: data.data.description
                       .match(/\d.*(?!NAP)(?=:)/)
-                      ?.toString(),
+                      ?.toString()
+                      .replace(/ /g, ''),
                   },
                   status: data.status,
                   totalVotesCast: data.totalVotesCast,
@@ -93,6 +94,7 @@ export const onChainGovernanceMiddleware: Middleware =
           const getNAPCodes = getOnChainApis.proposals.filter((topic: any) => {
             return topic.status === 'ACTIVE';
           });
+          if (getNAPCodes.length === onChainData.length) return;
           getNAPCodes.map((data: any) => {
             return setOnChainData((_data: any) => {
               if (!(data.status === 'ACTIVE')) return [..._data];
