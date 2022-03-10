@@ -46,7 +46,6 @@ export const onChainGovernancBsceMiddleware: Middleware =
             });
           if (getNAPDatas.length === onChainData.length) return;
           getNAPDatas.map((data: any, index: any) => {
-            // if (index !== 0) return;
             setProposalId(data.id);
             return setOnChainData((_data: any) => {
               return [
@@ -72,7 +71,7 @@ export const onChainGovernancBsceMiddleware: Middleware =
     }, [swr.data]);
 
     useEffect(() => {
-      if (!voteDatas) return;
+      if (!voteDatas || !proposalId) return;
       setOnChainData(() => [
         {
           ...onChainData[0],
@@ -88,7 +87,7 @@ export const onChainGovernancBsceMiddleware: Middleware =
             0,
         },
       ]);
-    }, [voteDatas]);
+    }, [voteDatas, proposalId]);
 
     const data = swr.data === undefined ? dataRef.current : onChainData;
 
