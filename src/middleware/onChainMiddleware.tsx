@@ -36,11 +36,11 @@ export const onChainGovernancBsceMiddleware: Middleware =
                 totalVotesCastAgainst: data.scores[1],
                 totalVotesCastInSupport: data.scores[0],
                 timestamp: data.start.toString(),
-                id: data.author,
+                id: data.id,
               } as IProposals;
             });
           getNAPDatas.map((data: any, index: any) => {
-            if (index !== 0) return;
+            // if (index !== 0) return;
             return setOnChainData((_data: any) => {
               return [
                 ..._data,
@@ -55,7 +55,7 @@ export const onChainGovernancBsceMiddleware: Middleware =
                   totalVotesCastAbstained: data.totalVotesCastAbstained,
                   totalVotesCastAgainst: data.totalVotesCastAgainst,
                   totalVotesCastInSupport: data.totalVotesCastInSupport,
-                  id: data.id.match(/(?=).*(?=-proposal)/)?.toString(),
+                  id: data.id,
                 } as IProposals,
               ];
             });

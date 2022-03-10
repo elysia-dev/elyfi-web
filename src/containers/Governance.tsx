@@ -170,6 +170,7 @@ const Governance = (): JSX.Element => {
       </div>
     );
   };
+
   const onChainConatainer = (data: IProposals) => {
     return (
       <div
@@ -179,7 +180,11 @@ const Governance = (): JSX.Element => {
             category: PageEventType.MoveToExternalPage,
             action: ButtonEventType.OnChainVoteButtonOnGovernance,
           });
-          window.open(`${t('governance.link.tally')}/proposal/${data.id}`);
+          mainnetType === MainnetType.BSC
+            ? window.open(
+                `https://snapshot.org/#/elyfi-bsc.eth/proposal/${data.id}`,
+              )
+            : window.open(`${t('governance.link.tally')}/proposal/${data.id}`);
         }}>
         <div>
           <img
@@ -213,11 +218,13 @@ const Governance = (): JSX.Element => {
               <progress
                 className="governance__asset__progress-bar index-0"
                 value={
-                  typeof data.totalVotesCastInSupport === 'number'
-                    ? data.totalVotesCastInSupport
-                    : parseFloat(
-                        utils.formatEther(data.totalVotesCastInSupport),
-                      )
+                  data.totalVotesCastInSupport
+                    ? typeof data.totalVotesCastInSupport === 'number'
+                      ? data.totalVotesCastInSupport
+                      : parseFloat(
+                          utils.formatEther(data.totalVotesCastInSupport),
+                        )
+                    : 0
                 }
                 max={
                   typeof data.totalVotesCast === 'number'
@@ -231,9 +238,13 @@ const Governance = (): JSX.Element => {
               <progress
                 className="governance__asset__progress-bar index-1"
                 value={
-                  typeof data.totalVotesCastAgainst === 'number'
-                    ? data.totalVotesCastAgainst
-                    : parseFloat(utils.formatEther(data.totalVotesCastAgainst))
+                  data.totalVotesCastAgainst
+                    ? typeof data.totalVotesCastAgainst === 'number'
+                      ? data.totalVotesCastAgainst
+                      : parseFloat(
+                          utils.formatEther(data.totalVotesCastAgainst),
+                        )
+                    : 0
                 }
                 max={
                   typeof data.totalVotesCast === 'number'
@@ -247,11 +258,13 @@ const Governance = (): JSX.Element => {
               <progress
                 className="governance__asset__progress-bar index-2"
                 value={
-                  typeof data.totalVotesCastAbstained === 'number'
-                    ? data.totalVotesCastAbstained
-                    : parseFloat(
-                        utils.formatEther(data.totalVotesCastAbstained),
-                      )
+                  data.totalVotesCastAbstained
+                    ? typeof data.totalVotesCastAbstained === 'number'
+                      ? data.totalVotesCastAbstained
+                      : parseFloat(
+                          utils.formatEther(data.totalVotesCastAbstained),
+                        )
+                    : 0
                 }
                 max={
                   typeof data.totalVotesCast === 'number'
