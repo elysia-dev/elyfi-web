@@ -218,13 +218,11 @@ const Governance = (): JSX.Element => {
               <progress
                 className="governance__asset__progress-bar index-0"
                 value={
-                  data.totalVotesCastInSupport
-                    ? typeof data.totalVotesCastInSupport === 'number'
-                      ? data.totalVotesCastInSupport
-                      : parseFloat(
-                          utils.formatEther(data.totalVotesCastInSupport),
-                        )
-                    : 0
+                  typeof data.totalVotesCastInSupport === 'number'
+                    ? data.totalVotesCastInSupport
+                    : parseFloat(
+                        utils.formatEther(data.totalVotesCastInSupport),
+                      )
                 }
                 max={
                   typeof data.totalVotesCast === 'number'
@@ -238,13 +236,9 @@ const Governance = (): JSX.Element => {
               <progress
                 className="governance__asset__progress-bar index-1"
                 value={
-                  data.totalVotesCastAgainst
-                    ? typeof data.totalVotesCastAgainst === 'number'
-                      ? data.totalVotesCastAgainst
-                      : parseFloat(
-                          utils.formatEther(data.totalVotesCastAgainst),
-                        )
-                    : 0
+                  typeof data.totalVotesCastAgainst === 'number'
+                    ? data.totalVotesCastAgainst
+                    : parseFloat(utils.formatEther(data.totalVotesCastAgainst))
                 }
                 max={
                   typeof data.totalVotesCast === 'number'
@@ -258,13 +252,11 @@ const Governance = (): JSX.Element => {
               <progress
                 className="governance__asset__progress-bar index-2"
                 value={
-                  data.totalVotesCastAbstained
-                    ? typeof data.totalVotesCastAbstained === 'number'
-                      ? data.totalVotesCastAbstained
-                      : parseFloat(
-                          utils.formatEther(data.totalVotesCastAbstained),
-                        )
-                    : 0
+                  typeof data.totalVotesCastAbstained === 'number'
+                    ? data.totalVotesCastAbstained
+                    : parseFloat(
+                        utils.formatEther(data.totalVotesCastAbstained),
+                      )
                 }
                 max={
                   typeof data.totalVotesCast === 'number'
