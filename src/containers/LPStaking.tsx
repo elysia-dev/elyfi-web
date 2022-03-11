@@ -2,7 +2,6 @@ import { useWeb3React } from '@web3-react/core';
 import { constants, ethers, utils } from 'ethers';
 import { useEffect, useContext, useState, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import PriceContext from 'src/contexts/PriceContext';
 import envs from 'src/core/envs';
 import StakedLp from 'src/components/LpStaking/StakedLp';
 import StakerSubgraph, { IPoolPosition } from 'src/clients/StakerSubgraph';
@@ -11,7 +10,6 @@ import Token from 'src/enums/Token';
 import TxContext from 'src/contexts/TxContext';
 import stakerABI from 'src/core/abi/StakerABI.json';
 import useLpApr from 'src/hooks/useLpApy';
-import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import RewardModal from 'src/components/LpStaking/RewardModal';
 import DetailBox from 'src/components/LpStaking/DetailBox';
 import Reward from 'src/components/LpStaking/Reward';
@@ -41,9 +39,6 @@ function LPStaking(): JSX.Element {
   const { account, library } = useWeb3React();
   const { t, i18n } = useTranslation();
   const { txType, txWaiting } = useContext(TxContext);
-  const { elfiPrice } = useContext(PriceContext);
-  const { ethPool, daiPool } = useContext(UniswapPoolContext);
-  const { ethPrice, daiPrice } = useContext(PriceContext);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
@@ -74,10 +69,6 @@ function LPStaking(): JSX.Element {
     beforeTotalDai: 0,
     totalDai: 0,
   });
-  const ethPoolTotalLiquidity =
-    ethPool.stakedToken0 * elfiPrice + ethPool.stakedToken1 * ethPrice;
-  const daiPoolTotalLiquidity =
-    daiPool.stakedToken0 * elfiPrice + daiPool.stakedToken1 * daiPrice;
 
   const currentRound =
     lpUnixTimestamp.findIndex((staking) => {
