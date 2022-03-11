@@ -16,7 +16,6 @@ import LpStakingBox from 'src/components/RewardPlan/LpStakingBox';
 import StakingBox from 'src/components/RewardPlan/StakingBox';
 import TokenDeposit from 'src/components/RewardPlan/TokenDeposit';
 import PriceContext from 'src/contexts/PriceContext';
-import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import {
   daiMoneyPoolTime,
   tetherMoneyPoolTime,
@@ -49,12 +48,14 @@ import getTokenNameByAddress from 'src/core/utils/getTokenNameByAddress';
 import useCalcReward from 'src/hooks/useCalcReward';
 import { rewardToken } from 'src/utiles/stakingReward';
 import { ethRewardByRound } from 'src/utiles/LpStakingRewardByRound';
+import usePoolData from 'src/hooks/usePoolData';
+import Skeleton from 'react-loading-skeleton';
 
 const RewardPlan: FunctionComponent = () => {
   const { t, i18n } = useTranslation();
   const { stakingType } = useParams<{ stakingType: string }>();
   const history = useHistory();
-  const { latestPrice, ethPool, daiPool } = useContext(UniswapPoolContext);
+  const { latestPrice, loading } = usePoolData();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const { ethPrice } = useContext(PriceContext);
@@ -401,12 +402,16 @@ const RewardPlan: FunctionComponent = () => {
               <img src={ELFI} />
               <h2>{t('reward.deposit__reward_plan')}</h2>
               <div className="reward__token__elfi">
-                <p>
-                  <Trans
-                    i18nKey="reward.elfi_price"
-                    count={Math.round(latestPrice * 1000) / 1000}
-                  />
-                </p>
+                {!loading ? (
+                  <p>
+                    <Trans
+                      i18nKey="reward.elfi_price"
+                      count={Math.round(latestPrice * 1000) / 1000}
+                    />
+                  </p>
+                ) : (
+                  <Skeleton width={50} height={40} />
+                )}
               </div>
             </div>
             <section className="reward__container">
