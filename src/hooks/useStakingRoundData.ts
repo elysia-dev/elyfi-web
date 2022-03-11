@@ -5,7 +5,6 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import envs from 'src/core/envs';
 import PriceContext from 'src/contexts/PriceContext';
 import Token from 'src/enums/Token';
-import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import {
   DAIPerDayOnELFIStakingPool,
   ELFIPerDayOnELStakingPool,
@@ -15,6 +14,7 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import { poolAddress } from 'src/utiles/stakingPoolAddress';
 import { rewardPerDayByToken } from 'src/utiles/stakingReward';
 import MainnetType from 'src/enums/MainnetType';
+import usePoolData from './usePoolData';
 
 // round 0, 1, 2, 3
 const useStakingRoundData = (
@@ -43,7 +43,7 @@ const useStakingRoundData = (
     );
   }, [stakedToken, round, mainnet]);
 
-  const { latestPrice: elfiPrice } = useContext(UniswapPoolContext);
+  const { latestPrice: elfiPrice } = usePoolData();
   const { elPrice } = useContext(PriceContext);
 
   const [state, setState] = useState({

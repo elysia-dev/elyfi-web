@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import PriceContext from 'src/contexts/PriceContext';
 import { toCompact } from 'src/utiles/formatters';
-import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
+import usePoolData from './usePoolData';
 
 const ELFI_AMOUNT_PER_POOL = 300000;
 const DAI_AMOUNT_PER_POOL = 25000;
@@ -13,7 +13,7 @@ const useLpApr = (): {
   calcEthElfiPoolApr: (totalValue: number) => string;
 } => {
   const { daiPrice, ethPrice } = useContext(PriceContext);
-  const { latestPrice: elfiPrice } = useContext(UniswapPoolContext);
+  const { latestPrice: elfiPrice } = usePoolData();
 
   // Token0 is ELFI
   // Token1 is ETHa

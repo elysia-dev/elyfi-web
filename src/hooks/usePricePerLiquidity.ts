@@ -1,14 +1,14 @@
 import { useContext, useMemo } from 'react';
 import PriceContext from 'src/contexts/PriceContext';
-import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import { utils } from 'ethers';
+import usePoolData from './usePoolData';
 
 const usePricePerLiquidity = (): {
   pricePerDaiLiquidity: number;
   pricePerEthLiquidity: number;
 } => {
   const { elfiPrice, daiPrice, ethPrice } = useContext(PriceContext);
-  const { daiPool, ethPool } = useContext(UniswapPoolContext);
+  const { daiPool, ethPool } = usePoolData();
 
   const pricePerEthLiquidity = useMemo(() => {
     return (

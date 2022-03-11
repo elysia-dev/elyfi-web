@@ -2,20 +2,16 @@ import { BigNumber, constants, providers } from 'ethers';
 import { formatUnits, formatEther } from 'ethers/lib/utils';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import PriceContext from 'src/contexts/PriceContext';
-import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import envs from 'src/core/envs';
 import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import ReserveData from 'src/core/data/reserves';
 import SubgraphContext from 'src/contexts/SubgraphContext';
+import usePoolData from './usePoolData';
 
 const useTvl = (): { value: number; loading: boolean } => {
   const subgraphContext = useContext(SubgraphContext);
   const [loading, setLoading] = useState(true);
-  const {
-    latestPrice: elfiPrice,
-    daiPool,
-    ethPool,
-  } = useContext(UniswapPoolContext);
+  const { latestPrice: elfiPrice, daiPool, ethPool } = usePoolData();
   const { elPrice, daiPrice, ethPrice } = useContext(PriceContext);
 
   const [state, setState] = useState({
@@ -45,12 +41,7 @@ const useTvl = (): { value: number; loading: boolean } => {
       parseInt(formatEther(state.stakedEl), 10) * elPrice +
       parseInt(formatEther(state.stakedElfi), 10) * elfiPrice
     );
-  }, [
-    state,
-    elPrice,
-    elfiPrice,
-    loading,
-  ]);
+  }, [state, elPrice, elfiPrice, loading]);
 
   const loadBalances = async () => {
     try {
