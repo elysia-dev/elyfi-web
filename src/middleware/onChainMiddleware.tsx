@@ -1,11 +1,20 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IProposals } from 'src/clients/OnChainTopic';
-import { Middleware, SWRHook } from 'swr';
+import {
+  bscOnChainVoteQuery,
+  IProposals,
+  onChainBscVoteFetcher,
+} from 'src/clients/OnChainTopic';
+import useSWR, { Middleware, SWRHook } from 'swr';
 
 export const onChainGovernancBsceMiddleware: Middleware =
   (useSWRNext: SWRHook) => (key, fetcher, config) => {
+    const [proposalId, setProposalId] = useState('');
     const swr = useSWRNext(key, fetcher, config);
+    const { data: voteDatas } = useSWR(
+      bscOnChainVoteQuery(proposalId ? proposalId : ''),
+      onChainBscVoteFetcher,
+    );
     const dataRef = useRef<any>(null);
     const [onChainLoading, setOnChainLoading] = useState(true);
     const [onChainData, setOnChainData] = useState<
@@ -31,16 +40,13 @@ export const onChainGovernancBsceMiddleware: Middleware =
                   description: data.title,
                 },
                 status: data.state,
-                totalVotesCast: data.scores_total || 0,
-                totalVotesCastAbstained: data.scores[2] || 0,
-                totalVotesCastAgainst: data.scores[1] || 0,
-                totalVotesCastInSupport: data.scores[0] || 0,
                 timestamp: data.start.toString(),
                 id: data.id,
               } as IProposals;
             });
           if (getNAPDatas.length === onChainData.length) return;
           getNAPDatas.map((data: any, index: any) => {
+            setProposalId(data.id);
             return setOnChainData((_data: any) => {
               return [
                 ..._data,
@@ -52,10 +58,6 @@ export const onChainGovernancBsceMiddleware: Middleware =
                       .replace(/ /g, ''),
                   },
                   status: data.status,
-                  totalVotesCast: data.totalVotesCast,
-                  totalVotesCastAbstained: data.totalVotesCastAbstained,
-                  totalVotesCastAgainst: data.totalVotesCastAgainst,
-                  totalVotesCastInSupport: data.totalVotesCastInSupport,
                   id: data.id,
                 } as IProposals,
               ];
@@ -67,6 +69,25 @@ export const onChainGovernancBsceMiddleware: Middleware =
         setOnChainLoading(false);
       }
     }, [swr.data]);
+
+    useEffect(() => {
+      if (!voteDatas || !proposalId) return;
+      setOnChainData(() => [
+        {
+          ...onChainData[0],
+          totalVotesCast: voteDatas.votes.length || 0,
+          totalVotesCastAbstained:
+            voteDatas.votes.filter((vote: any) => vote.choice === 3).length ||
+            0,
+          totalVotesCastAgainst:
+            voteDatas.votes.filter((vote: any) => vote.choice === 2).length ||
+            0,
+          totalVotesCastInSupport:
+            voteDatas.votes.filter((vote: any) => vote.choice === 1).length ||
+            0,
+        },
+      ]);
+    }, [voteDatas, proposalId]);
 
     const data = swr.data === undefined ? dataRef.current : onChainData;
 
