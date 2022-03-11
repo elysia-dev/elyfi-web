@@ -1,35 +1,22 @@
 import { useHistory, useParams } from 'react-router-dom';
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { reserveTokenData } from 'src/core/data/reserves';
-
-import { toUsd, toPercent } from 'src/utiles/formatters';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { BigNumber } from 'ethers';
-import Chart from 'react-google-charts';
-
-import ErrorPage from 'src/components/ErrorPage';
 import { useTranslation } from 'react-i18next';
+
+import { reserveTokenData } from 'src/core/data/reserves';
+import { toUsd, toPercent } from 'src/utiles/formatters';
+import ErrorPage from 'src/components/ErrorPage';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcHistoryChartData from 'src/utiles/calcHistoryChartData';
-import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
-import envs from 'src/core/envs';
-import { useWeb3React } from '@web3-react/core';
-import {
-  ERC20__factory,
-  IncentivePool__factory,
-} from '@elysia-dev/contract-typechain';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
 import Token from 'src/enums/Token';
-import moment from 'moment';
 import Loan from 'src/containers/Loan';
 import MarketDetailsBody from 'src/components/MarketDetailsBody';
-import styled from 'styled-components';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
-import SubgraphContext, {
-  IReserveSubgraphData,
-} from 'src/contexts/SubgraphContext';
+import SubgraphContext from 'src/contexts/SubgraphContext';
 import {
   Bar,
   Cell,
@@ -47,6 +34,8 @@ import {
 } from 'src/utiles/graphTooltipPosition';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import PriceContext from 'src/contexts/PriceContext';
+import usePoolData from 'src/hooks/usePoolData';
+import Skeleton from 'react-loading-skeleton';
 
 interface ITokencolor {
   name: string;
@@ -81,7 +70,7 @@ function MarketDetail(): JSX.Element {
   const tokenRef = useRef<HTMLParagraphElement>(null);
   const { data: getSubgraphData } = useContext(SubgraphContext);
   const { elfiPrice } = useContext(PriceContext);
-  const { poolDayData } = useContext(UniswapPoolContext);
+  const { poolDayData, loading } = usePoolData();
   const { lng, id } = useParams<{ lng: string; id: Token.DAI | Token.USDT }>();
   const history = useHistory();
   const { value: mediaQuery } = useMediaQueryType();
@@ -283,65 +272,73 @@ function MarketDetail(): JSX.Element {
                 onMouseLeave={() => {
                   setCellInBarIdx(-1);
                 }}>
-                <ResponsiveContainer width="100%" height={300}>
-                  <ComposedChart
-                    data={
-                      mediaQuery === MediaQuery.PC
-                        ? calcHistoryChartData(
-                            data,
-                            graphConverter ? 'borrow' : 'deposit',
-                            poolDayData,
-                            tokenInfo!.decimals,
-                          )
-                        : calcHistoryChartData(
-                            data,
-                            graphConverter ? 'borrow' : 'deposit',
-                            poolDayData,
-                            tokenInfo!.decimals,
-                          ).slice(20)
-                    }>
-                    <Tooltip
-                      content={<CustomTooltip />}
-                      position={{
-                        x: setTooltipBoxPositionX(mediaQuery, tooltipPositionX),
-                        y: -70,
-                      }}
-                      cursor={{
-                        stroke: selectToken?.color,
-                        strokeDasharray: 3.3,
-                      }}
-                    />
-                    <Bar dataKey="barTotal" barSize={20}>
-                      {calcHistoryChartData(
-                        data,
-                        graphConverter ? 'borrow' : 'deposit',
-                        poolDayData,
-                        tokenInfo!.decimals,
-                      ).map((cData, index) => (
-                        <Cell
-                          key={index}
-                          fill={
-                            cellInBarIdx === index
-                              ? selectToken?.color
-                              : '#E6E6E6'
-                          }
-                          radius={4}
-                        />
-                      ))}
-                    </Bar>
-                    <Line
-                      type="monotone"
-                      dataKey="lineYield"
-                      stroke={selectToken?.color}
-                      dot={false}
-                      activeDot={{
-                        stroke: selectToken?.color,
-                        strokeWidth: 2,
-                        r: 4,
-                      }}
-                    />
-                  </ComposedChart>
-                </ResponsiveContainer>
+                {!loading ? (
+                  <ResponsiveContainer width="100%" height={300}>
+                    <ComposedChart
+                      data={
+                        mediaQuery === MediaQuery.PC
+                          ? calcHistoryChartData(
+                              data,
+                              graphConverter ? 'borrow' : 'deposit',
+                              poolDayData,
+                              tokenInfo!.decimals,
+                            )
+                          : calcHistoryChartData(
+                              data,
+                              graphConverter ? 'borrow' : 'deposit',
+                              poolDayData,
+                              tokenInfo!.decimals,
+                            ).slice(20)
+                      }>
+                      <Tooltip
+                        content={<CustomTooltip />}
+                        position={{
+                          x: setTooltipBoxPositionX(
+                            mediaQuery,
+                            tooltipPositionX,
+                          ),
+                          y: -70,
+                        }}
+                        cursor={{
+                          stroke: selectToken?.color,
+                          strokeDasharray: 3.3,
+                        }}
+                      />
+                      <Bar dataKey="barTotal" barSize={20}>
+                        {calcHistoryChartData(
+                          data,
+                          graphConverter ? 'borrow' : 'deposit',
+                          poolDayData,
+                          tokenInfo!.decimals,
+                        ).map((cData, index) => (
+                          <Cell
+                            key={index}
+                            fill={
+                              cellInBarIdx === index
+                                ? selectToken?.color
+                                : '#E6E6E6'
+                            }
+                            radius={4}
+                          />
+                        ))}
+                      </Bar>
+                      <Line
+                        type="monotone"
+                        dataKey="lineYield"
+                        stroke={selectToken?.color}
+                        dot={false}
+                        activeDot={{
+                          stroke: selectToken?.color,
+                          strokeWidth: 2,
+                          r: 4,
+                        }}
+                      />
+                    </ComposedChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <Skeleton width={'100%'} height={300} />
+                )}
+
                 <div
                   style={{
                     overflow: 'hidden',
