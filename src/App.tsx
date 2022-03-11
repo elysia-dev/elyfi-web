@@ -1,6 +1,5 @@
 import './i18n';
 
-import { useContext, useEffect, useState } from 'react';
 // import { Web3ReactProvider } from '@web3-react/core';
 import { ApolloProvider, InMemoryCache, ApolloClient } from '@apollo/client';
 import { Web3ReactProvider } from '@web3-react/core';
@@ -28,21 +27,19 @@ const App: React.FC = () => {
 
   return (
     <ApolloProvider client={client}>
-      <UniswapPoolProvider>
-        <PriceProvider>
-          <Web3ReactProvider getLibrary={getLibrary}>
-            <MainnetProvider>
-              <TxProvider>
-                <SubgraphProvider>
-                  <Router>
-                    <AppNavigator />
-                  </Router>
-                </SubgraphProvider>
-              </TxProvider>
-            </MainnetProvider>
-          </Web3ReactProvider>
-        </PriceProvider>
-      </UniswapPoolProvider>
+      <PriceProvider>
+        <Web3ReactProvider getLibrary={getLibrary}>
+          <MainnetProvider>
+            <TxProvider>
+              <SubgraphProvider>
+                <Router>
+                  <AppNavigator />
+                </Router>
+              </SubgraphProvider>
+            </TxProvider>
+          </MainnetProvider>
+        </Web3ReactProvider>
+      </PriceProvider>
     </ApolloProvider>
   );
 };
