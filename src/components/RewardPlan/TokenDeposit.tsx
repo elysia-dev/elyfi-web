@@ -9,12 +9,13 @@ import {
 } from 'src/utiles/formatters';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import { BigNumber } from 'ethers';
-import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import Token from 'src/enums/Token';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import CountUp from 'react-countup';
+import usePoolData from 'src/hooks/usePoolData';
+import Skeleton from 'react-loading-skeleton';
 
 interface Props {
   reserve: IReserveSubgraphData;
@@ -60,7 +61,7 @@ const TokenDeposit: FunctionComponent<Props> = ({
       : reserve.id === envs.token.usdtAddress
       ? Token.USDT
       : Token.BUSD;
-  const { latestPrice } = useContext(UniswapPoolContext);
+  const { latestPrice, loading } = usePoolData();
   const { value: mediaQuery } = useMediaQueryType();
 
   return (
@@ -113,15 +114,19 @@ const TokenDeposit: FunctionComponent<Props> = ({
                 </div>
                 <div>
                   <p>{t('dashboard.token_mining_apr')}</p>
-                  <h2>
-                    {toPercent(
-                      calcMiningAPR(
-                        latestPrice,
-                        BigNumber.from(reserve.totalDeposit || 0),
-                        reserveTokenData[token].decimals,
-                      ),
-                    ) || 0}
-                  </h2>
+                  {!loading ? (
+                    <h2>
+                      {toPercent(
+                        calcMiningAPR(
+                          latestPrice,
+                          BigNumber.from(reserve.totalDeposit || 0),
+                          reserveTokenData[token].decimals,
+                        ),
+                      ) || 0}
+                    </h2>
+                  ) : (
+                    <Skeleton width={100} height={40} />
+                  )}
                 </div>
               </div>
               <div className="reward__token-deposit__apy--right">
@@ -146,13 +151,19 @@ const TokenDeposit: FunctionComponent<Props> = ({
               <div>
                 <p>{t('dashboard.token_mining_apr')}</p>
                 <h2>
-                  {toPercent(
-                    calcMiningAPR(
-                      latestPrice,
-                      BigNumber.from(reserve.totalDeposit || 0),
-                      reserveTokenData[token].decimals,
-                    ),
-                  ) || 0}
+                  {!loading ? (
+                    <h2>
+                      {toPercent(
+                        calcMiningAPR(
+                          latestPrice,
+                          BigNumber.from(reserve.totalDeposit || 0),
+                          reserveTokenData[token].decimals,
+                        ),
+                      ) || 0}
+                    </h2>
+                  ) : (
+                    <Skeleton width={70} height={30} />
+                  )}
                 </h2>
               </div>
               <div>
