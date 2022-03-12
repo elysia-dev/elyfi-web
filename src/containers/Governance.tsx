@@ -41,7 +41,8 @@ const Governance = (): JSX.Element => {
   const [pageNumber, setPageNumber] = useState(1);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const { getAssetBondsByNetwork } = useContext(SubgraphContext);
+  const { getAssetBondsByNetwork, data: reserveData } =
+    useContext(SubgraphContext);
   const { type: mainnetType } = useContext(MainnetContext);
   const assetBondTokens = getAssetBondsByNetwork(mainnetType);
   const { t } = useTranslation();
@@ -128,6 +129,10 @@ const Governance = (): JSX.Element => {
       window.removeEventListener('resize', () => draw());
     };
   }, [document.body.clientHeight]);
+
+  useEffect(() => {
+    getAssetBondsByNetwork(mainnetType);
+  }, [mainnetType, reserveData]);
 
   const offChainContainer = (data: INapData) => {
     return (
@@ -529,9 +534,10 @@ const Governance = (): JSX.Element => {
                 </div>
                 <p>{t('governance.loan_list__content')}</p>
               </div>
-              <div className="loan__list--null">
-                <p>{t('loan.loan_list--null')}</p>
-              </div>
+              {/* <div className="loan__list--null"> */}
+              {/* <p>{t('loan.loan_list--null')}</p> */}
+              <Skeleton width={'100%'} height={500} />
+              {/* </div> */}
             </>
           ) : (
             <>
