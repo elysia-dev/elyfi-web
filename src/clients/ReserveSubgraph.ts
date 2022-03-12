@@ -1,11 +1,12 @@
 import axios, { AxiosResponse } from 'axios';
 import envs from 'src/core/envs';
 import moment from 'moment';
+import { request } from 'graphql-request';
 import { IReserveSubgraphData, IAssetBond } from 'src/contexts/SubgraphContext';
 
 const minimumTimestamp = moment().subtract(35, 'days').unix();
 
-const query = `
+export const reserveQuery = `
 {
   reserves {
     id
@@ -85,18 +86,8 @@ const query = `
 }
 `;
 
-interface IResponse {
-  data: {
-    reserves: IReserveSubgraphData[];
-    assetBondTokens: IAssetBond[];
-  };
-}
+export const bscReserveDataFetcher = (): Promise<IReserveSubgraphData[]> =>
+  request(envs.subgraphApiEndpoint.bscSubgraphURI, reserveQuery);
 
-export class ReserveSubgraph {
-  static getBscReserveData = async (): Promise<AxiosResponse<IResponse>> => {
-    return axios.post(envs.subgraphApiEndpoint.bscSubgraphURI, { query });
-  };
-  static getEthReserveData = async (): Promise<AxiosResponse<IResponse>> => {
-    return axios.post(envs.subgraphApiEndpoint.subgraphURI, { query });
-  };
-}
+export const ethReserveDataFetcher = (): Promise<IReserveSubgraphData[]> =>
+  request(envs.subgraphApiEndpoint.subgraphURI, reserveQuery);
