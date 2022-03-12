@@ -127,9 +127,9 @@ type ReturnType = {
 // 1. Use other naming. Balance dose not cover the usefulness
 const useBalances = (refetchUserData: () => void): ReturnType => {
   const { account, chainId, library } = useWeb3React();
-  const { data } = useContext(SubgraphContext);
+  const { data: reserveData } = useContext(SubgraphContext);
   const [balances, setBalances] = useState<BalanceType[]>(
-    data.reserves.map((reserve) => {
+    reserveData.reserves.map((reserve) => {
       return {
         ...initialBalanceState,
         id: reserve.id,
@@ -141,36 +141,39 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
   const { elfiPrice } = useContext(PriceContext);
   const { type: mainnetType, active } = useContext(MainnetContext);
 
-  const loadBalance = async (id: string) => {
-    if (!account) return;
-    try {
-      refetchUserData();
+  const loadBalance = useCallback(
+    async (id: string) => {
+      if (!account) return;
+      try {
+        refetchUserData();
 
-      setBalances(
-        await Promise.all(
-          balances.map(async (balance, _index) => {
-            const reserve = data.reserves.find((r) => r.id === id);
-            if (balance.id !== id || !reserve)
+        setBalances(
+          await Promise.all(
+            balances.map(async (balance, _index) => {
+              const reserve = reserveData.reserves.find((r) => r.id === id);
+              if (balance.id !== id || !reserve)
+                return {
+                  ...balance,
+                };
               return {
                 ...balance,
+                updatedAt: moment().unix(),
+                ...(await fetchBalanceFrom(
+                  reserve,
+                  account,
+                  library,
+                  balance.tokenName,
+                )),
               };
-            return {
-              ...balance,
-              updatedAt: moment().unix(),
-              ...(await fetchBalanceFrom(
-                reserve,
-                account,
-                library,
-                balance.tokenName,
-              )),
-            };
-          }),
-        ),
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  };
+            }),
+          ),
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [reserveData, balances],
+  );
 
   const loadBalances = useCallback(async () => {
     if (!account) {
@@ -180,7 +183,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
       refetchUserData();
       setBalances(
         await Promise.all(
-          data.reserves.map(async (reserve, index) => {
+          reserveData.reserves.map(async (reserve, index) => {
             const tokenName = getTokenNameFromAddress(
               reserve.id,
             ) as ReserveToken;
@@ -199,16 +202,16 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
       );
     } catch (error) {
       setBalances(
-        balances.map((data) => {
+        balances.map((reserveData) => {
           return {
-            ...data,
+            ...reserveData,
           };
         }),
       );
     } finally {
       setLoading(false);
     }
-  }, [account, library, chainId]);
+  }, [account, library, chainId, reserveData]);
 
   useEffect(() => {
     // Only called when active.
@@ -216,7 +219,19 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     if (!account || !active) return;
     setLoading(true);
     loadBalances();
-  }, [account, active, chainId]);
+  }, [account, active, chainId, reserveData]);
+
+  useEffect(() => {
+    setBalances(
+      reserveData.reserves.map((reserve) => {
+        return {
+          ...initialBalanceState,
+          id: reserve.id,
+          tokenName: getTokenNameFromAddress(reserve.id) as ReserveToken,
+        };
+      }),
+    );
+  }, [reserveData]);
 
   useEffect(() => {
     if (loading || !active) return;
@@ -224,7 +239,9 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     const interval = setInterval(() => {
       setBalances(
         balances.map((balance) => {
-          const reserve = data.reserves.find((r) => r.id === balance.id);
+          const reserve = reserveData.reserves.find((r) =>
+            balance ? r.id === balance.id : false,
+          );
           if (!reserve) return balance;
 
           return {
@@ -270,7 +287,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     return () => {
       clearInterval(interval);
     };
-  }, [balances, chainId, loading, active]);
+  }, [balances, chainId, loading, active, reserveData]);
 
   return { balances, loading, loadBalance };
 };
