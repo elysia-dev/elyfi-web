@@ -1,7 +1,7 @@
-import { BigNumber } from "ethers";
-import { createContext } from "react"
-import ABTokenState from "src/enums/ABTokenState";
-import MainnetType from "src/enums/MainnetType";
+import { BigNumber } from 'ethers';
+import { createContext } from 'react';
+import ABTokenState from 'src/enums/ABTokenState';
+import MainnetType from 'src/enums/MainnetType';
 
 export interface IReserveHistory {
   id: string;
@@ -13,31 +13,31 @@ export interface IReserveHistory {
 }
 
 export interface IAssetBond {
-  id: string
-  state: ABTokenState
+  id: string;
+  state: ABTokenState;
   signer: {
-    id: string
-  }
+    id: string;
+  };
   borrower: {
-    id: string
-  }
+    id: string;
+  };
   collateralServiceProvider: {
-    id: string
-  }
+    id: string;
+  };
   reserve: {
-    id: string
-  }
-  principal: BigNumber
-  debtCeiling: BigNumber
-  couponRate: BigNumber
-  interestRate: BigNumber
-  delinquencyRate: BigNumber
-  loanStartTimestamp: number
-  collateralizeTimestamp: number
-  maturityTimestamp: number
-  liquidationTimestamp: number
-  ipfsHash: string
-  signerOpinionHash: string
+    id: string;
+  };
+  principal: BigNumber;
+  debtCeiling: BigNumber;
+  couponRate: BigNumber;
+  interestRate: BigNumber;
+  delinquencyRate: BigNumber;
+  loanStartTimestamp: number;
+  collateralizeTimestamp: number;
+  maturityTimestamp: number;
+  liquidationTimestamp: number;
+  ipfsHash: string;
+  signerOpinionHash: string;
 }
 
 export interface IReserveSubgraphData {
@@ -73,83 +73,85 @@ export interface IReserveSubgraphData {
   lToken: {
     id: string;
   };
-  assetBondTokens: IAssetBond[]
+  assetBondTokens: IAssetBond[];
 }
-
 
 export interface IReserveSubgraph {
   data: {
-    reserves: IReserveSubgraphData[]
-  }
+    reserves: IReserveSubgraphData[];
+  };
+  loading: boolean;
 }
 
 export const initialReserveSubgraph: IReserveSubgraph = {
   data: {
     reserves: [
       {
-        id: "",
-        lTokenInterestIndex: "",
+        id: '',
+        lTokenInterestIndex: '',
         lastUpdateTimestamp: 0,
-        borrowAPY: "",
+        borrowAPY: '',
         depositAPY: 0,
-        totalBorrow: "",
-        totalDeposit: "",
+        totalBorrow: '',
+        totalDeposit: '',
         lTokenUserBalanceCount: 0,
         dTokenUserBalanceCount: 0,
         deposit: [
           {
-            id: "",
-          }
+            id: '',
+          },
         ],
         incentivePool: {
-          id: "",
+          id: '',
         },
         borrow: [
           {
-            id: "",
-            amount: "",
+            id: '',
+            amount: '',
             timestamp: 0,
-            tokenId: "",
-          }
+            tokenId: '',
+          },
         ],
         repay: [
           {
-            id: "",
-            userDTokenBalance: "",
-            feeOnCollateralServiceProvider: "",
+            id: '',
+            userDTokenBalance: '',
+            feeOnCollateralServiceProvider: '',
             timestamp: 0,
-            tokenId: "",
-          }
+            tokenId: '',
+          },
         ],
         reserveHistory: [
           {
-            id: "",
+            id: '',
             timestamp: 0,
-            borrowAPY: "",
-            depositAPY: "",
-            totalBorrow: "",
-            totalDeposit: "",
-          }
+            borrowAPY: '',
+            depositAPY: '',
+            totalBorrow: '',
+            totalDeposit: '',
+          },
         ],
         lToken: {
-          id: "",
+          id: '',
         },
         assetBondTokens: [],
-      }
+      },
     ],
   },
-}
+  loading: true,
+};
 
 interface ISubgraphContext {
   data: {
-    reserves: IReserveSubgraphData[]
-  },
-  getAssetBondsByNetwork: (network: MainnetType) => IAssetBond[]
+    reserves: IReserveSubgraphData[];
+  };
+  loading: boolean;
+  getAssetBondsByNetwork: (network: MainnetType) => IAssetBond[];
 }
 
 const SubgraphContext = createContext<ISubgraphContext>({
   ...initialReserveSubgraph,
-  getAssetBondsByNetwork: () => []
+  getAssetBondsByNetwork: () => [],
 });
 
-export default SubgraphContext
+export default SubgraphContext;
