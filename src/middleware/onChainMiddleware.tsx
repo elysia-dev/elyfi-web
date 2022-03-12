@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IProposals } from 'src/clients/OnChainTopic';
 import { Middleware, SWRHook } from 'swr';
@@ -18,7 +18,9 @@ export const onChainGovernancBsceMiddleware: Middleware =
 
     useEffect(() => {
       try {
+        if (swr.error) throw Error;
         if (swr.data !== undefined) {
+          setOnChainData([]);
           dataRef.current = swr.data;
           const data: any = swr.data;
           const getNAPDatas = data.proposals
@@ -39,7 +41,7 @@ export const onChainGovernancBsceMiddleware: Middleware =
                 id: data.id,
               } as IProposals;
             });
-          if (getNAPDatas.length === onChainData.length) return;
+
           getNAPDatas.map((data: any, index: any) => {
             return setOnChainData((_data: any) => {
               return [
@@ -88,13 +90,15 @@ export const onChainGovernanceMiddleware: Middleware =
 
     useEffect(() => {
       try {
+        if (swr.error) throw Error;
         if (swr.data !== undefined) {
+          setOnChainData([]);
           dataRef.current = swr.data;
           const getOnChainApis: any = swr.data;
           const getNAPCodes = getOnChainApis.proposals.filter((topic: any) => {
             return topic.status === 'ACTIVE';
           });
-          if (getNAPCodes.length === onChainData.length) return;
+
           getNAPCodes.map((data: any) => {
             return setOnChainData((_data: any) => {
               if (!(data.status === 'ACTIVE')) return [..._data];
