@@ -32,7 +32,7 @@ type UniswapPoolType = {
   };
 };
 
-const usePoolData = () => {
+const usePoolData = (): UniswapPoolType => {
   const [state, setState] = useState<UniswapPoolType>({
     totalValueLockedUSD: 0,
     totalValueLockedToken0: 0,
