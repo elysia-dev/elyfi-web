@@ -50,6 +50,7 @@ const Governance = (): JSX.Element => {
   const { value: mediaQuery } = useMediaQueryType();
   const { lng } = useParams<{ lng: string }>();
   const defaultShowingLoanData = mediaQuery === MediaQuery.Mobile ? 8 : 9;
+  const [isAssetList, setIsAssetList] = useState(false);
   const assetBondTokensBackedByEstate = assetBondTokens.filter((product) => {
     const parsedId = parseTokenId(product.id);
     return CollateralCategory.Others !== parsedId.collateralCategory;
@@ -133,6 +134,18 @@ const Governance = (): JSX.Element => {
   useEffect(() => {
     getAssetBondsByNetwork(mainnetType);
   }, [mainnetType, reserveData]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (assetBondTokensBackedByEstate.length === 0) {
+        setIsAssetList(true);
+      }
+    }, 3500);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
 
   const offChainContainer = (data: INapData) => {
     return (
@@ -522,63 +535,62 @@ const Governance = (): JSX.Element => {
           )}
         </section>
         <section className="governance__loan governance__header">
-          {assetBondTokensBackedByEstate.length === 0 ? (
-            <>
+          <>
+            <div>
               <div>
-                <div>
-                  <h3>
-                    {t('governance.loan_list', {
-                      count: 0,
-                    })}
-                  </h3>
-                </div>
-                <p>{t('governance.loan_list__content')}</p>
+                <h3>
+                  {t('governance.loan_list', {
+                    count: assetBondTokensBackedByEstate
+                      ? assetBondTokensBackedByEstate.length
+                      : 0,
+                  })}
+                </h3>
               </div>
-              {/* <div className="loan__list--null"> */}
-              {/* <p>{t('loan.loan_list--null')}</p> */}
-              <Skeleton width={'100%'} height={500} />
-              {/* </div> */}
-            </>
-          ) : (
+              <p>{t('governance.loan_list__content')}</p>
+            </div>
             <>
-              <div>
-                <div>
-                  <h3>
-                    {t('governance.loan_list', {
-                      count: assetBondTokensBackedByEstate.length,
-                    })}
-                  </h3>
-                </div>
-                <p>{t('governance.loan_list__content')}</p>
-              </div>
-              <>
-                <AssetList
-                  assetBondTokens={
-                    /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
-                    [...((assetBondTokensBackedByEstate as IAssetBond[]) || [])]
-                      .slice(0, pageNumber * defaultShowingLoanData)
-                      .sort((a, b) => {
-                        return b.loanStartTimestamp! - a.loanStartTimestamp! >=
-                          0
-                          ? 1
-                          : -1;
-                      }) || []
-                  }
-                />
-                {assetBondTokensBackedByEstate.length &&
-                  assetBondTokensBackedByEstate.length >=
-                    pageNumber * defaultShowingLoanData && (
-                    <div>
-                      <button
-                        className="portfolio__view-button"
-                        onClick={() => viewMoreHandler()}>
-                        {t('loan.view-more')}
-                      </button>
-                    </div>
-                  )}
-              </>
+              {assetBondTokensBackedByEstate.length === 0 ? (
+                isAssetList ? (
+                  <div className="loan__list--null">
+                    <p>{t('loan.loan_list--null')}</p>
+                  </div>
+                ) : (
+                  <Skeleton width={'100%'} height={500} />
+                )
+              ) : (
+                <>
+                  <AssetList
+                    assetBondTokens={
+                      /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
+                      [
+                        ...((assetBondTokensBackedByEstate as IAssetBond[]) ||
+                          []),
+                      ]
+                        .slice(0, pageNumber * defaultShowingLoanData)
+                        .sort((a, b) => {
+                          return b.loanStartTimestamp! -
+                            a.loanStartTimestamp! >=
+                            0
+                            ? 1
+                            : -1;
+                        }) || []
+                    }
+                  />
+                  {assetBondTokensBackedByEstate &&
+                    assetBondTokensBackedByEstate.length >=
+                      pageNumber * defaultShowingLoanData && (
+                      <div>
+                        <button
+                          className="portfolio__view-button"
+                          onClick={() => viewMoreHandler()}>
+                          {t('loan.view-more')}
+                        </button>
+                      </div>
+                    )}
+                </>
+              )}
             </>
-          )}
+          </>
         </section>
       </div>
     </>
