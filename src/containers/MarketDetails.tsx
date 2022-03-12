@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 
 import { reserveTokenData } from 'src/core/data/reserves';
 import { toUsd, toPercent } from 'src/utiles/formatters';
-import ErrorPage from 'src/components/ErrorPage';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcHistoryChartData from 'src/utiles/calcHistoryChartData';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
@@ -149,7 +148,37 @@ function MarketDetail(): JSX.Element {
 
   // FIXME
   // const miningAPR = utils.parseUnits('10', 25);
-  if (!data || !tokenInfo) return <ErrorPage />;
+  if (!data || !tokenInfo)
+    return (
+      <>
+        <canvas
+          ref={canvasRef}
+          style={{
+            position: 'absolute',
+            width: '100%',
+            top: 0,
+            left: 0,
+            zIndex: -1,
+          }}
+        />
+        <div className="detail">
+          <div className="component__text-navigation">
+            <p
+              onClick={() => history.push(`/${lng}/deposit`)}
+              className="pointer">
+              {t('dashboard.deposit')}
+            </p>
+            &nbsp;&gt;&nbsp;
+            <p>{id}</p>
+          </div>
+          <div ref={headerRef} className="detail__header">
+            <img src={tokenInfo?.image} alt="Token image" />
+            <h2 ref={tokenRef}>{tokenInfo?.name.toLocaleUpperCase()}</h2>
+          </div>
+          <Skeleton width={'100%'} height={1000} style={{}} />
+        </div>
+      </>
+    );
 
   const miningAPR = calcMiningAPR(
     elfiPrice,
