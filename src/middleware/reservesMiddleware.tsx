@@ -14,7 +14,6 @@ export const bscReserveMiddleware: Middleware =
         if (swr.data !== undefined) {
           dataRef.current = swr.data;
           const data: any = swr.data;
-          console.log(swr.data);
           setReserveData(
             data.reserves.map((reserve: any) => {
               return {
