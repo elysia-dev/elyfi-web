@@ -104,7 +104,7 @@ const TokenTable: React.FC<Props> = ({
           style={{ cursor: 'pointer' }}
           onClick={() => {
             history.push({
-              pathname: `/${lng}/deposits/${balance.tokenName}`,
+              pathname: `/${lng}/deposit/${balance.tokenName}`,
             });
           }}>
           <div className="deposit__table__header__token-info">
@@ -288,7 +288,7 @@ const TokenTable: React.FC<Props> = ({
               <div>
                 <h2>{t('dashboard.recent_loan')}</h2>
                 <Link
-                  to={`/${lng}/deposits/${balance.tokenName}`}
+                  to={`/${lng}/deposit/${balance.tokenName}`}
                   style={{
                     display:
                       assetBondTokensBackedByEstate.length === 0

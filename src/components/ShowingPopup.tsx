@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import reactGA from 'react-ga';
 import PageEventType from 'src/enums/PageEventType';
@@ -9,9 +9,11 @@ import LanguageType from "src/enums/LanguageType";
 import MainPopupKo from 'src/assets/images/popup/ko.png';
 import MainPopupEn from 'src/assets/images/popup/en.png';
 
+const LazyImage = lazy(() => import('src/utiles/lazyImage'));
+
 const ShowingPopup: React.FC<{
-  visible: boolean
-  closeHandler: () => void;
+  visible: boolean;
+  closeHandler: (value: React.SetStateAction<boolean>) => void;
 }> = ({
   visible,
   closeHandler
@@ -24,50 +26,52 @@ const ShowingPopup: React.FC<{
     const today = new Date();
     today.setDate(today.getDate() + 1);
     window.localStorage.setItem("@disableTime", (today.getDate()).toString());
-    closeHandler();
+    closeHandler(true);
   }
 
   const showingPopup = () => {
     const nowTime = new Date();
     const setTime = window.localStorage.getItem("@disableTime") || "0";
 
-    nowTime.getDate() < parseInt(setTime, 10) && closeHandler();
+    nowTime.getDate() < parseInt(setTime, 10) && closeHandler(true)
   }
 
   useEffect(() => {
     showingPopup()
-  }, [])
+  }, [visible])
 
   return (
     !visible ? (
-      <div className="main__popup">
-        <div className="main__popup__container">
-          <div>
-            <div onClick={() => dailyPopupDisable()}>
-              <div className="main__popup__button" />
-              <p>
-              {
-                t("main.popup.disable_popup")
-              }
-              </p>
-            </div>
-            <div className="close-button" onClick={closeHandler}>
-              <div className="close-button--1">
-                <div className="close-button--2" />
+      <Suspense fallback={<div>Now loading...</div>}>
+        <div className="main__popup">
+          <div className="main__popup__container">
+            <div>
+              <div onClick={() => dailyPopupDisable()}>
+                <div className="main__popup__button" />
+                <p>
+                {
+                  t("main.popup.disable_popup")
+                }
+                </p>
+              </div>
+              <div className="close-button" onClick={() => {closeHandler(true)}}>
+                <div className="close-button--1">
+                  <div className="close-button--2" />
+                </div>
               </div>
             </div>
-          </div>
-          <div onClick={() => {
-            reactGA.event({
-              category: PageEventType.MoveToInternalPage,
-              action: ButtonEventType.DepositButtonOnEventModal,
-            });
-            History.push({ pathname: `/${lng}/staking/ELFI` })
-          }}>
-            <img src={lng === LanguageType.KO ? MainPopupKo : MainPopupEn} />
+            <div onClick={() => {
+              reactGA.event({
+                category: PageEventType.MoveToInternalPage,
+                action: ButtonEventType.DepositButtonOnEventModal,
+              });
+              History.push({ pathname: `/${lng}/staking/ELFI` })
+            }}>
+              <LazyImage name={"popup-image"} src={lng === LanguageType.KO ? MainPopupKo : MainPopupEn} />
+            </div>
           </div>
         </div>
-      </div>
+      </Suspense>
     ) : <></>
   )
 }

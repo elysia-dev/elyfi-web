@@ -572,6 +572,7 @@ input[type='number'] {
             .bottom {
               position: relative;
               z-index: 3;
+              object-fit: initial !important;
             }
           }
           .token-low {
