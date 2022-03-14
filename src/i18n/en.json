@@ -29,7 +29,7 @@
         "section": [
           {
             "header": "Stable interest",
-            "content": "Depositors can obtain stable interest because loans are made with real assets such as real estate-based loans as collateral."
+            "content": "Depositors can obtain stable interest because loans are made with real world assets such as real estate-based loans as collateral."
           },
           {
             "header": "Direct participation in decision-making",
@@ -412,7 +412,7 @@
       "accumulated_repayment": "Accumulated Repayments",
       "accumulated_yield": "Accumulated Yield",
 
-      "portfolio_asset": "Real Asset Components",
+      "portfolio_asset": "Real World Asset Components",
       "mortgage": "Mortgage Loans",
       "auction_balance": "Auction Balance Loans",
       "charter_returns": "Short-term loans with charter returns",
