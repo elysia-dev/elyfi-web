@@ -1,7 +1,4 @@
 import './i18n';
-
-import { useContext, useEffect, useState } from 'react';
-// import { Web3ReactProvider } from '@web3-react/core';
 import { ApolloProvider, InMemoryCache, ApolloClient } from '@apollo/client';
 import { Web3ReactProvider } from '@web3-react/core';
 import envs from 'src/core/envs';
