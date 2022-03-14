@@ -6,7 +6,6 @@ import LanguageContext from '../contexts/LanguageContext';
 import LanguageType from '../enums/LanguageType';
 const LanguageProvider: React.FC = (props) => {
   const { i18n } = useTranslation();
-  const { lng } = useParams<{ lng: string }>();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -24,12 +23,16 @@ const LanguageProvider: React.FC = (props) => {
   };
 
   useEffect(() => {
-    if ([LanguageType.EN, LanguageType.KO].includes(lng as LanguageType)) {
-      i18n.changeLanguage(lng);
+    if (
+      [LanguageType.EN, LanguageType.KO].includes(
+        location.pathname.split('/')[1] as LanguageType,
+      )
+    ) {
+      i18n.changeLanguage(location.pathname.split('/')[1]);
     } else {
       navigate(`/${getLocalLanauge()}`);
     }
-  }, [lng]);
+  }, [location.pathname]);
   return (
     <LanguageContext.Provider
       value={{
