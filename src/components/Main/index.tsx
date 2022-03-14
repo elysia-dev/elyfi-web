@@ -1,0 +1,120 @@
+import { useEffect, useRef, useState, lazy, Suspense } from 'react';
+
+import DrawWave from 'src/utiles/drawWave';
+import ShowingPopup from 'src/components/ShowingPopup';
+import Skeleton from 'react-loading-skeleton';
+
+const Advantage = lazy(() => import('./Advantage'));
+const SectionEvent = lazy(() => import('./SectionEvent'));
+const Service = lazy(() => import('./Service'));
+const MainPage = lazy(() => import('./MainPage'));
+const Partners = lazy(() => import('./Partners'));
+const MainGovernanceTable = lazy(() => import('src/components/MainGovernanceTable'));
+
+const Main = (): JSX.Element => {
+  const [popupVisible, setPopupVisible] = useState(false);
+
+  const mainCanvasRef = useRef<HTMLCanvasElement>(null);
+  const mainHeaderY = useRef<HTMLParagraphElement>(null);
+  const mainHeaderMoblieY = useRef<HTMLParagraphElement>(null);
+  const guideY = useRef<HTMLParagraphElement>(null);
+  const serviceGraphPageY = useRef<HTMLParagraphElement>(null);
+  const auditPageY = useRef<HTMLParagraphElement>(null);
+  const governancePageY = useRef<HTMLParagraphElement>(null);
+  const governancePageBottomY = useRef<HTMLParagraphElement>(null);
+  
+  const draw = (isResize: boolean) => {
+    const dpr = window.devicePixelRatio;
+    const canvas: HTMLCanvasElement | null = mainCanvasRef.current;
+    if (
+      !mainHeaderY.current ||
+      !mainHeaderMoblieY.current ||
+      !guideY.current ||
+      !serviceGraphPageY.current ||
+      !auditPageY.current ||
+      !governancePageY.current ||
+      !governancePageBottomY.current
+    )
+      return;
+    if (!canvas) return;
+    canvas.width = document.body.clientWidth * dpr;
+    canvas.height = document.body.clientHeight * dpr + (isResize ? 0 : 500);
+    const browserWidth = canvas.width / dpr + 40;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.scale(dpr, dpr);
+    new DrawWave(ctx, browserWidth).drawOnMain(
+      mainHeaderY.current,
+      mainHeaderMoblieY.current,
+      guideY.current,
+      serviceGraphPageY.current,
+      auditPageY.current,
+      governancePageY.current,
+      isResize,
+    );
+  };
+
+  useEffect(() => {
+    draw(false);
+    window.addEventListener('resize', () => draw(true));
+
+    return () => {
+      window.removeEventListener('resize', () => draw(true));
+    };
+  }, []);
+
+  return (
+    <>
+      <canvas
+        ref={mainCanvasRef}
+        style={{
+          position: 'absolute',
+          width: '100%',
+          top: 0,
+          left: 0,
+          zIndex: -1,
+        }}
+      />
+      <ShowingPopup 
+        visible={popupVisible}
+        closeHandler={setPopupVisible}
+      />
+      <div className="main root-container">
+        <section className="main__title main__section">
+          <Suspense fallback={<Skeleton width={"100%"} height={'100%'} />}>
+            <MainPage 
+              mainHeaderY={mainHeaderY}
+              mainHeaderMoblieY={mainHeaderMoblieY}
+            />
+          </Suspense>
+        </section>
+        <Suspense fallback={<Skeleton width={"100%"} height={'100%'} />}>
+          <SectionEvent />
+        </Suspense>
+        <section className="main__advantages main__section">
+          <Suspense fallback={<Skeleton width={"100%"} height={'100%'} />}>
+            <Advantage guideY={guideY} />
+          </Suspense>
+        </section>
+        <section className="main__service main__section">
+          <Suspense fallback={<Skeleton width={"100%"} height={'100%'} />}>
+            <Service serviceGraphPageY={serviceGraphPageY} />
+          </Suspense>
+        </section>
+        <section className="main__partners main__section">
+          <Suspense fallback={<Skeleton width={"100%"} height={'100%'} />}>
+            <Partners auditPageY={auditPageY} />
+          </Suspense>
+        </section>
+        <Suspense fallback={<Skeleton width={"100%"} height={'100%'} />}>
+          <MainGovernanceTable
+            governancePageY={governancePageY}
+            governancePageBottomY={governancePageBottomY}
+          />
+        </Suspense>
+      </div>
+    </>
+  );
+};
+
+export default Main;

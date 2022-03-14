@@ -67,6 +67,7 @@
     "react-geocode": "^0.2.3",
     "react-google-charts": "2",
     "react-i18next": "^11.8.12",
+    "react-lazily": "^0.9.1",
     "react-loading-skeleton": "^2.2.0",
     "react-responsive": "^8.2.0",
     "react-router-dom": "^5.2.0",

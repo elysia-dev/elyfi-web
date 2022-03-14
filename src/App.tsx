@@ -10,6 +10,7 @@ import 'src/stylesheet/public.scss';
 import 'src/stylesheet/pc.scss';
 import 'src/stylesheet/tablet.scss';
 import 'src/stylesheet/mobile.scss';
+
 import TxProvider from './providers/TxProvider';
 import MainnetProvider from './providers/MainnetProvider';
 

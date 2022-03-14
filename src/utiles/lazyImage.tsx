@@ -4,7 +4,7 @@ export interface IProps {
 }
 
 const LazyImage:React.FC <IProps> = ({src, name}) => {
-  return <img src={src} alt={name} />
+  return <img src={src} className={name} alt={name} />
 }
 
 export default LazyImage;
