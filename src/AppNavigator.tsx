@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import ScrollToTop from 'src/hooks/ScrollToTop';
 import usePageTracking from 'src/hooks/usePageTracking';
@@ -26,6 +26,7 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import { isMetamask, isWalletConnector } from './utiles/connectWallet';
 import walletConnectConnector from './utiles/walletConnectProvider';
+import useNavigator from './hooks/useNavigator';
 
 const walletConnectProvider = walletConnectConnector();
 
@@ -33,7 +34,7 @@ const AppNavigator: React.FC = () => {
   const [hamburgerBar, setHamburgerBar] = useState(false);
   const { value: mediaQuery } = useMediaQueryType();
 
-  const { deactivate, activate, library } = useWeb3React();
+  const { deactivate, activate } = useWeb3React();
 
   usePageTracking();
 
@@ -53,10 +54,10 @@ const AppNavigator: React.FC = () => {
   }, []);
 
   const LanguageDetctionPage = () => {
-    const history = useHistory();
+    const navigate = useNavigator();
 
     useEffect(() => {
-      history.replace(`/${getLocalLanauge()}`);
+      navigate(`/${getLocalLanauge()}`);
     }, []);
 
     return <></>;
@@ -77,37 +78,30 @@ const AppNavigator: React.FC = () => {
       style={{
         position: hamburgerBar ? 'fixed' : 'initial',
       }}>
-      <ScrollToTop />
-      <Switch>
-        <Route path="/:lng">
+      {/* <ScrollToTop /> */}
+      <Routes>
+        <Route path="/:lng" element={<Main />}>
           <LanguageProvider>
             <Navigation
               hamburgerBar={hamburgerBar}
               setHamburgerBar={setHamburgerBar}
             />
-            <Route exact path="/:lng/staking/LP" component={LPStaking} />
-            <Route exact path="/:lng/staking/EL" component={StakingEL} />
-            <Route exact path="/:lng/staking/ELFI" component={StakingELFI} />
-            <Route exact path="/:lng/deposit" component={Dashboard} />
+            <Route path="staking/LP" element={<LPStaking />} />
+            <Route path="staking/EL" element={<StakingEL />} />
+            <Route path="staking/ELFI" element={<StakingELFI />} />
+            <Route path="deposit" element={<Dashboard />} />
 
-            <Route exact path="/:lng/governance" component={Governance} />
-            <Route
-              exact
-              path="/:lng/portfolio/:id"
-              component={PortfolioDetail}
-            />
-            <Route
-              exact
-              path="/:lng/rewardplan/:stakingType"
-              component={RewardPlan}
-            />
-            <Route exact path="/:lng/deposits/:id" component={MarketDetail} />
-            <Route exact path="/:lng" component={Main} />
+            <Route path="governance" element={<Governance />} />
+            <Route path="portfolio/:id" element={<PortfolioDetail />} />
+            <Route path="rewardplan/:stakingType" element={<RewardPlan />} />
+            <Route path="deposits">
+              <Route path=":id" element={<MarketDetail />} />
+            </Route>
             <Footer />
           </LanguageProvider>
         </Route>
-        <Route path="/" component={LanguageDetctionPage} />
-      </Switch>
+        <Route path="/" element={<LanguageDetctionPage />} />
+      </Routes>
     </div>
   );
 };
