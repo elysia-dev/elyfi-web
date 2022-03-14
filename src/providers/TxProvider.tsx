@@ -37,6 +37,8 @@ const TxProvider: React.FunctionComponent = (props) => {
     onEvent();
     emitter.canceled();
 
+    const metamaskUserDeniedErrCode = 4001
+
     const newEmitter = buildEventEmitter(
       "EncounteredAnError",
       transaction,
@@ -57,8 +59,9 @@ const TxProvider: React.FunctionComponent = (props) => {
           ).message,
       }),
     );
-
-    newEmitter.failed();
+    if (error.code !== metamaskUserDeniedErrCode) {
+      newEmitter.failed();
+    }
 
     setState({
       ...state,
