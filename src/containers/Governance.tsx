@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import TempAssets from 'src/assets/images/temp_assets.png';
 import Skeleton from 'react-loading-skeleton';
 import { useTranslation } from 'react-i18next';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { utils } from 'ethers';
 import moment from 'moment';
 import reactGA from 'react-ga';
@@ -36,6 +36,7 @@ import {
 } from 'src/middleware/onChainMiddleware';
 import { offChainGovernanceMiddleware } from 'src/middleware/offChainMiddleware';
 import { onChainQuery } from 'src/queries/onChainQuery';
+import useNavigator from 'src/hooks/useNavigator';
 
 const Governance = (): JSX.Element => {
   const [pageNumber, setPageNumber] = useState(1);
@@ -45,7 +46,7 @@ const Governance = (): JSX.Element => {
   const { type: mainnetType } = useContext(MainnetContext);
   const assetBondTokens = getAssetBondsByNetwork(mainnetType);
   const { t } = useTranslation();
-  const History = useHistory();
+  const navigate = useNavigator();
   const { value: mediaQuery } = useMediaQueryType();
   const { lng } = useParams<{ lng: string }>();
   const defaultShowingLoanData = mediaQuery === MediaQuery.Mobile ? 8 : 9;
@@ -305,9 +306,7 @@ const Governance = (): JSX.Element => {
           <div className="governance__content__button__wrapper">
             <div
               className="governance__content__button"
-              onClick={() =>
-                History.push({ pathname: `/${lng}/staking/ELFI` })
-              }>
+              onClick={() => navigate(`/${lng}/staking/ELFI`)}>
               <p>{t('governance.button--staking')}</p>
             </div>
             <div

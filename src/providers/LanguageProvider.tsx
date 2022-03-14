@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import getLocalLanauge from 'src/utiles/getLocalLanguage';
 import LanguageContext from '../contexts/LanguageContext';
@@ -7,18 +7,18 @@ import LanguageType from '../enums/LanguageType';
 const LanguageProvider: React.FC = (props) => {
   const { i18n } = useTranslation();
   const { lng } = useParams<{ lng: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const setLanguage = (language: LanguageType) => {
     window.localStorage.setItem('@language', language);
-    history.push(`/${language}`);
+    navigate(`/${language}`);
     const getPath = location.pathname.split('/')[2];
     if (getPath === undefined) {
-      return history.push(`/${language}`);
+      return navigate(`/${language}`);
     }
     i18n.changeLanguage(language);
-    history.push(
+    navigate(
       `/${language + '/' + getPath + location.pathname.split(getPath)[1]}`,
     );
   };
@@ -27,7 +27,7 @@ const LanguageProvider: React.FC = (props) => {
     if ([LanguageType.EN, LanguageType.KO].includes(lng as LanguageType)) {
       i18n.changeLanguage(lng);
     } else {
-      history.replace(`/${getLocalLanauge()}`);
+      navigate(`/${getLocalLanauge()}`);
     }
   }, [lng]);
   return (

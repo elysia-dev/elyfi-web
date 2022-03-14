@@ -1,5 +1,5 @@
-import { useHistory, useParams } from 'react-router-dom';
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { reserveTokenData } from 'src/core/data/reserves';
 
 import { toUsd, toPercent } from 'src/utiles/formatters';
@@ -11,12 +11,6 @@ import { useTranslation } from 'react-i18next';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcHistoryChartData from 'src/utiles/calcHistoryChartData';
 import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
-import envs from 'src/core/envs';
-import { useWeb3React } from '@web3-react/core';
-import {
-  ERC20__factory,
-  IncentivePool__factory,
-} from '@elysia-dev/contract-typechain';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
 import Token from 'src/enums/Token';
 import moment from 'moment';
@@ -47,6 +41,7 @@ import {
 } from 'src/utiles/graphTooltipPosition';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import PriceContext from 'src/contexts/PriceContext';
+import useNavigator from 'src/hooks/useNavigator';
 
 interface ITokencolor {
   name: string;
@@ -83,10 +78,10 @@ function MarketDetail(): JSX.Element {
   const { elfiPrice } = useContext(PriceContext);
   const { poolDayData } = useContext(UniswapPoolContext);
   const { lng, id } = useParams<{ lng: string; id: Token.DAI | Token.USDT }>();
-  const history = useHistory();
+  const navigate = useNavigator();
   const { value: mediaQuery } = useMediaQueryType();
   const currentChain = useCurrentChain();
-  const tokenInfo = reserveTokenData[id];
+  const tokenInfo = reserveTokenData[id || Token.DAI];
   const data = getSubgraphData.reserves.find(
     (reserve) => reserve.id === tokenInfo.address,
   );
@@ -94,7 +89,7 @@ function MarketDetail(): JSX.Element {
   const [date, setDate] = useState('');
   const { t, i18n } = useTranslation();
   const [cellInBarIdx, setCellInBarIdx] = useState(-1);
-  const [token, setToken] = useState(id);
+  const [token, setToken] = useState(id || Token.DAI);
   const { type: getMainnetType } = useContext(MainnetContext);
 
   const selectToken = tokenColorData.find((color) => {
@@ -152,9 +147,7 @@ function MarketDetail(): JSX.Element {
 
   useEffect(() => {
     if (!isSupportedReserve(token, getMainnetType)) {
-      history.push({
-        pathname: `/${lng}/deposit`,
-      });
+      navigate(`/${lng}/deposit`);
     }
   }, [getMainnetType]);
 
@@ -225,9 +218,7 @@ function MarketDetail(): JSX.Element {
       />
       <div className="detail">
         <div className="component__text-navigation">
-          <p
-            onClick={() => history.push(`/${lng}/deposit`)}
-            className="pointer">
+          <p onClick={() => navigate(`/${lng}/deposit`)} className="pointer">
             {t('dashboard.deposit')}
           </p>
           &nbsp;&gt;&nbsp;

@@ -6,7 +6,7 @@ import {
   useRef,
   useContext,
 } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import TempAssets from 'src/assets/images/temp_assets.png';
 import wave from 'src/assets/images/wave_elyfi.png';
 import { parseTokenId } from 'src/utiles/parseTokenId';
@@ -32,6 +32,7 @@ import Loading from 'src/components/Loading';
 import SubgraphContext, { IAssetBond } from 'src/contexts/SubgraphContext';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
+import useNavigator from 'src/hooks/useNavigator';
 
 const PortfolioDetail: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
@@ -66,13 +67,12 @@ const PortfolioDetail: FunctionComponent = () => {
   const tokenInfo = ReserveData.find(
     (reserve) => reserve.address === abToken?.reserve.id,
   );
-  const history = useHistory();
+  const navigate = useNavigator();
 
-  const blockExplorerUrls = 
-    tokenInfo?.tokenizer === envs.tokenizer.busdTokenizerAddress ? 
-      envs.externalApiEndpoint.bscscanURI 
-      : 
-      envs.externalApiEndpoint.etherscanURI;
+  const blockExplorerUrls =
+    tokenInfo?.tokenizer === envs.tokenizer.busdTokenizerAddress
+      ? envs.externalApiEndpoint.bscscanURI
+      : envs.externalApiEndpoint.etherscanURI;
 
   const loadAddress = async (
     lat: number,
@@ -84,7 +84,7 @@ const PortfolioDetail: FunctionComponent = () => {
   useEffect(() => {
     if (!isLat(lat) || !isLng(lng)) return;
 
-    loadAddress(lat, lng, language);
+    loadAddress(lat, lng, language || LanguageType.EN);
   }, [lat, lng, language]);
 
   const loadContractImage = async (ipfs: string) => {
@@ -143,7 +143,7 @@ const PortfolioDetail: FunctionComponent = () => {
     () => ({
       color: '#888888',
       fontSize: mediaQuery === MediaQuery.PC ? '15px' : '12px',
-      letterSpacing: -0.5
+      letterSpacing: -0.5,
     }),
     [mediaQuery],
   );
@@ -180,7 +180,7 @@ const PortfolioDetail: FunctionComponent = () => {
       <div className="portfolio">
         <div className="component__text-navigation">
           <p
-            onClick={() => history.push(`/${language}/deposit`)}
+            onClick={() => navigate(`/${language}/deposit`)}
             className="pointer">
             {t('dashboard.deposit')}
           </p>
@@ -211,8 +211,8 @@ const PortfolioDetail: FunctionComponent = () => {
                 target="_blank"
                 rel="noopener noreferer">
                 <p className="link">
-                  {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(0, 8)}{' '}
-                  ... {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(-8)}
+                  {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(0, 8)} ...{' '}
+                  {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(-8)}
                 </p>
               </a>
             </div>
@@ -443,8 +443,9 @@ const PortfolioDetail: FunctionComponent = () => {
                       style={{
                         fontFamily: 'SpoqaHanSansNeo',
                         color: '#333333',
-                        fontSize: mediaQuery === MediaQuery.PC ? '15px' : '12px',
-                        letterSpacing: -0.8
+                        fontSize:
+                          mediaQuery === MediaQuery.PC ? '15px' : '12px',
+                        letterSpacing: -0.8,
                       }}
                       onClick={() => {
                         !!data[3] === true

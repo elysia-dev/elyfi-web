@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import Advantages00 from 'src/assets/images/advantages00.png';
 import Advantages01 from 'src/assets/images/advantages01.png';
@@ -29,6 +29,7 @@ import DrawWave from 'src/utiles/drawWave';
 import Fbg from 'src/assets/images/main/fbg.png';
 import Blocore from 'src/assets/images/main/blocore.png';
 import ShowingPopup from 'src/components/ShowingPopup';
+import useNavigator from 'src/hooks/useNavigator';
 
 const Main = (): JSX.Element => {
   const { t } = useTranslation();
@@ -41,7 +42,7 @@ const Main = (): JSX.Element => {
   const auditPageY = useRef<HTMLParagraphElement>(null);
   const governancePageY = useRef<HTMLParagraphElement>(null);
   const governancePageBottomY = useRef<HTMLParagraphElement>(null);
-  const History = useHistory();
+  const navigate = useNavigator();
   const { lng } = useParams<{ lng: string }>();
   const sectionEvent = [
     {
@@ -128,10 +129,10 @@ const Main = (): JSX.Element => {
           zIndex: -1,
         }}
       />
-      <ShowingPopup 
+      <ShowingPopup
         visible={popupVisible}
         closeHandler={() => {
-          setPopupVisible(true)
+          setPopupVisible(true);
         }}
       />
       <div className="main root-container">
@@ -150,7 +151,7 @@ const Main = (): JSX.Element => {
                     category: PageEventType.MoveToInternalPage,
                     action: ButtonEventType.DepositButton,
                   });
-                  History.push({ pathname: `/${lng}/deposit` });
+                  navigate(`/${lng}/deposit`);
                 }}>
                 <p ref={mainHeaderY}> {t('main.landing.button__deposit')}</p>
               </div>
@@ -181,7 +182,7 @@ const Main = (): JSX.Element => {
                   category: PageEventType.MoveToInternalPage,
                   action: ButtonEventType.DepositButton,
                 });
-                History.push({ pathname: `/${lng}/deposit` });
+                navigate(`/${lng}/deposit`);
               }}>
               <p ref={mainHeaderMoblieY}>{t('main.landing.button__deposit')}</p>
             </div>
