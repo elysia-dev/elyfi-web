@@ -2,6 +2,7 @@ import CountUp from 'react-countup';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import HeaderCircle from 'src/assets/images/title-circle.png';
 import useTvl from 'src/hooks/useTvl';
+import Skeleton from 'react-loading-skeleton';
 import { useMemo } from 'react';
 
 const usdFormatter = new Intl.NumberFormat('en', {
@@ -25,10 +26,12 @@ const TvlCounter: React.FC = () => {
         // Counter should be rerender with ONLY loading & tvl
         // setInterval make some rerendering when the changes is not related the component
         useMemo(() => {
-          return (
+          return loading ? (
+            <Skeleton width={200} height={66} />
+          ) : (
             <CountUp
               start={0}
-              end={loading ? 0 : tvl}
+              end={tvl}
               formattingFn={(number) => usdFormatter.format(number)}
               decimals={4}
               duration={2}>
