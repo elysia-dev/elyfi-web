@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useContext } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
 import NavigationType from 'src/enums/NavigationType';
 import Wallet from 'src/components/Wallet';
@@ -23,6 +23,7 @@ import MediaQuery from 'src/enums/MediaQuery';
 import MainnetSwitch from 'src/components/MainnetSwitch';
 
 import ErrorModal from './ErrorModal';
+import Footer from './Footer';
 
 const InitialNavigation: INavigation[] = [
   {
@@ -67,7 +68,6 @@ const Navigation: React.FunctionComponent<{
     );
     return getPath.length === 0 ? InitialNavigation : getPath;
   }, [location]);
-
 
   const { setLanguage } = useContext(LanguageContext);
 
@@ -167,28 +167,41 @@ const Navigation: React.FunctionComponent<{
             </div>
             {!['navigation.dashboard', 'navigation.governance'].includes(
               _data.i18nKeyword.toLowerCase(),
-            ) && <div className="navigation__arrow" style={{ transform: isBold(_index) && globalNavHover === _index + 1 ? `rotate(135deg)` : `rotate(-45deg) translateX(-2px) translateY(2px)`}} />}
+            ) && (
+              <div
+                className="navigation__arrow"
+                style={{
+                  transform:
+                    isBold(_index) && globalNavHover === _index + 1
+                      ? `rotate(135deg)`
+                      : `rotate(-45deg) translateX(-2px) translateY(2px)`,
+                }}
+              />
+            )}
           </div>
           <div>
             <div
-              className={`navigation__bottom ${isBold(_index) && globalNavHover === _index + 1 ? "" : " disabled"}`}
-              ref={localNavigationRef}
-            >
+              className={`navigation__bottom ${
+                isBold(_index) && globalNavHover === _index + 1
+                  ? ''
+                  : ' disabled'
+              }`}
+              ref={localNavigationRef}>
               {isExternalLink &&
-                _data.subNavigation && (
-                  getLNBData.filter((data) => {
-                    return data.id === _data.id
-                  }).map((__data) => {
+                _data.subNavigation &&
+                getLNBData
+                  .filter((data) => {
+                    return data.id === _data.id;
+                  })
+                  .map((__data) => {
                     return __data.subNavigation!.map((subData, index) => {
                       return localNavInnerContainer(
                         subData,
                         subData.type === NavigationType.Link ? false : true,
                         index,
                       );
-                    })
-                  })
-                )
-              }
+                    });
+                  })}
             </div>
           </div>
         </div>
@@ -382,7 +395,12 @@ const Navigation: React.FunctionComponent<{
 
   return (
     <>
-      {txStatus === TxStatus.FAIL && error && error !== "MetaMask Tx Signature: User denied transaction signature." && <ErrorModal error={error} />}
+      {txStatus === TxStatus.FAIL &&
+        error &&
+        error !==
+          'MetaMask Tx Signature: User denied transaction signature.' && (
+          <ErrorModal error={error} />
+        )}
       <nav
         className={`navigation`}
         style={{
@@ -452,6 +470,8 @@ const Navigation: React.FunctionComponent<{
         {hamburgerBar && mobileHamburgerBar()}
       </nav>
       <div className="navigation__margin" />
+      <Outlet />
+      <Footer />
     </>
   );
 };
