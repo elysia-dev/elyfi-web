@@ -9,7 +9,7 @@ import SubgraphContext from 'src/contexts/SubgraphContext';
 import usePoolData from './usePoolData';
 
 const useTvl = (): { value: number; loading: boolean } => {
-  const subgraphContext = useContext(SubgraphContext);
+  const { data, loading: reserveLoading } = useContext(SubgraphContext);
   const [loading, setLoading] = useState(true);
   const { latestPrice: elfiPrice, daiPool, ethPool } = usePoolData();
   const { elPrice, daiPrice, ethPrice } = useContext(PriceContext);
@@ -22,7 +22,7 @@ const useTvl = (): { value: number; loading: boolean } => {
 
   const tvl = useMemo(() => {
     return (
-      subgraphContext.data.reserves.reduce((res, cur) => {
+      data.reserves.reduce((res, cur) => {
         const tokenInfo = ReserveData.find((datum) => datum.address === cur.id);
         return (
           res +
@@ -73,10 +73,11 @@ const useTvl = (): { value: number; loading: boolean } => {
   };
 
   useEffect(() => {
+    if (reserveLoading) return;
     loadBalances().then(() => {
       setLoading(false);
     });
-  }, []);
+  }, [reserveLoading]);
 
   return {
     value: tvl,
