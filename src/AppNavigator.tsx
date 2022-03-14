@@ -15,9 +15,7 @@ import 'src/stylesheet/pc.scss';
 // import 'src/stylesheet/tablet.scss';
 import 'src/stylesheet/mobile.scss';
 import Navigation from 'src/components/Navigation';
-import Footer from 'src/components/Footer';
 import getLocalLanauge from 'src/utiles/getLocalLanguage';
-import LanguageProvider from 'src/providers/LanguageProvider';
 import LPStaking from 'src/containers/LPStaking';
 import RewardPlan from 'src/containers/RewardPlan';
 import MarketDetail from 'src/containers/MarketDetails';
@@ -78,29 +76,35 @@ const AppNavigator: React.FC = () => {
       style={{
         position: hamburgerBar ? 'fixed' : 'initial',
       }}>
-      {/* <ScrollToTop /> */}
+      <ScrollToTop />
       <Routes>
-        <Route path="/:lng" element={<Main />}>
-          <LanguageProvider>
+        <Route
+          path="/:lng"
+          element={
             <Navigation
               hamburgerBar={hamburgerBar}
               setHamburgerBar={setHamburgerBar}
             />
-            <Route path="staking/LP" element={<LPStaking />} />
-            <Route path="staking/EL" element={<StakingEL />} />
-            <Route path="staking/ELFI" element={<StakingELFI />} />
-            <Route path="deposit" element={<Dashboard />} />
-
-            <Route path="governance" element={<Governance />} />
-            <Route path="portfolio/:id" element={<PortfolioDetail />} />
-            <Route path="rewardplan/:stakingType" element={<RewardPlan />} />
-            <Route path="deposits">
-              <Route path=":id" element={<MarketDetail />} />
-            </Route>
-            <Footer />
-          </LanguageProvider>
+          }>
+          <Route index element={<Main />} />
+          <Route path="staking">
+            <Route path="LP" element={<LPStaking />} />
+            <Route path="EL" element={<StakingEL />} />
+            <Route path="ELFI" element={<StakingELFI />} />
+          </Route>
+          <Route path="deposit" element={<Dashboard />} />
+          <Route path="governance" element={<Governance />} />
+          <Route path="portfolio">
+            <Route path=":id" element={<PortfolioDetail />} />
+          </Route>
+          <Route path="rewardplan">
+            <Route path=":stakingType" element={<RewardPlan />} />
+          </Route>
+          <Route path="deposits">
+            <Route path=":id" element={<MarketDetail />} />
+          </Route>
         </Route>
-        <Route path="/" element={<LanguageDetctionPage />} />
+        {/* <Route path="/" element={<LanguageDetctionPage />} /> */}
       </Routes>
     </div>
   );
