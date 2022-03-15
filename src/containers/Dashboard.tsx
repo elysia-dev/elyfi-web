@@ -3,10 +3,10 @@ import { useContext, useState, useMemo, useEffect } from 'react';
 import { toPercent } from 'src/utiles/formatters';
 import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
 import { BigNumber } from 'ethers';
-import { useQuery } from '@apollo/client';
-import { GetUser } from 'src/queries/__generated__/GetUser';
-import { GET_USER } from 'src/queries/userQueries';
-import { useTranslation, Trans } from 'react-i18next';
+import { request } from 'graphql-request';
+import useSWR, { useSWRConfig } from 'swr';
+import { useTranslation } from 'react-i18next';
+import envs from 'src/core/envs';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import PriceContext from 'src/contexts/PriceContext';
 import ReactGA from 'react-ga';
@@ -34,6 +34,8 @@ import useCurrentChain from 'src/hooks/useCurrentChain';
 import WalletDisconnect from 'src/components/WalletDisconnect';
 import SelectWalletModal from 'src/components/SelectWalletModal';
 import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
+import { GET_USER } from 'src/queries/userQueries';
+import MainnetType from 'src/enums/MainnetType';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();
@@ -47,11 +49,25 @@ const Dashboard: React.FunctionComponent = () => {
     useContext(MainnetContext);
   const [incentiveModalVisible, setIncentiveModalVisible] =
     useState<boolean>(false);
-  const { data: userConnection, refetch: refetchUserData } = useQuery<GetUser>(
-    GET_USER,
-    { variables: { id: account?.toLocaleLowerCase() } },
+  const { mutate } = useSWRConfig();
+
+  const { data: bscUserConnection } = useSWR('bscUser', () =>
+    request(
+      envs.subgraphApiEndpoint.bscSubgraphURI,
+      GET_USER(account?.toLocaleLowerCase() || ''),
+    ),
   );
-  const { balances, loading, loadBalance } = useBalances(refetchUserData);
+
+  const { data: ethUserConnection } = useSWR('ethUser', () =>
+    request(
+      envs.subgraphApiEndpoint.subgraphURI,
+      GET_USER(account?.toLocaleLowerCase() || ''),
+    ),
+  );
+
+  const { balances, loading, loadBalance } = useBalances(() =>
+    mutate(getMainnetType === MainnetType.BSC ? 'bscUser' : 'ethUser'),
+  );
   const [transactionModal, setTransactionModal] = useState(false);
   const [selectedBalanceId, selectBalanceId] = useState('');
   const [connectWalletModalvisible, setConnectWalletModalvisible] =
@@ -94,7 +110,11 @@ const Dashboard: React.FunctionComponent = () => {
       {reserveData && selectedBalance && (
         <DepositOrWithdrawModal
           reserve={reserveData}
-          userData={userConnection?.user}
+          userData={
+            getMainnetType === MainnetType.BSC
+              ? bscUserConnection?.user
+              : ethUserConnection?.user
+          }
           tokenName={selectedBalance.tokenName}
           tokenImage={reserveTokenData[selectedBalance.tokenName].image}
           visible={!!reserveData}
