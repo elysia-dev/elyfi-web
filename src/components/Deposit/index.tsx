@@ -19,7 +19,7 @@ import useCurrentChain from 'src/hooks/useCurrentChain';
 import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
 import Skeleton from 'react-loading-skeleton';
 
-import TokenTable from 'src/components/TokenTable';
+import TokenTable from 'src/components/Deposit/TokenTable';
 
 const TransactionConfirmModal = lazy(() => import('src/components/Modal/TransactionConfirmModal'))
 const IncentiveModal = lazy(() => import('src/components/Modal/IncentiveModal'))
@@ -29,7 +29,7 @@ const DepositOrWithdrawModal = lazy(() => import('src/components/Modal/DepositOr
 const WalletDisconnect = lazy(() => import('src/components/Modal/WalletDisconnect'));
 const SelectWalletModal = lazy(() => import('src/components/Modal/SelectWalletModal'));
 
-const TvlCounter = lazy(() => import('src/components/TvlCounter'))
+const TvlCounter = lazy(() => import('src/components/Deposit/TvlCounter'))
 const RewardPlanButton = lazy(() => import('src/components/RewardPlan/RewardPlanButton'))
 const RemoteControl = lazy(() => import('./RemoteControl'));
 

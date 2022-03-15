@@ -8,7 +8,7 @@ import InjectedConnector from 'src/core/connectors/injectedConnector';
 
 const Dashboard = lazy(() => import('src/components/Deposit'))
 const Main = lazy(() => import('src/components/Main'))
-const Governance = lazy(() => import('src/components/Governance/Governance'))
+const Governance = lazy(() => import('src/components/Governance'))
 const { StakingEL, StakingELFI } = lazily(() => import('src/containers/Staking'));
 const LPStaking = lazy(() => import('src/containers/LPStaking'));
 const RewardPlan = lazy(() => import('src/containers/RewardPlan'));

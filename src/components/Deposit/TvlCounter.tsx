@@ -1,6 +1,5 @@
 import CountUp from 'react-countup';
-import useMediaQueryType from 'src/hooks/useMediaQueryType';
-import HeaderCircle from 'src/assets/images/title-circle.png';
+import HeaderCircle from 'src/assets/images/deposit/title-circle.svg';
 import useTvl from 'src/hooks/useTvl';
 import { useMemo } from 'react';
 
@@ -10,7 +9,6 @@ const usdFormatter = new Intl.NumberFormat('en', {
 });
 
 const TvlCounter: React.FC = () => {
-  const { value: mediaQuery } = useMediaQueryType();
   const { value: tvl, loading } = useTvl();
 
   return (
