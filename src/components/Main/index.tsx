@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, lazy, Suspense } from 'react';
 
 import DrawWave from 'src/utiles/drawWave';
-import ShowingPopup from 'src/components/ShowingPopup';
 import Skeleton from 'react-loading-skeleton';
 
 const Advantage = lazy(() => import('./Advantage'));
@@ -10,6 +9,7 @@ const Service = lazy(() => import('./Service'));
 const MainPage = lazy(() => import('./MainPage'));
 const Partners = lazy(() => import('./Partners'));
 const MainGovernanceTable = lazy(() => import('src/components/Main/MainGovernanceTable'));
+const ShowingPopup = lazy(() => import('src/components/ShowingPopup'));
 
 const Main = (): JSX.Element => {
   const [popupVisible, setPopupVisible] = useState(false);
@@ -75,10 +75,12 @@ const Main = (): JSX.Element => {
           zIndex: -1,
         }}
       />
-      <ShowingPopup 
-        visible={popupVisible}
-        closeHandler={setPopupVisible}
-      />
+      <Suspense fallback={null}>
+        <ShowingPopup 
+          visible={popupVisible}
+          closeHandler={setPopupVisible}
+        />
+      </Suspense>
       <div className="main root-container">
         <section className="main__title main__section">
           <Suspense fallback={<Skeleton width={"100%"} height={'100%'} />}>

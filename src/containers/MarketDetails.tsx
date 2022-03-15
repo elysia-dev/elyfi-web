@@ -9,7 +9,7 @@ import { reserveTokenData } from 'src/core/data/reserves';
 import { toUsd, toPercent } from 'src/utiles/formatters';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcHistoryChartData from 'src/utiles/calcHistoryChartData';
-import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
+import TransactionConfirmModal from 'src/components/Modal/TransactionConfirmModal';
 import Token from 'src/enums/Token';
 import Loan from 'src/containers/Loan';
 import MarketDetailsBody from 'src/components/MarketDetailsBody';

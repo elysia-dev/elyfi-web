@@ -34,8 +34,8 @@ import IncreateAllowanceModal, {
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
-import DepositBody from '../components/DepositBody';
-import WithdrawBody from '../components/WithdrawBody';
+import DepositBody from './DepositBody';
+import WithdrawBody from './WithdrawBody';
 
 const DepositOrWithdrawModal: FunctionComponent<{
   tokenName: string;

@@ -6,7 +6,7 @@ import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
 import { useParams } from 'react-router-dom';
 
-const SectionEvent = () => {
+const SectionEvent = (): JSX.Element => {
   const { lng } = useParams<{ lng: string }>();
   
   const eventList = [
