@@ -6,9 +6,9 @@ import ScrollToTop from 'src/hooks/ScrollToTop';
 import usePageTracking from 'src/hooks/usePageTracking';
 import InjectedConnector from 'src/core/connectors/injectedConnector';
 
-const Dashboard = lazy(() => import('src/containers/Dashboard'))
+const Dashboard = lazy(() => import('src/components/Deposit'))
 const Main = lazy(() => import('src/components/Main'))
-const Governance = lazy(() => import('src/containers/Governance'))
+const Governance = lazy(() => import('src/components/Governance/Governance'))
 const { StakingEL, StakingELFI } = lazily(() => import('src/containers/Staking'));
 const LPStaking = lazy(() => import('src/containers/LPStaking'));
 const RewardPlan = lazy(() => import('src/containers/RewardPlan'));
@@ -82,50 +82,50 @@ const AppNavigator: React.FC = () => {
       <ScrollToTop />
       <Switch>
         <Route path="/:lng">
-            <LanguageProvider>
+          <LanguageProvider>
+            <Suspense fallback={<>Loading...</>}>
               <Suspense fallback={<>Loading...</>}>
-                <Suspense fallback={<>Loading...</>}>
-                  <Navigation
-                    hamburgerBar={hamburgerBar}
-                    setHamburgerBar={setHamburgerBar}
-                  />
-                </Suspense>
-                <Suspense fallback={<>Loading...</>}>
-                  <Route exact path="/:lng/staking/LP" component={LPStaking} />
-                </Suspense>
-                <Suspense fallback={<>Loading...</>}>
-                  <Route exact path="/:lng/staking/EL" component={StakingEL} />
-                  <Route exact path="/:lng/staking/ELFI" component={StakingELFI} />
-                </Suspense>
-                <Suspense fallback={<>Loading...</>}>
-                  <Route exact path="/:lng/governance" component={Governance} />
-                </Suspense>
-                <Suspense fallback={<>Loading...</>}>
-                  <Route
-                    exact
-                    path="/:lng/portfolio/:id"
-                    component={PortfolioDetail}
-                  />
-                </Suspense>
-                <Suspense fallback={<>Loading...</>}>
-                  <Route
-                    exact
-                    path="/:lng/rewardplan/:stakingType"
-                    component={RewardPlan}
-                  />
-                </Suspense>
-                <Suspense fallback={<>Loading...</>}>
-                  <Route exact path="/:lng/deposit/:id" component={MarketDetail} />
-                </Suspense>
-                <Suspense fallback={<>Loading...</>}>
-                  <Route exact path="/:lng/deposit" component={Dashboard} />
-                </Suspense>
-                <Suspense fallback={<>Loading...</>}>
-                  <Route exact path="/:lng" component={Main} />
-                </Suspense>
-                <Footer />
+                <Navigation
+                  hamburgerBar={hamburgerBar}
+                  setHamburgerBar={setHamburgerBar}
+                />
               </Suspense>
-            </LanguageProvider>
+              <Suspense fallback={<>Loading...</>}>
+                <Route exact path="/:lng/staking/LP" component={LPStaking} />
+              </Suspense>
+              <Suspense fallback={<>Loading...</>}>
+                <Route exact path="/:lng/staking/EL" component={StakingEL} />
+                <Route exact path="/:lng/staking/ELFI" component={StakingELFI} />
+              </Suspense>
+              <Suspense fallback={<>Loading...</>}>
+                <Route exact path="/:lng/governance" component={Governance} />
+              </Suspense>
+              <Suspense fallback={<>Loading...</>}>
+                <Route
+                  exact
+                  path="/:lng/portfolio/:id"
+                  component={PortfolioDetail}
+                />
+              </Suspense>
+              <Suspense fallback={<>Loading...</>}>
+                <Route
+                  exact
+                  path="/:lng/rewardplan/:stakingType"
+                  component={RewardPlan}
+                />
+              </Suspense>
+              <Suspense fallback={<>Loading...</>}>
+                <Route exact path="/:lng/deposit/:id" component={MarketDetail} />
+              </Suspense>
+              <Suspense fallback={<>Loading...</>}>
+                <Route exact path="/:lng/deposit" component={Dashboard} />
+              </Suspense>
+              <Suspense fallback={<>Loading...</>}>
+                <Route exact path="/:lng" component={Main} />
+              </Suspense>
+              <Footer />
+            </Suspense>
+          </LanguageProvider>
         </Route>
         <Route path="/" component={LanguageDetctionPage} />
       </Switch>

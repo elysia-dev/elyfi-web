@@ -32,8 +32,8 @@ import useCurrentMoneypoolAddress from 'src/hooks/useCurrnetMoneypoolAddress';
 import IncreateAllowanceModal, {
   PermissionType,
 } from 'src/components/IncreateAllowanceModal';
-import DepositBody from '../components/DepositBody';
-import WithdrawBody from '../components/WithdrawBody';
+import DepositBody from './DepositBody';
+import WithdrawBody from './WithdrawBody';
 
 const DepositOrWithdrawModal: FunctionComponent<{
   tokenName: string;

@@ -17,7 +17,7 @@ import {
   ERC20__factory,
   IncentivePool__factory,
 } from '@elysia-dev/contract-typechain';
-import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
+import TransactionConfirmModal from 'src/components/Modal/TransactionConfirmModal';
 import Token from 'src/enums/Token';
 import moment from 'moment';
 import Loan from 'src/containers/Loan';

@@ -6,8 +6,9 @@ import ButtonEventType from 'src/enums/ButtonEventType';
 import { useHistory, useParams } from "react-router-dom";
 import LanguageType from "src/enums/LanguageType";
 
-import MainPopupKo from 'src/assets/images/popup/ko.png';
-import MainPopupEn from 'src/assets/images/popup/en.png';
+import MainPopupKo from 'src/assets/images/popup/ko.svg';
+import MainPopupEn from 'src/assets/images/popup/en.svg';
+import Skeleton from "react-loading-skeleton";
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
@@ -42,7 +43,6 @@ const ShowingPopup: React.FC<{
 
   return (
     !visible ? (
-      <Suspense fallback={<div>Now loading...</div>}>
         <div className="main__popup">
           <div className="main__popup__container">
             <div>
@@ -67,11 +67,12 @@ const ShowingPopup: React.FC<{
               });
               History.push({ pathname: `/${lng}/staking/ELFI` })
             }}>
-              <LazyImage name={"popup-image"} src={lng === LanguageType.KO ? MainPopupKo : MainPopupEn} />
+              <Suspense fallback={<Skeleton width={500} height={500} />}>
+                <LazyImage name={"popup-image"} src={lng === LanguageType.KO ? MainPopupKo : MainPopupEn} />
+              </Suspense>
             </div>
           </div>
         </div>
-      </Suspense>
     ) : <></>
   )
 }
