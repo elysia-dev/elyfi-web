@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { Middleware, SWRHook } from 'swr';
 
-import OffChainTopic, { INapData, IOffChainVote } from 'src/clients/OffChainTopic';
+import OffChainTopic, {
+  INapData,
+  IOffChainVote,
+} from 'src/clients/OffChainTopic';
 import MainnetType from 'src/enums/MainnetType';
 
 export const offChainGovernanceMiddleware: Middleware =
@@ -55,13 +58,19 @@ export const offChainGovernanceMiddleware: Middleware =
                         /slate.textile.io.*(?=" rel="noopener nofollow ugc">Collateral Image)/,
                       )
                       ?.toString() || '',
-                  votes:
-                    getNATData.data.post_stream.posts[0].polls[0].options as IOffChainVote[] || [{ id: "", html: "", votes: 1 }, { id: "", html: "", votes: 1 }] as IOffChainVote[],
-                  totalVoters:
-                    getNATData.data.post_stream.posts[0].polls[0].voters || '',
+                  votes: getNATData.data.post_stream.posts[0].polls
+                    ? getNATData.data.post_stream.posts[0].polls[0].options
+                    : ([
+                        { id: '', html: '', votes: 1 },
+                        { id: '', html: '', votes: 1 },
+                      ] as IOffChainVote[]),
+                  totalVoters: getNATData.data.post_stream.posts[0].polls
+                    ? getNATData.data.post_stream.posts[0].polls[0].voters
+                    : 0,
                   link: `https://forum.elyfi.world/t/${getNATData.data.slug}`,
-                  endedDate:
-                    getNATData.data.post_stream.posts[0].polls[0].close || '',
+                  endedDate: getNATData.data.post_stream.posts[0].polls
+                    ? getNATData.data.post_stream.posts[0].polls[0].close
+                    : '',
                   network:
                     !!getHTMLStringData.match(regexNetwork) === true
                       ? MainnetType.BSC
