@@ -16,7 +16,7 @@ import {
 } from 'src/clients/OnChainTopic';
 import { INapData, topicListFetcher } from 'src/clients/OffChainTopic';
 import AssetList from 'src/containers/AssetList';
-import GovernanceGuideBox from 'src/components/GovernanceGuideBox';
+import GovernanceGuideBox from 'src/components/Governance/GovernanceGuideBox';
 import LanguageType from 'src/enums/LanguageType';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';

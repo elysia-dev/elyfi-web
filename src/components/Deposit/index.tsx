@@ -1,33 +1,23 @@
 import { reserveTokenData } from 'src/core/data/reserves';
-import { useContext, useState, useMemo } from 'react';
+import { useContext, useState, useMemo, lazy } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import envs from 'src/core/envs';
 import { toPercent } from 'src/utiles/formatters';
-import DepositOrWithdrawModal from 'src/components/Modal/DepositOrWithdrawModal';
 import { BigNumber, constants } from 'ethers';
 import { GET_USER } from 'src/queries/userQueries';
 import { useTranslation } from 'react-i18next';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import ReactGA from 'react-ga';
-import TokenTable from 'src/components/TokenTable';
-import TransactionConfirmModal from 'src/components/Modal/TransactionConfirmModal';
-import IncentiveModal from 'src/components/Modal/IncentiveModal';
-import ConnectWalletModal from 'src/components/Modal/ConnectWalletModal';
-import NetworkChangeModal from 'src/components/Modal/NetworkChangeModal';
-import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 
 import ModalViewType from 'src/enums/ModalViewType';
 import { useMediaQuery } from 'react-responsive';
 import MainnetContext from 'src/contexts/MainnetContext';
-import TvlCounter from 'src/components/TvlCounter';
 import { MainnetData } from 'src/core/data/mainnets';
 import getIncentivePoolAddress from 'src/core/utils/getIncentivePoolAddress';
 import scrollToOffeset from 'src/core/utils/scrollToOffeset';
 import useBalances from 'src/hooks/useBalances';
 import { useWeb3React } from '@web3-react/core';
 import useCurrentChain from 'src/hooks/useCurrentChain';
-import WalletDisconnect from 'src/components/Modal/WalletDisconnect';
-import SelectWalletModal from 'src/components/Modal/SelectWalletModal';
 import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
 import Skeleton from 'react-loading-skeleton';
 import { pricesFetcher } from 'src/clients/Coingecko';
@@ -38,6 +28,20 @@ import Token from 'src/enums/Token';
 import ReserveToken from 'src/core/types/ReserveToken';
 import MainnetType from 'src/enums/MainnetType';
 import request from 'graphql-request';
+
+import TokenTable from 'src/components/Deposit/TokenTable';
+
+const TransactionConfirmModal = lazy(() => import('src/components/Modal/TransactionConfirmModal'))
+const IncentiveModal = lazy(() => import('src/components/Modal/IncentiveModal'))
+const ConnectWalletModal = lazy(() => import('src/components/Modal/ConnectWalletModal'))
+const NetworkChangeModal = lazy(() => import('src/components/Modal/NetworkChangeModal'))
+const DepositOrWithdrawModal = lazy(() => import('src/components/Modal/DepositOrWithdrawModal'));
+const WalletDisconnect = lazy(() => import('src/components/Modal/WalletDisconnect'));
+const SelectWalletModal = lazy(() => import('src/components/Modal/SelectWalletModal'));
+
+const TvlCounter = lazy(() => import('src/components/Deposit/TvlCounter'))
+const RewardPlanButton = lazy(() => import('src/components/RewardPlan/RewardPlanButton'))
+const RemoteControl = lazy(() => import('./RemoteControl'));
 
 const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();

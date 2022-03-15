@@ -33,7 +33,7 @@ import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 import useReserveData from 'src/hooks/useReserveData';
-import TableBodyEventReward from './TableBodyEventReward';
+import TableBodyEventReward from 'src/components/TableBodyEventReward';
 
 interface Props {
   balance: BalanceType;
@@ -299,7 +299,7 @@ const TokenTable: React.FC<Props> = ({
                 expectedAdditionalIncentiveAfter={
                   balance.expectedAdditionalIncentiveAfter
                 }
-                buttonEvent={(e) => {
+                buttonEvent={(e: any) => {
                   e.preventDefault();
                   setIncentiveModalVisible();
                   setModalNumber();

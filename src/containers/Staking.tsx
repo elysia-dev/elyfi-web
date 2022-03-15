@@ -27,7 +27,7 @@ import TransactionConfirmModal from 'src/components/Modal/TransactionConfirmModa
 import LanguageType from 'src/enums/LanguageType';
 import useStakingRoundData from 'src/hooks/useStakingRoundData';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
-import GovernanceGuideBox from 'src/components/GovernanceGuideBox';
+import GovernanceGuideBox from 'src/components/Governance/GovernanceGuideBox';
 import Uniswap from 'src/assets/images/uniswap.png';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
