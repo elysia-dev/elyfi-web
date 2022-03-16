@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { Middleware, SWRHook } from 'swr';
 
-import OffChainTopic, { INapData, IOffChainVote } from 'src/clients/OffChainTopic';
+import OffChainTopic, {
+  INapData,
+  IOffChainVote,
+} from 'src/clients/OffChainTopic';
 import MainnetType from 'src/enums/MainnetType';
 
 export const offChainGovernanceMiddleware: Middleware =
@@ -20,6 +23,7 @@ export const offChainGovernanceMiddleware: Middleware =
     useEffect(() => {
       try {
         if (swr.data !== undefined) {
+          setOffChainNapData([]);
           dataRef.current = swr.data;
           const getOffChainApis: any = swr.data;
           const getNAPTitles = getOffChainApis.topic_list.topics.filter(
@@ -56,7 +60,12 @@ export const offChainGovernanceMiddleware: Middleware =
                       )
                       ?.toString() || '',
                   votes:
-                    getNATData.data.post_stream.posts[0].polls[0].options as IOffChainVote[] || [{ id: "", html: "", votes: 1 }, { id: "", html: "", votes: 1 }] as IOffChainVote[],
+                    (getNATData.data.post_stream.posts[0].polls[0]
+                      .options as IOffChainVote[]) ||
+                    ([
+                      { id: '', html: '', votes: 1 },
+                      { id: '', html: '', votes: 1 },
+                    ] as IOffChainVote[]),
                   totalVoters:
                     getNATData.data.post_stream.posts[0].polls[0].voters || '',
                   link: `https://forum.elyfi.world/t/${getNATData.data.slug}`,
@@ -95,6 +104,7 @@ const offChainMainMiddleware: Middleware =
 
     useEffect(() => {
       if (swr.data !== undefined) {
+        setOffChainNapData([]);
         dataRef.current = swr.data;
         const getOffChainApis: any = swr.data;
         const getNAPTitles = getOffChainApis.topic_list.topics.filter(

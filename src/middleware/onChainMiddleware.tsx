@@ -28,6 +28,7 @@ export const onChainGovernancBsceMiddleware: Middleware =
     useEffect(() => {
       try {
         if (swr.data !== undefined) {
+          setOnChainData([]);
           dataRef.current = swr.data;
           const data: any = swr.data;
           const getNAPDatas = data.proposals
@@ -44,7 +45,7 @@ export const onChainGovernancBsceMiddleware: Middleware =
                 id: data.id,
               } as IProposals;
             });
-          if (getNAPDatas.length === onChainData.length) return;
+          // if (getNAPDatas.length === onChainData.length) return;
           getNAPDatas.map((data: any, index: any) => {
             setProposalId(data.id);
             return setOnChainData((_data: any) => {
@@ -110,12 +111,13 @@ export const onChainGovernanceMiddleware: Middleware =
     useEffect(() => {
       try {
         if (swr.data !== undefined) {
+          setOnChainData([]);
           dataRef.current = swr.data;
           const getOnChainApis: any = swr.data;
           const getNAPCodes = getOnChainApis.proposals.filter((topic: any) => {
             return topic.status === 'ACTIVE';
           });
-          if (getNAPCodes.length === onChainData.length) return;
+          // if (getNAPCodes.length === onChainData.length) return;
           getNAPCodes.map((data: any) => {
             return setOnChainData((_data: any) => {
               if (!(data.status === 'ACTIVE')) return [..._data];
