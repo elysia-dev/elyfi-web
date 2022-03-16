@@ -7,7 +7,6 @@ import envs from 'src/core/envs';
 import { BrowserRouter as Router } from 'react-router-dom';
 import getLibrary from './core/utils/getLibrary';
 import AppNavigator from './AppNavigator';
-import PriceProvider from './providers/PriceProvider';
 import SubgraphProvider from './providers/SubgraphProvider';
 
 import 'src/stylesheet/public.scss';
@@ -26,19 +25,17 @@ const App: React.FC = () => {
 
   return (
     <ApolloProvider client={client}>
-      <PriceProvider>
-        <Web3ReactProvider getLibrary={getLibrary}>
-          <MainnetProvider>
-            <TxProvider>
-              <SubgraphProvider>
-                <Router>
-                  <AppNavigator />
-                </Router>
-              </SubgraphProvider>
-            </TxProvider>
-          </MainnetProvider>
-        </Web3ReactProvider>
-      </PriceProvider>
+      <Web3ReactProvider getLibrary={getLibrary}>
+        <MainnetProvider>
+          <TxProvider>
+            <SubgraphProvider>
+              <Router>
+                <AppNavigator />
+              </Router>
+            </SubgraphProvider>
+          </TxProvider>
+        </MainnetProvider>
+      </Web3ReactProvider>
     </ApolloProvider>
   );
 };
