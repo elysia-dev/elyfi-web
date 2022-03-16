@@ -74,10 +74,9 @@ const Governance = (): JSX.Element => {
 
   const { data: onChainBscData, isValidating: onChainBscLoading } = useSWR(
     bscOnChainQuery(
-      'elyfi-bsc.eth',
-      // process.env.NODE_ENV === 'production' && !process.env.REACT_APP_TEST_MODE
-      //   ? 'elyfi-bsc.eth'
-      //   : 'test-elyfi-bsc.eth',
+      process.env.NODE_ENV === 'production' && !process.env.REACT_APP_TEST_MODE
+        ? 'elyfi-bsc.eth'
+        : 'test-elyfi-bsc.eth',
     ),
     onChainBscFetcher,
     {
