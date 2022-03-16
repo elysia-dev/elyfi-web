@@ -1,5 +1,6 @@
 import { Dispatch, FunctionComponent, SetStateAction, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import useSWR from 'swr';
 import envs from 'src/core/envs';
 import { reserveTokenData } from 'src/core/data/reserves';
 import {
@@ -14,8 +15,9 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import CountUp from 'react-countup';
-import usePoolData from 'src/hooks/usePoolData';
 import Skeleton from 'react-loading-skeleton';
+import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
+import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
 
 interface Props {
   reserve: IReserveSubgraphData;
@@ -61,7 +63,14 @@ const TokenDeposit: FunctionComponent<Props> = ({
       : reserve.id === envs.token.usdtAddress
       ? Token.USDT
       : Token.BUSD;
-  const { latestPrice, loading } = usePoolData();
+  const { data: poolData, isValidating: loading } = useSWR(
+    envs.externalApiEndpoint.cachedUniswapV3URL,
+    poolDataFetcher,
+    {
+      use: [poolDataMiddleware],
+    },
+  );
+
   const { value: mediaQuery } = useMediaQueryType();
 
   return (
@@ -114,11 +123,11 @@ const TokenDeposit: FunctionComponent<Props> = ({
                 </div>
                 <div>
                   <p>{t('dashboard.token_mining_apr')}</p>
-                  {!loading ? (
+                  {!loading && poolData ? (
                     <h2>
                       {toPercent(
                         calcMiningAPR(
-                          latestPrice,
+                          poolData.latestPrice,
                           BigNumber.from(reserve.totalDeposit || 0),
                           reserveTokenData[token].decimals,
                         ),
@@ -151,11 +160,11 @@ const TokenDeposit: FunctionComponent<Props> = ({
               <div>
                 <p>{t('dashboard.token_mining_apr')}</p>
                 <h2>
-                  {!loading ? (
+                  {!loading && poolData ? (
                     <h2>
                       {toPercent(
                         calcMiningAPR(
-                          latestPrice,
+                          poolData.latestPrice,
                           BigNumber.from(reserve.totalDeposit || 0),
                           reserveTokenData[token].decimals,
                         ),

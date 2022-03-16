@@ -1,30 +1,41 @@
 import { useContext, useMemo } from 'react';
 import PriceContext from 'src/contexts/PriceContext';
 import { utils } from 'ethers';
-import usePoolData from './usePoolData';
+import useSWR from 'swr';
+import envs from 'src/core/envs';
+import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
+import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
 
 const usePricePerLiquidity = (): {
   pricePerDaiLiquidity: number;
   pricePerEthLiquidity: number;
 } => {
   const { elfiPrice, daiPrice, ethPrice } = useContext(PriceContext);
-  const { daiPool, ethPool } = usePoolData();
+  const { data: poolData, isValidating: loading } = useSWR(
+    envs.externalApiEndpoint.cachedUniswapV3URL,
+    poolDataFetcher,
+    {
+      use: [poolDataMiddleware],
+    },
+  );
 
   const pricePerEthLiquidity = useMemo(() => {
+    if (!poolData) return 0;
     return (
-      (ethPool.totalValueLockedToken0 * elfiPrice +
-        ethPool.totalValueLockedToken1 * ethPrice) /
-      parseFloat(utils.formatEther(ethPool.liquidity))
+      (poolData.ethPool.totalValueLockedToken0 * elfiPrice +
+        poolData.ethPool.totalValueLockedToken1 * ethPrice) /
+      parseFloat(utils.formatEther(poolData.ethPool.liquidity))
     );
-  }, [ethPool, elfiPrice, ethPrice]);
+  }, [elfiPrice, ethPrice, poolData, loading]);
 
   const pricePerDaiLiquidity = useMemo(() => {
+    if (!poolData) return 0;
     return (
-      (daiPool.totalValueLockedToken0 * elfiPrice +
-        daiPool.totalValueLockedToken1 * daiPrice) /
-      parseFloat(utils.formatEther(daiPool.liquidity))
+      (poolData.daiPool.totalValueLockedToken0 * elfiPrice +
+        poolData.daiPool.totalValueLockedToken1 * daiPrice) /
+      parseFloat(utils.formatEther(poolData.daiPool.liquidity))
     );
-  }, [daiPool, elfiPrice, daiPrice]);
+  }, [elfiPrice, daiPrice, poolData]);
 
   return {
     pricePerEthLiquidity,

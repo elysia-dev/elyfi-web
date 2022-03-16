@@ -2,6 +2,8 @@ import { useHistory, useParams } from 'react-router-dom';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { BigNumber } from 'ethers';
 import { useTranslation } from 'react-i18next';
+import envs from 'src/core/envs';
+import useSWR from 'swr';
 
 import { reserveTokenData } from 'src/core/data/reserves';
 import { toUsd, toPercent } from 'src/utiles/formatters';
@@ -33,8 +35,9 @@ import {
 } from 'src/utiles/graphTooltipPosition';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import PriceContext from 'src/contexts/PriceContext';
-import usePoolData from 'src/hooks/usePoolData';
 import Skeleton from 'react-loading-skeleton';
+import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
+import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
 
 interface ITokencolor {
   name: string;
@@ -69,7 +72,14 @@ function MarketDetail(): JSX.Element {
   const tokenRef = useRef<HTMLParagraphElement>(null);
   const { data: getSubgraphData } = useContext(SubgraphContext);
   const { elfiPrice } = useContext(PriceContext);
-  const { poolDayData, loading } = usePoolData();
+  const { data: poolData, isValidating: loading } = useSWR(
+    envs.externalApiEndpoint.cachedUniswapV3URL,
+    poolDataFetcher,
+    {
+      use: [poolDataMiddleware],
+    },
+  );
+
   const { lng, id } = useParams<{ lng: string; id: Token.DAI | Token.USDT }>();
   const history = useHistory();
   const { value: mediaQuery } = useMediaQueryType();
@@ -301,7 +311,7 @@ function MarketDetail(): JSX.Element {
                 onMouseLeave={() => {
                   setCellInBarIdx(-1);
                 }}>
-                {!loading ? (
+                {!loading && poolData ? (
                   <ResponsiveContainer width="100%" height={300}>
                     <ComposedChart
                       data={
@@ -309,13 +319,13 @@ function MarketDetail(): JSX.Element {
                           ? calcHistoryChartData(
                               data,
                               graphConverter ? 'borrow' : 'deposit',
-                              poolDayData,
+                              poolData.poolDayData,
                               tokenInfo!.decimals,
                             )
                           : calcHistoryChartData(
                               data,
                               graphConverter ? 'borrow' : 'deposit',
-                              poolDayData,
+                              poolData.poolDayData,
                               tokenInfo!.decimals,
                             ).slice(20)
                       }>
@@ -337,7 +347,7 @@ function MarketDetail(): JSX.Element {
                         {calcHistoryChartData(
                           data,
                           graphConverter ? 'borrow' : 'deposit',
-                          poolDayData,
+                          poolData.poolDayData,
                           tokenInfo!.decimals,
                         ).map((cData, index) => (
                           <Cell
