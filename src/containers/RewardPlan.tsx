@@ -16,7 +16,6 @@ import { useHistory, useParams } from 'react-router-dom';
 import LpStakingBox from 'src/components/RewardPlan/LpStakingBox';
 import StakingBox from 'src/components/RewardPlan/StakingBox';
 import TokenDeposit from 'src/components/RewardPlan/TokenDeposit';
-import PriceContext from 'src/contexts/PriceContext';
 import {
   daiMoneyPoolTime,
   tetherMoneyPoolTime,
@@ -66,7 +65,6 @@ const RewardPlan: FunctionComponent = () => {
   );
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const { ethPrice } = useContext(PriceContext);
   const { data: getSubgraphData, loading: subgraphLoading } =
     useContext(SubgraphContext);
   const { type: getMainnetType } = useContext(MainnetContext);
