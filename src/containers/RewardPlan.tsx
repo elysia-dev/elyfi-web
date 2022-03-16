@@ -10,6 +10,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import useSWR from 'swr';
 import { useTranslation, Trans } from 'react-i18next';
 import { useHistory, useParams } from 'react-router-dom';
 import LpStakingBox from 'src/components/RewardPlan/LpStakingBox';
@@ -48,18 +49,26 @@ import getTokenNameByAddress from 'src/core/utils/getTokenNameByAddress';
 import useCalcReward from 'src/hooks/useCalcReward';
 import { rewardToken } from 'src/utiles/stakingReward';
 import { ethRewardByRound } from 'src/utiles/LpStakingRewardByRound';
-import usePoolData from 'src/hooks/usePoolData';
 import Skeleton from 'react-loading-skeleton';
+import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
+import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
 
 const RewardPlan: FunctionComponent = () => {
   const { t, i18n } = useTranslation();
   const { stakingType } = useParams<{ stakingType: string }>();
   const history = useHistory();
-  const { latestPrice, loading } = usePoolData();
+  const { data: poolData, isValidating: poolDataLoading } = useSWR(
+    envs.externalApiEndpoint.cachedUniswapV3URL,
+    poolDataFetcher,
+    {
+      use: [poolDataMiddleware],
+    },
+  );
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const { ethPrice } = useContext(PriceContext);
-  const { data: getSubgraphData } = useContext(SubgraphContext);
+  const { data: getSubgraphData, loading: subgraphLoading } =
+    useContext(SubgraphContext);
   const { type: getMainnetType } = useContext(MainnetContext);
   const current = moment();
   const { value: mediaQuery } = useMediaQueryType();
@@ -402,11 +411,11 @@ const RewardPlan: FunctionComponent = () => {
               <img src={ELFI} />
               <h2>{t('reward.deposit__reward_plan')}</h2>
               <div className="reward__token__elfi">
-                {!loading ? (
+                {!poolDataLoading && poolData ? (
                   <p>
                     <Trans
                       i18nKey="reward.elfi_price"
-                      count={Math.round(latestPrice * 1000) / 1000}
+                      count={Math.round(poolData.latestPrice * 1000) / 1000}
                     />
                   </p>
                 ) : (
@@ -415,37 +424,43 @@ const RewardPlan: FunctionComponent = () => {
               </div>
             </div>
             <section className="reward__container">
-              {getSubgraphData.reserves
-                .filter((data) =>
-                  isSupportedReserve(
-                    getTokenNameByAddress(data.id),
-                    getMainnetType,
-                  ),
-                )
-                .map((reserve, index) => {
-                  return (
-                    <TokenDeposit
-                      key={index}
-                      idx={index}
-                      reserve={reserve}
-                      moneyPoolInfo={moneyPoolInfo}
-                      beforeMintedMoneypool={
-                        beforeMintedMoneypool[getTokenNameByAddress(reserve.id)]
-                          .beforeMintedToken <= 0
-                          ? 0
-                          : beforeMintedMoneypool[
-                              getTokenNameByAddress(reserve.id)
-                            ].beforeMintedToken
-                      }
-                      mintedMoneypool={
-                        mintedMoneypool[getTokenNameByAddress(reserve.id)]
-                          .mintedToken
-                      }
-                      depositRound={depositRound}
-                      setDepositRound={setDepositRound}
-                    />
-                  );
-                })}
+              {!subgraphLoading ? (
+                getSubgraphData.reserves
+                  .filter((data) => {
+                    if (!data.id) return;
+                    return isSupportedReserve(
+                      getTokenNameByAddress(data.id),
+                      getMainnetType,
+                    );
+                  })
+                  .map((reserve, index) => {
+                    return (
+                      <TokenDeposit
+                        key={index}
+                        idx={index}
+                        reserve={reserve}
+                        moneyPoolInfo={moneyPoolInfo}
+                        beforeMintedMoneypool={
+                          beforeMintedMoneypool[
+                            getTokenNameByAddress(reserve.id)
+                          ].beforeMintedToken <= 0
+                            ? 0
+                            : beforeMintedMoneypool[
+                                getTokenNameByAddress(reserve.id)
+                              ].beforeMintedToken
+                        }
+                        mintedMoneypool={
+                          mintedMoneypool[getTokenNameByAddress(reserve.id)]
+                            .mintedToken
+                        }
+                        depositRound={depositRound}
+                        setDepositRound={setDepositRound}
+                      />
+                    );
+                  })
+              ) : (
+                <Skeleton width={'100%'} height={330} />
+              )}
             </section>
           </>
         )}
