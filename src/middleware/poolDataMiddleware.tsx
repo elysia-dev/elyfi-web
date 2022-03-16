@@ -1,103 +1,105 @@
 import { BigNumber } from 'ethers';
 import { useEffect, useRef, useState } from 'react';
-import { UniswapPoolType } from 'src/clients/CachedUniswapV3';
 import { Middleware, SWRHook } from 'swr';
 
 const poolDataMiddleware: Middleware =
   (useSWRNext: SWRHook) => (key, fetcher, config) => {
     const swr = useSWRNext(key, fetcher, config);
     const dataRef = useRef<any>(null);
-    const [reserveLoading, setReserveLoading] = useState(true);
-    const [poolData, setPoolData] = useState<UniswapPoolType>({
-      totalValueLockedUSD: 0,
-      totalValueLockedToken0: 0,
-      totalValueLockedToken1: 0,
-      poolDayData: [],
-      latestPrice: 0.103,
-      loading: true,
-      error: false,
-      ethPool: {
-        liquidity: BigNumber.from(0),
-        totalValueLockedToken0: 0,
-        totalValueLockedToken1: 0,
-        stakedToken0: 0,
-        stakedToken1: 0,
-      },
-      daiPool: {
-        liquidity: BigNumber.from(0),
-        totalValueLockedToken0: 0,
-        totalValueLockedToken1: 0,
-        stakedToken0: 0,
-        stakedToken1: 0,
-      },
-    });
+    const [poolDataLoading, setPoolDataLoading] = useState(true);
+    const [poolData, setPoolData] = useState<any>();
 
     useEffect(() => {
       try {
         if (swr.data !== undefined) {
           dataRef.current = swr.data;
           const data: any = swr.data;
-          const poolData = data.data.data;
+          const uniswapPoolData = data.data.data.data;
+
           setPoolData({
-            ...poolData,
             totalValueLockedUSD: parseFloat(
-              poolData.daiPool.totalValueLockedUSD,
+              uniswapPoolData.daiPool.totalValueLockedUSD,
             ),
             totalValueLockedToken0: parseFloat(
-              poolData.daiPool.totalValueLockedToken0,
+              uniswapPoolData.daiPool.totalValueLockedToken0,
             ),
             totalValueLockedToken1: parseFloat(
-              poolData.daiPool.totalValueLockedToken1,
+              uniswapPoolData.daiPool.totalValueLockedToken1,
             ),
-            poolDayData: poolData.data.data.daiPool.poolDayData,
+            poolDayData: uniswapPoolData.daiPool.poolDayData,
             latestPrice: parseFloat(
-              poolData.daiPool.poolDayData[0].token1Price,
+              uniswapPoolData.daiPool.poolDayData[0].token1Price,
             ),
+            loading: true,
+            error: false,
             ethPool: {
-              liquidity: poolData.ethPool.liquidity,
+              liquidity: uniswapPoolData.ethPool.liquidity,
               totalValueLockedToken0: parseFloat(
-                poolData.ethPool.totalValueLockedToken0,
+                uniswapPoolData.ethPool.totalValueLockedToken0,
               ),
               totalValueLockedToken1: parseFloat(
-                poolData.ethPool.totalValueLockedToken1,
+                uniswapPoolData.ethPool.totalValueLockedToken1,
               ),
-              stakedToken0: poolData.stakedEthPositions.reduce(
+              stakedToken0: uniswapPoolData.stakedEthPositions.reduce(
                 (sum: any, cur: any) => sum + parseFloat(cur.depositedToken0),
                 0,
               ),
-              stakedToken1: poolData.stakedEthPositions.reduce(
+              stakedToken1: uniswapPoolData.stakedEthPositions.reduce(
                 (sum: any, cur: any) => sum + parseFloat(cur.depositedToken1),
                 0,
               ),
             },
             daiPool: {
-              liquidity: poolData.daiPool.liquidity,
+              liquidity: uniswapPoolData.daiPool.liquidity,
               totalValueLockedToken0: parseFloat(
-                poolData.data.data.daiPool.totalValueLockedToken0,
+                uniswapPoolData.daiPool.totalValueLockedToken0,
               ),
               totalValueLockedToken1: parseFloat(
-                poolData.daiPool.totalValueLockedToken1,
+                uniswapPoolData.daiPool.totalValueLockedToken1,
               ),
-              stakedToken0: poolData.stakedDaiPositions.reduce(
+              stakedToken0: uniswapPoolData.stakedDaiPositions.reduce(
                 (sum: any, cur: any) => sum + parseFloat(cur.depositedToken0),
                 0,
               ),
-              stakedToken1: poolData.stakedDaiPositions.reduce(
+              stakedToken1: uniswapPoolData.stakedDaiPositions.reduce(
                 (sum: any, cur: any) => sum + parseFloat(cur.depositedToken1),
                 0,
               ),
             },
           });
         }
-        setReserveLoading(false);
+        setPoolDataLoading(false);
       } catch (error) {
-        setReserveLoading(false);
+        setPoolData({
+          totalValueLockedUSD: 0,
+          totalValueLockedToken0: 0,
+          totalValueLockedToken1: 0,
+          poolDayData: [],
+          latestPrice: 0.103,
+          loading: true,
+          error: false,
+          ethPool: {
+            liquidity: BigNumber.from(0),
+            totalValueLockedToken0: 0,
+            totalValueLockedToken1: 0,
+            stakedToken0: 0,
+            stakedToken1: 0,
+          },
+          daiPool: {
+            liquidity: BigNumber.from(0),
+            totalValueLockedToken0: 0,
+            totalValueLockedToken1: 0,
+            stakedToken0: 0,
+            stakedToken1: 0,
+          },
+        });
+        setPoolDataLoading(false);
       }
     }, [swr.data]);
 
     const data = swr.data === undefined ? dataRef.current : poolData;
 
-    return { ...swr, data, isValidating: reserveLoading };
+    return { ...swr, data, isValidating: poolDataLoading };
   };
 
 export default poolDataMiddleware;
