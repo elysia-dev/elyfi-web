@@ -1,6 +1,7 @@
 import { BigNumber, constants } from 'ethers';
 import envs from 'src/core/envs';
 import moment from 'moment';
+import useSWR from 'swr';
 import {
   ERC20__factory,
   IncentivePool__factory,
@@ -9,16 +10,17 @@ import Token from 'src/enums/Token';
 import SubgraphContext, {
   IReserveSubgraphData,
 } from 'src/contexts/SubgraphContext';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import getTokenNameFromAddress from 'src/utiles/getTokenNameFromAddress';
 import isEndedIncentive from 'src/core/utils/isEndedIncentive';
 import calcExpectedIncentive from 'src/utiles/calcExpectedIncentive';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
-import PriceContext from 'src/contexts/PriceContext';
 import { useWeb3React } from '@web3-react/core';
 import MainnetContext from 'src/contexts/MainnetContext';
 import ReserveToken from 'src/core/types/ReserveToken';
 import isSupportedReserveByChainId from 'src/core/utils/isSupportedReserveByChainId';
+import { pricesFetcher } from 'src/clients/Coingecko';
+import priceMiddleware from 'src/middleware/priceMiddleware';
 
 export type BalanceType = {
   id: string;
@@ -138,8 +140,16 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     }),
   );
   const [loading, setLoading] = useState(true);
-  const { elfiPrice } = useContext(PriceContext);
-  const { type: mainnetType, active } = useContext(MainnetContext);
+  const { data: priceData } = useSWR(
+    envs.externalApiEndpoint.coingackoURL,
+    pricesFetcher,
+    {
+      use: [priceMiddleware],
+    },
+  );
+  const { active } = useContext(MainnetContext);
+
+  const elfiPrice = priceData ? priceData.elfiPrice : 0;
 
   const loadBalance = useCallback(
     async (id: string) => {

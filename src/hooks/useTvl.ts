@@ -2,13 +2,14 @@ import { BigNumber, constants, providers } from 'ethers';
 import { formatUnits, formatEther } from 'ethers/lib/utils';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import useSWR from 'swr';
-import PriceContext from 'src/contexts/PriceContext';
 import envs from 'src/core/envs';
 import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import ReserveData from 'src/core/data/reserves';
 import SubgraphContext from 'src/contexts/SubgraphContext';
 import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
 import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
+import { pricesFetcher } from 'src/clients/Coingecko';
+import priceMiddleware from 'src/middleware/priceMiddleware';
 
 const useTvl = (): { value: number; loading: boolean } => {
   const { data, loading: reserveLoading } = useContext(SubgraphContext);
@@ -20,7 +21,13 @@ const useTvl = (): { value: number; loading: boolean } => {
       use: [poolDataMiddleware],
     },
   );
-  const { elPrice, daiPrice, ethPrice, elfiPrice } = useContext(PriceContext);
+  const { data: priceData } = useSWR(
+    envs.externalApiEndpoint.coingackoURL,
+    pricesFetcher,
+    {
+      use: [priceMiddleware],
+    },
+  );
 
   const [state, setState] = useState({
     stakedEl: constants.Zero,
@@ -29,7 +36,7 @@ const useTvl = (): { value: number; loading: boolean } => {
   });
 
   const tvl = useMemo(() => {
-    if (!poolData) return 0;
+    if (!poolData || !priceData) return 0;
     return (
       data.reserves.reduce((res, cur) => {
         const tokenInfo = ReserveData.find((datum) => datum.address === cur.id);
@@ -43,14 +50,14 @@ const useTvl = (): { value: number; loading: boolean } => {
           )
         );
       }, 0) +
-      poolData.ethPool.totalValueLockedToken0 * elfiPrice +
-      poolData.ethPool.totalValueLockedToken1 * ethPrice +
-      poolData.daiPool.totalValueLockedToken0 * elfiPrice +
-      poolData.daiPool.totalValueLockedToken1 * daiPrice +
-      parseInt(formatEther(state.stakedEl), 10) * elPrice +
-      parseInt(formatEther(state.stakedElfi), 10) * elfiPrice
+      poolData.ethPool.totalValueLockedToken0 * priceData.elfiPrice +
+      poolData.ethPool.totalValueLockedToken1 * priceData.ethPrice +
+      poolData.daiPool.totalValueLockedToken0 * priceData.elfiPrice +
+      poolData.daiPool.totalValueLockedToken1 * priceData.daiPrice +
+      parseInt(formatEther(state.stakedEl), 10) * priceData.elPrice +
+      parseInt(formatEther(state.stakedElfi), 10) * priceData.elfiPrice
     );
-  }, [state, elPrice, elfiPrice, loading, poolData]);
+  }, [state, priceData, loading, poolData]);
 
   const loadBalances = async () => {
     try {

@@ -1,4 +1,6 @@
 import { useTranslation } from 'react-i18next';
+import useSWR from 'swr';
+import envs from 'src/core/envs';
 import {
   formatSixFracionDigit,
   toCompactForBignumber,
@@ -23,11 +25,12 @@ import { daiMoneyPoolTime } from 'src/core/data/moneypoolTimes';
 import { BalanceType } from 'src/hooks/useBalances';
 import moment from 'moment';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
-import PriceContext from 'src/contexts/PriceContext';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
+import { pricesFetcher } from 'src/clients/Coingecko';
+import priceMiddleware from 'src/middleware/priceMiddleware';
 import TableBodyEventReward from './TableBodyEventReward';
 
 interface Props {
@@ -56,13 +59,19 @@ const TokenTable: React.FC<Props> = ({
   const { account } = useWeb3React();
   const { unsupportedChainid, type: getMainnetType } =
     useContext(MainnetContext);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const tokenInfo = reserveTokenData[balance.tokenName];
   const history = useHistory();
   const { lng } = useParams<{ lng: string }>();
   const { value: mediaQuery } = useMediaQueryType();
   const currentChain = useCurrentChain();
-  const { elfiPrice } = useContext(PriceContext);
+  const { data: priceData } = useSWR(
+    envs.externalApiEndpoint.coingackoURL,
+    pricesFetcher,
+    {
+      use: [priceMiddleware],
+    },
+  );
   const assetBondTokensBackedByEstate = reserveData.assetBondTokens.filter(
     (ab) => {
       const parsedId = parseTokenId(ab.id);
@@ -85,7 +94,7 @@ const TokenTable: React.FC<Props> = ({
       t('dashboard.token_mining_apr'),
       toPercent(
         calcMiningAPR(
-          elfiPrice,
+          priceData?.elfiPrice || 0,
           BigNumber.from(reserveData.totalDeposit),
           reserveTokenData[balance.tokenName].decimals,
         ) || '0',

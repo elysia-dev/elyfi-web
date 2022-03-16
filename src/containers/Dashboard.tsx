@@ -1,5 +1,7 @@
 import { reserveTokenData } from 'src/core/data/reserves';
 import { useContext, useState, useMemo, useEffect } from 'react';
+import useSWR from 'swr';
+import envs from 'src/core/envs';
 import { toPercent } from 'src/utiles/formatters';
 import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
 import { BigNumber } from 'ethers';
@@ -8,7 +10,6 @@ import { GetUser } from 'src/queries/__generated__/GetUser';
 import { GET_USER } from 'src/queries/userQueries';
 import { useTranslation, Trans } from 'react-i18next';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
-import PriceContext from 'src/contexts/PriceContext';
 import ReactGA from 'react-ga';
 import TokenTable from 'src/components/TokenTable';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
@@ -28,18 +29,25 @@ import { MainnetData } from 'src/core/data/mainnets';
 import getIncentivePoolAddress from 'src/core/utils/getIncentivePoolAddress';
 import scrollToOffeset from 'src/core/utils/scrollToOffeset';
 import useBalances from 'src/hooks/useBalances';
-import EventImage from 'src/assets/images/event_image.png';
 import { useWeb3React } from '@web3-react/core';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import WalletDisconnect from 'src/components/WalletDisconnect';
 import SelectWalletModal from 'src/components/SelectWalletModal';
 import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
 import Skeleton from 'react-loading-skeleton';
+import { pricesFetcher } from 'src/clients/Coingecko';
+import priceMiddleware from 'src/middleware/priceMiddleware';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();
   const { data, loading: subgraphLoading } = useContext(SubgraphContext);
-  const { elfiPrice } = useContext(PriceContext);
+  const { data: priceData } = useSWR(
+    envs.externalApiEndpoint.coingackoURL,
+    pricesFetcher,
+    {
+      use: [priceMiddleware],
+    },
+  );
   const [reserveData, setReserveData] = useState<
     IReserveSubgraphData | undefined
   >();
@@ -218,15 +226,19 @@ const Dashboard: React.FunctionComponent = () => {
                         </p>
                         <div className="deposit__remote-control__mining">
                           <p>{t('dashboard.token_mining_apr')}</p>
-                          <p>
-                            {toPercent(
-                              calcMiningAPR(
-                                elfiPrice,
-                                BigNumber.from(reserve.totalDeposit),
-                                reserveTokenData[balance.tokenName].decimals,
-                              ) || '0',
-                            )}
-                          </p>
+                          {priceData ? (
+                            <p>
+                              {toPercent(
+                                calcMiningAPR(
+                                  priceData.elfiPrice,
+                                  BigNumber.from(reserve.totalDeposit),
+                                  reserveTokenData[balance.tokenName].decimals,
+                                ) || '0',
+                              )}
+                            </p>
+                          ) : (
+                            <Skeleton width={100} height={20} />
+                          )}
                         </div>
                       </div>
                     </a>

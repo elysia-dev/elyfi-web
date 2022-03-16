@@ -34,10 +34,11 @@ import {
   setTooltipBoxPositionX,
 } from 'src/utiles/graphTooltipPosition';
 import useCurrentChain from 'src/hooks/useCurrentChain';
-import PriceContext from 'src/contexts/PriceContext';
 import Skeleton from 'react-loading-skeleton';
 import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
 import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
+import { pricesFetcher } from 'src/clients/Coingecko';
+import priceMiddleware from 'src/middleware/priceMiddleware';
 
 interface ITokencolor {
   name: string;
@@ -71,7 +72,13 @@ function MarketDetail(): JSX.Element {
   const [transactionModal, setTransactionModal] = useState(false);
   const tokenRef = useRef<HTMLParagraphElement>(null);
   const { data: getSubgraphData } = useContext(SubgraphContext);
-  const { elfiPrice } = useContext(PriceContext);
+  const { data: priceData } = useSWR(
+    envs.externalApiEndpoint.coingackoURL,
+    pricesFetcher,
+    {
+      use: [priceMiddleware],
+    },
+  );
   const { data: poolData, isValidating: loading } = useSWR(
     envs.externalApiEndpoint.cachedUniswapV3URL,
     poolDataFetcher,
@@ -191,7 +198,7 @@ function MarketDetail(): JSX.Element {
     );
 
   const miningAPR = calcMiningAPR(
-    elfiPrice,
+    priceData?.elfiPrice || 0,
     BigNumber.from(data.totalDeposit),
     tokenInfo?.decimals,
   );
