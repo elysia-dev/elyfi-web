@@ -14,7 +14,6 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import { poolAddress } from 'src/utiles/stakingPoolAddress';
 import { rewardPerDayByToken } from 'src/utiles/stakingReward';
 import MainnetType from 'src/enums/MainnetType';
-import usePoolData from './usePoolData';
 
 // round 0, 1, 2, 3
 const useStakingRoundData = (
@@ -43,8 +42,7 @@ const useStakingRoundData = (
     );
   }, [stakedToken, round, mainnet]);
 
-  const { latestPrice: elfiPrice } = usePoolData();
-  const { elPrice } = useContext(PriceContext);
+  const { elPrice, elfiPrice } = useContext(PriceContext);
 
   const [state, setState] = useState({
     totalPrincipal: constants.Zero,
