@@ -15,7 +15,6 @@ const priceMiddleware: Middleware =
         if (swr.data !== undefined) {
           dataRef.current = swr.data;
           const priceData: any = swr.data;
-          console.log('price', priceData);
           setPrice({
             ...price,
             elfiPrice: priceData.elyfi.usd,
