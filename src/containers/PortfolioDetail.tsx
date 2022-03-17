@@ -127,12 +127,6 @@ const PortfolioDetail: FunctionComponent = () => {
     }
   }, [abToken]);
 
-  // useEffect(() => {
-  //   if (mainnetType) {
-  //     return history.goBack();
-  //   }
-  // }, [mainnetType]);
-
   const divStyle = useMemo(
     () => ({
       color: '#888888',
