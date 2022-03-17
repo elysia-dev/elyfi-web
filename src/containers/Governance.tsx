@@ -244,9 +244,11 @@ const Governance = (): JSX.Element => {
                     : 0
                 }
                 max={
-                  typeof data.totalVotesCast === 'number'
-                    ? data.totalVotesCast
-                    : parseFloat(utils.formatEther(data.totalVotesCast))
+                  data.totalVotesCastInSupport
+                    ? typeof data.totalVotesCast === 'number'
+                      ? data.totalVotesCast
+                      : parseFloat(utils.formatEther(data.totalVotesCast))
+                    : 0
                 }
               />
             </div>
@@ -264,9 +266,11 @@ const Governance = (): JSX.Element => {
                     : 0
                 }
                 max={
-                  typeof data.totalVotesCast === 'number'
-                    ? data.totalVotesCast
-                    : parseFloat(utils.formatEther(data.totalVotesCast))
+                  data.totalVotesCastAgainst
+                    ? typeof data.totalVotesCast === 'number'
+                      ? data.totalVotesCast
+                      : parseFloat(utils.formatEther(data.totalVotesCast))
+                    : 0
                 }
               />
             </div>
@@ -284,9 +288,11 @@ const Governance = (): JSX.Element => {
                     : 0
                 }
                 max={
-                  typeof data.totalVotesCast === 'number'
-                    ? data.totalVotesCast
-                    : parseFloat(utils.formatEther(data.totalVotesCast))
+                  data.totalVotesCastAbstained
+                    ? typeof data.totalVotesCast === 'number'
+                      ? data.totalVotesCast
+                      : parseFloat(utils.formatEther(data.totalVotesCast))
+                    : 0
                 }
               />
             </div>

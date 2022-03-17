@@ -33,6 +33,7 @@ const useTvl = (): { value: number; loading: boolean } => {
   const [state, setState] = useState({
     stakedEl: constants.Zero,
     stakedElfi: constants.Zero,
+    stakedElfiOnBSC: constants.Zero,
     loading: true,
   });
 
@@ -56,7 +57,8 @@ const useTvl = (): { value: number; loading: boolean } => {
       poolData.daiPool.totalValueLockedToken0 * priceData.elfiPrice +
       poolData.daiPool.totalValueLockedToken1 * priceData.daiPrice +
       parseInt(formatEther(state.stakedEl), 10) * priceData.elPrice +
-      parseInt(formatEther(state.stakedElfi), 10) * priceData.elfiPrice
+      parseInt(formatEther(state.stakedElfi), 10) * priceData.elfiPrice +
+      parseInt(formatEther(state.stakedElfiOnBSC), 10) * priceData.elfiPrice
     );
   }, [state, priceData, loading, poolData, reserveState]);
 
@@ -76,12 +78,18 @@ const useTvl = (): { value: number; loading: boolean } => {
         provider as any,
       ).balanceOf(envs.staking.elfyV2StakingPoolAddress);
 
+      const stakedElfiOnBSC = await ERC20__factory.connect(
+        envs.token.bscElfiAddress,
+        new providers.JsonRpcProvider(envs.jsonRpcUrl.bsc),
+      ).balanceOf(envs.staking.elfyBscStakingPoolAddress);
+
       setState({
         stakedEl: await ERC20__factory.connect(
           envs.token.elAddress,
           provider as any,
         ).balanceOf(envs.staking.elStakingPoolAddress),
         stakedElfi: stakedElfiOnV1.add(stakedElfiOnV2),
+        stakedElfiOnBSC,
         loading: false,
       });
     } catch (e) {

@@ -23,6 +23,7 @@ export const offChainGovernanceMiddleware: Middleware =
     useEffect(() => {
       try {
         if (swr.data !== undefined) {
+          setOffChainNapData([]);
           dataRef.current = swr.data;
           const getOffChainApis: any = swr.data;
           const getNAPTitles = getOffChainApis.topic_list.topics.filter(
@@ -104,6 +105,7 @@ const offChainMainMiddleware: Middleware =
 
     useEffect(() => {
       if (swr.data !== undefined) {
+        setOffChainNapData([]);
         dataRef.current = swr.data;
         const getOffChainApis: any = swr.data;
         const getNAPTitles = getOffChainApis.topic_list.topics.filter(
