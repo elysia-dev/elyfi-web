@@ -17,7 +17,6 @@ import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
-import SubgraphContext from 'src/contexts/SubgraphContext';
 import {
   Bar,
   Cell,
@@ -28,7 +27,6 @@ import {
 } from 'recharts';
 import MainnetContext from 'src/contexts/MainnetContext';
 import isSupportedReserve from 'src/core/utils/isSupportedReserve';
-import ReserveToken from 'src/core/types/ReserveToken';
 import {
   setDatePositionX,
   setTooltipBoxPositionX,
@@ -39,6 +37,7 @@ import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
 import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
+import useReserveData from 'src/hooks/useReserveData';
 
 interface ITokencolor {
   name: string;
@@ -71,7 +70,7 @@ function MarketDetail(): JSX.Element {
   const [graphConverter, setGraphConverter] = useState(false);
   const [transactionModal, setTransactionModal] = useState(false);
   const tokenRef = useRef<HTMLParagraphElement>(null);
-  const { data: getSubgraphData } = useContext(SubgraphContext);
+  const { reserveState } = useReserveData();
   const { data: priceData } = useSWR(
     envs.externalApiEndpoint.coingackoURL,
     pricesFetcher,
@@ -92,7 +91,7 @@ function MarketDetail(): JSX.Element {
   const { value: mediaQuery } = useMediaQueryType();
   const currentChain = useCurrentChain();
   const tokenInfo = reserveTokenData[id];
-  const data = getSubgraphData.reserves.find(
+  const data = reserveState.reserves.find(
     (reserve) => reserve.id === tokenInfo.address,
   );
   const [tooltipPositionX, setTooltipPositionX] = useState(0);

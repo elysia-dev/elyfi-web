@@ -1,18 +1,19 @@
 import { BigNumber, constants, providers } from 'ethers';
 import { formatUnits, formatEther } from 'ethers/lib/utils';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useSWR from 'swr';
 import envs from 'src/core/envs';
 import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import ReserveData from 'src/core/data/reserves';
-import SubgraphContext from 'src/contexts/SubgraphContext';
 import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
 import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
+import useReserveData from './useReserveData';
 
 const useTvl = (): { value: number; loading: boolean } => {
-  const { data, loading: reserveLoading } = useContext(SubgraphContext);
+  const { reserveState, loading: reserveLoading } = useReserveData();
+
   const [loading, setLoading] = useState(true);
   const { data: poolData } = useSWR(
     envs.externalApiEndpoint.cachedUniswapV3URL,
@@ -36,15 +37,15 @@ const useTvl = (): { value: number; loading: boolean } => {
   });
 
   const tvl = useMemo(() => {
-    if (!poolData || !priceData) return 0;
+    if (!poolData || !priceData || !reserveState) return 0;
     return (
-      data.reserves.reduce((res, cur) => {
+      reserveState.reserves.reduce((res, cur) => {
         const tokenInfo = ReserveData.find((datum) => datum.address === cur.id);
         return (
           res +
           parseFloat(
             formatUnits(
-              BigNumber.from(loading ? 0 : cur.totalDeposit),
+              BigNumber.from(loading ? 0 : cur?.totalDeposit || 0),
               tokenInfo?.decimals,
             ),
           )
@@ -57,7 +58,7 @@ const useTvl = (): { value: number; loading: boolean } => {
       parseInt(formatEther(state.stakedEl), 10) * priceData.elPrice +
       parseInt(formatEther(state.stakedElfi), 10) * priceData.elfiPrice
     );
-  }, [state, priceData, loading, poolData]);
+  }, [state, priceData, loading, poolData, reserveState]);
 
   const loadBalances = async () => {
     try {

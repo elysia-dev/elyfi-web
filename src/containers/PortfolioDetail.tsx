@@ -28,18 +28,18 @@ import maturityFormmater from 'src/utiles/maturityFormmater';
 import ReserveData from 'src/core/data/reserves';
 import envs from 'src/core/envs';
 import Guide from 'src/components/Guide';
-import Loading from 'src/components/Loading';
-import SubgraphContext, { IAssetBond } from 'src/contexts/SubgraphContext';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
+import useReserveData from 'src/hooks/useReserveData';
+import { IAssetBond } from 'src/core/types/reserveSubgraph';
 
 const PortfolioDetail: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
-  const { data: tokenData } = useContext(SubgraphContext);
+  const { reserveState } = useReserveData();
   const { t } = useTranslation();
   const { lng: language } = useParams<{ lng: LanguageType }>();
 
-  const assetBondTokens = tokenData.reserves.reduce((arr, reserve) => {
+  const assetBondTokens = reserveState.reserves.reduce((arr, reserve) => {
     return [...arr, ...reserve.assetBondTokens];
   }, [] as IAssetBond[]);
 

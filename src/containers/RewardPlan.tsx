@@ -41,7 +41,6 @@ import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
-import SubgraphContext from 'src/contexts/SubgraphContext';
 import isSupportedReserve from 'src/core/utils/isSupportedReserve';
 import MainnetContext from 'src/contexts/MainnetContext';
 import getTokenNameByAddress from 'src/core/utils/getTokenNameByAddress';
@@ -51,6 +50,7 @@ import { ethRewardByRound } from 'src/utiles/LpStakingRewardByRound';
 import Skeleton from 'react-loading-skeleton';
 import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
 import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
+import useReserveData from 'src/hooks/useReserveData';
 
 const RewardPlan: FunctionComponent = () => {
   const { t, i18n } = useTranslation();
@@ -65,8 +65,7 @@ const RewardPlan: FunctionComponent = () => {
   );
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const { data: getSubgraphData, loading: subgraphLoading } =
-    useContext(SubgraphContext);
+  const { reserveState, loading: subgraphLoading } = useReserveData();
   const { type: getMainnetType } = useContext(MainnetContext);
   const current = moment();
   const { value: mediaQuery } = useMediaQueryType();
@@ -423,7 +422,7 @@ const RewardPlan: FunctionComponent = () => {
             </div>
             <section className="reward__container">
               {!subgraphLoading ? (
-                getSubgraphData.reserves
+                reserveState.reserves
                   .filter((data) => {
                     if (!data.id) return;
                     return isSupportedReserve(

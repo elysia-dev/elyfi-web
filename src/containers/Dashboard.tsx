@@ -20,9 +20,6 @@ import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 
 import ModalViewType from 'src/enums/ModalViewType';
 import { useMediaQuery } from 'react-responsive';
-import SubgraphContext, {
-  IReserveSubgraphData,
-} from 'src/contexts/SubgraphContext';
 import MainnetContext from 'src/contexts/MainnetContext';
 import TvlCounter from 'src/components/TvlCounter';
 import { MainnetData } from 'src/core/data/mainnets';
@@ -37,10 +34,12 @@ import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
 import Skeleton from 'react-loading-skeleton';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
+import useReserveData from 'src/hooks/useReserveData';
+import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();
-  const { data, loading: subgraphLoading } = useContext(SubgraphContext);
+  const { reserveState, loading: subgraphLoading } = useReserveData();
   const { data: priceData } = useSWR(
     envs.externalApiEndpoint.coingackoURL,
     pricesFetcher,
@@ -85,8 +84,9 @@ const Dashboard: React.FunctionComponent = () => {
     [balances],
   );
   const selectedReserve = useMemo(
-    () => data.reserves.find((balance) => balance.id === selectedBalanceId),
-    [selectedBalanceId, data],
+    () =>
+      reserveState.reserves.find((balance) => balance.id === selectedBalanceId),
+    [selectedBalanceId, reserveState],
   );
   const supportedBalances = useMemo(() => {
     return balances.filter((balance) =>
@@ -204,7 +204,7 @@ const Dashboard: React.FunctionComponent = () => {
             <div className="deposit__remote-control__wrapper">
               <div className="deposit__remote-control">
                 {supportedBalances.map((balance, index) => {
-                  const reserve = data.reserves.find(
+                  const reserve = reserveState.reserves.find(
                     (d) => d.id === balance.id,
                   );
 
@@ -254,7 +254,9 @@ const Dashboard: React.FunctionComponent = () => {
             </>
           ) : (
             supportedBalances.map((balance, index) => {
-              const reserve = data.reserves.find((d) => d.id === balance.id);
+              const reserve = reserveState.reserves.find(
+                (d) => d.id === balance.id,
+              );
 
               if (!reserve) return <></>;
 

@@ -7,9 +7,6 @@ import {
   IncentivePool__factory,
 } from '@elysia-dev/contract-typechain';
 import Token from 'src/enums/Token';
-import SubgraphContext, {
-  IReserveSubgraphData,
-} from 'src/contexts/SubgraphContext';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import getTokenNameFromAddress from 'src/utiles/getTokenNameFromAddress';
 import isEndedIncentive from 'src/core/utils/isEndedIncentive';
@@ -21,6 +18,8 @@ import ReserveToken from 'src/core/types/ReserveToken';
 import isSupportedReserveByChainId from 'src/core/utils/isSupportedReserveByChainId';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
+import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
+import useReserveData from './useReserveData';
 
 export type BalanceType = {
   id: string;
@@ -129,9 +128,9 @@ type ReturnType = {
 // 1. Use other naming. Balance dose not cover the usefulness
 const useBalances = (refetchUserData: () => void): ReturnType => {
   const { account, chainId, library } = useWeb3React();
-  const { data: reserveData } = useContext(SubgraphContext);
+  const { reserveState } = useReserveData();
   const [balances, setBalances] = useState<BalanceType[]>(
-    reserveData.reserves.map((reserve) => {
+    reserveState.reserves.map((reserve) => {
       return {
         ...initialBalanceState,
         id: reserve.id,
@@ -160,7 +159,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
         setBalances(
           await Promise.all(
             balances.map(async (balance, _index) => {
-              const reserve = reserveData.reserves.find((r) => r.id === id);
+              const reserve = reserveState.reserves.find((r) => r.id === id);
               if (balance.id !== id || !reserve)
                 return {
                   ...balance,
@@ -182,7 +181,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
         console.error(error);
       }
     },
-    [reserveData, balances],
+    [reserveState, balances],
   );
 
   const loadBalances = useCallback(async () => {
@@ -193,7 +192,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
       refetchUserData();
       setBalances(
         await Promise.all(
-          reserveData.reserves.map(async (reserve, index) => {
+          reserveState.reserves.map(async (reserve, index) => {
             const tokenName = getTokenNameFromAddress(
               reserve.id,
             ) as ReserveToken;
@@ -221,7 +220,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     } finally {
       setLoading(false);
     }
-  }, [account, library, chainId, reserveData]);
+  }, [account, library, chainId, reserveState]);
 
   useEffect(() => {
     // Only called when active.
@@ -229,11 +228,11 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     if (!account || !active) return;
     setLoading(true);
     loadBalances();
-  }, [account, active, chainId, reserveData]);
+  }, [account, active, chainId, reserveState]);
 
   useEffect(() => {
     setBalances(
-      reserveData.reserves.map((reserve) => {
+      reserveState.reserves.map((reserve) => {
         return {
           ...initialBalanceState,
           id: reserve.id,
@@ -241,7 +240,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
         };
       }),
     );
-  }, [reserveData]);
+  }, [reserveState]);
 
   useEffect(() => {
     if (loading || !active) return;
@@ -249,7 +248,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     const interval = setInterval(() => {
       setBalances(
         balances.map((balance) => {
-          const reserve = reserveData.reserves.find((r) =>
+          const reserve = reserveState.reserves.find((r) =>
             balance ? r.id === balance.id : false,
           );
           if (!reserve) return balance;
@@ -297,7 +296,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     return () => {
       clearInterval(interval);
     };
-  }, [balances, chainId, loading, active, reserveData]);
+  }, [balances, chainId, loading, active, reserveState]);
 
   return { balances, loading, loadBalance };
 };
