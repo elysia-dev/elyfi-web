@@ -4,6 +4,7 @@ import HeaderCircle from 'src/assets/images/title-circle.png';
 import useTvl from 'src/hooks/useTvl';
 import Skeleton from 'react-loading-skeleton';
 import { useMemo } from 'react';
+import MediaQuery from 'src/enums/MediaQuery';
 
 const usdFormatter = new Intl.NumberFormat('en', {
   style: 'currency',
@@ -27,7 +28,10 @@ const TvlCounter: React.FC = () => {
         // setInterval make some rerendering when the changes is not related the component
         useMemo(() => {
           return loading ? (
-            <Skeleton width={200} height={66} />
+            <Skeleton
+              width={200}
+              height={mediaQuery === MediaQuery.PC ? 66 : 42}
+            />
           ) : (
             <CountUp
               start={0}
