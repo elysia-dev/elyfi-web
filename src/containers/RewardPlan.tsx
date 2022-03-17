@@ -33,7 +33,11 @@ import ELFI from 'src/assets/images/ELFI.png';
 import ETH from 'src/assets/images/eth-color.png';
 import DAI from 'src/assets/images/dai.png';
 import useLpApr from 'src/hooks/useLpApy';
-import StakerSubgraph, { IPoolPosition } from 'src/clients/StakerSubgraph';
+import {
+  IPoolPosition,
+  positionsByPoolIdFetcher,
+  positionsByPoolIdQuery,
+} from 'src/clients/StakerSubgraph';
 import getIncentiveId from 'src/utiles/getIncentive';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import { lpRoundDate } from 'src/core/data/lpStakingTime';
@@ -62,6 +66,10 @@ const RewardPlan: FunctionComponent = () => {
     {
       use: [poolDataMiddleware],
     },
+  );
+  const { data: positionsByPoolId } = useSWR(
+    positionsByPoolIdQuery,
+    positionsByPoolIdFetcher,
   );
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -217,18 +225,14 @@ const RewardPlan: FunctionComponent = () => {
   };
 
   const getAllStakedPositions = () => {
-    StakerSubgraph.getIncentivesWithPositionsByPoolId(
-      envs.lpStaking.ethElfiPoolAddress,
-      envs.lpStaking.daiElfiPoolAddress,
-    ).then((res) => {
-      setTotalStakedPositions(res.data);
-    });
+    if (!positionsByPoolId) return;
+    setTotalStakedPositions(positionsByPoolId);
   };
 
   // total value of the steak in the pool.
   const calcTotalStakedLpToken = useCallback(() => {
     const daiElfiPoolTotalLiquidity =
-      totalStakedPositions?.data.daiIncentive
+      totalStakedPositions?.daiIncentive
         .filter(
           (incentive) =>
             incentive.id ===
@@ -240,7 +244,7 @@ const RewardPlan: FunctionComponent = () => {
         ) || constants.Zero;
 
     const ethElfiPoolTotalLiquidity =
-      totalStakedPositions?.data.wethIncentive
+      totalStakedPositions?.wethIncentive
         .filter(
           (incentive) =>
             incentive.id ===
