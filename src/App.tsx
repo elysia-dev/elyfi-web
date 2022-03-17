@@ -7,7 +7,6 @@ import envs from 'src/core/envs';
 import { BrowserRouter as Router } from 'react-router-dom';
 import getLibrary from './core/utils/getLibrary';
 import AppNavigator from './AppNavigator';
-import SubgraphProvider from './providers/SubgraphProvider';
 
 import 'src/stylesheet/public.scss';
 import 'src/stylesheet/pc.scss';
@@ -28,11 +27,9 @@ const App: React.FC = () => {
       <Web3ReactProvider getLibrary={getLibrary}>
         <MainnetProvider>
           <TxProvider>
-            <SubgraphProvider>
-              <Router>
-                <AppNavigator />
-              </Router>
-            </SubgraphProvider>
+            <Router>
+              <AppNavigator />
+            </Router>
           </TxProvider>
         </MainnetProvider>
       </Web3ReactProvider>
