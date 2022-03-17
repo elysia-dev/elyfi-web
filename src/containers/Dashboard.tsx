@@ -247,22 +247,26 @@ const Dashboard: React.FunctionComponent = () => {
                           <p className="montserrat">{balance.tokenName}</p>
                         </div>
                         <p className="deposit__remote-control__apy bold">
-                          {toPercent(reserve.depositAPY)}
+                          {reserve.depositAPY ? (
+                            toPercent(reserve.depositAPY)
+                          ) : (
+                            <Skeleton width={50} height={20} />
+                          )}
                         </p>
                         <div className="deposit__remote-control__mining">
                           <p>{t('dashboard.token_mining_apr')}</p>
-                          {priceData ? (
+                          {priceData && reserve.totalDeposit ? (
                             <p>
                               {toPercent(
                                 calcMiningAPR(
                                   priceData.elfiPrice,
-                                  BigNumber.from(reserve.totalDeposit),
+                                  BigNumber.from(reserve.totalDeposit || 0),
                                   reserveTokenData[balance.tokenName].decimals,
                                 ) || '0',
                               )}
                             </p>
                           ) : (
-                            <Skeleton width={100} height={20} />
+                            <Skeleton width={50} height={13} />
                           )}
                         </div>
                       </div>
