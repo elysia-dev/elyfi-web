@@ -84,7 +84,7 @@ const Dashboard: React.FunctionComponent = () => {
       balances.find((balance) =>
         balance ? balance.id === selectedBalanceId : false,
       ),
-    [balances],
+    [balances, selectedBalanceId],
   );
   const selectedReserve = useMemo(
     () =>
