@@ -35,7 +35,7 @@ const DetailBoxItemHeader: FunctionComponent<DetailBoxItemHeaderProps> = (
           <Guide content={t('guide.total_liquidity', { token: token1 })} />
         </div>
         {isLoading ? (
-          <h2 className="percent">{totalLiquidity}</h2>
+          <h2 className="percent">$ {totalLiquidity}</h2>
         ) : (
           <Skeleton
             width={145}
