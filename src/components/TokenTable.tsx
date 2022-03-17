@@ -11,6 +11,7 @@ import { reserveTokenData } from 'src/core/data/reserves';
 import { useWeb3React } from '@web3-react/core';
 import CountUp from 'react-countup';
 import { formatEther } from '@ethersproject/units';
+import Skeleton from 'react-loading-skeleton';
 import { BigNumber, constants } from 'ethers';
 import AssetList from 'src/containers/AssetList';
 import { Link, useHistory, useParams } from 'react-router-dom';
@@ -31,18 +32,19 @@ import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
+import useReserveData from 'src/hooks/useReserveData';
 import TableBodyEventReward from './TableBodyEventReward';
 
 interface Props {
   balance: BalanceType;
   onClick?: (e: any) => void;
-  reserveData: IReserveSubgraphData;
   setIncentiveModalVisible: () => void;
   setModalNumber: () => void;
   modalview: () => void;
   setRound: (round: number) => void;
   id: string;
   loading: boolean;
+  reserveData?: IReserveSubgraphData;
 }
 
 const TokenTable: React.FC<Props> = ({
@@ -65,6 +67,7 @@ const TokenTable: React.FC<Props> = ({
   const { lng } = useParams<{ lng: string }>();
   const { value: mediaQuery } = useMediaQueryType();
   const currentChain = useCurrentChain();
+  const { loading: subgraphLoading } = useReserveData();
   const { data: priceData } = useSWR(
     envs.externalApiEndpoint.coingackoURL,
     pricesFetcher,
@@ -72,36 +75,44 @@ const TokenTable: React.FC<Props> = ({
       use: [priceMiddleware],
     },
   );
-  const assetBondTokensBackedByEstate = reserveData.assetBondTokens.filter(
-    (ab) => {
-      const parsedId = parseTokenId(ab.id);
-      return CollateralCategory.Others !== parsedId.collateralCategory;
-    },
-  );
+  const assetBondTokensBackedByEstate = reserveData?.id
+    ? reserveData.assetBondTokens.filter((ab) => {
+        const parsedId = parseTokenId(ab.id);
+        return CollateralCategory.Others !== parsedId.collateralCategory;
+      })
+    : undefined;
 
   const isWrongMainnet = isWrongNetwork(getMainnetType, currentChain?.name);
 
   const tableData = [
     [
       t('dashboard.total_deposit'),
-      toUsd(reserveData.totalDeposit, tokenInfo?.decimals),
+      reserveData?.id && toUsd(reserveData.totalDeposit, tokenInfo?.decimals),
     ],
     [
       t('dashboard.total_borrowed'),
-      toUsd(reserveData.totalBorrow, tokenInfo?.decimals),
+      reserveData?.id && toUsd(reserveData.totalBorrow, tokenInfo?.decimals),
     ],
     [
       t('dashboard.token_mining_apr'),
-      toPercent(
-        calcMiningAPR(
-          priceData?.elfiPrice || 0,
-          BigNumber.from(reserveData.totalDeposit),
-          reserveTokenData[balance.tokenName].decimals,
-        ) || '0',
-      ) || 0,
+      (reserveData?.id &&
+        toPercent(
+          calcMiningAPR(
+            priceData?.elfiPrice || 0,
+            BigNumber.from(reserveData.totalDeposit),
+            reserveTokenData[balance.tokenName].decimals,
+          ) || '0',
+        )) ||
+        0,
     ],
-    [t('dashboard.deposit_apy'), toPercent(reserveData.depositAPY) || 0],
-    [t('dashboard.borrow_apy'), toPercent(reserveData.borrowAPY)],
+    [
+      t('dashboard.deposit_apy'),
+      (reserveData?.id && toPercent(reserveData.depositAPY)) || 0,
+    ],
+    [
+      t('dashboard.borrow_apy'),
+      reserveData?.id && toPercent(reserveData.borrowAPY),
+    ],
   ];
 
   return (
@@ -129,7 +140,11 @@ const TokenTable: React.FC<Props> = ({
                 return (
                   <div key={index}>
                     <p>{data[0]}</p>
-                    <p className="bold">{data[1]}</p>
+                    {subgraphLoading || !reserveData?.id ? (
+                      <Skeleton width={70} height={17.5} />
+                    ) : (
+                      <p className="bold">{data[1]}</p>
+                    )}
                   </div>
                 );
               })}
@@ -145,7 +160,11 @@ const TokenTable: React.FC<Props> = ({
                   return (
                     <div key={index}>
                       <p>{data[0]}</p>
-                      <p className="bold">{data[1]}</p>
+                      {subgraphLoading || !reserveData?.id ? (
+                        <Skeleton width={50} height={10.5} />
+                      ) : (
+                        <p className="bold">{data[1]}</p>
+                      )}
                     </div>
                   );
                 })}
@@ -296,20 +315,22 @@ const TokenTable: React.FC<Props> = ({
             <div>
               <div>
                 <h2>{t('dashboard.recent_loan')}</h2>
-                <Link
-                  to={`/${lng}/deposits/${balance.tokenName}`}
-                  style={{
-                    display:
-                      assetBondTokensBackedByEstate.length === 0
-                        ? 'none'
-                        : 'block',
-                  }}>
-                  <div className="deposit__table__body__loan-list__button">
-                    <p>{t('main.governance.view-more')}</p>
-                  </div>
-                </Link>
+                {assetBondTokensBackedByEstate && (
+                  <Link
+                    to={`/${lng}/deposits/${balance.tokenName}`}
+                    style={{
+                      display:
+                        assetBondTokensBackedByEstate?.length === 0
+                          ? 'none'
+                          : 'block',
+                    }}>
+                    <div className="deposit__table__body__loan-list__button">
+                      <p>{t('main.governance.view-more')}</p>
+                    </div>
+                  </Link>
+                )}
               </div>
-              {assetBondTokensBackedByEstate.length === 0 ? (
+              {assetBondTokensBackedByEstate?.length === 0 ? (
                 <div className="loan__list--null" style={{ marginTop: 30 }}>
                   <p>{t('loan.loan_list--null')}</p>
                 </div>
@@ -318,15 +339,17 @@ const TokenTable: React.FC<Props> = ({
                   <AssetList
                     assetBondTokens={
                       // Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다.
-                      [...(assetBondTokensBackedByEstate || [])]
-                        .sort((a, b) => {
-                          return b.loanStartTimestamp! -
-                            a.loanStartTimestamp! >=
-                            0
-                            ? 1
-                            : -1;
-                        })
-                        .slice(0, mediaQuery === MediaQuery.PC ? 3 : 2) || []
+                      assetBondTokensBackedByEstate
+                        ? [...assetBondTokensBackedByEstate]
+                            .sort((a, b) => {
+                              return b.loanStartTimestamp! -
+                                a.loanStartTimestamp! >=
+                                0
+                                ? 1
+                                : -1;
+                            })
+                            .slice(0, mediaQuery === MediaQuery.PC ? 3 : 2)
+                        : undefined
                     }
                   />
                 </div>
