@@ -3,6 +3,8 @@ import { useHistory, useParams } from 'react-router-dom';
 import AssetItem from 'src/components/AssetItem';
 import { IAssetBond } from 'src/core/types/reserveSubgraph';
 import LoanProduct from 'src/enums/LoanProduct';
+import MediaQuery from 'src/enums/MediaQuery';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 
 const AssetList: React.FC<{
@@ -10,6 +12,7 @@ const AssetList: React.FC<{
 }> = ({ assetBondTokens }) => {
   const history = useHistory();
   const { lng } = useParams<{ lng: string }>();
+  const { value: mediaQuery } = useMediaQueryType();
 
   return (
     <div className="component__loan-list__container">
@@ -32,9 +35,14 @@ const AssetList: React.FC<{
                 />
               );
             })
-        : Array(3)
+        : Array(mediaQuery === MediaQuery.PC ? 3 : 2)
             .fill(0)
-            .map(() => <Skeleton width={300} height={328.5} />)}
+            .map(() => (
+              <Skeleton
+                width={mediaQuery === MediaQuery.PC ? 300 : 135}
+                height={mediaQuery === MediaQuery.PC ? 328.5 : 149}
+              />
+            ))}
     </div>
   );
 };
