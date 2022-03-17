@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import envs from 'src/core/envs';
 import moment from 'moment';
 import { request } from 'graphql-request';
-import { IReserveSubgraphData, IAssetBond } from 'src/contexts/SubgraphContext';
+import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 
 const minimumTimestamp = moment().subtract(35, 'days').unix();
 

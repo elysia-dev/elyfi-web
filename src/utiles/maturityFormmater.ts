@@ -1,9 +1,7 @@
 import moment from 'moment';
-import { IAssetBond } from 'src/contexts/SubgraphContext';
+import { IAssetBond } from 'src/core/types/reserveSubgraph';
 
-const maturityFormmater = (
-  abToken: IAssetBond,
-): string => {
+const maturityFormmater = (abToken: IAssetBond): string => {
   if (!abToken.maturityTimestamp) return '-';
   if (
     [

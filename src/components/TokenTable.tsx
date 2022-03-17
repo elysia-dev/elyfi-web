@@ -17,7 +17,6 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import TableBodyAmount from 'src/components/TableBodyAmount';
-import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import { useContext } from 'react';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
@@ -31,6 +30,7 @@ import useCurrentChain from 'src/hooks/useCurrentChain';
 import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
+import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 import TableBodyEventReward from './TableBodyEventReward';
 
 interface Props {

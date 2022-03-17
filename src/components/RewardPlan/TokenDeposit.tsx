@@ -13,11 +13,11 @@ import { BigNumber } from 'ethers';
 import Token from 'src/enums/Token';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import CountUp from 'react-countup';
 import Skeleton from 'react-loading-skeleton';
 import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
 import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
+import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 
 interface Props {
   reserve: IReserveSubgraphData;
