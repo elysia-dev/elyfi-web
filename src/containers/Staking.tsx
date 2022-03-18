@@ -159,15 +159,7 @@ const Staking: React.FunctionComponent<IProps> = ({
     if (!ctx) return;
     ctx.scale(dpr, dpr);
 
-    if (mediaQuery === MediaQuery.Mobile) {
-      new DrawWave(ctx, browserWidth).drawMobileOnPages(
-        headerY,
-        TokenColors.ELFI,
-        browserHeight,
-        true,
-      );
-      return;
-    }
+    if (mediaQuery === MediaQuery.Mobile) return;
 
     new DrawWave(ctx, browserWidth).drawOnPages(
       headerY,
@@ -373,7 +365,7 @@ const Staking: React.FunctionComponent<IProps> = ({
             <>
               <p>
                 {stakedToken === Token.EL
-                  ? t('staking.el.staking__content')
+                  ? ''
                   : t('staking.elfi.staking__content')}
               </p>
               {getMainnetType === MainnetType.Ethereum ? (
