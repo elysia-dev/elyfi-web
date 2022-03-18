@@ -3,18 +3,18 @@
     "main": {
       "landing": {
         "header__title": "부동산 기반 NFT를 담보로<br /><strong>가상자산 대출이 이뤄지는 <i>디파이</i></strong>",
-        "header__content": "엘리파이는 부동산 기반의 대출채권을 토큰화하여 만들어진 NFT를 담보로\n가상자산 대출이 이뤄지는 랜딩 프로토콜입니다.",
+        "header__content": "엘리파이는 부동산 자산을 토큰화하여 만들어진 NFT를 담보로\n가상자산 대출이 이뤄지는 랜딩 프로토콜입니다.",
         "button__deposit": "예치하기",
         "button__view-more": "자세히 알아보기"
       },
       "section": [
         {
-          "header": "가상 자산을 예치하면 보상으로<br/><strong>이자와 ELFI를 받을 수 있습니다!</strong>",
-          "content": "가상자산을 예치하면 예치 이자는 물론 거버넌스 토큰(ELFI)까지 받을 수 있습니다.\n또한 스테이킹시 프로토콜 수익까지 분배 받을 수 있습니다.",
-          "button": "이자율 확인하기"
+          "header": "가상 자산을 예치하여 <strong>유동성을 공급하세요!</strong>",
+          "content": "가상자산을 예치하면 엘리파이 프로토콜 의사결정 권한을 얻을 수 있습니다.",
+          "button": "유동성 공급하기"
         },
         {
-          "header": "부동산 자산을 담보로 하여<br/><strong>안정적으로 수익을 얻을 수 있습니다!</strong>",
+          "header": "부동산 자산을 담보로 하기 때문에 <br/><strong>프로토콜이 안정적으로 운영됩니다!</strong>",
           "content": "가치의 변동폭이 커서 청산 위험이 높은 가상자산이 아닌\n변동폭이 작은 부동산을 담보로 하는 시스템으로 프로토콜이 안정적으로 운영됩니다.",
           "button": "담보물 확인하기"
         },
@@ -193,9 +193,9 @@
       "wallet_connect_content": "지갑을 연결해주세요.",
 
       "governance--header": "<strong>ELYFI 거버넌스</strong>에 참여하세요!",
-      "governance--content": "ELFI 홀더들은 보유한 ELFI를 스테이킹함으로써 탈중앙 거버넌스에 참여할 수 있으며, 스테이킹시 프로토콜 순이익을 분배 받을 수 있습니다.",
+      "governance--content": "ELFI 홀더들은 보유한 ELFI를 스테이킹함으로써 탈중앙 거버넌스에 참여할 수 있습니다.",
       "elyfi": "ELYFI",
-      "protocol_profit": "프로토콜 순이익",
+      "protocol_profit": "권한",
       "participate_governance": "거버넌스 참여",
       "elyfi_holder": "ELYFI Holder",
       "title": "ELFI 채굴 플랜 & DAI 지급 플랜",
@@ -266,10 +266,10 @@
     "governance": {
       "status": "상태",
       "title": "ELYFI 거버넌스",
-      "content": "엘리파이는 탈중앙 조직(DAO)에 의해 운영되는 디파이(DeFi) 프로토콜입니다.\nELFI 토큰을 보유한 홀더는 누구나 탈중앙 조직멤버로서 엘리파이 운영에 참여할 수 있으며, 스테이킹시 프로토콜 순이익을 분배받을 수 있습니다.",
+      "content": "엘리파이는 탈중앙 조직(DAO)에 의해 운영되는 디파이(DeFi) 프로토콜입니다.\nELFI 토큰을 보유한 홀더는 누구나 탈중앙 조직멤버로서 엘리파이 운영에 참여할 수 있습니다.",
       "button--staking": "ELFI 스테이킹 하기",
       "button--governance_faq": "거버넌스 FAQ",
-      "graph": ["ELYFI", "프로토콜 순 이익", "거버넌스 참여", "ELYFI Holder"],
+      "graph": ["ELYFI", "권한", "거버넌스 참여", "ELYFI Holder"],
       "data_verification": "데이터 검증 투표 ({{ count }} 건)",
       "data_verification_plural": "데이터 검증 투표 ({{ count }} 건)",
       "data_verification_plural--mobile": "데이터 검증 투표 ({{ count }} 건)",
@@ -298,7 +298,7 @@
     "staking": {
       "staking__token": "{{ token }} 스테이킹",
       "staking__notice": {
-        "ELFI": "{{ stakedToken }} 스테이킹은 {{ rewardToken }} 채굴 플랜에 따라 7차례로 나눠서 진행됩니다.\n{{ stakedToken }} 토큰을 스테이킹하면 {{ rewardToken }} 토큰을 리워드로 받게 되며, 스테이킹한 {{ stakedToken }} 토큰은 언제든지 언스테이킹이 가능합니다.\n\n* 이전 회차에 스테이킹한 {{ stakedToken }} 토큰과 보상 받은 {{ rewardToken }} 토큰은 다음 회차의 스테이킹 풀에 자동으로 전송되지 않습니다.",
+        "ELFI": "{{ stakedToken }} 스테이킹은 {{ rewardToken }} 채굴 플랜에 따라 7차례로 나눠서 진행됩니다.\n{{ stakedToken }} 토큰을 스테이킹하면 거버넌스 토큰 ({{ rewardToken }}) 을 리워드로 받게 되며, 스테이킹한 {{ stakedToken }} 토큰은 언제든지 언스테이킹이 가능합니다.\n\n* 이전 회차에 스테이킹한 {{ stakedToken }} 토큰과 보상 받은 {{ rewardToken }} 토큰은 다음 회차의 스테이킹 풀에 자동으로 전송되지 않습니다.",
         "DAI": "{{ stakedToken }} 스테이킹은 {{ rewardToken }} 채굴 플랜에 따라 7차례로 나눠서 진행됩니다.\n{{ stakedToken }} 토큰을 스테이킹하면 {{ rewardToken }} 토큰을 리워드로 받게 되며, 스테이킹한 {{ stakedToken }} 토큰은 언제든지 언스테이킹이 가능합니다.\n\n* 이전 회차에 스테이킹한 {{ stakedToken }} 토큰과 보상 받은 {{ rewardToken }} 토큰은 다음 회차의 스테이킹 풀에 자동으로 전송되지 않습니다.",
         "BUSD": "{{ stakedToken }} 스테이킹은 {{ rewardToken }} 채굴 플랜에 따라 2차례로 나눠서 진행됩니다.\n{{ stakedToken }} 토큰을 스테이킹하면 {{ rewardToken }} 토큰을 리워드로 받게 되며, 스테이킹한 {{ stakedToken }} 토큰은 언제든지 언스테이킹이 가능합니다.\n\n* 이전 회차에 스테이킹한 {{ stakedToken }} 토큰과 보상 받은 {{ rewardToken }} 토큰은 다음 회차의 스테이킹 풀에 자동으로 전송되지 않습니다."
       },
@@ -310,7 +310,7 @@
         "staking__content--button": "EL 토큰 구매하러 가기"
       },
       "elfi": {
-        "staking__content": "ELFI 토큰을 스테이킹하고 보상 토큰과 투표권을 받아가세요!\nELFI 홀더들은 보유한 ELFI를 스테이킹함으로써 탈중앙 거버넌스에 참여할 수 있으며,\n스테이킹시 프로토콜 순이익을 분배 받을 수 있습니다.",
+        "staking__content": "ELFI 토큰을 스테이킹하고 투표권을 받아가세요!\nELFI 홀더들은 보유한 ELFI를 스테이킹함으로써 탈중앙 거버넌스에 참여할 수 있습니다.",
         "staking__content--button": {
           "uniswap": "유니스왑에서 ELFI 토큰 구매하기",
           "pancakeswap": "팬케이크스왑에서 ELFI 토큰 구매하기",
@@ -442,7 +442,7 @@
     },
     "lpstaking": {
       "lp_token_staking": "LP 토큰 스테이킹",
-      "lp_token_staking__content": "ELFI-ETH, ELFI-DAI 풀에 유동성을 공급하고 보상 토큰을 받아가세요!",
+      "lp_token_staking__content": "ELFI-ETH, ELFI-DAI 풀에 유동성을 공급하고 유동성을 공급하세요.",
       "lp_token_staking_title": "{{token0}}-{{token1}} LP",
       "lp_token_staking_modal": "{{token0}}-{{token1}} LP 토큰",
       "lp_token_staked": "{{token0}}-{{token1}} LP Staked",
