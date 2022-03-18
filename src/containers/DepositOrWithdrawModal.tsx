@@ -11,7 +11,7 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import LoadingIndicator from 'src/components/LoadingIndicator';
-import { GetUser_user } from 'src/queries/__generated__/GetUser';
+import { GetUser_user } from 'src/core/types/GetUser';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcAccumulatedYield from 'src/utiles/calcAccumulatedYield';
 import { toPercent } from 'src/utiles/formatters';
