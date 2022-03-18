@@ -128,12 +128,6 @@ const Main = (): JSX.Element => {
           zIndex: -1,
         }}
       />
-      <ShowingPopup 
-        visible={popupVisible}
-        closeHandler={() => {
-          setPopupVisible(true)
-        }}
-      />
       <div className="main root-container">
         <section className="main__title main__section">
           <div className="main__title__container">
