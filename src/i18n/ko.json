@@ -442,7 +442,7 @@
     },
     "lpstaking": {
       "lp_token_staking": "LP 토큰 스테이킹",
-      "lp_token_staking__content": "ELFI-ETH, ELFI-DAI 풀에 유동성을 공급하고 유동성을 공급하세요.",
+      "lp_token_staking__content": "ELFI-ETH, ELFI-DAI 풀에 유동성을 공급하세요.",
       "lp_token_staking_title": "{{token0}}-{{token1}} LP",
       "lp_token_staking_modal": "{{token0}}-{{token1}} LP 토큰",
       "lp_token_staked": "{{token0}}-{{token1}} LP Staked",
