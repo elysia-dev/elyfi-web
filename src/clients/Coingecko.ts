@@ -1,22 +1,12 @@
 import axios from 'axios';
 
-export interface ICoinPriceResponse {
-  elysia: {
-    usd: number;
-  };
-  elyfi: {
-    usd: number;
-  };
-  dai: {
-    usd: number;
-  };
-  tether: {
-    usd: number;
-  };
-  ethereum: {
-    usd: number;
-  };
-}
+export type PriceType = {
+  elfiPrice: number;
+  elPrice: number;
+  tetherPrice: number;
+  daiPrice: number;
+  ethPrice: number;
+};
 
-export const pricesFetcher = (url: string): Promise<ICoinPriceResponse> =>
+export const pricesFetcher = (url: string): Promise<PriceType> =>
   axios.get(url).then((res) => res.data);

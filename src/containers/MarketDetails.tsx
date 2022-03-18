@@ -1,35 +1,22 @@
 import { useHistory, useParams } from 'react-router-dom';
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { reserveTokenData } from 'src/core/data/reserves';
-
-import { toUsd, toPercent } from 'src/utiles/formatters';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { BigNumber } from 'ethers';
-import Chart from 'react-google-charts';
-
-import ErrorPage from 'src/components/ErrorPage';
 import { useTranslation } from 'react-i18next';
+import envs from 'src/core/envs';
+import useSWR from 'swr';
+
+import { reserveTokenData } from 'src/core/data/reserves';
+import { toUsd, toPercent } from 'src/utiles/formatters';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcHistoryChartData from 'src/utiles/calcHistoryChartData';
-import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
-import envs from 'src/core/envs';
-import { useWeb3React } from '@web3-react/core';
-import {
-  ERC20__factory,
-  IncentivePool__factory,
-} from '@elysia-dev/contract-typechain';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
 import Token from 'src/enums/Token';
-import moment from 'moment';
 import Loan from 'src/containers/Loan';
 import MarketDetailsBody from 'src/components/MarketDetailsBody';
-import styled from 'styled-components';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
-import SubgraphContext, {
-  IReserveSubgraphData,
-} from 'src/contexts/SubgraphContext';
 import {
   Bar,
   Cell,
@@ -40,13 +27,17 @@ import {
 } from 'recharts';
 import MainnetContext from 'src/contexts/MainnetContext';
 import isSupportedReserve from 'src/core/utils/isSupportedReserve';
-import ReserveToken from 'src/core/types/ReserveToken';
 import {
   setDatePositionX,
   setTooltipBoxPositionX,
 } from 'src/utiles/graphTooltipPosition';
 import useCurrentChain from 'src/hooks/useCurrentChain';
-import PriceContext from 'src/contexts/PriceContext';
+import Skeleton from 'react-loading-skeleton';
+import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
+import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
+import { pricesFetcher } from 'src/clients/Coingecko';
+import priceMiddleware from 'src/middleware/priceMiddleware';
+import useReserveData from 'src/hooks/useReserveData';
 
 interface ITokencolor {
   name: string;
@@ -79,15 +70,28 @@ function MarketDetail(): JSX.Element {
   const [graphConverter, setGraphConverter] = useState(false);
   const [transactionModal, setTransactionModal] = useState(false);
   const tokenRef = useRef<HTMLParagraphElement>(null);
-  const { data: getSubgraphData } = useContext(SubgraphContext);
-  const { elfiPrice } = useContext(PriceContext);
-  const { poolDayData } = useContext(UniswapPoolContext);
+  const { reserveState } = useReserveData();
+  const { data: priceData } = useSWR(
+    envs.externalApiEndpoint.coingackoURL,
+    pricesFetcher,
+    {
+      use: [priceMiddleware],
+    },
+  );
+  const { data: poolData, isValidating: loading } = useSWR(
+    envs.externalApiEndpoint.cachedUniswapV3URL,
+    poolDataFetcher,
+    {
+      use: [poolDataMiddleware],
+    },
+  );
+
   const { lng, id } = useParams<{ lng: string; id: Token.DAI | Token.USDT }>();
   const history = useHistory();
   const { value: mediaQuery } = useMediaQueryType();
   const currentChain = useCurrentChain();
   const tokenInfo = reserveTokenData[id];
-  const data = getSubgraphData.reserves.find(
+  const data = reserveState.reserves.find(
     (reserve) => reserve.id === tokenInfo.address,
   );
   const [tooltipPositionX, setTooltipPositionX] = useState(0);
@@ -160,10 +164,40 @@ function MarketDetail(): JSX.Element {
 
   // FIXME
   // const miningAPR = utils.parseUnits('10', 25);
-  if (!data || !tokenInfo) return <ErrorPage />;
+  if (!data || !tokenInfo)
+    return (
+      <>
+        <canvas
+          ref={canvasRef}
+          style={{
+            position: 'absolute',
+            width: '100%',
+            top: 0,
+            left: 0,
+            zIndex: -1,
+          }}
+        />
+        <div className="detail">
+          <div className="component__text-navigation">
+            <p
+              onClick={() => history.push(`/${lng}/deposit`)}
+              className="pointer">
+              {t('dashboard.deposit')}
+            </p>
+            &nbsp;&gt;&nbsp;
+            <p>{id}</p>
+          </div>
+          <div ref={headerRef} className="detail__header">
+            <img src={tokenInfo?.image} alt="Token image" />
+            <h2 ref={tokenRef}>{tokenInfo?.name.toLocaleUpperCase()}</h2>
+          </div>
+          <Skeleton width={'100%'} height={1000} style={{}} />
+        </div>
+      </>
+    );
 
   const miningAPR = calcMiningAPR(
-    elfiPrice,
+    priceData?.elfiPrice || 0,
     BigNumber.from(data.totalDeposit),
     tokenInfo?.decimals,
   );
@@ -283,65 +317,73 @@ function MarketDetail(): JSX.Element {
                 onMouseLeave={() => {
                   setCellInBarIdx(-1);
                 }}>
-                <ResponsiveContainer width="100%" height={300}>
-                  <ComposedChart
-                    data={
-                      mediaQuery === MediaQuery.PC
-                        ? calcHistoryChartData(
-                            data,
-                            graphConverter ? 'borrow' : 'deposit',
-                            poolDayData,
-                            tokenInfo!.decimals,
-                          )
-                        : calcHistoryChartData(
-                            data,
-                            graphConverter ? 'borrow' : 'deposit',
-                            poolDayData,
-                            tokenInfo!.decimals,
-                          ).slice(20)
-                    }>
-                    <Tooltip
-                      content={<CustomTooltip />}
-                      position={{
-                        x: setTooltipBoxPositionX(mediaQuery, tooltipPositionX),
-                        y: -70,
-                      }}
-                      cursor={{
-                        stroke: selectToken?.color,
-                        strokeDasharray: 3.3,
-                      }}
-                    />
-                    <Bar dataKey="barTotal" barSize={20}>
-                      {calcHistoryChartData(
-                        data,
-                        graphConverter ? 'borrow' : 'deposit',
-                        poolDayData,
-                        tokenInfo!.decimals,
-                      ).map((cData, index) => (
-                        <Cell
-                          key={index}
-                          fill={
-                            cellInBarIdx === index
-                              ? selectToken?.color
-                              : '#E6E6E6'
-                          }
-                          radius={4}
-                        />
-                      ))}
-                    </Bar>
-                    <Line
-                      type="monotone"
-                      dataKey="lineYield"
-                      stroke={selectToken?.color}
-                      dot={false}
-                      activeDot={{
-                        stroke: selectToken?.color,
-                        strokeWidth: 2,
-                        r: 4,
-                      }}
-                    />
-                  </ComposedChart>
-                </ResponsiveContainer>
+                {!loading && poolData ? (
+                  <ResponsiveContainer width="100%" height={300}>
+                    <ComposedChart
+                      data={
+                        mediaQuery === MediaQuery.PC
+                          ? calcHistoryChartData(
+                              data,
+                              graphConverter ? 'borrow' : 'deposit',
+                              poolData.poolDayData,
+                              tokenInfo!.decimals,
+                            )
+                          : calcHistoryChartData(
+                              data,
+                              graphConverter ? 'borrow' : 'deposit',
+                              poolData.poolDayData,
+                              tokenInfo!.decimals,
+                            ).slice(20)
+                      }>
+                      <Tooltip
+                        content={<CustomTooltip />}
+                        position={{
+                          x: setTooltipBoxPositionX(
+                            mediaQuery,
+                            tooltipPositionX,
+                          ),
+                          y: -70,
+                        }}
+                        cursor={{
+                          stroke: selectToken?.color,
+                          strokeDasharray: 3.3,
+                        }}
+                      />
+                      <Bar dataKey="barTotal" barSize={20}>
+                        {calcHistoryChartData(
+                          data,
+                          graphConverter ? 'borrow' : 'deposit',
+                          poolData.poolDayData,
+                          tokenInfo!.decimals,
+                        ).map((cData, index) => (
+                          <Cell
+                            key={index}
+                            fill={
+                              cellInBarIdx === index
+                                ? selectToken?.color
+                                : '#E6E6E6'
+                            }
+                            radius={4}
+                          />
+                        ))}
+                      </Bar>
+                      <Line
+                        type="monotone"
+                        dataKey="lineYield"
+                        stroke={selectToken?.color}
+                        dot={false}
+                        activeDot={{
+                          stroke: selectToken?.color,
+                          strokeWidth: 2,
+                          r: 4,
+                        }}
+                      />
+                    </ComposedChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <Skeleton width={'100%'} height={300} />
+                )}
+
                 <div
                   style={{
                     overflow: 'hidden',

@@ -1,11 +1,10 @@
 import { StakingPool__factory } from '@elysia-dev/contract-typechain';
 import { BigNumber, constants, providers } from 'ethers';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import useSWR from 'swr';
 
 import envs from 'src/core/envs';
-import PriceContext from 'src/contexts/PriceContext';
 import Token from 'src/enums/Token';
-import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import {
   DAIPerDayOnELFIStakingPool,
   ELFIPerDayOnELStakingPool,
@@ -15,6 +14,8 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import { poolAddress } from 'src/utiles/stakingPoolAddress';
 import { rewardPerDayByToken } from 'src/utiles/stakingReward';
 import MainnetType from 'src/enums/MainnetType';
+import { pricesFetcher } from 'src/clients/Coingecko';
+import priceMiddleware from 'src/middleware/priceMiddleware';
 
 // round 0, 1, 2, 3
 const useStakingRoundData = (
@@ -43,8 +44,13 @@ const useStakingRoundData = (
     );
   }, [stakedToken, round, mainnet]);
 
-  const { latestPrice: elfiPrice } = useContext(UniswapPoolContext);
-  const { elPrice } = useContext(PriceContext);
+  const { data: priceData } = useSWR(
+    envs.externalApiEndpoint.coingackoURL,
+    pricesFetcher,
+    {
+      use: [priceMiddleware],
+    },
+  );
 
   const [state, setState] = useState({
     totalPrincipal: constants.Zero,
@@ -58,6 +64,7 @@ const useStakingRoundData = (
         ...state,
         loading: true,
       });
+      if (!priceData) return;
       // ELFI 스테이킹풀의 경우 3 round부터 v2로 바뀜
       let currentRound = round;
       if (round >= 2 && stakedToken === Token.ELFI && mainnet === 'Ethereum')
@@ -70,9 +77,9 @@ const useStakingRoundData = (
           totalPrincipal: res.totalPrincipal,
           apr: calcAPR(
             res.totalPrincipal,
-            stakedToken === Token.EL ? elPrice : elfiPrice,
+            stakedToken === Token.EL ? priceData.elPrice : priceData.elfiPrice,
             rewardPerDayByToken(stakedToken, mainnet),
-            rewardToken === Token.ELFI ? elfiPrice : 1,
+            rewardToken === Token.ELFI ? priceData.elfiPrice : 1,
           ),
           loading: false,
         });
@@ -81,17 +88,17 @@ const useStakingRoundData = (
           totalPrincipal: constants.Zero,
           apr: calcAPR(
             constants.Zero,
-            stakedToken === Token.EL ? elPrice : elfiPrice,
+            stakedToken === Token.EL ? priceData.elPrice : priceData.elfiPrice,
             rewardToken === Token.ELFI
               ? ELFIPerDayOnELStakingPool
               : DAIPerDayOnELFIStakingPool,
-            rewardToken === Token.ELFI ? elfiPrice : 1,
+            rewardToken === Token.ELFI ? priceData.elfiPrice : 1,
           ),
           loading: false,
         });
       }
     },
-    [stakingPool, elfiPrice, elPrice, round, mainnet],
+    [stakingPool, priceData, round, mainnet],
   );
 
   useEffect(() => {
@@ -104,7 +111,7 @@ const useStakingRoundData = (
     )
       return;
     loadRound(round);
-  }, [round, elfiPrice, mainnet, stakingPool]);
+  }, [round, priceData, mainnet, stakingPool]);
 
   return {
     ...state,

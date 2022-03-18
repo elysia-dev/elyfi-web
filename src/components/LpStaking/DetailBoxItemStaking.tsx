@@ -2,6 +2,7 @@ import { useWeb3React } from '@web3-react/core';
 import moment from 'moment';
 import { FunctionComponent } from 'react';
 import { useTranslation } from 'react-i18next';
+import Skeleton from 'react-loading-skeleton';
 import { lpRoundDate } from 'src/core/data/lpStakingTime';
 import { DetailBoxItemStakingProps } from 'src/core/types/LpStakingTypeProps';
 import MediaQuery from 'src/enums/MediaQuery';
@@ -17,6 +18,7 @@ const DetailBoxItemStaking: FunctionComponent<DetailBoxItemStakingProps> = (
     totalStakedLiquidity,
     setModalAndSetStakeToken,
     round,
+    isLoading,
   } = props;
   const { t } = useTranslation();
   const isStakingDate = moment().isBetween(
@@ -40,13 +42,17 @@ const DetailBoxItemStaking: FunctionComponent<DetailBoxItemStakingProps> = (
         <div
           onClick={() => isStakingDate && account && setModalAndSetStakeToken()}
           className={`staking__lp__detail-box__staking__button ${
-            !isStakingDate || !account  ? 'disable' : ''
+            !isStakingDate || !account ? 'disable' : ''
           }`}>
           <p>{t('staking.staking')}</p>
         </div>
       </div>
       <div className="staking__lp__detail-box__staking__value">
-        <h2 className="amount">{account ? totalStakedLiquidity : 0}</h2>
+        {isLoading ? (
+          <h2 className="amount">{account ? totalStakedLiquidity : 0}</h2>
+        ) : (
+          <Skeleton width={100} height={38} />
+        )}
       </div>
     </>
   ) : (
@@ -63,7 +69,11 @@ const DetailBoxItemStaking: FunctionComponent<DetailBoxItemStakingProps> = (
         </div>
       </div>
       <div className="staking__lp__detail-box__staking__value">
-        <h2 className="amount">{account ? totalStakedLiquidity : 0}</h2>
+        {isLoading ? (
+          <h2 className="amount">{account ? totalStakedLiquidity : 0}</h2>
+        ) : (
+          <Skeleton width={80} height={18} />
+        )}
       </div>
       <div
         onClick={() => isStakingDate && account && setModalAndSetStakeToken()}

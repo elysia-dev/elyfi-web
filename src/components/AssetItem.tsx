@@ -1,15 +1,15 @@
 import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 import { toCompactForBignumber, toPercent } from 'src/utiles/formatters';
-import { parseTokenId } from 'src/utiles/parseTokenId';
+import { useTranslation } from 'react-i18next';
 import GoogleMapReact from 'google-map-react';
 
 import isLat from 'src/utiles/isLat';
 import isLng from 'src/utiles/isLng';
 
+import { parseTokenId } from 'src/utiles/parseTokenId';
 import Slate from 'src/clients/Slate';
 import ReserveData from 'src/core/data/reserves';
-import { useTranslation } from 'react-i18next';
-import { IAssetBond } from 'src/contexts/SubgraphContext';
+import { IAssetBond } from 'src/core/types/reserveSubgraph';
 import Marker from './Marker';
 
 const defaultLat = 37.5172;

@@ -13,6 +13,7 @@ export type DetailBoxItemHeaderProps = {
   totalLiquidity: string;
   apr: string;
   token1: string;
+  isLoading: boolean;
 };
 
 export type DetailBoxItemStakingProps = {
@@ -20,6 +21,7 @@ export type DetailBoxItemStakingProps = {
   totalStakedLiquidity: string;
   setModalAndSetStakeToken: () => void;
   round: number;
+  isLoading: boolean;
 };
 export type DetailBoxProps = {
   tokens: tokenTypes;

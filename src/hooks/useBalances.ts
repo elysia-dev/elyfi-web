@@ -1,24 +1,25 @@
 import { BigNumber, constants } from 'ethers';
 import envs from 'src/core/envs';
 import moment from 'moment';
+import useSWR from 'swr';
 import {
   ERC20__factory,
   IncentivePool__factory,
 } from '@elysia-dev/contract-typechain';
 import Token from 'src/enums/Token';
-import SubgraphContext, {
-  IReserveSubgraphData,
-} from 'src/contexts/SubgraphContext';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import getTokenNameFromAddress from 'src/utiles/getTokenNameFromAddress';
 import isEndedIncentive from 'src/core/utils/isEndedIncentive';
 import calcExpectedIncentive from 'src/utiles/calcExpectedIncentive';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
-import PriceContext from 'src/contexts/PriceContext';
 import { useWeb3React } from '@web3-react/core';
 import MainnetContext from 'src/contexts/MainnetContext';
 import ReserveToken from 'src/core/types/ReserveToken';
 import isSupportedReserveByChainId from 'src/core/utils/isSupportedReserveByChainId';
+import { pricesFetcher } from 'src/clients/Coingecko';
+import priceMiddleware from 'src/middleware/priceMiddleware';
+import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
+import useReserveData from './useReserveData';
 
 export type BalanceType = {
   id: string;
@@ -127,9 +128,9 @@ type ReturnType = {
 // 1. Use other naming. Balance dose not cover the usefulness
 const useBalances = (refetchUserData: () => void): ReturnType => {
   const { account, chainId, library } = useWeb3React();
-  const { data } = useContext(SubgraphContext);
+  const { reserveState } = useReserveData();
   const [balances, setBalances] = useState<BalanceType[]>(
-    data.reserves.map((reserve) => {
+    reserveState.reserves.map((reserve) => {
       return {
         ...initialBalanceState,
         id: reserve.id,
@@ -138,39 +139,50 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     }),
   );
   const [loading, setLoading] = useState(true);
-  const { elfiPrice } = useContext(PriceContext);
-  const { type: mainnetType, active } = useContext(MainnetContext);
+  const { data: priceData } = useSWR(
+    envs.externalApiEndpoint.coingackoURL,
+    pricesFetcher,
+    {
+      use: [priceMiddleware],
+    },
+  );
+  const { active } = useContext(MainnetContext);
 
-  const loadBalance = async (id: string) => {
-    if (!account) return;
-    try {
-      refetchUserData();
+  const elfiPrice = priceData ? priceData.elfiPrice : 0;
 
-      setBalances(
-        await Promise.all(
-          balances.map(async (balance, _index) => {
-            const reserve = data.reserves.find((r) => r.id === id);
-            if (balance.id !== id || !reserve)
+  const loadBalance = useCallback(
+    async (id: string) => {
+      if (!account) return;
+      try {
+        refetchUserData();
+
+        setBalances(
+          await Promise.all(
+            balances.map(async (balance, _index) => {
+              const reserve = reserveState.reserves.find((r) => r.id === id);
+              if (balance.id !== id || !reserve)
+                return {
+                  ...balance,
+                };
               return {
                 ...balance,
+                updatedAt: moment().unix(),
+                ...(await fetchBalanceFrom(
+                  reserve,
+                  account,
+                  library,
+                  balance.tokenName,
+                )),
               };
-            return {
-              ...balance,
-              updatedAt: moment().unix(),
-              ...(await fetchBalanceFrom(
-                reserve,
-                account,
-                library,
-                balance.tokenName,
-              )),
-            };
-          }),
-        ),
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  };
+            }),
+          ),
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [reserveState, balances],
+  );
 
   const loadBalances = useCallback(async () => {
     if (!account) {
@@ -180,7 +192,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
       refetchUserData();
       setBalances(
         await Promise.all(
-          data.reserves.map(async (reserve, index) => {
+          reserveState.reserves.map(async (reserve, index) => {
             const tokenName = getTokenNameFromAddress(
               reserve.id,
             ) as ReserveToken;
@@ -199,16 +211,16 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
       );
     } catch (error) {
       setBalances(
-        balances.map((data) => {
+        balances.map((reserveData) => {
           return {
-            ...data,
+            ...reserveData,
           };
         }),
       );
     } finally {
       setLoading(false);
     }
-  }, [account, library, chainId]);
+  }, [account, library, chainId, reserveState]);
 
   useEffect(() => {
     // Only called when active.
@@ -216,7 +228,19 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     if (!account || !active) return;
     setLoading(true);
     loadBalances();
-  }, [account, active, chainId]);
+  }, [account, active, chainId, reserveState]);
+
+  useEffect(() => {
+    setBalances(
+      reserveState.reserves.map((reserve) => {
+        return {
+          ...initialBalanceState,
+          id: reserve.id,
+          tokenName: getTokenNameFromAddress(reserve.id) as ReserveToken,
+        };
+      }),
+    );
+  }, [reserveState]);
 
   useEffect(() => {
     if (loading || !active) return;
@@ -224,7 +248,9 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     const interval = setInterval(() => {
       setBalances(
         balances.map((balance) => {
-          const reserve = data.reserves.find((r) => r.id === balance.id);
+          const reserve = reserveState.reserves.find((r) =>
+            balance ? r.id === balance.id : false,
+          );
           if (!reserve) return balance;
 
           return {
@@ -270,7 +296,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     return () => {
       clearInterval(interval);
     };
-  }, [balances, chainId, loading, active]);
+  }, [balances, chainId, loading, active, reserveState]);
 
   return { balances, loading, loadBalance };
 };

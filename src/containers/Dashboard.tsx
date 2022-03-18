@@ -1,14 +1,13 @@
 import { reserveTokenData } from 'src/core/data/reserves';
-import { useContext, useState, useMemo, useEffect } from 'react';
+import { useContext, useState, useMemo } from 'react';
+import useSWR, { useSWRConfig } from 'swr';
+import envs from 'src/core/envs';
 import { toPercent } from 'src/utiles/formatters';
 import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
-import { BigNumber } from 'ethers';
-import { request } from 'graphql-request';
-import useSWR, { useSWRConfig } from 'swr';
+import { BigNumber, constants } from 'ethers';
+import { GET_USER } from 'src/queries/userQueries';
 import { useTranslation } from 'react-i18next';
-import envs from 'src/core/envs';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
-import PriceContext from 'src/contexts/PriceContext';
 import ReactGA from 'react-ga';
 import TokenTable from 'src/components/TokenTable';
 import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
@@ -19,28 +18,37 @@ import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 
 import ModalViewType from 'src/enums/ModalViewType';
 import { useMediaQuery } from 'react-responsive';
-import SubgraphContext, {
-  IReserveSubgraphData,
-} from 'src/contexts/SubgraphContext';
 import MainnetContext from 'src/contexts/MainnetContext';
 import TvlCounter from 'src/components/TvlCounter';
 import { MainnetData } from 'src/core/data/mainnets';
 import getIncentivePoolAddress from 'src/core/utils/getIncentivePoolAddress';
 import scrollToOffeset from 'src/core/utils/scrollToOffeset';
 import useBalances from 'src/hooks/useBalances';
-import EventImage from 'src/assets/images/event_image.png';
 import { useWeb3React } from '@web3-react/core';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import WalletDisconnect from 'src/components/WalletDisconnect';
 import SelectWalletModal from 'src/components/SelectWalletModal';
 import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
-import { GET_USER } from 'src/queries/userQueries';
+import Skeleton from 'react-loading-skeleton';
+import { pricesFetcher } from 'src/clients/Coingecko';
+import priceMiddleware from 'src/middleware/priceMiddleware';
+import useReserveData from 'src/hooks/useReserveData';
+import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
+import Token from 'src/enums/Token';
+import ReserveToken from 'src/core/types/ReserveToken';
 import MainnetType from 'src/enums/MainnetType';
+import request from 'graphql-request';
 
 const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();
-  const { data } = useContext(SubgraphContext);
-  const { elfiPrice } = useContext(PriceContext);
+  const { reserveState, loading: subgraphLoading } = useReserveData();
+  const { data: priceData } = useSWR(
+    envs.externalApiEndpoint.coingackoURL,
+    pricesFetcher,
+    {
+      use: [priceMiddleware],
+    },
+  );
   const [reserveData, setReserveData] = useState<
     IReserveSubgraphData | undefined
   >();
@@ -84,17 +92,44 @@ const Dashboard: React.FunctionComponent = () => {
   const supportedTokens = useMemo(() => {
     return MainnetData[currentNetworkType].supportedTokens;
   }, [currentNetworkType]);
-  const selectedBalance = balances.find(
-    (balance) => balance.id === selectedBalanceId,
+  const selectedBalance = useMemo(
+    () =>
+      balances.find((balance) =>
+        balance ? balance.id === selectedBalanceId : false,
+      ),
+    [balances, selectedBalanceId],
   );
   const selectedReserve = useMemo(
-    () => data.reserves.find((balance) => balance.id === selectedBalanceId),
-    [selectedBalanceId],
+    () =>
+      reserveState.reserves.find((balance) => balance.id === selectedBalanceId),
+    [selectedBalanceId, reserveState],
   );
+
+  const initSupportedTokens = useMemo(
+    () =>
+      getMainnetType === MainnetType.BSC
+        ? [Token.BUSD]
+        : [Token.DAI, Token.USDT],
+    [getMainnetType],
+  );
+
   const supportedBalances = useMemo(() => {
-    return balances.filter((balance) =>
-      supportedTokens.some((token) => token === balance.id),
+    const supportBlalance = balances.filter((balance) =>
+      supportedTokens.some((token) => (balance ? token === balance.id : false)),
     );
+    return supportBlalance.length === 0
+      ? initSupportedTokens.map((token) => ({
+          id: '',
+          tokenName: token as ReserveToken,
+          value: constants.Zero,
+          expectedIncentiveBefore: constants.Zero,
+          expectedIncentiveAfter: constants.Zero,
+          expectedAdditionalIncentiveBefore: constants.Zero,
+          expectedAdditionalIncentiveAfter: constants.Zero,
+          deposit: constants.Zero,
+          updatedAt: 0,
+        }))
+      : supportBlalance;
   }, [supportedTokens, balances]);
 
   const isWrongMainnet = isWrongNetwork(getMainnetType, currentChain?.name);
@@ -211,7 +246,7 @@ const Dashboard: React.FunctionComponent = () => {
             <div className="deposit__remote-control__wrapper">
               <div className="deposit__remote-control">
                 {supportedBalances.map((balance, index) => {
-                  const reserve = data.reserves.find(
+                  const reserve = reserveState.reserves.find(
                     (d) => d.id === balance.id,
                   );
 
@@ -229,19 +264,27 @@ const Dashboard: React.FunctionComponent = () => {
                           <p className="montserrat">{balance.tokenName}</p>
                         </div>
                         <p className="deposit__remote-control__apy bold">
-                          {toPercent(reserve.depositAPY)}
+                          {reserve.depositAPY ? (
+                            toPercent(reserve.depositAPY)
+                          ) : (
+                            <Skeleton width={50} height={20} />
+                          )}
                         </p>
                         <div className="deposit__remote-control__mining">
                           <p>{t('dashboard.token_mining_apr')}</p>
-                          <p>
-                            {toPercent(
-                              calcMiningAPR(
-                                elfiPrice,
-                                BigNumber.from(reserve.totalDeposit),
-                                reserveTokenData[balance.tokenName].decimals,
-                              ) || '0',
-                            )}
-                          </p>
+                          {priceData && reserve.totalDeposit ? (
+                            <p>
+                              {toPercent(
+                                calcMiningAPR(
+                                  priceData.elfiPrice,
+                                  BigNumber.from(reserve.totalDeposit || 0),
+                                  reserveTokenData[balance.tokenName].decimals,
+                                ) || '0',
+                              )}
+                            </p>
+                          ) : (
+                            <Skeleton width={50} height={13} />
+                          )}
                         </div>
                       </div>
                     </a>
@@ -252,9 +295,9 @@ const Dashboard: React.FunctionComponent = () => {
           )}
 
           {supportedBalances.map((balance, index) => {
-            const reserve = data.reserves.find((d) => d.id === balance.id);
-
-            if (!reserve) return <></>;
+            const reserve = reserveState.reserves.find(
+              (d) => d.id === balance.id,
+            );
 
             return (
               <TokenTable

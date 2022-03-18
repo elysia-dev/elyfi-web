@@ -1,5 +1,7 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants, utils } from 'ethers';
+import useSWR from 'swr';
+import envs from 'src/core/envs';
 import {
   useContext,
   useEffect,
@@ -14,7 +16,6 @@ import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcAccumulatedYield from 'src/utiles/calcAccumulatedYield';
 import { toPercent } from 'src/utiles/formatters';
 import calcCurrentIndex from 'src/utiles/calcCurrentIndex';
-import PriceContext from 'src/contexts/PriceContext';
 import useMoneyPool from 'src/hooks/useMoneyPool';
 import useERC20Info from 'src/hooks/useERC20Info';
 import useWaitingTx from 'src/hooks/useWaitingTx';
@@ -27,11 +28,13 @@ import buildEventEmitter from 'src/utiles/buildEventEmitter';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
-import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import useCurrentMoneypoolAddress from 'src/hooks/useCurrnetMoneypoolAddress';
 import IncreateAllowanceModal, {
   PermissionType,
 } from 'src/components/IncreateAllowanceModal';
+import { pricesFetcher } from 'src/clients/Coingecko';
+import priceMiddleware from 'src/middleware/priceMiddleware';
+import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 import DepositBody from '../components/DepositBody';
 import WithdrawBody from '../components/WithdrawBody';
 
@@ -67,7 +70,13 @@ const DepositOrWithdrawModal: FunctionComponent<{
   round,
 }) => {
   const { account, chainId } = useWeb3React();
-  const { elfiPrice } = useContext(PriceContext);
+  const { data: priceData } = useSWR(
+    envs.externalApiEndpoint.coingackoURL,
+    pricesFetcher,
+    {
+      use: [priceMiddleware],
+    },
+  );
   const currentMoneypoolAddress = useCurrentMoneypoolAddress();
   const [selected, select] = useState<boolean>(true);
   const {
@@ -297,14 +306,14 @@ const DepositOrWithdrawModal: FunctionComponent<{
         />
         {loading ? (
           <LoadingIndicator button={t('modal.indicator.permission_check')} />
-        ) : selected ? (
+        ) : selected && priceData ? (
           allowance.gt(balance) ? (
             <DepositBody
               tokenInfo={tokenInfo!}
               depositAPY={toPercent(reserve.depositAPY || '0')}
               miningAPR={toPercent(
                 calcMiningAPR(
-                  elfiPrice,
+                  priceData.elfiPrice,
                   BigNumber.from(reserve.totalDeposit),
                   tokenInfo?.decimals,
                 ),
