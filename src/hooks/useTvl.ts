@@ -80,7 +80,7 @@ const useTvl = (): { value: number; loading: boolean } => {
 
       const stakedElfiOnBSC = await ERC20__factory.connect(
         envs.token.bscElfiAddress,
-        new providers.JsonRpcProvider(envs.jsonRpcUrl.bsc),
+        new providers.JsonRpcProvider(envs.jsonRpcUrl.bsc) as any,
       ).balanceOf(envs.staking.elfyBscStakingPoolAddress);
 
       setState({

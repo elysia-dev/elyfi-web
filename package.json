@@ -10,9 +10,7 @@
     "deploy": "aws s3 sync ./build s3://elyfi-bucket",
     "aws-build": "aws cloudfront create-invalidation --distribution-id EH1U6Z7PEQO75 --paths \"/*\" ",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public",
-    "download-schema": "apollo service:download --endpoint=https://api.studio.thegraph.com/query/862/elyfi-ropsten/v0.0.6 graphql-schema.json",
-    "codegen": "apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql"
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": [
@@ -98,7 +96,6 @@
     "web-vitals": "^1.0.1"
   },
   "devDependencies": {
-    "@apollo/client": "3.3.21",
     "@storybook/addon-actions": "^6.2.9",
     "@storybook/addon-essentials": "^6.2.9",
     "@storybook/addon-links": "^6.2.9",
@@ -113,7 +110,6 @@
     "@types/react-geocode": "^0.2.0",
     "@types/react-responsive": "^8.0.2",
     "@types/react-router-dom": "^5.1.7",
-    "apollo": "^2.33.4",
     "react-test-renderer": "^16.9.0"
   }
 }
