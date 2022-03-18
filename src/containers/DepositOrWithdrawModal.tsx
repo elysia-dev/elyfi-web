@@ -11,14 +11,13 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import LoadingIndicator from 'src/components/LoadingIndicator';
-import { GetUser_user } from 'src/queries/__generated__/GetUser';
+import { GetUser_user } from 'src/core/types/GetUser';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcAccumulatedYield from 'src/utiles/calcAccumulatedYield';
 import { toPercent } from 'src/utiles/formatters';
 import calcCurrentIndex from 'src/utiles/calcCurrentIndex';
 import useMoneyPool from 'src/hooks/useMoneyPool';
 import useERC20Info from 'src/hooks/useERC20Info';
-import useWaitingTx from 'src/hooks/useWaitingTx';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ReserveData from 'src/core/data/reserves';
@@ -89,7 +88,6 @@ const DepositOrWithdrawModal: FunctionComponent<{
     value: BigNumber;
     loaded: boolean;
   }>({ value: constants.Zero, loaded: false });
-  const { waiting, wait } = useWaitingTx();
   const [currentIndex, setCurrentIndex] = useState<BigNumber>(
     calcCurrentIndex(
       BigNumber.from(reserve.lTokenInterestIndex),
@@ -119,24 +117,24 @@ const DepositOrWithdrawModal: FunctionComponent<{
 
   const yieldProduced = useMemo(() => {
     return accumulatedYield.sub(
-      calcAccumulatedYield(
-        // FIXME
-        // Tricky constant.One
-        // yieldProduced should be calculated with last burn index
-        constants.One,
-        BigNumber.from(
-          userData?.lTokenBurn[userData.lTokenBurn.length - 1]?.index ||
-            reserve.lTokenInterestIndex,
-        ),
-        userData?.lTokenMint.filter(
-          (mint) => mint.lToken.id === reserve.lToken.id,
-        ) || [],
-        userData?.lTokenBurn.filter(
-          (burn) => burn.lToken.id === reserve.lToken.id,
-        ) || [],
-      ),
+      userData?.lTokenBurn.length && userData.lTokenBurn.length > 0 ?
+        calcAccumulatedYield(
+          // FIXME
+          // Tricky constant.One
+          // yieldProduced should be calculated with last burn index
+          constants.One,
+          BigNumber.from(
+            userData.lTokenBurn[userData.lTokenBurn.length - 1].index
+          ),
+          userData?.lTokenMint.filter(
+            (mint) => mint.lToken.id === reserve.lToken.id,
+          ) || [],
+          userData?.lTokenBurn.filter(
+            (burn) => burn.lToken.id === reserve.lToken.id,
+          ) || [],
+        ) : constants.Zero,
     );
-  }, [accumulatedYield, reserve, userData]);
+  }, [accumulatedYield, reserve, userData, currentIndex]);
 
   const increateAllowance = async () => {
     setTransactionWait();

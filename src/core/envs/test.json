@@ -40,7 +40,7 @@
     "bscMainnetChainId": 97
   },
   "subgraphApiEndpoint": {
-    "subgraphURI": "https://api.studio.thegraph.com/query/862/elyfi/v0.0.4",
+    "subgraphURI": "https://gateway.thegraph.com/api/96f993b15274d04d4c1be0cb5fb79ff6/subgraphs/id/56zkjAwQ8Kq1MjmYm4Zxwe7bv8fGSwUCNBT7jcXi8nFn",
     "stakerSubgraphURL": "https://api.studio.thegraph.com/query/862/lp-staking-elyfi/v0.0.8",
     "lpTokenPoolSubgraphURL": "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3",
     "bscSubgraphURI": "https://api.thegraph.com/subgraphs/name/donguks/elyfi-bsc-subgraph"

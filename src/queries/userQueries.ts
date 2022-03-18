@@ -1,51 +1,48 @@
-import { gql } from '@apollo/client';
-
-// id is lower address
-export const GET_USER = gql`
-  query GetUser($id: String!) {
-    user(id: $id) {
+export const GET_USER = (id: string): string => `
+ {
+   user(id: "${id}") {
+    id
+    lTokenBalance {
+      lToken {
+        reserve {
+          id
+          depositAPY
+        }
+      }
+      balance
+    }
+    isCouncil
+    isCollateralServiceProvider
+    deposit {
       id
-      lTokenBalance {
-        lToken {
-          reserve {
-            id
-            depositAPY
-          }
-        }
-        balance
-      }
-      isCouncil
-      isCollateralServiceProvider
-      deposit {
+      amount
+      reserve {
         id
-        amount
-        reserve {
-          id
-        }
-      }
-      withdraw {
-        id
-        amount
-        reserve {
-          id
-        }
-      }
-      lTokenMint(orderBy: timestamp) {
-        lToken {
-          id
-        }
-        amount
-        index
-        timestamp
-      }
-      lTokenBurn(orderBy: timestamp) {
-        lToken {
-          id
-        }
-        amount
-        index
-        timestamp
       }
     }
+    withdraw {
+      id
+      amount
+      reserve {
+        id
+      }
+    }
+    lTokenMint(orderBy: timestamp) {
+      lToken {
+        id
+      }
+      amount
+      index
+      timestamp
+    }
+    lTokenBurn(orderBy: timestamp) {
+      lToken {
+        id
+      }
+      amount
+      index
+      timestamp
+    }
   }
+}
 `;
