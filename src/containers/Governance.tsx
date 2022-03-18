@@ -138,6 +138,7 @@ const Governance = (): JSX.Element => {
     const timeout = setTimeout(() => {
       if (assetBondTokensBackedByEstate.length === 0) {
         setIsAssetList(true);
+        draw();
       }
     }, 3500);
 
@@ -568,7 +569,7 @@ const Governance = (): JSX.Element => {
                     <p>{t('loan.loan_list--null')}</p>
                   </div>
                 ) : (
-                  <Skeleton width={'100%'} height={500} />
+                  <Skeleton width={'100%'} height={300} />
                 )
               ) : (
                 <>
