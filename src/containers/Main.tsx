@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
-import Advantages00 from 'src/assets/images/advantages00.png';
 import Advantages01 from 'src/assets/images/advantages01.png';
-import Advantages02 from 'src/assets/images/advantages02.png';
 import Advantages03 from 'src/assets/images/advantages03.png';
 import Advantages04 from 'src/assets/images/advantages04.png';
 import Advantages05 from 'src/assets/images/advantages05.png';
@@ -29,6 +27,9 @@ import DrawWave from 'src/utiles/drawWave';
 import Fbg from 'src/assets/images/main/fbg.png';
 import Blocore from 'src/assets/images/main/blocore.png';
 import ShowingPopup from 'src/components/ShowingPopup';
+import { isMoblie } from 'src/utiles/connectWallet';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import MediaQuery from 'src/enums/MediaQuery';
 
 const Main = (): JSX.Element => {
   const { t } = useTranslation();
@@ -37,10 +38,10 @@ const Main = (): JSX.Element => {
   const mainHeaderY = useRef<HTMLParagraphElement>(null);
   const mainHeaderMoblieY = useRef<HTMLParagraphElement>(null);
   const guideY = useRef<HTMLParagraphElement>(null);
-  const serviceGraphPageY = useRef<HTMLParagraphElement>(null);
   const auditPageY = useRef<HTMLParagraphElement>(null);
   const governancePageY = useRef<HTMLParagraphElement>(null);
   const governancePageBottomY = useRef<HTMLParagraphElement>(null);
+  const { value: mediaQueryType } = useMediaQueryType();
   const History = useHistory();
   const { lng } = useParams<{ lng: string }>();
   const sectionEvent = [
@@ -83,7 +84,6 @@ const Main = (): JSX.Element => {
       !mainHeaderY.current ||
       !mainHeaderMoblieY.current ||
       !guideY.current ||
-      !serviceGraphPageY.current ||
       !auditPageY.current ||
       !governancePageY.current ||
       !governancePageBottomY.current
@@ -91,20 +91,28 @@ const Main = (): JSX.Element => {
       return;
     if (!canvas) return;
     canvas.width = document.body.clientWidth * dpr;
-    canvas.height = document.body.clientHeight * dpr + (isResize ? 0 : 500);
+    canvas.height = document.body.clientHeight * dpr;
     const browserWidth = canvas.width / dpr + 40;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     ctx.scale(dpr, dpr);
-    new DrawWave(ctx, browserWidth).drawOnMain(
-      mainHeaderY.current,
-      mainHeaderMoblieY.current,
-      guideY.current,
-      serviceGraphPageY.current,
-      auditPageY.current,
-      governancePageY.current,
-      isResize,
-    );
+    mediaQueryType === MediaQuery.Mobile
+      ? new DrawWave(ctx, browserWidth).drawMoblieOnMain(
+          mainHeaderY.current,
+          mainHeaderMoblieY.current,
+          guideY.current,
+          auditPageY.current,
+          governancePageY.current,
+          isResize,
+        )
+      : new DrawWave(ctx, browserWidth).drawOnMain(
+          mainHeaderY.current,
+          mainHeaderMoblieY.current,
+          guideY.current,
+          auditPageY.current,
+          governancePageY.current,
+          isResize,
+        );
   };
 
   useEffect(() => {
@@ -115,6 +123,10 @@ const Main = (): JSX.Element => {
       window.removeEventListener('resize', () => draw(true));
     };
   }, []);
+
+  useEffect(() => {
+    draw(false);
+  }, [governancePageBottomY.current]);
 
   return (
     <>
@@ -210,21 +222,21 @@ const Main = (): JSX.Element => {
           </h2>
           <div className="main__advantages__container">
             {[
-              [
-                Advantages00,
-                t('main.advantages.section.0.header'),
-                t('main.advantages.section.0.content'),
-              ],
+              // [
+              //   Advantages00,
+              //   t('main.advantages.section.0.header'),
+              //   t('main.advantages.section.0.content'),
+              // ],
               [
                 Advantages01,
                 t('main.advantages.section.1.header'),
                 t('main.advantages.section.1.content'),
               ],
-              [
-                Advantages02,
-                t('main.advantages.section.2.header'),
-                t('main.advantages.section.2.content'),
-              ],
+              // [
+              //   Advantages02,
+              //   t('main.advantages.section.2.header'),
+              //   t('main.advantages.section.2.content'),
+              // ],
               [
                 Advantages03,
                 t('main.advantages.section.3.header'),
@@ -253,12 +265,12 @@ const Main = (): JSX.Element => {
             })}
           </div>
         </section>
-        <section className="main__service main__section">
-          <h2 ref={serviceGraphPageY}>
+        {/* <section className="main__service main__section"> */}
+        {/* <h2 ref={serviceGraphPageY}>
             <Trans i18nKey={'main.graph.title'} />
-          </h2>
-          <MainGraph />
-          <div className="main__service__comment pc-only">
+          </h2> */}
+        {/* <MainGraph /> */}
+        {/* <div className="main__service__comment pc-only">
             <p>{t('main.graph.investment-linked-financial')}</p>
             <div
               onClick={() =>
@@ -266,8 +278,8 @@ const Main = (): JSX.Element => {
               }>
               <h2>{t('main.graph.investment-linked-financial--button')}</h2>
             </div>
-          </div>
-        </section>
+          </div> */}
+        {/* </section> */}
         <section className="main__partners main__section">
           <div>
             <h2 ref={auditPageY} className="bold">
@@ -312,6 +324,7 @@ const Main = (): JSX.Element => {
         <MainGovernanceTable
           governancePageY={governancePageY}
           governancePageBottomY={governancePageBottomY}
+          draw={draw}
         />
       </div>
     </>
