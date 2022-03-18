@@ -5,7 +5,7 @@
   "scripts": {
     "start": "REACT_APP_TEST_MODE=y react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "cypress open",
     "eject": "react-scripts eject",
     "deploy": "aws s3 sync ./build s3://elyfi-bucket",
     "aws-build": "aws cloudfront create-invalidation --distribution-id EH1U6Z7PEQO75 --paths \"/*\" ",
@@ -110,6 +110,7 @@
     "@types/react-geocode": "^0.2.0",
     "@types/react-responsive": "^8.0.2",
     "@types/react-router-dom": "^5.1.7",
+    "cypress": "^9.5.2",
     "react-test-renderer": "^16.9.0"
   }
 }
