@@ -2,16 +2,21 @@ import { useWeb3React } from '@web3-react/core';
 import { constants, ethers, utils } from 'ethers';
 import { useEffect, useContext, useState, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import PriceContext from 'src/contexts/PriceContext';
+import useSWR, { useSWRConfig } from 'swr';
 import envs from 'src/core/envs';
 import StakedLp from 'src/components/LpStaking/StakedLp';
-import StakerSubgraph, { IPoolPosition } from 'src/clients/StakerSubgraph';
+import {
+  IPoolPosition,
+  positionsByOwnerFetcher,
+  positionsByOwnerQuery,
+  positionsByPoolIdFetcher,
+  positionsByPoolIdQuery,
+} from 'src/clients/StakerSubgraph';
 import Position from 'src/core/types/Position';
 import Token from 'src/enums/Token';
 import TxContext from 'src/contexts/TxContext';
 import stakerABI from 'src/core/abi/StakerABI.json';
 import useLpApr from 'src/hooks/useLpApy';
-import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import RewardModal from 'src/components/LpStaking/RewardModal';
 import DetailBox from 'src/components/LpStaking/DetailBox';
 import Reward from 'src/components/LpStaking/Reward';
@@ -39,11 +44,17 @@ import MainnetType from 'src/enums/MainnetType';
 
 function LPStaking(): JSX.Element {
   const { account, library } = useWeb3React();
+  const { mutate } = useSWRConfig();
+  const { data: positionsByOwner } = useSWR(
+    positionsByOwnerQuery(account || ''),
+    positionsByOwnerFetcher,
+  );
+  const { data: positionsByPoolId } = useSWR(
+    positionsByPoolIdQuery,
+    positionsByPoolIdFetcher,
+  );
   const { t, i18n } = useTranslation();
   const { txType, txWaiting } = useContext(TxContext);
-  const { elfiPrice } = useContext(PriceContext);
-  const { ethPool, daiPool } = useContext(UniswapPoolContext);
-  const { ethPrice, daiPrice } = useContext(PriceContext);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
@@ -74,10 +85,6 @@ function LPStaking(): JSX.Element {
     beforeTotalDai: 0,
     totalDai: 0,
   });
-  const ethPoolTotalLiquidity =
-    ethPool.stakedToken0 * elfiPrice + ethPool.stakedToken1 * ethPrice;
-  const daiPoolTotalLiquidity =
-    daiPool.stakedToken0 * elfiPrice + daiPool.stakedToken1 * daiPrice;
 
   const currentRound =
     lpUnixTimestamp.findIndex((staking) => {
@@ -169,30 +176,22 @@ function LPStaking(): JSX.Element {
   };
 
   const getStakedPositions = useCallback(() => {
-    if (!account) return;
-    StakerSubgraph.getPositionsByOwner(account!)
-      .then((res) => {
-        setStakedPositions(res.data.data.positions);
-      })
-      .catch((error) => {
-        console.error(`${error}`);
-      });
-  }, [stakedPositions, account, incentiveIds]);
+    if (!account || !positionsByOwner) return;
+    mutate(positionsByOwnerQuery(account || ''));
+    setStakedPositions(positionsByOwner.positions);
+  }, [stakedPositions, account, incentiveIds, positionsByOwner]);
 
   const getAllStakedPositions = useCallback(() => {
     setIsLoading(true);
-    StakerSubgraph.getIncentivesWithPositionsByPoolId(
-      envs.lpStaking.ethElfiPoolAddress,
-      envs.lpStaking.daiElfiPoolAddress,
-    ).then((res) => {
-      setTotalStakedPositions(res.data);
-    });
-  }, [totalLiquidity, isLoading, stakedPositions]);
+    if (!positionsByPoolId) return;
+    mutate(positionsByPoolIdQuery);
+    setTotalStakedPositions(positionsByPoolId);
+  }, [totalLiquidity, isLoading, stakedPositions, positionsByPoolId]);
 
   // total value of the steak in the pool.
   const calcTotalStakedLpToken = useCallback(() => {
     const daiElfiPoolTotalLiquidity =
-      totalStakedPositions?.data.daiIncentive
+      totalStakedPositions?.daiIncentive
         .filter(
           (incentive) =>
             incentive.id === incentiveIds[round - 1].daiIncentiveId,
@@ -203,7 +202,7 @@ function LPStaking(): JSX.Element {
         ) || constants.Zero;
 
     const ethElfiPoolTotalLiquidity =
-      totalStakedPositions?.data.wethIncentive
+      totalStakedPositions?.wethIncentive
         .filter(
           (incentive) =>
             incentive.id === incentiveIds[round - 1].ethIncentiveId,
@@ -300,7 +299,7 @@ function LPStaking(): JSX.Element {
     fetchPositions();
     getRewardToRecive();
     getAllStakedPositions();
-  }, [txWaiting, account]);
+  }, [txWaiting, account, positionsByPoolId]);
 
   useEffect(() => {
     if (txType === RecentActivityType.Withdraw && !txWaiting) {
@@ -478,7 +477,7 @@ function LPStaking(): JSX.Element {
                   envs.lpStaking.ethElfiPoolAddress,
                 )}
                 apr={totalLiquidity.ethElfiliquidityForApr}
-                isLoading={isLoading}
+                isLoading={positionsByPoolId}
                 setModalAndSetStakeToken={() => {
                   setStakingVisibleModal(true);
                   ReactGA.modalview(
@@ -498,7 +497,7 @@ function LPStaking(): JSX.Element {
                   envs.lpStaking.daiElfiPoolAddress,
                 )}
                 apr={totalLiquidity.daiElfiliquidityForApr}
-                isLoading={isLoading}
+                isLoading={positionsByPoolId}
                 setModalAndSetStakeToken={() => {
                   setStakingVisibleModal(true);
                   ReactGA.modalview(

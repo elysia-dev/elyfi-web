@@ -13,7 +13,6 @@ import {
   IProposals,
   onChainBscFetcher,
   onChainFetcher,
-  OnChainTopic,
 } from 'src/clients/OnChainTopic';
 import { INapData, topicListFetcher } from 'src/clients/OffChainTopic';
 import AssetList from 'src/containers/AssetList';
@@ -27,7 +26,6 @@ import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
-import SubgraphContext, { IAssetBond } from 'src/contexts/SubgraphContext';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
 import {
@@ -36,13 +34,14 @@ import {
 } from 'src/middleware/onChainMiddleware';
 import { offChainGovernanceMiddleware } from 'src/middleware/offChainMiddleware';
 import { onChainQuery } from 'src/queries/onChainQuery';
+import useReserveData from 'src/hooks/useReserveData';
+import { IAssetBond } from 'src/core/types/reserveSubgraph';
 
 const Governance = (): JSX.Element => {
   const [pageNumber, setPageNumber] = useState(1);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const { getAssetBondsByNetwork, data: reserveData } =
-    useContext(SubgraphContext);
+  const { reserveState, getAssetBondsByNetwork } = useReserveData();
   const { type: mainnetType } = useContext(MainnetContext);
   const assetBondTokens = getAssetBondsByNetwork(mainnetType);
   const { t } = useTranslation();
@@ -133,12 +132,13 @@ const Governance = (): JSX.Element => {
 
   useEffect(() => {
     getAssetBondsByNetwork(mainnetType);
-  }, [mainnetType, reserveData]);
+  }, [mainnetType, reserveState]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (assetBondTokensBackedByEstate.length === 0) {
         setIsAssetList(true);
+        draw();
       }
     }, 3500);
 
@@ -569,7 +569,7 @@ const Governance = (): JSX.Element => {
                     <p>{t('loan.loan_list--null')}</p>
                   </div>
                 ) : (
-                  <Skeleton width={'100%'} height={500} />
+                  <Skeleton width={'100%'} height={300} />
                 )
               ) : (
                 <>

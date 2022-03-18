@@ -39,58 +39,56 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
         <img src={secondImg} alt="Token Icon" className="second-token" />
         <h2>{t('lpstaking.lp_token_staking_title', { token0, token1 })}</h2>
       </div>
-      {!isLoading ? (
-        <>
-          <div className="staking__lp__detail-box__body">
-            <section className="staking__lp__detail-box__item-header">
-              <DetailBoxItemHeader
-                totalLiquidity={formatDecimalFracionDigit(totalLiquidity, 2)}
-                apr={
-                  moment().isBetween(
-                    lpRoundDate[round - 1].startedAt,
-                    lpRoundDate[round - 1].endedAt,
-                  )
-                    ? apr
-                    : '-'
-                }
-                token1={token1}
-              />
-            </section>
-            <section className="staking__lp__detail-box__receive-token">
-              <DetailBoxItemReceiveToken token0={token0} token1={token1} />
-            </section>
-            <section className="staking__lp__detail-box__staking">
-              <DetailBoxItemStaking
-                tokens={tokens}
-                totalStakedLiquidity={
-                  account
-                    ? formatDecimalFracionDigit(
-                        (tokens.token1 === Token.ETH
-                          ? pricePerEthLiquidity
-                          : pricePerDaiLiquidity) *
-                          parseFloat(utils.formatEther(totalStakedLiquidity)),
-                        2,
-                      ) || '0'
-                    : '0'
-                }
-                setModalAndSetStakeToken={setModalAndSetStakeToken}
-                round={round}
-              />
-            </section>
-          </div>
-          <p className="staking__lp__detail-box__time-data">
-            {moment
-              .unix(lpUnixTimestamp[round - 1].startedAt)
-              .format('YYYY-MM-DD HH:mm:ss')}{' '}
-            -{' '}
-            {moment
-              .unix(lpUnixTimestamp[round - 1].endedAt)
-              .format('YYYY-MM-DD HH:mm:ss')}
-          </p>
-        </>
-      ) : (
-        <Skeleton width={'100%'} height={550} />
-      )}
+      <>
+        <div className="staking__lp__detail-box__body">
+          <section className="staking__lp__detail-box__item-header">
+            <DetailBoxItemHeader
+              totalLiquidity={formatDecimalFracionDigit(totalLiquidity, 2)}
+              apr={
+                moment().isBetween(
+                  lpRoundDate[round - 1].startedAt,
+                  lpRoundDate[round - 1].endedAt,
+                )
+                  ? apr
+                  : '-'
+              }
+              token1={token1}
+              isLoading={isLoading}
+            />
+          </section>
+          <section className="staking__lp__detail-box__receive-token">
+            <DetailBoxItemReceiveToken token0={token0} token1={token1} />
+          </section>
+          <section className="staking__lp__detail-box__staking">
+            <DetailBoxItemStaking
+              tokens={tokens}
+              totalStakedLiquidity={
+                account
+                  ? formatDecimalFracionDigit(
+                      (tokens.token1 === Token.ETH
+                        ? pricePerEthLiquidity
+                        : pricePerDaiLiquidity) *
+                        parseFloat(utils.formatEther(totalStakedLiquidity)),
+                      2,
+                    ) || '0'
+                  : '0'
+              }
+              setModalAndSetStakeToken={setModalAndSetStakeToken}
+              round={round}
+              isLoading={isLoading}
+            />
+          </section>
+        </div>
+        <p className="staking__lp__detail-box__time-data">
+          {moment
+            .unix(lpUnixTimestamp[round - 1].startedAt)
+            .format('YYYY-MM-DD HH:mm:ss')}{' '}
+          -{' '}
+          {moment
+            .unix(lpUnixTimestamp[round - 1].endedAt)
+            .format('YYYY-MM-DD HH:mm:ss')}
+        </p>
+      </>
     </section>
   );
 };

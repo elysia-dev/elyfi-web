@@ -4,7 +4,7 @@ import envs from 'src/core/envs';
 import {
   IReserveHistory,
   IReserveSubgraphData,
-} from 'src/contexts/SubgraphContext';
+} from 'src/core/types/reserveSubgraph';
 import calcMiningAPR from './calcMiningAPR';
 import { toCompact } from './formatters';
 

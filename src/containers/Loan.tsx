@@ -2,12 +2,12 @@ import { FunctionComponent, useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BigNumber, constants, utils } from 'ethers';
 import MainnetContext from 'src/contexts/MainnetContext';
-import SubgraphContext from 'src/contexts/SubgraphContext';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
 import AssetList from 'src/containers/AssetList';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
+import useReserveData from 'src/hooks/useReserveData';
 
 const usdFormatter = new Intl.NumberFormat('en', {
   style: 'currency',
@@ -15,7 +15,7 @@ const usdFormatter = new Intl.NumberFormat('en', {
 });
 
 const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
-  const { getAssetBondsByNetwork } = useContext(SubgraphContext);
+  const { getAssetBondsByNetwork } = useReserveData();
   const { type: mainnetType } = useContext(MainnetContext);
   const assetBondTokens = getAssetBondsByNetwork(mainnetType);
   const [pageNumber, setPageNumber] = useState(1);
@@ -65,30 +65,34 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
             <AssetList
               assetBondTokens={
                 /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
-                [...(assetBondTokensBackedByEstate || [])].slice(0, pageNumber * defaultShowingLoanData).sort((a, b) => {
-                  if (sortMode) {
-                    return BigNumber.from(b.principal).gte(
-                      BigNumber.from(a.principal),
-                    )
-                      ? 1
-                      : -1;
-                  } else {
-                    return b.loanStartTimestamp! - a.loanStartTimestamp! >= 0
-                      ? 1
-                      : -1;
-                  }
-                }) || []
+                [...(assetBondTokensBackedByEstate || [])]
+                  .slice(0, pageNumber * defaultShowingLoanData)
+                  .sort((a, b) => {
+                    if (sortMode) {
+                      return BigNumber.from(b.principal).gte(
+                        BigNumber.from(a.principal),
+                      )
+                        ? 1
+                        : -1;
+                    } else {
+                      return b.loanStartTimestamp! - a.loanStartTimestamp! >= 0
+                        ? 1
+                        : -1;
+                    }
+                  }) || []
               }
             />
-            {assetBondTokensBackedByEstate.length && assetBondTokensBackedByEstate.length >= pageNumber * defaultShowingLoanData && (
-              <div>
-                <button
-                  className="portfolio__view-button"
-                  onClick={() => viewMoreHandler()}>
-                  {t('loan.view-more')}
-                </button>
-              </div>
-            )}
+            {assetBondTokensBackedByEstate.length &&
+              assetBondTokensBackedByEstate.length >=
+                pageNumber * defaultShowingLoanData && (
+                <div>
+                  <button
+                    className="portfolio__view-button"
+                    onClick={() => viewMoreHandler()}>
+                    {t('loan.view-more')}
+                  </button>
+                </div>
+              )}
           </>
         )}
       </section>

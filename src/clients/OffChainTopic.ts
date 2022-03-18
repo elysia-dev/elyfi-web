@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
 import MainnetType from 'src/enums/MainnetType';
-import { request } from 'graphql-request';
 
 export interface TopicList {
   images: TopicList[] | undefined;

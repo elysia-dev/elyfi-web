@@ -108,8 +108,6 @@ const MainnetProvider: React.FC = (props) => {
     }
   };
 
-  if (loading) return <Loading />;
-
   return (
     <MainnetContext.Provider
       value={{
