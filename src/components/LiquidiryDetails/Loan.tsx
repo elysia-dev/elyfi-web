@@ -4,7 +4,7 @@ import { BigNumber, constants, utils } from 'ethers';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
-import AssetList from 'src/containers/AssetList';
+import AssetList from 'src/components/AssetList';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import useReserveData from 'src/hooks/useReserveData';

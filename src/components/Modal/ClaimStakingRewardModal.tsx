@@ -4,7 +4,7 @@ import { FunctionComponent, useContext } from 'react';
 import CountUp from 'react-countup';
 import { formatEther } from '@ethersproject/units';
 
-import LoadingIndicator from 'src/components/LoadingIndicator';
+import LoadingIndicator from 'src/components/Modal/LoadingIndicator';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
 import DaiImage from 'src/assets/images/dai.png';
 import BusdImage from 'src/assets/images/busd@2x.png';
@@ -23,7 +23,6 @@ import ElyfiVersions from 'src/enums/ElyfiVersions';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { roundForElfiV2Staking } from 'src/utiles/roundForElfiV2Staking';
 import MainnetType from 'src/enums/MainnetType';
-import TxStatus from 'src/enums/TxStatus';
 import ModalHeader from './ModalHeader';
 
 const ClaimStakingRewardModal: FunctionComponent<{

@@ -11,9 +11,9 @@ import MainnetError from 'src/assets/images/network_error.png';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import { isMoblie } from 'src/utiles/connectWallet';
 import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
-import NetworkChangeModal from './Modal/NetworkChangeModal';
-import SelectWalletModal from './Modal/SelectWalletModal';
-import WalletDisconnect from './Modal/WalletDisconnect';
+import NetworkChangeModal from '../Modal/NetworkChangeModal';
+import SelectWalletModal from '../Modal/SelectWalletModal';
+import WalletDisconnect from '../Modal/WalletDisconnect';
 
 const Wallet = (): JSX.Element => {
   const { account, chainId, active } = useWeb3React();

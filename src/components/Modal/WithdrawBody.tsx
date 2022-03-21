@@ -6,8 +6,8 @@ import {
   formatCommaFillZero,
 } from 'src/utiles/formatters';
 import { IReserve } from 'src/core/data/reserves';
-import ModalButton from 'src/components/ModalButton';
-import LoadingIndicator from '../LoadingIndicator';
+import ModalButton from 'src/components/Modal/ModalButton';
+import LoadingIndicator from './LoadingIndicator';
 
 const WithdrawBody: React.FunctionComponent<{
   tokenInfo: IReserve;

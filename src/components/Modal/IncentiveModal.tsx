@@ -8,12 +8,12 @@ import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import { IncentivePool__factory } from '@elysia-dev/contract-typechain';
 import CountUp from 'react-countup';
-import ModalHeader from 'src/components/ModalHeader';
+import ModalHeader from 'src/components/Modal/ModalHeader';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
 import { useTranslation } from 'react-i18next';
-import LoadingIndicator from 'src/components/LoadingIndicator';
+import LoadingIndicator from 'src/components/Modal/LoadingIndicator';
 import buildEventEmitter from 'src/utiles/buildEventEmitter';
 
 // Create deposit & withdraw

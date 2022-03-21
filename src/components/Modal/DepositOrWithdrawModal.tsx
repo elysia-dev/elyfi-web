@@ -10,7 +10,7 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import LoadingIndicator from 'src/components/LoadingIndicator';
+import LoadingIndicator from 'src/components/Modal/LoadingIndicator';
 import { GetUser_user } from 'src/core/types/GetUser';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcAccumulatedYield from 'src/utiles/calcAccumulatedYield';
@@ -21,8 +21,8 @@ import useERC20Info from 'src/hooks/useERC20Info';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ReserveData from 'src/core/data/reserves';
-import ModalHeader from 'src/components/ModalHeader';
-import ModalConverter from 'src/components/ModalConverter';
+import ModalHeader from 'src/components/Modal/ModalHeader';
+import ModalConverter from 'src/components/Modal/ModalConverter';
 import buildEventEmitter from 'src/utiles/buildEventEmitter';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
@@ -30,7 +30,7 @@ import ElyfiVersions from 'src/enums/ElyfiVersions';
 import useCurrentMoneypoolAddress from 'src/hooks/useCurrnetMoneypoolAddress';
 import IncreateAllowanceModal, {
   PermissionType,
-} from 'src/components/IncreateAllowanceModal';
+} from 'src/components/Modal/IncreateAllowanceModal';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';

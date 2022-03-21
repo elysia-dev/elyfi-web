@@ -13,11 +13,11 @@ import CountUp from 'react-countup';
 import { formatEther } from '@ethersproject/units';
 import Skeleton from 'react-loading-skeleton';
 import { BigNumber, constants } from 'ethers';
-import AssetList from 'src/containers/AssetList';
+import AssetList from 'src/components/AssetList';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import TableBodyAmount from 'src/components/TableBodyAmount';
+import TableBodyAmount from 'src/components/Deposit/TableBodyAmount';
 import { useContext } from 'react';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
@@ -33,7 +33,7 @@ import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 import useReserveData from 'src/hooks/useReserveData';
-import TableBodyEventReward from 'src/components/TableBodyEventReward';
+import TableBodyEventReward from './TableBodyEventReward';
 
 interface Props {
   balance: BalanceType;

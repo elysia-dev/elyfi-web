@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useMemo, useContext } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
 import NavigationType from 'src/enums/NavigationType';
-import Wallet from 'src/components/Wallet';
+import Wallet from 'src/components/Navigation/Wallet';
 import {
   INavigation,
   ISubNavigation,
@@ -20,9 +20,9 @@ import ButtonEventType from 'src/enums/ButtonEventType';
 
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import MainnetSwitch from 'src/components/MainnetSwitch';
+import MainnetSwitch from 'src/components/Navigation/MainnetSwitch';
 
-import ErrorModal from './ErrorModal';
+import ErrorModal from '../Modal/ErrorModal';
 
 const InitialNavigation: INavigation[] = [
   {

@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { IStakingPoolRound } from 'src/core/data/stakingRoundTimes';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
-import ModalHeader from 'src/components/ModalHeader';
+import ModalHeader from 'src/components/Modal/ModalHeader';
 
 const StakingEnded: React.FunctionComponent<{
   visible: boolean;

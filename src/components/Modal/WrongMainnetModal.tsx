@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import ModalHeader from 'src/components/ModalHeader';
+import ModalHeader from 'src/components/Modal/ModalHeader';
 
 const WrongMainnetModal: React.FunctionComponent<{
   visible: boolean;

@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { useParams, useHistory } from 'react-router-dom';
 import { utils } from 'ethers';
 import moment from 'moment';
-import reactGA from 'react-ga';
 import useSWR from 'swr';
 
 import {
@@ -15,7 +14,7 @@ import {
   onChainFetcher,
 } from 'src/clients/OnChainTopic';
 import { INapData, topicListFetcher } from 'src/clients/OffChainTopic';
-import AssetList from 'src/containers/AssetList';
+import AssetList from 'src/components/AssetList';
 import GovernanceGuideBox from 'src/components/Governance/GovernanceGuideBox';
 import LanguageType from 'src/enums/LanguageType';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
@@ -36,6 +35,7 @@ import { offChainGovernanceMiddleware } from 'src/middleware/offChainMiddleware'
 import { onChainQuery } from 'src/queries/onChainQuery';
 import useReserveData from 'src/hooks/useReserveData';
 import { IAssetBond } from 'src/core/types/reserveSubgraph';
+import reactGA from 'react-ga';
 
 const Governance = (): JSX.Element => {
   const [pageNumber, setPageNumber] = useState(1);
@@ -541,62 +541,60 @@ const Governance = (): JSX.Element => {
           )}
         </section>
         <section className="governance__loan governance__header">
-          <>
-            <div>
-              <div>
-                <h3>
-                  {t('governance.loan_list', {
-                    count: assetBondTokensBackedByEstate
-                      ? assetBondTokensBackedByEstate.length
-                      : 0,
-                  })}
-                </h3>
-              </div>
-              <p>{t('governance.loan_list__content')}</p>
-            </div>
+          {assetBondTokensBackedByEstate.length !== 0 ? (
             <>
-              {assetBondTokensBackedByEstate.length === 0 ? (
-                isAssetList ? (
-                  <div className="loan__list--null">
-                    <p>{t('loan.loan_list--null')}</p>
+              <div>
+                <div>
+                  <h3>
+                    {t('governance.loan_list', {
+                      count: assetBondTokensBackedByEstate.length,
+                    })}
+                  </h3>
+                </div>
+                <p>{t('governance.loan_list__content')}</p>
+              </div>
+              <AssetList
+                assetBondTokens={
+                  /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
+                  [...((assetBondTokensBackedByEstate as IAssetBond[]) || [])]
+                    .slice(0, pageNumber * defaultShowingLoanData)
+                    .sort((a, b) => {
+                      return b.loanStartTimestamp! - a.loanStartTimestamp! >=
+                        0
+                        ? 1
+                        : -1;
+                    }) || []
+                }
+              />
+              {assetBondTokensBackedByEstate.length &&
+                assetBondTokensBackedByEstate.length >=
+                  pageNumber * defaultShowingLoanData && (
+                  <div>
+                    <button
+                      className="portfolio__view-button"
+                      onClick={() => viewMoreHandler()}>
+                      {t('loan.view-more')}
+                    </button>
                   </div>
-                ) : (
-                  <Skeleton width={'100%'} height={300} />
-                )
-              ) : (
-                <>
-                  <AssetList
-                    assetBondTokens={
-                      /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
-                      [
-                        ...((assetBondTokensBackedByEstate as IAssetBond[]) ||
-                          []),
-                      ]
-                        .slice(0, pageNumber * defaultShowingLoanData)
-                        .sort((a, b) => {
-                          return b.loanStartTimestamp! -
-                            a.loanStartTimestamp! >=
-                            0
-                            ? 1
-                            : -1;
-                        }) || []
-                    }
-                  />
-                  {assetBondTokensBackedByEstate &&
-                    assetBondTokensBackedByEstate.length >=
-                      pageNumber * defaultShowingLoanData && (
-                      <div>
-                        <button
-                          className="portfolio__view-button"
-                          onClick={() => viewMoreHandler()}>
-                          {t('loan.view-more')}
-                        </button>
-                      </div>
-                    )}
-                </>
-              )}
+                )}
             </>
-          </>
+          ) : (
+            <>
+              <div>
+                <div>
+                  <h3>
+                    {t('governance.loan_list', {
+                      count: 0,
+                    })}
+                  </h3>
+                </div>
+                <p>{t('governance.loan_list__content')}</p>
+              </div>
+              <div className="loan__list--null">
+                <p>{t('loan.loan_list--null')}</p>
+              </div>
+            </>
+          )}
         </section>
       </div>
     </>

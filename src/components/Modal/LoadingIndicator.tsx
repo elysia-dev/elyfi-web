@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import ModalButton from 'src/components/ModalButton';
+import ModalButton from 'src/components/Modal/ModalButton';
 
 const LoadingIndicator: React.FunctionComponent<{
   button?: string;

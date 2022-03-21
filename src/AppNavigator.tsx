@@ -9,11 +9,11 @@ import InjectedConnector from 'src/core/connectors/injectedConnector';
 const Dashboard = lazy(() => import('src/components/Deposit'))
 const Main = lazy(() => import('src/components/Main'))
 const Governance = lazy(() => import('src/components/Governance'))
-const { StakingEL, StakingELFI } = lazily(() => import('src/containers/Staking'));
-const LPStaking = lazy(() => import('src/containers/LPStaking'));
-const RewardPlan = lazy(() => import('src/containers/RewardPlan'));
-const MarketDetail = lazy(() => import('src/containers/MarketDetails'));
-const PortfolioDetail = lazy(() => import('src/containers/PortfolioDetail'));
+const { StakingEL, StakingELFI } = lazily(() => import('src/components/Staking'));
+const LPStaking = lazy(() => import('src/components/LpStaking'));
+const RewardPlan = lazy(() => import('src/components/RewardPlan'));
+const MarketDetail = lazy(() => import('src/components/LiquidiryDetails'));
+const PortfolioDetail = lazy(() => import('src/components/Portfolio'));
 
 import 'src/stylesheet/public.scss';
 import 'src/stylesheet/pc.scss';
@@ -83,7 +83,6 @@ const AppNavigator: React.FC = () => {
       <Switch>
         <Route path="/:lng">
           <LanguageProvider>
-            <Suspense fallback={<>Loading...</>}>
               <Suspense fallback={<>Loading...</>}>
                 <Navigation
                   hamburgerBar={hamburgerBar}
@@ -123,8 +122,9 @@ const AppNavigator: React.FC = () => {
               <Suspense fallback={<>Loading...</>}>
                 <Route exact path="/:lng" component={Main} />
               </Suspense>
-              <Footer />
-            </Suspense>
+              <Suspense fallback={<>Loading...</>}>
+                <Footer />
+              </Suspense>
           </LanguageProvider>
         </Route>
         <Route path="/" component={LanguageDetctionPage} />
