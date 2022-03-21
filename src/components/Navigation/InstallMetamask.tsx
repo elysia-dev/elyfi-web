@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
-import ModalHeader from 'src/components/ModalHeader';
+import ModalHeader from 'src/components/Modal/ModalHeader';
 
 const InstallMetamask = (): JSX.Element => {
   const { t } = useTranslation();

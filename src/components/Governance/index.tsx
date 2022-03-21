@@ -1,20 +1,16 @@
 import { lazy, Suspense, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useTranslation } from 'react-i18next';
-import { useParams, useHistory } from 'react-router-dom';
 import moment from 'moment';
-import reactGA from 'react-ga';
 import useSWR from 'swr';
 
 import {
   bscOnChainQuery,
-  IProposals,
   onChainBscFetcher,
   onChainFetcher,
-  OnChainTopic,
 } from 'src/clients/OnChainTopic';
 import { topicListFetcher } from 'src/clients/OffChainTopic';
-import AssetList from 'src/containers/AssetList';
+import AssetList from 'src/components/AssetList';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import DrawWave from 'src/utiles/drawWave';
@@ -229,7 +225,44 @@ const Governance = (): JSX.Element => {
         </section>
 
         <section className="governance__loan governance__header">
-          {assetBondTokensBackedByEstate.length === 0 ? (
+          {assetBondTokensBackedByEstate.length !== 0 ? (
+            <>
+              <div>
+                <div>
+                  <h3>
+                    {t('governance.loan_list', {
+                      count: assetBondTokensBackedByEstate.length,
+                    })}
+                  </h3>
+                </div>
+                <p>{t('governance.loan_list__content')}</p>
+              </div>
+              <AssetList
+                assetBondTokens={
+                  /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
+                  [...((assetBondTokensBackedByEstate as IAssetBond[]) || [])]
+                    .slice(0, pageNumber * defaultShowingLoanData)
+                    .sort((a, b) => {
+                      return b.loanStartTimestamp! - a.loanStartTimestamp! >=
+                        0
+                        ? 1
+                        : -1;
+                    }) || []
+                }
+              />
+              {assetBondTokensBackedByEstate.length &&
+                assetBondTokensBackedByEstate.length >=
+                  pageNumber * defaultShowingLoanData && (
+                  <div>
+                    <button
+                      className="portfolio__view-button"
+                      onClick={() => viewMoreHandler()}>
+                      {t('loan.view-more')}
+                    </button>
+                  </div>
+                )}
+            </>
+          ) : (
             <>
               <div>
                 <div>
@@ -244,45 +277,6 @@ const Governance = (): JSX.Element => {
               <div className="loan__list--null">
                 <p>{t('loan.loan_list--null')}</p>
               </div>
-            </>
-          ) : (
-            <>
-              <div>
-                <div>
-                  <h3>
-                    {t('governance.loan_list', {
-                      count: assetBondTokensBackedByEstate.length,
-                    })}
-                  </h3>
-                </div>
-                <p>{t('governance.loan_list__content')}</p>
-              </div>
-              <>
-                <AssetList
-                  assetBondTokens={
-                    /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
-                    [...((assetBondTokensBackedByEstate as IAssetBond[]) || [])]
-                      .slice(0, pageNumber * defaultShowingLoanData)
-                      .sort((a, b) => {
-                        return b.loanStartTimestamp! - a.loanStartTimestamp! >=
-                          0
-                          ? 1
-                          : -1;
-                      }) || []
-                  }
-                />
-                {assetBondTokensBackedByEstate.length &&
-                  assetBondTokensBackedByEstate.length >=
-                    pageNumber * defaultShowingLoanData && (
-                    <div>
-                      <button
-                        className="portfolio__view-button"
-                        onClick={() => viewMoreHandler()}>
-                        {t('loan.view-more')}
-                      </button>
-                    </div>
-                  )}
-              </>
             </>
           )}
         </section>

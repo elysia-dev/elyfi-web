@@ -10,11 +10,11 @@ import { useWeb3React } from '@web3-react/core';
 import CountUp from 'react-countup';
 import { formatEther } from '@ethersproject/units';
 import { BigNumber, constants } from 'ethers';
-import AssetList from 'src/containers/AssetList';
+import AssetList from 'src/components/AssetList';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import TableBodyAmount from 'src/components/TableBodyAmount';
+import TableBodyAmount from 'src/components/Deposit/TableBodyAmount';
 import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import { useContext } from 'react';
 import MainnetContext from 'src/contexts/MainnetContext';
@@ -28,7 +28,7 @@ import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
-import TableBodyEventReward from '../TableBodyEventReward';
+import TableBodyEventReward from './TableBodyEventReward';
 
 interface Props {
   balance: BalanceType;

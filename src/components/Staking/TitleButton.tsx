@@ -1,6 +1,6 @@
-import { FunctionComponent } from 'react';
-import { useTranslation } from 'react-i18next';
-import Token from 'src/enums/Token';
+import { FunctionComponent, lazy, Suspense } from 'react';
+
+const LazyImage = lazy(() => import('src/utiles/lazyImage'))
 
 type Props = {
   buttonName: string;
@@ -10,7 +10,6 @@ type Props = {
 };
 
 const TitleButton: FunctionComponent<Props> = (props) => {
-  const { t } = useTranslation();
   const { buttonName, link, linkName, linkImage } = props;
 
   return (
@@ -24,7 +23,9 @@ const TitleButton: FunctionComponent<Props> = (props) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        {linkImage && <img src={linkImage} alt={linkName} />}
+        <Suspense fallback={null}>
+          {linkImage && <LazyImage src={linkImage} name={linkName || ""} />}
+        </Suspense>
         <p>{buttonName}</p>
       </a>
     </div>

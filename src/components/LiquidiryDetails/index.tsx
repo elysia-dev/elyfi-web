@@ -20,8 +20,8 @@ import {
 import TransactionConfirmModal from 'src/components/Modal/TransactionConfirmModal';
 import Token from 'src/enums/Token';
 import moment from 'moment';
-import Loan from 'src/containers/Loan';
-import MarketDetailsBody from 'src/components/MarketDetailsBody';
+import Loan from 'src/components/LiquidiryDetails/Loan';
+import MarketDetailsBody from 'src/components/LiquidiryDetails/MarketDetailsBody';
 import styled from 'styled-components';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';

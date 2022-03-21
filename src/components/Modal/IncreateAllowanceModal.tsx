@@ -2,7 +2,7 @@
 import { useWeb3React } from '@web3-react/core';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
-import ModalButton from 'src/components/ModalButton';
+import ModalButton from 'src/components/Modal/ModalButton';
 import TxContext from 'src/contexts/TxContext';
 import TxStatus from 'src/enums/TxStatus';
 import LoadingIndicator from './LoadingIndicator';

@@ -5,7 +5,7 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import SubgraphContext from 'src/contexts/SubgraphContext';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import CollateralCategory from 'src/enums/CollateralCategory';
-import AssetList from 'src/containers/AssetList';
+import AssetList from 'src/components/AssetList';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 

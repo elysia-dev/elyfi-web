@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useMemo, useState } from 'react';
+import { FunctionComponent, lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { toCompactForBignumber, toPercent } from 'src/utiles/formatters';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import GoogleMapReact from 'google-map-react';
@@ -10,10 +10,12 @@ import Slate from 'src/clients/Slate';
 import ReserveData from 'src/core/data/reserves';
 import { useTranslation } from 'react-i18next';
 import { IAssetBond } from 'src/contexts/SubgraphContext';
-import Marker from './Marker';
+import Marker from '../Marker';
 
 const defaultLat = 37.5172;
 const defaultLng = 127.0473;
+
+const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
 const AssetItem: FunctionComponent<{
   abToken: IAssetBond;
@@ -59,21 +61,23 @@ const AssetItem: FunctionComponent<{
   return (
     <div className="component__loan-list" style={style} onClick={onClick}>
       <div className="component__loan-list__image">
-        {image ? (
-          <img src={image} alt={`csp_image_${abToken.id}`} />
-        ) : (
-          <GoogleMapReact
-            bootstrapURLKeys={{
-              key: process.env.REACT_APP_GOOGLE_MAP_API_KEY!,
-            }}
-            defaultCenter={{
-              lat: isLat(lat) ? lat : defaultLat,
-              lng: isLng(lng) ? lng : defaultLng,
-            }}
-            defaultZoom={15}>
-            <Marker lat={lat} lng={lng} />
-          </GoogleMapReact>
-        )}
+        <Suspense fallback={<div>loading..</div>} >
+          {image ? (
+            <LazyImage src={image} name={`csp_image_${abToken.id}`} />
+          ) : (
+            <GoogleMapReact
+              bootstrapURLKeys={{
+                key: process.env.REACT_APP_GOOGLE_MAP_API_KEY!,
+              }}
+              defaultCenter={{
+                lat: isLat(lat) ? lat : defaultLat,
+                lng: isLng(lng) ? lng : defaultLng,
+              }}
+              defaultZoom={15}>
+              <Marker lat={lat} lng={lng} />
+            </GoogleMapReact>
+          )}
+        </Suspense>
       </div>
       <div className="component__loan-list__data">
         <div>

@@ -1,5 +1,5 @@
 import { useHistory, useParams } from 'react-router-dom';
-import AssetItem from 'src/components/AssetItem';
+import AssetItem from 'src/components/AssetList/AssetItem';
 import { IAssetBond } from 'src/contexts/SubgraphContext';
 import LoanProduct from 'src/enums/LoanProduct';
 import { parseTokenId } from 'src/utiles/parseTokenId';

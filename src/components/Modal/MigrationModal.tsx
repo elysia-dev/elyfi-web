@@ -26,7 +26,7 @@ import { roundForElfiV2Staking } from 'src/utiles/roundForElfiV2Staking';
 import TxStatus from 'src/enums/TxStatus';
 import LoadingIndicator from './LoadingIndicator';
 import ModalHeader from './ModalHeader';
-import Popupinfo from './PopupInfo';
+import Popupinfo from '../Popupinfo';
 
 const MigrationModal: React.FunctionComponent<{
   visible: boolean;

@@ -753,7 +753,7 @@ $device-width: 1190px;
     .deposit {
       @include page-container;
       padding-top: 100px;
-      
+
       &__title {
         .react-loading-skeleton {
           margin-top: 20px;
@@ -1694,9 +1694,10 @@ $device-width: 1190px;
           font-size: 15px;
         }
         &__token {
-          // display: flex;
-          // width: 583px;
+          display: flex;
+          width: 680px;
           justify-content: space-between;
+          gap: 50px;
         }
         &__button {
           min-width: 220px;
@@ -1760,7 +1761,7 @@ $device-width: 1190px;
           line-height: 30px;
           padding: 0px 20px;
           > p {
-            font-size: 15px;
+            font-size: 13.5px;
           }
         }
         &__current-data {
@@ -1980,6 +1981,7 @@ $device-width: 1190px;
         } // detail-box end
 
         &__staked {
+          margin-top: 60px;
           &__header {
             margin-top: 86px;
             padding-bottom: 10px;

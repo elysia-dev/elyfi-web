@@ -1,8 +1,12 @@
-import LanguageConverter from 'src/components/LanguageConverter';
-import Twitter from 'src/assets/images/twitter.png';
-import Telegram from 'src/assets/images/telegram.png';
-import Github from 'src/assets/images/github.png';
-import Discord from 'src/assets/images/discord.png';
+import LanguageConverter from 'src/components/Footer/LanguageConverter';
+
+import Twitter from 'src/assets/images/footer/twitter.svg';
+import Telegram from 'src/assets/images/footer/telegram.svg';
+import Github from 'src/assets/images/footer/github.svg';
+import Discord from 'src/assets/images/footer/discord.svg';
+import LazyImage from 'src/utiles/lazyImage';
+import { Suspense } from 'react';
+import Skeleton from 'react-loading-skeleton';
 
 const Footer = (): JSX.Element => {
   return (
@@ -18,9 +22,11 @@ const Footer = (): JSX.Element => {
               [Discord, 'https://discord.gg/JjjYrE5Ww8'],
             ].map((data, index) => {
               return (
-                <a key={`footer_${index}`} href={data[1]}>
-                  <img src={data[0]} />
-                </a>
+                <Suspense fallback={<Skeleton width={25} height={25} />}>
+                  <a key={`footer_${index}`} href={data[1]}>
+                    <LazyImage src={data[0]} name="logo-icons" />
+                  </a>
+                </Suspense>
               );
             })}
           </div>

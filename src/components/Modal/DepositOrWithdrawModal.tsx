@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import LoadingIndicator from 'src/components/LoadingIndicator';
+import LoadingIndicator from 'src/components/Modal/LoadingIndicator';
 import { GetUser_user } from 'src/queries/__generated__/GetUser';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcAccumulatedYield from 'src/utiles/calcAccumulatedYield';
@@ -21,8 +21,8 @@ import useWaitingTx from 'src/hooks/useWaitingTx';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ReserveData from 'src/core/data/reserves';
-import ModalHeader from 'src/components/ModalHeader';
-import ModalConverter from 'src/components/ModalConverter';
+import ModalHeader from 'src/components/Modal/ModalHeader';
+import ModalConverter from 'src/components/Modal/ModalConverter';
 import buildEventEmitter from 'src/utiles/buildEventEmitter';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
@@ -31,7 +31,7 @@ import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import useCurrentMoneypoolAddress from 'src/hooks/useCurrnetMoneypoolAddress';
 import IncreateAllowanceModal, {
   PermissionType,
-} from 'src/components/IncreateAllowanceModal';
+} from 'src/components/Modal/IncreateAllowanceModal';
 import DepositBody from './DepositBody';
 import WithdrawBody from './WithdrawBody';
 

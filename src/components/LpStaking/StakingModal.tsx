@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import useWatingTx from 'src/hooks/useWaitingTx';
-import LoadingIndicator from 'src/components/LoadingIndicator';
+import LoadingIndicator from 'src/components/Modal/LoadingIndicator';
 import TxContext from 'src/contexts/TxContext';
 import elfi from 'src/assets/images/ELFI.png';
-import SelectBox from 'src/components/SelectBox';
+import SelectBox from 'src/components/LpStaking/SelectBox';
 import useLpStaking from 'src/hooks/useLpStaking';
 import { LpStakingModalProps } from 'src/core/types/LpStakingTypeProps';
-import ModalHeader from '../ModalHeader';
-import ModalConverter from '../ModalConverter';
+import ModalHeader from '../Modal/ModalHeader';
+import ModalConverter from '../Modal/ModalConverter';
 
 const StakingModal: React.FunctionComponent<LpStakingModalProps> = (props) => {
   const {

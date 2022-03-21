@@ -9,7 +9,7 @@ const Service = lazy(() => import('./Service'));
 const MainPage = lazy(() => import('./MainPage'));
 const Partners = lazy(() => import('./Partners'));
 const MainGovernanceTable = lazy(() => import('src/components/Main/MainGovernanceTable'));
-const ShowingPopup = lazy(() => import('src/components/ShowingPopup'));
+const ShowingPopup = lazy(() => import('src/components/Popup'));
 
 const Main = (): JSX.Element => {
   const [popupVisible, setPopupVisible] = useState(false);
