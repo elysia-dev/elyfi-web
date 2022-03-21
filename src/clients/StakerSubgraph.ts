@@ -54,8 +54,9 @@ export const positionsByOwnerQuery = (owner: string): string => `
 }
   `;
 
-export const positionsByPoolIdFetcher = (query: string): Promise<any> =>
-  request(baseUrl, query);
+export const positionsByPoolIdFetcher = (
+  query: string,
+): Promise<IPoolPosition> => request(baseUrl, query);
 
 export const positionsByPoolIdQuery = `
 {
