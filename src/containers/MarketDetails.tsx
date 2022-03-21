@@ -123,15 +123,7 @@ function MarketDetail(): JSX.Element {
     if (!ctx) return;
     ctx.scale(dpr, dpr);
 
-    if (mediaQuery === MediaQuery.Mobile) {
-      new DrawWave(ctx, browserWidth).drawMobileOnPages(
-        headerY,
-        TokenColors.ELFI,
-        browserHeight,
-        false,
-      );
-      return;
-    }
+    if (mediaQuery === MediaQuery.Mobile) return;
 
     new DrawWave(ctx, browserWidth).drawOnPages(
       headerY,
