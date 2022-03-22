@@ -380,7 +380,7 @@
       "error_code_copy": "copy"
     },
     "reward": {
-      "token_staking__reward_plan": "{{ token }} Staking Reward Plan",
+      "token_staking__reward_plan": "{{ token }} Staking Plan",
       "staking__nth": "{{ token }} <strong>{{ nth }} round</strong> Staking",
       "staking__nth--apr": "Staking APR on the {{nth}} round",
       "staking__nth--amount": "Staked Amount on the {{nth}} round",

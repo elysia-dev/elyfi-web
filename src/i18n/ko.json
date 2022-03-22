@@ -370,7 +370,7 @@
       "error_code_copy": "복사하기"
     },
     "reward": {
-      "token_staking__reward_plan": "{{ token }} 스테이킹 보상 플랜",
+      "token_staking__reward_plan": "{{ token }} 스테이킹 플랜",
       "staking__nth": "{{ token }} <strong>{{ nth }}차</strong> 스테이킹",
       "staking__nth--apr": "{{nth}}차 스테이킹 APR",
       "staking__nth--amount": "{{nth}}차 스테이킹 수량",
