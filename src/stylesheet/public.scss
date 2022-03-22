@@ -26,12 +26,14 @@
 @font-face {
   font-family: 'Inter';
   src: url('../assets/fonts/Inter-Regular.ttf') format('truetype');
-  unicode-range: U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E, U+0041-005A, U+0061-007A;
+  unicode-range: U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E, U+0041-005A,
+    U+0061-007A;
 }
 @font-face {
   font-family: 'Inter-Bold';
   src: url('../assets/fonts/Inter-Bold.ttf') format('truetype');
-  unicode-range: U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E, U+0041-005A, U+0061-007A;
+  unicode-range: U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E, U+0041-005A,
+    U+0061-007A;
 }
 
 * {
@@ -146,7 +148,7 @@ h2 {
 p,
 a,
 span {
-  font-family: 'Inter', "SpoqaHanSansNeo";
+  font-family: 'Inter', 'SpoqaHanSansNeo';
   color: $font-color;
   text-decoration: none;
   cursor: default;
@@ -209,8 +211,8 @@ input[type='number'] {
       justify-content: center;
       top: 60px;
       border: 1px solid $gray-line;
-      background: #FFF;
-      transition: all .3s ease;
+      background: #fff;
+      transition: all 0.3s ease;
       z-index: 1;
       &.disabled {
         overflow: hidden;
@@ -218,7 +220,7 @@ input[type='number'] {
         padding: 0;
         height: 0;
         opacity: 0;
-        background: #FFF;
+        background: #fff;
         z-index: 1;
       }
       &__link {
@@ -227,7 +229,7 @@ input[type='number'] {
         border-bottom: 1px solid $gray-line;
         cursor: pointer;
         &:hover {
-          background: #F7FBFF;
+          background: #f7fbff;
           border-left: 2px solid $elysia-color;
           padding: 20px 13px;
           > div > p {
@@ -813,7 +815,7 @@ input[type='number'] {
     &__partners {
       height: 100vh;
       flex-direction: column;
-      margin-top: 35vh;
+      margin-top: 10vh;
       margin-bottom: 40vh;
       > div {
         display: flex;
@@ -4093,7 +4095,7 @@ input[type='number'] {
       animation: lds-spinner 1.2s linear infinite;
     }
     .lds-spinner div:after {
-      content: " ";
+      content: ' ';
       display: block;
       position: absolute;
       top: 3px;
@@ -4102,7 +4104,7 @@ input[type='number'] {
       height: 18px;
       border-radius: 20%;
       background: $elysia-color;
-    }    
+    }
     // .flip-card {
     //   background-color: transparent;
     //   width: 300px;
@@ -4150,7 +4152,7 @@ input[type='number'] {
     //   transform: rotateY(180deg) translateZ(1px);
     //   background-image: -webkit-linear-gradient(hsla(0,0%,100%,.25), hsla(0,0%,0%,.25));
     // }
-    
+
     // .flip-card-inner:after {
     //   content: '';
     //   top: 0;
@@ -4192,7 +4194,6 @@ input[type='number'] {
     // }
   }
 
-
   .lds-spinner {
     color: official;
     display: inline-block;
@@ -4205,7 +4206,7 @@ input[type='number'] {
     animation: lds-spinner 1.2s linear infinite;
   }
   .lds-spinner div:after {
-    content: " ";
+    content: ' ';
     display: block;
     position: absolute;
     top: 3px;
@@ -4271,7 +4272,7 @@ input[type='number'] {
       opacity: 0;
     }
   }
-  
+
   @keyframes glow {
     from {
       box-shadow: 0 0 2px #00bfff44, 0 0 3px #00bfff44, 0 0 4px #00bfff44,
@@ -4751,7 +4752,6 @@ input[type='number'] {
   textarea {
     font-family: 'Inter';
   }
-
 
   .error {
     width: 100%;

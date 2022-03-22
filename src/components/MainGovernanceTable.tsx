@@ -11,11 +11,13 @@ import { onChainQuery } from 'src/queries/onChainQuery';
 type Props = {
   governancePageY: RefObject<HTMLParagraphElement>;
   governancePageBottomY: RefObject<HTMLParagraphElement>;
+  draw: (isResize: boolean) => void;
 };
 
 const MainGovernanceTable: FunctionComponent<Props> = ({
   governancePageY,
   governancePageBottomY,
+  draw,
 }) => {
   const { data: onChainData } = useSWR(onChainQuery, onChainFetcher, {
     use: [onChainMainMiddleware],
@@ -31,6 +33,12 @@ const MainGovernanceTable: FunctionComponent<Props> = ({
   const [moreload, setMoreload] = useState(false);
 
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (onChainData || offChainData) {
+      draw(false);
+    }
+  }, [onChainData, offChainData]);
 
   return (
     <div ref={governancePageY} className="main__governance main__section">
