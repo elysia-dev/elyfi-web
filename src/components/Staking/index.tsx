@@ -309,7 +309,7 @@ const Staking: React.FunctionComponent<IProps> = ({
               isUnstaking={isUnstaking}
             />
             <MigrationModal
-              visible={modalVisible(StakingModalType.Migration)}
+              visible={!modalVisible(StakingModalType.Migration)}
               closeHandler={() => {
                 setModalType('');
                 setTransactionWait(false);

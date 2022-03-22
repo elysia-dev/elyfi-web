@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-
 const Popupinfo: React.FunctionComponent<{
   content: string;
   fontStyle?: React.CSSProperties;
