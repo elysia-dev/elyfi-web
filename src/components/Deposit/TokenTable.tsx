@@ -315,20 +315,18 @@ const TokenTable: React.FC<Props> = ({
             <div>
               <div>
                 <h2>{t('dashboard.recent_loan')}</h2>
-                {assetBondTokensBackedByEstate && (
-                  <Link
-                    to={`/${lng}/deposits/${balance.tokenName}`}
-                    style={{
-                      display:
-                        assetBondTokensBackedByEstate.length === 0
-                          ? 'none'
-                          : 'block',
-                    }}>
-                    <div className="deposit__table__body__loan-list__button">
-                      <p>{t('main.governance.view-more')}</p>
-                    </div>
-                  </Link>
-                )}
+                <Link
+                  to={`/${lng}/deposit/${balance.tokenName}`}
+                  style={{
+                    display:
+                      assetBondTokensBackedByEstate.length === 0
+                        ? 'none'
+                        : 'block',
+                  }}>
+                  <div className="deposit__table__body__loan-list__button">
+                    <p>{t('main.governance.view-more')}</p>
+                  </div>
+                </Link>
               </div>
               {assetBondTokensBackedByEstate?.length === 0 ? (
                 <div className="loan__list--null" style={{ marginTop: 30 }}>
