@@ -439,7 +439,10 @@ const Staking: React.FunctionComponent<IProps> = ({
                           rewardToken,
                         })}
                       </p>
-                      <RewardPlanButton stakingType={stakedToken} />
+                      <RewardPlanButton
+                        stakingType={stakedToken}
+                        isStaking={true}
+                      />
                     </div>
                   </>
                 ) : (
@@ -453,7 +456,10 @@ const Staking: React.FunctionComponent<IProps> = ({
                           })}
                         </h2>
                       </div>
-                      <RewardPlanButton stakingType={stakedToken} />
+                      <RewardPlanButton
+                        stakingType={stakedToken}
+                        isStaking={true}
+                      />
                     </div>
                     <div className="staking__title__content">
                       <p>

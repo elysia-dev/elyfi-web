@@ -467,7 +467,7 @@ function LPStaking(): JSX.Element {
         </div>
         {getMainnetType === MainnetType.Ethereum ? (
           <div>
-            <RewardPlanButton stakingType={'LP'} />
+            <RewardPlanButton stakingType={'LP'} isStaking={true} />
             <section className="staking__lp__detail-box">
               <DetailBox
                 tokens={{
