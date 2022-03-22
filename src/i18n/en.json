@@ -3,14 +3,14 @@
     "main": {
       "landing": {
         "header__title": "<i>ELYFI</i> <strong>the first real estate collateralized,<br />decentralized lending protocol</strong>",
-        "header__content": "ELYFI provides digital asset loans by converting real estate bonds into NFTs and using it as collateral",
+        "header__content": "ELYFI provides digital asset loans by converting real estate into NFTs and using it as collateral",
         "button__deposit": "Deposit",
         "button__view-more": "Learn more"
       },
       "section": [
         {
-          "header": "<strong>Deposit digital assets and receive APR and additional rewards for securing loans</strong>",
-          "content": "By staking digital assets into the ELYFI money pool, participants earn interest on deposits.\nIn addition, ELFI governance tokens are distributed to provide incentives for securing the network.",
+          "header": "<strong>Deposit digital assets and receive APR and additional rewards</strong>",
+          "content": "By staking into the ELYFI money pool, participants obtain voting rights regarding the protocol and receive rewards for participation",
           "button": "Check APR"
         },
         {
@@ -136,8 +136,8 @@
     "dashboard": {
       "token_mining_apr": "ELFI Mining APR",
       "total_deposit": "Total Deposit",
-      "total_deposit--reward": "Total Deposit Yield",
-      "total_deposit--yield": "Total Deposit Yield",
+      "total_deposit--reward": "Total Deposit Rates",
+      "total_deposit--yield": "Total Deposit Rates",
       "total_borrowed": "Total Borrowed",
       "borrow_apy": "Borrow APY",
       "deposit_apy": "Deposit APY",
@@ -148,7 +148,7 @@
       "claim_reward": "Claim rewards",
       "recent_loan": "Recent Loans",
       "reward_plan": "Reward plan",
-      "reward_plan--button": "Check out reward plan >",
+      "reward_plan--button": "Check reward plan >",
       "details": "Liquidity Details",
       "total_depositor": "# of deposits",
       "total_loans": "# of loans",
@@ -166,7 +166,7 @@
       "withdraw--button": "Withdraw",
       "max": "MAX",
       "deposit_available": "Deposit Available",
-      "total_deposit_yield": "Total Deposit Yield",
+      "total_deposit_yield": "Total Deposit Rates",
       "mining_apr": "Mining APR",
       "withdraw_availble": "Withdraw Available",
       "reserves_elyfi": "{{tokenName}} reserves in ELYFI",
@@ -259,7 +259,7 @@
     "governance": {
       "status": "Status",
       "title": "ELYFI Governance",
-      "content": "ELYFI is a DeFi protocol operated by a decentralized organization(DAO).\nAny ELFI token holder can participate in the operation of ELYFI as a member of the DAO and receive a share of the protocol net profit when staking ELFI.",
+      "content": "ELYFI is a DeFi protocol operated by a decentralized organization(DAO).\nAny ELFI token holder can participate in the operation of ELYFI as a member of the DAO.",
       "button--staking": "Go to stake ELFI",
       "button--governance_faq": "Governance FAQ",
       "graph": [
@@ -488,14 +488,14 @@
     },
     "lpstaking": {
       "lp_token_staking": "LP Token Staking",
-      "lp_token_staking__content": "Supply liquidity to the ELFI-ETH or ELFI-DAI pool and earn reward tokens!",
+      "lp_token_staking__content": "Supply liquidity to the ELFI-ETH or ELFI-DAI pool!",
       "lp_token_staking_title": "{{token0}}-{{token1}} LP",
       "lp_token_staking_modal": "{{token0}}-{{token1}} LP Token",
       "lp_token_staked": "{{token0}}-{{token1}} LP Staked",
       "lp_token_total_liquidity": "Total liquidity",
       "no_lp_token": "There are no LP tokens available for staking.",
       "receive_lp_token": "Get LP Token",
-      "receive_lp_token_content": "Supply liquidity to the {{token0}}-{{token1}} pool in Uniswap V3 and earn <strong>{{firstToken}}-{{secondToken}}</strong> LP tokens!",
+      "receive_lp_token_content": "Supply liquidity to the {{token0}}-{{token1}} pool in Uniswap V3 and earn <strong>{{token0}}-{{token1}}</strong> LP tokens!",
       "staked_lp_token": "Staked LP",
       "staked_lp_token_type": "LP Type",
       "liquidity": "Liquidity",
@@ -505,7 +505,7 @@
       "lp_staking_modal_default": "Please select the LP tokens to be staked.",
       "lp_tokens_held": "LP tokens held",
       "receive_reward": "Rewards receiving",
-      "reward_amount": "Amount of rewards",
+      "reward_amount": "Amounst of rewards",
       "round_staking": "{{round}} round staking"
     },
     "transaction": {
@@ -541,7 +541,7 @@
       "button": "Deposit | Withdraw",
       "coming_soon": "Coming Soon!",
       "info": "Details",
-      "total_deposit_yield": "Total Deposit Yield",
+      "total_deposit_yield": "Total Deposit Rates",
       "deposit_info": "Combines Deposit APY and Mining APR",
       "mining_apr": "Mining APR",
       "details": "Liquidity Details",
