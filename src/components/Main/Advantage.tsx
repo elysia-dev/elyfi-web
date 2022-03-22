@@ -26,21 +26,21 @@ const Advantage: React.FC<Props> = ({
       </h2>
       <div className="main__advantages__container">
         {[
-          [
-            Advantages00,
-            t('main.advantages.section.0.header'),
-            t('main.advantages.section.0.content'),
-          ],
+          // [
+          //   Advantages00,
+          //   t('main.advantages.section.0.header'),
+          //   t('main.advantages.section.0.content'),
+          // ],
           [
             Advantages01,
             t('main.advantages.section.1.header'),
             t('main.advantages.section.1.content'),
           ],
-          [
-            Advantages02,
-            t('main.advantages.section.2.header'),
-            t('main.advantages.section.2.content'),
-          ],
+          // [
+          //   Advantages02,
+          //   t('main.advantages.section.2.header'),
+          //   t('main.advantages.section.2.content'),
+          // ],
           [
             Advantages03,
             t('main.advantages.section.3.header'),

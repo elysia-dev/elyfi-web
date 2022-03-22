@@ -23,10 +23,10 @@ import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { roundForElfiV2Staking } from 'src/utiles/roundForElfiV2Staking';
+import Popupinfo from 'src/components/Popupinfo';
 import TxStatus from 'src/enums/TxStatus';
 import LoadingIndicator from './LoadingIndicator';
 import ModalHeader from './ModalHeader';
-import Popupinfo from '../Popupinfo';
 
 const MigrationModal: React.FunctionComponent<{
   visible: boolean;
