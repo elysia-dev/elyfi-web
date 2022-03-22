@@ -18,7 +18,7 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import TableBodyAmount from 'src/components/Deposit/TableBodyAmount';
-import { useContext } from 'react';
+import { lazy, useContext } from 'react';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
 import { daiMoneyPoolTime } from 'src/core/data/moneypoolTimes';
@@ -34,6 +34,8 @@ import priceMiddleware from 'src/middleware/priceMiddleware';
 import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 import useReserveData from 'src/hooks/useReserveData';
 import TableBodyEventReward from './TableBodyEventReward';
+
+const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
 interface Props {
   balance: BalanceType;
@@ -124,11 +126,11 @@ const TokenTable: React.FC<Props> = ({
           style={{ cursor: 'pointer' }}
           onClick={() => {
             history.push({
-              pathname: `/${lng}/deposit/${balance.tokenName}`,
+              pathname: `/${lng}/deposits/${balance.tokenName}`,
             });
           }}>
           <div className="deposit__table__header__token-info">
-            <img src={tokenInfo.image} alt="Token icon" />
+            <LazyImage src={tokenInfo.image} name="Token icon" />
             <p className="bold" style={{ cursor: 'pointer' }}>
               {balance.tokenName}
             </p>
@@ -299,7 +301,7 @@ const TokenTable: React.FC<Props> = ({
                 expectedAdditionalIncentiveAfter={
                   balance.expectedAdditionalIncentiveAfter
                 }
-                buttonEvent={(e: any) => {
+                buttonEvent={(e) => {
                   e.preventDefault();
                   setIncentiveModalVisible();
                   setModalNumber();
@@ -315,18 +317,20 @@ const TokenTable: React.FC<Props> = ({
             <div>
               <div>
                 <h2>{t('dashboard.recent_loan')}</h2>
-                <Link
-                  to={`/${lng}/deposit/${balance.tokenName}`}
-                  style={{
-                    display:
-                      assetBondTokensBackedByEstate.length === 0
-                        ? 'none'
-                        : 'block',
-                  }}>
-                  <div className="deposit__table__body__loan-list__button">
-                    <p>{t('main.governance.view-more')}</p>
-                  </div>
-                </Link>
+                {assetBondTokensBackedByEstate && (
+                  <Link
+                    to={`/${lng}/deposits/${balance.tokenName}`}
+                    style={{
+                      display:
+                        assetBondTokensBackedByEstate?.length === 0
+                          ? 'none'
+                          : 'block',
+                    }}>
+                    <div className="deposit__table__body__loan-list__button">
+                      <p>{t('main.governance.view-more')}</p>
+                    </div>
+                  </Link>
+                )}
               </div>
               {assetBondTokensBackedByEstate?.length === 0 ? (
                 <div className="loan__list--null" style={{ marginTop: 30 }}>

@@ -2,6 +2,8 @@ import { useEffect, useRef, useState, lazy, Suspense } from 'react';
 
 import DrawWave from 'src/utiles/drawWave';
 import Skeleton from 'react-loading-skeleton';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import MediaQuery from 'src/enums/MediaQuery';
 
 const Advantage = lazy(() => import('./Advantage'));
 const SectionEvent = lazy(() => import('./SectionEvent'));
@@ -13,16 +15,15 @@ const ShowingPopup = lazy(() => import('src/components/Popup'));
 
 const Main = (): JSX.Element => {
   const [popupVisible, setPopupVisible] = useState(false);
-
   const mainCanvasRef = useRef<HTMLCanvasElement>(null);
   const mainHeaderY = useRef<HTMLParagraphElement>(null);
   const mainHeaderMoblieY = useRef<HTMLParagraphElement>(null);
   const guideY = useRef<HTMLParagraphElement>(null);
-  const serviceGraphPageY = useRef<HTMLParagraphElement>(null);
   const auditPageY = useRef<HTMLParagraphElement>(null);
   const governancePageY = useRef<HTMLParagraphElement>(null);
   const governancePageBottomY = useRef<HTMLParagraphElement>(null);
-  
+  const { value: mediaQueryType } = useMediaQueryType();
+
   const draw = (isResize: boolean) => {
     const dpr = window.devicePixelRatio;
     const canvas: HTMLCanvasElement | null = mainCanvasRef.current;
@@ -30,7 +31,6 @@ const Main = (): JSX.Element => {
       !mainHeaderY.current ||
       !mainHeaderMoblieY.current ||
       !guideY.current ||
-      !serviceGraphPageY.current ||
       !auditPageY.current ||
       !governancePageY.current ||
       !governancePageBottomY.current
@@ -38,20 +38,28 @@ const Main = (): JSX.Element => {
       return;
     if (!canvas) return;
     canvas.width = document.body.clientWidth * dpr;
-    canvas.height = document.body.clientHeight * dpr + (isResize ? 0 : 500);
+    canvas.height = document.body.clientHeight * dpr;
     const browserWidth = canvas.width / dpr + 40;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     ctx.scale(dpr, dpr);
-    new DrawWave(ctx, browserWidth).drawOnMain(
-      mainHeaderY.current,
-      mainHeaderMoblieY.current,
-      guideY.current,
-      serviceGraphPageY.current,
-      auditPageY.current,
-      governancePageY.current,
-      isResize,
-    );
+    mediaQueryType === MediaQuery.Mobile
+      ? new DrawWave(ctx, browserWidth).drawMoblieOnMain(
+          mainHeaderY.current,
+          mainHeaderMoblieY.current,
+          guideY.current,
+          auditPageY.current,
+          governancePageY.current,
+          isResize,
+        )
+      : new DrawWave(ctx, browserWidth).drawOnMain(
+          mainHeaderY.current,
+          mainHeaderMoblieY.current,
+          guideY.current,
+          auditPageY.current,
+          governancePageY.current,
+          isResize,
+        );
   };
 
   useEffect(() => {
@@ -62,6 +70,10 @@ const Main = (): JSX.Element => {
       window.removeEventListener('resize', () => draw(true));
     };
   }, []);
+
+  useEffect(() => {
+    draw(false);
+  }, [governancePageBottomY.current]);
 
   return (
     <>
@@ -98,11 +110,11 @@ const Main = (): JSX.Element => {
             <Advantage guideY={guideY} />
           </Suspense>
         </section>
-        <section className="main__service main__section">
+        {/* <section className="main__service main__section">
           <Suspense fallback={<Skeleton width={"100%"} height={'100%'} />}>
             <Service serviceGraphPageY={serviceGraphPageY} />
           </Suspense>
-        </section>
+        </section> */}
         <section className="main__partners main__section">
           <Suspense fallback={<Skeleton width={"100%"} height={'100%'} />}>
             <Partners auditPageY={auditPageY} />
@@ -112,6 +124,7 @@ const Main = (): JSX.Element => {
           <MainGovernanceTable
             governancePageY={governancePageY}
             governancePageBottomY={governancePageBottomY}
+            draw={draw}
           />
         </Suspense>
       </div>

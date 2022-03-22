@@ -4,9 +4,8 @@ import {
   useEffect,
   useState,
   useRef,
-  useContext,
-  Suspense,
   lazy,
+  Suspense
 } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import TempAssets from 'src/assets/images/temp_assets.png';
@@ -21,10 +20,10 @@ import CollateralLogo from 'src/assets/images/ELYFI.png';
 import Slate from 'src/clients/Slate';
 import ReserveData from 'src/core/data/reserves';
 import envs from 'src/core/envs';
-import Loading from 'src/components/Loading';
-import SubgraphContext, { IAssetBond } from 'src/contexts/SubgraphContext';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
+import useReserveData from 'src/hooks/useReserveData';
+import { IAssetBond } from 'src/core/types/reserveSubgraph';
 import Skeleton from 'react-loading-skeleton';
 
 const LazyImage = lazy(() => import("src/utiles/lazyImage"));
@@ -34,11 +33,11 @@ const CollateralizedInfo = lazy(() => import("src/components/Portfolio/Collatera
 
 const PortfolioDetail: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
-  const { data: tokenData } = useContext(SubgraphContext);
+  const { reserveState } = useReserveData();
   const { t } = useTranslation();
   const { lng: language } = useParams<{ lng: LanguageType }>();
 
-  const assetBondTokens = tokenData.reserves.reduce((arr, reserve) => {
+  const assetBondTokens = reserveState.reserves.reduce((arr, reserve) => {
     return [...arr, ...reserve.assetBondTokens];
   }, [] as IAssetBond[]);
 
@@ -67,11 +66,10 @@ const PortfolioDetail: FunctionComponent = () => {
   );
   const history = useHistory();
 
-  const blockExplorerUrls = 
-    tokenInfo?.tokenizer === envs.tokenizer.busdTokenizerAddress ? 
-      envs.externalApiEndpoint.bscscanURI 
-      : 
-      envs.externalApiEndpoint.etherscanURI;
+  const blockExplorerUrls =
+    tokenInfo?.tokenizer === envs.tokenizer.busdTokenizerAddress
+      ? envs.externalApiEndpoint.bscscanURI
+      : envs.externalApiEndpoint.etherscanURI;
 
   const loadAddress = async (
     lat: number,
@@ -85,7 +83,7 @@ const PortfolioDetail: FunctionComponent = () => {
 
     loadAddress(lat, lng, language);
   }, [lat, lng, language]);
-
+  
   const loadContractImage = async (ipfs: string) => {
     try {
       const response = await Slate.fetctABTokenIpfs(ipfs);
@@ -127,43 +125,6 @@ const PortfolioDetail: FunctionComponent = () => {
     }
   }, [abToken]);
 
-  if (!tokenInfo || !abToken)
-    return (
-      <div
-        style={{
-          height: '100vh',
-        }}>
-        {' '}
-        <Loading />
-      </div>
-    );
-
-  const divStyle = useMemo(
-    () => ({
-      color: '#888888',
-      fontSize: mediaQuery === MediaQuery.PC ? '15px' : '12px',
-      letterSpacing: -0.5
-    }),
-    [mediaQuery],
-  );
-
-  const AddressCopy = (add: string | undefined) => {
-    if (!document.queryCommandSupported('copy')) {
-      return alert('This browser does not support the copy function.');
-    }
-    if (add === undefined) {
-      return alert('There was a problem reading the ABToken.');
-    } else {
-      const area = document.createElement('textarea');
-      area.value = add;
-      document.body.appendChild(area);
-      area.select();
-      document.execCommand('copy');
-      document.body.removeChild(area);
-      alert('Copied!!');
-    }
-  };
-
   return (
     <>
       <img
@@ -189,71 +150,68 @@ const PortfolioDetail: FunctionComponent = () => {
         <div className="detail__header">
           <h2 ref={depositRef}>{t('loan.loan__info')}</h2>
         </div>
-        <div className="portfolio__borrower">
-          <h2 className="portfolio__borrower__title">
-            {t('loan.borrower__info')}
-          </h2>
-          <Suspense fallback={<Skeleton width={"100%"} height={"100%"} />}>
-            <BorrowInfo
-              collateralLogo={CollateralLogo}
-              parsedTokenId={parsedTokenId}
-              abToken={abToken}
-              blockExplorerUrls={blockExplorerUrls}
-              tokenInfo={tokenInfo}
-            />
-          </Suspense>
-        </div>
-        <div className="portfolio__collateral">
-          <h2>{t('loan.collateral_nft__details')}</h2>
-          <div className="portfolio__collateral__data">
-            <div className="portfolio__collateral__data--left">
-              <Suspense fallback={<Skeleton width="538" height="526" />} >
-                <a
-                  href={`https://www.google.com/maps/place/${address}/@${lat},${lng},18.12z`}
-                  rel="noopener noreferer"
-                  target="_blank"
-                  style={{
-                    cursor: 'pointer',
-                  }}>
-                  <LazyImage
-                    style={{
-                      width: 538.5,
-                      height: 526,
-                    }}
-                    src={contractImage[3]?.link || TempAssets}
-                    name={contractImage[3]?.link || TempAssets}
-                  />
-                </a>
-              </Suspense>
-              {/* <GoogleMapReact
-                  bootstrapURLKeys={{
-                    key: process.env.REACT_APP_GOOGLE_MAP_API_KEY!,
-                  }}
-                  defaultCenter={{
-                    lat,
-                    lng,
-                  }}
-                  defaultZoom={15}>
-                  <Marker lat={lat} lng={lng} />
-                </GoogleMapReact> */}
-            </div>
-            <div className="portfolio__collateral__data--right">
-              <Suspense fallback={<div style={{display: 'block', width: "100%"}}><Skeleton width={"100%"} height={"100%"} /></div>}>
-                <CollateralizedInfo 
+
+        {!(!tokenInfo || !abToken) ? (
+          <>
+            <div className="portfolio__borrower">
+              <h2 className="portfolio__borrower__title">
+                {t('loan.borrower__info')}
+              </h2>
+              <Suspense fallback={<Skeleton width={"100%"} height={"100%"} />}>
+                <BorrowInfo
+                  collateralLogo={CollateralLogo}
+                  parsedTokenId={parsedTokenId}
                   abToken={abToken}
                   blockExplorerUrls={blockExplorerUrls}
                   tokenInfo={tokenInfo}
-                  parsedTokenId={parsedTokenId}
-                  address={address}
-                  contractImage={contractImage}
                   mediaQuery={mediaQuery}
-                  lat={lat}
-                  lng={lng}
                 />
               </Suspense>
             </div>
-          </div>
-        </div>
+            <div className="portfolio__collateral">
+              <h2>{t('loan.collateral_nft__details')}</h2>
+              <div className="portfolio__collateral__data">
+                <div className="portfolio__collateral__data--left">
+                  <Suspense fallback={<Skeleton width="538" height="526" />} >
+                    <a
+                      href={`https://www.google.com/maps/place/${address}/@${lat},${lng},18.12z`}
+                      rel="noopener noreferer"
+                      target="_blank"
+                      style={{
+                        cursor: 'pointer',
+                      }}>
+                      <LazyImage
+                        style={{
+                          width: 538.5,
+                          height: 526,
+                        }}
+                        src={contractImage[3]?.link || TempAssets}
+                        name={contractImage[3]?.link || TempAssets}
+                      />
+                    </a>
+                  </Suspense>
+                </div>
+                <div className="portfolio__collateral__data--right">
+                  <Suspense fallback={<div style={{display: 'block', width: "100%"}}><Skeleton width={"100%"} height={"100%"} /></div>}>
+                    <CollateralizedInfo 
+                      abToken={abToken}
+                      blockExplorerUrls={blockExplorerUrls}
+                      tokenInfo={tokenInfo}
+                      parsedTokenId={parsedTokenId}
+                      address={address}
+                      contractImage={contractImage}
+                      mediaQuery={mediaQuery}
+                      lat={lat}
+                      lng={lng}
+                    />
+                  </Suspense>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <Skeleton width={'100%'} height={1000} />
+        )}
       </div>
     </>
   );

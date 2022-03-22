@@ -6,7 +6,6 @@ import Token from "src/enums/Token";
 import StakingProgress from 'src/components/Staking/StakingProgress';
 
 
-
 interface Props {
   roundInProgress: number,
   stakingRoundDate: IStakingPoolRound[],
@@ -21,9 +20,9 @@ interface Props {
   expectedReward: {
     before: BigNumber;
     value: BigNumber;
-  }
+  },
+  setIsUnstaking: () => void;
 }
-
 
 const CurrentStakingSelectBox: React.FC<Props> = ({
   roundInProgress,
@@ -36,7 +35,8 @@ const CurrentStakingSelectBox: React.FC<Props> = ({
   setModalValue,
   currentRound,
   expectedReward,
-  isWrongMainnet
+  isWrongMainnet,
+  setIsUnstaking
 }) => {
 
   return (
@@ -54,6 +54,7 @@ const CurrentStakingSelectBox: React.FC<Props> = ({
           setModalValue={setModalValue}
           setRoundModal={setRoundModal}
           isWrongMainnet={isWrongMainnet}
+          setIsUnstaking={setIsUnstaking}
         />
       )
     }

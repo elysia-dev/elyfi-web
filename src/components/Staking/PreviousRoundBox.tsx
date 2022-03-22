@@ -16,6 +16,7 @@ interface Props {
   setModalType: Dispatch<SetStateAction<string>>,
   setRoundModal: Dispatch<SetStateAction<number>>,
   setModalValue: Dispatch<SetStateAction<BigNumber>>
+  setIsUnstaking: () => void;
 }
 
 const PreviousRoundBox: React.FC<Props> = ({
@@ -26,7 +27,8 @@ const PreviousRoundBox: React.FC<Props> = ({
   roundInProgress,
   setModalType,
   setRoundModal,
-  setModalValue
+  setModalValue,
+  setIsUnstaking
 }) => {
   const current = moment();
 
@@ -49,6 +51,7 @@ const PreviousRoundBox: React.FC<Props> = ({
               setModalType={setModalType}
               setRoundModal={setRoundModal}
               setModalValue={setModalValue}
+              setIsUnstaking={setIsUnstaking}
             />
           );
         }

@@ -12,7 +12,7 @@ import { isEthElfiPoolAddress } from 'src/core/utils/getAddressesByPool';
 import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
 import Guide from 'src/components/Guide';
-import SelectWalletModal from 'src/components/SelectWalletModal';
+import SelectWalletModal from 'src/components/Modal/SelectWalletModal';
 import StakedLpItem from './StakedLpItem';
 
 const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {

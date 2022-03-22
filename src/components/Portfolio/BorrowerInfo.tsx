@@ -2,15 +2,14 @@ import { lazy, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import moment from 'moment';
 import MediaQuery from "src/enums/MediaQuery";
-import useMediaQueryType from "src/hooks/useMediaQueryType";
 import Guide from 'src/components/Guide';
 import { AssetBondIdData } from 'src/utiles/parseTokenId';
 import LoanStatus from 'src/enums/LoanStatus';
 import toLoanStatus from 'src/utiles/toLoanStatus';
-import { IAssetBond } from "src/contexts/SubgraphContext";
 import { IReserve } from "src/core/data/reserves";
 import { toUsd, toPercent } from 'src/utiles/formatters';
 import maturityFormmater from 'src/utiles/maturityFormmater';
+import { IAssetBond } from 'src/core/types/reserveSubgraph';
 
 const LazyImage = lazy(() => import("src/utiles/lazyImage"));
 
@@ -19,7 +18,8 @@ interface Props {
   parsedTokenId: AssetBondIdData,
   abToken: IAssetBond,
   blockExplorerUrls: string,
-  tokenInfo: IReserve
+  tokenInfo: IReserve,
+  mediaQuery: MediaQuery
 }
 
 const BorrowInfo: React.FC<Props> = ({
@@ -27,10 +27,10 @@ const BorrowInfo: React.FC<Props> = ({
   parsedTokenId,
   abToken,
   blockExplorerUrls,
-  tokenInfo
+  tokenInfo,
+  mediaQuery
 }) => {
   const { t } = useTranslation();
-  const { value: mediaQuery } = useMediaQueryType();
 
   const divStyle = useMemo(
     () => ({
@@ -60,8 +60,12 @@ const BorrowInfo: React.FC<Props> = ({
             target="_blank"
             rel="noopener noreferer">
             <p className="link">
-              {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(0, 8)}{' '}
-              ... {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(-8)}
+              {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(
+                0,
+                8,
+              )}{' '}
+              ...{' '}
+              {'0x9FCdc09bF1e0f933e529325Ac9D24f56034d8eD7'.slice(-8)}
             </p>
           </a>
         </div>
@@ -84,7 +88,9 @@ const BorrowInfo: React.FC<Props> = ({
                 )} \n ${t('portfolio.infomation_popup.5')}`}
               />
             </div>
-            <p>{t(`words.${LoanStatus[toLoanStatus(abToken.state)]}`)}</p>
+            <p>
+              {t(`words.${LoanStatus[toLoanStatus(abToken.state)]}`)}
+            </p>
           </div>
           <div>
             <p>{t('loan.receiving_address')}</p>
@@ -104,7 +110,9 @@ const BorrowInfo: React.FC<Props> = ({
           </div>
           <div>
             <p>{t('loan.loan__borrowed')}</p>
-            <p>{toUsd(abToken?.principal || '0', tokenInfo.decimals)}</p>
+            <p>
+              {toUsd(abToken?.principal || '0', tokenInfo.decimals)}
+            </p>
           </div>
         </div>
 

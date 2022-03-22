@@ -1,12 +1,10 @@
 import { reserveTokenData } from 'src/core/data/reserves';
-import { useContext, useState, useMemo, lazy } from 'react';
+import { useContext, useState, useMemo, lazy, Suspense } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import envs from 'src/core/envs';
-import { toPercent } from 'src/utiles/formatters';
 import { BigNumber, constants } from 'ethers';
 import { GET_USER } from 'src/queries/userQueries';
 import { useTranslation } from 'react-i18next';
-import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import ReactGA from 'react-ga';
 
 import ModalViewType from 'src/enums/ModalViewType';
@@ -14,7 +12,6 @@ import { useMediaQuery } from 'react-responsive';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { MainnetData } from 'src/core/data/mainnets';
 import getIncentivePoolAddress from 'src/core/utils/getIncentivePoolAddress';
-import scrollToOffeset from 'src/core/utils/scrollToOffeset';
 import useBalances from 'src/hooks/useBalances';
 import { useWeb3React } from '@web3-react/core';
 import useCurrentChain from 'src/hooks/useCurrentChain';
@@ -147,66 +144,72 @@ const Dashboard: React.FunctionComponent = () => {
   return (
     <>
       {reserveData && selectedBalance && (
-        <DepositOrWithdrawModal
-          reserve={reserveData}
-          userData={
-            getMainnetType === MainnetType.BSC
-              ? bscUserConnection?.user
-              : ethUserConnection?.user
-          }
-          tokenName={selectedBalance.tokenName}
-          tokenImage={reserveTokenData[selectedBalance.tokenName].image}
-          visible={!!reserveData}
-          onClose={() => {
-            setReserveData(undefined);
-            setTransactionWait(false);
-          }}
-          balance={selectedBalance.value}
-          depositBalance={BigNumber.from(selectedBalance.deposit)}
-          afterTx={() => loadBalance(selectedBalanceId)}
-          transactionModal={() => setTransactionModal(true)}
-          round={round}
-          transactionWait={transactionWait}
-          setTransactionWait={() => setTransactionWait(true)}
-          disableTransactionWait={() => setTransactionWait(false)}
-        />
+        <Suspense fallback={null}>
+          <DepositOrWithdrawModal
+            reserve={reserveData}
+            userData={
+              getMainnetType === MainnetType.BSC
+                ? bscUserConnection?.user
+                : ethUserConnection?.user
+            }
+            tokenName={selectedBalance.tokenName}
+            tokenImage={reserveTokenData[selectedBalance.tokenName].image}
+            visible={!!reserveData}
+            onClose={() => {
+              setReserveData(undefined);
+              setTransactionWait(false);
+            }}
+            balance={selectedBalance.value}
+            depositBalance={BigNumber.from(selectedBalance.deposit)}
+            afterTx={() => loadBalance(selectedBalanceId)}
+            transactionModal={() => setTransactionModal(true)}
+            round={round}
+            transactionWait={transactionWait}
+            setTransactionWait={() => setTransactionWait(true)}
+            disableTransactionWait={() => setTransactionWait(false)}
+          />
+        </Suspense>
       )}
       {selectedBalance && selectedReserve && (
-        <IncentiveModal
-          visible={incentiveModalVisible}
-          onClose={() => {
-            setIncentiveModalVisible(false);
-            setTransactionWait(false);
-          }}
-          balanceBefore={
-            round === 1
-              ? selectedBalance.expectedIncentiveBefore
-              : selectedBalance.expectedAdditionalIncentiveBefore
-          }
-          balanceAfter={
-            round === 1
-              ? selectedBalance.expectedIncentiveAfter
-              : selectedBalance.expectedAdditionalIncentiveAfter
-          }
-          incentivePoolAddress={getIncentivePoolAddress(
-            round,
-            selectedBalance.tokenName,
-          )}
-          tokenName={selectedBalance.tokenName}
-          afterTx={() => loadBalance(selectedBalanceId)}
-          transactionModal={() => setTransactionModal(true)}
-          transactionWait={transactionWait}
-          setTransactionWait={() => setTransactionWait(true)}
-        />
+        <Suspense fallback={null}>
+          <IncentiveModal
+            visible={incentiveModalVisible}
+            onClose={() => {
+              setIncentiveModalVisible(false);
+              setTransactionWait(false);
+            }}
+            balanceBefore={
+              round === 1
+                ? selectedBalance.expectedIncentiveBefore
+                : selectedBalance.expectedAdditionalIncentiveBefore
+            }
+            balanceAfter={
+              round === 1
+                ? selectedBalance.expectedIncentiveAfter
+                : selectedBalance.expectedAdditionalIncentiveAfter
+            }
+            incentivePoolAddress={getIncentivePoolAddress(
+              round,
+              selectedBalance.tokenName,
+            )}
+            tokenName={selectedBalance.tokenName}
+            afterTx={() => loadBalance(selectedBalanceId)}
+            transactionModal={() => setTransactionModal(true)}
+            transactionWait={transactionWait}
+            setTransactionWait={() => setTransactionWait(true)}
+          />
+        </Suspense>
       )}
-      <TransactionConfirmModal
-        visible={transactionModal}
-        closeHandler={() => {
-          setTransactionModal(false);
-        }}
-      />
+      <Suspense fallback={null}>
+        <TransactionConfirmModal
+          visible={transactionModal}
+          closeHandler={() => {
+            setTransactionModal(false);
+          }}
+        />
+      </Suspense>
       {isModals && (
-        <>
+        <Suspense fallback={null}>
           <NetworkChangeModal
             visible={unsupportedChainid}
             closeHandler={() => {
@@ -239,62 +242,22 @@ const Dashboard: React.FunctionComponent = () => {
               setIsModals(false);
             }}
           />
-        </>
+        </Suspense>
       )}
 
       <div className="deposit">
-        <TvlCounter />
-        <RewardPlanButton stakingType={'deposit'} />
+        <Suspense fallback={<Skeleton width={"100%"} height={300} />}>
+          <TvlCounter />
+        </Suspense>
+        <Suspense fallback={<Skeleton width={"100%"} height={20} />}>
+          <RewardPlanButton stakingType={'deposit'} isStaking={false} />
+        </Suspense>
         <div className="deposit__table__wrapper">
           {isEnoughWide && (
             <div className="deposit__remote-control__wrapper">
-              <div className="deposit__remote-control">
-                {supportedBalances.map((balance, index) => {
-                  const reserve = reserveState.reserves.find(
-                    (d) => d.id === balance.id,
-                  );
-
-                  if (!reserve) return <></>;
-
-                  return (
-                    <a onClick={() => scrollToOffeset(`table-${index}`, 678)}>
-                      <div>
-                        <div className="deposit__remote-control__images">
-                          <img
-                            src={reserveTokenData[balance.tokenName].image}
-                          />
-                        </div>
-                        <div className="deposit__remote-control__name">
-                          <p className="montserrat">{balance.tokenName}</p>
-                        </div>
-                        <p className="deposit__remote-control__apy bold">
-                          {reserve.depositAPY ? (
-                            toPercent(reserve.depositAPY)
-                          ) : (
-                            <Skeleton width={50} height={20} />
-                          )}
-                        </p>
-                        <div className="deposit__remote-control__mining">
-                          <p>{t('dashboard.token_mining_apr')}</p>
-                          {priceData && reserve.totalDeposit ? (
-                            <p>
-                              {toPercent(
-                                calcMiningAPR(
-                                  priceData.elfiPrice,
-                                  BigNumber.from(reserve.totalDeposit || 0),
-                                  reserveTokenData[balance.tokenName].decimals,
-                                ) || '0',
-                              )}
-                            </p>
-                          ) : (
-                            <Skeleton width={50} height={13} />
-                          )}
-                        </div>
-                      </div>
-                    </a>
-                  );
-                })}
-              </div>
+              <Suspense fallback={<Skeleton width={120} height={180} style={{ position: 'fixed' }} />}>
+                <RemoteControl reserveState={reserveState} priceData={priceData} supportedBalances={supportedBalances} />
+              </Suspense>
             </div>
           )}
 

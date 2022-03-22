@@ -12,6 +12,7 @@ import { useWeb3React } from '@web3-react/core';
 import { constants } from 'ethers';
 import Skeleton from 'react-loading-skeleton';
 import moment from 'moment';
+
 import { roundTimes } from 'src/core/data/stakingRoundTimes';
 import Token from 'src/enums/Token';
 import { useTranslation, Trans } from 'react-i18next';
@@ -66,7 +67,7 @@ const Staking: React.FunctionComponent<IProps> = ({
   stakedToken,
   rewardToken,
 }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const current = moment();
   const { account } = useWeb3React();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -100,7 +101,7 @@ const Staking: React.FunctionComponent<IProps> = ({
   );
 
   const [modalType, setModalType] = useState('');
-
+  const [isUnstaking, setIsUnstaking] = useState(true);
   const modalVisible = useCallback(
     (type: StakingModalType) => {
       return modalType === type;
@@ -164,15 +165,7 @@ const Staking: React.FunctionComponent<IProps> = ({
     if (!ctx) return;
     ctx.scale(dpr, dpr);
 
-    if (mediaQuery === MediaQuery.Mobile) {
-      new DrawWave(ctx, browserWidth).drawMobileOnPages(
-        headerY,
-        TokenColors.ELFI,
-        browserHeight,
-        true,
-      );
-      return;
-    }
+    if (mediaQuery === MediaQuery.Mobile) return;
 
     new DrawWave(ctx, browserWidth).drawOnPages(
       headerY,
@@ -313,6 +306,7 @@ const Staking: React.FunctionComponent<IProps> = ({
               transactionWait={transactionWait}
               setTransactionWait={() => setTransactionWait(true)}
               disableTransactionWait={() => setTransactionWait(false)}
+              isUnstaking={isUnstaking}
             />
             <MigrationModal
               visible={modalVisible(StakingModalType.Migration)}
@@ -378,7 +372,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           <>
             <p>
               {stakedToken === Token.EL
-                ? t('staking.el.staking__content')
+                ? ''
                 : t('staking.elfi.staking__content')}
             </p>
             {getMainnetType === MainnetType.Ethereum ? (
@@ -462,7 +456,10 @@ const Staking: React.FunctionComponent<IProps> = ({
                         rewardToken,
                       })}
                     </p>
-                    <RewardPlanButton stakingType={stakedToken} />
+                    <RewardPlanButton
+                      stakingType={stakedToken}
+                      isStaking={true}
+                    />
                   </div>
                 </>
               ) : (
@@ -478,7 +475,10 @@ const Staking: React.FunctionComponent<IProps> = ({
                         })}
                       </h2>
                     </div>
-                    <RewardPlanButton stakingType={stakedToken} />
+                    <RewardPlanButton
+                      stakingType={stakedToken}
+                      isStaking={true}
+                    />
                   </div>
                   <div className="staking__title__content">
                     <p>
@@ -526,6 +526,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                           setModalType={setModalType}
                           setRoundModal={setRoundModal}
                           setModalValue={setModalValue}
+                          setIsUnstaking={() => setIsUnstaking(false)}
                         />
                       </Suspense>
                     </section>
@@ -543,6 +544,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                           isWrongMainnet={isWrongMainnet}
                           currentRound={currentRound}
                           expectedReward={expectedReward}
+                          setIsUnstaking={() => setIsUnstaking(true)}
                         />
                       </Suspense>
                     </section>
