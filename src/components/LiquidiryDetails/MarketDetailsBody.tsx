@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Circle } from 'src/components/Circle';
+import { Circle } from 'src/components/LiquidiryDetails/Circle';
 import MediaQuery from "src/enums/MediaQuery";
 import useMediaQueryType from "src/hooks/useMediaQueryType";
 import Defi001 from 'src/assets/images/defi_001.png';
