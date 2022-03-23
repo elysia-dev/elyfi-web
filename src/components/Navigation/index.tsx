@@ -21,11 +21,11 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
-import ErrorModal from './ErrorModal';
+import ErrorModal from '../Modal/ErrorModal';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
-const MainnetSwitch = lazy(() => import('src/components/MainnetSwitch'));
-const Wallet = lazy(() => import('src/components/Wallet'));
+const MainnetSwitch = lazy(() => import('src/components/Navigation/MainnetSwitch'));
+const Wallet = lazy(() => import('src/components/Navigation/Wallet'));
 
 const InitialNavigation: INavigation[] = [
   {

@@ -5,15 +5,15 @@ import Davatar from '@davatar/react';
 import TxContext from 'src/contexts/TxContext';
 import TxStatus from 'src/enums/TxStatus';
 import { useENS } from 'src/hooks/useENS';
-import AccountModal from 'src/components/AccountModal';
+import AccountModal from 'src/components/Modal/AccountModal';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetError from 'src/assets/images/network_error.png';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import { isMoblie } from 'src/utiles/connectWallet';
 import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
-import NetworkChangeModal from './NetworkChangeModal';
-import SelectWalletModal from './SelectWalletModal';
-import WalletDisconnect from './WalletDisconnect';
+import NetworkChangeModal from '../Modal/NetworkChangeModal';
+import SelectWalletModal from '../Modal/SelectWalletModal';
+import WalletDisconnect from '../Modal/WalletDisconnect';
 
 const Wallet = (): JSX.Element => {
   const { account, chainId, active } = useWeb3React();
