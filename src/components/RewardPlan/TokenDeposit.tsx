@@ -1,4 +1,4 @@
-import { Dispatch, FunctionComponent, SetStateAction, useContext } from 'react';
+import { Dispatch, FunctionComponent, lazy, SetStateAction, Suspense, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import useSWR from 'swr';
 import envs from 'src/core/envs';
@@ -18,6 +18,9 @@ import Skeleton from 'react-loading-skeleton';
 import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
 import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
 import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
+import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
+
+const LazyImage = lazy(() => import('src/utiles/lazyImage'))
 
 interface Props {
   reserve: IReserveSubgraphData;
@@ -77,9 +80,10 @@ const TokenDeposit: FunctionComponent<Props> = ({
     <>
       <div className="reward__token-deposit">
         <div className="reward__token-deposit__header">
+          <Suspense fallback={<FallbackSkeleton />}>
           {mediaQuery === MediaQuery.PC ? (
             <>
-              <img src={reserveTokenData[token].image} alt="Token image" />
+              <LazyImage src={reserveTokenData[token].image} name="Token image" />
               <div>
                 <div>
                   <p className="bold">
@@ -98,7 +102,7 @@ const TokenDeposit: FunctionComponent<Props> = ({
           ) : (
             <>
               <div>
-                <img src={reserveTokenData[token].image} alt="Token image" />
+                <LazyImage src={reserveTokenData[token].image} name="Token image" />
                 <h2>
                   {t('dashboard.token_deposit', {
                     Token: reserveTokenData[token].name,
@@ -112,6 +116,7 @@ const TokenDeposit: FunctionComponent<Props> = ({
               </p>
             </>
           )}
+          </Suspense>
         </div>
         <div className="reward__token-deposit__apy">
           {mediaQuery === MediaQuery.PC ? (

@@ -25,9 +25,9 @@ import Token from 'src/enums/Token';
 import ReserveToken from 'src/core/types/ReserveToken';
 import MainnetType from 'src/enums/MainnetType';
 import request from 'graphql-request';
+import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
-import TokenTable from 'src/components/Deposit/TokenTable';
-
+const TokenTable = lazy(() => import('src/components/Deposit/TokenTable'));
 const TransactionConfirmModal = lazy(() => import('src/components/Modal/TransactionConfirmModal'))
 const IncentiveModal = lazy(() => import('src/components/Modal/IncentiveModal'))
 const ConnectWalletModal = lazy(() => import('src/components/Modal/ConnectWalletModal'))
@@ -260,48 +260,49 @@ const Dashboard: React.FunctionComponent = () => {
               </Suspense>
             </div>
           )}
+          <Suspense fallback={<FallbackSkeleton height={400} />}>
+            {supportedBalances.map((balance, index) => {
+              const reserve = reserveState.reserves.find(
+                (d) => d.id === balance.id,
+              );
 
-          {supportedBalances.map((balance, index) => {
-            const reserve = reserveState.reserves.find(
-              (d) => d.id === balance.id,
-            );
-
-            return (
-              <TokenTable
-                key={index}
-                id={`table-${index}`}
-                balance={balance}
-                onClick={(e: any) => {
-                  if (!isWrongMainnet && account && !unsupportedChainid) {
-                    e.preventDefault();
-                    setReserveData(reserve);
-                    selectBalanceId(balance.id);
+              return (
+                <TokenTable
+                  key={index}
+                  id={`table-${index}`}
+                  balance={balance}
+                  onClick={(e: any) => {
+                    if (!isWrongMainnet && account && !unsupportedChainid) {
+                      e.preventDefault();
+                      setReserveData(reserve);
+                      selectBalanceId(balance.id);
+                      ReactGA.modalview(
+                        balance.tokenName + ModalViewType.DepositOrWithdrawModal,
+                      );
+                      return;
+                    }
+                    setIsModals(true);
+                  }}
+                  reserveData={reserve}
+                  setIncentiveModalVisible={() => {
+                    if (!isWrongMainnet && account && !unsupportedChainid) {
+                      setIncentiveModalVisible(true);
+                      return;
+                    }
+                    setIsModals(true);
+                  }}
+                  setModalNumber={() => selectBalanceId(balance.id)}
+                  modalview={() =>
                     ReactGA.modalview(
-                      balance.tokenName + ModalViewType.DepositOrWithdrawModal,
-                    );
-                    return;
+                      balance.tokenName + ModalViewType.IncentiveModal,
+                    )
                   }
-                  setIsModals(true);
-                }}
-                reserveData={reserve}
-                setIncentiveModalVisible={() => {
-                  if (!isWrongMainnet && account && !unsupportedChainid) {
-                    setIncentiveModalVisible(true);
-                    return;
-                  }
-                  setIsModals(true);
-                }}
-                setModalNumber={() => selectBalanceId(balance.id)}
-                modalview={() =>
-                  ReactGA.modalview(
-                    balance.tokenName + ModalViewType.IncentiveModal,
-                  )
-                }
-                setRound={setRound}
-                loading={loading}
-              />
-            );
-          })}
+                  setRound={setRound}
+                  loading={loading}
+                />
+              );
+            })}
+          </Suspense>
         </div>
       </div>
     </>

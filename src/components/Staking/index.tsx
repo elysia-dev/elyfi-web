@@ -41,6 +41,7 @@ import Wormhole from 'src/assets/images/staking/wormhole@2x.svg';
 import Uniswap from 'src/assets/images/staking/uniswap@2x.svg';
 import elfi from 'src/assets/images/token/ELFI.svg';
 import el from 'src/assets/images/token/el.svg';
+import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
 const ClaimDisableModal = lazy(() => import('src/components/Modal/ClaimDisableModal'));
 const MigrationDisableModal = lazy(() => import('src/components/Modal/MigrationDisableModal'));
@@ -506,7 +507,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                   )}
                   <div className="staking__round__container">
                     <section className="staking__round__current-data">
-                      <Suspense fallback={<div style={{display: 'block', width: "100%"}}><Skeleton width={"100%"} height={"100%"} /></div>}>
+                      <Suspense fallback={<FallbackSkeleton height={100} />}>
                         <CurrentRoundBox
                           currentPhase={currentPhase}
                           mediaQuery={mediaQuery}
@@ -516,7 +517,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                       </Suspense>
                     </section>
                     <section className="staking__round__previous__wrapper">
-                      <Suspense fallback={<div style={{display: 'block', width: "100%"}}><Skeleton width={"100%"} height={"100%"} /></div>}>
+                      <Suspense fallback={<FallbackSkeleton height={200} />}>
                         <PreviousRoundBox 
                           roundData={roundData}
                           stakingRoundDate={stakingRoundDate}
@@ -531,7 +532,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                       </Suspense>
                     </section>
                     <section>
-                      <Suspense fallback={<div style={{display: 'block', width: "100%"}}><Skeleton width={"100%"} height={"100%"} /></div>}>
+                      <Suspense fallback={<FallbackSkeleton height={100} />}>
                         <CurrentStakingSelectBox 
                           roundInProgress={roundInProgress}
                           stakingRoundDate={stakingRoundDate}

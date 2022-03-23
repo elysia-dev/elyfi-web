@@ -4,7 +4,7 @@ import reactGA from 'react-ga';
 import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
 import { useTranslation } from "react-i18next";
-import Skeleton from "react-loading-skeleton";
+import FallbackSkeleton from "src/utiles/FallbackSkeleton";
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
@@ -28,7 +28,7 @@ const OffChainContainer: React.FC<Props> = ({
         });
         window.open(data.link);
       }}>
-      <Suspense fallback={<Skeleton width={"100%"} height={"100%"} />}>
+      <Suspense fallback={<FallbackSkeleton width={"100%"} height={300} />}>
         <div>
           <LazyImage src={`https://${data.images}`} name="container-images" />
         </div>

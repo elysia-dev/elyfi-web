@@ -10,7 +10,6 @@ import {
   onChainFetcher,
 } from 'src/clients/OnChainTopic';
 import { topicListFetcher } from 'src/clients/OffChainTopic';
-import AssetList from 'src/components/AssetList';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import DrawWave from 'src/utiles/drawWave';
@@ -27,12 +26,14 @@ import { offChainGovernanceMiddleware } from 'src/middleware/offChainMiddleware'
 import { onChainQuery } from 'src/queries/onChainQuery';
 import useReserveData from 'src/hooks/useReserveData';
 import { IAssetBond } from 'src/core/types/reserveSubgraph';
+import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
 const OffchainHeader = lazy(() => import('./OffchainHeader'))
 const OnchainHeader = lazy(() => import('./OnchainHeader'));
 const Header = lazy(() => import('./Header'));
 const OffChainContainer = lazy(() => import('src/components/Governance/OffchainContainer'));
 const OnchainContainer = lazy(() => import('src/components/Governance/OnchainContainer'));
+const AssetList = lazy(() => import('src/components/AssetList'));
 
 const Governance = (): JSX.Element => {
   const [pageNumber, setPageNumber] = useState(1);
@@ -232,7 +233,7 @@ const Governance = (): JSX.Element => {
         </section>
 
         <section className="governance__loan governance__header">
-          <>
+          <Suspense fallback={<FallbackSkeleton />}>
             <div>
               <div>
                 <h3>
@@ -287,7 +288,7 @@ const Governance = (): JSX.Element => {
                 </>
               )}
             </>
-          </>
+          </Suspense>
         </section>
       </div>
     </>

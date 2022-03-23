@@ -9,6 +9,7 @@ import { utils } from "ethers";
 
 import TempAssets from 'src/assets/images/governance/temp_assets.svg';
 import Skeleton from "react-loading-skeleton";
+import FallbackSkeleton from "src/utiles/FallbackSkeleton";
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
@@ -34,7 +35,7 @@ const OnChainContainer: React.FC<Props> = ({
         });
         window.open(`${t('governance.link.tally')}/proposal/${data.id}`);
       }}>
-      <Suspense fallback={<Skeleton width={"100%"} height={"100%"} />}>
+      <Suspense fallback={<FallbackSkeleton width={"100%"} height={300} />}>
         <div>
           <LazyImage
             name="Asset-image"

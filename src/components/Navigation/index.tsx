@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useMemo, useContext, lazy, Suspense } from
 import { Link, useLocation, useParams } from 'react-router-dom';
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
 import NavigationType from 'src/enums/NavigationType';
-import Wallet from 'src/components/Navigation/Wallet';
 import {
   INavigation,
   ISubNavigation,
@@ -20,11 +19,13 @@ import ButtonEventType from 'src/enums/ButtonEventType';
 
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import MainnetSwitch from 'src/components/Navigation/MainnetSwitch';
+import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
 import ErrorModal from '../Modal/ErrorModal';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
+const MainnetSwitch = lazy(() => import('src/components/Navigation/MainnetSwitch'));
+const Wallet = lazy(() => import('src/components/Navigation/Wallet'));
 
 const InitialNavigation: INavigation[] = [
   {
@@ -403,7 +404,7 @@ const Navigation: React.FunctionComponent<{
           setGlobalNavHover(0);
           setSelectedLocalNavIndex(0);
         }}>
-        <Suspense fallback={null}>
+        <Suspense fallback={<FallbackSkeleton height={mediaQuery === MediaQuery.PC ? 100 : 60} />}>
           <div className="navigation__container">
             <div className="navigation__wrapper">
               <div>
