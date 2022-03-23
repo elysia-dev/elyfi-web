@@ -23,8 +23,7 @@ import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { roundForElfiV2Staking } from 'src/utiles/roundForElfiV2Staking';
-// import Popupinfo from 'src/components/Popupinfo';
-import TxStatus from 'src/enums/TxStatus';
+import Popupinfo from 'src/components/Modal/Popupinfo';
 import LoadingIndicator from './LoadingIndicator';
 import ModalHeader from './ModalHeader';
 
@@ -64,7 +63,6 @@ const MigrationModal: React.FunctionComponent<{
     withdrawMax: false,
     migrationMax: false,
   });
-  const [mouseHover, setMouseHover] = useState(false);
   const { contract: stakingPool } = useStakingPool(stakedToken, round >= 3);
   const { waiting, wait } = useWaitingTx();
   const { setTransaction, failTransaction, txStatus } = useContext(TxContext);
@@ -166,7 +164,7 @@ const MigrationModal: React.FunctionComponent<{
                 <div>
                   <div className="modal__migration__popup__info">
                     <h2>{t('staking.migration')}</h2>
-                    {/* <Popupinfo content={t('staking.migration--content')} /> */}
+                    <Popupinfo content={t('staking.migration--content')} />
                   </div>
                   <div className="modal__migration__input">
                     <h2

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo, useContext } from 'react';
+import { useState, useEffect, useRef, useMemo, useContext, lazy, Suspense } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
 import NavigationType from 'src/enums/NavigationType';
@@ -23,6 +23,8 @@ import MediaQuery from 'src/enums/MediaQuery';
 import MainnetSwitch from 'src/components/Navigation/MainnetSwitch';
 
 import ErrorModal from '../Modal/ErrorModal';
+
+const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
 const InitialNavigation: INavigation[] = [
   {
@@ -401,55 +403,56 @@ const Navigation: React.FunctionComponent<{
           setGlobalNavHover(0);
           setSelectedLocalNavIndex(0);
         }}>
-        <div className="navigation__container">
-          <div className="navigation__wrapper">
-            <div>
-              <Link
-                to={`/${lng}`}
-                onMouseEnter={() => {
-                  setGlobalNavHover(0);
-                  setSelectedLocalNavIndex(0);
-                  setHamburgerBar(false);
+        <Suspense fallback={null}>
+          <div className="navigation__container">
+            <div className="navigation__wrapper">
+              <div>
+                <Link
+                  to={`/${lng}`}
+                  onMouseEnter={() => {
+                    setGlobalNavHover(0);
+                    setSelectedLocalNavIndex(0);
+                    setHamburgerBar(false);
+                  }}>
+                  <div className="logo-wrapper" style={{ cursor: 'pointer' }}>
+                    <LazyImage
+                      src={ElysiaLogo}
+                      name="elysia-logo"
+                    />
+                  </div>
+                </Link>
+              </div>
+              {setNavigationLink()}
+              {mediaQuery === MediaQuery.Mobile && (
+                <MainnetSwitch
+                  mainNetwork={mainNetwork}
+                  setMainNetwork={setMainNetwork}
+                />
+              )}
+              <div
+                className={`navigation__hamburger__button ${
+                  hamburgerBar && 'active'
+                } mobile-only`}
+                onClick={() => {
+                  setHamburgerBar(!hamburgerBar);
                 }}>
-                <div className="logo-wrapper" style={{ cursor: 'pointer' }}>
-                  <img
-                    src={ElysiaLogo}
-                    className="elysia-logo"
-                    alt="Elysia_Logo"
-                  />
-                </div>
-              </Link>
+                <i />
+                <i />
+                <i />
+              </div>
             </div>
-            {setNavigationLink()}
-            {mediaQuery === MediaQuery.Mobile && (
-              <MainnetSwitch
-                mainNetwork={mainNetwork}
-                setMainNetwork={setMainNetwork}
-              />
-            )}
-            <div
-              className={`navigation__hamburger__button ${
-                hamburgerBar && 'active'
-              } mobile-only`}
-              onClick={() => {
-                setHamburgerBar(!hamburgerBar);
-              }}>
-              <i />
-              <i />
-              <i />
+            <div className="navigation__mainnet">
+              {mediaQuery === MediaQuery.PC && (
+                <MainnetSwitch
+                  mainNetwork={mainNetwork}
+                  setMainNetwork={setMainNetwork}
+                />
+              )}
+              {setMediaQueryMetamask('pc')}
             </div>
           </div>
-          <div className="navigation__mainnet">
-            {mediaQuery === MediaQuery.PC && (
-              <MainnetSwitch
-                mainNetwork={mainNetwork}
-                setMainNetwork={setMainNetwork}
-              />
-            )}
-            {setMediaQueryMetamask('pc')}
-          </div>
-        </div>
-        {hamburgerBar && mobileHamburgerBar()}
+          {hamburgerBar && mobileHamburgerBar()}
+        </Suspense>
       </nav>
       <div className="navigation__margin" />
     </>
