@@ -28,8 +28,8 @@ import Skeleton from 'react-loading-skeleton';
 
 const LazyImage = lazy(() => import("src/utiles/lazyImage"));
 
-const BorrowInfo = lazy(() => import("src/components/BorrowerInfo"))
-const CollateralizedInfo = lazy(() => import("src/components/CollateralizedInfo"))
+const BorrowInfo = lazy(() => import("src/components/Portfolio/BorrowerInfo"))
+const CollateralizedInfo = lazy(() => import("src/components/Portfolio/CollateralizedInfo"))
 
 const PortfolioDetail: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
