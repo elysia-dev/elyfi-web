@@ -2,9 +2,11 @@ module.exports = {
   env: {
     es6: true,
     node: true,
+    'cypress/globals': true,
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'cypress'],
   extends: [
+    'plugin:cypress/recommended',
     'airbnb-base',
     'plugin:import/typescript',
     'plugin:@typescript-eslint/eslint-recommended',
@@ -81,6 +83,7 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-console': 'off',
     camelcase: 'off',
+    'jest/expect-expect': 'off',
   },
   parser: '@typescript-eslint/parser',
   settings: {},
