@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import animationLine from 'src/components/AnimationLine';
+import animationLine from 'src/components/Main/AnimationLine';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 

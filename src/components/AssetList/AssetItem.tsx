@@ -10,7 +10,7 @@ import { parseTokenId } from 'src/utiles/parseTokenId';
 import Slate from 'src/clients/Slate';
 import ReserveData from 'src/core/data/reserves';
 import { IAssetBond } from 'src/core/types/reserveSubgraph';
-import Marker from 'src/components/Marker';
+import Marker from 'src/components/AssetList/Marker';
 import Skeleton from 'react-loading-skeleton';
 
 const defaultLat = 37.5172;
