@@ -10,6 +10,7 @@ import LanguageType from 'src/enums/LanguageType';
 
 import AssetDom from 'src/assets/images/main/asset-dom.svg'
 import Pit from 'src/assets/images/main/pit.svg';
+import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
@@ -64,10 +65,8 @@ const MainPage: React.FC<Props> = ({
         </div>
       </div>
       <div className="main__image-wrapper">
-        <Suspense fallback={<p>loading..</p>}>
+        <Suspense fallback={<FallbackSkeleton />}>
           <LazyImage name="dom" src={AssetDom} />
-        </Suspense>
-        <Suspense fallback={<p>loading..</p>}>
           <LazyImage name="pit" src={Pit} />
         </Suspense>
       </div>

@@ -83,46 +83,46 @@ const AppNavigator: React.FC = () => {
       <Switch>
         <Route path="/:lng">
           <LanguageProvider>
-              <Suspense fallback={<>Loading...</>}>
+              <Suspense fallback={null}>
                 <Navigation
                   hamburgerBar={hamburgerBar}
                   setHamburgerBar={setHamburgerBar}
                 />
               </Suspense>
-              <Suspense fallback={<>Loading...</>}>
+              <Suspense fallback={null}>
                 <Route exact path="/:lng/staking/LP" component={LPStaking} />
               </Suspense>
-              <Suspense fallback={<>Loading...</>}>
+              <Suspense fallback={null}>
                 <Route exact path="/:lng/staking/EL" component={StakingEL} />
                 <Route exact path="/:lng/staking/ELFI" component={StakingELFI} />
               </Suspense>
-              <Suspense fallback={<>Loading...</>}>
+              <Suspense fallback={null}>
                 <Route exact path="/:lng/governance" component={Governance} />
               </Suspense>
-              <Suspense fallback={<>Loading...</>}>
+              <Suspense fallback={null}>
                 <Route
                   exact
                   path="/:lng/portfolio/:id"
                   component={PortfolioDetail}
                 />
               </Suspense>
-              <Suspense fallback={<>Loading...</>}>
+              <Suspense fallback={null}>
                 <Route
                   exact
                   path="/:lng/rewardplan/:stakingType"
                   component={RewardPlan}
                 />
               </Suspense>
-              <Suspense fallback={<>Loading...</>}>
+              <Suspense fallback={null}>
                 <Route exact path="/:lng/deposit/:id" component={MarketDetail} />
               </Suspense>
-              <Suspense fallback={<>Loading...</>}>
+              <Suspense fallback={null}>
                 <Route exact path="/:lng/deposit" component={Dashboard} />
               </Suspense>
-              <Suspense fallback={<>Loading...</>}>
+              <Suspense fallback={null}>
                 <Route exact path="/:lng" component={Main} />
               </Suspense>
-              <Suspense fallback={<>Loading...</>}>
+              <Suspense fallback={null}>
                 <Footer />
               </Suspense>
           </LanguageProvider>

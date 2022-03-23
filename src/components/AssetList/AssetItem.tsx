@@ -11,6 +11,7 @@ import Slate from 'src/clients/Slate';
 import ReserveData from 'src/core/data/reserves';
 import { IAssetBond } from 'src/core/types/reserveSubgraph';
 import Marker from 'src/components/Marker';
+import Skeleton from 'react-loading-skeleton';
 
 const defaultLat = 37.5172;
 const defaultLng = 127.0473;
@@ -61,7 +62,7 @@ const AssetItem: FunctionComponent<{
   return (
     <div className="component__loan-list" style={style} onClick={onClick}>
       <div className="component__loan-list__image">
-        <Suspense fallback={<div>loading..</div>} >
+        <Suspense fallback={<Skeleton width={"100%"} height={"100%"} />} >
           {image ? (
             <LazyImage src={image} name={`csp_image_${abToken.id}`} />
           ) : (

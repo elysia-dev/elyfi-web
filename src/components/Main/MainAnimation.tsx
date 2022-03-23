@@ -11,13 +11,14 @@ import Governance from 'src/assets/images/main/governance.svg';
 import Governance00 from 'src/assets/images/main/governance00.svg';
 import Governance01 from 'src/assets/images/main/governance01.svg';
 import { lazy, Suspense } from 'react';
+import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
 const MainAnimation = (index: number): (() => JSX.Element) => {
   function MainAnimation00() {
     return (
-      <Suspense fallback={<p>loading....</p>}>
+      <Suspense fallback={<FallbackSkeleton />}>
         <div className="main__content__image-container--01">
           <LazyImage src={TokenLow} name="token-low" />
           <div className="main__content__image-container--01--01">
@@ -31,7 +32,7 @@ const MainAnimation = (index: number): (() => JSX.Element) => {
   }
   function MainAnimation01() {
     return (
-      <Suspense fallback={<p>loading....</p>}>
+      <Suspense fallback={<FallbackSkeleton />}>
         <div className="main__content__image-container--02">
           <LazyImage src={Asset} name="asset-image" />
           <LazyImage src={Coin} name="coin" />
@@ -42,7 +43,7 @@ const MainAnimation = (index: number): (() => JSX.Element) => {
   }
   function MainAnimation02() {
     return (
-      <Suspense fallback={<p>loading....</p>}>
+      <Suspense fallback={<FallbackSkeleton />}>
         <div className="main__content__image-container--03">
           <div>
             <LazyImage src={Governance00} name="paper--o" />

@@ -7,6 +7,7 @@ import Advantages02 from 'src/assets/images/main/advantages02.svg';
 import Advantages03 from 'src/assets/images/main/advantages03.svg';
 import Advantages04 from 'src/assets/images/main/advantages04.svg';
 import Advantages05 from 'src/assets/images/main/advantages05.svg';
+import FallbackSkeleton from "src/utiles/FallbackSkeleton";
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
@@ -20,7 +21,7 @@ const Advantage: React.FC<Props> = ({
   const { t } = useTranslation();
 
   return (
-    <Suspense fallback={<p>loading..</p>}>
+    <Suspense fallback={<FallbackSkeleton />}>
       <h2 ref={guideY}>
         <Trans i18nKey={'main.advantages.header'} />
       </h2>
