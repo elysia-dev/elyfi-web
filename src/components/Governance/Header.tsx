@@ -4,7 +4,7 @@ import Skeleton from "react-loading-skeleton";
 import { useParams, useHistory } from 'react-router-dom';
 import LanguageType from "src/enums/LanguageType";
 
-const GovernanceGuideBox = lazy(() => import('src/components/GovernanceGuideBox'));
+const GovernanceGuideBox = lazy(() => import('src/components/Governance/GovernanceGuideBox'));
 
 interface Props {
   headerRef: RefObject<HTMLDivElement>;

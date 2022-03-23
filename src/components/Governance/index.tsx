@@ -28,12 +28,12 @@ import useReserveData from 'src/hooks/useReserveData';
 import { IAssetBond } from 'src/core/types/reserveSubgraph';
 import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
-const OffchainHeader = lazy(() => import('src/components/OffchainHeader'))
-const OnchainHeader = lazy(() => import('src/components/OnchainHeader'));
-const Header = lazy(() => import('src/components/GovernanceHeader'));
-const OffChainContainer = lazy(() => import('src/components/OffchainContainer'));
-const OnchainContainer = lazy(() => import('src/components/OnchainContainer'));
-const AssetList = lazy(() => import('src/containers/AssetList'));
+const OffchainHeader = lazy(() => import('./OffchainHeader'))
+const OnchainHeader = lazy(() => import('./OnchainHeader'));
+const Header = lazy(() => import('./Header'));
+const OffChainContainer = lazy(() => import('src/components/Governance/OffchainContainer'));
+const OnchainContainer = lazy(() => import('src/components/Governance/OnchainContainer'));
+const AssetList = lazy(() => import('src/components/AssetList'));
 
 const Governance = (): JSX.Element => {
   const [pageNumber, setPageNumber] = useState(1);

@@ -13,7 +13,7 @@ interface Props {
   data: INapData
 }
 
-const OffchainContainer: React.FC<Props> = ({
+const OffChainContainer: React.FC<Props> = ({
   data
 }) => {
   const { t } = useTranslation();
@@ -61,4 +61,4 @@ const OffchainContainer: React.FC<Props> = ({
   );
 };
 
-export default OffchainContainer;
+export default OffChainContainer;
