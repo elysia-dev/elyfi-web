@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatCommaWithDigits } from 'src/utiles/formatters';
 import { IReserve } from 'src/core/data/reserves';
-import ModalButton from 'src/components/ModalButton';
+import ModalButton from 'src/components/Modal/ModalButton';
 import LoadingIndicator from './LoadingIndicator';
 
 const DepositBody: React.FunctionComponent<{

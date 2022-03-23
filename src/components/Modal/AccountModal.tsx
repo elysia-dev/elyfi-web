@@ -10,7 +10,7 @@ import Copy from 'src/assets/images/copy.png';
 import envs from 'src/core/envs';
 import TxStatus from 'src/enums/TxStatus';
 import Davatar from '@davatar/react';
-import ModalHeader from 'src/components/ModalHeader';
+import ModalHeader from 'src/components/Modal/ModalHeader';
 import { useENS } from 'src/hooks/useENS';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';

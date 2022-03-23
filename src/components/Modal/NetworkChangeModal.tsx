@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import ModalHeader from 'src/components/ModalHeader';
+import ModalHeader from 'src/components/Modal/ModalHeader';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { MainnetData, MainnetList } from 'src/core/data/mainnets'
 

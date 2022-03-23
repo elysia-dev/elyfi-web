@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import TransactinConfirm from 'src/assets/images/transaction_confirm.png';
-import ModalHeader from 'src/components/ModalHeader';
+import ModalHeader from 'src/components/Modal/ModalHeader';
 
 const TransactionConfirmModal: React.FunctionComponent<{
   visible: boolean;

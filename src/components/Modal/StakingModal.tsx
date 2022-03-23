@@ -4,7 +4,7 @@ import ELFI from 'src/assets/images/ELFI.png';
 import { formatComma } from 'src/utiles/formatters';
 import { useTranslation } from 'react-i18next';
 import useWatingTx from 'src/hooks/useWaitingTx';
-import LoadingIndicator from 'src/components/LoadingIndicator';
+import LoadingIndicator from 'src/components/Modal/LoadingIndicator';
 import { useWeb3React } from '@web3-react/core';
 import Token from 'src/enums/Token';
 import moment from 'moment';
@@ -14,8 +14,8 @@ import useERC20Info from 'src/hooks/useERC20Info';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
-import ModalHeader from 'src/components/ModalHeader';
-import ModalConverter from 'src/components/ModalConverter';
+import ModalHeader from 'src/components/Modal/ModalHeader';
+import ModalConverter from 'src/components/Modal/ModalConverter';
 import buildEventEmitter from 'src/utiles/buildEventEmitter';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
@@ -25,7 +25,7 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import IncreateAllowanceModal, {
   PermissionType,
-} from 'src/components/IncreateAllowanceModal';
+} from 'src/components/Modal/IncreateAllowanceModal';
 import TxStatus from 'src/enums/TxStatus';
 
 const StakingModal: React.FunctionComponent<{
