@@ -23,7 +23,8 @@
           "**/*.stories.*"
         ],
         "rules": {
-          "import/no-anonymous-default-export": "off"
+          "import/no-anonymous-default-export": "off",
+          "jest/expect-expect": "off"
         }
       }
     ]
@@ -70,7 +71,7 @@
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "ngrok": "^4.2.2",
-    "node-sass": "4.14.1",
+    "node-sass": "6",
     "prettier": "^2.4.1",
     "react": "^17.0.2",
     "react-countup": "^5.0.0",
@@ -111,6 +112,9 @@
     "@types/react-responsive": "^8.0.2",
     "@types/react-router-dom": "^5.1.7",
     "cypress": "^9.5.2",
-    "react-test-renderer": "^16.9.0"
+    "cypress-react-selector": "^2.3.16",
+    "eslint-plugin-cypress": "^2.12.1",
+    "react-test-renderer": "^16.9.0",
+    "sass": "^1.49.9"
   }
 }
