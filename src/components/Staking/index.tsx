@@ -43,19 +43,19 @@ import elfi from 'src/assets/images/token/ELFI.svg';
 import el from 'src/assets/images/token/el.svg';
 import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
-const ClaimDisableModal = lazy(() => import('src/components/ClaimDisableModal'));
-const MigrationDisableModal = lazy(() => import('src/components/MigrationDisableModal'));
-const MigrationModal = lazy(() => import('src/components/MigrationModal'));
-const StakingEnded = lazy(() => import('src/components/StakingEnded'));
-const MigrationEnded = lazy(() => import('src/components/MigrationEnded'));
-const ClaimStakingRewardModal = lazy(() => import('src/components/ClaimStakingRewardModal'));
-const StakingModal = lazy(() => import('src/containers/StakingModal'));
-const TransactionConfirmModal = lazy(() => import('src/components/TransactionConfirmModal'));
-const GovernanceGuideBox = lazy(() => import('src/components/GovernanceGuideBox'));
+const ClaimDisableModal = lazy(() => import('src/components/Modal/ClaimDisableModal'));
+const MigrationDisableModal = lazy(() => import('src/components/Modal/MigrationDisableModal'));
+const MigrationModal = lazy(() => import('src/components/Modal/MigrationModal'));
+const StakingEnded = lazy(() => import('src/components/Modal/StakingEnded'));
+const MigrationEnded = lazy(() => import('src/components/Modal/MigrationEnded'));
+const ClaimStakingRewardModal = lazy(() => import('src/components/Modal/ClaimStakingRewardModal'));
+const StakingModal = lazy(() => import('src/components/Modal/StakingModal'));
+const TransactionConfirmModal = lazy(() => import('src/components/Modal/TransactionConfirmModal'));
+const GovernanceGuideBox = lazy(() => import('src/components/Governance/GovernanceGuideBox'));
 
-const CurrentRoundBox = lazy(() => import('src/components/CurrentRoundBox'));
-const PreviousRoundBox = lazy(() => import('src/components/PreviousRoundBox'));
-const CurrentStakingSelectBox = lazy(() => import('src/components/CurrentStakingSelectBox'));
+const CurrentRoundBox = lazy(() => import('./CurrentRoundBox'));
+const PreviousRoundBox = lazy(() => import('./PreviousRoundBox'));
+const CurrentStakingSelectBox = lazy(() => import('./CurrentStakingSelectBox'));
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'))
 
