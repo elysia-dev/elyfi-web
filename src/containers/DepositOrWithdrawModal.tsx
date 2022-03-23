@@ -90,9 +90,9 @@ const DepositOrWithdrawModal: FunctionComponent<{
   }>({ value: constants.Zero, loaded: false });
   const [currentIndex, setCurrentIndex] = useState<BigNumber>(
     calcCurrentIndex(
-      BigNumber.from(reserve.lTokenInterestIndex),
+      BigNumber.from(reserve.lTokenInterestIndex || 0),
       reserve.lastUpdateTimestamp,
-      BigNumber.from(reserve.depositAPY),
+      BigNumber.from(reserve.depositAPY || 0),
     ),
   );
   const { t } = useTranslation();
@@ -117,22 +117,23 @@ const DepositOrWithdrawModal: FunctionComponent<{
 
   const yieldProduced = useMemo(() => {
     return accumulatedYield.sub(
-      userData?.lTokenBurn.length && userData.lTokenBurn.length > 0 ?
-        calcAccumulatedYield(
-          // FIXME
-          // Tricky constant.One
-          // yieldProduced should be calculated with last burn index
-          constants.One,
-          BigNumber.from(
-            userData.lTokenBurn[userData.lTokenBurn.length - 1].index
-          ),
-          userData?.lTokenMint.filter(
-            (mint) => mint.lToken.id === reserve.lToken.id,
-          ) || [],
-          userData?.lTokenBurn.filter(
-            (burn) => burn.lToken.id === reserve.lToken.id,
-          ) || [],
-        ) : constants.Zero,
+      userData?.lTokenBurn.length && userData.lTokenBurn.length > 0
+        ? calcAccumulatedYield(
+            // FIXME
+            // Tricky constant.One
+            // yieldProduced should be calculated with last burn index
+            constants.One,
+            BigNumber.from(
+              userData.lTokenBurn[userData.lTokenBurn.length - 1].index,
+            ),
+            userData?.lTokenMint.filter(
+              (mint) => mint.lToken.id === reserve.lToken.id,
+            ) || [],
+            userData?.lTokenBurn.filter(
+              (burn) => burn.lToken.id === reserve.lToken.id,
+            ) || [],
+          )
+        : constants.Zero,
     );
   }, [accumulatedYield, reserve, userData, currentIndex]);
 
@@ -278,9 +279,9 @@ const DepositOrWithdrawModal: FunctionComponent<{
       () =>
         setCurrentIndex(
           calcCurrentIndex(
-            BigNumber.from(reserve.lTokenInterestIndex),
+            BigNumber.from(reserve.lTokenInterestIndex || 0),
             reserve.lastUpdateTimestamp,
-            BigNumber.from(reserve.depositAPY),
+            BigNumber.from(reserve.depositAPY || 0),
           ),
         ),
       500,
