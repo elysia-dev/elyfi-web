@@ -1,33 +1,20 @@
 import { reserveTokenData } from 'src/core/data/reserves';
-import { useContext, useState, useMemo } from 'react';
+import { useContext, useState, useMemo, lazy, Suspense } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import envs from 'src/core/envs';
-import { toPercent } from 'src/utiles/formatters';
-import DepositOrWithdrawModal from 'src/containers/DepositOrWithdrawModal';
 import { BigNumber, constants } from 'ethers';
 import { GET_USER } from 'src/queries/userQueries';
 import { useTranslation } from 'react-i18next';
-import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import ReactGA from 'react-ga';
-import TokenTable from 'src/components/TokenTable';
-import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
-import IncentiveModal from 'src/containers/IncentiveModal';
-import ConnectWalletModal from 'src/containers/ConnectWalletModal';
-import NetworkChangeModal from 'src/components/NetworkChangeModal';
-import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 
 import ModalViewType from 'src/enums/ModalViewType';
 import { useMediaQuery } from 'react-responsive';
 import MainnetContext from 'src/contexts/MainnetContext';
-import TvlCounter from 'src/components/TvlCounter';
 import { MainnetData } from 'src/core/data/mainnets';
 import getIncentivePoolAddress from 'src/core/utils/getIncentivePoolAddress';
-import scrollToOffeset from 'src/core/utils/scrollToOffeset';
 import useBalances from 'src/hooks/useBalances';
 import { useWeb3React } from '@web3-react/core';
 import useCurrentChain from 'src/hooks/useCurrentChain';
-import WalletDisconnect from 'src/components/WalletDisconnect';
-import SelectWalletModal from 'src/components/SelectWalletModal';
 import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
 import Skeleton from 'react-loading-skeleton';
 import { pricesFetcher } from 'src/clients/Coingecko';
@@ -38,6 +25,20 @@ import Token from 'src/enums/Token';
 import ReserveToken from 'src/core/types/ReserveToken';
 import MainnetType from 'src/enums/MainnetType';
 import request from 'graphql-request';
+import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
+
+const TokenTable = lazy(() => import('src/components/TokenTable'));
+const TransactionConfirmModal = lazy(() => import('src/components/TransactionConfirmModal'))
+const IncentiveModal = lazy(() => import('src/containers/IncentiveModal'))
+const ConnectWalletModal = lazy(() => import('src/containers/ConnectWalletModal'))
+const NetworkChangeModal = lazy(() => import('src/components/NetworkChangeModal'))
+const DepositOrWithdrawModal = lazy(() => import('src/containers/DepositOrWithdrawModal'));
+const WalletDisconnect = lazy(() => import('src/components/WalletDisconnect'));
+const SelectWalletModal = lazy(() => import('src/components/SelectWalletModal'));
+
+const TvlCounter = lazy(() => import('src/components/TvlCounter'))
+const RewardPlanButton = lazy(() => import('src/components/RewardPlan/RewardPlanButton'))
+const RemoteControl = lazy(() => import('./RemoteControl'));
 
 const Dashboard: React.FunctionComponent = () => {
   const { account } = useWeb3React();
@@ -143,66 +144,72 @@ const Dashboard: React.FunctionComponent = () => {
   return (
     <>
       {reserveData && selectedBalance && (
-        <DepositOrWithdrawModal
-          reserve={reserveData}
-          userData={
-            getMainnetType === MainnetType.BSC
-              ? bscUserConnection?.user
-              : ethUserConnection?.user
-          }
-          tokenName={selectedBalance.tokenName}
-          tokenImage={reserveTokenData[selectedBalance.tokenName].image}
-          visible={!!reserveData}
-          onClose={() => {
-            setReserveData(undefined);
-            setTransactionWait(false);
-          }}
-          balance={selectedBalance.value}
-          depositBalance={BigNumber.from(selectedBalance.deposit)}
-          afterTx={() => loadBalance(selectedBalanceId)}
-          transactionModal={() => setTransactionModal(true)}
-          round={round}
-          transactionWait={transactionWait}
-          setTransactionWait={() => setTransactionWait(true)}
-          disableTransactionWait={() => setTransactionWait(false)}
-        />
+        <Suspense fallback={null}>
+          <DepositOrWithdrawModal
+            reserve={reserveData}
+            userData={
+              getMainnetType === MainnetType.BSC
+                ? bscUserConnection?.user
+                : ethUserConnection?.user
+            }
+            tokenName={selectedBalance.tokenName}
+            tokenImage={reserveTokenData[selectedBalance.tokenName].image}
+            visible={!!reserveData}
+            onClose={() => {
+              setReserveData(undefined);
+              setTransactionWait(false);
+            }}
+            balance={selectedBalance.value}
+            depositBalance={BigNumber.from(selectedBalance.deposit)}
+            afterTx={() => loadBalance(selectedBalanceId)}
+            transactionModal={() => setTransactionModal(true)}
+            round={round}
+            transactionWait={transactionWait}
+            setTransactionWait={() => setTransactionWait(true)}
+            disableTransactionWait={() => setTransactionWait(false)}
+          />
+        </Suspense>
       )}
       {selectedBalance && selectedReserve && (
-        <IncentiveModal
-          visible={incentiveModalVisible}
-          onClose={() => {
-            setIncentiveModalVisible(false);
-            setTransactionWait(false);
-          }}
-          balanceBefore={
-            round === 1
-              ? selectedBalance.expectedIncentiveBefore
-              : selectedBalance.expectedAdditionalIncentiveBefore
-          }
-          balanceAfter={
-            round === 1
-              ? selectedBalance.expectedIncentiveAfter
-              : selectedBalance.expectedAdditionalIncentiveAfter
-          }
-          incentivePoolAddress={getIncentivePoolAddress(
-            round,
-            selectedBalance.tokenName,
-          )}
-          tokenName={selectedBalance.tokenName}
-          afterTx={() => loadBalance(selectedBalanceId)}
-          transactionModal={() => setTransactionModal(true)}
-          transactionWait={transactionWait}
-          setTransactionWait={() => setTransactionWait(true)}
-        />
+        <Suspense fallback={null}>
+          <IncentiveModal
+            visible={incentiveModalVisible}
+            onClose={() => {
+              setIncentiveModalVisible(false);
+              setTransactionWait(false);
+            }}
+            balanceBefore={
+              round === 1
+                ? selectedBalance.expectedIncentiveBefore
+                : selectedBalance.expectedAdditionalIncentiveBefore
+            }
+            balanceAfter={
+              round === 1
+                ? selectedBalance.expectedIncentiveAfter
+                : selectedBalance.expectedAdditionalIncentiveAfter
+            }
+            incentivePoolAddress={getIncentivePoolAddress(
+              round,
+              selectedBalance.tokenName,
+            )}
+            tokenName={selectedBalance.tokenName}
+            afterTx={() => loadBalance(selectedBalanceId)}
+            transactionModal={() => setTransactionModal(true)}
+            transactionWait={transactionWait}
+            setTransactionWait={() => setTransactionWait(true)}
+          />
+        </Suspense>
       )}
-      <TransactionConfirmModal
-        visible={transactionModal}
-        closeHandler={() => {
-          setTransactionModal(false);
-        }}
-      />
+      <Suspense fallback={null}>
+        <TransactionConfirmModal
+          visible={transactionModal}
+          closeHandler={() => {
+            setTransactionModal(false);
+          }}
+        />
+      </Suspense>
       {isModals && (
-        <>
+        <Suspense fallback={null}>
           <NetworkChangeModal
             visible={unsupportedChainid}
             closeHandler={() => {
@@ -235,106 +242,67 @@ const Dashboard: React.FunctionComponent = () => {
               setIsModals(false);
             }}
           />
-        </>
+        </Suspense>
       )}
 
       <div className="deposit">
-        <TvlCounter />
-        <RewardPlanButton stakingType={'deposit'} isStaking={false} />
+        <Suspense fallback={<Skeleton width={"100%"} height={300} />}>
+          <TvlCounter />
+        </Suspense>
+        <Suspense fallback={<Skeleton width={"100%"} height={20} />}>
+          <RewardPlanButton stakingType={'deposit'} isStaking={false} />
+        </Suspense>
         <div className="deposit__table__wrapper">
           {isEnoughWide && (
             <div className="deposit__remote-control__wrapper">
-              <div className="deposit__remote-control">
-                {supportedBalances.map((balance, index) => {
-                  const reserve = reserveState.reserves.find(
-                    (d) => d.id === balance.id,
-                  );
-
-                  if (!reserve) return <></>;
-
-                  return (
-                    <a onClick={() => scrollToOffeset(`table-${index}`, 678)}>
-                      <div>
-                        <div className="deposit__remote-control__images">
-                          <img
-                            src={reserveTokenData[balance.tokenName].image}
-                          />
-                        </div>
-                        <div className="deposit__remote-control__name">
-                          <p className="montserrat">{balance.tokenName}</p>
-                        </div>
-                        <p className="deposit__remote-control__apy bold">
-                          {reserve.depositAPY ? (
-                            toPercent(reserve.depositAPY)
-                          ) : (
-                            <Skeleton width={50} height={20} />
-                          )}
-                        </p>
-                        <div className="deposit__remote-control__mining">
-                          <p>{t('dashboard.token_mining_apr')}</p>
-                          {priceData && reserve.totalDeposit ? (
-                            <p>
-                              {toPercent(
-                                calcMiningAPR(
-                                  priceData.elfiPrice,
-                                  BigNumber.from(reserve.totalDeposit || 0),
-                                  reserveTokenData[balance.tokenName].decimals,
-                                ) || '0',
-                              )}
-                            </p>
-                          ) : (
-                            <Skeleton width={50} height={13} />
-                          )}
-                        </div>
-                      </div>
-                    </a>
-                  );
-                })}
-              </div>
+              <Suspense fallback={<Skeleton width={120} height={180} style={{ position: 'fixed' }} />}>
+                <RemoteControl reserveState={reserveState} priceData={priceData} supportedBalances={supportedBalances} />
+              </Suspense>
             </div>
           )}
+          <Suspense fallback={<FallbackSkeleton height={400} />}>
+            {supportedBalances.map((balance, index) => {
+              const reserve = reserveState.reserves.find(
+                (d) => d.id === balance.id,
+              );
 
-          {supportedBalances.map((balance, index) => {
-            const reserve = reserveState.reserves.find(
-              (d) => d.id === balance.id,
-            );
-
-            return (
-              <TokenTable
-                key={index}
-                id={`table-${index}`}
-                balance={balance}
-                onClick={(e: any) => {
-                  if (!isWrongMainnet && account && !unsupportedChainid) {
-                    e.preventDefault();
-                    setReserveData(reserve);
-                    selectBalanceId(balance.id);
+              return (
+                <TokenTable
+                  key={index}
+                  id={`table-${index}`}
+                  balance={balance}
+                  onClick={(e: any) => {
+                    if (!isWrongMainnet && account && !unsupportedChainid) {
+                      e.preventDefault();
+                      setReserveData(reserve);
+                      selectBalanceId(balance.id);
+                      ReactGA.modalview(
+                        balance.tokenName + ModalViewType.DepositOrWithdrawModal,
+                      );
+                      return;
+                    }
+                    setIsModals(true);
+                  }}
+                  reserveData={reserve}
+                  setIncentiveModalVisible={() => {
+                    if (!isWrongMainnet && account && !unsupportedChainid) {
+                      setIncentiveModalVisible(true);
+                      return;
+                    }
+                    setIsModals(true);
+                  }}
+                  setModalNumber={() => selectBalanceId(balance.id)}
+                  modalview={() =>
                     ReactGA.modalview(
-                      balance.tokenName + ModalViewType.DepositOrWithdrawModal,
-                    );
-                    return;
+                      balance.tokenName + ModalViewType.IncentiveModal,
+                    )
                   }
-                  setIsModals(true);
-                }}
-                reserveData={reserve}
-                setIncentiveModalVisible={() => {
-                  if (!isWrongMainnet && account && !unsupportedChainid) {
-                    setIncentiveModalVisible(true);
-                    return;
-                  }
-                  setIsModals(true);
-                }}
-                setModalNumber={() => selectBalanceId(balance.id)}
-                modalview={() =>
-                  ReactGA.modalview(
-                    balance.tokenName + ModalViewType.IncentiveModal,
-                  )
-                }
-                setRound={setRound}
-                loading={loading}
-              />
-            );
-          })}
+                  setRound={setRound}
+                  loading={loading}
+                />
+              );
+            })}
+          </Suspense>
         </div>
       </div>
     </>

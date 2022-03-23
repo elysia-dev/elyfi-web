@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef, useMemo, useContext } from 'react';
+import { useState, useEffect, useRef, useMemo, useContext, lazy, Suspense } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
 import NavigationType from 'src/enums/NavigationType';
-import Wallet from 'src/components/Wallet';
 import {
   INavigation,
   ISubNavigation,
@@ -20,9 +19,13 @@ import ButtonEventType from 'src/enums/ButtonEventType';
 
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import MainnetSwitch from 'src/components/MainnetSwitch';
+import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
 import ErrorModal from './ErrorModal';
+
+const LazyImage = lazy(() => import('src/utiles/lazyImage'));
+const MainnetSwitch = lazy(() => import('src/components/MainnetSwitch'));
+const Wallet = lazy(() => import('src/components/Wallet'));
 
 const InitialNavigation: INavigation[] = [
   {
@@ -401,55 +404,61 @@ const Navigation: React.FunctionComponent<{
           setGlobalNavHover(0);
           setSelectedLocalNavIndex(0);
         }}>
-        <div className="navigation__container">
-          <div className="navigation__wrapper">
-            <div>
-              <Link
-                to={`/${lng}`}
-                onMouseEnter={() => {
-                  setGlobalNavHover(0);
-                  setSelectedLocalNavIndex(0);
-                  setHamburgerBar(false);
+        <Suspense fallback={
+          <div style={{
+            height: mediaQuery === MediaQuery.PC ? 100 : 60,
+            borderBottom: "1px solid #f0f0f1"
+          }} />
+        }>
+          <div className="navigation__container">
+            <div className="navigation__wrapper">
+              <div>
+                <Link
+                  to={`/${lng}`}
+                  onMouseEnter={() => {
+                    setGlobalNavHover(0);
+                    setSelectedLocalNavIndex(0);
+                    setHamburgerBar(false);
+                  }}>
+                  <div className="logo-wrapper" style={{ cursor: 'pointer' }}>
+                    <LazyImage
+                      src={ElysiaLogo}
+                      name="elysia-logo"
+                    />
+                  </div>
+                </Link>
+              </div>
+              {setNavigationLink()}
+              {mediaQuery === MediaQuery.Mobile && (
+                <MainnetSwitch
+                  mainNetwork={mainNetwork}
+                  setMainNetwork={setMainNetwork}
+                />
+              )}
+              <div
+                className={`navigation__hamburger__button ${
+                  hamburgerBar && 'active'
+                } mobile-only`}
+                onClick={() => {
+                  setHamburgerBar(!hamburgerBar);
                 }}>
-                <div className="logo-wrapper" style={{ cursor: 'pointer' }}>
-                  <img
-                    src={ElysiaLogo}
-                    className="elysia-logo"
-                    alt="Elysia_Logo"
-                  />
-                </div>
-              </Link>
+                <i />
+                <i />
+                <i />
+              </div>
             </div>
-            {setNavigationLink()}
-            {mediaQuery === MediaQuery.Mobile && (
-              <MainnetSwitch
-                mainNetwork={mainNetwork}
-                setMainNetwork={setMainNetwork}
-              />
-            )}
-            <div
-              className={`navigation__hamburger__button ${
-                hamburgerBar && 'active'
-              } mobile-only`}
-              onClick={() => {
-                setHamburgerBar(!hamburgerBar);
-              }}>
-              <i />
-              <i />
-              <i />
+            <div className="navigation__mainnet">
+              {mediaQuery === MediaQuery.PC && (
+                <MainnetSwitch
+                  mainNetwork={mainNetwork}
+                  setMainNetwork={setMainNetwork}
+                />
+              )}
+              {setMediaQueryMetamask('pc')}
             </div>
           </div>
-          <div className="navigation__mainnet">
-            {mediaQuery === MediaQuery.PC && (
-              <MainnetSwitch
-                mainNetwork={mainNetwork}
-                setMainNetwork={setMainNetwork}
-              />
-            )}
-            {setMediaQueryMetamask('pc')}
-          </div>
-        </div>
-        {hamburgerBar && mobileHamburgerBar()}
+          {hamburgerBar && mobileHamburgerBar()}
+        </Suspense>
       </nav>
       <div className="navigation__margin" />
     </>

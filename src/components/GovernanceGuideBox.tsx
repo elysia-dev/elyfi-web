@@ -5,7 +5,7 @@ const GovernanceGuideBox: FunctionComponent = () => {
   const { t } = useTranslation();
 
   return (
-    <section className="governance__elyfi-graph">
+    <>
       <div>
         <div>
           <p>{t('governance.graph.0')}</p>
@@ -32,7 +32,7 @@ const GovernanceGuideBox: FunctionComponent = () => {
           <p>{t('governance.graph.3')}</p>
         </div>
       </div>
-    </section>
+    </>
   );
 };
 

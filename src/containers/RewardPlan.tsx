@@ -3,6 +3,8 @@ import moment from 'moment';
 import envs from 'src/core/envs';
 import {
   FunctionComponent,
+  lazy,
+  Suspense,
   useCallback,
   useContext,
   useEffect,
@@ -13,9 +15,6 @@ import {
 import useSWR from 'swr';
 import { useTranslation, Trans } from 'react-i18next';
 import { useHistory, useParams } from 'react-router-dom';
-import LpStakingBox from 'src/components/RewardPlan/LpStakingBox';
-import StakingBox from 'src/components/RewardPlan/StakingBox';
-import TokenDeposit from 'src/components/RewardPlan/TokenDeposit';
 import {
   daiMoneyPoolTime,
   tetherMoneyPoolTime,
@@ -55,6 +54,12 @@ import Skeleton from 'react-loading-skeleton';
 import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
 import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
 import useReserveData from 'src/hooks/useReserveData';
+import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
+
+const LazyImage = lazy(() => import('src/utiles/lazyImage'))
+const LpStakingBox = lazy(() => import('src/components/RewardPlan/LpStakingBox'))
+const StakingBox = lazy(() => import('src/components/RewardPlan/StakingBox'))
+const TokenDeposit = lazy(() => import('src/components/RewardPlan/TokenDeposit'))
 
 const RewardPlan: FunctionComponent = () => {
   const { t, i18n } = useTranslation();
@@ -330,77 +335,81 @@ const RewardPlan: FunctionComponent = () => {
               </div>
               <h2>{t('reward.token_staking__reward_plan', { token: 'LP' })}</h2>
             </div>
-            <LpStakingBox
-              index={1}
-              tvl={totalLiquidity.ethElfiPoolTotalLiquidity}
-              apr={totalLiquidity.ethElfiliquidityForApr}
-              token0={'ELFI'}
-              firstTokenValue={{
-                total: ELFI_REWARD_PER_POOL,
-                start: rewardInfo.beforeElfiRewardByLp,
-                end: rewardInfo.elfiRewardByLp,
-              }}
-              token1={'ETH'}
-              secondTokenValue={{
-                total: ethRewardByRound(lpStakingRound.ethElfiRound + 1),
-                start: rewardInfo.beforeEthRewardByLp,
-                end: rewardInfo.ethRewardByLp,
-              }}
-              currentRound={currentPhase}
-              selectedRound={lpStakingRound.ethElfiRound}
-              lpStakingRound={lpStakingRound}
-              setLpStakingRound={setLpStakingRound}
-            />
-            <LpStakingBox
-              index={1}
-              tvl={totalLiquidity.daiElfiPoolTotalLiquidity}
-              apr={totalLiquidity.daiElfiliquidityForApr}
-              token0={'ELFI'}
-              firstTokenValue={{
-                total: ELFI_REWARD_PER_POOL,
-                start: rewardInfo.beforeElfiRewardByLp,
-                end: rewardInfo.elfiRewardByLp,
-              }}
-              token1={'DAI'}
-              secondTokenValue={{
-                total: DAI_REWARD_PER_POOL,
-                start: rewardInfo.beforeDaiRewardByLp,
-                end: rewardInfo.daiRewardByLp,
-              }}
-              currentRound={currentPhase}
-              selectedRound={lpStakingRound.daiElfiRound}
-              lpStakingRound={lpStakingRound}
-              setLpStakingRound={setLpStakingRound}
-            />
+            <Suspense fallback={<FallbackSkeleton height={400} style={{ marginTop: 150 }} />} >
+              <LpStakingBox
+                index={1}
+                tvl={totalLiquidity.ethElfiPoolTotalLiquidity}
+                apr={totalLiquidity.ethElfiliquidityForApr}
+                token0={'ELFI'}
+                firstTokenValue={{
+                  total: ELFI_REWARD_PER_POOL,
+                  start: rewardInfo.beforeElfiRewardByLp,
+                  end: rewardInfo.elfiRewardByLp,
+                }}
+                token1={'ETH'}
+                secondTokenValue={{
+                  total: ethRewardByRound(lpStakingRound.ethElfiRound + 1),
+                  start: rewardInfo.beforeEthRewardByLp,
+                  end: rewardInfo.ethRewardByLp,
+                }}
+                currentRound={currentPhase}
+                selectedRound={lpStakingRound.ethElfiRound}
+                lpStakingRound={lpStakingRound}
+                setLpStakingRound={setLpStakingRound}
+              />
+              <LpStakingBox
+                index={1}
+                tvl={totalLiquidity.daiElfiPoolTotalLiquidity}
+                apr={totalLiquidity.daiElfiliquidityForApr}
+                token0={'ELFI'}
+                firstTokenValue={{
+                  total: ELFI_REWARD_PER_POOL,
+                  start: rewardInfo.beforeElfiRewardByLp,
+                  end: rewardInfo.elfiRewardByLp,
+                }}
+                token1={'DAI'}
+                secondTokenValue={{
+                  total: DAI_REWARD_PER_POOL,
+                  start: rewardInfo.beforeDaiRewardByLp,
+                  end: rewardInfo.daiRewardByLp,
+                }}
+                currentRound={currentPhase}
+                selectedRound={lpStakingRound.daiElfiRound}
+                lpStakingRound={lpStakingRound}
+                setLpStakingRound={setLpStakingRound}
+              />
+            </Suspense>
           </>
         ) : ['EL', 'ELFI'].includes(stakingType) ? (
           <section className={`reward__${stakingType.toLowerCase()}`}>
-            <StakingBox
-              loading={poolLoading}
-              poolApr={poolApr}
-              poolPrincipal={poolPrincipal}
-              stakedRound={state.round}
-              unit={rewardToken(stakingType, getMainnetType)}
-              start={
-                isEl
-                  ? beforeTotalMintedByElStakingPool
-                  : rewardInfo.beforeStakingPool
-              }
-              end={
-                isEl ? totalMintedByElStakingPool : rewardInfo.afterStakingPool
-              }
-              state={state}
-              setState={setState}
-              OrdinalNumberConverter={ordinalNumberConverter}
-              stakedToken={stakingType}
-              miningStart={isEl ? rewardInfo.beforeStakingPool : undefined}
-              miningEnd={isEl ? rewardInfo.afterStakingPool : undefined}
-            />
+            <Suspense fallback={<FallbackSkeleton height={400} style={{ marginTop: 250 }} />}>
+              <StakingBox
+                loading={poolLoading}
+                poolApr={poolApr}
+                poolPrincipal={poolPrincipal}
+                stakedRound={state.round}
+                unit={rewardToken(stakingType, getMainnetType)}
+                start={
+                  isEl
+                    ? beforeTotalMintedByElStakingPool
+                    : rewardInfo.beforeStakingPool
+                }
+                end={
+                  isEl ? totalMintedByElStakingPool : rewardInfo.afterStakingPool
+                }
+                state={state}
+                setState={setState}
+                OrdinalNumberConverter={ordinalNumberConverter}
+                stakedToken={stakingType}
+                miningStart={isEl ? rewardInfo.beforeStakingPool : undefined}
+                miningEnd={isEl ? rewardInfo.afterStakingPool : undefined}
+              />
+            </Suspense>
           </section>
         ) : (
           <>
             <div className="reward__token">
-              <img src={ELFI} />
+              <LazyImage src={ELFI} name="elfi" />
               <h2>{t('reward.deposit__reward_plan')}</h2>
               <div className="reward__token__elfi">
                 {!poolDataLoading && poolData ? (
@@ -416,43 +425,45 @@ const RewardPlan: FunctionComponent = () => {
               </div>
             </div>
             <section className="reward__container">
-              {!subgraphLoading ? (
-                reserveState.reserves
-                  .filter((data) => {
-                    if (!data.id) return;
-                    return isSupportedReserve(
-                      getTokenNameByAddress(data.id),
-                      getMainnetType,
-                    );
-                  })
-                  .map((reserve, index) => {
-                    return (
-                      <TokenDeposit
-                        key={index}
-                        idx={index}
-                        reserve={reserve}
-                        moneyPoolInfo={moneyPoolInfo}
-                        beforeMintedMoneypool={
-                          beforeMintedMoneypool[
-                            getTokenNameByAddress(reserve.id)
-                          ].beforeMintedToken <= 0
-                            ? 0
-                            : beforeMintedMoneypool[
-                                getTokenNameByAddress(reserve.id)
-                              ].beforeMintedToken
-                        }
-                        mintedMoneypool={
-                          mintedMoneypool[getTokenNameByAddress(reserve.id)]
-                            .mintedToken
-                        }
-                        depositRound={depositRound}
-                        setDepositRound={setDepositRound}
-                      />
-                    );
-                  })
-              ) : (
-                <Skeleton width={'100%'} height={330} />
-              )}
+              <Suspense fallback={<FallbackSkeleton height={300} style={{ marginTop: 50 }} />}>
+                {!subgraphLoading ? (
+                  reserveState.reserves
+                    .filter((data) => {
+                      if (!data.id) return;
+                      return isSupportedReserve(
+                        getTokenNameByAddress(data.id),
+                        getMainnetType,
+                      );
+                    })
+                    .map((reserve, index) => {
+                      return (
+                        <TokenDeposit
+                          key={index}
+                          idx={index}
+                          reserve={reserve}
+                          moneyPoolInfo={moneyPoolInfo}
+                          beforeMintedMoneypool={
+                            beforeMintedMoneypool[
+                              getTokenNameByAddress(reserve.id)
+                            ].beforeMintedToken <= 0
+                              ? 0
+                              : beforeMintedMoneypool[
+                                  getTokenNameByAddress(reserve.id)
+                                ].beforeMintedToken
+                          }
+                          mintedMoneypool={
+                            mintedMoneypool[getTokenNameByAddress(reserve.id)]
+                              .mintedToken
+                          }
+                          depositRound={depositRound}
+                          setDepositRound={setDepositRound}
+                        />
+                      );
+                    })
+                ) : (
+                  <Skeleton width={'100%'} height={330} />
+                )}
+              </Suspense>
             </section>
           </>
         )}

@@ -1,48 +1,58 @@
-import Pit from 'src/assets/images/main/pit.png';
-import TokenLow from 'src/assets/images/main/token__low.png';
-import TokenMany from 'src/assets/images/main/token__many.png';
-import Bottom from 'src/assets/images/main/bottom.png';
+import Pit from 'src/assets/images/main/pit.svg';
+import TokenLow from 'src/assets/images/main/token__low.svg';
+import TokenMany from 'src/assets/images/main/token__many.svg';
+import Bottom from 'src/assets/images/main/bottom.svg';
 
-import SlimPit from 'src/assets/images/main/slim-pit.png';
-import Asset from 'src/assets/images/main/asset.png';
-import Coin from 'src/assets/images/main/coin.png';
+import SlimPit from 'src/assets/images/main/slim-pit.svg';
+import Asset from 'src/assets/images/main/asset.svg';
+import Coin from 'src/assets/images/main/coin.svg';
 
-import Governance from 'src/assets/images/main/governance.png';
-import Governance00 from 'src/assets/images/main/governance00.png';
-import Governance01 from 'src/assets/images/main/governance01.png';
+import Governance from 'src/assets/images/main/governance.svg';
+import Governance00 from 'src/assets/images/main/governance00.svg';
+import Governance01 from 'src/assets/images/main/governance01.svg';
+import { lazy, Suspense } from 'react';
+import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
+
+const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
 const MainAnimation = (index: number): (() => JSX.Element) => {
   function MainAnimation00() {
     return (
-      <div className="main__content__image-container--01">
-        <img src={TokenLow} className="token-low" />
-        <div className="main__content__image-container--01--01">
-          <img src={Pit} className="pit" />
-          <img src={Bottom} className="bottom" />
+      <Suspense fallback={<FallbackSkeleton />}>
+        <div className="main__content__image-container--01">
+          <LazyImage src={TokenLow} name="token-low" />
+          <div className="main__content__image-container--01--01">
+            <LazyImage src={Pit} name="pit" />
+            <LazyImage src={Bottom} name="bottom" />
+          </div>
+          <LazyImage src={TokenMany} name="token-many" />
         </div>
-        <img src={TokenMany} className="token-many" />
-      </div>
+      </Suspense>
     );
   }
   function MainAnimation01() {
     return (
-      <div className="main__content__image-container--02">
-        <img src={Asset} className="asset-image" />
-        <img src={Coin} className="coin" />
-        <img src={SlimPit} className="pit" />
-      </div>
+      <Suspense fallback={<FallbackSkeleton />}>
+        <div className="main__content__image-container--02">
+          <LazyImage src={Asset} name="asset-image" />
+          <LazyImage src={Coin} name="coin" />
+          <LazyImage src={SlimPit} name="pit" />
+        </div>
+      </Suspense>
     );
   }
   function MainAnimation02() {
     return (
-      <div className="main__content__image-container--03">
-        <div>
-          <img src={Governance00} className="paper--o" />
-          <img src={Governance01} className="paper--x" />
+      <Suspense fallback={<FallbackSkeleton />}>
+        <div className="main__content__image-container--03">
+          <div>
+            <LazyImage src={Governance00} name="paper--o" />
+            <LazyImage src={Governance01} name="paper--x" />
+          </div>
+          <LazyImage src={SlimPit} name="pit" />
+          <LazyImage src={Governance} name="governance--image" />
         </div>
-        <img src={SlimPit} className="pit" />
-        <img src={Governance} className="governance--image" />
-      </div>
+      </Suspense>
     );
   }
 

@@ -18,7 +18,7 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import TableBodyAmount from 'src/components/TableBodyAmount';
-import { useContext } from 'react';
+import { lazy, useContext } from 'react';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
 import { daiMoneyPoolTime } from 'src/core/data/moneypoolTimes';
@@ -34,6 +34,8 @@ import priceMiddleware from 'src/middleware/priceMiddleware';
 import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 import useReserveData from 'src/hooks/useReserveData';
 import TableBodyEventReward from './TableBodyEventReward';
+
+const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
 interface Props {
   balance: BalanceType;
@@ -124,11 +126,11 @@ const TokenTable: React.FC<Props> = ({
           style={{ cursor: 'pointer' }}
           onClick={() => {
             history.push({
-              pathname: `/${lng}/deposits/${balance.tokenName}`,
+              pathname: `/${lng}/deposit/${balance.tokenName}`,
             });
           }}>
           <div className="deposit__table__header__token-info">
-            <img src={tokenInfo.image} alt="Token icon" />
+            <LazyImage src={tokenInfo.image} name="Token icon" />
             <p className="bold" style={{ cursor: 'pointer' }}>
               {balance.tokenName}
             </p>
@@ -317,7 +319,7 @@ const TokenTable: React.FC<Props> = ({
                 <h2>{t('dashboard.recent_loan')}</h2>
                 {assetBondTokensBackedByEstate && (
                   <Link
-                    to={`/${lng}/deposits/${balance.tokenName}`}
+                    to={`/${lng}/deposit/${balance.tokenName}`}
                     style={{
                       display:
                         assetBondTokensBackedByEstate?.length === 0

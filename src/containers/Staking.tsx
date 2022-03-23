@@ -1,6 +1,6 @@
-import elfi from 'src/assets/images/ELFI.png';
-import el from 'src/assets/images/el.png';
 import {
+  lazy,
+  Suspense,
   useCallback,
   useContext,
   useEffect,
@@ -13,23 +13,13 @@ import { constants } from 'ethers';
 import Skeleton from 'react-loading-skeleton';
 import moment from 'moment';
 
-import { toPercentWithoutSign } from 'src/utiles/formatters';
 import { roundTimes } from 'src/core/data/stakingRoundTimes';
-import ClaimStakingRewardModal from 'src/components/ClaimStakingRewardModal';
-import StakingModal from 'src/containers/StakingModal';
 import Token from 'src/enums/Token';
 import { useTranslation, Trans } from 'react-i18next';
-import MigrationModal from 'src/components/MigrationModal';
-import StakingEnded from 'src/components/StakingEnded';
-import MigrationEnded from 'src/components/MigrationEnded';
 import txStatus from 'src/enums/TxStatus';
-import TransactionConfirmModal from 'src/components/TransactionConfirmModal';
 import LanguageType from 'src/enums/LanguageType';
 import useStakingRoundData from 'src/hooks/useStakingRoundData';
 import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
-import GovernanceGuideBox from 'src/components/GovernanceGuideBox';
-import Uniswap from 'src/assets/images/uniswap.png';
-import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import { useParams } from 'react-router-dom';
@@ -37,20 +27,37 @@ import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
-import ClaimDisableModal from 'src/components/ClaimDisableModal';
-import MigrationDisableModal from 'src/components/MigrationDisableModal';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
 import StakingModalType from 'src/enums/StakingModalType';
 import useStakingFetchRoundData from 'src/hooks/useStakingFetchRoundData';
-import FinishedStaking from 'src/components/Staking/FinishedStaking';
-import StakingProgress from 'src/components/Staking/StakingProgress';
 import NextStaking from 'src/components/Staking/NextStaking';
 import { rewardPerDayByToken } from 'src/utiles/stakingReward';
 import calcExpectedReward from 'src/core/utils/calcExpectedReward';
-import PancakeSwap from 'src/assets/images/pancakeswapcake@2x.png';
-import Wormhole from 'src/assets/images/wormhole@2x.png';
 import TitleButton from 'src/components/Staking/TitleButton';
+
+import PancakeSwap from 'src/assets/images/staking/pancakeswapcake@2x.svg';
+import Wormhole from 'src/assets/images/staking/wormhole@2x.svg';
+import Uniswap from 'src/assets/images/staking/uniswap@2x.svg';
+import elfi from 'src/assets/images/token/ELFI.svg';
+import el from 'src/assets/images/token/el.svg';
+import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
+
+const ClaimDisableModal = lazy(() => import('src/components/ClaimDisableModal'));
+const MigrationDisableModal = lazy(() => import('src/components/MigrationDisableModal'));
+const MigrationModal = lazy(() => import('src/components/MigrationModal'));
+const StakingEnded = lazy(() => import('src/components/StakingEnded'));
+const MigrationEnded = lazy(() => import('src/components/MigrationEnded'));
+const ClaimStakingRewardModal = lazy(() => import('src/components/ClaimStakingRewardModal'));
+const StakingModal = lazy(() => import('src/containers/StakingModal'));
+const TransactionConfirmModal = lazy(() => import('src/components/TransactionConfirmModal'));
+const GovernanceGuideBox = lazy(() => import('src/components/GovernanceGuideBox'));
+
+const CurrentRoundBox = lazy(() => import('src/components/CurrentRoundBox'));
+const PreviousRoundBox = lazy(() => import('src/components/PreviousRoundBox'));
+const CurrentStakingSelectBox = lazy(() => import('src/components/CurrentStakingSelectBox'));
+
+const LazyImage = lazy(() => import('src/utiles/lazyImage'))
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI;
@@ -61,7 +68,7 @@ const Staking: React.FunctionComponent<IProps> = ({
   stakedToken,
   rewardToken,
 }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const current = moment();
   const { account } = useWeb3React();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -230,176 +237,178 @@ const Staking: React.FunctionComponent<IProps> = ({
           zIndex: -1,
         }}
       />
-      {stakingRoundDate.length === roundData.length && (
-        <>
-          <TransactionConfirmModal
-            visible={transactionModal}
-            closeHandler={() => {
-              setTransactionModal(false);
-            }}
-          />
-          <ClaimStakingRewardModal
-            visible={modalVisible(StakingModalType.Claim)}
-            stakedToken={stakedToken}
-            token={rewardToken}
-            balance={
-              moment().isBetween(
-                stakingRoundDate[selectModalRound].startedAt,
-                stakingRoundDate[selectModalRound].endedAt,
-              )
-                ? expectedReward
-                : undefined
-            }
-            endedBalance={
-              (!moment().isBetween(
-                stakingRoundDate[selectModalRound].startedAt,
-                stakingRoundDate[selectModalRound].endedAt,
-              ) &&
-                roundData[selectModalRound]?.accountReward) ||
-              constants.Zero
-            }
-            stakingBalance={
-              loading
-                ? constants.Zero
-                : roundData[selectModalRound].accountPrincipal
-            }
-            currentRound={currentRound}
-            round={selectModalRound + 1}
-            closeHandler={() => {
-              setModalType('');
-              setTransactionWait(false);
-            }}
-            afterTx={() => {
-              account && fetchRoundData(account);
-            }}
-            transactionModal={() => setTransactionModal(true)}
-            transactionWait={transactionWait}
-            setTransactionWait={() => setTransactionWait(true)}
-          />
-          <StakingModal
-            visible={modalVisible(StakingModalType.Staking)}
-            closeHandler={() => {
-              setModalType('');
-              setTransactionWait(false);
-            }}
-            stakedToken={stakedToken}
-            stakedBalance={
-              loading
-                ? constants.Zero
-                : roundData[selectModalRound].accountPrincipal
-            }
-            round={selectModalRound + 1}
-            afterTx={() => {
-              account && fetchRoundData(account);
-            }}
-            endedModal={() => {
-              setModalType(StakingModalType.StakingEnded);
-            }}
-            transactionModal={() => setTransactionModal(true)}
-            transactionWait={transactionWait}
-            setTransactionWait={() => setTransactionWait(true)}
-            disableTransactionWait={() => setTransactionWait(false)}
-            isUnstaking={isUnstaking}
-          />
-          <MigrationModal
-            visible={modalVisible(StakingModalType.Migration)}
-            closeHandler={() => {
-              setModalType('');
-              setTransactionWait(false);
-            }}
-            stakedToken={stakedToken}
-            rewardToken={rewardToken}
-            stakedBalance={loading ? constants.Zero : modalValue}
-            rewardBalance={
-              roundData[selectModalRound]?.accountReward || constants.Zero
-            }
-            round={selectModalRound + 1}
-            afterTx={() => {
-              account && fetchRoundData(account);
-            }}
-            transactionModal={() => setTransactionModal(true)}
-            transactionWait={transactionWait}
-            setTransactionWait={() => setTransactionWait(true)}
-            stakingRoundDate={stakingRoundDate}
-          />
-          <StakingEnded
-            visible={modalVisible(StakingModalType.StakingEnded)}
-            onClose={() => {
-              setModalType('');
-              setState({ ...state, selectPhase: currentPhase });
-            }}
-            round={selectModalRound + 1}
-            stakingRoundDate={stakingRoundDate}
-          />
-          <MigrationEnded
-            visible={modalVisible(StakingModalType.MigrationEnded)}
-            onClose={() => {
-              setModalType('');
-              setState({ ...state, selectPhase: currentPhase });
-            }}
-            round={selectModalRound + 1}
-            stakingRoundDate={stakingRoundDate}
-          />
-          <ClaimDisableModal
-            visible={modalVisible(StakingModalType.ClaimDisable)}
-            onClose={() => {
-              setModalType('');
-            }}
-          />
-          <MigrationDisableModal
-            visible={modalVisible(StakingModalType.MigrationDisable)}
-            onClose={() => {
-              setModalType(StakingModalType.Staking);
-            }}
-          />
-        </>
-      )}
+      <Suspense fallback={null}>
+        {stakingRoundDate.length === roundData.length && (
+          <>
+            <TransactionConfirmModal
+              visible={transactionModal}
+              closeHandler={() => {
+                setTransactionModal(false);
+              }}
+            />
+            <ClaimStakingRewardModal
+              visible={modalVisible(StakingModalType.Claim)}
+              stakedToken={stakedToken}
+              token={rewardToken}
+              balance={
+                moment().isBetween(
+                  stakingRoundDate[selectModalRound].startedAt,
+                  stakingRoundDate[selectModalRound].endedAt,
+                )
+                  ? expectedReward
+                  : undefined
+              }
+              endedBalance={
+                (!moment().isBetween(
+                  stakingRoundDate[selectModalRound].startedAt,
+                  stakingRoundDate[selectModalRound].endedAt,
+                ) &&
+                  roundData[selectModalRound]?.accountReward) ||
+                constants.Zero
+              }
+              stakingBalance={
+                loading
+                  ? constants.Zero
+                  : roundData[selectModalRound].accountPrincipal
+              }
+              currentRound={currentRound}
+              round={selectModalRound + 1}
+              closeHandler={() => {
+                setModalType('');
+                setTransactionWait(false);
+              }}
+              afterTx={() => {
+                account && fetchRoundData(account);
+              }}
+              transactionModal={() => setTransactionModal(true)}
+              transactionWait={transactionWait}
+              setTransactionWait={() => setTransactionWait(true)}
+            />
+            <StakingModal
+              visible={modalVisible(StakingModalType.Staking)}
+              closeHandler={() => {
+                setModalType('');
+                setTransactionWait(false);
+              }}
+              stakedToken={stakedToken}
+              stakedBalance={
+                loading
+                  ? constants.Zero
+                  : roundData[selectModalRound].accountPrincipal
+              }
+              round={selectModalRound + 1}
+              afterTx={() => {
+                account && fetchRoundData(account);
+              }}
+              endedModal={() => {
+                setModalType(StakingModalType.StakingEnded);
+              }}
+              transactionModal={() => setTransactionModal(true)}
+              transactionWait={transactionWait}
+              setTransactionWait={() => setTransactionWait(true)}
+              disableTransactionWait={() => setTransactionWait(false)}
+              isUnstaking={isUnstaking}
+            />
+            <MigrationModal
+              visible={modalVisible(StakingModalType.Migration)}
+              closeHandler={() => {
+                setModalType('');
+                setTransactionWait(false);
+              }}
+              stakedToken={stakedToken}
+              rewardToken={rewardToken}
+              stakedBalance={loading ? constants.Zero : modalValue}
+              rewardBalance={
+                roundData[selectModalRound]?.accountReward || constants.Zero
+              }
+              round={selectModalRound + 1}
+              afterTx={() => {
+                account && fetchRoundData(account);
+              }}
+              transactionModal={() => setTransactionModal(true)}
+              transactionWait={transactionWait}
+              setTransactionWait={() => setTransactionWait(true)}
+              stakingRoundDate={stakingRoundDate}
+            />
+            <StakingEnded
+              visible={modalVisible(StakingModalType.StakingEnded)}
+              onClose={() => {
+                setModalType('');
+                setState({ ...state, selectPhase: currentPhase });
+              }}
+              round={selectModalRound + 1}
+              stakingRoundDate={stakingRoundDate}
+            />
+            <MigrationEnded
+              visible={modalVisible(StakingModalType.MigrationEnded)}
+              onClose={() => {
+                setModalType('');
+                setState({ ...state, selectPhase: currentPhase });
+              }}
+              round={selectModalRound + 1}
+              stakingRoundDate={stakingRoundDate}
+            />
+            <ClaimDisableModal
+              visible={modalVisible(StakingModalType.ClaimDisable)}
+              onClose={() => {
+                setModalType('');
+              }}
+            />
+            <MigrationDisableModal
+              visible={modalVisible(StakingModalType.MigrationDisable)}
+              onClose={() => {
+                setModalType(StakingModalType.Staking);
+              }}
+            />
+          </>
+        )}
+      </Suspense>
       <section className="staking">
-        <section>
-          <div ref={headerRef} className="staking__title">
-            <h2>
-              {t('staking.staking__token', {
-                token: stakedToken.toUpperCase(),
-              })}
-            </h2>
-            <>
-              <p>
-                {stakedToken === Token.EL
-                  ? ''
-                  : t('staking.elfi.staking__content')}
-              </p>
-              {getMainnetType === MainnetType.Ethereum ? (
-                <TitleButton
-                  buttonName={
-                    stakedToken === Token.EL
-                      ? t('staking.el.staking__content--button')
-                      : t('staking.elfi.staking__content--button.uniswap')
-                  }
-                  link={
-                    stakedToken === Token.ELFI
-                      ? 'https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4'
-                      : lng === LanguageType.KO
-                      ? 'https://coinmarketcap.com/ko/currencies/elysia/markets/'
-                      : 'https://coinmarketcap.com/currencies/elysia/markets/'
-                  }
-                  linkName={stakedToken === Token.ELFI ? Token.ELFI : Token.EL}
-                  linkImage={stakedToken === Token.ELFI ? Uniswap : undefined}
-                />
-              ) : stakedToken === Token.ELFI ? (
-                <div className="staking__title__token">
-                  {[
-                    {
-                      linkName: 'pancakeswap',
-                      link: 'https://pancakeswap.finance/swap?inputCurrency=0xe9e7cea3dedca5984780bafc599bd69add087d56&outputCurrency=0x6c619006043eab742355395690c7b42d3411e8c0',
-                      linkImage: PancakeSwap,
-                    },
-                    {
-                      linkName: 'wormhole',
-                      link: 'https://portalbridge.com/#/transfer',
-                      linkImage: Wormhole,
-                    },
-                  ].map((value, index) => {
-                    return (
+        <div ref={headerRef} className="staking__title">
+          <h2>
+            {t('staking.staking__token', {
+              token: stakedToken.toUpperCase(),
+            })}
+          </h2>
+          <>
+            <p>
+              {stakedToken === Token.EL
+                ? ''
+                : t('staking.elfi.staking__content')}
+            </p>
+            {getMainnetType === MainnetType.Ethereum ? (
+              <TitleButton
+                buttonName={
+                  stakedToken === Token.EL
+                    ? t('staking.el.staking__content--button')
+                    : t('staking.elfi.staking__content--button.uniswap')
+                }
+                link={
+                  stakedToken === Token.ELFI
+                    ? 'https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4'
+                    : lng === LanguageType.KO
+                    ? 'https://coinmarketcap.com/ko/currencies/elysia/markets/'
+                    : 'https://coinmarketcap.com/currencies/elysia/markets/'
+                }
+                linkName={stakedToken === Token.ELFI ? Token.ELFI : Token.EL}
+                linkImage={stakedToken === Token.ELFI ? Uniswap : undefined}
+              />
+            ) : stakedToken === Token.ELFI ? (
+              <div className="staking__title__token">
+                {[
+                  {
+                    linkName: 'pancakeswap',
+                    link: 'https://pancakeswap.finance/swap?inputCurrency=0xe9e7cea3dedca5984780bafc599bd69add087d56&outputCurrency=0x6c619006043eab742355395690c7b42d3411e8c0',
+                    linkImage: PancakeSwap,
+                  },
+                  {
+                    linkName: 'wormhole',
+                    link: 'https://portalbridge.com/#/transfer',
+                    linkImage: Wormhole,
+                  },
+                ].map((value, index) => {
+                  return (
+                    <Suspense fallback={null}>
                       <TitleButton
                         key={`btn_${index}`}
                         buttonName={t(
@@ -409,234 +418,177 @@ const Staking: React.FunctionComponent<IProps> = ({
                         linkName={value.linkName}
                         linkImage={value.linkImage}
                       />
-                    );
-                  })}
-                </div>
+                    </Suspense>
+                  );
+                })}
+              </div>
+            ) : (
+              <div style={{ height: 120 }} />
+            )}
+          </>
+        </div>
+        {getMainnetType === MainnetType.Ethereum ||
+        stakedToken === Token.ELFI ? (
+          <section>
+            {stakedToken === Token.ELFI && (
+              <section className="governance__elyfi-graph">
+                <Suspense fallback={<Skeleton width={"100%"} height={"100%"} />}>
+                  <GovernanceGuideBox />
+                </Suspense>
+              </section>
+            )}
+            <div className="staking__title__content__wrapper">
+              {mediaQuery === MediaQuery.PC ? (
+                <>
+                  <div className="staking__title__content__token-wrapper">
+                    <Suspense fallback={<Skeleton width={37} height={37} />}>
+                      <LazyImage src={stakedToken === Token.EL ? el : elfi} name="token-images" />
+                    </Suspense>
+                    <h2>
+                      {t('staking.staking__token', {
+                        token: stakedToken.toUpperCase(),
+                      })}
+                    </h2>
+                  </div>
+                  <div className="staking__title__content">
+                    <p>
+                      {t(`staking.staking__notice.${rewardToken}`, {
+                        stakedToken,
+                        rewardToken,
+                      })}
+                    </p>
+                    <RewardPlanButton
+                      stakingType={stakedToken}
+                      isStaking={true}
+                    />
+                  </div>
+                </>
               ) : (
-                <div style={{ height: 120 }} />
-              )}
-            </>
-          </div>
-          {getMainnetType === MainnetType.Ethereum ||
-          stakedToken === Token.ELFI ? (
-            <section>
-              {stakedToken === Token.ELFI && <GovernanceGuideBox />}
-              <div className="staking__title__content__wrapper">
-                {mediaQuery === MediaQuery.PC ? (
-                  <>
-                    <div className="staking__title__content__token-wrapper">
-                      <img src={stakedToken === Token.EL ? el : elfi} />
+                <>
+                  <div className="staking__title__content__token-wrapper">
+                    <div>
+                      <Suspense fallback={<Skeleton width={21} height={21} />}>
+                        <LazyImage src={stakedToken === Token.EL ? el : elfi} name="token-images" />
+                      </Suspense>
                       <h2>
                         {t('staking.staking__token', {
                           token: stakedToken.toUpperCase(),
                         })}
                       </h2>
                     </div>
-                    <div className="staking__title__content">
-                      <p>
-                        {t(`staking.staking__notice.${rewardToken}`, {
-                          stakedToken,
-                          rewardToken,
-                        })}
-                      </p>
-                      <RewardPlanButton
-                        stakingType={stakedToken}
-                        isStaking={true}
-                      />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="staking__title__content__token-wrapper">
-                      <div>
-                        <img src={stakedToken === Token.EL ? el : elfi} />
-                        <h2>
-                          {t('staking.staking__token', {
-                            token: stakedToken.toUpperCase(),
-                          })}
-                        </h2>
-                      </div>
-                      <RewardPlanButton
-                        stakingType={stakedToken}
-                        isStaking={true}
-                      />
-                    </div>
-                    <div className="staking__title__content">
-                      <p>
-                        {t(`staking.staking__notice.${rewardToken}`, {
-                          stakedToken,
-                          rewardToken,
-                        })}
-                      </p>
-                    </div>
-                  </>
-                )}
-              </div>
-              {loading ? (
-                <Skeleton width={'100%'} height={600} />
-              ) : (
-                <>
-                  <section className="staking__round">
-                    {roundInProgress !== -1 && (
-                      <div
-                        className="staking__round__border"
-                        style={{
-                          height: roundDataLength,
-                        }}
-                      />
-                    )}
-                    <div className="staking__round__container">
-                      <section className="staking__round__current-data">
-                        {!current.isBetween(
-                          stakingRoundDate[currentPhase - 1].startedAt,
-                          stakingRoundDate[currentPhase - 1].endedAt,
-                        ) ? (
-                          <p>{t('staking.current_round_null')}</p>
-                        ) : (
-                          <>
-                            <div>
-                              <div>
-                                <p>
-                                  <Trans
-                                    i18nKey="staking.staking__in_progress"
-                                    values={{
-                                      nth: toOrdinalNumber(
-                                        i18n.language,
-                                        currentPhase,
-                                      ),
-                                    }}
-                                  />
-                                </p>
-                              </div>
-                              {mediaQuery === MediaQuery.PC ? (
-                                <h2>
-                                  {stakingRoundDate[
-                                    currentPhase - 1
-                                  ].startedAt.format('YYYY.MM.DD HH:mm:ss')}
-                                  &nbsp;~&nbsp;
-                                  {stakingRoundDate[
-                                    currentPhase - 1
-                                  ].endedAt.format('YYYY.MM.DD HH:mm:ss')}
-                                  &nbsp;(KST)
-                                </h2>
-                              ) : (
-                                <div>
-                                  <h2>
-                                    {stakingRoundDate[
-                                      currentPhase - 1
-                                    ].startedAt.format('YYYY.MM.DD HH:mm:ss')}
-                                  </h2>
-                                  <h2>&nbsp;~&nbsp;</h2>
-                                  <h2>
-                                    {stakingRoundDate[
-                                      currentPhase - 1
-                                    ].endedAt.format('YYYY.MM.DD HH:mm:ss')}
-                                    &nbsp;(KST)
-                                  </h2>
-                                </div>
-                              )}
-                            </div>
-                            <div>
-                              <p>APR</p>
-                              <h2 className="percent">
-                                {current.diff(
-                                  stakingRoundDate[currentPhase - 1].startedAt,
-                                ) <= 0 ||
-                                currentRound?.apr.eq(constants.MaxUint256) ||
-                                current.diff(
-                                  stakingRoundDate[currentPhase - 1].endedAt,
-                                ) >= 0
-                                  ? '-'
-                                  : toPercentWithoutSign(
-                                      currentRound?.apr || '0',
-                                    )}
-                              </h2>
-                            </div>
-                          </>
-                        )}
-                      </section>
-
-                      <section className="staking__round__previous__wrapper">
-                        {
-                          // eslint-disable-next-line array-callback-return
-                          roundData.map((item, index) => {
-                            if (stakingRoundDate.length !== roundData.length)
-                              return;
-                            if (current.diff(item.endedAt) > 0) {
-                              return (
-                                <FinishedStaking
-                                  key={`Finished_${index}`}
-                                  index={index}
-                                  item={item}
-                                  stakedToken={stakedToken}
-                                  rewardToken={rewardToken}
-                                  roundInProgress={roundInProgress}
-                                  setModalType={setModalType}
-                                  setRoundModal={setRoundModal}
-                                  setModalValue={setModalValue}
-                                  setIsUnstaking={() => setIsUnstaking(false)}
-                                />
-                              );
-                            }
-                          })
-                        }
-                      </section>
-                      {roundInProgress !== -1 &&
-                        stakingRoundDate.length === roundData.length && (
-                          <StakingProgress
-                            currentRound={currentRound}
-                            expectedReward={expectedReward}
-                            stakedToken={stakedToken}
-                            rewardToken={rewardToken}
-                            roundData={roundData}
-                            setModalType={setModalType}
-                            setModalValue={setModalValue}
-                            setRoundModal={setRoundModal}
-                            isWrongMainnet={isWrongMainnet}
-                            setIsUnstaking={() => setIsUnstaking(true)}
-                          />
-                        )}
-
-                      <section>
-                        {
-                          // eslint-disable-next-line array-callback-return
-                          roundData.map((item, index) => {
-                            if (stakingRoundDate.length !== roundData.length)
-                              return;
-                            if (current.diff(item.startedAt) < 0) {
-                              return (
-                                <NextStaking
-                                  key={`nextStaking_${index}`}
-                                  index={index}
-                                  stakedToken={stakedToken}
-                                  rewardToken={rewardToken}
-                                />
-                              );
-                            }
-                          })
-                        }
-                      </section>
-                    </div>
-                  </section>
+                    <RewardPlanButton
+                      stakingType={stakedToken}
+                      isStaking={true}
+                    />
+                  </div>
+                  <div className="staking__title__content">
+                    <p>
+                      {t(`staking.staking__notice.${rewardToken}`, {
+                        stakedToken,
+                        rewardToken,
+                      })}
+                    </p>
+                  </div>
                 </>
               )}
-            </section>
-          ) : (
-            <>
-              <div
-                className={`staking__coming-soon ${
-                  stakedToken === Token.EL ? 'el' : 'elfi'
-                }`}>
-                <div>
-                  <h2>COMING SOON</h2>
-                </div>
-                <div />
-                <div />
-                <div />
+            </div>
+            {loading ? (
+              <Skeleton width={'100%'} height={600} />
+            ) : (
+              <>
+                <section className="staking__round">
+                  {roundInProgress !== -1 && (
+                    <div
+                      className="staking__round__border"
+                      style={{
+                        height: roundDataLength,
+                      }}
+                    />
+                  )}
+                  <div className="staking__round__container">
+                    <section className="staking__round__current-data">
+                      <Suspense fallback={<FallbackSkeleton height={100} />}>
+                        <CurrentRoundBox
+                          currentPhase={currentPhase}
+                          mediaQuery={mediaQuery}
+                          stakingRoundDate={stakingRoundDate}
+                          currentRound={currentRound}
+                        />
+                      </Suspense>
+                    </section>
+                    <section className="staking__round__previous__wrapper">
+                      <Suspense fallback={<FallbackSkeleton height={200} />}>
+                        <PreviousRoundBox 
+                          roundData={roundData}
+                          stakingRoundDate={stakingRoundDate}
+                          stakedToken={stakedToken}
+                          rewardToken={rewardToken}
+                          roundInProgress={roundInProgress}
+                          setModalType={setModalType}
+                          setRoundModal={setRoundModal}
+                          setModalValue={setModalValue}
+                          setIsUnstaking={() => setIsUnstaking(false)}
+                        />
+                      </Suspense>
+                    </section>
+                    <section>
+                      <Suspense fallback={<FallbackSkeleton height={100} />}>
+                        <CurrentStakingSelectBox 
+                          roundInProgress={roundInProgress}
+                          stakingRoundDate={stakingRoundDate}
+                          roundData={roundData}
+                          stakedToken={stakedToken}
+                          rewardToken={rewardToken}
+                          setModalType={setModalType}
+                          setModalValue={setModalValue}
+                          setRoundModal={setRoundModal}
+                          isWrongMainnet={isWrongMainnet}
+                          currentRound={currentRound}
+                          expectedReward={expectedReward}
+                          setIsUnstaking={() => setIsUnstaking(true)}
+                        />
+                      </Suspense>
+                    </section>
+
+                    <section>
+                      {
+                        // eslint-disable-next-line array-callback-return
+                        roundData.map((item, index) => {
+                          if (stakingRoundDate.length !== roundData.length)
+                            return;
+                          if (current.diff(item.startedAt) < 0) {
+                            return (
+                              <NextStaking
+                                key={`nextStaking_${index}`}
+                                index={index}
+                                stakedToken={stakedToken}
+                                rewardToken={rewardToken}
+                              />
+                            );
+                          }
+                        })
+                      }
+                    </section>
+                  </div>
+                </section>
+              </>
+            )}
+          </section>
+        ) : (
+          <>
+            <div
+              className={`staking__coming-soon ${
+                stakedToken === Token.EL ? 'el' : 'elfi'
+              }`}>
+              <div>
+                <h2>COMING SOON</h2>
               </div>
-            </>
-          )}
-        </section>
+              <div />
+              <div />
+              <div />
+            </div>
+          </>
+        )}
       </section>
     </>
   );
