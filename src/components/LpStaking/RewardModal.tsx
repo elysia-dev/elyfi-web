@@ -16,8 +16,8 @@ import { ethers, utils } from 'ethers';
 import stakerABI from 'src/core/abi/StakerABI.json';
 import envs from 'src/core/envs';
 import RecentActivityType from 'src/enums/RecentActivityType';
-import ModalHeader from '../ModalHeader';
-import LoadingIndicator from '../LoadingIndicator';
+import ModalHeader from '../Modal/ModalHeader';
+import LoadingIndicator from '../Modal/LoadingIndicator';
 
 const iFace = new utils.Interface(stakerABI);
 
