@@ -1,3 +1,4 @@
+
 import Twitter from 'src/assets/images/footer/twitter.svg';
 import Telegram from 'src/assets/images/footer/telegram.svg';
 import Github from 'src/assets/images/footer/github.svg';
@@ -5,7 +6,7 @@ import Discord from 'src/assets/images/footer/discord.svg';
 import LazyImage from 'src/utiles/lazyImage';
 import { lazy, Suspense } from 'react';
 
-const LanguageConverter = lazy(() => import('src/components/LanguageConverter'));
+const LanguageConverter = lazy(() => import('src/components/Footer/LanguageConverter'));
 
 const Footer = (): JSX.Element => {
   return (
