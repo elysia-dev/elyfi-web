@@ -1,6 +1,6 @@
 import Skeleton from 'react-loading-skeleton';
 import { useHistory, useParams } from 'react-router-dom';
-import AssetItem from 'src/components/AssetItem';
+import AssetItem from 'src/components/AssetList/AssetItem';
 import { IAssetBond } from 'src/core/types/reserveSubgraph';
 import LoanProduct from 'src/enums/LoanProduct';
 import MediaQuery from 'src/enums/MediaQuery';
