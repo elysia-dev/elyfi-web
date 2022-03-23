@@ -1,6 +1,6 @@
 
-import MainContent from 'src/components/MainContent';
-import MainAnimation from 'src/components/MainAnimation';
+import MainContent from 'src/components/Main/MainContent';
+import MainAnimation from 'src/components/Main/MainAnimation';
 import reactGA from 'react-ga';
 import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';

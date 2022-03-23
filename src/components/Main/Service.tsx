@@ -1,6 +1,6 @@
 import { RefObject } from "react"
 import { useTranslation, Trans } from 'react-i18next';
-import MainGraph from 'src/components/MainGraph';
+import MainGraph from 'src/components/Main/MainGraph';
 
 interface Props {
   serviceGraphPageY: RefObject<HTMLParagraphElement>;

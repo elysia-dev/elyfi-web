@@ -5,12 +5,12 @@ import Skeleton from 'react-loading-skeleton';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 
-const Advantage = lazy(() => import('src/components/Advantage'));
-const SectionEvent = lazy(() => import('src/components/SectionEvent'));
-const Service = lazy(() => import('src/components/Service'));
-const MainPage = lazy(() => import('src/components/MainPage'));
-const Partners = lazy(() => import('src/components/Partners'));
-const MainGovernanceTable = lazy(() => import('src/components/MainGovernanceTable'));
+const Advantage = lazy(() => import('./Advantage'));
+const SectionEvent = lazy(() => import('./SectionEvent'));
+const Service = lazy(() => import('./Service'));
+const MainPage = lazy(() => import('./MainPage'));
+const Partners = lazy(() => import('./Partners'));
+const MainGovernanceTable = lazy(() => import('src/components/Main/MainGovernanceTable'));
 
 const Main = (): JSX.Element => {
   const [popupVisible, setPopupVisible] = useState(false);
