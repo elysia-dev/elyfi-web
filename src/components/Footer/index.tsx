@@ -5,13 +5,12 @@ import Github from 'src/assets/images/footer/github.svg';
 import Discord from 'src/assets/images/footer/discord.svg';
 import LazyImage from 'src/utiles/lazyImage';
 import { lazy, Suspense } from 'react';
-import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
 const LanguageConverter = lazy(() => import('src/components/Footer/LanguageConverter'));
 
 const Footer = (): JSX.Element => {
   return (
-    <Suspense fallback={<FallbackSkeleton height={100} />}>
+    <Suspense fallback={null}>
       <footer className="footer">
         <div>
           <div className="footer__right-container">

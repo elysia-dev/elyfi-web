@@ -404,7 +404,12 @@ const Navigation: React.FunctionComponent<{
           setGlobalNavHover(0);
           setSelectedLocalNavIndex(0);
         }}>
-        <Suspense fallback={<FallbackSkeleton height={mediaQuery === MediaQuery.PC ? 100 : 60} />}>
+        <Suspense fallback={
+          <div style={{
+            height: mediaQuery === MediaQuery.PC ? 100 : 60,
+            borderBottom: "1px solid #f0f0f1"
+          }} />
+        }>
           <div className="navigation__container">
             <div className="navigation__wrapper">
               <div>
