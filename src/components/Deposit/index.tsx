@@ -27,16 +27,16 @@ import MainnetType from 'src/enums/MainnetType';
 import request from 'graphql-request';
 import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
-const TokenTable = lazy(() => import('src/components/TokenTable'));
-const TransactionConfirmModal = lazy(() => import('src/components/TransactionConfirmModal'))
-const IncentiveModal = lazy(() => import('src/containers/IncentiveModal'))
-const ConnectWalletModal = lazy(() => import('src/containers/ConnectWalletModal'))
-const NetworkChangeModal = lazy(() => import('src/components/NetworkChangeModal'))
-const DepositOrWithdrawModal = lazy(() => import('src/containers/DepositOrWithdrawModal'));
-const WalletDisconnect = lazy(() => import('src/components/WalletDisconnect'));
-const SelectWalletModal = lazy(() => import('src/components/SelectWalletModal'));
+const TokenTable = lazy(() => import('src/components/Deposit/TokenTable'));
+const TransactionConfirmModal = lazy(() => import('src/components/Modal/TransactionConfirmModal'))
+const IncentiveModal = lazy(() => import('src/components/Modal/IncentiveModal'))
+const ConnectWalletModal = lazy(() => import('src/components/Modal/ConnectWalletModal'))
+const NetworkChangeModal = lazy(() => import('src/components/Modal/NetworkChangeModal'))
+const DepositOrWithdrawModal = lazy(() => import('src/components/Modal/DepositOrWithdrawModal'));
+const WalletDisconnect = lazy(() => import('src/components/Modal/WalletDisconnect'));
+const SelectWalletModal = lazy(() => import('src/components/Modal/SelectWalletModal'));
 
-const TvlCounter = lazy(() => import('src/components/TvlCounter'))
+const TvlCounter = lazy(() => import('src/components/Deposit/TvlCounter'))
 const RewardPlanButton = lazy(() => import('src/components/RewardPlan/RewardPlanButton'))
 const RemoteControl = lazy(() => import('./RemoteControl'));
 
