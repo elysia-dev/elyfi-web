@@ -159,15 +159,7 @@ const Staking: React.FunctionComponent<IProps> = ({
     if (!ctx) return;
     ctx.scale(dpr, dpr);
 
-    if (mediaQuery === MediaQuery.Mobile) {
-      new DrawWave(ctx, browserWidth).drawMobileOnPages(
-        headerY,
-        TokenColors.ELFI,
-        browserHeight,
-        true,
-      );
-      return;
-    }
+    if (mediaQuery === MediaQuery.Mobile) return;
 
     new DrawWave(ctx, browserWidth).drawOnPages(
       headerY,
@@ -373,7 +365,7 @@ const Staking: React.FunctionComponent<IProps> = ({
             <>
               <p>
                 {stakedToken === Token.EL
-                  ? t('staking.el.staking__content')
+                  ? ''
                   : t('staking.elfi.staking__content')}
               </p>
               {getMainnetType === MainnetType.Ethereum ? (
@@ -447,7 +439,10 @@ const Staking: React.FunctionComponent<IProps> = ({
                           rewardToken,
                         })}
                       </p>
-                      <RewardPlanButton stakingType={stakedToken} />
+                      <RewardPlanButton
+                        stakingType={stakedToken}
+                        isStaking={true}
+                      />
                     </div>
                   </>
                 ) : (
@@ -461,7 +456,10 @@ const Staking: React.FunctionComponent<IProps> = ({
                           })}
                         </h2>
                       </div>
-                      <RewardPlanButton stakingType={stakedToken} />
+                      <RewardPlanButton
+                        stakingType={stakedToken}
+                        isStaking={true}
+                      />
                     </div>
                     <div className="staking__title__content">
                       <p>

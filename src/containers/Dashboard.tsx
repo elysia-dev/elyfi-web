@@ -240,7 +240,7 @@ const Dashboard: React.FunctionComponent = () => {
 
       <div className="deposit">
         <TvlCounter />
-        <RewardPlanButton stakingType={'deposit'} />
+        <RewardPlanButton stakingType={'deposit'} isStaking={false} />
         <div className="deposit__table__wrapper">
           {isEnoughWide && (
             <div className="deposit__remote-control__wrapper">

@@ -44,7 +44,6 @@ import MainnetType from 'src/enums/MainnetType';
 
 function LPStaking(): JSX.Element {
   const { account, library } = useWeb3React();
-  const { mutate } = useSWRConfig();
   const { data: positionsByOwner } = useSWR(
     positionsByOwnerQuery(account || ''),
     positionsByOwnerFetcher,
@@ -63,7 +62,7 @@ function LPStaking(): JSX.Element {
   const [rewardVisibleModal, setRewardVisibleModal] = useState(false);
   const [stakingVisibleModal, setStakingVisibleModal] = useState(false);
   const [transactionWait, setTransactionWait] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [stakedPositions, setStakedPositions] = useState<Position[]>([]);
   const { positions, fetchPositions } = usePositions(account);
   const [stakeToken, setStakeToken] = useState<Token.DAI | Token.ETH>();
@@ -177,14 +176,12 @@ function LPStaking(): JSX.Element {
 
   const getStakedPositions = useCallback(() => {
     if (!account || !positionsByOwner) return;
-    mutate(positionsByOwnerQuery(account || ''));
     setStakedPositions(positionsByOwner.positions);
+    setIsLoading(false);
   }, [stakedPositions, account, incentiveIds, positionsByOwner]);
 
   const getAllStakedPositions = useCallback(() => {
-    setIsLoading(true);
     if (!positionsByPoolId) return;
-    mutate(positionsByPoolIdQuery);
     setTotalStakedPositions(positionsByPoolId);
   }, [totalLiquidity, isLoading, stakedPositions, positionsByPoolId]);
 
@@ -226,8 +223,13 @@ function LPStaking(): JSX.Element {
       daiElfiliquidityForApr: calcDaiElfiPoolApr(daiElfiLiquidityToDollar),
       ethElfiliquidityForApr: calcEthElfiPoolApr(ethElfiLiquidityToDollar),
     });
-    setIsLoading(false);
-  }, [totalLiquidity, round, totalStakedPositions]);
+  }, [
+    totalLiquidity,
+    round,
+    totalStakedPositions,
+    pricePerDaiLiquidity,
+    pricePerEthLiquidity,
+  ]);
 
   const totalStakedLiquidity = (poolAddress: string) => {
     const positionsByIncentiveId = stakedPositions.filter(
@@ -292,7 +294,7 @@ function LPStaking(): JSX.Element {
     ) {
       getStakedPositions();
     }
-  }, [account, txType, txWaiting, round]);
+  }, [account, txType, txWaiting, round, positionsByOwner]);
 
   useEffect(() => {
     if (txWaiting) return;
@@ -318,7 +320,7 @@ function LPStaking(): JSX.Element {
 
   useEffect(() => {
     calcTotalStakedLpToken();
-  }, [totalStakedPositions, round]);
+  }, [totalStakedPositions, round, pricePerDaiLiquidity, pricePerEthLiquidity]);
 
   useEffect(() => {
     try {
@@ -465,7 +467,7 @@ function LPStaking(): JSX.Element {
         </div>
         {getMainnetType === MainnetType.Ethereum ? (
           <div>
-            <RewardPlanButton stakingType={'LP'} />
+            <RewardPlanButton stakingType={'LP'} isStaking={true} />
             <section className="staking__lp__detail-box">
               <DetailBox
                 tokens={{
@@ -477,7 +479,11 @@ function LPStaking(): JSX.Element {
                   envs.lpStaking.ethElfiPoolAddress,
                 )}
                 apr={totalLiquidity.ethElfiliquidityForApr}
-                isLoading={positionsByPoolId}
+                isLoading={
+                  !!positionsByPoolId &&
+                  !!pricePerDaiLiquidity &&
+                  !!pricePerEthLiquidity
+                }
                 setModalAndSetStakeToken={() => {
                   setStakingVisibleModal(true);
                   ReactGA.modalview(
@@ -497,7 +503,11 @@ function LPStaking(): JSX.Element {
                   envs.lpStaking.daiElfiPoolAddress,
                 )}
                 apr={totalLiquidity.daiElfiliquidityForApr}
-                isLoading={positionsByPoolId}
+                isLoading={
+                  !!positionsByPoolId &&
+                  !!pricePerDaiLiquidity &&
+                  !!pricePerEthLiquidity
+                }
                 setModalAndSetStakeToken={() => {
                   setStakingVisibleModal(true);
                   ReactGA.modalview(

@@ -14,7 +14,6 @@ class DrawWave {
     mainHeaderY: HTMLParagraphElement,
     mainHeaderMoblieY: HTMLParagraphElement,
     guideY: HTMLParagraphElement,
-    serviceGraphPageY: HTMLParagraphElement,
     auditPageY: HTMLParagraphElement,
     governancePageY: HTMLParagraphElement,
     isResize: boolean,
@@ -22,9 +21,8 @@ class DrawWave {
     const headerY = mainHeaderY.offsetTop;
     const mainMoblieY = mainHeaderMoblieY.offsetTop;
     const guidePageY = guideY.offsetTop;
-    const serviceGraphY = serviceGraphPageY.offsetTop;
     const auditY = auditPageY.offsetTop;
-    const governanceY = governancePageY.offsetTop + (isResize ? 0 : 300);
+    const governanceY = governancePageY.offsetTop;
     const governanceBottomY = governancePageY.offsetHeight;
 
     this.ctx.strokeStyle = '#00BFFF';
@@ -120,28 +118,29 @@ class DrawWave {
       this.browserWidth,
       guidePageY * 1.0363,
     );
-    this.ctx.lineTo(this.browserWidth, serviceGraphY * 0.9513);
+
+    this.ctx.lineTo(this.browserWidth, auditY * 0.9877);
     this.ctx.bezierCurveTo(
       this.browserWidth / 2,
-      serviceGraphY * 1.0065,
-      this.browserWidth / 1.5,
-      serviceGraphY * 0.929,
+      auditY * 1.0117,
+      this.browserWidth / 1.7,
+      auditY * 0.9301,
       0,
-      serviceGraphY * 0.992,
+      auditY * 0.9605,
     );
     this.ctx.closePath();
     this.ctx.fill();
     this.ctx.stroke();
 
     this.ctx.beginPath();
-    this.ctx.moveTo(0, serviceGraphY * 0.997);
+    this.ctx.moveTo(0, auditY * 0.97);
     this.ctx.bezierCurveTo(
       this.browserWidth / 2,
-      serviceGraphY * 0.9432,
-      this.browserWidth / 1.4,
-      serviceGraphY * 0.9972,
+      auditY * 0.9301,
+      this.browserWidth / 1.7,
+      auditY * 1.0045,
       this.browserWidth,
-      serviceGraphY * 0.9538,
+      auditY * 0.986,
     );
     this.ctx.stroke();
 
@@ -181,69 +180,24 @@ class DrawWave {
     );
     this.ctx.fill();
 
-    this.ctx.moveTo(this.browserWidth / 4 + 10, serviceGraphY * 0.977);
-    this.ctx.arc(
-      this.browserWidth / 4,
-      serviceGraphY * 0.977,
-      10,
-      0,
-      Math.PI * 2,
-      true,
-    );
-    this.ctx.fill();
-
-    this.ctx.moveTo(this.browserWidth / 3.8 + 5, serviceGraphY * 0.9714);
-    this.ctx.arc(
-      this.browserWidth / 3.8,
-      serviceGraphY * 0.9714,
-      5,
-      0,
-      Math.PI * 2,
-      true,
-    );
-    this.ctx.fill();
-
-    this.ctx.stroke();
-
-    // audit image
-    this.ctx.beginPath();
-    this.ctx.moveTo(0, auditY * 0.9605);
-    this.ctx.bezierCurveTo(
-      this.browserWidth / 2,
-      auditY * 1.0117,
-      this.browserWidth / 1.7,
-      auditY * 0.9301,
-      this.browserWidth,
-      auditY * 0.9877,
-    );
-
-    this.ctx.moveTo(0, auditY * 0.966);
-    this.ctx.bezierCurveTo(
-      this.browserWidth / 2,
-      auditY * 1.0045,
-      this.browserWidth / 1.7,
-      auditY * 0.9301,
-      this.browserWidth,
-      auditY * 0.995,
-    );
     this.ctx.stroke();
 
     // circle
     this.ctx.beginPath();
-    this.ctx.moveTo(this.browserWidth / 3 + 10, auditY * 0.978);
+    this.ctx.moveTo(this.browserWidth / 3 + 10, auditY * 0.959);
     this.ctx.arc(
       this.browserWidth / 3,
-      auditY * 0.978,
+      auditY * 0.959,
       10,
       0,
       Math.PI * 2,
       true,
     );
 
-    this.ctx.moveTo(this.browserWidth / 3.12 + 5, auditY * 0.9761);
+    this.ctx.moveTo(this.browserWidth / 3.14 + 5, auditY * 0.9585);
     this.ctx.arc(
-      this.browserWidth / 3.12,
-      auditY * 0.9761,
+      this.browserWidth / 3.14,
+      auditY * 0.9585,
       5,
       0,
       Math.PI * 2,
@@ -348,6 +302,300 @@ class DrawWave {
       this.browserWidth / 2.6,
       governanceY * 0.9708 + governanceBottomY + 256,
       5,
+      0,
+      Math.PI * 2,
+      true,
+    );
+
+    this.ctx.fill();
+    this.ctx.stroke();
+  }
+
+  drawMoblieOnMain(
+    mainHeaderY: HTMLParagraphElement,
+    mainHeaderMoblieY: HTMLParagraphElement,
+    guideY: HTMLParagraphElement,
+    auditPageY: HTMLParagraphElement,
+    governancePageY: HTMLParagraphElement,
+    isResize: boolean,
+  ): void {
+    const headerY = mainHeaderY.offsetTop;
+    const mainMoblieY = mainHeaderMoblieY.offsetTop;
+    const guidePageY = guideY.offsetTop + 120;
+    const auditY = auditPageY.offsetTop + 120;
+    const governanceY = governancePageY.offsetTop - 25;
+    const governanceBottomY = governancePageY.offsetHeight;
+
+    this.ctx.strokeStyle = '#00BFFF';
+    const yValue = mainMoblieY / 1.12;
+    this.ctx.beginPath();
+    this.ctx.moveTo(0, yValue * 1.78);
+    this.ctx.bezierCurveTo(
+      this.browserWidth / 2.4,
+      // 970,
+      yValue * 1.9,
+      this.browserWidth / 1.4,
+      yValue * 1.22,
+      this.browserWidth,
+      yValue * 1.58,
+    );
+    this.ctx.moveTo(0, yValue * 1.8);
+    this.ctx.bezierCurveTo(
+      this.browserWidth / 2.4,
+      yValue * 1.9,
+      this.browserWidth / 1.4,
+      yValue * 1.22,
+      this.browserWidth,
+      yValue * 1.6,
+    );
+    this.ctx.stroke();
+
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.beginPath();
+    this.ctx.moveTo(this.browserWidth / 2.448 + 7, yValue * 1.685);
+    this.ctx.arc(
+      this.browserWidth / 2.448,
+      yValue * 1.685,
+      7,
+      0,
+      Math.PI * 2,
+      true,
+    );
+
+    this.ctx.moveTo(this.browserWidth / 2.23 + 4, yValue * 1.658);
+    this.ctx.arc(
+      this.browserWidth / 2.23,
+      yValue * 1.658,
+      4,
+      0,
+      Math.PI * 2,
+      true,
+    );
+
+    this.ctx.moveTo(this.browserWidth / 1.33 + 6, yValue * 1.48);
+    this.ctx.arc(
+      this.browserWidth / 1.33,
+      yValue * 1.48,
+      6,
+      0,
+      Math.PI * 2,
+      true,
+    );
+
+    this.ctx.moveTo(this.browserWidth / 1.27 + 3, yValue * 1.484);
+    this.ctx.arc(
+      this.browserWidth / 1.27,
+      yValue * 1.484,
+      3,
+      0,
+      Math.PI * 2,
+      true,
+    );
+    this.ctx.fill();
+
+    this.ctx.stroke();
+
+    this.ctx.beginPath();
+    this.ctx.moveTo(0, guidePageY * 0.912);
+    this.ctx.bezierCurveTo(
+      this.browserWidth / 2.2,
+      guidePageY * 0.98,
+      this.browserWidth / 1.2,
+      guidePageY * 0.925,
+      this.browserWidth,
+      guidePageY * 0.97,
+    );
+    this.ctx.stroke();
+
+    // bottom
+    this.ctx.fillStyle = 'rgba(247, 251, 255, 1)';
+    this.ctx.beginPath();
+    this.ctx.moveTo(0, guidePageY * 0.918);
+    this.ctx.bezierCurveTo(
+      this.browserWidth / 2.2,
+      guidePageY * 0.98,
+      this.browserWidth / 1.2,
+      guidePageY * 0.92,
+      this.browserWidth,
+      guidePageY * 0.98,
+    );
+
+    this.ctx.lineTo(this.browserWidth, auditY * 0.911);
+    this.ctx.bezierCurveTo(
+      this.browserWidth / 2,
+      auditY * 0.91,
+      this.browserWidth / 1.7,
+      auditY * 0.9401,
+      0,
+      auditY * 0.938,
+    );
+    this.ctx.closePath();
+    this.ctx.fill();
+    this.ctx.stroke();
+
+    this.ctx.beginPath();
+    this.ctx.moveTo(0, auditY * 0.94);
+    this.ctx.bezierCurveTo(
+      this.browserWidth / 2,
+      auditY * 0.94,
+      this.browserWidth / 1.7,
+      auditY * 0.91,
+      this.browserWidth,
+      auditY * 0.921,
+    );
+    this.ctx.stroke();
+
+    this.ctx.fillStyle = '#ffffff';
+    // bottom circle
+    this.ctx.beginPath();
+    this.ctx.moveTo(this.browserWidth / 4 + 7, guidePageY * 0.9417);
+    this.ctx.arc(
+      this.browserWidth / 4,
+      guidePageY * 0.9417,
+      7,
+      0,
+      Math.PI * 2,
+      true,
+    );
+    this.ctx.fill();
+
+    this.ctx.moveTo(this.browserWidth / 1.39 + 7, guidePageY * 0.95);
+    this.ctx.arc(
+      this.browserWidth / 1.39,
+      guidePageY * 0.95,
+      7,
+      0,
+      Math.PI * 2,
+      true,
+    );
+    this.ctx.fill();
+
+    this.ctx.moveTo(this.browserWidth / 1.32 + 4, guidePageY * 0.95);
+    this.ctx.arc(
+      this.browserWidth / 1.32,
+      guidePageY * 0.95,
+      4,
+      0,
+      Math.PI * 2,
+      true,
+    );
+    this.ctx.fill();
+
+    this.ctx.stroke();
+
+    // circle
+    this.ctx.beginPath();
+    this.ctx.moveTo(this.browserWidth / 3 + 7, auditY * 0.935);
+    this.ctx.arc(
+      this.browserWidth / 3,
+      auditY * 0.935,
+      7,
+      0,
+      Math.PI * 2,
+      true,
+    );
+
+    this.ctx.moveTo(this.browserWidth / 3.35 + 4, auditY * 0.936);
+    this.ctx.arc(
+      this.browserWidth / 3.35,
+      auditY * 0.936,
+      4,
+      0,
+      Math.PI * 2,
+      true,
+    );
+    this.ctx.fill();
+
+    this.ctx.stroke();
+
+    // gorvernence
+    this.ctx.beginPath();
+    this.ctx.moveTo(0, governanceY * 1.009);
+    this.ctx.bezierCurveTo(
+      this.browserWidth / 2.2,
+      governanceY * 0.98,
+      this.browserWidth / 1.7,
+      governanceY * 1.031,
+      this.browserWidth * 1.1,
+      governanceY * 0.9893,
+    );
+    this.ctx.stroke();
+    this.ctx.fillStyle = 'rgba(247, 251, 255, 1)';
+    this.ctx.beginPath();
+    this.ctx.moveTo(0, governanceY * 1.015);
+    this.ctx.bezierCurveTo(
+      this.browserWidth / 2.2,
+      governanceY * 0.972,
+      this.browserWidth / 1.7,
+      governanceY * 1.04,
+      this.browserWidth * 1.1,
+      governanceY * 0.9893,
+    );
+    this.ctx.lineTo(
+      this.browserWidth,
+      governanceY * 0.9708 + governanceBottomY + 220,
+    );
+    this.ctx.bezierCurveTo(
+      this.browserWidth / 2,
+      governanceY * 0.9708 + governanceBottomY + 110,
+      this.browserWidth / 1.7,
+      governanceY * 0.9708 + governanceBottomY + 280,
+      0,
+      governanceY * 0.9708 + governanceBottomY + 180,
+    );
+    // this.ctx.lineTo(0, governanceY * 0.9708 + governanceBottomY + 220);
+    this.ctx.fill();
+    this.ctx.stroke();
+
+    this.ctx.beginPath();
+    this.ctx.moveTo(0, governanceY * 0.9708 + governanceBottomY + 190);
+    this.ctx.bezierCurveTo(
+      this.browserWidth / 2,
+      governanceY * 0.9708 + governanceBottomY + 290,
+      this.browserWidth / 1.7,
+      governanceY * 0.9708 + governanceBottomY + 100,
+      this.browserWidth,
+      governanceY * 0.9708 + governanceBottomY + 240,
+    );
+
+    this.ctx.stroke();
+    // circle
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.beginPath();
+    this.ctx.moveTo(this.browserWidth / 3.2 + 7, governanceY * 0.9998);
+    this.ctx.arc(
+      this.browserWidth / 3.2,
+      governanceY * 0.9998,
+      7,
+      0,
+      Math.PI * 2,
+      true,
+    );
+
+    this.ctx.moveTo(this.browserWidth / 2.9 + 3, governanceY);
+    this.ctx.arc(this.browserWidth / 2.9, governanceY, 3, 0, Math.PI * 2, true);
+
+    this.ctx.moveTo(
+      this.browserWidth / 2.4 + 7,
+      governanceY * 0.9708 + governanceBottomY + 213,
+    );
+    this.ctx.arc(
+      this.browserWidth / 2.4,
+      governanceY * 0.9708 + governanceBottomY + 213,
+      7,
+      0,
+      Math.PI * 2,
+      true,
+    );
+
+    this.ctx.moveTo(
+      this.browserWidth / 2.6 + 4,
+      governanceY * 0.9708 + governanceBottomY + 217,
+    );
+    this.ctx.arc(
+      this.browserWidth / 2.6,
+      governanceY * 0.9708 + governanceBottomY + 217,
+      4,
       0,
       Math.PI * 2,
       true,

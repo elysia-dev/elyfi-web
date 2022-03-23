@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react';
+import { useMemo } from 'react';
 import { utils } from 'ethers';
 import useSWR from 'swr';
 import envs from 'src/core/envs';
