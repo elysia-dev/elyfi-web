@@ -65,7 +65,7 @@ const useTvl = (): { value: number; loading: boolean } => {
   const loadBalances = async () => {
     try {
       const provider = new providers.JsonRpcProvider(
-        'https://eth-mainnet.alchemyapi.io/v2/aqm3Z2P6_2fctCSsHEBqo9Csz-ydQH_0',
+         process.env.REACT_APP_JSON_RPC,
       );
 
       const stakingBalances = await Promise.all(
