@@ -38,6 +38,7 @@ export const reserveQuery = `
       tokenId
     }
     reserveHistory(
+      first:500
       orderBy: timestamp
       where: { timestamp_gt: ${minimumTimestamp} }
     ) {
