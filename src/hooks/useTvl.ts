@@ -65,31 +65,34 @@ const useTvl = (): { value: number; loading: boolean } => {
   const loadBalances = async () => {
     try {
       const provider = new providers.JsonRpcProvider(
-        process.env.REACT_APP_JSON_RPC,
+         process.env.REACT_APP_JSON_RPC,
       );
 
-      const stakedElfiOnV1 = await ERC20__factory.connect(
-        envs.token.governanceAddress,
-        provider as any,
-      ).balanceOf(envs.staking.elfyStakingPoolAddress);
-
-      const stakedElfiOnV2 = await ERC20__factory.connect(
-        envs.token.governanceAddress,
-        provider as any,
-      ).balanceOf(envs.staking.elfyV2StakingPoolAddress);
-
-      const stakedElfiOnBSC = await ERC20__factory.connect(
-        envs.token.bscElfiAddress,
-        new providers.JsonRpcProvider(envs.jsonRpcUrl.bsc) as any,
-      ).balanceOf(envs.staking.elfyBscStakingPoolAddress);
+      const stakingBalances = await Promise.all(
+        [
+          ERC20__factory.connect(
+            envs.token.governanceAddress,
+            provider as any,
+          ).balanceOf(envs.staking.elfyStakingPoolAddress),
+          ERC20__factory.connect(
+            envs.token.governanceAddress,
+            provider as any,
+          ).balanceOf(envs.staking.elfyV2StakingPoolAddress),
+          ERC20__factory.connect(
+            envs.token.bscElfiAddress,
+            new providers.JsonRpcProvider(envs.jsonRpcUrl.bsc) as any,
+          ).balanceOf(envs.staking.elfyBscStakingPoolAddress),
+          ERC20__factory.connect(
+            envs.token.elAddress,
+            provider as any,
+          ).balanceOf(envs.staking.elStakingPoolAddress),
+        ].map((balance) => balance),
+      );
 
       setState({
-        stakedEl: await ERC20__factory.connect(
-          envs.token.elAddress,
-          provider as any,
-        ).balanceOf(envs.staking.elStakingPoolAddress),
-        stakedElfi: stakedElfiOnV1.add(stakedElfiOnV2),
-        stakedElfiOnBSC,
+        stakedEl: stakingBalances[3],
+        stakedElfi: stakingBalances[0].add(stakingBalances[1]),
+        stakedElfiOnBSC: stakingBalances[2],
         loading: false,
       });
     } catch (e) {
