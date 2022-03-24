@@ -41,7 +41,6 @@ import Wormhole from 'src/assets/images/staking/wormhole@2x.svg';
 import Uniswap from 'src/assets/images/staking/uniswap@2x.svg';
 import elfi from 'src/assets/images/token/ELFI.svg';
 import el from 'src/assets/images/token/el.svg';
-import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
 const ClaimDisableModal = lazy(() => import('src/components/Modal/ClaimDisableModal'));
 const MigrationDisableModal = lazy(() => import('src/components/Modal/MigrationDisableModal'));
@@ -432,7 +431,7 @@ const Staking: React.FunctionComponent<IProps> = ({
           <section>
             {stakedToken === Token.ELFI && (
               <section className="governance__elyfi-graph">
-                <Suspense fallback={<Skeleton width={"100%"} height={"100%"} />}>
+                <Suspense fallback={<div style={{ height: 120 }} />}>
                   <GovernanceGuideBox />
                 </Suspense>
               </section>
@@ -441,7 +440,7 @@ const Staking: React.FunctionComponent<IProps> = ({
               {mediaQuery === MediaQuery.PC ? (
                 <>
                   <div className="staking__title__content__token-wrapper">
-                    <Suspense fallback={<Skeleton width={37} height={37} />}>
+                    <Suspense fallback={<div style={{ width: 37, height: 37 }}/>}>
                       <LazyImage src={stakedToken === Token.EL ? el : elfi} name="token-images" />
                     </Suspense>
                     <h2>
@@ -467,7 +466,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                 <>
                   <div className="staking__title__content__token-wrapper">
                     <div>
-                      <Suspense fallback={<Skeleton width={21} height={21} />}>
+                      <Suspense fallback={<div style={{ width: 21, height: 21 }}/>}>
                         <LazyImage src={stakedToken === Token.EL ? el : elfi} name="token-images" />
                       </Suspense>
                       <h2>
@@ -507,7 +506,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                   )}
                   <div className="staking__round__container">
                     <section className="staking__round__current-data">
-                      <Suspense fallback={<FallbackSkeleton height={100} />}>
+                      <Suspense fallback={<div style={{ width: "100%", height: 120, background: "#ffffff"  }}/>}>
                         <CurrentRoundBox
                           currentPhase={currentPhase}
                           mediaQuery={mediaQuery}
@@ -517,7 +516,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                       </Suspense>
                     </section>
                     <section className="staking__round__previous__wrapper">
-                      <Suspense fallback={<FallbackSkeleton height={200} />}>
+                      <Suspense fallback={<div style={{ width: "100%", height: 200, background: "#ffffff" }}/>}>
                         <PreviousRoundBox 
                           roundData={roundData}
                           stakingRoundDate={stakingRoundDate}
@@ -532,7 +531,7 @@ const Staking: React.FunctionComponent<IProps> = ({
                       </Suspense>
                     </section>
                     <section>
-                      <Suspense fallback={<FallbackSkeleton height={100} />}>
+                      <Suspense fallback={<div style={{ width: "100%", height: 120, background: "#ffffff"  }}/>}>
                         <CurrentStakingSelectBox 
                           roundInProgress={roundInProgress}
                           stakingRoundDate={stakingRoundDate}

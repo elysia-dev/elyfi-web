@@ -246,21 +246,21 @@ const Dashboard: React.FunctionComponent = () => {
       )}
 
       <div className="deposit">
-        <Suspense fallback={<Skeleton width={"100%"} height={300} />}>
+        <Suspense fallback={<div style={{ height: 300 }} />}>
           <TvlCounter />
         </Suspense>
-        <Suspense fallback={<Skeleton width={"100%"} height={20} />}>
+        <Suspense fallback={<div style={{ height: 20 }} />}>
           <RewardPlanButton stakingType={'deposit'} isStaking={false} />
         </Suspense>
         <div className="deposit__table__wrapper">
           {isEnoughWide && (
             <div className="deposit__remote-control__wrapper">
-              <Suspense fallback={<Skeleton width={120} height={180} style={{ position: 'fixed' }} />}>
+              <Suspense fallback={null}>
                 <RemoteControl reserveState={reserveState} priceData={priceData} supportedBalances={supportedBalances} />
               </Suspense>
             </div>
           )}
-          <Suspense fallback={<FallbackSkeleton height={400} />}>
+          <Suspense fallback={<div style={{ height: 400 }} />}>
             {supportedBalances.map((balance, index) => {
               const reserve = reserveState.reserves.find(
                 (d) => d.id === balance.id,

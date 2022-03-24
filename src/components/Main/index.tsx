@@ -88,18 +88,18 @@ const Main = (): JSX.Element => {
       />
       <div className="main root-container">
         <section className="main__title main__section">
-          <Suspense fallback={<Skeleton width={"100%"} height={'100%'} />}>
+          <Suspense fallback={<div ref={mainHeaderY} ><div ref={mainHeaderMoblieY} /></div>}>
             <MainPage 
               mainHeaderY={mainHeaderY}
               mainHeaderMoblieY={mainHeaderMoblieY}
             />
           </Suspense>
         </section>
-        <Suspense fallback={<Skeleton width={"100%"} height={'100%'} />}>
+        <Suspense fallback={<div style={{ height: "100vh" }} />}>
           <SectionEvent />
         </Suspense>
         <section className="main__advantages main__section">
-          <Suspense fallback={<Skeleton width={"100%"} height={'100%'} />}>
+          <Suspense fallback={<div style={{ height: "80vh" }} />}>
             <Advantage guideY={guideY} />
           </Suspense>
         </section>
@@ -109,11 +109,11 @@ const Main = (): JSX.Element => {
           </Suspense>
         </section> */}
         <section className="main__partners main__section">
-          <Suspense fallback={<Skeleton width={"100%"} height={'100%'} />}>
+          <Suspense fallback={<div style={{ height: "100vh" }} />}>
             <Partners auditPageY={auditPageY} />
           </Suspense>
         </section>
-        <Suspense fallback={<Skeleton width={"100%"} height={'100%'} />}>
+        <Suspense fallback={<div style={{ height: "100vh" }} />}>
           <MainGovernanceTable
             governancePageY={governancePageY}
             governancePageBottomY={governancePageBottomY}

@@ -335,7 +335,7 @@ const RewardPlan: FunctionComponent = () => {
               </div>
               <h2>{t('reward.token_staking__reward_plan', { token: 'LP' })}</h2>
             </div>
-            <Suspense fallback={<FallbackSkeleton height={400} style={{ marginTop: 150 }} />} >
+            <Suspense fallback={<div style={{ marginTop: 150, height: 400, background: "#FFFFFF" }} />} >
               <LpStakingBox
                 index={1}
                 tvl={totalLiquidity.ethElfiPoolTotalLiquidity}
@@ -382,7 +382,7 @@ const RewardPlan: FunctionComponent = () => {
           </>
         ) : ['EL', 'ELFI'].includes(stakingType) ? (
           <section className={`reward__${stakingType.toLowerCase()}`}>
-            <Suspense fallback={<FallbackSkeleton height={400} style={{ marginTop: 250 }} />}>
+            <Suspense fallback={<div style={{ marginTop: 250, height: 400, background: "#FFFFFF" }} />}>
               <StakingBox
                 loading={poolLoading}
                 poolApr={poolApr}
@@ -425,7 +425,7 @@ const RewardPlan: FunctionComponent = () => {
               </div>
             </div>
             <section className="reward__container">
-              <Suspense fallback={<FallbackSkeleton height={300} style={{ marginTop: 50 }} />}>
+              <Suspense fallback={<div style={{ marginTop: 50, height: 300, background: "#FFFFFF" }} />}>
                 {!subgraphLoading ? (
                   reserveState.reserves
                     .filter((data) => {

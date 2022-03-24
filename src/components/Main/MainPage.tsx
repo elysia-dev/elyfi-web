@@ -63,7 +63,7 @@ const MainPage: React.FC<Props> = ({
         </div>
       </div>
       <div className="main__image-wrapper">
-        <Suspense fallback={<FallbackSkeleton />}>
+        <Suspense fallback={<div style={{ height: "100%" }} />}>
           <LazyImage name="dom" src={AssetDom} />
           <LazyImage name="pit" src={Pit} />
         </Suspense>

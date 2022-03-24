@@ -64,6 +64,10 @@ const AppNavigator: React.FC = () => {
     return <></>;
   };
 
+  const nullFallbackArea = (): JSX.Element => {
+    return <div style={{ width: "100vw", height: "100vh" }} />
+  }
+
   return (
     <div
       className={
@@ -83,46 +87,46 @@ const AppNavigator: React.FC = () => {
       <Switch>
         <Route path="/:lng">
           <LanguageProvider>
-              <Suspense fallback={null}>
+              <Suspense fallback={nullFallbackArea()}>
                 <Navigation
                   hamburgerBar={hamburgerBar}
                   setHamburgerBar={setHamburgerBar}
                 />
               </Suspense>
-              <Suspense fallback={null}>
+              <Suspense fallback={nullFallbackArea()}>
                 <Route exact path="/:lng/staking/LP" component={LPStaking} />
               </Suspense>
-              <Suspense fallback={null}>
+              <Suspense fallback={nullFallbackArea()}>
                 <Route exact path="/:lng/staking/EL" component={StakingEL} />
                 <Route exact path="/:lng/staking/ELFI" component={StakingELFI} />
               </Suspense>
-              <Suspense fallback={null}>
+              <Suspense fallback={nullFallbackArea()}>
                 <Route exact path="/:lng/governance" component={Governance} />
               </Suspense>
-              <Suspense fallback={null}>
+              <Suspense fallback={nullFallbackArea()}>
                 <Route
                   exact
                   path="/:lng/portfolio/:id"
                   component={PortfolioDetail}
                 />
               </Suspense>
-              <Suspense fallback={null}>
+              <Suspense fallback={nullFallbackArea()}>
                 <Route
                   exact
                   path="/:lng/rewardplan/:stakingType"
                   component={RewardPlan}
                 />
               </Suspense>
-              <Suspense fallback={null}>
+              <Suspense fallback={nullFallbackArea()}>
                 <Route exact path="/:lng/deposit/:id" component={MarketDetail} />
               </Suspense>
-              <Suspense fallback={null}>
+              <Suspense fallback={nullFallbackArea()}>
                 <Route exact path="/:lng/deposit" component={Dashboard} />
               </Suspense>
-              <Suspense fallback={null}>
+              <Suspense fallback={nullFallbackArea()}>
                 <Route exact path="/:lng" component={Main} />
               </Suspense>
-              <Suspense fallback={null}>
+              <Suspense fallback={nullFallbackArea()}>
                 <Footer />
               </Suspense>
           </LanguageProvider>

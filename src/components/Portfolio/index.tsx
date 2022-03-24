@@ -157,7 +157,7 @@ const PortfolioDetail: FunctionComponent = () => {
               <h2 className="portfolio__borrower__title">
                 {t('loan.borrower__info')}
               </h2>
-              <Suspense fallback={<Skeleton width={"100%"} height={"100%"} />}>
+              <Suspense fallback={<div style={{ height: mediaQuery === MediaQuery.PC ? 280 : 450 }} />}>
                 <BorrowInfo
                   collateralLogo={CollateralLogo}
                   parsedTokenId={parsedTokenId}
@@ -192,7 +192,7 @@ const PortfolioDetail: FunctionComponent = () => {
                   </Suspense>
                 </div>
                 <div className="portfolio__collateral__data--right">
-                  <Suspense fallback={<div style={{display: 'block', width: "100%"}}><Skeleton width={"100%"} height={"100%"} /></div>}>
+                  <Suspense fallback={null}>
                     <CollateralizedInfo 
                       abToken={abToken}
                       blockExplorerUrls={blockExplorerUrls}

@@ -1,6 +1,5 @@
 import { RefObject, Suspense, lazy } from "react";
 import { useTranslation } from "react-i18next";
-import Skeleton from "react-loading-skeleton";
 import { useParams, useHistory } from 'react-router-dom';
 import LanguageType from "src/enums/LanguageType";
 
@@ -51,7 +50,7 @@ const Header: React.FC<Props> = ({
         </div>
       </section>
       <section className="governance__elyfi-graph">
-        <Suspense fallback={<Skeleton width={"100%"} height={"100%"} />}>
+        <Suspense fallback={<div style={{ height: 120 }} />}>
           <GovernanceGuideBox />
         </Suspense>
       </section>

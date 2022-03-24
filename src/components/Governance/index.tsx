@@ -148,13 +148,13 @@ const Governance = (): JSX.Element => {
         }}
       />
       <div className="governance">
-        <Suspense fallback={<Skeleton width={"100%"} height={400} />}>
+        <Suspense fallback={<div style={{ height: 600 }} ref={headerRef} />}>
           <Header headerRef={headerRef} />
         </Suspense>
 
         <section className="governance__validation governance__header">
           <div>
-            <Suspense fallback={<Skeleton width={"100%"} height={50} />}>
+            <Suspense fallback={<div style={{ height: 30 }} />}>
               <OffchainHeader 
                 mainnetType={mainnetType} 
                 offChainNapData={offChainNapData} 
@@ -163,7 +163,7 @@ const Governance = (): JSX.Element => {
             </Suspense>
           </div>
 
-          <Suspense fallback={<Skeleton width={"100%"} height={400} />}>
+          <Suspense fallback={<div style={{ height: 600 }} />}>
             {offChainLoading ? (
               <Skeleton width={'100%'} height={600} />
             ) : offChainNapData &&
@@ -191,7 +191,7 @@ const Governance = (): JSX.Element => {
         </section>
 
         <section className="governance__onchain-vote governance__header">
-          <Suspense fallback={<Skeleton width={"100%"} height={50} />}>
+          <Suspense fallback={<div style={{ height: 50 }} />}>
             <OnchainHeader 
               mainnetType={mainnetType} 
               onChainData={onChainData}
@@ -200,7 +200,7 @@ const Governance = (): JSX.Element => {
             />
           </Suspense>
 
-          <Suspense fallback={<Skeleton width={"100%"} height={400} />}>
+          <Suspense fallback={<div style={{ height: 600 }} />}>
             {/* need refactoring... */}
             {mainnetType === MainnetType.Ethereum ? (
               onChainLoading ? (
@@ -233,7 +233,7 @@ const Governance = (): JSX.Element => {
         </section>
 
         <section className="governance__loan governance__header">
-          <Suspense fallback={<FallbackSkeleton />}>
+          <Suspense fallback={<div style={{ height: 300 }} />}>
             <div>
               <div>
                 <h3>
