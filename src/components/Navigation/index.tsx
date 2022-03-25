@@ -19,7 +19,7 @@ import ButtonEventType from 'src/enums/ButtonEventType';
 
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
+import useCurrentRoute from 'src/hooks/useCurrnetRoute';
 
 import ErrorModal from '../Modal/ErrorModal';
 
@@ -52,6 +52,7 @@ const Navigation: React.FunctionComponent<{
   const { txStatus, error } = useContext(TxContext);
   const { lng } = useParams<{ lng: string }>();
   const { value: mediaQuery } = useMediaQueryType();
+  const currentRoute = useCurrentRoute();
 
   const location = useLocation();
 
@@ -164,7 +165,7 @@ const Navigation: React.FunctionComponent<{
               style={{
                 marginRight: 8,
               }}>
-              <p style={{ cursor: 'pointer' }}>
+              <p style={{ cursor: 'pointer', fontWeight: currentRoute === _index ? "bold" : 400 }}>
                 {t(_data.i18nKeyword).toUpperCase()}
               </p>
             </div>
