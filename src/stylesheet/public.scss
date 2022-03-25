@@ -43,6 +43,10 @@
   word-break: keep-all;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 $font-color: #333333;
 $sub-font-color: #646464;
 $elysia-color: #00bfff;
@@ -599,6 +603,7 @@ input[type='number'] {
             .bottom {
               position: relative;
               z-index: 3;
+              object-fit: initial !important;
             }
           }
           .token-low {
