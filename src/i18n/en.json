@@ -128,8 +128,8 @@
       "ELFIStake": "ELFI Staking",
       "LPStake": "LP Staking",
       "link": {
-        "docs": "https://elysia.gitbook.io/elysia.finance/v/eng/",
-        "guide": "https://elysia.gitbook.io/elyfi-user-guide/",
+        "docs": "https://docs.elyfi.world/v/eng/",
+        "guide": "https://guide.elyfi.world",
         "governance_docs": "https://elysia.gitbook.io/elyfi-user-guide/governance"
       }
     },
