@@ -1,19 +1,22 @@
-import { BigNumber, constants, providers } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 import { formatUnits, formatEther } from 'ethers/lib/utils';
 import { useEffect, useMemo, useState } from 'react';
 import useSWR from 'swr';
 import envs from 'src/core/envs';
-import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import ReserveData from 'src/core/data/reserves';
 import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
 import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
+import {
+  bscStakingFetcher,
+  elfiStakingFetcher,
+  elStakingFetcher,
+} from 'src/clients/BalancesFetcher';
 import useReserveData from './useReserveData';
 
 const useTvl = (): { value: number; loading: boolean } => {
   const { reserveState, loading: reserveLoading } = useReserveData();
-
   const [loading, setLoading] = useState(true);
   const { data: poolData } = useSWR(
     envs.externalApiEndpoint.cachedUniswapV3URL,
@@ -27,6 +30,33 @@ const useTvl = (): { value: number; loading: boolean } => {
     pricesFetcher,
     {
       use: [priceMiddleware],
+    },
+  );
+
+  const { data: v1StakingBalance } = useSWR(
+    [envs.staking.elfyStakingPoolAddress],
+    {
+      fetcher: elfiStakingFetcher(),
+    },
+  );
+  const { data: v2StakingBalance } = useSWR(
+    [envs.staking.elfyV2StakingPoolAddress],
+    {
+      fetcher: elfiStakingFetcher(),
+    },
+  );
+
+  const { data: bscStakingBalance } = useSWR(
+    [envs.staking.elfyBscStakingPoolAddress],
+    {
+      fetcher: bscStakingFetcher(),
+    },
+  );
+
+  const { data: elStakingBalance } = useSWR(
+    [envs.staking.elStakingPoolAddress],
+    {
+      fetcher: elStakingFetcher(),
     },
   );
 
@@ -64,35 +94,10 @@ const useTvl = (): { value: number; loading: boolean } => {
 
   const loadBalances = async () => {
     try {
-      const provider = new providers.JsonRpcProvider(
-         process.env.REACT_APP_JSON_RPC,
-      );
-
-      const stakingBalances = await Promise.all(
-        [
-          ERC20__factory.connect(
-            envs.token.governanceAddress,
-            provider as any,
-          ).balanceOf(envs.staking.elfyStakingPoolAddress),
-          ERC20__factory.connect(
-            envs.token.governanceAddress,
-            provider as any,
-          ).balanceOf(envs.staking.elfyV2StakingPoolAddress),
-          ERC20__factory.connect(
-            envs.token.bscElfiAddress,
-            new providers.JsonRpcProvider(envs.jsonRpcUrl.bsc) as any,
-          ).balanceOf(envs.staking.elfyBscStakingPoolAddress),
-          ERC20__factory.connect(
-            envs.token.elAddress,
-            provider as any,
-          ).balanceOf(envs.staking.elStakingPoolAddress),
-        ].map((balance) => balance),
-      );
-
       setState({
-        stakedEl: stakingBalances[3],
-        stakedElfi: stakingBalances[0].add(stakingBalances[1]),
-        stakedElfiOnBSC: stakingBalances[2],
+        stakedEl: elStakingBalance,
+        stakedElfi: v1StakingBalance.add(v2StakingBalance),
+        stakedElfiOnBSC: bscStakingBalance,
         loading: false,
       });
     } catch (e) {
@@ -101,11 +106,24 @@ const useTvl = (): { value: number; loading: boolean } => {
   };
 
   useEffect(() => {
-    if (reserveLoading) return;
+    if (
+      reserveLoading ||
+      !elStakingBalance ||
+      !v2StakingBalance ||
+      !v1StakingBalance ||
+      !bscStakingBalance
+    )
+      return;
     loadBalances().then(() => {
       setLoading(false);
     });
-  }, [reserveLoading]);
+  }, [
+    reserveLoading,
+    elStakingBalance,
+    v2StakingBalance,
+    v1StakingBalance,
+    bscStakingBalance,
+  ]);
 
   return {
     value: tvl,
