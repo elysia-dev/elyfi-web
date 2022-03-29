@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ethers, providers } from 'ethers';
 
-type ReturnType = { ensName: string | null, ensLoading: boolean };
+type ReturnType = { ensName: string | null; ensLoading: boolean };
 
 export const useENS = (address: string | null | undefined): ReturnType => {
   const [ensName, setENSName] = useState<string | null>(null);
@@ -9,9 +9,9 @@ export const useENS = (address: string | null | undefined): ReturnType => {
 
   useEffect(() => {
     if (address !== (undefined || null)) {
-      setEnsLoading(true)
+      setEnsLoading(true);
     }
-  }, [address])
+  }, [address]);
 
   useEffect(() => {
     async function resolveENS() {
@@ -24,12 +24,12 @@ export const useENS = (address: string | null | undefined): ReturnType => {
           if (getEnsName) setENSName(getEnsName);
         }
       } catch (e) {
-        if (e.code === "UNSUPPORTED_OPERATION") {
+        if (e.code === 'UNSUPPORTED_OPERATION') {
           return;
         }
-        console.error(e)
+        console.error(e);
       } finally {
-        setEnsLoading(true)
+        setEnsLoading(true);
       }
     }
     resolveENS();
