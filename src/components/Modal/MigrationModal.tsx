@@ -115,7 +115,9 @@ const MigrationModal: React.FunctionComponent<{
                     <h2 className="modal__input__value">
                       <input
                         type="number"
-                        className="modal__input__value__amount"
+                        className={`modal__input__value__amount ${
+                          state.withdrawMax ? 'is-max' : ''
+                        }`}
                         placeholder="0"
                         value={state.withdrawAmount}
                         style={{
@@ -184,7 +186,9 @@ const MigrationModal: React.FunctionComponent<{
                     <h2 className="modal__input__value">
                       <input
                         type="number"
-                        className="modal__input__value__amount"
+                        className={`modal__input__value__amount ${
+                          state.migrationMax ? 'is-max' : ''
+                        }`}
                         placeholder="0"
                         value={state.migrationAmount}
                         style={{

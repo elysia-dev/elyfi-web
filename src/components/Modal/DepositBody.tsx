@@ -62,7 +62,9 @@ const DepositBody: React.FunctionComponent<{
                 <input
                   ref={inputRef}
                   type="number"
-                  className="modal__input__value__amount"
+                  className={`modal__input__value__amount ${
+                    amount.max ? 'is-max' : ''
+                  }`}
                   placeholder="0"
                   value={parseFloat(
                     amount.value.substring(0, amount.value.indexOf('.') + 9),

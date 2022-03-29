@@ -77,7 +77,9 @@ const WithdrawBody: React.FunctionComponent<{
               <h2 className="modal__input__value">
                 <input
                   type="number"
-                  className="modal__input__value__amount"
+                  className={`modal__input__value__amount ${
+                    amount.max ? 'is-max' : ''
+                  }`}
                   placeholder="0"
                   value={amount.value}
                   style={{

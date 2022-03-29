@@ -3042,6 +3042,9 @@ input[type='number'] {
         display: flex;
         cursor: pointer;
         white-space: nowrap;
+        &.is-zero {
+          display: none;
+        }
       }
       &__value {
         color: $font-color;
@@ -3056,6 +3059,9 @@ input[type='number'] {
           font-family: $bold;
           outline: 0;
           transition: all 0.3s linear;
+          &.is-max {
+            color: $elysia-color;
+          }
         }
       }
     }
