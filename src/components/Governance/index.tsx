@@ -3,7 +3,6 @@ import Skeleton from 'react-loading-skeleton';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import useSWR from 'swr';
-
 import {
   bscOnChainQuery,
   onChainBscFetcher,
@@ -26,7 +25,6 @@ import { offChainGovernanceMiddleware } from 'src/middleware/offChainMiddleware'
 import { onChainQuery } from 'src/queries/onChainQuery';
 import useReserveData from 'src/hooks/useReserveData';
 import { IAssetBond } from 'src/core/types/reserveSubgraph';
-import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
 const OffchainHeader = lazy(() => import('./OffchainHeader'))
 const OnchainHeader = lazy(() => import('./OnchainHeader'));
@@ -258,6 +256,7 @@ const Governance = (): JSX.Element => {
               ) : (
                 <>
                   <AssetList
+                    prevRoute={"governance"}
                     assetBondTokens={
                       /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
                       [
