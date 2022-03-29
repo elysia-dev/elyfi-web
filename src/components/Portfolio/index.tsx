@@ -5,7 +5,7 @@ import {
   useState,
   useRef,
   lazy,
-  Suspense
+  Suspense,
 } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import TempAssets from 'src/assets/images/temp_assets.png';
@@ -26,10 +26,12 @@ import useReserveData from 'src/hooks/useReserveData';
 import { IAssetBond } from 'src/core/types/reserveSubgraph';
 import Skeleton from 'react-loading-skeleton';
 
-const LazyImage = lazy(() => import("src/utiles/lazyImage"));
+const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
-const BorrowInfo = lazy(() => import("src/components/Portfolio/BorrowerInfo"))
-const CollateralizedInfo = lazy(() => import("src/components/Portfolio/CollateralizedInfo"))
+const BorrowInfo = lazy(() => import('src/components/Portfolio/BorrowerInfo'));
+const CollateralizedInfo = lazy(
+  () => import('src/components/Portfolio/CollateralizedInfo'),
+);
 
 const PortfolioDetail: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
@@ -83,7 +85,7 @@ const PortfolioDetail: FunctionComponent = () => {
 
     loadAddress(lat, lng, language);
   }, [lat, lng, language]);
-  
+
   const loadContractImage = async (ipfs: string) => {
     try {
       const response = await Slate.fetctABTokenIpfs(ipfs);
@@ -157,7 +159,12 @@ const PortfolioDetail: FunctionComponent = () => {
               <h2 className="portfolio__borrower__title">
                 {t('loan.borrower__info')}
               </h2>
-              <Suspense fallback={<div style={{ height: mediaQuery === MediaQuery.PC ? 280 : 450 }} />}>
+              <Suspense
+                fallback={
+                  <div
+                    style={{ height: mediaQuery === MediaQuery.PC ? 280 : 450 }}
+                  />
+                }>
                 <BorrowInfo
                   collateralLogo={CollateralLogo}
                   parsedTokenId={parsedTokenId}
@@ -172,7 +179,7 @@ const PortfolioDetail: FunctionComponent = () => {
               <h2>{t('loan.collateral_nft__details')}</h2>
               <div className="portfolio__collateral__data">
                 <div className="portfolio__collateral__data--left">
-                  <Suspense fallback={<Skeleton width="538" height="526" />} >
+                  <Suspense fallback={<Skeleton width="538" height="526" />}>
                     <a
                       href={`https://www.google.com/maps/place/${address}/@${lat},${lng},18.12z`}
                       rel="noopener noreferer"
@@ -193,7 +200,7 @@ const PortfolioDetail: FunctionComponent = () => {
                 </div>
                 <div className="portfolio__collateral__data--right">
                   <Suspense fallback={null}>
-                    <CollateralizedInfo 
+                    <CollateralizedInfo
                       abToken={abToken}
                       blockExplorerUrls={blockExplorerUrls}
                       tokenInfo={tokenInfo}

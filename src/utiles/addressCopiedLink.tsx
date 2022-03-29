@@ -1,5 +1,4 @@
-import { CSSProperties } from "react";
-
+import { CSSProperties } from 'react';
 
 const copiedLink = (addr: string) => {
   if (!document.queryCommandSupported('copy')) {
@@ -16,14 +15,17 @@ const copiedLink = (addr: string) => {
     document.body.removeChild(area);
     alert('Copied!!');
   }
-}
+};
 
 const addressCopiedLink = (addr: string, style?: CSSProperties) => {
   return (
-    <p className="component__address-copied-link" style={style} onClick={() => copiedLink(addr)}>
+    <p
+      className="component__address-copied-link"
+      style={style}
+      onClick={() => copiedLink(addr)}>
       {addr}
     </p>
-  )
-}
+  );
+};
 
 export default addressCopiedLink;

@@ -6,22 +6,18 @@ import ButtonEventType from 'src/enums/ButtonEventType';
 import { useHistory, useParams } from 'react-router-dom';
 import LanguageType from 'src/enums/LanguageType';
 
-import AssetDom from 'src/assets/images/main/asset-dom.svg'
+import AssetDom from 'src/assets/images/main/asset-dom.svg';
 import Pit from 'src/assets/images/main/pit.svg';
 import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
-
 
 interface Props {
   mainHeaderY: RefObject<HTMLParagraphElement>;
   mainHeaderMoblieY: RefObject<HTMLParagraphElement>;
 }
 
-const MainPage: React.FC<Props> = ({
-  mainHeaderY,
-  mainHeaderMoblieY
-}) => {
+const MainPage: React.FC<Props> = ({ mainHeaderY, mainHeaderMoblieY }) => {
   const { t } = useTranslation();
   const History = useHistory();
   const { lng } = useParams<{ lng: string }>();
@@ -63,7 +59,7 @@ const MainPage: React.FC<Props> = ({
         </div>
       </div>
       <div className="main__image-wrapper">
-        <Suspense fallback={<div style={{ height: "100%" }} />}>
+        <Suspense fallback={<div style={{ height: '100%' }} />}>
           <LazyImage name="dom" src={AssetDom} />
           <LazyImage name="pit" src={Pit} />
         </Suspense>
@@ -95,7 +91,7 @@ const MainPage: React.FC<Props> = ({
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default MainPage;

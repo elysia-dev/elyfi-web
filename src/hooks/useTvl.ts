@@ -65,7 +65,7 @@ const useTvl = (): { value: number; loading: boolean } => {
   const loadBalances = async () => {
     try {
       const provider = new providers.JsonRpcProvider(
-         process.env.REACT_APP_JSON_RPC,
+        process.env.REACT_APP_JSON_RPC,
       );
 
       const stakingBalances = await Promise.all(

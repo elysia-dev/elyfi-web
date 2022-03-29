@@ -9,26 +9,23 @@ import Skeleton from 'react-loading-skeleton';
 import { IReserveSubgraph } from 'src/core/types/reserveSubgraph';
 import { PriceType } from 'src/clients/Coingecko';
 
-
 interface Props {
   supportedBalances: BalanceType[];
   reserveState: IReserveSubgraph;
-  priceData: PriceType | undefined
+  priceData: PriceType | undefined;
 }
 
 const RemoteControl: React.FC<Props> = ({
   supportedBalances,
   reserveState,
-  priceData
+  priceData,
 }) => {
   const { t } = useTranslation();
-  
+
   return (
     <div className="deposit__remote-control">
       {supportedBalances.map((balance, index) => {
-        const reserve = reserveState.reserves.find(
-          (d) => d.id === balance.id,
-        );
+        const reserve = reserveState.reserves.find((d) => d.id === balance.id);
 
         if (!reserve) return <></>;
 
@@ -36,9 +33,7 @@ const RemoteControl: React.FC<Props> = ({
           <a onClick={() => scrollToOffeset(`table-${index}`, 678)}>
             <div>
               <div className="deposit__remote-control__images">
-                <img
-                  src={reserveTokenData[balance.tokenName].image}
-                />
+                <img src={reserveTokenData[balance.tokenName].image} />
               </div>
               <div className="deposit__remote-control__name">
                 <p className="montserrat">{balance.tokenName}</p>
@@ -71,7 +66,7 @@ const RemoteControl: React.FC<Props> = ({
         );
       })}
     </div>
-  )
-}
+  );
+};
 
 export default RemoteControl;

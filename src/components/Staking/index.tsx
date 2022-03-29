@@ -42,21 +42,35 @@ import Uniswap from 'src/assets/images/staking/uniswap@2x.svg';
 import elfi from 'src/assets/images/token/ELFI.svg';
 import el from 'src/assets/images/token/el.svg';
 
-const ClaimDisableModal = lazy(() => import('src/components/Modal/ClaimDisableModal'));
-const MigrationDisableModal = lazy(() => import('src/components/Modal/MigrationDisableModal'));
-const MigrationModal = lazy(() => import('src/components/Modal/MigrationModal'));
+const ClaimDisableModal = lazy(
+  () => import('src/components/Modal/ClaimDisableModal'),
+);
+const MigrationDisableModal = lazy(
+  () => import('src/components/Modal/MigrationDisableModal'),
+);
+const MigrationModal = lazy(
+  () => import('src/components/Modal/MigrationModal'),
+);
 const StakingEnded = lazy(() => import('src/components/Modal/StakingEnded'));
-const MigrationEnded = lazy(() => import('src/components/Modal/MigrationEnded'));
-const ClaimStakingRewardModal = lazy(() => import('src/components/Modal/ClaimStakingRewardModal'));
+const MigrationEnded = lazy(
+  () => import('src/components/Modal/MigrationEnded'),
+);
+const ClaimStakingRewardModal = lazy(
+  () => import('src/components/Modal/ClaimStakingRewardModal'),
+);
 const StakingModal = lazy(() => import('src/components/Modal/StakingModal'));
-const TransactionConfirmModal = lazy(() => import('src/components/Modal/TransactionConfirmModal'));
-const GovernanceGuideBox = lazy(() => import('src/components/Governance/GovernanceGuideBox'));
+const TransactionConfirmModal = lazy(
+  () => import('src/components/Modal/TransactionConfirmModal'),
+);
+const GovernanceGuideBox = lazy(
+  () => import('src/components/Governance/GovernanceGuideBox'),
+);
 
 const CurrentRoundBox = lazy(() => import('./CurrentRoundBox'));
 const PreviousRoundBox = lazy(() => import('./PreviousRoundBox'));
 const CurrentStakingSelectBox = lazy(() => import('./CurrentStakingSelectBox'));
 
-const LazyImage = lazy(() => import('src/utiles/lazyImage'))
+const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
 interface IProps {
   stakedToken: Token.EL | Token.ELFI;
@@ -440,8 +454,12 @@ const Staking: React.FunctionComponent<IProps> = ({
               {mediaQuery === MediaQuery.PC ? (
                 <>
                   <div className="staking__title__content__token-wrapper">
-                    <Suspense fallback={<div style={{ width: 37, height: 37 }}/>}>
-                      <LazyImage src={stakedToken === Token.EL ? el : elfi} name="token-images" />
+                    <Suspense
+                      fallback={<div style={{ width: 37, height: 37 }} />}>
+                      <LazyImage
+                        src={stakedToken === Token.EL ? el : elfi}
+                        name="token-images"
+                      />
                     </Suspense>
                     <h2>
                       {t('staking.staking__token', {
@@ -466,8 +484,12 @@ const Staking: React.FunctionComponent<IProps> = ({
                 <>
                   <div className="staking__title__content__token-wrapper">
                     <div>
-                      <Suspense fallback={<div style={{ width: 21, height: 21 }}/>}>
-                        <LazyImage src={stakedToken === Token.EL ? el : elfi} name="token-images" />
+                      <Suspense
+                        fallback={<div style={{ width: 21, height: 21 }} />}>
+                        <LazyImage
+                          src={stakedToken === Token.EL ? el : elfi}
+                          name="token-images"
+                        />
                       </Suspense>
                       <h2>
                         {t('staking.staking__token', {
@@ -506,7 +528,16 @@ const Staking: React.FunctionComponent<IProps> = ({
                   )}
                   <div className="staking__round__container">
                     <section className="staking__round__current-data">
-                      <Suspense fallback={<div style={{ width: "100%", height: 120, background: "#ffffff"  }}/>}>
+                      <Suspense
+                        fallback={
+                          <div
+                            style={{
+                              width: '100%',
+                              height: 120,
+                              background: '#ffffff',
+                            }}
+                          />
+                        }>
                         <CurrentRoundBox
                           currentPhase={currentPhase}
                           mediaQuery={mediaQuery}
@@ -516,8 +547,17 @@ const Staking: React.FunctionComponent<IProps> = ({
                       </Suspense>
                     </section>
                     <section className="staking__round__previous__wrapper">
-                      <Suspense fallback={<div style={{ width: "100%", height: 200, background: "#ffffff" }}/>}>
-                        <PreviousRoundBox 
+                      <Suspense
+                        fallback={
+                          <div
+                            style={{
+                              width: '100%',
+                              height: 200,
+                              background: '#ffffff',
+                            }}
+                          />
+                        }>
+                        <PreviousRoundBox
                           roundData={roundData}
                           stakingRoundDate={stakingRoundDate}
                           stakedToken={stakedToken}
@@ -531,8 +571,17 @@ const Staking: React.FunctionComponent<IProps> = ({
                       </Suspense>
                     </section>
                     <section>
-                      <Suspense fallback={<div style={{ width: "100%", height: 120, background: "#ffffff"  }}/>}>
-                        <CurrentStakingSelectBox 
+                      <Suspense
+                        fallback={
+                          <div
+                            style={{
+                              width: '100%',
+                              height: 120,
+                              background: '#ffffff',
+                            }}
+                          />
+                        }>
+                        <CurrentStakingSelectBox
                           roundInProgress={roundInProgress}
                           stakingRoundDate={stakingRoundDate}
                           roundData={roundData}

@@ -9,7 +9,7 @@ import { parseTokenId } from 'src/utiles/parseTokenId';
 
 const AssetList: React.FC<{
   assetBondTokens?: IAssetBond[];
-  prevRoute?: "deposit" | "governance"
+  prevRoute?: 'deposit' | 'governance';
 }> = ({ assetBondTokens, prevRoute }) => {
   const history = useHistory();
   const { lng } = useParams<{ lng: string }>();
@@ -31,7 +31,7 @@ const AssetList: React.FC<{
                   onClick={() => {
                     history.push({
                       pathname: `/${lng}/portfolio/${abToken.id}`,
-                      state: { route: prevRoute }
+                      state: { route: prevRoute },
                     });
                   }}
                 />

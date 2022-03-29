@@ -1,4 +1,3 @@
-
 import Twitter from 'src/assets/images/footer/twitter.svg';
 import Telegram from 'src/assets/images/footer/telegram.svg';
 import Github from 'src/assets/images/footer/github.svg';
@@ -6,7 +5,9 @@ import Discord from 'src/assets/images/footer/discord.svg';
 import LazyImage from 'src/utiles/lazyImage';
 import { lazy, Suspense } from 'react';
 
-const LanguageConverter = lazy(() => import('src/components/Footer/LanguageConverter'));
+const LanguageConverter = lazy(
+  () => import('src/components/Footer/LanguageConverter'),
+);
 
 const Footer = (): JSX.Element => {
   return (
@@ -23,9 +24,9 @@ const Footer = (): JSX.Element => {
                 [Discord, 'https://discord.gg/JjjYrE5Ww8'],
               ].map((data, index) => {
                 return (
-                    <a key={`footer_${index}`} href={data[1]}>
-                      <LazyImage src={data[0]} name="logo-icons" />
-                    </a>
+                  <a key={`footer_${index}`} href={data[1]}>
+                    <LazyImage src={data[0]} name="logo-icons" />
+                  </a>
                 );
               })}
             </div>

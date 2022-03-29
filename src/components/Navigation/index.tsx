@@ -1,4 +1,12 @@
-import { useState, useEffect, useRef, useMemo, useContext, lazy, Suspense } from 'react';
+import {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useContext,
+  lazy,
+  Suspense,
+} from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
 import NavigationType from 'src/enums/NavigationType';
@@ -24,7 +32,9 @@ import useCurrentRoute from 'src/hooks/useCurrnetRoute';
 import ErrorModal from '../Modal/ErrorModal';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
-const MainnetSwitch = lazy(() => import('src/components/Navigation/MainnetSwitch'));
+const MainnetSwitch = lazy(
+  () => import('src/components/Navigation/MainnetSwitch'),
+);
 const Wallet = lazy(() => import('src/components/Navigation/Wallet'));
 
 const InitialNavigation: INavigation[] = [
@@ -71,7 +81,6 @@ const Navigation: React.FunctionComponent<{
     );
     return getPath.length === 0 ? InitialNavigation : getPath;
   }, [location]);
-
 
   const { setLanguage } = useContext(LanguageContext);
 
@@ -165,34 +174,51 @@ const Navigation: React.FunctionComponent<{
               style={{
                 marginRight: 8,
               }}>
-              <p style={{ cursor: 'pointer', fontWeight: currentRoute === _index ? "bold" : 400 }}>
+              <p
+                style={{
+                  cursor: 'pointer',
+                  fontWeight: currentRoute === _index ? 'bold' : 400,
+                }}>
                 {t(_data.i18nKeyword).toUpperCase()}
               </p>
             </div>
             {!['navigation.dashboard', 'navigation.governance'].includes(
               _data.i18nKeyword.toLowerCase(),
-            ) && <div className="navigation__arrow" style={{ transform: isBold(_index) && globalNavHover === _index + 1 ? `rotate(135deg)` : `rotate(-45deg) translateX(-2px) translateY(2px)`}} />}
+            ) && (
+              <div
+                className="navigation__arrow"
+                style={{
+                  transform:
+                    isBold(_index) && globalNavHover === _index + 1
+                      ? `rotate(135deg)`
+                      : `rotate(-45deg) translateX(-2px) translateY(2px)`,
+                }}
+              />
+            )}
           </div>
           <div>
             <div
-              className={`navigation__bottom ${isBold(_index) && globalNavHover === _index + 1 ? "" : " disabled"}`}
-              ref={localNavigationRef}
-            >
+              className={`navigation__bottom ${
+                isBold(_index) && globalNavHover === _index + 1
+                  ? ''
+                  : ' disabled'
+              }`}
+              ref={localNavigationRef}>
               {isExternalLink &&
-                _data.subNavigation && (
-                  getLNBData.filter((data) => {
-                    return data.id === _data.id
-                  }).map((__data) => {
+                _data.subNavigation &&
+                getLNBData
+                  .filter((data) => {
+                    return data.id === _data.id;
+                  })
+                  .map((__data) => {
                     return __data.subNavigation!.map((subData, index) => {
                       return localNavInnerContainer(
                         subData,
                         subData.type === NavigationType.Link ? false : true,
                         index,
                       );
-                    })
-                  })
-                )
-              }
+                    });
+                  })}
             </div>
           </div>
         </div>
@@ -386,7 +412,12 @@ const Navigation: React.FunctionComponent<{
 
   return (
     <>
-      {txStatus === TxStatus.FAIL && error && error !== "MetaMask Tx Signature: User denied transaction signature." && <ErrorModal error={error} />}
+      {txStatus === TxStatus.FAIL &&
+        error &&
+        error !==
+          'MetaMask Tx Signature: User denied transaction signature.' && (
+          <ErrorModal error={error} />
+        )}
       <nav
         className={`navigation`}
         style={{
@@ -405,12 +436,15 @@ const Navigation: React.FunctionComponent<{
           setGlobalNavHover(0);
           setSelectedLocalNavIndex(0);
         }}>
-        <Suspense fallback={
-          <div style={{
-            height: mediaQuery === MediaQuery.PC ? 100 : 60,
-            borderBottom: "1px solid #f0f0f1"
-          }} />
-        }>
+        <Suspense
+          fallback={
+            <div
+              style={{
+                height: mediaQuery === MediaQuery.PC ? 100 : 60,
+                borderBottom: '1px solid #f0f0f1',
+              }}
+            />
+          }>
           <div className="navigation__container">
             <div className="navigation__wrapper">
               <div>
@@ -422,10 +456,7 @@ const Navigation: React.FunctionComponent<{
                     setHamburgerBar(false);
                   }}>
                   <div className="logo-wrapper" style={{ cursor: 'pointer' }}>
-                    <LazyImage
-                      src={ElysiaLogo}
-                      name="elysia-logo"
-                    />
+                    <LazyImage src={ElysiaLogo} name="elysia-logo" />
                   </div>
                 </Link>
               </div>
