@@ -1,21 +1,18 @@
-import { lazy, Suspense } from "react";
-import { INapData } from "src/clients/OffChainTopic";
+import { lazy, Suspense } from 'react';
+import { INapData } from 'src/clients/OffChainTopic';
 import reactGA from 'react-ga';
 import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
-import { useTranslation } from "react-i18next";
-import FallbackSkeleton from "src/utiles/FallbackSkeleton";
+import { useTranslation } from 'react-i18next';
+import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
-
 interface Props {
-  data: INapData
+  data: INapData;
 }
 
-const OffChainContainer: React.FC<Props> = ({
-  data
-}) => {
+const OffChainContainer: React.FC<Props> = ({ data }) => {
   const { t } = useTranslation();
 
   return (
@@ -28,7 +25,7 @@ const OffChainContainer: React.FC<Props> = ({
         });
         window.open(data.link);
       }}>
-      <Suspense fallback={<FallbackSkeleton width={"100%"} height={300} />}>
+      <Suspense fallback={<FallbackSkeleton width={'100%'} height={300} />}>
         <div>
           <LazyImage src={`https://${data.images}`} name="container-images" />
         </div>

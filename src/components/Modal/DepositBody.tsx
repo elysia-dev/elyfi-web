@@ -13,14 +13,7 @@ const DepositBody: React.FunctionComponent<{
   balance: BigNumber;
   deposit: (amount: BigNumber, max: boolean) => void;
   txWait: boolean;
-}> = ({
-  tokenInfo,
-  depositAPY,
-  miningAPR,
-  balance,
-  deposit,
-  txWait
-}) => {
+}> = ({ tokenInfo, depositAPY, miningAPR, balance, deposit, txWait }) => {
   const [amount, setAmount] = useState({ value: '', max: false });
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -44,8 +37,7 @@ const DepositBody: React.FunctionComponent<{
 
   return (
     <>
-    {
-      txWait ? (
+      {txWait ? (
         <LoadingIndicator isTxActive={txWait} />
       ) : (
         <>
@@ -98,9 +90,11 @@ const DepositBody: React.FunctionComponent<{
                 <p>{t('dashboard.deposit_available')}</p>
                 <div>
                   <h2>{t('dashboard.wallet_balance')}</h2>
-                  <h2>{`${formatCommaWithDigits(balance, 4, tokenInfo.decimals)} ${
-                    tokenInfo.name
-                  }`}</h2>
+                  <h2>{`${formatCommaWithDigits(
+                    balance,
+                    4,
+                    tokenInfo.decimals,
+                  )} ${tokenInfo.name}`}</h2>
                 </div>
               </div>
               <div className="modal__deposit__despositable-value">
@@ -117,21 +111,22 @@ const DepositBody: React.FunctionComponent<{
             </div>
           </div>
         </>
-      )
-    }
+      )}
       <ModalButton
-        className={`modal__button${(amountLteZero || amountGtBalance || txWait) ? ' disable' : ''}`}
+        className={`modal__button${
+          amountLteZero || amountGtBalance || txWait ? ' disable' : ''
+        }`}
         onClick={() => {
           !txWait &&
-          !amountLteZero &&
-          !amountGtBalance &&
-          deposit(
-            utils.parseUnits(amount.value, tokenInfo.decimals),
-            amount.max,
-          )
+            !amountLteZero &&
+            !amountGtBalance &&
+            deposit(
+              utils.parseUnits(amount.value, tokenInfo.decimals),
+              amount.max,
+            );
         }}
         content={
-            amountLteZero
+          amountLteZero
             ? t('dashboard.enter_amount')
             : amountGtBalance
             ? t('staking.insufficient_balance', {

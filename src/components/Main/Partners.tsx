@@ -1,4 +1,3 @@
-
 import { lazy, RefObject, Suspense } from 'react';
 
 import HaechiLabs from 'src/assets/images/main/haechi-labs.svg';
@@ -18,9 +17,7 @@ interface Props {
   auditPageY: RefObject<HTMLParagraphElement>;
 }
 
-const Partners: React.FC<Props> = ({
-  auditPageY
-}) => {
+const Partners: React.FC<Props> = ({ auditPageY }) => {
   const { t } = useTranslation();
 
   return (
@@ -60,12 +57,18 @@ const Partners: React.FC<Props> = ({
         <h2>{t('main.partners.lawfirm')}</h2>
         <div className="main__partners__lawfirm">
           {[SHIN, BKI, FocusLaw, HUB, HOW, TSMP].map((LawFirm, _index) => {
-            return <LazyImage name={`partner_${_index}`} src={LawFirm} key={_index} />;
+            return (
+              <LazyImage
+                name={`partner_${_index}`}
+                src={LawFirm}
+                key={_index}
+              />
+            );
           })}
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default Partners;

@@ -56,10 +56,14 @@ import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
 import useReserveData from 'src/hooks/useReserveData';
 import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
-const LazyImage = lazy(() => import('src/utiles/lazyImage'))
-const LpStakingBox = lazy(() => import('src/components/RewardPlan/LpStakingBox'))
-const StakingBox = lazy(() => import('src/components/RewardPlan/StakingBox'))
-const TokenDeposit = lazy(() => import('src/components/RewardPlan/TokenDeposit'))
+const LazyImage = lazy(() => import('src/utiles/lazyImage'));
+const LpStakingBox = lazy(
+  () => import('src/components/RewardPlan/LpStakingBox'),
+);
+const StakingBox = lazy(() => import('src/components/RewardPlan/StakingBox'));
+const TokenDeposit = lazy(
+  () => import('src/components/RewardPlan/TokenDeposit'),
+);
 
 const RewardPlan: FunctionComponent = () => {
   const { t, i18n } = useTranslation();
@@ -335,7 +339,12 @@ const RewardPlan: FunctionComponent = () => {
               </div>
               <h2>{t('reward.token_staking__reward_plan', { token: 'LP' })}</h2>
             </div>
-            <Suspense fallback={<div style={{ marginTop: 150, height: 400, background: "#FFFFFF" }} />} >
+            <Suspense
+              fallback={
+                <div
+                  style={{ marginTop: 150, height: 400, background: '#FFFFFF' }}
+                />
+              }>
               <LpStakingBox
                 index={1}
                 tvl={totalLiquidity.ethElfiPoolTotalLiquidity}
@@ -382,7 +391,12 @@ const RewardPlan: FunctionComponent = () => {
           </>
         ) : ['EL', 'ELFI'].includes(stakingType) ? (
           <section className={`reward__${stakingType.toLowerCase()}`}>
-            <Suspense fallback={<div style={{ marginTop: 250, height: 400, background: "#FFFFFF" }} />}>
+            <Suspense
+              fallback={
+                <div
+                  style={{ marginTop: 250, height: 400, background: '#FFFFFF' }}
+                />
+              }>
               <StakingBox
                 loading={poolLoading}
                 poolApr={poolApr}
@@ -395,7 +409,9 @@ const RewardPlan: FunctionComponent = () => {
                     : rewardInfo.beforeStakingPool
                 }
                 end={
-                  isEl ? totalMintedByElStakingPool : rewardInfo.afterStakingPool
+                  isEl
+                    ? totalMintedByElStakingPool
+                    : rewardInfo.afterStakingPool
                 }
                 state={state}
                 setState={setState}
@@ -425,7 +441,16 @@ const RewardPlan: FunctionComponent = () => {
               </div>
             </div>
             <section className="reward__container">
-              <Suspense fallback={<div style={{ marginTop: 50, height: 300, background: "#FFFFFF" }} />}>
+              <Suspense
+                fallback={
+                  <div
+                    style={{
+                      marginTop: 50,
+                      height: 300,
+                      background: '#FFFFFF',
+                    }}
+                  />
+                }>
                 {!subgraphLoading ? (
                   reserveState.reserves
                     .filter((data) => {

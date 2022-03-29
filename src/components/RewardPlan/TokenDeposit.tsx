@@ -1,4 +1,11 @@
-import { Dispatch, FunctionComponent, lazy, SetStateAction, Suspense, useContext } from 'react';
+import {
+  Dispatch,
+  FunctionComponent,
+  lazy,
+  SetStateAction,
+  Suspense,
+  useContext,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import useSWR from 'swr';
 import envs from 'src/core/envs';
@@ -20,7 +27,7 @@ import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
 import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
-const LazyImage = lazy(() => import('src/utiles/lazyImage'))
+const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
 interface Props {
   reserve: IReserveSubgraphData;
@@ -81,41 +88,47 @@ const TokenDeposit: FunctionComponent<Props> = ({
       <div className="reward__token-deposit">
         <div className="reward__token-deposit__header">
           <Suspense fallback={<FallbackSkeleton />}>
-          {mediaQuery === MediaQuery.PC ? (
-            <>
-              <LazyImage src={reserveTokenData[token].image} name="Token image" />
-              <div>
+            {mediaQuery === MediaQuery.PC ? (
+              <>
+                <LazyImage
+                  src={reserveTokenData[token].image}
+                  name="Token image"
+                />
                 <div>
-                  <p className="bold">
+                  <div>
+                    <p className="bold">
+                      {t('dashboard.token_deposit', {
+                        Token: reserveTokenData[token].name,
+                      })}
+                    </p>
+                    <p>
+                      {t('dashboard.token_deposit_content', {
+                        Token: reserveTokenData[token].name,
+                      })}
+                    </p>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <LazyImage
+                    src={reserveTokenData[token].image}
+                    name="Token image"
+                  />
+                  <h2>
                     {t('dashboard.token_deposit', {
                       Token: reserveTokenData[token].name,
                     })}
-                  </p>
-                  <p>
-                    {t('dashboard.token_deposit_content', {
-                      Token: reserveTokenData[token].name,
-                    })}
-                  </p>
+                  </h2>
                 </div>
-              </div>
-            </>
-          ) : (
-            <>
-              <div>
-                <LazyImage src={reserveTokenData[token].image} name="Token image" />
-                <h2>
-                  {t('dashboard.token_deposit', {
+                <p>
+                  {t('dashboard.token_deposit_content', {
                     Token: reserveTokenData[token].name,
                   })}
-                </h2>
-              </div>
-              <p>
-                {t('dashboard.token_deposit_content', {
-                  Token: reserveTokenData[token].name,
-                })}
-              </p>
-            </>
-          )}
+                </p>
+              </>
+            )}
           </Suspense>
         </div>
         <div className="reward__token-deposit__apy">

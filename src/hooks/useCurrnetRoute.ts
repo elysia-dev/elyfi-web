@@ -1,14 +1,14 @@
-import { useMemo } from "react";
-import { useLocation } from "react-router-dom"
+import { useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export enum NavigationRoutes {
   Deposit,
   Governance,
-  Staking
+  Staking,
 }
 
 interface RouteState {
-  route: string | undefined
+  route: string | undefined;
 }
 
 const useCurrentRoute = (): NavigationRoutes | undefined => {
@@ -17,34 +17,36 @@ const useCurrentRoute = (): NavigationRoutes | undefined => {
 
   const getCurrentRoute = () => {
     switch (location.pathname.split('/')[2]) {
-      case "deposit": 
+      case 'deposit':
         return NavigationRoutes.Deposit;
-      case "governance": 
+      case 'governance':
         return NavigationRoutes.Governance;
-      case "staking": 
+      case 'staking':
         return NavigationRoutes.Staking;
-      case "rewardplan": 
-        switch(location.pathname.split('/')[3]) {
-          case "deposit":
+      case 'rewardplan':
+        switch (location.pathname.split('/')[3]) {
+          case 'deposit':
             return NavigationRoutes.Deposit;
-          case "EL":
-          case "ELFI":
-          case "LP":
+          case 'EL':
+          case 'ELFI':
+          case 'LP':
             return NavigationRoutes.Staking;
           default:
           // No Default
         }
         break;
-      case "portfolio":
-        return state?.route === "governance" ? NavigationRoutes.Governance : NavigationRoutes.Deposit;
-      default: 
+      case 'portfolio':
+        return state?.route === 'governance'
+          ? NavigationRoutes.Governance
+          : NavigationRoutes.Deposit;
+      default:
         return undefined;
     }
-  }
+  };
 
-  const currnetRoute = useMemo(() => getCurrentRoute(), [location])
-  
+  const currnetRoute = useMemo(() => getCurrentRoute(), [location]);
+
   return currnetRoute;
-}
+};
 
 export default useCurrentRoute;

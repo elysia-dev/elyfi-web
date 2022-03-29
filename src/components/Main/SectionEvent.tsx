@@ -1,4 +1,3 @@
-
 import MainContent from 'src/components/Main/MainContent';
 import MainAnimation from 'src/components/Main/MainAnimation';
 import reactGA from 'react-ga';
@@ -8,7 +7,7 @@ import { useParams } from 'react-router-dom';
 
 const SectionEvent = (): JSX.Element => {
   const { lng } = useParams<{ lng: string }>();
-  
+
   const eventList = [
     {
       image: MainAnimation(0),
@@ -41,19 +40,19 @@ const SectionEvent = (): JSX.Element => {
       },
     },
   ];
-  return <>
-  {
-    eventList.map((_data, _index) => {
-      return (
-        <MainContent
-          key={`sectionEvent_${_index}`}
-          index={_index}
-          data={_data}
-        />
-      );
-    })
-  }
-  </>
-}
+  return (
+    <>
+      {eventList.map((_data, _index) => {
+        return (
+          <MainContent
+            key={`sectionEvent_${_index}`}
+            index={_index}
+            data={_data}
+          />
+        );
+      })}
+    </>
+  );
+};
 
 export default SectionEvent;

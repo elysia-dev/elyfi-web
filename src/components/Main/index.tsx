@@ -10,7 +10,9 @@ const SectionEvent = lazy(() => import('./SectionEvent'));
 const Service = lazy(() => import('./Service'));
 const MainPage = lazy(() => import('./MainPage'));
 const Partners = lazy(() => import('./Partners'));
-const MainGovernanceTable = lazy(() => import('src/components/Main/MainGovernanceTable'));
+const MainGovernanceTable = lazy(
+  () => import('src/components/Main/MainGovernanceTable'),
+);
 
 const Main = (): JSX.Element => {
   const [popupVisible, setPopupVisible] = useState(false);
@@ -88,18 +90,23 @@ const Main = (): JSX.Element => {
       />
       <div className="main root-container">
         <section className="main__title main__section">
-          <Suspense fallback={<div ref={mainHeaderY} ><div ref={mainHeaderMoblieY} /></div>}>
-            <MainPage 
+          <Suspense
+            fallback={
+              <div ref={mainHeaderY}>
+                <div ref={mainHeaderMoblieY} />
+              </div>
+            }>
+            <MainPage
               mainHeaderY={mainHeaderY}
               mainHeaderMoblieY={mainHeaderMoblieY}
             />
           </Suspense>
         </section>
-        <Suspense fallback={<div style={{ height: "100vh" }} />}>
+        <Suspense fallback={<div style={{ height: '100vh' }} />}>
           <SectionEvent />
         </Suspense>
         <section className="main__advantages main__section">
-          <Suspense fallback={<div style={{ height: "80vh" }} />}>
+          <Suspense fallback={<div style={{ height: '80vh' }} />}>
             <Advantage guideY={guideY} />
           </Suspense>
         </section>
@@ -109,11 +116,11 @@ const Main = (): JSX.Element => {
           </Suspense>
         </section> */}
         <section className="main__partners main__section">
-          <Suspense fallback={<div style={{ height: "100vh" }} />}>
+          <Suspense fallback={<div style={{ height: '100vh' }} />}>
             <Partners auditPageY={auditPageY} />
           </Suspense>
         </section>
-        <Suspense fallback={<div style={{ height: "100vh" }} />}>
+        <Suspense fallback={<div style={{ height: '100vh' }} />}>
           <MainGovernanceTable
             governancePageY={governancePageY}
             governancePageBottomY={governancePageBottomY}

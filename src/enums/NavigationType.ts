@@ -1,7 +1,7 @@
 enum NavigationType {
-  Link = "Link",
-  Href = "Href",
-  LNB = "LocalNavigationBar"
+  Link = 'Link',
+  Href = 'Href',
+  LNB = 'LocalNavigationBar',
 }
 
 export default NavigationType;

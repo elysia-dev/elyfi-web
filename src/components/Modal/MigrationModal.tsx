@@ -342,7 +342,12 @@ const MigrationModal: React.FunctionComponent<{
               })
               .catch((e) => {
                 console.error(e);
-                failTransaction(emitter, closeHandler, e, TransactionType.Migrate);
+                failTransaction(
+                  emitter,
+                  closeHandler,
+                  e,
+                  TransactionType.Migrate,
+                );
               });
           }}>
           <p>

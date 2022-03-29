@@ -1,6 +1,5 @@
 import NavigationType from 'src/enums/NavigationType';
 
-
 export interface ISubNavigation {
   type: NavigationType;
   location: string;
@@ -58,19 +57,19 @@ export const navigationLink: INavigation[] = [
     subNavigation: [
       {
         type: NavigationType.Href,
-        location: "navigation.link.docs",
-        i18nKeyword: "navigation.elyfi_docs"
+        location: 'navigation.link.docs',
+        i18nKeyword: 'navigation.elyfi_docs',
       },
       {
         type: NavigationType.Href,
-        location: "navigation.link.guide",
-        i18nKeyword: "navigation.elyfi_guide"
+        location: 'navigation.link.guide',
+        i18nKeyword: 'navigation.elyfi_guide',
       },
       {
         type: NavigationType.Href,
-        location: "navigation.link.governance_docs",
-        i18nKeyword: "navigation.governance_docs"
-      }
+        location: 'navigation.link.governance_docs',
+        i18nKeyword: 'navigation.governance_docs',
+      },
     ],
   },
 ];

@@ -1,17 +1,17 @@
-import { RefObject, Suspense, lazy } from "react";
-import { useTranslation } from "react-i18next";
+import { RefObject, Suspense, lazy } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams, useHistory } from 'react-router-dom';
-import LanguageType from "src/enums/LanguageType";
+import LanguageType from 'src/enums/LanguageType';
 
-const GovernanceGuideBox = lazy(() => import('src/components/Governance/GovernanceGuideBox'));
+const GovernanceGuideBox = lazy(
+  () => import('src/components/Governance/GovernanceGuideBox'),
+);
 
 interface Props {
   headerRef: RefObject<HTMLDivElement>;
 }
 
-const Header: React.FC<Props> = ({
-  headerRef
-}) => {
+const Header: React.FC<Props> = ({ headerRef }) => {
   const { t } = useTranslation();
   const History = useHistory();
   const { lng } = useParams<{ lng: string }>();
@@ -31,9 +31,7 @@ const Header: React.FC<Props> = ({
         <div className="governance__content__button__wrapper">
           <div
             className="governance__content__button"
-            onClick={() =>
-              History.push({ pathname: `/${lng}/staking/ELFI` })
-            }>
+            onClick={() => History.push({ pathname: `/${lng}/staking/ELFI` })}>
             <p>{t('governance.button--staking')}</p>
           </div>
           <div
@@ -55,7 +53,7 @@ const Header: React.FC<Props> = ({
         </Suspense>
       </section>
     </>
-  )
-}
+  );
+};
 
 export default Header;
