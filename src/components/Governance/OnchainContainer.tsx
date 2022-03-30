@@ -65,16 +65,20 @@ const OnChainContainer: React.FC<Props> = ({ data, offChainNapData }) => {
               <progress
                 className="governance__asset__progress-bar index-0"
                 value={
-                  typeof data.totalVotesCastInSupport === 'number'
-                    ? data.totalVotesCastInSupport
-                    : parseFloat(
-                        utils.formatEther(data.totalVotesCastInSupport),
-                      )
+                  data.totalVotesCastInSupport
+                    ? typeof data.totalVotesCastInSupport === 'number'
+                      ? data.totalVotesCastInSupport
+                      : parseFloat(
+                          utils.formatEther(data.totalVotesCastInSupport),
+                        )
+                    : 0
                 }
                 max={
-                  typeof data.totalVotesCast === 'number'
-                    ? data.totalVotesCast
-                    : parseFloat(utils.formatEther(data.totalVotesCast))
+                  data.totalVotesCast
+                    ? typeof data.totalVotesCast === 'number'
+                      ? data.totalVotesCast
+                      : parseFloat(utils.formatEther(data.totalVotesCast))
+                    : 0
                 }
               />
             </div>
@@ -83,14 +87,20 @@ const OnChainContainer: React.FC<Props> = ({ data, offChainNapData }) => {
               <progress
                 className="governance__asset__progress-bar index-1"
                 value={
-                  typeof data.totalVotesCastAgainst === 'number'
-                    ? data.totalVotesCastAgainst
-                    : parseFloat(utils.formatEther(data.totalVotesCastAgainst))
+                  data.totalVotesCastAgainst
+                    ? typeof data.totalVotesCastAgainst === 'number'
+                      ? data.totalVotesCastAgainst
+                      : parseFloat(
+                          utils.formatEther(data.totalVotesCastAgainst),
+                        )
+                    : 0
                 }
                 max={
-                  typeof data.totalVotesCast === 'number'
-                    ? data.totalVotesCast
-                    : parseFloat(utils.formatEther(data.totalVotesCast))
+                  data.totalVotesCast
+                    ? typeof data.totalVotesCast === 'number'
+                      ? data.totalVotesCast
+                      : parseFloat(utils.formatEther(data.totalVotesCast))
+                    : 0
                 }
               />
             </div>
@@ -99,16 +109,20 @@ const OnChainContainer: React.FC<Props> = ({ data, offChainNapData }) => {
               <progress
                 className="governance__asset__progress-bar index-2"
                 value={
-                  typeof data.totalVotesCastAbstained === 'number'
-                    ? data.totalVotesCastAbstained
-                    : parseFloat(
-                        utils.formatEther(data.totalVotesCastAbstained),
-                      )
+                  data.totalVotesCastAbstained
+                    ? typeof data.totalVotesCastAbstained === 'number'
+                      ? data.totalVotesCastAbstained
+                      : parseFloat(
+                          utils.formatEther(data.totalVotesCastAbstained),
+                        )
+                    : 0
                 }
                 max={
-                  typeof data.totalVotesCast === 'number'
-                    ? data.totalVotesCast
-                    : parseFloat(utils.formatEther(data.totalVotesCast))
+                  data.totalVotesCast
+                    ? typeof data.totalVotesCast === 'number'
+                      ? data.totalVotesCast
+                      : parseFloat(utils.formatEther(data.totalVotesCast))
+                    : 0
                 }
               />
             </div>
