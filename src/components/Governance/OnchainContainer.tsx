@@ -34,7 +34,6 @@ const OnChainContainer: React.FC<Props> = ({
       : undefined;
   }, [mainnetType, offChainNapData]);
 
-  console.log(offChainData?.length);
   return (
     <div
       className="governance__onchain-vote__assets governance__asset"
