@@ -21,6 +21,7 @@ describe('useReserveData hooks', () => {
         use: [bscReserveMiddleware],
       }),
     );
+
     await act(async () => {
       await bscReserveData.result.current.mutate();
     });
@@ -51,7 +52,6 @@ describe('useReserveData hooks', () => {
   test('return reserves state', async () => {
     const { result } = renderHook(() => useReserveData());
 
-    console.log(result.current.reserveState.reserves);
     expect(result.current.reserveState.reserves).toEqual([
       ...bscReserveData.result.current.data,
       ...ethReserveData.result.current.data,
