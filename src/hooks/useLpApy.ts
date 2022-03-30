@@ -9,7 +9,7 @@ const DAI_AMOUNT_PER_POOL = 25000;
 const ETH_AMOUNT_PER_POOL = 6.437; // FIXME
 const DAYS = 40;
 
-const useLpApr = (): {
+const useLpApy = (): {
   calcDaiElfiPoolApr: (totalValue: number) => string;
   calcEthElfiPoolApr: (totalValue: number) => string;
 } => {
@@ -49,4 +49,4 @@ const useLpApr = (): {
   return { calcDaiElfiPoolApr, calcEthElfiPoolApr };
 };
 
-export default useLpApr;
+export default useLpApy;
