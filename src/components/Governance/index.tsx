@@ -222,6 +222,7 @@ const Governance = (): JSX.Element => {
                       <OnchainContainer
                         data={data}
                         offChainNapData={offChainNapData}
+                        mainnetType={mainnetType}
                       />
                     );
                   })}
@@ -240,6 +241,7 @@ const Governance = (): JSX.Element => {
                     <OnchainContainer
                       data={data}
                       offChainNapData={offChainNapData}
+                      mainnetType={mainnetType}
                     />
                   );
                 })}

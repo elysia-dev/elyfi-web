@@ -10,15 +10,21 @@ import { utils } from 'ethers';
 import TempAssets from 'src/assets/images/governance/temp_assets.svg';
 import Skeleton from 'react-loading-skeleton';
 import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
+import MainnetType from 'src/enums/MainnetType';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
 interface Props {
   data: IProposals;
   offChainNapData: TopicList[] | undefined;
+  mainnetType: MainnetType;
 }
 
-const OnChainContainer: React.FC<Props> = ({ data, offChainNapData }) => {
+const OnChainContainer: React.FC<Props> = ({
+  data,
+  offChainNapData,
+  mainnetType,
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -29,7 +35,11 @@ const OnChainContainer: React.FC<Props> = ({ data, offChainNapData }) => {
           category: PageEventType.MoveToExternalPage,
           action: ButtonEventType.OnChainVoteButtonOnGovernance,
         });
-        window.open(`${t('governance.link.tally')}/proposal/${data.id}`);
+        mainnetType === MainnetType.BSC
+          ? window.open(
+              `https://snapshot.org/#/elyfi-bsc.eth/proposal/${data.id}`,
+            )
+          : window.open(`${t('governance.link.tally')}/proposal/${data.id}`);
       }}>
       <Suspense fallback={<FallbackSkeleton width={'100%'} height={300} />}>
         <div>
