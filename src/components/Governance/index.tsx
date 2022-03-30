@@ -213,7 +213,7 @@ const Governance = (): JSX.Element => {
           <Suspense fallback={<div style={{ height: 600 }} />}>
             {/* need refactoring... */}
             {mainnetType === MainnetType.Ethereum ? (
-              onChainLoading ? (
+              onChainLoading && offChainLoading ? (
                 <Skeleton width={'100%'} height={600} />
               ) : onChainData && onChainData.length > 0 ? (
                 <div className="governance__grid">
@@ -232,7 +232,7 @@ const Governance = (): JSX.Element => {
                   <p>{t('governance.onchain_list_zero')}</p>
                 </div>
               )
-            ) : onChainBscLoading ? (
+            ) : onChainBscLoading && offChainLoading ? (
               <Skeleton width={'100%'} height={600} />
             ) : onChainBscData && onChainBscData.length > 0 ? (
               <div className="governance__grid">
