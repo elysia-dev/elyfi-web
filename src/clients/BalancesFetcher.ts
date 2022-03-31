@@ -5,9 +5,9 @@ import envs from 'src/core/envs';
 const provider = new providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC);
 const bscProvider = new providers.JsonRpcProvider(envs.jsonRpcUrl.bsc);
 
-export const elStakingFetcher =
+export const elBalanceOfFetche =
   (): any =>
-  (...args: any) => {
+  (...args: [string]) => {
     const [...params] = args;
     const contract: any = ERC20__factory.connect(
       envs.token.elAddress,
@@ -16,9 +16,9 @@ export const elStakingFetcher =
 
     return contract.balanceOf(params[0]);
   };
-export const elfiStakingFetcher =
+export const elfiBalanceOfFetche =
   (): any =>
-  (...args: any) => {
+  (...args: [string]) => {
     const [...params] = args;
     const contract: any = ERC20__factory.connect(
       envs.token.governanceAddress,
@@ -28,9 +28,9 @@ export const elfiStakingFetcher =
     return contract.balanceOf(params[0]);
   };
 
-export const bscStakingFetcher =
+export const bscBalanceOfFetche =
   (): any =>
-  (...args: any) => {
+  (...args: [string]) => {
     const [...params] = args;
     const contract: any = ERC20__factory.connect(
       envs.token.bscElfiAddress,
