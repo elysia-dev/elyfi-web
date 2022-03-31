@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import MainnetType from 'src/enums/MainnetType';
 import MediaQuery from 'src/enums/MediaQuery';
-import { IBSCOnChainTopic, IOnChainToipc } from 'src/clients/OnChainTopic';
+import { IBSCOnChainTopic, IOnChainTopic } from 'src/clients/OnChainTopic';
 
 interface Props {
   mainnetType: MainnetType;
-  onChainData: IOnChainToipc[] | undefined;
+  onChainData: IOnChainTopic[] | undefined;
   onChainBscData: IBSCOnChainTopic[] | undefined;
   mediaQuery: MediaQuery;
 }
