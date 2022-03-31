@@ -134,7 +134,9 @@ const StakingModal: React.FunctionComponent<{
             <div className="modal__body">
               <div className="modal__input">
                 <h2
-                  className="modal__input__maximum"
+                  className={`modal__input__maximum ${
+                    amount.max ? 'is-max' : ''
+                  }`}
                   onClick={() => {
                     if (
                       stakingMode ? balance.isZero() : stakedBalance.isZero()
@@ -157,9 +159,7 @@ const StakingModal: React.FunctionComponent<{
                 <h2 className="modal__input__value">
                   <input
                     type="number"
-                    className={`modal__input__value__amount ${
-                      amount.max ? 'is-max' : ''
-                    }`}
+                    className="modal__input__value__amount"
                     placeholder="0"
                     value={amount.value}
                     style={{

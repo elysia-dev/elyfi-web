@@ -99,7 +99,9 @@ const MigrationModal: React.FunctionComponent<{
                   <h2>{t('staking.unstaking')}</h2>
                   <div className="modal__migration__input">
                     <h2
-                      className="modal__input__maximum"
+                      className={`modal__input__maximum  ${
+                        state.withdrawMax ? 'is-max' : ''
+                      }`}
                       onClick={() => {
                         setState({
                           migrationAmount: '0',
@@ -115,9 +117,7 @@ const MigrationModal: React.FunctionComponent<{
                     <h2 className="modal__input__value">
                       <input
                         type="number"
-                        className={`modal__input__value__amount ${
-                          state.withdrawMax ? 'is-max' : ''
-                        }`}
+                        className="modal__input__value__amount"
                         placeholder="0"
                         value={state.withdrawAmount}
                         style={{
@@ -170,7 +170,9 @@ const MigrationModal: React.FunctionComponent<{
                   </div>
                   <div className="modal__migration__input">
                     <h2
-                      className="modal__input__maximum"
+                      className={`modal__input__maximum  ${
+                        state.migrationMax ? 'is-max' : ''
+                      }`}
                       onClick={() => {
                         setState({
                           withdrawAmount: '0',
@@ -186,9 +188,7 @@ const MigrationModal: React.FunctionComponent<{
                     <h2 className="modal__input__value">
                       <input
                         type="number"
-                        className={`modal__input__value__amount ${
-                          state.migrationMax ? 'is-max' : ''
-                        }`}
+                        className="modal__input__value__amount"
                         placeholder="0"
                         value={state.migrationAmount}
                         style={{

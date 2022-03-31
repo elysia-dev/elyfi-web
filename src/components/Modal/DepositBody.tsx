@@ -44,7 +44,9 @@ const DepositBody: React.FunctionComponent<{
           <div className="modal__deposit">
             <div className="modal__input">
               <h2
-                className="modal__input__maximum"
+                className={`modal__input__maximum ${
+                  amount.max ? 'is-max' : ''
+                }`}
                 onClick={() => {
                   if (balance.isZero()) {
                     return;
@@ -62,9 +64,7 @@ const DepositBody: React.FunctionComponent<{
                 <input
                   ref={inputRef}
                   type="number"
-                  className={`modal__input__value__amount ${
-                    amount.max ? 'is-max' : ''
-                  }`}
+                  className="modal__input__value__amount"
                   placeholder="0"
                   value={parseFloat(
                     amount.value.substring(0, amount.value.indexOf('.') + 9),
