@@ -90,9 +90,9 @@ const DepositOrWithdrawModal: FunctionComponent<{
   }>({ value: constants.Zero, loaded: false });
   const [currentIndex, setCurrentIndex] = useState<BigNumber>(
     calcCurrentIndex(
-      BigNumber.from(reserve.lTokenInterestIndex || 0),
+      BigNumber.from(reserve.lTokenInterestIndex),
       reserve.lastUpdateTimestamp,
-      BigNumber.from(reserve.depositAPY || 0),
+      BigNumber.from(reserve.depositAPY),
     ),
   );
   const { t } = useTranslation();
@@ -279,9 +279,9 @@ const DepositOrWithdrawModal: FunctionComponent<{
       () =>
         setCurrentIndex(
           calcCurrentIndex(
-            BigNumber.from(reserve.lTokenInterestIndex || 0),
+            BigNumber.from(reserve.lTokenInterestIndex),
             reserve.lastUpdateTimestamp,
-            BigNumber.from(reserve.depositAPY || 0),
+            BigNumber.from(reserve.depositAPY),
           ),
         ),
       500,
