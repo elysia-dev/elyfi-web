@@ -128,8 +128,8 @@
       "ELFIStake": "ELFI Staking",
       "LPStake": "LP Staking",
       "link": {
-        "docs": "https://elysia.gitbook.io/elysia.finance/v/eng/",
-        "guide": "https://elysia.gitbook.io/elyfi-user-guide/",
+        "docs": "https://docs.elyfi.world/v/eng/",
+        "guide": "https://guide.elyfi.world",
         "governance_docs": "https://elysia.gitbook.io/elyfi-user-guide/governance"
       }
     },
@@ -247,7 +247,7 @@
       "receiving_address": "Loan receiving wallet address",
       "maturity_date": "Maturity Date",
       "collateral_nft": "Collateral NFT",
-      "collateral_nft__details": "Collatrealized NFT Details",
+      "collateral_nft__details": "Collateralized NFT Details",
       "collateral_nft__type": "NFT Type",
       "collateral_nft__abtoken_id": "ABToken ID",
       "collateral_nft__borrower": "Lenders",
@@ -293,7 +293,7 @@
         "snapshot": "Go to Snapshot"
       },
       "link": {
-        "tally": "https://www.withtally.com/governance/eip155:1:0x0c54629266d7fa40B4BFaF1640ebC2Cd093866C3",
+        "tally": "https://www.tally.xyz/governance/eip155:1:0x0c54629266d7fa40B4BFaF1640ebC2Cd093866C3",
         "snapshot": "https://snapshot.org/#/elyfi-bsc.eth"
       }
     },
@@ -453,7 +453,7 @@
       "borrower--loan": "Borrower",
       "wallet_address": "Wallet Address",
       "receiving_address": "Loan receiving wallet address",
-      "nft_details": "Collatrealized NFT Details",
+      "nft_details": "Collateralized NFT Details",
       "abtoken_title": "What is ABToken?",
       "abtoken_content": "ABToken is a non-fungible token(NFT) minted based on a loan bond formed in a loan agreement beteween Elyloan corp, a lending company, and the property owner.\nABToken proves the ownership of the underlying loan bond, and the owner with the token can borrow crypto assets using it as collateral in ELYFI.",
       "abtoken_details": "ABToken Details",

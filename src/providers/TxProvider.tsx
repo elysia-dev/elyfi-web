@@ -33,30 +33,35 @@ const TxProvider: React.FunctionComponent = (props) => {
     setState({ ...state, txStatus, txWaiting, error: '' });
   };
 
-  const failTransaction = (emitter: any, onEvent: () => void, error: any, transaction: TransactionType) => {
+  const failTransaction = (
+    emitter: any,
+    onEvent: () => void,
+    error: any,
+    transaction: TransactionType,
+  ) => {
     onEvent();
     emitter.canceled();
 
-    const metamaskUserDeniedErrCode = 4001
+    const metamaskUserDeniedErrCode = 4001;
 
     const newEmitter = buildEventEmitter(
-      "EncounteredAnError",
+      'EncounteredAnError',
       transaction,
       JSON.stringify({
         version: ElyfiVersions.V1,
         chainId,
         address: account,
         errorType: Number(error.code)
-        ? error.message
-        : ethersJsErrors.includes(error.code)
-        ? error.code
-        : JSON.parse(
-            '{' +
-              error.message.substring(
-                error.message.indexOf('"message"'),
-                error.message.lastIndexOf('}'),
-              ),
-          ).message,
+          ? error.message
+          : ethersJsErrors.includes(error.code)
+          ? error.code
+          : JSON.parse(
+              '{' +
+                error.message.substring(
+                  error.message.indexOf('"message"'),
+                  error.message.lastIndexOf('}'),
+                ),
+            ).message,
       }),
     );
     if (error.code !== metamaskUserDeniedErrCode) {

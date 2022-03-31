@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers';
 
-type AssetBondIdData = {
+export type AssetBondIdData = {
   nonce: number;
   countryCode: number;
   collateralServiceProviderIdentificationNumber: number;

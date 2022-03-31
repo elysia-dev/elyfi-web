@@ -128,8 +128,8 @@
       "ELFIStake": "ELFI 스테이킹",
       "LPStake": "LP 스테이킹",
       "link": {
-        "docs": "https://elysia.gitbook.io/elysia.finance/",
-        "guide": "https://elysia.gitbook.io/elyfi-user-guide/v/korean-2/",
+        "docs": "https://docs.elyfi.world/",
+        "guide": "https://guide.elyfi.world/v/korean-2/",
         "governance_docs": "https://elysia.gitbook.io/elyfi-user-guide/v/korean-2/governance"
       }
     },
@@ -294,7 +294,7 @@
         "snapshot": "Snapshot으로 이동하기"
       },
       "link": {
-        "tally": "https://www.withtally.com/governance/eip155:1:0x0c54629266d7fa40B4BFaF1640ebC2Cd093866C3",
+        "tally": "https://www.tally.xyz/governance/eip155:1:0x0c54629266d7fa40B4BFaF1640ebC2Cd093866C3",
         "snapshot": "https://snapshot.org/#/elyfi-bsc.eth"
       }
     },

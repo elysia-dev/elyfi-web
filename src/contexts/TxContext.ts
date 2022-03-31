@@ -25,7 +25,12 @@ export interface ITxContext extends TxContextType {
     callback: () => void,
   ) => void;
   initTransaction: (txStatus: TxStatus, txWaiting: boolean) => void;
-  failTransaction: (emitter: any, onEvent: () => void, e: any, transaction: TransactionType) => void;
+  failTransaction: (
+    emitter: any,
+    onEvent: () => void,
+    e: any,
+    transaction: TransactionType,
+  ) => void;
   reset: () => void;
 }
 
@@ -65,7 +70,7 @@ export const initialTxContext = {
     },
     onEvent: () => void,
     e: Error,
-    transaction: TransactionType
+    transaction: TransactionType,
   ): void => {},
   reset: (): void => {},
 };
