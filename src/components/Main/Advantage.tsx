@@ -1,4 +1,4 @@
-import { lazy, RefObject, Suspense } from "react";
+import { lazy, RefObject, Suspense } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 
 import Advantages00 from 'src/assets/images/main/advantages00.svg';
@@ -14,9 +14,7 @@ interface Props {
   guideY: RefObject<HTMLParagraphElement>;
 }
 
-const Advantage: React.FC<Props> = ({
-  guideY
-}) => {
+const Advantage: React.FC<Props> = ({ guideY }) => {
   const { t } = useTranslation();
 
   return (
@@ -69,7 +67,7 @@ const Advantage: React.FC<Props> = ({
         })}
       </div>
     </>
-  )
-}
+  );
+};
 
 export default Advantage;

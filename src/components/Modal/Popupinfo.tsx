@@ -1,5 +1,4 @@
-import { useState } from "react";
-
+import { useState } from 'react';
 
 const Popupinfo: React.FunctionComponent<{
   content: string;
@@ -22,12 +21,10 @@ const Popupinfo: React.FunctionComponent<{
       <div
         className="component__popup-info__content"
         style={{ display: hover ? 'block' : 'none' }}>
-        <p style={fontStyle}>
-          {content}
-        </p>
+        <p style={fontStyle}>{content}</p>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Popupinfo;

@@ -117,22 +117,23 @@ const DepositOrWithdrawModal: FunctionComponent<{
 
   const yieldProduced = useMemo(() => {
     return accumulatedYield.sub(
-      userData?.lTokenBurn.length && userData.lTokenBurn.length > 0 ?
-        calcAccumulatedYield(
-          // FIXME
-          // Tricky constant.One
-          // yieldProduced should be calculated with last burn index
-          constants.One,
-          BigNumber.from(
-            userData.lTokenBurn[userData.lTokenBurn.length - 1].index
-          ),
-          userData?.lTokenMint.filter(
-            (mint) => mint.lToken.id === reserve.lToken.id,
-          ) || [],
-          userData?.lTokenBurn.filter(
-            (burn) => burn.lToken.id === reserve.lToken.id,
-          ) || [],
-        ) : constants.Zero,
+      userData?.lTokenBurn.length && userData.lTokenBurn.length > 0
+        ? calcAccumulatedYield(
+            // FIXME
+            // Tricky constant.One
+            // yieldProduced should be calculated with last burn index
+            constants.One,
+            BigNumber.from(
+              userData.lTokenBurn[userData.lTokenBurn.length - 1].index,
+            ),
+            userData?.lTokenMint.filter(
+              (mint) => mint.lToken.id === reserve.lToken.id,
+            ) || [],
+            userData?.lTokenBurn.filter(
+              (burn) => burn.lToken.id === reserve.lToken.id,
+            ) || [],
+          )
+        : constants.Zero,
     );
   }, [accumulatedYield, reserve, userData, currentIndex]);
 

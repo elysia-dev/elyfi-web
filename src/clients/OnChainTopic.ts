@@ -14,20 +14,15 @@ export interface IProposals {
   timestamp: string;
   id: string;
 }
-export interface IOnChainToipc {
+export interface IOnChainTopic {
   proposals: IProposals[];
 }
 
-export const onChainFetcher = (query: string): Promise<IOnChainToipc[]> =>
+export const onChainFetcher = (query: string): Promise<IOnChainTopic[]> =>
   request(
     'https://api.thegraph.com/subgraphs/name/withtally/elyfi-finance-protocol',
     query,
   );
-export interface IOnChainTopic {
-  data: {
-    proposals: IProposals[];
-  };
-}
 
 export interface IBSCOnChainTopic {
   data: {

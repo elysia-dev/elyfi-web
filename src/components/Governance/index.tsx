@@ -1,9 +1,16 @@
-import { lazy, Suspense, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import useSWR from 'swr';
-
 import {
   bscOnChainQuery,
   onChainBscFetcher,
@@ -26,13 +33,16 @@ import { offChainGovernanceMiddleware } from 'src/middleware/offChainMiddleware'
 import { onChainQuery } from 'src/queries/onChainQuery';
 import useReserveData from 'src/hooks/useReserveData';
 import { IAssetBond } from 'src/core/types/reserveSubgraph';
-import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
-const OffchainHeader = lazy(() => import('./OffchainHeader'))
+const OffchainHeader = lazy(() => import('./OffchainHeader'));
 const OnchainHeader = lazy(() => import('./OnchainHeader'));
 const Header = lazy(() => import('./Header'));
-const OffChainContainer = lazy(() => import('src/components/Governance/OffchainContainer'));
-const OnchainContainer = lazy(() => import('src/components/Governance/OnchainContainer'));
+const OffChainContainer = lazy(
+  () => import('src/components/Governance/OffchainContainer'),
+);
+const OnchainContainer = lazy(
+  () => import('src/components/Governance/OnchainContainer'),
+);
 const AssetList = lazy(() => import('src/components/AssetList'));
 
 const Governance = (): JSX.Element => {
@@ -155,10 +165,10 @@ const Governance = (): JSX.Element => {
         <section className="governance__validation governance__header">
           <div>
             <Suspense fallback={<div style={{ height: 30 }} />}>
-              <OffchainHeader 
-                mainnetType={mainnetType} 
-                offChainNapData={offChainNapData} 
-                mediaQuery={mediaQuery} 
+              <OffchainHeader
+                mainnetType={mainnetType}
+                offChainNapData={offChainNapData}
+                mediaQuery={mediaQuery}
               />
             </Suspense>
           </div>
@@ -169,8 +179,8 @@ const Governance = (): JSX.Element => {
             ) : offChainNapData &&
               offChainNapData
                 .filter((data: any) => data.network === mainnetType)
-                .filter((data: any) => moment().isBefore(data.endedDate)).length >
-                0 ? (
+                .filter((data: any) => moment().isBefore(data.endedDate))
+                .length > 0 ? (
               <div className="governance__grid">
                 {offChainNapData &&
                   offChainNapData
@@ -192,23 +202,29 @@ const Governance = (): JSX.Element => {
 
         <section className="governance__onchain-vote governance__header">
           <Suspense fallback={<div style={{ height: 50 }} />}>
-            <OnchainHeader 
-              mainnetType={mainnetType} 
+            <OnchainHeader
+              mainnetType={mainnetType}
               onChainData={onChainData}
               onChainBscData={onChainBscData}
-              mediaQuery={mediaQuery} 
+              mediaQuery={mediaQuery}
             />
           </Suspense>
 
           <Suspense fallback={<div style={{ height: 600 }} />}>
             {/* need refactoring... */}
             {mainnetType === MainnetType.Ethereum ? (
-              onChainLoading ? (
+              onChainLoading && offChainLoading ? (
                 <Skeleton width={'100%'} height={600} />
               ) : onChainData && onChainData.length > 0 ? (
                 <div className="governance__grid">
                   {onChainData.map((data: any) => {
-                    return <OnchainContainer data={data} offChainNapData={offChainNapData} />;
+                    return (
+                      <OnchainContainer
+                        data={data}
+                        offChainNapData={offChainNapData}
+                        mainnetType={mainnetType}
+                      />
+                    );
                   })}
                 </div>
               ) : (
@@ -216,12 +232,18 @@ const Governance = (): JSX.Element => {
                   <p>{t('governance.onchain_list_zero')}</p>
                 </div>
               )
-            ) : onChainBscLoading ? (
+            ) : onChainBscLoading && offChainLoading ? (
               <Skeleton width={'100%'} height={600} />
             ) : onChainBscData && onChainBscData.length > 0 ? (
               <div className="governance__grid">
                 {onChainBscData.map((data: any) => {
-                  return <OnchainContainer data={data} offChainNapData={offChainNapData} />
+                  return (
+                    <OnchainContainer
+                      data={data}
+                      offChainNapData={offChainNapData}
+                      mainnetType={mainnetType}
+                    />
+                  );
                 })}
               </div>
             ) : (
@@ -258,6 +280,7 @@ const Governance = (): JSX.Element => {
               ) : (
                 <>
                   <AssetList
+                    prevRoute={'governance'}
                     assetBondTokens={
                       /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
                       [

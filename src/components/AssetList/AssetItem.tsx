@@ -1,4 +1,11 @@
-import { FunctionComponent, lazy, Suspense, useEffect, useMemo, useState } from 'react';
+import {
+  FunctionComponent,
+  lazy,
+  Suspense,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { toCompactForBignumber, toPercent } from 'src/utiles/formatters';
 import { useTranslation } from 'react-i18next';
 import GoogleMapReact from 'google-map-react';
@@ -62,7 +69,7 @@ const AssetItem: FunctionComponent<{
   return (
     <div className="component__loan-list" style={style} onClick={onClick}>
       <div className="component__loan-list__image">
-        <Suspense fallback={<Skeleton width={"100%"} height={"100%"} />} >
+        <Suspense fallback={<Skeleton width={'100%'} height={'100%'} />}>
           {image ? (
             <LazyImage src={image} name={`csp_image_${abToken.id}`} />
           ) : (

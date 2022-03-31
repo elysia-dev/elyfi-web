@@ -7,23 +7,17 @@ const MigrationDisableModal: React.FunctionComponent<{
 }> = ({ visible, onClose }) => {
   const { t } = useTranslation();
   return (
-    <div
-      className="modal"
-      style={{ display: visible ? 'block' : 'none' }}>
+    <div className="modal" style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
         <ModalHeader
-          title={t("modal.migration_disable.title")}
+          title={t('modal.migration_disable.title')}
           onClose={onClose}
         />
         <div className="modal__connect__content">
-          <p>{t("modal.migration_disable.content")}</p>
+          <p>{t('modal.migration_disable.content')}</p>
         </div>
-        <div
-          className={`modal__button`}
-          onClick={onClose}>
-          <p>
-            {t("modal.migration_disable.button")}
-          </p>
+        <div className={`modal__button`} onClick={onClose}>
+          <p>{t('modal.migration_disable.button')}</p>
         </div>
       </div>
     </div>

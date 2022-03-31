@@ -1,16 +1,13 @@
-
 const ModalButton: React.FunctionComponent<{
-  className?: string,
+  className?: string;
   onClick: () => void;
-  content: string
+  content: string;
 }> = ({ className, onClick, content }) => {
   return (
-    <div
-      className={className || "modal__button"}
-      onClick={onClick}>
+    <div className={className || 'modal__button'} onClick={onClick}>
       <p>{content}</p>
     </div>
-  )
-}
+  );
+};
 
 export default ModalButton;

@@ -1,6 +1,6 @@
 import { FunctionComponent, lazy, Suspense } from 'react';
 
-const LazyImage = lazy(() => import('src/utiles/lazyImage'))
+const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
 type Props = {
   buttonName: string;
@@ -24,7 +24,7 @@ const TitleButton: FunctionComponent<Props> = (props) => {
           alignItems: 'center',
         }}>
         <Suspense fallback={null}>
-          {linkImage && <LazyImage src={linkImage} name={linkName || ""} />}
+          {linkImage && <LazyImage src={linkImage} name={linkName || ''} />}
         </Suspense>
         <p>{buttonName}</p>
       </a>

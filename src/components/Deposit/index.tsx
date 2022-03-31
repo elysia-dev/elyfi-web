@@ -28,16 +28,32 @@ import request from 'graphql-request';
 import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
 const TokenTable = lazy(() => import('src/components/Deposit/TokenTable'));
-const TransactionConfirmModal = lazy(() => import('src/components/Modal/TransactionConfirmModal'))
-const IncentiveModal = lazy(() => import('src/components/Modal/IncentiveModal'))
-const ConnectWalletModal = lazy(() => import('src/components/Modal/ConnectWalletModal'))
-const NetworkChangeModal = lazy(() => import('src/components/Modal/NetworkChangeModal'))
-const DepositOrWithdrawModal = lazy(() => import('src/components/Modal/DepositOrWithdrawModal'));
-const WalletDisconnect = lazy(() => import('src/components/Modal/WalletDisconnect'));
-const SelectWalletModal = lazy(() => import('src/components/Modal/SelectWalletModal'));
+const TransactionConfirmModal = lazy(
+  () => import('src/components/Modal/TransactionConfirmModal'),
+);
+const IncentiveModal = lazy(
+  () => import('src/components/Modal/IncentiveModal'),
+);
+const ConnectWalletModal = lazy(
+  () => import('src/components/Modal/ConnectWalletModal'),
+);
+const NetworkChangeModal = lazy(
+  () => import('src/components/Modal/NetworkChangeModal'),
+);
+const DepositOrWithdrawModal = lazy(
+  () => import('src/components/Modal/DepositOrWithdrawModal'),
+);
+const WalletDisconnect = lazy(
+  () => import('src/components/Modal/WalletDisconnect'),
+);
+const SelectWalletModal = lazy(
+  () => import('src/components/Modal/SelectWalletModal'),
+);
 
-const TvlCounter = lazy(() => import('src/components/Deposit/TvlCounter'))
-const RewardPlanButton = lazy(() => import('src/components/RewardPlan/RewardPlanButton'))
+const TvlCounter = lazy(() => import('src/components/Deposit/TvlCounter'));
+const RewardPlanButton = lazy(
+  () => import('src/components/RewardPlan/RewardPlanButton'),
+);
 const RemoteControl = lazy(() => import('./RemoteControl'));
 
 const Dashboard: React.FunctionComponent = () => {
@@ -256,7 +272,11 @@ const Dashboard: React.FunctionComponent = () => {
           {isEnoughWide && (
             <div className="deposit__remote-control__wrapper">
               <Suspense fallback={null}>
-                <RemoteControl reserveState={reserveState} priceData={priceData} supportedBalances={supportedBalances} />
+                <RemoteControl
+                  reserveState={reserveState}
+                  priceData={priceData}
+                  supportedBalances={supportedBalances}
+                />
               </Suspense>
             </div>
           )}
@@ -277,7 +297,8 @@ const Dashboard: React.FunctionComponent = () => {
                       setReserveData(reserve);
                       selectBalanceId(balance.id);
                       ReactGA.modalview(
-                        balance.tokenName + ModalViewType.DepositOrWithdrawModal,
+                        balance.tokenName +
+                          ModalViewType.DepositOrWithdrawModal,
                       );
                       return;
                     }

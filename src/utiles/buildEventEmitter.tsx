@@ -1,8 +1,15 @@
 import ReactGA from 'react-ga';
 
 const buildEventEmitter = (
-  category: string, action: string, label: string
-): { clicked: () => void, created: () => void, canceled: () => void, failed: () => void } => {
+  category: string,
+  action: string,
+  label: string,
+): {
+  clicked: () => void;
+  created: () => void;
+  canceled: () => void;
+  failed: () => void;
+} => {
   return {
     clicked: () => {
       ReactGA.event({
@@ -30,9 +37,9 @@ const buildEventEmitter = (
         category,
         action: `${action} tx is encountered an error`,
         label,
-      })
-    }
+      });
+    },
   };
 };
 
-export default buildEventEmitter
+export default buildEventEmitter;

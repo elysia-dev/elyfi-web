@@ -9,7 +9,8 @@ import { parseTokenId } from 'src/utiles/parseTokenId';
 
 const AssetList: React.FC<{
   assetBondTokens?: IAssetBond[];
-}> = ({ assetBondTokens }) => {
+  prevRoute?: 'deposit' | 'governance';
+}> = ({ assetBondTokens, prevRoute }) => {
   const history = useHistory();
   const { lng } = useParams<{ lng: string }>();
   const { value: mediaQuery } = useMediaQueryType();
@@ -30,6 +31,7 @@ const AssetList: React.FC<{
                   onClick={() => {
                     history.push({
                       pathname: `/${lng}/portfolio/${abToken.id}`,
+                      state: { route: prevRoute },
                     });
                   }}
                 />

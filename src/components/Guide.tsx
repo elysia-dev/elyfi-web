@@ -58,7 +58,7 @@ function Guide(props: Props): JSX.Element {
                       width: '300px',
                       marginTop: '20px',
                       marginBottom: 10,
-                      objectFit: 'scale-down'
+                      objectFit: 'scale-down',
                     }}
                   />
                 ) : (
@@ -68,7 +68,7 @@ function Guide(props: Props): JSX.Element {
                       width: '300px',
                       marginTop: '20px',
                       marginBottom: 10,
-                      objectFit: 'scale-down'
+                      objectFit: 'scale-down',
                     }}
                   />
                 )}

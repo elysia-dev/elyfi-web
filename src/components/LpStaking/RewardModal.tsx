@@ -84,7 +84,7 @@ const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
 
   const receiveRewardHandler = async () => {
     try {
-      setTransactionWait()
+      setTransactionWait();
       await claim();
     } catch (error) {
       alert(error);
@@ -107,59 +107,51 @@ const RewardModal: React.FunctionComponent<LpRewardModalProps> = ({
           title={t('lpstaking.receive_reward')}
           onClose={() => closeHandler()}
         />
-        {
-          transactionWait ? (
-            <LoadingIndicator isTxActive={transactionWait} />
-          ) : (
-            <>
-              <div className="modal__lp__reward__container">
+        {transactionWait ? (
+          <LoadingIndicator isTxActive={transactionWait} />
+        ) : (
+          <>
+            <div className="modal__lp__reward__container">
+              <div>
                 <div>
-                  <div>
-                    <img src={elfi} />
-                    <h2>
-                      {Token.ELFI}
-                    </h2>
-                  </div>
-                  <h2>
-                    {formatSixFracionDigit(rewardToReceive.elfiReward)}
-                    <span className="bold">
-                      {Token.ELFI}
-                    </span>
-                  </h2>
+                  <img src={elfi} />
+                  <h2>{Token.ELFI}</h2>
                 </div>
-                
-                <div>
-                  <div>
-                    <img src={eth} />
-                    <h2>
-                      {Token.ETH}
-                    </h2>
-                  </div>
-                  <h2>
-                    {formatSixFracionDigit(rewardToReceive.ethReward)}
-                    <span className="bold">{Token.ETH}</span>
-                  </h2>
-                </div>
-                <div>
-                  <div>
-                    <img src={dai} />
-                    <h2>
-                      {Token.DAI}
-                    </h2>
-                  </div>
-                  <h2>
-                    {formatSixFracionDigit(rewardToReceive.daiReward)}
-                    <span>{Token.DAI}</span>
-                  </h2>
-                </div>
+                <h2>
+                  {formatSixFracionDigit(rewardToReceive.elfiReward)}
+                  <span className="bold">{Token.ELFI}</span>
+                </h2>
               </div>
-            </>
-          )
-        }
+
+              <div>
+                <div>
+                  <img src={eth} />
+                  <h2>{Token.ETH}</h2>
+                </div>
+                <h2>
+                  {formatSixFracionDigit(rewardToReceive.ethReward)}
+                  <span className="bold">{Token.ETH}</span>
+                </h2>
+              </div>
+              <div>
+                <div>
+                  <img src={dai} />
+                  <h2>{Token.DAI}</h2>
+                </div>
+                <h2>
+                  {formatSixFracionDigit(rewardToReceive.daiReward)}
+                  <span>{Token.DAI}</span>
+                </h2>
+              </div>
+            </div>
+          </>
+        )}
         <div>
           <div
-            className={`modal__button ${transactionWait ? "disable" : ""}`}
-            onClick={() => transactionWait ? undefined : receiveRewardHandler()}>
+            className={`modal__button ${transactionWait ? 'disable' : ''}`}
+            onClick={() =>
+              transactionWait ? undefined : receiveRewardHandler()
+            }>
             <p>{t('staking.claim_reward')}</p>
           </div>
         </div>
