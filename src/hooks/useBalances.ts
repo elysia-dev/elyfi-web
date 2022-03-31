@@ -243,7 +243,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
   }, [reserveState]);
 
   useEffect(() => {
-    if (loading || !active) return;
+    if (loading || !active || !priceData) return;
 
     const interval = setInterval(() => {
       setBalances(
@@ -264,7 +264,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
                     balance.deposit,
                     calcMiningAPR(
                       elfiPrice,
-                      BigNumber.from(reserve.totalDeposit),
+                      BigNumber.from(reserve.totalDeposit || 0),
                     ),
                     balance.updatedAt,
                   ),
@@ -296,7 +296,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
     return () => {
       clearInterval(interval);
     };
-  }, [balances, chainId, loading, active, reserveState]);
+  }, [balances, chainId, loading, active, reserveState, priceData]);
 
   return { balances, loading, loadBalance };
 };
