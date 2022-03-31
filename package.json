@@ -5,12 +5,9 @@
   "scripts": {
     "start": "REACT_APP_TEST_MODE=y react-scripts start",
     "build": "react-scripts build",
-    "test": "cypress open",
-    "eject": "react-scripts eject",
-    "deploy": "aws s3 sync ./build s3://elyfi-bucket",
-    "aws-build": "aws cloudfront create-invalidation --distribution-id EH1U6Z7PEQO75 --paths \"/*\" ",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "test": "react-scripts test",
+    "e2etest": "cypress open",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
