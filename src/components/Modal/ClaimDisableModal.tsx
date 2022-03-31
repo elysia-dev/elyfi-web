@@ -13,7 +13,7 @@ const ClaimDisableModal: React.FunctionComponent<{
         <div className="modal__connect__content">
           <p>{t('modal.claim_disable.content')}</p>
         </div>
-        <div className={`modal__button`} onClick={onClose}>
+        <div className={`modal__button`} onClick={() => onClose()}>
           <p>{t('modal.claim_disable.button')}</p>
         </div>
       </div>
