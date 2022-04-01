@@ -9,9 +9,9 @@ import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import {
-  bscBalanceOfFetche,
-  elBalanceOfFetche,
-  elfiBalanceOfFetche,
+  bscBalanceOfFetcher,
+  elBalanceOfFetcher,
+  elfiBalanceOfFetcher,
 } from 'src/clients/BalancesFetcher';
 import useReserveData from './useReserveData';
 
@@ -36,27 +36,27 @@ const useTvl = (): { value: number; loading: boolean } => {
   const { data: v1StakingBalance } = useSWR(
     [envs.staking.elfyStakingPoolAddress],
     {
-      fetcher: elfiBalanceOfFetche(),
+      fetcher: elfiBalanceOfFetcher(),
     },
   );
   const { data: v2StakingBalance } = useSWR(
     [envs.staking.elfyV2StakingPoolAddress],
     {
-      fetcher: elfiBalanceOfFetche(),
+      fetcher: elfiBalanceOfFetcher(),
     },
   );
 
   const { data: bscStakingBalance } = useSWR(
     [envs.staking.elfyBscStakingPoolAddress],
     {
-      fetcher: bscBalanceOfFetche(),
+      fetcher: bscBalanceOfFetcher(),
     },
   );
 
   const { data: elStakingBalance } = useSWR(
     [envs.staking.elStakingPoolAddress],
     {
-      fetcher: elBalanceOfFetche(),
+      fetcher: elBalanceOfFetcher(),
     },
   );
 

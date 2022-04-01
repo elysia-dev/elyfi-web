@@ -5,7 +5,7 @@ import envs from 'src/core/envs';
 const provider = new providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC);
 const bscProvider = new providers.JsonRpcProvider(envs.jsonRpcUrl.bsc);
 
-export const elBalanceOfFetche =
+export const elBalanceOfFetcher =
   (): any =>
   (...args: [string]) => {
     const [...params] = args;
@@ -16,7 +16,7 @@ export const elBalanceOfFetche =
 
     return contract.balanceOf(params[0]);
   };
-export const elfiBalanceOfFetche =
+export const elfiBalanceOfFetcher =
   (): any =>
   (...args: [string]) => {
     const [...params] = args;
@@ -28,7 +28,7 @@ export const elfiBalanceOfFetche =
     return contract.balanceOf(params[0]);
   };
 
-export const bscBalanceOfFetche =
+export const bscBalanceOfFetcher =
   (): any =>
   (...args: [string]) => {
     const [...params] = args;
