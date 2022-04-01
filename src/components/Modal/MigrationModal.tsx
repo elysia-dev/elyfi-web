@@ -99,7 +99,9 @@ const MigrationModal: React.FunctionComponent<{
                   <h2>{t('staking.unstaking')}</h2>
                   <div className="modal__migration__input">
                     <h2
-                      className="modal__input__maximum"
+                      className={`modal__input__maximum  ${
+                        state.withdrawMax ? 'is-max' : ''
+                      }`}
                       onClick={() => {
                         setState({
                           migrationAmount: '0',
@@ -168,7 +170,9 @@ const MigrationModal: React.FunctionComponent<{
                   </div>
                   <div className="modal__migration__input">
                     <h2
-                      className="modal__input__maximum"
+                      className={`modal__input__maximum  ${
+                        state.migrationMax ? 'is-max' : ''
+                      }`}
                       onClick={() => {
                         setState({
                           withdrawAmount: '0',

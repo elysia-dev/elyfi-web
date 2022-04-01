@@ -3042,6 +3042,10 @@ input[type='number'] {
         display: flex;
         cursor: pointer;
         white-space: nowrap;
+        &.is-max {
+          color: $elysia-color;
+          transition: all 0.3s linear;
+        }
       }
       &__value {
         color: $font-color;

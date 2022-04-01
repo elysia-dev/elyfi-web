@@ -15,7 +15,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "types": ["cypress"]
   },
-  "include": ["src"]
+  "include": ["src", "**/*.ts"]
 }

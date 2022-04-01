@@ -49,7 +49,9 @@ const WithdrawBody: React.FunctionComponent<{
           <div className="modal__withdraw">
             <div className="modal__input">
               <h2
-                className="modal__input__maximum"
+                className={`modal__input__maximum ${
+                  amount.max ? 'is-max' : ''
+                }`}
                 onClick={() => {
                   if (depositBalance.isZero()) {
                     return;
