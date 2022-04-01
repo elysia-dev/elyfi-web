@@ -1,5 +1,13 @@
-import { Dispatch, FunctionComponent, SetStateAction, useContext } from 'react';
+import {
+  Dispatch,
+  FunctionComponent,
+  lazy,
+  SetStateAction,
+  Suspense,
+  useContext,
+} from 'react';
 import { useTranslation } from 'react-i18next';
+import useSWR from 'swr';
 import envs from 'src/core/envs';
 import { reserveTokenData } from 'src/core/data/reserves';
 import {
@@ -9,12 +17,17 @@ import {
 } from 'src/utiles/formatters';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import { BigNumber } from 'ethers';
-import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
 import Token from 'src/enums/Token';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import { IReserveSubgraphData } from 'src/contexts/SubgraphContext';
 import CountUp from 'react-countup';
+import Skeleton from 'react-loading-skeleton';
+import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
+import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
+import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
+import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
+
+const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
 interface Props {
   reserve: IReserveSubgraphData;
@@ -60,48 +73,63 @@ const TokenDeposit: FunctionComponent<Props> = ({
       : reserve.id === envs.token.usdtAddress
       ? Token.USDT
       : Token.BUSD;
-  const { latestPrice } = useContext(UniswapPoolContext);
+  const { data: poolData, isValidating: loading } = useSWR(
+    envs.externalApiEndpoint.cachedUniswapV3URL,
+    poolDataFetcher,
+    {
+      use: [poolDataMiddleware],
+    },
+  );
+
   const { value: mediaQuery } = useMediaQueryType();
 
   return (
     <>
       <div className="reward__token-deposit">
         <div className="reward__token-deposit__header">
-          {mediaQuery === MediaQuery.PC ? (
-            <>
-              <img src={reserveTokenData[token].image} alt="Token image" />
-              <div>
+          <Suspense fallback={<FallbackSkeleton />}>
+            {mediaQuery === MediaQuery.PC ? (
+              <>
+                <LazyImage
+                  src={reserveTokenData[token].image}
+                  name="Token image"
+                />
                 <div>
-                  <p className="bold">
+                  <div>
+                    <p className="bold">
+                      {t('dashboard.token_deposit', {
+                        Token: reserveTokenData[token].name,
+                      })}
+                    </p>
+                    <p>
+                      {t('dashboard.token_deposit_content', {
+                        Token: reserveTokenData[token].name,
+                      })}
+                    </p>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <LazyImage
+                    src={reserveTokenData[token].image}
+                    name="Token image"
+                  />
+                  <h2>
                     {t('dashboard.token_deposit', {
                       Token: reserveTokenData[token].name,
                     })}
-                  </p>
-                  <p>
-                    {t('dashboard.token_deposit_content', {
-                      Token: reserveTokenData[token].name,
-                    })}
-                  </p>
+                  </h2>
                 </div>
-              </div>
-            </>
-          ) : (
-            <>
-              <div>
-                <img src={reserveTokenData[token].image} alt="Token image" />
-                <h2>
-                  {t('dashboard.token_deposit', {
+                <p>
+                  {t('dashboard.token_deposit_content', {
                     Token: reserveTokenData[token].name,
                   })}
-                </h2>
-              </div>
-              <p>
-                {t('dashboard.token_deposit_content', {
-                  Token: reserveTokenData[token].name,
-                })}
-              </p>
-            </>
-          )}
+                </p>
+              </>
+            )}
+          </Suspense>
         </div>
         <div className="reward__token-deposit__apy">
           {mediaQuery === MediaQuery.PC ? (
@@ -113,15 +141,19 @@ const TokenDeposit: FunctionComponent<Props> = ({
                 </div>
                 <div>
                   <p>{t('dashboard.token_mining_apr')}</p>
-                  <h2>
-                    {toPercent(
-                      calcMiningAPR(
-                        latestPrice,
-                        BigNumber.from(reserve.totalDeposit || 0),
-                        reserveTokenData[token].decimals,
-                      ),
-                    ) || 0}
-                  </h2>
+                  {!loading && poolData ? (
+                    <h2>
+                      {toPercent(
+                        calcMiningAPR(
+                          poolData.latestPrice,
+                          BigNumber.from(reserve.totalDeposit || 0),
+                          reserveTokenData[token].decimals,
+                        ),
+                      ) || 0}
+                    </h2>
+                  ) : (
+                    <Skeleton width={100} height={40} />
+                  )}
                 </div>
               </div>
               <div className="reward__token-deposit__apy--right">
@@ -146,13 +178,19 @@ const TokenDeposit: FunctionComponent<Props> = ({
               <div>
                 <p>{t('dashboard.token_mining_apr')}</p>
                 <h2>
-                  {toPercent(
-                    calcMiningAPR(
-                      latestPrice,
-                      BigNumber.from(reserve.totalDeposit || 0),
-                      reserveTokenData[token].decimals,
-                    ),
-                  ) || 0}
+                  {!loading && poolData ? (
+                    <h2>
+                      {toPercent(
+                        calcMiningAPR(
+                          poolData.latestPrice,
+                          BigNumber.from(reserve.totalDeposit || 0),
+                          reserveTokenData[token].decimals,
+                        ),
+                      ) || 0}
+                    </h2>
+                  ) : (
+                    <Skeleton width={70} height={30} />
+                  )}
                 </h2>
               </div>
               <div>

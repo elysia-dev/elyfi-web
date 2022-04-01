@@ -27,7 +27,10 @@ const reverseGeocoding = async (
       try {
         const data = await cord2address(lng, lat);
 
-        return data.documents[0].road_address?.address_name || getHardKorGeocoding(lat, lng)
+        return (
+          data.documents[0].road_address?.address_name ||
+          getHardKorGeocoding(lat, lng)
+        );
       } catch (error) {
         console.error(error);
         return '-';

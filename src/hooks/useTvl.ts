@@ -1,56 +1,66 @@
 import { BigNumber, constants, providers } from 'ethers';
 import { formatUnits, formatEther } from 'ethers/lib/utils';
-import { useContext, useEffect, useMemo, useState } from 'react';
-import PriceContext from 'src/contexts/PriceContext';
-import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
+import { useEffect, useMemo, useState } from 'react';
+import useSWR from 'swr';
 import envs from 'src/core/envs';
 import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import ReserveData from 'src/core/data/reserves';
-import SubgraphContext from 'src/contexts/SubgraphContext';
+import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
+import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
+import { pricesFetcher } from 'src/clients/Coingecko';
+import priceMiddleware from 'src/middleware/priceMiddleware';
+import useReserveData from './useReserveData';
 
 const useTvl = (): { value: number; loading: boolean } => {
-  const subgraphContext = useContext(SubgraphContext);
+  const { reserveState, loading: reserveLoading } = useReserveData();
+
   const [loading, setLoading] = useState(true);
-  const {
-    latestPrice: elfiPrice,
-    daiPool,
-    ethPool,
-  } = useContext(UniswapPoolContext);
-  const { elPrice, daiPrice, ethPrice } = useContext(PriceContext);
+  const { data: poolData } = useSWR(
+    envs.externalApiEndpoint.cachedUniswapV3URL,
+    poolDataFetcher,
+    {
+      use: [poolDataMiddleware],
+    },
+  );
+  const { data: priceData } = useSWR(
+    envs.externalApiEndpoint.coingackoURL,
+    pricesFetcher,
+    {
+      use: [priceMiddleware],
+    },
+  );
 
   const [state, setState] = useState({
     stakedEl: constants.Zero,
     stakedElfi: constants.Zero,
+    stakedElfiOnBSC: constants.Zero,
     loading: true,
   });
 
   const tvl = useMemo(() => {
+    if (!poolData || !priceData || !reserveState) return 0;
     return (
-      subgraphContext.data.reserves.reduce((res, cur) => {
+      reserveState.reserves.reduce((res, cur) => {
         const tokenInfo = ReserveData.find((datum) => datum.address === cur.id);
         return (
           res +
           parseFloat(
             formatUnits(
-              BigNumber.from(loading ? 0 : cur.totalDeposit),
+              BigNumber.from(loading ? 0 : cur?.totalDeposit || 0),
               tokenInfo?.decimals,
             ),
           )
         );
       }, 0) +
-      ethPool.totalValueLockedToken0 * elfiPrice +
-      ethPool.totalValueLockedToken1 * ethPrice +
-      daiPool.totalValueLockedToken0 * elfiPrice +
-      daiPool.totalValueLockedToken1 * daiPrice +
-      parseInt(formatEther(state.stakedEl), 10) * elPrice +
-      parseInt(formatEther(state.stakedElfi), 10) * elfiPrice
+      poolData.ethPool.totalValueLockedToken0 * priceData.elfiPrice +
+      poolData.ethPool.totalValueLockedToken1 * priceData.ethPrice +
+      poolData.daiPool.totalValueLockedToken0 * priceData.elfiPrice +
+      poolData.daiPool.totalValueLockedToken1 * priceData.daiPrice +
+      parseInt(formatEther(state.stakedEl), 10) * priceData.elPrice +
+      parseInt(formatEther(state.stakedElfi), 10) * priceData.elfiPrice +
+      parseInt(formatEther(state.stakedElfiOnBSC), 10) * priceData.elfiPrice
     );
-  }, [
-    state,
-    elPrice,
-    elfiPrice,
-    loading,
-  ]);
+  }, [state, priceData, loading, poolData, reserveState]);
 
   const loadBalances = async () => {
     try {
@@ -58,22 +68,31 @@ const useTvl = (): { value: number; loading: boolean } => {
         process.env.REACT_APP_JSON_RPC,
       );
 
-      const stakedElfiOnV1 = await ERC20__factory.connect(
-        envs.token.governanceAddress,
-        provider as any,
-      ).balanceOf(envs.staking.elfyStakingPoolAddress);
-
-      const stakedElfiOnV2 = await ERC20__factory.connect(
-        envs.token.governanceAddress,
-        provider as any,
-      ).balanceOf(envs.staking.elfyV2StakingPoolAddress);
+      const stakingBalances = await Promise.all(
+        [
+          ERC20__factory.connect(
+            envs.token.governanceAddress,
+            provider as any,
+          ).balanceOf(envs.staking.elfyStakingPoolAddress),
+          ERC20__factory.connect(
+            envs.token.governanceAddress,
+            provider as any,
+          ).balanceOf(envs.staking.elfyV2StakingPoolAddress),
+          ERC20__factory.connect(
+            envs.token.bscElfiAddress,
+            new providers.JsonRpcProvider(envs.jsonRpcUrl.bsc) as any,
+          ).balanceOf(envs.staking.elfyBscStakingPoolAddress),
+          ERC20__factory.connect(
+            envs.token.elAddress,
+            provider as any,
+          ).balanceOf(envs.staking.elStakingPoolAddress),
+        ].map((balance) => balance),
+      );
 
       setState({
-        stakedEl: await ERC20__factory.connect(
-          envs.token.elAddress,
-          provider as any,
-        ).balanceOf(envs.staking.elStakingPoolAddress),
-        stakedElfi: stakedElfiOnV1.add(stakedElfiOnV2),
+        stakedEl: stakingBalances[3],
+        stakedElfi: stakingBalances[0].add(stakingBalances[1]),
+        stakedElfiOnBSC: stakingBalances[2],
         loading: false,
       });
     } catch (e) {
@@ -82,10 +101,11 @@ const useTvl = (): { value: number; loading: boolean } => {
   };
 
   useEffect(() => {
+    if (reserveLoading) return;
     loadBalances().then(() => {
       setLoading(false);
     });
-  }, []);
+  }, [reserveLoading]);
 
   return {
     value: tvl,

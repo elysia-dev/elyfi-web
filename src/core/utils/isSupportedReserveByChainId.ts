@@ -1,14 +1,19 @@
-import Token from "src/enums/Token"
+import Token from 'src/enums/Token';
 
-const isSupportedReserveByChainId = (token: Token, chainId?: number): boolean => {
-	switch (chainId) {
-		case 1: case 1337:
-			return [Token.DAI, Token.USDT].includes(token)
-		case 56: case 97:
-			return [Token.BUSD].includes(token)
-		default:
-			return false
-	}
-}
+const isSupportedReserveByChainId = (
+  token: Token,
+  chainId?: number,
+): boolean => {
+  switch (chainId) {
+    case 1:
+    case 1337:
+      return [Token.DAI, Token.USDT].includes(token);
+    case 56:
+    case 97:
+      return [Token.BUSD].includes(token);
+    default:
+      return false;
+  }
+};
 
-export default isSupportedReserveByChainId
+export default isSupportedReserveByChainId;

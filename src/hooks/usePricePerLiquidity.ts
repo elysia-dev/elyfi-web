@@ -1,30 +1,48 @@
-import { useContext, useMemo } from 'react';
-import PriceContext from 'src/contexts/PriceContext';
-import UniswapPoolContext from 'src/contexts/UniswapPoolContext';
+import { useMemo } from 'react';
 import { utils } from 'ethers';
+import useSWR from 'swr';
+import envs from 'src/core/envs';
+import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
+import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
+import { pricesFetcher } from 'src/clients/Coingecko';
+import priceMiddleware from 'src/middleware/priceMiddleware';
 
 const usePricePerLiquidity = (): {
   pricePerDaiLiquidity: number;
   pricePerEthLiquidity: number;
 } => {
-  const { elfiPrice, daiPrice, ethPrice } = useContext(PriceContext);
-  const { daiPool, ethPool } = useContext(UniswapPoolContext);
+  const { data: poolData, isValidating: loading } = useSWR(
+    envs.externalApiEndpoint.cachedUniswapV3URL,
+    poolDataFetcher,
+    {
+      use: [poolDataMiddleware],
+    },
+  );
+  const { data: priceData } = useSWR(
+    envs.externalApiEndpoint.coingackoURL,
+    pricesFetcher,
+    {
+      use: [priceMiddleware],
+    },
+  );
 
   const pricePerEthLiquidity = useMemo(() => {
+    if (!poolData || !priceData) return 0;
     return (
-      (ethPool.totalValueLockedToken0 * elfiPrice +
-        ethPool.totalValueLockedToken1 * ethPrice) /
-      parseFloat(utils.formatEther(ethPool.liquidity))
+      (poolData.ethPool.totalValueLockedToken0 * priceData.elfiPrice +
+        poolData.ethPool.totalValueLockedToken1 * priceData.ethPrice) /
+      parseFloat(utils.formatEther(poolData.ethPool.liquidity))
     );
-  }, [ethPool, elfiPrice, ethPrice]);
+  }, [priceData, poolData, loading]);
 
   const pricePerDaiLiquidity = useMemo(() => {
+    if (!poolData || !priceData) return 0;
     return (
-      (daiPool.totalValueLockedToken0 * elfiPrice +
-        daiPool.totalValueLockedToken1 * daiPrice) /
-      parseFloat(utils.formatEther(daiPool.liquidity))
+      (poolData.daiPool.totalValueLockedToken0 * priceData.elfiPrice +
+        poolData.daiPool.totalValueLockedToken1 * priceData.daiPrice) /
+      parseFloat(utils.formatEther(poolData.daiPool.liquidity))
     );
-  }, [daiPool, elfiPrice, daiPrice]);
+  }, [priceData, poolData]);
 
   return {
     pricePerEthLiquidity,

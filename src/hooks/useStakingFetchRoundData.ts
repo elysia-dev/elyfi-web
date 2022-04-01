@@ -1,9 +1,11 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants } from 'ethers';
 import moment from 'moment';
+import useSWR from 'swr';
+import envs from 'src/core/envs';
 import { useContext, useEffect, useMemo, useState } from 'react';
+import { pricesFetcher, PriceType } from 'src/clients/Coingecko';
 import MainnetContext from 'src/contexts/MainnetContext';
-import PriceContext from 'src/contexts/PriceContext';
 import { roundTimes } from 'src/core/data/stakingRoundTimes';
 import {
   DAIPerDayOnELFIStakingPool,
@@ -12,6 +14,7 @@ import {
 import RoundData from 'src/core/types/RoundData';
 import calcAPR from 'src/core/utils/calcAPR';
 import Token from 'src/enums/Token';
+import priceMiddleware from 'src/middleware/priceMiddleware';
 import useStakingPool from './useStakingPool';
 
 const useStakingFetchRoundData = (
@@ -36,7 +39,13 @@ const useStakingFetchRoundData = (
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [roundData, setroundData] = useState<RoundData[]>([]);
-  const { elPrice, elfiPrice } = useContext(PriceContext);
+  const { data: priceData } = useSWR(
+    envs.externalApiEndpoint.coingackoURL,
+    pricesFetcher,
+    {
+      use: [priceMiddleware],
+    },
+  );
 
   const roundTime = useMemo(
     () => roundTimes(stakedToken, getMainnetType),
@@ -47,6 +56,7 @@ const useStakingFetchRoundData = (
 
   const stakedData = (
     round: number,
+    priceData: PriceType,
     accountReward?: BigNumber,
     totalPrincipal?: BigNumber,
     accountPrincipal?: BigNumber,
@@ -58,11 +68,11 @@ const useStakingFetchRoundData = (
       apr: totalPrincipal
         ? calcAPR(
             totalPrincipal,
-            stakedToken === Token.EL ? elPrice : elfiPrice,
+            stakedToken === Token.EL ? priceData.elPrice : priceData.elfiPrice,
             rewardToken === Token.ELFI
               ? ELFIPerDayOnELStakingPool
               : DAIPerDayOnELFIStakingPool,
-            rewardToken === Token.ELFI ? elfiPrice : 1,
+            rewardToken === Token.ELFI ? priceData.elfiPrice : 1,
           )
         : poolApr,
       loadedAt: moment(),
@@ -73,6 +83,7 @@ const useStakingFetchRoundData = (
 
   const fetchRoundData = async (account: string | null | undefined) => {
     try {
+      if (!priceData) return;
       const data = await Promise.all(
         roundTime.map(async (_item, round) => {
           let poolData;
@@ -107,12 +118,13 @@ const useStakingFetchRoundData = (
             );
             return stakedData(
               round,
+              priceData,
               accountReward,
               poolData.totalPrincipal,
               userData.userPrincipal,
             );
           } else {
-            return stakedData(round);
+            return stakedData(round, priceData);
           }
         }),
       );
@@ -121,9 +133,10 @@ const useStakingFetchRoundData = (
       setError(false);
     } catch (error) {
       console.log(error);
+      if (!priceData) return;
       const data = await Promise.all(
         roundTime.map(async (_item, round) => {
-          return stakedData(round);
+          return stakedData(round, priceData);
         }),
       );
       setroundData(data);

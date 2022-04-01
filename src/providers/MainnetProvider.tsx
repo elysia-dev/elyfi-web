@@ -6,7 +6,6 @@ import MainnetContext, {
 import MainnetType from 'src/enums/MainnetType';
 import { mainnets } from 'src/core/data/mainnets';
 import useCurrentChain from 'src/hooks/useCurrentChain';
-import Loading from 'src/components/Loading';
 
 // ! FIXME
 // 2. Remove redundant loading(false)
@@ -107,8 +106,6 @@ const MainnetProvider: React.FC = (props) => {
       setLoading(false);
     }
   };
-
-  if (loading) return <Loading />;
 
   return (
     <MainnetContext.Provider

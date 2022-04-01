@@ -2,7 +2,7 @@ import { BigNumber, constants } from 'ethers';
 import {
   GetUser_user_lTokenBurn,
   GetUser_user_lTokenMint,
-} from 'src/queries/__generated__/GetUser';
+} from 'src/core/types/GetUser';
 import { RAY } from './math';
 
 const calcAccumulatedYield = (
