@@ -3244,33 +3244,51 @@ input[type='number'] {
           color: $font-color;
         }
         > div {
-          display: grid;
+          display: flex;
+          flex-direction: column;
           width: 100%;
-          grid-template-columns: repeat(2, 1fr);
           align-items: center;
-          gap: 15px 30px;
           padding: 20px;
           border: 1px solid $gray-line;
           border-radius: 10px;
           margin-top: 10px;
           > div {
-            @include hover__box-shadow;
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
             box-shadow: 0px 0px 6px #00000029;
-            border-radius: 40px;
+            border-radius: 10px;
+            width: 100%;
             padding: 10px 15px;
-            cursor: pointer;
-            > img {
-              width: 24px;
-              height: 24px;
+            &:not(:last-child) {
+              margin-bottom: 15px;
+            }
+            > div {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              > img {
+                width: 24px;
+                height: 24px;
+                &:first-child {
+                  margin-right: 12px;
+                }
+              }
+              > div {
+                position: relative;
+                > img {
+                  width: 24px;
+                  height: 24px;
+                  &:first-child {
+                    margin-right: 12px;
+                  }
+                }
+              }
             }
             > p {
-              font-size: 18px;
+              font-size: 15px;
               color: $font-color;
-              cursor: pointer;
             }
           }
         }
