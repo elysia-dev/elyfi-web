@@ -36,5 +36,9 @@ describe('Navigation component test', () => {
         </Route>
       </BrowserRouter>,
     );
+    expect(screen.getByText('NAVIGATION.DASHBOARD')).toBeInTheDocument();
+    expect(screen.getByText('NAVIGATION.GOVERNANCE')).toBeInTheDocument();
+    expect(screen.getByText('NAVIGATION.STAKING')).toBeInTheDocument();
+    expect(screen.getByText('NAVIGATION.ELYFI_DOCS')).toBeInTheDocument();
   });
 });
