@@ -47,7 +47,7 @@ const AssetItem: FunctionComponent<{
     <div className="component__loan-list" style={style} onClick={onClick}>
       <div className="component__loan-list__image">
         <Suspense fallback={<Skeleton width={'100%'} height={'100%'} />}>
-          <LazyImage src={image} name={`csp_image_${abToken.id}`} />
+          <LazyImage src={image} name={`csp_image`} />
         </Suspense>
       </div>
       <div className="component__loan-list__data">
