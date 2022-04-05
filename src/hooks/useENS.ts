@@ -15,11 +15,10 @@ export const useENS = (address: string | null | undefined): ReturnType => {
 
   useEffect(() => {
     async function resolveENS() {
+      const { ethereum } = window;
       try {
-        if (address && ethers.utils.isAddress(address) && !ensLoading) {
-          const provider = new providers.JsonRpcProvider(
-            process.env.REACT_APP_JSON_RPC,
-          );
+        if (ethereum && address && ethers.utils.isAddress(address || '')) {
+          const provider = new providers.Web3Provider(ethereum);
           const getEnsName = await provider.lookupAddress(address);
           if (getEnsName) setENSName(getEnsName);
         }
