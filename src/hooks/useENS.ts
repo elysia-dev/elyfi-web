@@ -18,8 +18,15 @@ export const useENS = (address: string | null | undefined): ReturnType => {
       const { ethereum } = window;
       try {
         if (ethereum && address && ethers.utils.isAddress(address || '')) {
+          const prevprovider = new providers.JsonRpcProvider(
+            process.env.REACT_APP_JSON_RPC,
+          );
           const provider = new providers.Web3Provider(ethereum);
           const getEnsName = await provider.lookupAddress(address);
+          console.log(prevprovider);
+          console.log(provider);
+          console.log(await provider.lookupAddress(address));
+          console.log(await prevprovider.lookupAddress(address));
           if (getEnsName) setENSName(getEnsName);
         }
       } catch (e) {

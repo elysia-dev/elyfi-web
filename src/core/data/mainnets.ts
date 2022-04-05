@@ -66,8 +66,8 @@ export const mainnets: IMainnet[] = [
     type: MainnetType.Ethereum,
     name: 'Ethereum',
     image: ETH,
-    chainId: 1,
-    chainHexId: '0x1',
+    chainId: 3,
+    chainHexId: '0x3',
     addParams: {
       chainId: '0x1',
       chainName: 'Ethereum Mainnet',
@@ -85,8 +85,8 @@ export const mainnets: IMainnet[] = [
     type: MainnetType.Ethereum,
     name: 'Ganache',
     image: ETH,
-    chainId: 1337,
-    chainHexId: '0x1',
+    chainId: 3,
+    chainHexId: '0x3',
     addParams: {
       chainId: '0x1',
       chainName: 'Ganache Mainnet',
