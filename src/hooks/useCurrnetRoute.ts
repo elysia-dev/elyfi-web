@@ -13,7 +13,7 @@ interface RouteState {
 
 const useCurrentRoute = (): NavigationRoutes | undefined => {
   const location = useLocation();
-  const { state } = useLocation<RouteState>();
+  // const { state } = useLocation<RouteState>();
 
   const getCurrentRoute = () => {
     switch (location.pathname.split('/')[2]) {
@@ -36,7 +36,7 @@ const useCurrentRoute = (): NavigationRoutes | undefined => {
         }
         break;
       case 'portfolio':
-        return state?.route === 'governance'
+        return location.state === 'governance'
           ? NavigationRoutes.Governance
           : NavigationRoutes.Deposit;
       default:

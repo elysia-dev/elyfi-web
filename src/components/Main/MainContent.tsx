@@ -1,8 +1,8 @@
 import { Trans, useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
 
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
+import useNavigator from 'src/hooks/useNavigator';
 
 const MainContent: React.FunctionComponent<{
   index: number;
@@ -13,7 +13,7 @@ const MainContent: React.FunctionComponent<{
   };
 }> = ({ index, data }) => {
   const { t } = useTranslation();
-  const History = useHistory();
+  const navigate = useNavigator();
 
   const { value: mediaQuery } = useMediaQueryType();
 
@@ -41,7 +41,7 @@ const MainContent: React.FunctionComponent<{
           <div
             onClick={() => {
               data.ga();
-              History.push({ pathname: data.link });
+              navigate(data.link);
             }}
             className="main__content__button">
             <p>{t(`main.section.${index}.button`)}</p>

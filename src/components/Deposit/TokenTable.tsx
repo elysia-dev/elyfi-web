@@ -14,7 +14,7 @@ import { formatEther } from '@ethersproject/units';
 import Skeleton from 'react-loading-skeleton';
 import { BigNumber, constants } from 'ethers';
 import AssetList from 'src/components/AssetList';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import TableBodyAmount from 'src/components/Deposit/TableBodyAmount';
@@ -26,6 +26,7 @@ import { BalanceType } from 'src/hooks/useBalances';
 import moment from 'moment';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import { parseTokenId } from 'src/utiles/parseTokenId';
+import useNavigator from 'src/hooks/useNavigator';
 import CollateralCategory from 'src/enums/CollateralCategory';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
@@ -65,7 +66,7 @@ const TokenTable: React.FC<Props> = ({
     useContext(MainnetContext);
   const { t } = useTranslation();
   const tokenInfo = reserveTokenData[balance.tokenName];
-  const history = useHistory();
+  const navigate = useNavigator();
   const { lng } = useParams<{ lng: string }>();
   const { value: mediaQuery } = useMediaQueryType();
   const currentChain = useCurrentChain();
@@ -125,9 +126,7 @@ const TokenTable: React.FC<Props> = ({
           className="deposit__table__header"
           style={{ cursor: 'pointer' }}
           onClick={() => {
-            history.push({
-              pathname: `/${lng}/deposit/${balance.tokenName}`,
-            });
+            navigate(`/${lng}/deposits/${balance.tokenName}`);
           }}>
           <div className="deposit__table__header__token-info">
             <LazyImage src={tokenInfo.image} name="Token icon" />

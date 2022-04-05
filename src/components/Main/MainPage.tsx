@@ -3,12 +3,13 @@ import { useTranslation, Trans } from 'react-i18next';
 import reactGA from 'react-ga';
 import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import LanguageType from 'src/enums/LanguageType';
 
 import AssetDom from 'src/assets/images/main/asset-dom.svg';
 import Pit from 'src/assets/images/main/pit.svg';
 import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
+import useNavigator from 'src/hooks/useNavigator';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
@@ -19,7 +20,7 @@ interface Props {
 
 const MainPage: React.FC<Props> = ({ mainHeaderY, mainHeaderMoblieY }) => {
   const { t } = useTranslation();
-  const History = useHistory();
+  const navigate = useNavigator();
   const { lng } = useParams<{ lng: string }>();
 
   return (
@@ -38,7 +39,7 @@ const MainPage: React.FC<Props> = ({ mainHeaderY, mainHeaderMoblieY }) => {
                 category: PageEventType.MoveToInternalPage,
                 action: ButtonEventType.DepositButton,
               });
-              History.push({ pathname: `/${lng}/deposit` });
+              navigate(`/${lng}/deposit`);
             }}>
             <p ref={mainHeaderY}> {t('main.landing.button__deposit')}</p>
           </div>
@@ -71,7 +72,7 @@ const MainPage: React.FC<Props> = ({ mainHeaderY, mainHeaderMoblieY }) => {
               category: PageEventType.MoveToInternalPage,
               action: ButtonEventType.DepositButton,
             });
-            History.push({ pathname: `/${lng}/deposit` });
+            navigate(`/${lng}/deposit`);
           }}>
           <p ref={mainHeaderMoblieY}>{t('main.landing.button__deposit')}</p>
         </div>

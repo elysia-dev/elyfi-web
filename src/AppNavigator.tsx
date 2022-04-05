@@ -1,6 +1,6 @@
 import { useEffect, useState, lazy, Suspense } from 'react';
 import { lazily } from 'react-lazily';
-import { Switch, Route, useHistory } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import ScrollToTop from 'src/hooks/ScrollToTop';
 import usePageTracking from 'src/hooks/usePageTracking';
@@ -25,11 +25,11 @@ const Navigation = lazy(() => import('src/components/Navigation'));
 const Footer = lazy(() => import('src/components/Footer'));
 
 import getLocalLanauge from 'src/utiles/getLocalLanguage';
-import LanguageProvider from 'src/providers/LanguageProvider';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import { isMetamask, isWalletConnector } from './utiles/connectWallet';
 import walletConnectConnector from './utiles/walletConnectProvider';
+import useNavigator from './hooks/useNavigator';
 
 const walletConnectProvider = walletConnectConnector();
 
@@ -37,7 +37,7 @@ const AppNavigator: React.FC = () => {
   const [hamburgerBar, setHamburgerBar] = useState(false);
   const { value: mediaQuery } = useMediaQueryType();
 
-  const { deactivate, activate, library } = useWeb3React();
+  const { deactivate, activate } = useWeb3React();
 
   usePageTracking();
 
@@ -57,10 +57,10 @@ const AppNavigator: React.FC = () => {
   }, []);
 
   const LanguageDetctionPage = () => {
-    const history = useHistory();
+    const navigate = useNavigator();
 
     useEffect(() => {
-      history.replace(`/${getLocalLanauge()}`);
+      navigate(`/${getLocalLanauge()}`);
     }, []);
 
     return <></>;
@@ -86,8 +86,100 @@ const AppNavigator: React.FC = () => {
         position: hamburgerBar ? 'fixed' : 'initial',
       }}>
       <ScrollToTop />
-      <Switch>
-        <Route path="/:lng">
+      <Routes>
+        <Route
+          path=":lng"
+          element={
+            <Suspense fallback={nullFallbackArea()}>
+              <Navigation
+                hamburgerBar={hamburgerBar}
+                setHamburgerBar={setHamburgerBar}
+              />
+            </Suspense>
+          }>
+          <Route
+            index
+            element={
+              <Suspense fallback={nullFallbackArea()}>
+                <Main />
+              </Suspense>
+            }
+          />
+          <Route path="staking">
+            <Route
+              path="LP"
+              element={
+                <Suspense fallback={nullFallbackArea()}>
+                  <LPStaking />
+                </Suspense>
+              }
+            />
+            <Route
+              path="EL"
+              element={
+                <Suspense fallback={nullFallbackArea()}>
+                  <StakingEL />
+                </Suspense>
+              }
+            />
+            <Route
+              path="ELFI"
+              element={
+                <Suspense fallback={nullFallbackArea()}>
+                  <StakingELFI />
+                </Suspense>
+              }
+            />
+          </Route>
+          <Route
+            path="deposit"
+            element={
+              <Suspense fallback={nullFallbackArea()}>
+                <Dashboard />
+              </Suspense>
+            }
+          />
+          <Route
+            path="governance"
+            element={
+              <Suspense fallback={nullFallbackArea()}>
+                <Governance />
+              </Suspense>
+            }
+          />
+          <Route path="portfolio">
+            <Route
+              path=":id"
+              element={
+                <Suspense fallback={nullFallbackArea()}>
+                  <PortfolioDetail />
+                </Suspense>
+              }
+            />
+          </Route>
+          <Route path="rewardplan">
+            <Route
+              path=":stakingType"
+              element={
+                <Suspense fallback={nullFallbackArea()}>
+                  <RewardPlan />
+                </Suspense>
+              }
+            />
+          </Route>
+          <Route path="deposits">
+            <Route
+              path=":id"
+              element={
+                <Suspense fallback={nullFallbackArea()}>
+                  <MarketDetail />
+                </Suspense>
+              }
+            />
+          </Route>
+        </Route>
+      </Routes>
+      {/* <Route path="/:lng">
           <LanguageProvider>
             <Suspense fallback={nullFallbackArea()}>
               <Navigation
@@ -96,11 +188,11 @@ const AppNavigator: React.FC = () => {
               />
             </Suspense>
             <Suspense fallback={nullFallbackArea()}>
-              <Route exact path="/:lng/staking/LP" component={LPStaking} />
-            </Suspense>
-            <Suspense fallback={nullFallbackArea()}>
-              <Route exact path="/:lng/staking/EL" component={StakingEL} />
-              <Route exact path="/:lng/staking/ELFI" component={StakingELFI} />
+            <Route path="staking">
+            <Route path="LP" element={<LPStaking />} />
+            <Route path="EL" element={<StakingEL />} />
+            <Route path="ELFI" element={<StakingELFI />} />
+          </Route>
             </Suspense>
             <Suspense fallback={nullFallbackArea()}>
               <Route exact path="/:lng/governance" component={Governance} />
@@ -132,9 +224,8 @@ const AppNavigator: React.FC = () => {
               <Footer />
             </Suspense>
           </LanguageProvider>
-        </Route>
-        <Route path="/" component={LanguageDetctionPage} />
-      </Switch>
+        </Route> */}
+      {/* <Route path="/" element={<LanguageDetctionPage />} /> */}
     </div>
   );
 };

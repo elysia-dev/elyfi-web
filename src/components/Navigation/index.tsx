@@ -7,7 +7,7 @@ import {
   lazy,
   Suspense,
 } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
 import NavigationType from 'src/enums/NavigationType';
 import {
@@ -29,6 +29,7 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import useCurrentRoute from 'src/hooks/useCurrnetRoute';
 
+import Footer from 'src/components/Footer';
 import ErrorModal from '../Modal/ErrorModal';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
@@ -493,6 +494,8 @@ const Navigation: React.FunctionComponent<{
         </Suspense>
       </nav>
       <div className="navigation__margin" />
+      <Outlet />
+      <Footer />
     </>
   );
 };

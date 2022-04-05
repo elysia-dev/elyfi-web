@@ -1,7 +1,8 @@
 import { RefObject, Suspense, lazy } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import LanguageType from 'src/enums/LanguageType';
+import useNavigator from 'src/hooks/useNavigator';
 
 const GovernanceGuideBox = lazy(
   () => import('src/components/Governance/GovernanceGuideBox'),
@@ -13,7 +14,7 @@ interface Props {
 
 const Header: React.FC<Props> = ({ headerRef }) => {
   const { t } = useTranslation();
-  const History = useHistory();
+  const navigate = useNavigator();
   const { lng } = useParams<{ lng: string }>();
 
   return (
@@ -31,7 +32,7 @@ const Header: React.FC<Props> = ({ headerRef }) => {
         <div className="governance__content__button__wrapper">
           <div
             className="governance__content__button"
-            onClick={() => History.push({ pathname: `/${lng}/staking/ELFI` })}>
+            onClick={() => navigate(`/${lng}/staking/ELFI`)}>
             <p>{t('governance.button--staking')}</p>
           </div>
           <div

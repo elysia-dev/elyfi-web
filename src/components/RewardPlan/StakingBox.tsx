@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 import { i18n } from 'i18next';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Token from 'src/enums/Token';
 import elfi from 'src/assets/images/ELFI.png';
@@ -25,6 +25,7 @@ import miningValueByToken, { countValue } from 'src/utiles/stakingReward';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { ordinalNumberConverter } from 'src/utiles/ordinalNumberConverter';
 import MainnetType from 'src/enums/MainnetType';
+import useNavigator from 'src/hooks/useNavigator';
 import SmallProgressBar from './SmallProgressBar';
 import StakingBoxHeader from './StakingBoxHeader';
 import StakingDetailInfo from './StakingDetailInfo';
@@ -60,7 +61,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
   const { t, i18n } = useTranslation();
   const { value: mediaQuery } = useMediaQueryType();
   const [currentSwipe, setCurrnetSwipe] = useState(props.stakedRound);
-  const history = useHistory();
+  const navigate = useNavigator();
   const { type: getMainnetType } = useContext(MainnetContext);
   const prevNavigation = useRef<HTMLDivElement>(null);
   const nextNavigation = useRef<HTMLDivElement>(null);
@@ -82,7 +83,7 @@ const StakingBox: FunctionComponent<Props> = (props: Props) => {
 
   useEffect(() => {
     if (props.stakedToken === Token.EL && getMainnetType === MainnetType.BSC) {
-      history.push(`/${i18n.language}/staking/EL`);
+      navigate(`/${i18n.language}/staking/EL`);
     }
   }, [getMainnetType]);
 

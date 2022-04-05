@@ -3,12 +3,13 @@ import { useTranslation } from 'react-i18next';
 import reactGA from 'react-ga';
 import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import LanguageType from 'src/enums/LanguageType';
 
 import MainPopupKo from 'src/assets/images/popup/ko.svg';
 import MainPopupEn from 'src/assets/images/popup/en.svg';
 import Skeleton from 'react-loading-skeleton';
+import useNavigator from 'src/hooks/useNavigator';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
@@ -17,7 +18,7 @@ const ShowingPopup: React.FC<{
   closeHandler: (value: React.SetStateAction<boolean>) => void;
 }> = ({ visible, closeHandler }) => {
   const { t } = useTranslation();
-  const History = useHistory();
+  const navigate = useNavigator();
   const { lng } = useParams<{ lng: string }>();
 
   const dailyPopupDisable = () => {
@@ -62,7 +63,7 @@ const ShowingPopup: React.FC<{
               category: PageEventType.MoveToInternalPage,
               action: ButtonEventType.DepositButtonOnEventModal,
             });
-            History.push({ pathname: `/${lng}/staking/ELFI` });
+            navigate(`/${lng}/staking/ELFI`);
           }}>
           <Suspense fallback={<Skeleton width={500} height={500} />}>
             <LazyImage

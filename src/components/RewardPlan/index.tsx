@@ -14,7 +14,7 @@ import {
 } from 'react';
 import useSWR from 'swr';
 import { useTranslation, Trans } from 'react-i18next';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   daiMoneyPoolTime,
   tetherMoneyPoolTime,
@@ -68,7 +68,7 @@ const TokenDeposit = lazy(
 const RewardPlan: FunctionComponent = () => {
   const { t, i18n } = useTranslation();
   const { stakingType } = useParams<{ stakingType: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { data: poolData, isValidating: poolDataLoading } = useSWR(
     envs.externalApiEndpoint.cachedUniswapV3URL,
     poolDataFetcher,
@@ -86,16 +86,16 @@ const RewardPlan: FunctionComponent = () => {
   const { type: getMainnetType } = useContext(MainnetContext);
   const current = moment();
   const { value: mediaQuery } = useMediaQueryType();
-
-  const isEl = stakingType === 'EL';
-  const stakingRoundDate = roundTimes(stakingType, getMainnetType);
+  const rewardType = stakingType || 'EL';
+  const isEl = rewardType === 'EL';
+  const stakingRoundDate = roundTimes(rewardType, getMainnetType);
 
   const currentPhase = useMemo(() => {
     return stakingRoundDate.filter(
       (round) => current.diff(round.startedAt) >= 0,
     ).length;
   }, [current]);
-  const { state: rewardInfo } = useCalcReward(stakingType);
+  const { state: rewardInfo } = useCalcReward(rewardType);
 
   const lpCurrentPhase = useMemo(() => {
     return lpRoundDate.filter((round) => current.diff(round.startedAt) >= 0)
@@ -109,7 +109,7 @@ const RewardPlan: FunctionComponent = () => {
   }, [current]);
 
   const onClickHandler = () => {
-    history.goBack();
+    navigate(-1);
   };
 
   const [state, setState] = useState({
@@ -150,8 +150,8 @@ const RewardPlan: FunctionComponent = () => {
     loading: poolLoading,
   } = useStakingRoundData(
     state.round,
-    stakingType,
-    rewardToken(stakingType, getMainnetType),
+    rewardType,
+    rewardToken(rewardType, getMainnetType),
   );
 
   const moneyPoolInfo = {
@@ -217,10 +217,10 @@ const RewardPlan: FunctionComponent = () => {
 
     new DrawWave(ctx, browserWidth).drawOnPages(
       headerY,
-      stakingType === Token.EL ? TokenColors.EL : TokenColors.ELFI,
+      rewardType === Token.EL ? TokenColors.EL : TokenColors.ELFI,
       browserHeight,
       false,
-      stakingType === 'LP' ? stakingType : undefined,
+      rewardType === 'LP' ? rewardType : undefined,
     );
   };
 
@@ -301,7 +301,7 @@ const RewardPlan: FunctionComponent = () => {
         }}
       />
       <div ref={headerRef} className="reward">
-        {stakingType === 'deposit' ? (
+        {rewardType === 'deposit' ? (
           <div className="component__text-navigation">
             <p onClick={() => onClickHandler()} className="pointer">
               {t('dashboard.deposit')}
@@ -314,14 +314,14 @@ const RewardPlan: FunctionComponent = () => {
             {`${t('staking.location_staking')} > `}
             <p onClick={() => onClickHandler()} className="pointer">
               &nbsp;&nbsp;
-              {t('staking.token_staking', { stakedToken: stakingType })}
+              {t('staking.token_staking', { stakedToken: rewardType })}
               &nbsp;&nbsp;
             </p>
             {` > ${t('reward.reward_plan')}`}
           </div>
         )}
 
-        {stakingType === 'LP' ? (
+        {rewardType === 'LP' ? (
           <>
             <div className="reward__token">
               <div className="reward__token__image-container">
@@ -389,8 +389,8 @@ const RewardPlan: FunctionComponent = () => {
               />
             </Suspense>
           </>
-        ) : ['EL', 'ELFI'].includes(stakingType) ? (
-          <section className={`reward__${stakingType.toLowerCase()}`}>
+        ) : ['EL', 'ELFI'].includes(stakingType || 'EL') ? (
+          <section className={`reward__${(stakingType || 'EL').toLowerCase()}`}>
             <Suspense
               fallback={
                 <div
@@ -402,7 +402,7 @@ const RewardPlan: FunctionComponent = () => {
                 poolApr={poolApr}
                 poolPrincipal={poolPrincipal}
                 stakedRound={state.round}
-                unit={rewardToken(stakingType, getMainnetType)}
+                unit={rewardToken(stakingType || 'EL', getMainnetType)}
                 start={
                   isEl
                     ? beforeTotalMintedByElStakingPool
@@ -416,7 +416,7 @@ const RewardPlan: FunctionComponent = () => {
                 state={state}
                 setState={setState}
                 OrdinalNumberConverter={ordinalNumberConverter}
-                stakedToken={stakingType}
+                stakedToken={stakingType || 'EL'}
                 miningStart={isEl ? rewardInfo.beforeStakingPool : undefined}
                 miningEnd={isEl ? rewardInfo.afterStakingPool : undefined}
               />

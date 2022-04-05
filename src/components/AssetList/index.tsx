@@ -1,17 +1,18 @@
 import Skeleton from 'react-loading-skeleton';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import AssetItem from 'src/components/AssetList/AssetItem';
 import { IAssetBond } from 'src/core/types/reserveSubgraph';
 import LoanProduct from 'src/enums/LoanProduct';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import useNavigator from 'src/hooks/useNavigator';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 
 const AssetList: React.FC<{
   assetBondTokens?: IAssetBond[];
   prevRoute?: 'deposit' | 'governance';
 }> = ({ assetBondTokens, prevRoute }) => {
-  const history = useHistory();
+  const navigate = useNavigator();
   const { lng } = useParams<{ lng: string }>();
   const { value: mediaQuery } = useMediaQueryType();
 
@@ -29,7 +30,7 @@ const AssetList: React.FC<{
                   key={index}
                   abToken={abToken}
                   onClick={() => {
-                    history.push({
+                    navigate({
                       pathname: `/${lng}/portfolio/${abToken.id}`,
                       state: { route: prevRoute },
                     });

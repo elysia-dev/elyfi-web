@@ -7,7 +7,7 @@ import {
   lazy,
   Suspense,
 } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import TempAssets from 'src/assets/images/temp_assets.png';
 import wave from 'src/assets/images/wave_elyfi.png';
 import { parseTokenId } from 'src/utiles/parseTokenId';
@@ -25,6 +25,7 @@ import MediaQuery from 'src/enums/MediaQuery';
 import useReserveData from 'src/hooks/useReserveData';
 import { IAssetBond } from 'src/core/types/reserveSubgraph';
 import Skeleton from 'react-loading-skeleton';
+import useNavigator from 'src/hooks/useNavigator';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
@@ -66,7 +67,7 @@ const PortfolioDetail: FunctionComponent = () => {
   const tokenInfo = ReserveData.find(
     (reserve) => reserve.address === abToken?.reserve.id,
   );
-  const history = useHistory();
+  const navigate = useNavigator();
 
   const blockExplorerUrls =
     tokenInfo?.tokenizer === envs.tokenizer.busdTokenizerAddress
@@ -83,7 +84,7 @@ const PortfolioDetail: FunctionComponent = () => {
   useEffect(() => {
     if (!isLat(lat) || !isLng(lng)) return;
 
-    loadAddress(lat, lng, language);
+    loadAddress(lat, lng, language || LanguageType.EN);
   }, [lat, lng, language]);
 
   const loadContractImage = async (ipfs: string) => {
@@ -142,7 +143,7 @@ const PortfolioDetail: FunctionComponent = () => {
       <div className="portfolio">
         <div className="component__text-navigation">
           <p
-            onClick={() => history.push(`/${language}/deposit`)}
+            onClick={() => navigate(`/${language}/deposit`)}
             className="pointer">
             {t('dashboard.deposit')}
           </p>
