@@ -6,7 +6,7 @@ import TxContext from 'src/contexts/TxContext';
 import Fail from 'src/assets/images/status__fail.png';
 import Confirm from 'src/assets/images/status__confirm.png';
 import NewTab from 'src/assets/images/new_tab.png';
-import Copy from 'src/assets/images/copy.png';
+import Copy from 'src/assets/images/copy.svg';
 import envs from 'src/core/envs';
 import TxStatus from 'src/enums/TxStatus';
 import Davatar from '@davatar/react';
