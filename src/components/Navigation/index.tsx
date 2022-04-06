@@ -272,12 +272,8 @@ const Navigation: React.FunctionComponent<{
       <Link
         key={_index}
         to={{
-          pathname:
-            _data.type === NavigationType.Link
-              ? `/${lng + _data.location}`
-              : t(_data.location),
+          pathname: `/${lng + _data.location}`,
         }}
-        target={isExternalLink ? '_blank' : undefined}
         onMouseEnter={() => {
           setGlobalNavHover(_index + 1);
 
@@ -340,20 +336,12 @@ const Navigation: React.FunctionComponent<{
                 }}>
                 <div className="navigation__hamburger__lnb__sub-navigation__wrapper">
                   {data.subNavigation!.map((_data, index) => {
-                    return (
+                    return _data.type === NavigationType.Link ? (
                       <Link
                         key={`hamburgerBar_${index}`}
                         to={{
-                          pathname:
-                            _data.type === NavigationType.Link
-                              ? `/${lng + _data.location}`
-                              : t(_data.location),
+                          pathname: `/${lng + _data.location}`,
                         }}
-                        target={
-                          _data.type === NavigationType.Href
-                            ? '_blank'
-                            : undefined
-                        }
                         onClick={() => {
                           if (index === 0) {
                             reactGA.event({
@@ -367,6 +355,24 @@ const Navigation: React.FunctionComponent<{
                           <p>{t(_data.i18nKeyword).toUpperCase()}</p>
                         </div>
                       </Link>
+                    ) : (
+                      <a
+                        key={`hamburgerBar_${index}`}
+                        href={t(_data.location)}
+                        target="_blank"
+                        onClick={() => {
+                          if (index === 0) {
+                            reactGA.event({
+                              category: PageEventType.MoveToInternalPage,
+                              action: ButtonEventType.DepositButtonOnTop,
+                            });
+                          }
+                          setHamburgerBar(false);
+                        }}>
+                        <div>
+                          <p>{t(_data.i18nKeyword).toUpperCase()}</p>
+                        </div>
+                      </a>
                     );
                   })}
                 </div>
