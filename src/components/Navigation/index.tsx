@@ -7,13 +7,7 @@ import {
   lazy,
   Suspense,
 } from 'react';
-import {
-  Link,
-  Outlet,
-  useLocation,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
 import NavigationType from 'src/enums/NavigationType';
 import {
@@ -59,8 +53,6 @@ const Navigation: React.FunctionComponent<{
 }> = ({ hamburgerBar, setHamburgerBar }) => {
   // Hover Value
   const [globalNavHover, setGlobalNavHover] = useState(0);
-
-  const nav = useNavigate();
 
   // Type.LNB Dropdown Nav Seleted
   const [selectedLocalNavIndex, setSelectedLocalNavIndex] = useState(0);
