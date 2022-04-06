@@ -16,10 +16,8 @@ export const useENS = (address: string | null | undefined): ReturnType => {
   useEffect(() => {
     async function resolveENS() {
       try {
-        if (address && ethers.utils.isAddress(address) && !ensLoading) {
-          const provider = new providers.JsonRpcProvider(
-            process.env.REACT_APP_JSON_RPC,
-          );
+        if (address && ethers.utils.isAddress(address || '')) {
+          const provider = new providers.InfuraProvider('homestead');
           const getEnsName = await provider.lookupAddress(address);
           if (getEnsName) setENSName(getEnsName);
         }
