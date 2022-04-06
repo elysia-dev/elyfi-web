@@ -22,10 +22,10 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import CountUp from 'react-countup';
 import Skeleton from 'react-loading-skeleton';
-import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
-import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
 import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
+import { pricesFetcher } from 'src/clients/Coingecko';
+import priceMiddleware from 'src/middleware/priceMiddleware';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
@@ -73,11 +73,12 @@ const TokenDeposit: FunctionComponent<Props> = ({
       : reserve.id === envs.token.usdtAddress
       ? Token.USDT
       : Token.BUSD;
-  const { data: poolData, isValidating: loading } = useSWR(
-    envs.externalApiEndpoint.cachedUniswapV3URL,
-    poolDataFetcher,
+
+  const { data: priceData, isValidating: loading } = useSWR(
+    envs.externalApiEndpoint.coingackoURL,
+    pricesFetcher,
     {
-      use: [poolDataMiddleware],
+      use: [priceMiddleware],
     },
   );
 
@@ -141,11 +142,11 @@ const TokenDeposit: FunctionComponent<Props> = ({
                 </div>
                 <div>
                   <p>{t('dashboard.token_mining_apr')}</p>
-                  {!loading && poolData ? (
+                  {!loading && priceData ? (
                     <h2>
                       {toPercent(
                         calcMiningAPR(
-                          poolData.latestPrice,
+                          priceData.elfiPrice,
                           BigNumber.from(reserve.totalDeposit || 0),
                           reserveTokenData[token].decimals,
                         ),
@@ -178,11 +179,11 @@ const TokenDeposit: FunctionComponent<Props> = ({
               <div>
                 <p>{t('dashboard.token_mining_apr')}</p>
                 <h2>
-                  {!loading && poolData ? (
+                  {!loading && priceData ? (
                     <h2>
                       {toPercent(
                         calcMiningAPR(
-                          poolData.latestPrice,
+                          priceData?.elfiPrice,
                           BigNumber.from(reserve.totalDeposit || 0),
                           reserveTokenData[token].decimals,
                         ),
