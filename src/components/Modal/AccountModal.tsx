@@ -135,7 +135,6 @@ const AccountModal: React.FunctionComponent<{
                   getMainnetType === MainnetType.Ethereum
                     ? data.mainnet.Ethereum.address
                     : data.mainnet.BSC.address;
-                console.log(data);
                 return (
                   <div key={index}>
                     <div>
