@@ -2926,6 +2926,48 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
           }
         }
       }
+      &__add-tokens {
+        margin-top: 20px;
+        > h2 {
+          font-size: 12px;
+        }
+        > div {
+          padding: 10px;
+          border-radius: 10px;
+          margin-top: 10px;
+          > div {
+            border-radius: 10px;
+            padding: 7px 10px;
+            &:not(:last-child) {
+              margin-bottom: 10px;
+            }
+            > div {
+              > img {
+                width: 16px;
+                height: 16px;
+                &:first-child {
+                  margin-right: 8px;
+                }
+              }
+              > div {
+                > img {
+                  width: 16px;
+                  height: 16px;
+                  &:first-child {
+                    margin-right: 8px;
+                  }
+                }
+              }
+              > p {
+                font-size: 12px;
+              }
+            }
+            > p {
+              font-size: 12px;
+            }
+          }
+        }
+      }
     }
 
     &__staking {

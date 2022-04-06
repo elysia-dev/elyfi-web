@@ -6,7 +6,7 @@ import TxContext from 'src/contexts/TxContext';
 import Fail from 'src/assets/images/status__fail.png';
 import Confirm from 'src/assets/images/status__confirm.png';
 import NewTab from 'src/assets/images/new_tab.png';
-import Copy from 'src/assets/images/copy.png';
+import Copy from 'src/assets/images/copy.svg';
 import envs from 'src/core/envs';
 import TxStatus from 'src/enums/TxStatus';
 import Davatar from '@davatar/react';
@@ -17,6 +17,8 @@ import MainnetType from 'src/enums/MainnetType';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import { setWalletConnect } from 'src/utiles/connectWallet';
+import { ImportTokenData, IImportTokens } from 'src/core/data/importTokens';
+import MetamaskIcon from 'src/assets/images/metamask@2x.png';
 
 const AccountModal: React.FunctionComponent<{
   visible: boolean;
@@ -43,17 +45,20 @@ const AccountModal: React.FunctionComponent<{
     alert('Copied!!');
   };
 
-  const addELFIToken = async (data: string[]) => {
+  const addELFIToken = async (data: IImportTokens) => {
     try {
       await window.ethereum?.request({
         method: 'wallet_watchAsset',
         params: {
           type: 'ERC20',
           options: {
-            address: data[3],
-            symbol: data[1],
-            decimals: data[2],
-            image: data[0],
+            address:
+              getMainnetType === MainnetType.Ethereum
+                ? data.mainnet.Ethereum.address
+                : data.mainnet.BSC.address,
+            symbol: data.symbol,
+            decimals: data.decimals,
+            image: data.image,
           },
         },
       });
@@ -122,25 +127,50 @@ const AccountModal: React.FunctionComponent<{
               </div>
             </a>
           </div>
-          {/* <div className="modal__account__add-tokens">
-            <h2>
-              토큰 불러오기
-            </h2>
+          <div className="modal__account__add-tokens">
+            <h2>토큰 불러오기</h2>
             <div>
-              {
-                tokenDataArray.map((data, index) => {
-                  return (
-                    <div key={index} onClick={() => addELFIToken(data)}>
-                      <img src={data[0]} />
-                      <p>
-                        {data[1]}
-                      </p>
+              {ImportTokenData.map((data, index) => {
+                const currnetAddress =
+                  getMainnetType === MainnetType.Ethereum
+                    ? data.mainnet.Ethereum.address
+                    : data.mainnet.BSC.address;
+                console.log(data);
+                return (
+                  <div key={index}>
+                    <div>
+                      <img src={data.image} />
+                      <p>{data.symbol}</p>
                     </div>
-                  )
-                })
-              }
+                    <p>{`${currnetAddress.slice(
+                      0,
+                      8,
+                    )}....${currnetAddress.slice(-8)}`}</p>
+                    <div>
+                      <div>
+                        <img
+                          title="주소 복사하기"
+                          className="copy-image"
+                          src={Copy}
+                          onClick={() => AddressCopy(currnetAddress)}
+                          style={{ cursor: 'pointer' }}
+                        />
+                      </div>
+                      <div>
+                        <img
+                          title="메타마스크에 토큰 추가"
+                          className="metamask-image"
+                          src={MetamaskIcon}
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => addELFIToken(data)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          </div> */}
+          </div>
           <div className="modal__account__status">
             <p className="modal__header__name spoqa__bold">
               {t('transaction.activity__title')}

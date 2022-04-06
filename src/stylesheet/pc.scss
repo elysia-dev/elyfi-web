@@ -2427,6 +2427,45 @@ $device-width: 1190px;
             }
           }
         }
+        &__add-tokens {
+          margin-top: 25px;
+          > h2 {
+            font-size: 18px;
+          }
+          > div {
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 10px;
+            > div {
+              border-radius: 10px;
+              padding: 10px 15px;
+              &:not(:last-child) {
+                margin-bottom: 15px;
+              }
+              > div {
+                > img {
+                  width: 24px;
+                  height: 24px;
+                  &:first-child {
+                    margin-right: 12px;
+                  }
+                }
+                > div {
+                  > img {
+                    width: 24px;
+                    height: 24px;
+                    &:first-child {
+                      margin-right: 12px;
+                    }
+                  }
+                }
+              }
+              > p {
+                font-size: 15px;
+              }
+            }
+          }
+        }
       }
 
       &__staking {
