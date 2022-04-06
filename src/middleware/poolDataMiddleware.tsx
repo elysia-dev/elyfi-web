@@ -40,14 +40,6 @@ const poolDataMiddleware: Middleware =
               totalValueLockedToken1: parseFloat(
                 uniswapPoolData.ethPool.totalValueLockedToken1,
               ),
-              stakedToken0: uniswapPoolData.stakedEthPositions.reduce(
-                (sum: any, cur: any) => sum + parseFloat(cur.depositedToken0),
-                0,
-              ),
-              stakedToken1: uniswapPoolData.stakedEthPositions.reduce(
-                (sum: any, cur: any) => sum + parseFloat(cur.depositedToken1),
-                0,
-              ),
             },
             daiPool: {
               liquidity: uniswapPoolData.daiPool.liquidity,
@@ -56,14 +48,6 @@ const poolDataMiddleware: Middleware =
               ),
               totalValueLockedToken1: parseFloat(
                 uniswapPoolData.daiPool.totalValueLockedToken1,
-              ),
-              stakedToken0: uniswapPoolData.stakedDaiPositions.reduce(
-                (sum: any, cur: any) => sum + parseFloat(cur.depositedToken0),
-                0,
-              ),
-              stakedToken1: uniswapPoolData.stakedDaiPositions.reduce(
-                (sum: any, cur: any) => sum + parseFloat(cur.depositedToken1),
-                0,
               ),
             },
           });
