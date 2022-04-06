@@ -13,11 +13,12 @@ const TitleButton: FunctionComponent<Props> = (props) => {
   const { buttonName, link, linkName, linkImage } = props;
 
   return (
-    <div className="staking__title__button">
-      <a
-        href={link}
-        target="_blank"
-        rel="noopener noreferrer"
+    <a
+      className="staking__title__button"
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer">
+      <div
         style={{
           display: 'flex',
           justifyContent: 'center',
@@ -27,8 +28,8 @@ const TitleButton: FunctionComponent<Props> = (props) => {
           {linkImage && <LazyImage src={linkImage} name={linkName || ''} />}
         </Suspense>
         <p>{buttonName}</p>
-      </a>
-    </div>
+      </div>
+    </a>
   );
 };
 

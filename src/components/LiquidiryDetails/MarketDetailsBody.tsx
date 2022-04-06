@@ -183,11 +183,31 @@ const MarketDetailsBody: React.FunctionComponent<{
             <h2>{totalDeposit}</h2>
           </div>
           <div className="detail__data-wrapper__info__circle-wrapper">
-            <Circle
-              progress={Math.round(100 - utilization)}
-              color={color || '#333333'}
-              subColor={subColor || '#888888'}
-            />
+            <div className="detail__data-wrapper__info__circle--moblie">
+              {utilization !== 0 && (
+                <div
+                  className="main-color"
+                  style={{
+                    backgroundColor: color || '#333',
+                    flex: utilization,
+                    borderRadius:
+                      utilization !== 100 ? '15px 0px 0px 15px' : 15,
+                  }}>
+                  <p>{utilization}%</p>
+                </div>
+              )}
+              {utilization !== 100 && (
+                <div
+                  className="sub-color"
+                  style={{
+                    backgroundColor: subColor || '#888',
+                    flex: Math.round(100 - utilization),
+                    borderRadius: utilization !== 0 ? '0px 15px 15px 0px' : 15,
+                  }}>
+                  <p>{Math.round(100 - utilization)}%</p>
+                </div>
+              )}
+            </div>
           </div>
           <div>
             <div className="detail__data-wrapper__info__deposit">
