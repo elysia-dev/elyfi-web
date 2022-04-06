@@ -1,27 +1,10 @@
-import {
-  FunctionComponent,
-  lazy,
-  Suspense,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { FunctionComponent, lazy, Suspense, useEffect, useState } from 'react';
 import { toCompactForBignumber, toPercent } from 'src/utiles/formatters';
 import { useTranslation } from 'react-i18next';
-import GoogleMapReact from 'google-map-react';
-
-import isLat from 'src/utiles/isLat';
-import isLng from 'src/utiles/isLng';
-
-import { parseTokenId } from 'src/utiles/parseTokenId';
 import Slate from 'src/clients/Slate';
 import ReserveData from 'src/core/data/reserves';
 import { IAssetBond } from 'src/core/types/reserveSubgraph';
-import Marker from 'src/components/AssetList/Marker';
 import Skeleton from 'react-loading-skeleton';
-
-const defaultLat = 37.5172;
-const defaultLng = 127.0473;
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
@@ -31,12 +14,6 @@ const AssetItem: FunctionComponent<{
   style?: React.CSSProperties;
 }> = ({ abToken, onClick, style }) => {
   const { t } = useTranslation();
-  const parsedTokenId = useMemo(() => {
-    return parseTokenId(abToken.id);
-  }, [abToken]);
-
-  const lat = parsedTokenId.collateralLatitude / 100000;
-  const lng = parsedTokenId.collateralLongitude / 100000;
   const [image, setImage] = useState('');
   const tokenInfo = ReserveData.find(
     (reserve) => reserve.address === abToken?.reserve.id,
@@ -70,21 +47,7 @@ const AssetItem: FunctionComponent<{
     <div className="component__loan-list" style={style} onClick={onClick}>
       <div className="component__loan-list__image">
         <Suspense fallback={<Skeleton width={'100%'} height={'100%'} />}>
-          {image ? (
-            <LazyImage src={image} name={`csp_image_${abToken.id}`} />
-          ) : (
-            <GoogleMapReact
-              bootstrapURLKeys={{
-                key: process.env.REACT_APP_GOOGLE_MAP_API_KEY!,
-              }}
-              defaultCenter={{
-                lat: isLat(lat) ? lat : defaultLat,
-                lng: isLng(lng) ? lng : defaultLng,
-              }}
-              defaultZoom={15}>
-              <Marker lat={lat} lng={lng} />
-            </GoogleMapReact>
-          )}
+          <LazyImage src={image} name={`csp_image`} />
         </Suspense>
       </div>
       <div className="component__loan-list__data">
