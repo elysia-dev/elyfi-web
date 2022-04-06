@@ -7,7 +7,13 @@ import {
   lazy,
   Suspense,
 } from 'react';
-import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
 import NavigationType from 'src/enums/NavigationType';
 import {
@@ -53,6 +59,8 @@ const Navigation: React.FunctionComponent<{
 }> = ({ hamburgerBar, setHamburgerBar }) => {
   // Hover Value
   const [globalNavHover, setGlobalNavHover] = useState(0);
+
+  const nav = useNavigate();
 
   // Type.LNB Dropdown Nav Seleted
   const [selectedLocalNavIndex, setSelectedLocalNavIndex] = useState(0);
@@ -130,26 +138,44 @@ const Navigation: React.FunctionComponent<{
     index: number,
   ) => {
     return (
-      <Link
-        key={`nav_${index}`}
-        to={{
-          pathname: !isExternalLink
-            ? `/${lng + _data.location}`
-            : t(_data.location),
-        }}
-        target={isExternalLink ? '_blank' : undefined}
-        onMouseEnter={() => {
-          setSelectedLocalNavIndex(0);
-        }}
-        onClick={() => {
-          initialNavigationState();
-        }}
-        className="navigation__bottom__link">
-        <div className="navigation__link">
-          <p>{t(_data.i18nKeyword).toUpperCase()}</p>
-          {isExternalLink && <img src={ExternalLinkImage} />}
-        </div>
-      </Link>
+      <>
+        {isExternalLink ? (
+          <a
+            key={`nav_${index}`}
+            href={t(_data.location)}
+            target="_blank"
+            onMouseEnter={() => {
+              setSelectedLocalNavIndex(0);
+            }}
+            onClick={() => {
+              initialNavigationState();
+            }}
+            className="navigation__bottom__link">
+            <div className="navigation__link">
+              <p>{t(_data.i18nKeyword).toUpperCase()}</p>
+              <img src={ExternalLinkImage} />
+            </div>
+          </a>
+        ) : (
+          <Link
+            key={`nav_${index}`}
+            to={{
+              pathname: `/${lng + _data.location}`,
+            }}
+            target={isExternalLink ? '_blank' : undefined}
+            onMouseEnter={() => {
+              setSelectedLocalNavIndex(0);
+            }}
+            onClick={() => {
+              initialNavigationState();
+            }}
+            className="navigation__bottom__link">
+            <div className="navigation__link">
+              <p>{t(_data.i18nKeyword).toUpperCase()}</p>
+            </div>
+          </Link>
+        )}
+      </>
     );
   };
 
