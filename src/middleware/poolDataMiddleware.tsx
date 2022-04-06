@@ -1,4 +1,4 @@
-import { BigNumber } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 import { useEffect, useRef, useState } from 'react';
 import { Middleware, SWRHook } from 'swr';
 
@@ -33,7 +33,10 @@ const poolDataMiddleware: Middleware =
             loading: true,
             error: false,
             ethPool: {
-              liquidity: uniswapPoolData.ethPool.liquidity,
+              liquidity: uniswapPoolData.ethPositions.reduce(
+                (prev: BigNumber, current: any) => prev.add(current.liquidity),
+                constants.Zero,
+              ),
               totalValueLockedToken0: parseFloat(
                 uniswapPoolData.ethPool.totalValueLockedToken0,
               ),
@@ -42,7 +45,10 @@ const poolDataMiddleware: Middleware =
               ),
             },
             daiPool: {
-              liquidity: uniswapPoolData.daiPool.liquidity,
+              liquidity: uniswapPoolData.daiPositions.reduce(
+                (prev: BigNumber, current: any) => prev.add(current.liquidity),
+                constants.Zero,
+              ),
               totalValueLockedToken0: parseFloat(
                 uniswapPoolData.daiPool.totalValueLockedToken0,
               ),
