@@ -26,6 +26,7 @@ import useReserveData from 'src/hooks/useReserveData';
 import { IAssetBond } from 'src/core/types/reserveSubgraph';
 import Skeleton from 'react-loading-skeleton';
 import useNavigator from 'src/hooks/useNavigator';
+import UnKnownImage from 'src/assets/images/undefined_image.svg';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
@@ -196,7 +197,7 @@ const PortfolioDetail: FunctionComponent = () => {
                         src={contractImage[3]?.link || TempAssets}
                         alt="Asset Image"
                         onError={(e: any) => {
-                          e.target.src = TempAssets;
+                          e.target.src = UnKnownImage;
                         }}
                       />
                     </a>
