@@ -188,13 +188,16 @@ const PortfolioDetail: FunctionComponent = () => {
                       style={{
                         cursor: 'pointer',
                       }}>
-                      <LazyImage
+                      <img
                         style={{
                           width: 538.5,
                           height: 526,
                         }}
                         src={contractImage[3]?.link || TempAssets}
-                        name={contractImage[3]?.link || TempAssets}
+                        alt="Asset Image"
+                        onError={(e: any) => {
+                          e.target.src = TempAssets;
+                        }}
                       />
                     </a>
                   </Suspense>

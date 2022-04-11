@@ -6,12 +6,11 @@ import ButtonEventType from 'src/enums/ButtonEventType';
 import { useTranslation } from 'react-i18next';
 import { TopicList } from 'src/clients/OffChainTopic';
 import { utils } from 'ethers';
+import UnKnownImage from 'src/assets/images/undefined_image.svg';
 
 import TempAssets from 'src/assets/images/governance/temp_assets.svg';
 import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 import MainnetType from 'src/enums/MainnetType';
-
-const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
 interface Props {
   data: IProposals;
@@ -50,13 +49,16 @@ const OnChainContainer: React.FC<Props> = ({
       }}>
       <Suspense fallback={<FallbackSkeleton width={'100%'} height={300} />}>
         <div>
-          <LazyImage
-            name="Asset-image"
+          <img
             src={
               offChainNapData && offChainData?.length !== 0
                 ? 'https://' + offChainData![0].images
                 : TempAssets
             }
+            alt="vote image"
+            onError={(e: any) => {
+              e.target.src = UnKnownImage;
+            }}
           />
         </div>
         <div>
