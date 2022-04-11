@@ -126,7 +126,7 @@ const TokenTable: React.FC<Props> = ({
           className="deposit__table__header"
           style={{ cursor: 'pointer' }}
           onClick={() => {
-            navigate(`/${lng}/deposits/${balance.tokenName}`);
+            navigate(`/${lng}/deposit/${balance.tokenName}`);
           }}>
           <div className="deposit__table__header__token-info">
             <LazyImage src={tokenInfo.image} name="Token icon" />

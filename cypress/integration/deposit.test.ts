@@ -14,7 +14,7 @@ describe('Deposit page', () => {
   });
   it('BUSD detail page', () => {
     cy.get('.deposit__table__header').click();
-    cy.url().should('include', '/ko/deposits/BUSD');
+    cy.url().should('include', '/ko/deposit/BUSD');
     cy.get('.component__text-navigation > p.pointer').click();
     cy.url().should('include', '/ko/deposit');
   });
@@ -32,7 +32,7 @@ describe('Deposit page', () => {
     cy.get(
       '.deposit__table__wrapper > div:nth-child(1) > div.deposit__table__header',
     ).click();
-    cy.url().should('include', '/ko/deposits/DAI');
+    cy.url().should('include', '/ko/deposit/DAI');
     cy.get('.component__text-navigation > p.pointer').click();
     cy.url().should('include', '/ko/deposit');
   });
@@ -40,7 +40,7 @@ describe('Deposit page', () => {
     cy.get(
       '.deposit__table__wrapper > div:nth-child(2) > div.deposit__table__header',
     ).click();
-    cy.url().should('include', '/ko/deposits/USDT');
+    cy.url().should('include', '/ko/deposit/USDT');
     cy.get('.component__text-navigation > p.pointer').click();
     cy.url().should('include', '/ko/deposit');
   });
