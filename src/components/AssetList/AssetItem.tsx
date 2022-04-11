@@ -1,7 +1,7 @@
 import { FunctionComponent, lazy, Suspense, useEffect, useState } from 'react';
 import { toCompactForBignumber, toPercent } from 'src/utiles/formatters';
 import { useTranslation } from 'react-i18next';
-import Slate from 'src/clients/Slate';
+import Slate, { baseUrl } from 'src/clients/Slate';
 import ReserveData from 'src/core/data/reserves';
 import { IAssetBond } from 'src/core/types/reserveSubgraph';
 import Skeleton from 'react-loading-skeleton';
@@ -33,7 +33,7 @@ const AssetItem: FunctionComponent<{
     }
     try {
       const response = await Slate.fetctABTokenIpfs(abToken.ipfsHash || '');
-      setImage(response.data.images[0]?.link);
+      setImage(`${baseUrl}/${response.data.images[0]?.hash}`)
     } catch (error) {
       console.error(error);
     }
