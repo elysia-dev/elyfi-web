@@ -6,7 +6,7 @@ import ReserveData from 'src/core/data/reserves';
 import { IAssetBond } from 'src/core/types/reserveSubgraph';
 import Skeleton from 'react-loading-skeleton';
 
-const LazyImage = lazy(() => import('src/utiles/lazyImage'));
+const UndefinedImage = lazy(() => import('src/utiles/undefinedImage'));
 
 const AssetItem: FunctionComponent<{
   abToken: IAssetBond;
@@ -33,7 +33,7 @@ const AssetItem: FunctionComponent<{
     }
     try {
       const response = await Slate.fetctABTokenIpfs(abToken.ipfsHash || '');
-      setImage(`${baseUrl}/${response.data.images[0]?.hash}`)
+      setImage(`${baseUrl}/${response.data.images[0]?.hash}`);
     } catch (error) {
       console.error(error);
     }
@@ -47,7 +47,7 @@ const AssetItem: FunctionComponent<{
     <div className="component__loan-list" style={style} onClick={onClick}>
       <div className="component__loan-list__image">
         <Suspense fallback={<Skeleton width={'100%'} height={'100%'} />}>
-          <LazyImage src={image} name={`csp_image`} />
+          <UndefinedImage image={image} />
         </Suspense>
       </div>
       <div className="component__loan-list__data">

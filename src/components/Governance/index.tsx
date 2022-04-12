@@ -56,10 +56,14 @@ const Governance = (): JSX.Element => {
   const { value: mediaQuery } = useMediaQueryType();
   const defaultShowingLoanData = mediaQuery === MediaQuery.Mobile ? 8 : 9;
   const [isAssetList, setIsAssetList] = useState(false);
-  const assetBondTokensBackedByEstate = assetBondTokens.filter((product) => {
-    const parsedId = parseTokenId(product.id);
-    return CollateralCategory.Others !== parsedId.collateralCategory;
-  });
+  const assetBondTokensBackedByEstate = assetBondTokens
+    .filter((product) => {
+      const parsedId = parseTokenId(product.id);
+      return CollateralCategory.Others !== parsedId.collateralCategory;
+    })
+    .sort((a, b) => {
+      return b.loanStartTimestamp! - a.loanStartTimestamp! >= 0 ? 1 : -1;
+    });
 
   const { data: onChainData, isValidating: onChainLoading } = useSWR(
     onChainQuery,
@@ -282,19 +286,10 @@ const Governance = (): JSX.Element => {
                   <AssetList
                     prevRoute={'governance'}
                     assetBondTokens={
-                      /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
-                      [
-                        ...((assetBondTokensBackedByEstate as IAssetBond[]) ||
-                          []),
-                      ]
-                        .slice(0, pageNumber * defaultShowingLoanData)
-                        .sort((a, b) => {
-                          return b.loanStartTimestamp! -
-                            a.loanStartTimestamp! >=
-                            0
-                            ? 1
-                            : -1;
-                        }) || []
+                      [...(assetBondTokensBackedByEstate || [])].slice(
+                        0,
+                        pageNumber * defaultShowingLoanData,
+                      ) || []
                     }
                   />
                   {assetBondTokensBackedByEstate &&

@@ -33,13 +33,17 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
     ),
   );
 
-  const assetBondTokensBackedByEstate = assetBondTokens.filter((product) => {
-    const parsedId = parseTokenId(product.id);
-    return (
-      CollateralCategory.Others !== parsedId.collateralCategory &&
-      product.reserve.id === id
-    );
-  });
+  const assetBondTokensBackedByEstate = assetBondTokens
+    .filter((product) => {
+      const parsedId = parseTokenId(product.id);
+      return (
+        CollateralCategory.Others !== parsedId.collateralCategory &&
+        product.reserve.id === id
+      );
+    })
+    .sort((a, b) => {
+      return b.loanStartTimestamp! - a.loanStartTimestamp! >= 0 ? 1 : -1;
+    });
 
   const viewMoreHandler = useCallback(() => {
     setPageNumber((prev) => prev + 1);
@@ -65,21 +69,10 @@ const Loan: FunctionComponent<{ id: string }> = ({ id }) => {
             <AssetList
               assetBondTokens={
                 /* Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다. */
-                [...(assetBondTokensBackedByEstate || [])]
-                  .slice(0, pageNumber * defaultShowingLoanData)
-                  .sort((a, b) => {
-                    if (sortMode) {
-                      return BigNumber.from(b.principal).gte(
-                        BigNumber.from(a.principal),
-                      )
-                        ? 1
-                        : -1;
-                    } else {
-                      return b.loanStartTimestamp! - a.loanStartTimestamp! >= 0
-                        ? 1
-                        : -1;
-                    }
-                  }) || []
+                [...(assetBondTokensBackedByEstate || [])].slice(
+                  0,
+                  pageNumber * defaultShowingLoanData,
+                ) || []
               }
             />
             {assetBondTokensBackedByEstate.length &&

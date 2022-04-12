@@ -18,7 +18,7 @@ export const reserveQuery = `
     totalDeposit
     lTokenUserBalanceCount
     dTokenUserBalanceCount
-    deposit {
+    deposit(first: 1000) {
       id
     }
     incentivePool {

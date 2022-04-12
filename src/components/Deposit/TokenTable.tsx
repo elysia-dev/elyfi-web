@@ -79,10 +79,14 @@ const TokenTable: React.FC<Props> = ({
     },
   );
   const assetBondTokensBackedByEstate = reserveData?.id
-    ? reserveData.assetBondTokens.filter((ab) => {
-        const parsedId = parseTokenId(ab.id);
-        return CollateralCategory.Others !== parsedId.collateralCategory;
-      })
+    ? reserveData.assetBondTokens
+        .filter((ab) => {
+          const parsedId = parseTokenId(ab.id);
+          return CollateralCategory.Others !== parsedId.collateralCategory;
+        })
+        .sort((a, b) => {
+          return b.loanStartTimestamp! - a.loanStartTimestamp! >= 0 ? 1 : -1;
+        })
     : undefined;
 
   const isWrongMainnet = isWrongNetwork(getMainnetType, currentChain?.name);
@@ -126,7 +130,7 @@ const TokenTable: React.FC<Props> = ({
           className="deposit__table__header"
           style={{ cursor: 'pointer' }}
           onClick={() => {
-            navigate(`/${lng}/deposits/${balance.tokenName}`);
+            navigate(`/${lng}/deposit/${balance.tokenName}`);
           }}>
           <div className="deposit__table__header__token-info">
             <LazyImage src={tokenInfo.image} name="Token icon" />
@@ -341,15 +345,10 @@ const TokenTable: React.FC<Props> = ({
                     assetBondTokens={
                       // Tricky : javascript의 sort는 mutuable이라 아래와 같이 복사 후 진행해야한다.
                       assetBondTokensBackedByEstate
-                        ? [...assetBondTokensBackedByEstate]
-                            .sort((a, b) => {
-                              return b.loanStartTimestamp! -
-                                a.loanStartTimestamp! >=
-                                0
-                                ? 1
-                                : -1;
-                            })
-                            .slice(0, mediaQuery === MediaQuery.PC ? 3 : 2)
+                        ? [...assetBondTokensBackedByEstate].slice(
+                            0,
+                            mediaQuery === MediaQuery.PC ? 3 : 2,
+                          )
                         : undefined
                     }
                   />

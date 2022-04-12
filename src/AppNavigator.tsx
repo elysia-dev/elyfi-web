@@ -139,6 +139,16 @@ const AppNavigator: React.FC = () => {
               </Suspense>
             }
           />
+          <Route path="deposit">
+            <Route
+              path=":id"
+              element={
+                <Suspense fallback={nullFallbackArea()}>
+                  <MarketDetail />
+                </Suspense>
+              }
+            />
+          </Route>
           <Route
             path="governance"
             element={
@@ -163,16 +173,6 @@ const AppNavigator: React.FC = () => {
               element={
                 <Suspense fallback={nullFallbackArea()}>
                   <RewardPlan />
-                </Suspense>
-              }
-            />
-          </Route>
-          <Route path="deposits">
-            <Route
-              path=":id"
-              element={
-                <Suspense fallback={nullFallbackArea()}>
-                  <MarketDetail />
                 </Suspense>
               }
             />

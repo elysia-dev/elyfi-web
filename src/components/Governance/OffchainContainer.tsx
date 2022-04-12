@@ -5,8 +5,7 @@ import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
 import { useTranslation } from 'react-i18next';
 import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
-
-const LazyImage = lazy(() => import('src/utiles/lazyImage'));
+import UnKnownImage from 'src/assets/images/undefined_image.svg';
 
 interface Props {
   data: INapData;
@@ -27,7 +26,13 @@ const OffChainContainer: React.FC<Props> = ({ data }) => {
       }}>
       <Suspense fallback={<FallbackSkeleton width={'100%'} height={300} />}>
         <div>
-          <LazyImage src={`https://${data.images}`} name="container-images" />
+          <img
+            src={`https://${data.images}`}
+            alt="vote image"
+            onError={(e: any) => {
+              e.target.src = UnKnownImage;
+            }}
+          />
         </div>
         <div>
           <div className="governance__asset__nap">
