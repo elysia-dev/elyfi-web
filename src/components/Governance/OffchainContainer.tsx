@@ -13,7 +13,7 @@ interface Props {
 
 const OffChainContainer: React.FC<Props> = ({ data }) => {
   const { t } = useTranslation();
-  console.log(data.images);
+
   return (
     <div
       className="governance__validation__assets governance__asset"
