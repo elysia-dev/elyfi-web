@@ -309,8 +309,9 @@
       "current_round_null": "There is no current rounds in progress.",
       "staking__in_progress": "<strong>{{ nth }}</strong> round In Progress",
       "el": {
-        "staking__content": "Stake EL tokens and get reward tokens, ELFI!",
-        "staking__content--button": "Go to buy EL tokens"
+        "title": "EL 스테이킹",
+        "content": "<strong>2022.04.18 KST</strong> 부터 EL 스테이킹 페이지를 엘리시아 사이트로 이전했습니다.\nEL 스테이킹을 이용하실 분들은 다음 링크를 클릭하시면, 엘리시아 사이트로 이동하실 수 있습니다.",
+        "button": "EL 스테이킹 하러가기"
       },
       "elfi": {
         "staking__content": "Stake ELFI tokens and get governance tokens(ELFI) and voting rights!\nELFI holders can participate in decentralized governance(DAO) by staking their ELFI.",
