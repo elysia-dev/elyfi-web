@@ -15,6 +15,20 @@ export const poolAddress = (mainnet: string, stakedToken: string): string => {
   }
 };
 
+export const poolAddressV2 = (mainnet: string, stakedToken: string): string => {
+  switch (stakedToken) {
+    case Token.ELFI:
+      if (mainnet === 'BSC') {
+        return envs.stakingV2MoneyPool.elfiStaking; // elfi only... yet
+      }
+      return envs.stakingV2MoneyPool.elfiStaking;
+    case Token.UNI:
+      return envs.stakingV2MoneyPool.lpStaking;
+    default:
+      return envs.stakingV2MoneyPool.elfiStaking;
+  }
+};
+
 export const stakingRewardTokenAddress = (
   mainnet: string,
   stakedToken: string,
