@@ -10,16 +10,12 @@ type StakedTokenProps = {
   daiElfiStakedLiquidity: BigNumber;
   expectedReward: ExpectedRewardTypes[];
   totalExpectedReward: {
-    beforeTotalElfi: number;
     totalElfi: number;
-    beforeTotalEth: number;
     totalEth: number;
-    beforeTotalDai: number;
     totalDai: number;
   };
   isError: string;
   round: number;
-  currentRound: number;
   isLoading: boolean;
 };
 
