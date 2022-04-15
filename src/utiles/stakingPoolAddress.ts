@@ -19,7 +19,7 @@ export const poolAddressV2 = (mainnet: string, stakedToken: string): string => {
   switch (stakedToken) {
     case Token.ELFI:
       if (mainnet === 'BSC') {
-        return envs.stakingV2MoneyPool.elfiStaking; // elfi only... yet
+        return envs.stakingV2MoneyPool.elfiBscStaking;
       }
       return envs.stakingV2MoneyPool.elfiStaking;
     case Token.UNI:
