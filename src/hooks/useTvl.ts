@@ -2,7 +2,6 @@ import { BigNumber, constants, providers, utils } from 'ethers';
 import { formatUnits, formatEther } from 'ethers/lib/utils';
 import { useEffect, useMemo, useState } from 'react';
 import useSWR from 'swr';
-import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import envs from 'src/core/envs';
 import ReserveData from 'src/core/data/reserves';
 import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
@@ -122,10 +121,6 @@ const useTvl = (): { value: number; loading: boolean } => {
   }, [state, priceData, loading, poolData, reserveState]);
 
   const loadBalances = async () => {
-    const provider = new providers.JsonRpcProvider(
-      'https://eth-mainnet.alchemyapi.io/v2/aqm3Z2P6_2fctCSsHEBqo9Csz-ydQH_0',
-    );
-
     try {
       setState({
         v2LPPoolElfi: v2DaiLPPoolElfi.add(v2EthLPPoolElfi),
@@ -142,7 +137,6 @@ const useTvl = (): { value: number; loading: boolean } => {
   };
 
   useEffect(() => {
-    console.log(v2DaiLPPoolElfi, v2EthLPPoolElfi, v2LPPoolDai, v2LPPoolEth);
     if (
       reserveLoading ||
       !elStakingBalance ||
