@@ -79,7 +79,6 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
   );
 
   const [modalType, setModalType] = useState('');
-  const [isUnstaking, setIsUnstaking] = useState(true);
   const modalVisible = useCallback(
     (type: StakingModalType) => {
       return modalType === type;
@@ -88,9 +87,7 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
   );
 
   const [transactionModal, setTransactionModal] = useState(false);
-
   const [transactionWait, setTransactionWait] = useState<boolean>(false);
-
   const [modalValue, setModalValue] = useState(constants.Zero);
 
   const { roundData, loading, error, fetchRoundData } =
@@ -136,11 +133,8 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
     if (error || loading) return;
 
     const interval = setInterval(() => {
-      // FIXME
-      // currentRound is not return 4 when there is no round
-      // For temp usage, use round 4 data
-      // if (!roundData[2]) return;
       if (!account) return;
+
       setExpectedReward({
         before: expectedReward.value.isZero()
           ? roundData[0].accountReward
@@ -237,7 +231,6 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
               transactionWait={transactionWait}
               setTransactionWait={() => setTransactionWait(true)}
               disableTransactionWait={() => setTransactionWait(false)}
-              isUnstaking={isUnstaking}
             />
           </>
         )}

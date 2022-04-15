@@ -48,3 +48,15 @@ export const stakingRewardTokenAddress = (
       return envs.token.bscElfiAddress;
   }
 };
+
+export const stakingRewardTokenAddressV2 = (
+  mainnet: string,
+  currentChain?: string,
+): string => {
+  if (mainnet === 'BSC') {
+    return currentChain === 'BSC Test'
+      ? envs.token.testBscElfiAddress
+      : envs.token.bscElfiAddress;
+  }
+  return envs.token.governanceAddress;
+};

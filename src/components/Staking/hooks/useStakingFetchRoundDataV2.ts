@@ -2,6 +2,7 @@ import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants } from 'ethers';
 import useSWR from 'swr';
 import envs from 'src/core/envs';
+import moment from 'moment';
 import { useContext, useEffect, useState } from 'react';
 import { pricesFetcher, PriceType } from 'src/clients/Coingecko';
 import MainnetContext from 'src/contexts/MainnetContext';
@@ -61,6 +62,7 @@ const useStakingFetchRoundDataV2 = (
             rewardToken === Token.ELFI ? priceData.elfiPrice : 1,
           )
         : poolApr,
+      loadedAt: moment(),
     };
   };
 

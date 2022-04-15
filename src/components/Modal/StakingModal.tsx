@@ -57,7 +57,7 @@ const StakingModal: React.FunctionComponent<{
 }) => {
   const { t, i18n } = useTranslation();
   const { account, chainId } = useWeb3React();
-  const [stakingMode, setStakingMode] = useState<boolean>(true);
+  const [stakingMode, setStakingMode] = useState<boolean>(false);
   const [amount, setAmount] = useState({ value: '', max: false });
   const current = moment();
   const { setTransaction, failTransaction, txStatus } = useContext(TxContext);
@@ -109,11 +109,6 @@ const StakingModal: React.FunctionComponent<{
           title={stakedToken}
           image={ELFI}
           onClose={() => closeHandler()}
-        />
-        <ModalConverter
-          handlerProps={stakingMode}
-          setState={setStakingMode}
-          title={[t('staking.staking'), t('staking.unstaking')]}
         />
         {transactionWait ||
         allowanceLoading ||
