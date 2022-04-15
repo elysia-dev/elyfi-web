@@ -33,6 +33,7 @@ import {
   toPercentWithoutSign,
 } from 'src/utiles/formatters';
 import StakingModalType from 'src/enums/StakingModalType';
+import Skeleton from 'react-loading-skeleton';
 import LegacyStakingButton from '../LegacyStaking/LegacyStakingButton';
 import useStakingRoundDataV2 from '../Staking/hooks/useStakingRoundDataV2';
 import useStakingFetchRoundDataV2 from '../Staking/hooks/useStakingFetchRoundDataV2';
@@ -247,135 +248,139 @@ function LPStaking(): JSX.Element {
         </div>
         <div ref={headerRef} />
         {getMainnetType === MainnetType.Ethereum ? (
-          <section className="staking__v2__container">
-            <div className="staking__v2__header">
-              <div>
+          loading ? (
+            <Skeleton width={'100%'} height={600} />
+          ) : (
+            <section className="staking__v2__container">
+              <div className="staking__v2__header">
                 <div>
-                  <img src={elfi} />
-                  <img src={eth} />
-                </div>
-                <h2>ELFI-ETH LP</h2>
-              </div>
-              <LegacyStakingButton stakingType={'LP'} isStaking={true} />
-            </div>
-            <div className="staking__v2__content">
-              <div>
-                <div>
-                  <p>APR</p>
-                  <h2 className="percent">
-                    {roundData[0]?.apr.eq(constants.MaxUint256)
-                      ? '-'
-                      : toPercentWithoutSign(roundData[0]?.apr || 0)}
-                  </h2>
-                </div>
-                <div>
-                  <p>총 스테이킹 수량</p>
-                  <h2>
-                    {parseFloat(formatEther(totalPrincipal))} {rewardToken}
-                  </h2>
-                </div>
-              </div>
-
-              <div>
-                <p>
-                  Uniswap V2에 있는 ELFI-ETH 풀에 유동성을 제공함으로써 ELFI-ETH
-                  LP 토큰을 받으실 수 있습니다!
-                </p>
-                <div>
-                  <p>LP Token 받기</p>
-                </div>
-              </div>
-            </div>
-
-            <section className="staking__round__remaining-data current">
-              <div className="staking__round__remaining-data__body">
-                <>
                   <div>
-                    <h2>{t('staking.staking_amount')}</h2>
-                    <div>
-                      <h2>
-                        {`${formatCommaSmall(
-                          roundData[0]?.accountPrincipal || '0',
-                        )}`}
-                        <span className="token-amount bold">
-                          {' ' + Token.UNI}
-                        </span>
-                      </h2>
-                      <div
-                        className={`staking__round__button ${
-                          !account || isWrongMainnet ? ' disable' : ''
-                        }`}
-                        onClick={(e) => {
-                          if (!account || isWrongMainnet) {
-                            return;
-                          }
-                          console.log(e);
-                          // ReactGA.modalview(
-                          //   stakedToken +
-                          //     ModalViewType.StakingOrUnstakingModal,
-                          // );
-                          setModalValue(roundData[0].accountPrincipal);
-                          setModalType(StakingModalType.Staking);
-                        }}>
-                        <p>{t('staking.staking_btn')}</p>
-                      </div>
-                    </div>
+                    <img src={elfi} />
+                    <img src={eth} />
+                  </div>
+                  <h2>ELFI-ETH LP</h2>
+                </div>
+                <LegacyStakingButton stakingType={'LP'} isStaking={true} />
+              </div>
+              <div className="staking__v2__content">
+                <div>
+                  <div>
+                    <p>APR</p>
+                    <h2 className="percent">
+                      {roundData[0]?.apr.eq(constants.MaxUint256)
+                        ? '-'
+                        : toPercentWithoutSign(roundData[0].apr)}
+                    </h2>
                   </div>
                   <div>
-                    <h2>{t('staking.reward_amount')}</h2>
-                    <div>
-                      <h2>
-                        {expectedReward.before.isZero() || !account ? (
-                          '-'
-                        ) : (
-                          <CountUp
-                            start={parseFloat(
-                              formatEther(expectedReward.before),
-                            )}
-                            end={parseFloat(
-                              formatEther(
-                                expectedReward.before.isZero()
-                                  ? roundData[0].accountReward
-                                  : expectedReward.value,
-                              ),
-                            )}
-                            formattingFn={(number) => {
-                              return formatSixFracionDigit(number);
-                            }}
-                            decimals={6}
-                            duration={1}
-                          />
-                        )}
-                        <span className="token-amount bold">
-                          {' ' + rewardToken}
-                        </span>
-                      </h2>
-                      <div
-                        className={`staking__round__button ${
-                          expectedReward.value.isZero() || !account
-                            ? ' disable'
-                            : ''
-                        }`}
-                        onClick={(e) => {
-                          if (expectedReward.value.isZero() || !account) {
-                            return;
-                          }
-                          console.log(e);
+                    <p>총 스테이킹 수량</p>
+                    <h2>
+                      {parseFloat(formatEther(totalPrincipal))} {rewardToken}
+                    </h2>
+                  </div>
+                </div>
 
-                          // ReactGA.modalview(
-                          //   stakedToken + ModalViewType.StakingIncentiveModal,
-                          // );
-                          setModalValue(expectedReward.value);
-                          setModalType(StakingModalType.Claim);
-                        }}>
-                        <p>{t('staking.claim_reward')}</p>
+                <div>
+                  <p>
+                    Uniswap V2에 있는 ELFI-ETH 풀에 유동성을 제공함으로써
+                    ELFI-ETH LP 토큰을 받으실 수 있습니다!
+                  </p>
+                  <div>
+                    <p>LP Token 받기</p>
+                  </div>
+                </div>
+              </div>
+
+              <section className="staking__round__remaining-data current">
+                <div className="staking__round__remaining-data__body">
+                  <>
+                    <div>
+                      <h2>{t('staking.staking_amount')}</h2>
+                      <div>
+                        <h2>
+                          {`${formatCommaSmall(
+                            roundData[0]?.accountPrincipal || '0',
+                          )}`}
+                          <span className="token-amount bold">
+                            {' ' + Token.UNI}
+                          </span>
+                        </h2>
+                        <div
+                          className={`staking__round__button ${
+                            !account || isWrongMainnet ? ' disable' : ''
+                          }`}
+                          onClick={(e) => {
+                            if (!account || isWrongMainnet) {
+                              return;
+                            }
+                            console.log(e);
+                            // ReactGA.modalview(
+                            //   stakedToken +
+                            //     ModalViewType.StakingOrUnstakingModal,
+                            // );
+                            setModalValue(roundData[0].accountPrincipal);
+                            setModalType(StakingModalType.Staking);
+                          }}>
+                          <p>{t('staking.staking_btn')}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </>
-              </div>
+                    <div>
+                      <h2>{t('staking.reward_amount')}</h2>
+                      <div>
+                        <h2>
+                          {expectedReward.before.isZero() || !account ? (
+                            '-'
+                          ) : (
+                            <CountUp
+                              start={parseFloat(
+                                formatEther(expectedReward.before),
+                              )}
+                              end={parseFloat(
+                                formatEther(
+                                  expectedReward.before.isZero()
+                                    ? roundData[0].accountReward
+                                    : expectedReward.value,
+                                ),
+                              )}
+                              formattingFn={(number) => {
+                                return formatSixFracionDigit(number);
+                              }}
+                              decimals={6}
+                              duration={1}
+                            />
+                          )}
+                          <span className="token-amount bold">
+                            {' ' + rewardToken}
+                          </span>
+                        </h2>
+                        <div
+                          className={`staking__round__button ${
+                            expectedReward.value.isZero() || !account
+                              ? ' disable'
+                              : ''
+                          }`}
+                          onClick={(e) => {
+                            if (expectedReward.value.isZero() || !account) {
+                              return;
+                            }
+                            console.log(e);
+
+                            // ReactGA.modalview(
+                            //   stakedToken + ModalViewType.StakingIncentiveModal,
+                            // );
+                            setModalValue(expectedReward.value);
+                            setModalType(StakingModalType.Claim);
+                          }}>
+                          <p>{t('staking.claim_reward')}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                </div>
+              </section>
             </section>
-          </section>
+          )
         ) : (
           <>
             <div style={{ marginTop: 300 }} />
