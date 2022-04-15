@@ -25,6 +25,8 @@ interface EnvironmentVariables {
   lpStaking: {
     daiElfiPoolAddress: string;
     ethElfiPoolAddress: string;
+    ethElfiV2PoolAddress: string;
+    daiElfiV2PoolAddress: string;
     stakerAddress: string;
     nonFungiblePositionAddress: string;
     refundedAddress: string;
