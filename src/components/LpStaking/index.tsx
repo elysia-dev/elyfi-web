@@ -369,7 +369,7 @@ function LPStaking(): JSX.Element {
                           <p>{t('staking.elfi.total_amount')}</p>
                           <h2>
                             {parseFloat(formatEther(totalPrincipal))}{' '}
-                            {rewardToken}
+                            {Token.UNI}
                           </h2>
                         </div>
                       </div>
