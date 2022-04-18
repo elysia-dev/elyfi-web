@@ -286,7 +286,6 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
           </>
         </div>
         <section>
-          <RewardPlanButton stakingType={Token.ELFI} isStaking={true} />
           <section className="governance__elyfi-graph">
             <Suspense fallback={<div style={{ height: 120 }} />}>
               <GovernanceGuideBox />
@@ -341,7 +340,7 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
             <>
               <section className="staking__round__header">
                 <div>
-                  <p>APR</p>
+                  <p>{t('staking.elfi.apr')}</p>
                   <h2 className="percent">
                     {roundData[0]?.apr.eq(constants.MaxUint256)
                       ? '-'
@@ -349,7 +348,7 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
                   </h2>
                 </div>
                 <div>
-                  <p>총 스테이킹 수량</p>
+                  <p>{t('staking.elfi.total_amount')}</p>
                   <h2>
                     {parseFloat(formatEther(totalPrincipal))} {rewardToken}
                   </h2>

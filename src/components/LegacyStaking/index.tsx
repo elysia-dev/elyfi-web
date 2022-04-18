@@ -205,14 +205,8 @@ const LegacyStaking: React.FC = () => {
         )}
       </Suspense>
       <section className="legacy__header">
-        <h2>이전 ELFI 스테이킹 프로그램</h2>
-        <p>
-          이전 ELFI 스테이킹 프로그램은 2021.07.27 ~ 2022.04.17 KST 까지 7회차
-          동안 진행했습니다.
-          <br />이 기간동안 스테이킹한 물량이 남아있는 사용자만 확인할 수
-          있습니다. 언스테이킹 및 보상 수령을 원하는 사용자는 지갑 연결을
-          해주세요.
-        </p>
+        <h2>{t('staking.legacy.title')}</h2>
+        <p>{t('staking.legacy.content')}</p>
         <div ref={headerRef} />
       </section>
       {loading ? (
@@ -247,19 +241,23 @@ const LegacyStaking: React.FC = () => {
             <>
               <div className="legacy__body--left">
                 <div className="legacy__body__all-round">
-                  <h2>1차 ~ 7차</h2>
+                  <h2>{t('staking.legacy.round')}</h2>
                   <p>2021.07.27 ~ 2022.04.17 KST</p>
                 </div>
               </div>
               <div className="legacy__body--right">
                 {!account ? (
                   <div className="legacy__body__undefined-data">
-                    <h2>지갑 연결이 필요합니다</h2>
+                    <h2>{t('staking.legacy.undefined.wallet')}</h2>
                   </div>
                 ) : (
                   !accountAmount && (
                     <div className="legacy__body__undefined-data">
-                      <h2>스테이킹한 ELFI 토큰이 없습니다</h2>
+                      <h2>
+                        {t('staking.legacy.undefined.amount', {
+                          token: 'ELFI',
+                        })}
+                      </h2>
                     </div>
                   )
                 )}

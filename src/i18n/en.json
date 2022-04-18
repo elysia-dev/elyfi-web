@@ -309,9 +309,9 @@
       "current_round_null": "There is no current rounds in progress.",
       "staking__in_progress": "<strong>{{ nth }}</strong> round In Progress",
       "el": {
-        "title": "EL 스테이킹",
-        "content": "<strong>2022.04.18 KST</strong> 부터 EL 스테이킹 페이지를 엘리시아 사이트로 이전했습니다.\nEL 스테이킹을 이용하실 분들은 다음 링크를 클릭하시면, 엘리시아 사이트로 이동하실 수 있습니다.",
-        "button": "EL 스테이킹 하러가기"
+        "title": "EL Staking",
+        "content": "From <strong>2022.04.18 KST</strong>, the EL staking page has been moved to the ELYSIA website.\nThose who use EL staking can go to the website by clicking the following link.",
+        "button": "Go to EL Staking"
       },
       "elfi": {
         "staking__content": "Stake ELFI tokens and get governance tokens(ELFI) and voting rights!\nELFI holders can participate in decentralized governance(DAO) by staking their ELFI.",
@@ -319,10 +319,27 @@
           "uniswap": "Buy ELFI on Uniswap",
           "pancakeswap": "Buy ELFI on PancakeSwap",
           "wormhole": "Use Wormhole Token Bridge"
+        },
+        "total_amount": "Total staked amount ",
+        "apr": "APR",
+        "prev_staking": "Previous Staking Program"
+      },
+      "legacy": {
+        "title": "Previous Staking Program",
+        "content": "The previous ELFI staking program was held for 7 rounds from 2021.07.27 to 2022.04.17 KST.\nOnly users who have remaining staked during this period can see.\nUsers who want to unstake and receive rewards, please connect your wallet.",
+        "lp-content": "The previous LP staking program was held for 4 rounds from 2021.11.05 to 2022.04.17 KST.\nOnly users who have remaining staked during this period can see.\nUsers who want to unstake and receive rewards, please connect your wallet.",
+        "round": "1st ~ 7th",
+        "undefined": {
+          "wallet": "A wallet connection is required.",
+          "amount": "There is no amount of {{ token }} tokens staked."
         }
       },
-      "receive_reward": "보상 수령",
-      "loacation_staking": "스테이킹",
+      "lp": {
+        "title": "LP Token Staking",
+        "content": "Supply liquidity to the ELFI-ETH or ELFI-DAI pool!",
+        "receive_token": "Supply liquidity to the {{ pool }} pool in Uniswap V2 and earn LP tokens!",
+        "receive_button": "Get LP Token"
+      },
 
       "token_staking": "{{stakedToken}} Staking",
       "token_staking--content": [

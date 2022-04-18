@@ -21,7 +21,9 @@ const LegacyStakingButton: FunctionComponent<Props> = ({
             cursor: 'pointer',
           }}
           to={`/${lng}/legacystaking/${stakingType}`}>
-          <p className="bold blue">이전 스테이킹 프로그램 {'>'}</p>
+          <p className="bold blue">
+            {t('staking.elfi.prev_staking')} {'>'}
+          </p>
         </Link>
       </div>
     </>
