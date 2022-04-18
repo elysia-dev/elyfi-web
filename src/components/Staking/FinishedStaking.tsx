@@ -21,14 +21,12 @@ import moment from 'moment';
 import StakingModalType from 'src/enums/StakingModalType';
 import ModalViewType from 'src/enums/ModalViewType';
 import { BigNumber } from 'ethers';
-import MainnetType from 'src/enums/MainnetType';
 
 type Props = {
   index: number;
   item: RoundData;
-  stakedToken: Token.EL | Token.ELFI;
-  rewardToken: Token.ELFI | Token.DAI | Token.BUSD;
-  roundInProgress: number;
+  stakedToken: Token.ELFI;
+  rewardToken: Token.DAI | Token.BUSD;
   setModalType: (value: SetStateAction<string>) => void;
   setRoundModal: (value: SetStateAction<number>) => void;
   setModalValue: (value: SetStateAction<BigNumber>) => void;
@@ -41,7 +39,6 @@ const FinishedStaking: FunctionComponent<Props> = (props) => {
     item,
     stakedToken,
     rewardToken,
-    roundInProgress,
     setModalType,
     setRoundModal,
     setModalValue,
@@ -52,20 +49,6 @@ const FinishedStaking: FunctionComponent<Props> = (props) => {
   const { type: getMainnetType } = useContext(MainnetContext);
   const stakingRoundDate = roundTimes(stakedToken, getMainnetType);
   const current = moment();
-
-  const migratable = useCallback(
-    (staked: Token, round: number): boolean => {
-      if (round >= roundInProgress) return false;
-      if (staked === Token.ELFI && getMainnetType === MainnetType.Ethereum) {
-        return (
-          round >= 2 && moment().diff(stakingRoundDate[round + 1].startedAt) > 0
-        );
-      } else {
-        return moment().diff(stakingRoundDate[round + 1].startedAt) > 0;
-      }
-    },
-    [getMainnetType],
-  );
 
   return (
     <div className="staking__round__previous">
@@ -107,7 +90,7 @@ const FinishedStaking: FunctionComponent<Props> = (props) => {
             <p>{t('staking.staking_amount')}</p>
             <h2>
               {`${formatCommaSmall(item.accountPrincipal) || '-'}`}
-              <span className="token-amount bold">{stakedToken}</span>
+              <span className="token-amount bold"> {stakedToken}</span>
             </h2>
           </div>
           <div>
@@ -126,7 +109,7 @@ const FinishedStaking: FunctionComponent<Props> = (props) => {
                   duration={1}
                 />
               )}
-              <span className="token-amount bold">{rewardToken}</span>
+              <span className="token-amount bold"> {rewardToken}</span>
             </h2>
           </div>
         </div>
@@ -141,26 +124,6 @@ const FinishedStaking: FunctionComponent<Props> = (props) => {
             if (item.accountPrincipal.isZero()) {
               return;
             }
-
-            if (migratable(stakedToken, index)) {
-              if (
-                stakedToken === Token.ELFI &&
-                getMainnetType === MainnetType.Ethereum
-              ) {
-                setRoundModal(index);
-                setModalType(StakingModalType.MigrationDisable);
-                setIsUnstaking();
-                return;
-              } else {
-                ReactGA.modalview(
-                  stakedToken + ModalViewType.MigrationOrUnstakingModal,
-                );
-                setRoundModal(index);
-                setModalValue(item.accountPrincipal);
-                setModalType(StakingModalType.Migration);
-              }
-              return;
-            }
             if (current.diff(stakingRoundDate[index].startedAt) > 0) {
               ReactGA.modalview(
                 stakedToken + ModalViewType.StakingOrUnstakingModal,
@@ -171,14 +134,7 @@ const FinishedStaking: FunctionComponent<Props> = (props) => {
               setIsUnstaking();
             }
           }}>
-          <p>
-            {stakedToken === Token.ELFI &&
-            getMainnetType === MainnetType.Ethereum
-              ? t('staking.unstaking')
-              : migratable(stakedToken, index)
-              ? t('staking.unstaking_migration')
-              : t('staking.staking_btn')}
-          </p>
+          <p>{t('staking.unstaking')}</p>
         </div>
         <div
           className={`staking__round__button ${

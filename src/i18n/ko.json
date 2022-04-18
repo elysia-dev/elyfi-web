@@ -309,8 +309,9 @@
       "current_round_null": "현재 진행중인 회차가 없습니다.",
       "staking__in_progress": "<strong>{{ nth }}차</strong> 스테이킹 진행 중",
       "el": {
-        "staking__content": "EL 토큰을 스테이킹하고 보상 토큰 ELFI를 받아가세요!",
-        "staking__content--button": "EL 토큰 구매하러 가기"
+        "title": "EL Staking",
+        "content": "<strong>2022.04.18 KST</strong> 부터 EL 스테이킹 페이지를 엘리시아 사이트로 이전했습니다.\nEL 스테이킹을 이용하실 분들은 다음 링크를 클릭하시면, 엘리시아 사이트로 이동하실 수 있습니다.",
+        "button": "EL 스테이킹 하러가기"
       },
       "elfi": {
         "staking__content": "ELFI 토큰을 스테이킹하고 투표권을 받아가세요!\nELFI 홀더들은 보유한 ELFI를 스테이킹함으로써 탈중앙 거버넌스에 참여할 수 있습니다.",
@@ -318,7 +319,28 @@
           "uniswap": "유니스왑에서 ELFI 토큰 구매하기",
           "pancakeswap": "팬케이크스왑에서 ELFI 토큰 구매하기",
           "wormhole": "Wormhole 토큰 브릿지 이용하기"
+        },
+        "total_amount": "총 스테이킹 수량",
+        "apr": "APR",
+        "prev_staking": "이전 스테이킹 프로그램"
+      },
+      "legacy": {
+        "title": "이전 스테이킹 프로그램",
+        "content": "이전 ELFI 스테이킹 프로그램은 2021.07.27 ~ 2022.04.17 KST까지 7회차 동안 진행했습니다.\n이 기간동안 스테이킹한 물량이 남아있는 사용자만 확인할 수 있습니다.\n언스테이킹 및 보상 수령을 원하는 사용자는 지갑 연결을 해주세요.",
+        "bsc-content": "이전 ELFI 스테이킹 프로그램은 2022.02.25 ~ 2022.04.17 KST까지 2회차 동안 진행했습니다.\n이 기간동안 스테이킹한 물량이 남아있는 사용자만 확인할 수 있습니다.\n언스테이킹 및 보상 수령을 원하는 사용자는 지갑 연결을 해주세요.",
+        "lp-content": "이전 LP 스테이킹 프로그램은 2021.11.05 ~ 2022.04.17 KST까지 4회차 동안 진행했습니다.\n이 기간동안 스테이킹한 물량이 남아있는 사용자만 확인할 수 있습니다.\n언스테이킹 및 보상 수령을 원하는 사용자는 지갑 연결을 해주세요.",
+        "round": "1차 ~ 7차",
+        "bsc-round": "1차 ~ 2차",
+        "undefined": {
+          "wallet": "지갑 연결이 필요합니다.",
+          "amount": "스테이킹한 {{ token }} 토큰 수량이 없습니다."
         }
+      },
+      "lp": {
+        "title": "LP 토큰 스테이킹",
+        "content": "ELFI-ETH와 ELFI-DAI 풀에 유동성을 공급하세요!",
+        "receive_token": "Uniswap V2에 있는 {{ pool }} 풀에 유동성을 제공함으로써 LP 토큰을 받을 수 있습니다!",
+        "receive_button": "LP Token 받기"
       },
       "staking_amount": "스테이킹 수량",
       "reward_amount": "보상 수량",

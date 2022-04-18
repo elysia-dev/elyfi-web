@@ -9,20 +9,22 @@ import InjectedConnector from 'src/core/connectors/injectedConnector';
 const Dashboard = lazy(() => import('src/components/Deposit'));
 const Main = lazy(() => import('src/components/Main'));
 const Governance = lazy(() => import('src/components/Governance'));
-const { StakingEL, StakingELFI } = lazily(
-  () => import('src/components/Staking'),
-);
+const StakingEL = lazy(() => import('src/components/Staking/ElStaking'));
+const { StakingELFI } = lazily(() => import('src/components/Staking'));
 const LPStaking = lazy(() => import('src/components/LpStaking'));
 const RewardPlan = lazy(() => import('src/components/RewardPlan'));
 const MarketDetail = lazy(() => import('src/components/LiquidiryDetails'));
 const PortfolioDetail = lazy(() => import('src/components/Portfolio'));
+const LegacyStaking = lazy(() => import('src/components/LegacyStaking'));
+const LegacyStakingLP = lazy(
+  () => import('src/components/LegacyStaking/LegacyLpstaking'),
+);
 
 import 'src/stylesheet/public.scss';
 import 'src/stylesheet/pc.scss';
 import 'src/stylesheet/mobile.scss';
 
 const Navigation = lazy(() => import('src/components/Navigation'));
-const Footer = lazy(() => import('src/components/Footer'));
 
 import getLocalLanauge from 'src/utiles/getLocalLanguage';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
@@ -177,55 +179,36 @@ const AppNavigator: React.FC = () => {
               }
             />
           </Route>
+          <Route path="deposits">
+            <Route
+              path=":id"
+              element={
+                <Suspense fallback={nullFallbackArea()}>
+                  <MarketDetail />
+                </Suspense>
+              }
+            />
+          </Route>
+          <Route path="legacystaking">
+            <Route
+              path="ELFI"
+              element={
+                <Suspense fallback={nullFallbackArea()}>
+                  <LegacyStaking />
+                </Suspense>
+              }
+            />
+            <Route
+              path="LP"
+              element={
+                <Suspense fallback={nullFallbackArea()}>
+                  <LegacyStakingLP />
+                </Suspense>
+              }
+            />
+          </Route>
         </Route>
       </Routes>
-      {/* <Route path="/:lng">
-          <LanguageProvider>
-            <Suspense fallback={nullFallbackArea()}>
-              <Navigation
-                hamburgerBar={hamburgerBar}
-                setHamburgerBar={setHamburgerBar}
-              />
-            </Suspense>
-            <Suspense fallback={nullFallbackArea()}>
-            <Route path="staking">
-            <Route path="LP" element={<LPStaking />} />
-            <Route path="EL" element={<StakingEL />} />
-            <Route path="ELFI" element={<StakingELFI />} />
-          </Route>
-            </Suspense>
-            <Suspense fallback={nullFallbackArea()}>
-              <Route exact path="/:lng/governance" component={Governance} />
-            </Suspense>
-            <Suspense fallback={nullFallbackArea()}>
-              <Route
-                exact
-                path="/:lng/portfolio/:id"
-                component={PortfolioDetail}
-              />
-            </Suspense>
-            <Suspense fallback={nullFallbackArea()}>
-              <Route
-                exact
-                path="/:lng/rewardplan/:stakingType"
-                component={RewardPlan}
-              />
-            </Suspense>
-            <Suspense fallback={nullFallbackArea()}>
-              <Route exact path="/:lng/deposit/:id" component={MarketDetail} />
-            </Suspense>
-            <Suspense fallback={nullFallbackArea()}>
-              <Route exact path="/:lng/deposit" component={Dashboard} />
-            </Suspense>
-            <Suspense fallback={nullFallbackArea()}>
-              <Route exact path="/:lng" component={Main} />
-            </Suspense>
-            <Suspense fallback={nullFallbackArea()}>
-              <Footer />
-            </Suspense>
-          </LanguageProvider>
-        </Route> */}
-      {/* <Route path="/" element={<LanguageDetctionPage />} /> */}
     </div>
   );
 };

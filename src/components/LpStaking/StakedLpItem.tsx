@@ -9,8 +9,6 @@ import getAddressesByPool from 'src/core/utils/getAddressesByPool';
 import { StakedLpItemProps } from 'src/core/types/LpStakingTypeProps';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import { lpUnixTimestamp } from 'src/core/data/lpStakingTime';
-import moment from 'moment';
 import { useWeb3React } from '@web3-react/core';
 import { ethers } from '@elysia-dev/contract-typechain/node_modules/ethers';
 import envs from 'src/core/envs';
@@ -24,14 +22,8 @@ import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
 
 const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
-  const {
-    position,
-    setUnstakeTokenId,
-    expectedReward,
-    positionInfo,
-    round,
-    currentRound,
-  } = props;
+  const { position, setUnstakeTokenId, expectedReward, positionInfo, round } =
+    props;
   const { t } = useTranslation();
   const { poolAddress, rewardTokenAddress } = getAddressesByPool(position);
   const {
@@ -92,61 +84,6 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
     }
   };
 
-  const migration = async (
-    poolAddress: string,
-    rewardTokenAddress: string,
-    tokenId: string,
-    round: number,
-  ) => {
-    try {
-      const res = await staker.multicall([
-        iFace.encodeFunctionData('unstakeToken', [
-          lpTokenValues(poolAddress, envs.token.governanceAddress, round - 1),
-          tokenId,
-        ]),
-        iFace.encodeFunctionData('unstakeToken', [
-          lpTokenValues(poolAddress, rewardTokenAddress, round - 1),
-          tokenId,
-        ]),
-        iFace.encodeFunctionData('stakeToken', [
-          lpTokenValues(poolAddress, envs.token.governanceAddress, round),
-          tokenId,
-        ]),
-        iFace.encodeFunctionData('stakeToken', [
-          lpTokenValues(poolAddress, rewardTokenAddress, round),
-          tokenId,
-        ]),
-      ]);
-
-      setTransaction(
-        res,
-        buildEventEmitter(
-          ModalViewType.LPStakingModal,
-          TransactionType.Migrate,
-          JSON.stringify({
-            version: ElyfiVersions.V1,
-            chainId,
-            address: account,
-            tokenId,
-          }),
-        ),
-        'LPMigration' as RecentActivityType,
-        () => {},
-        () => {},
-      );
-    } catch (error) {
-      console.error(error);
-      // throw Error(error);
-    }
-  };
-
-  const startedDate = moment
-    .unix(lpUnixTimestamp[currentRound].startedAt)
-    .format('YYYY.MM.DD hh:mm:ss Z');
-  const endedDate = moment
-    .unix(lpUnixTimestamp[currentRound].endedAt)
-    .format('YYYY.MM.DD hh:mm:ss Z');
-
   const unstakingHandler = async (position: {
     id: string;
     liquidity: BigNumber;
@@ -156,21 +93,6 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
   }) => {
     try {
       await unstake(poolAddress, rewardTokenAddress, position.id, round);
-      setUnstakeTokenId(position.tokenId);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const migrationHandler = async (position: {
-    id: string;
-    liquidity: BigNumber;
-    owner: string;
-    staked: boolean;
-    tokenId: number;
-  }) => {
-    try {
-      await migration(poolAddress, rewardTokenAddress, position.id, round);
       setUnstakeTokenId(position.tokenId);
     } catch (error) {
       console.error(error);
@@ -197,22 +119,6 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
             className="staking__lp__staked__table__content__button">
             <p>{t('staking.unstaking')}</p>
           </div>
-          {/* <div 
-              onClick={() => unstakingHandler(position)}
-              className="staking__lp__staked__table__content__button"
-            >
-              <p>
-                {t("staking.migration")}
-              </p>
-            </div> */}
-          {!(round - 1 >= currentRound) &&
-            moment().isBetween(startedDate, endedDate) && (
-              <div
-                onClick={() => migrationHandler(position)}
-                className="staking__lp__staked__table__content__button">
-                <p>{t('staking.migration')}</p>
-              </div>
-            )}
         </div>
       </div>
 
@@ -298,14 +204,6 @@ const StakedLpItem: FunctionComponent<StakedLpItemProps> = (props) => {
               className="staking__lp__staked__table__content__button">
               <p>{t('staking.unstaking')}</p>
             </div>
-            {!(round - 1 >= currentRound) &&
-              moment().isBetween(startedDate, endedDate) && (
-                <div
-                  onClick={() => migrationHandler(position)}
-                  className="staking__lp__staked__table__content__button">
-                  <p>{t('staking.migration')}</p>
-                </div>
-              )}
           </div>
         </div>
 

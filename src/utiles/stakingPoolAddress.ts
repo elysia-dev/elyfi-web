@@ -15,6 +15,22 @@ export const poolAddress = (mainnet: string, stakedToken: string): string => {
   }
 };
 
+export const poolAddressV2 = (mainnet: string, stakedToken: string): string => {
+  switch (stakedToken) {
+    case Token.ELFI:
+      if (mainnet === 'BSC') {
+        return envs.stakingV2MoneyPool.elfiBscStaking;
+      }
+      return envs.stakingV2MoneyPool.elfiStaking;
+    case Token.ELFI_ETH_LP:
+      return envs.stakingV2MoneyPool.elfiEthLp;
+    case Token.ELFI_DAI_LP:
+      return envs.stakingV2MoneyPool.elfiDaiLp;
+    default:
+      return envs.stakingV2MoneyPool.elfiStaking;
+  }
+};
+
 export const stakingRewardTokenAddress = (
   mainnet: string,
   stakedToken: string,
@@ -32,5 +48,24 @@ export const stakingRewardTokenAddress = (
       return envs.token.governanceAddress;
     default:
       return envs.token.bscElfiAddress;
+  }
+};
+
+export const stakingRewardTokenAddressV2 = (
+  mainnet: string,
+  currentChain?: string,
+  token?: Token,
+): string => {
+  if (mainnet === 'BSC') {
+    return currentChain === 'BSC Test'
+      ? envs.token.testBscElfiAddress
+      : envs.token.bscElfiAddress;
+  }
+  if (token === Token.ELFI_ETH_LP) {
+    return envs.lpStaking.ethElfiV2PoolAddress;
+  } else if (token === Token.ELFI_DAI_LP) {
+    return envs.lpStaking.daiElfiV2PoolAddress;
+  } else {
+    return envs.token.governanceAddress;
   }
 };

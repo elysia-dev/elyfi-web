@@ -10,26 +10,18 @@ export type tokenTypes = {
   token1: string;
 };
 export type DetailBoxItemHeaderProps = {
-  totalLiquidity: string;
-  apr: string;
   token1: string;
-  isLoading: boolean;
 };
 
 export type DetailBoxItemStakingProps = {
   tokens: tokenTypes;
   totalStakedLiquidity: string;
-  setModalAndSetStakeToken: () => void;
-  round: number;
   isLoading: boolean;
 };
 export type DetailBoxProps = {
   tokens: tokenTypes;
-  totalLiquidity: number;
   totalStakedLiquidity: BigNumber;
-  apr: string;
   isLoading: boolean;
-  setModalAndSetStakeToken: () => void;
   round: number;
 };
 
@@ -60,7 +52,6 @@ export type StakedLpItemProps = {
     lpTokenType: string;
   };
   round: number;
-  currentRound: number;
 };
 
 export type StakingTitleProps = {

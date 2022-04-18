@@ -321,7 +321,76 @@ const RewardPlan: FunctionComponent = () => {
           </div>
         )}
 
-        {rewardType === 'LP' ? (
+        <>
+          <div className="reward__token">
+            <LazyImage src={ELFI} name="elfi" />
+            <h2>{t('reward.deposit__reward_plan')}</h2>
+            <div className="reward__token__elfi">
+              {!poolDataLoading && poolData ? (
+                <p>
+                  <Trans
+                    i18nKey="reward.elfi_price"
+                    count={Math.round(poolData.latestPrice * 1000) / 1000}
+                  />
+                </p>
+              ) : (
+                <Skeleton width={50} height={40} />
+              )}
+            </div>
+          </div>
+          <section className="reward__container">
+            <Suspense
+              fallback={
+                <div
+                  style={{
+                    marginTop: 50,
+                    height: 300,
+                    background: '#FFFFFF',
+                  }}
+                />
+              }>
+              {!subgraphLoading ? (
+                reserveState.reserves
+                  .filter((data) => {
+                    if (!data.id) return;
+                    return isSupportedReserve(
+                      getTokenNameByAddress(data.id),
+                      getMainnetType,
+                    );
+                  })
+                  .map((reserve, index) => {
+                    return (
+                      <TokenDeposit
+                        key={index}
+                        idx={index}
+                        reserve={reserve}
+                        moneyPoolInfo={moneyPoolInfo}
+                        beforeMintedMoneypool={
+                          beforeMintedMoneypool[
+                            getTokenNameByAddress(reserve.id)
+                          ].beforeMintedToken <= 0
+                            ? 0
+                            : beforeMintedMoneypool[
+                                getTokenNameByAddress(reserve.id)
+                              ].beforeMintedToken
+                        }
+                        mintedMoneypool={
+                          mintedMoneypool[getTokenNameByAddress(reserve.id)]
+                            .mintedToken
+                        }
+                        depositRound={depositRound}
+                        setDepositRound={setDepositRound}
+                      />
+                    );
+                  })
+              ) : (
+                <Skeleton width={'100%'} height={330} />
+              )}
+            </Suspense>
+          </section>
+        </>
+
+        {/* {rewardType === 'LP' ? (
           <>
             <div className="reward__token">
               <div className="reward__token__image-container">
@@ -423,75 +492,8 @@ const RewardPlan: FunctionComponent = () => {
             </Suspense>
           </section>
         ) : (
-          <>
-            <div className="reward__token">
-              <LazyImage src={ELFI} name="elfi" />
-              <h2>{t('reward.deposit__reward_plan')}</h2>
-              <div className="reward__token__elfi">
-                {!poolDataLoading && poolData ? (
-                  <p>
-                    <Trans
-                      i18nKey="reward.elfi_price"
-                      count={Math.round(poolData.latestPrice * 1000) / 1000}
-                    />
-                  </p>
-                ) : (
-                  <Skeleton width={50} height={40} />
-                )}
-              </div>
-            </div>
-            <section className="reward__container">
-              <Suspense
-                fallback={
-                  <div
-                    style={{
-                      marginTop: 50,
-                      height: 300,
-                      background: '#FFFFFF',
-                    }}
-                  />
-                }>
-                {!subgraphLoading ? (
-                  reserveState.reserves
-                    .filter((data) => {
-                      if (!data.id) return;
-                      return isSupportedReserve(
-                        getTokenNameByAddress(data.id),
-                        getMainnetType,
-                      );
-                    })
-                    .map((reserve, index) => {
-                      return (
-                        <TokenDeposit
-                          key={index}
-                          idx={index}
-                          reserve={reserve}
-                          moneyPoolInfo={moneyPoolInfo}
-                          beforeMintedMoneypool={
-                            beforeMintedMoneypool[
-                              getTokenNameByAddress(reserve.id)
-                            ].beforeMintedToken <= 0
-                              ? 0
-                              : beforeMintedMoneypool[
-                                  getTokenNameByAddress(reserve.id)
-                                ].beforeMintedToken
-                          }
-                          mintedMoneypool={
-                            mintedMoneypool[getTokenNameByAddress(reserve.id)]
-                              .mintedToken
-                          }
-                          depositRound={depositRound}
-                          setDepositRound={setDepositRound}
-                        />
-                      );
-                    })
-                ) : (
-                  <Skeleton width={'100%'} height={330} />
-                )}
-              </Suspense>
-            </section>
-          </>
-        )}
+         
+        )} */}
       </div>
     </>
   );

@@ -1,6 +1,5 @@
 import { FunctionComponent } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import envs from 'src/core/envs';
 import { tokenTypes } from 'src/core/types/LpStakingTypeProps';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
@@ -24,14 +23,9 @@ const DetailBoxItemReceiveToken: FunctionComponent<tokenTypes> = (props) => {
           <Guide content={t('guide.create_liquidity')} />
         </div>
         <a
-          className="staking__lp__detail-box__receive-token__button"
-          target="_blank"
+          className="staking__lp__detail-box__staking__button disable"
           rel="noopener noreferrer"
-          href={
-            token1 === 'ETH'
-              ? `https://app.uniswap.org/#/add/${envs.token.governanceAddress}/${envs.token.wEthAddress}`
-              : `https://app.uniswap.org/#/add/${envs.token.governanceAddress}/${envs.token.daiAddress}`
-          }>
+          href={undefined}>
           <p>{t('lpstaking.receive_lp_token')}</p>
         </a>
       </div>
@@ -72,14 +66,9 @@ const DetailBoxItemReceiveToken: FunctionComponent<tokenTypes> = (props) => {
         </p>
       </div>
       <a
-        className="staking__lp__detail-box__receive-token__button"
-        target="_blank"
+        className="staking__lp__detail-box__staking__button disable"
         rel="noopener noreferrer"
-        href={
-          token1 === 'ETH'
-            ? `https://app.uniswap.org/#/add/${envs.token.governanceAddress}/${envs.token.wEthAddress}`
-            : `https://app.uniswap.org/#/add/${envs.token.governanceAddress}/${envs.token.daiAddress}`
-        }>
+        href={undefined}>
         <p>{t('lpstaking.receive_lp_token')}</p>
       </a>
     </>
