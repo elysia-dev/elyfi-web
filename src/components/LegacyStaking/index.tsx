@@ -77,6 +77,12 @@ const LegacyStaking: React.FC = () => {
     });
   }, [getMainnetType, account, roundData]);
 
+  const accountRewards = useMemo(() => {
+    return roundData.some((data) => {
+      return data.accountReward.gt(0);
+    });
+  }, [getMainnetType, account, roundData]);
+
   const modalVisible = useCallback(
     (type: StakingModalType) => {
       return modalType === type;
@@ -214,8 +220,11 @@ const LegacyStaking: React.FC = () => {
       {loading ? (
         <Skeleton width={'100%'} height={600} />
       ) : (
-        <section className={`legacy__body ${accountAmount ? 'connect' : ''}`}>
-          {accountAmount ? (
+        <section
+          className={`legacy__body ${
+            accountAmount || accountRewards ? 'connect' : ''
+          }`}>
+          {accountAmount || accountRewards ? (
             <section className="staking__round__previous__wrapper">
               {
                 // eslint-disable-next-line array-callback-return
@@ -260,7 +269,7 @@ const LegacyStaking: React.FC = () => {
                     <h2>{t('staking.legacy.undefined.wallet')}</h2>
                   </div>
                 ) : (
-                  !accountAmount && (
+                  !(accountAmount && accountRewards) && (
                     <div className="legacy__body__undefined-data">
                       <h2>
                         {t('staking.legacy.undefined.amount', {
