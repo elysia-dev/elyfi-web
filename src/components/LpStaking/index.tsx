@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { constants } from 'ethers';
+import { constants, utils } from 'ethers';
 import {
   useEffect,
   useContext,
@@ -8,6 +8,7 @@ import {
   useRef,
   lazy,
   Suspense,
+  useMemo,
 } from 'react';
 import CountUp from 'react-countup';
 import { useTranslation } from 'react-i18next';
@@ -34,6 +35,7 @@ import {
 } from 'src/utiles/formatters';
 import StakingModalType from 'src/enums/StakingModalType';
 import Skeleton from 'react-loading-skeleton';
+import useUniswapV2Apr from 'src/hooks/useUniswapV2Apr';
 import LegacyStakingButton from '../LegacyStaking/LegacyStakingButton';
 import useStakingRoundDataV2 from '../Staking/hooks/useStakingRoundDataV2';
 import useStakingFetchRoundDataV2 from '../Staking/hooks/useStakingFetchRoundDataV2';
@@ -70,6 +72,12 @@ function LPStaking(): JSX.Element {
   const [transactionModal, setTransactionModal] = useState(false);
   const [transactionWait, setTransactionWait] = useState<boolean>(false);
   const [modalValue, setModalValue] = useState(constants.Zero);
+
+  const { uniswapV2Apr } = useUniswapV2Apr();
+
+  const v2LPPoolApr = useMemo(() => {
+    return [uniswapV2Apr.elfiEthPool, uniswapV2Apr.elfiDaiPool];
+  }, [uniswapV2Apr]);
 
   const [ethExpectedReward, setEthExpectedReward] = useState({
     before: constants.Zero,
@@ -273,9 +281,9 @@ function LPStaking(): JSX.Element {
                         <div>
                           <p>{t('staking.elfi.apr')}</p>
                           <h2 className="percent">
-                            {roundData[0]?.apr.eq(constants.MaxUint256)
+                            {v2LPPoolApr[index].eq(constants.MaxUint256)
                               ? '-'
-                              : toPercentWithoutSign(roundData[0].apr)}
+                              : toPercentWithoutSign(v2LPPoolApr[index])}
                           </h2>
                         </div>
                         <div>
