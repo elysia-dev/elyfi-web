@@ -17,8 +17,8 @@ const provider = new providers.JsonRpcBatchProvider(
 
 const useUniswapV2Apr = () => {
   const [uniswapV2Apr, setUniswapV2Apr] = useState({
-    elfiEthPool: constants.Zero,
-    elfiDaiPool: constants.Zero,
+    elfiEthPool: 0,
+    elfiDaiPool: 0,
   });
   const { data: priceData, isValidating: loading } = useSWR(
     envs.externalApiEndpoint.coingackoURL,
@@ -82,9 +82,9 @@ const useUniswapV2Apr = () => {
       parseFloat(utils.formatEther(daiBalance)) * priceData.daiPrice;
 
     const ethPoolPerToken =
-      stakedTokenElfiEthPrice * parseFloat(utils.formatEther(ethTotalSupply));
+      stakedTokenElfiEthPrice / parseFloat(utils.formatEther(ethTotalSupply));
     const daiPoolPerToken =
-      stakedTokenElfiDaiPrice * parseFloat(utils.formatEther(daiTotalSupply));
+      stakedTokenElfiDaiPrice / parseFloat(utils.formatEther(daiTotalSupply));
 
     const ethTotalUSD =
       ethPoolPerToken *
@@ -99,14 +99,8 @@ const useUniswapV2Apr = () => {
       (daiUsdPerSecond / daiTotalUSD) * (3600 * 24 * 365 * 100);
 
     setUniswapV2Apr({
-      elfiDaiPool:
-        elfiEthAPR === Infinity
-          ? constants.MaxUint256
-          : utils.parseEther(String(elfiDaiAPR)),
-      elfiEthPool:
-        elfiDaiAPR === Infinity
-          ? constants.MaxUint256
-          : utils.parseEther(String(elfiEthAPR)),
+      elfiDaiPool: elfiDaiAPR,
+      elfiEthPool: elfiEthAPR,
     });
   };
 
