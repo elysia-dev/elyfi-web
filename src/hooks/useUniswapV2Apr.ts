@@ -43,10 +43,6 @@ const useUniswapV2Apr = () => {
   const test = async () => {
     if (!priceData || !v2EthLPPoolElfi || !v2DaiLPPoolElfi) return;
 
-    const provider = new providers.JsonRpcProvider(
-      process.env.REACT_APP_JSON_RPC,
-    );
-
     const daiBalance = await ERC20__factory.connect(
       envs.token.daiAddress,
       provider as any,
