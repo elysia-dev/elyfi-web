@@ -39,3 +39,47 @@ export const bscBalanceOfFetcher =
 
     return contract.balanceOf(params[0]);
   };
+export const v2EthLPPoolElfiFetcher =
+  (): any =>
+  (...args: [string]) => {
+    const [...params] = args;
+    const contract: any = ERC20__factory.connect(
+      envs.token.governanceAddress,
+      provider as any,
+    );
+
+    return contract.balanceOf(params[0]);
+  };
+export const v2LDaiLPPoolElfiFetcher =
+  (): any =>
+  (...args: [string]) => {
+    const [...params] = args;
+    const contract: any = ERC20__factory.connect(
+      envs.token.governanceAddress,
+      provider as any,
+    );
+
+    return contract.balanceOf(params[0]);
+  };
+export const v2LPPoolDaiFetcher =
+  (): any =>
+  (...args: [string]) => {
+    const [...params] = args;
+    const contract: any = ERC20__factory.connect(
+      envs.token.wEthAddress,
+      provider as any,
+    );
+
+    return contract.balanceOf(params[0]);
+  };
+export const v2LPPoolEthFetcher =
+  (): any =>
+  (...args: [string]) => {
+    const [...params] = args;
+    const contract: any = ERC20__factory.connect(
+      envs.token.daiAddress,
+      provider as any,
+    );
+
+    return contract.balanceOf(params[0]);
+  };

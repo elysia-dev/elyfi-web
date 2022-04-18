@@ -20,6 +20,8 @@
   "lpStaking": {
     "daiElfiPoolAddress": "0xbde484db131bd2ae80e44a57f865c1dfebb7e31f",
     "ethElfiPoolAddress": "0xc311faebe8802f9cfc91284016d1de9537ec66b7",
+    "daiElfiV2PoolAddress": "0x8f9a5bd715c553a94eaf0c67ebd2a8ae2ad60f9e",
+    "ethElfiV2PoolAddress": "0x727e501ddabf9ab1888abc5042ef4d0569f0c162",
     "stakerAddress": "0x1f98407aaB862CdDeF78Ed252D6f557aA5b0f00d",
     "nonFungiblePositionAddress": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
     "refundedAddress": "0x23b062F33ed93EE8C8e658e609dbd80797DFdA89"
