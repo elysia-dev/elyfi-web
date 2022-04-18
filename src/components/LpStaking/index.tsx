@@ -32,6 +32,7 @@ import {
   formatCommaSmall,
   formatSixFracionDigit,
   toCompact,
+  toCompactForBignumber,
 } from 'src/utiles/formatters';
 import StakingModalType from 'src/enums/StakingModalType';
 import Skeleton from 'react-loading-skeleton';
@@ -368,8 +369,7 @@ function LPStaking(): JSX.Element {
                         <div>
                           <p>{t('staking.elfi.total_amount')}</p>
                           <h2>
-                            {parseFloat(formatEther(totalPrincipal))}{' '}
-                            {Token.UNI}
+                            {toCompactForBignumber(totalPrincipal)} {Token.UNI}
                           </h2>
                         </div>
                       </div>
