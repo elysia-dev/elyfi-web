@@ -212,7 +212,7 @@ const LegacyStaking: React.FC = () => {
       {loading ? (
         <Skeleton width={'100%'} height={600} />
       ) : (
-        <section className="legacy__body">
+        <section className={`legacy__body ${accountAmount ? 'connect' : ''}`}>
           {accountAmount ? (
             <section className="staking__round__previous__wrapper">
               {

@@ -2180,12 +2180,15 @@ input[type='number'] {
           }
         }
       }
+      &__container {
+        margin-bottom: 100px;
+      }
       &__content {
         > div {
           background-color: $background-color;
           &:first-child {
             border-radius: 10px;
-            border: 1px solid #123;
+            border: 1px solid $gray-line;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
@@ -2199,7 +2202,7 @@ input[type='number'] {
               justify-content: space-between;
               align-items: center;
               &:first-child {
-                border-right: 1px solid #123;
+                border-right: 1px solid $gray-line;
               }
               > p {
                 font-size: 15px;
@@ -2217,7 +2220,7 @@ input[type='number'] {
             padding: 20px 30px 16px;
             position: relative;
             bottom: 5px;
-            border: 1px solid #123;
+            border: 1px solid $gray-line;
             border-radius: 0px 0 10px 10px;
             z-index: 1;
             display: flex;
@@ -2517,6 +2520,9 @@ input[type='number'] {
               > h2 {
                 text-align: right;
                 color: $font-color;
+                > span {
+                  margin-left: 5px;
+                }
               }
               > div {
                 margin: 0 auto;
