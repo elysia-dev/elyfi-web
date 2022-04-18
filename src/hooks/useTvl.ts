@@ -14,9 +14,8 @@ import {
   elfiBalanceOfFetcher,
   v2EthLPPoolElfiFetcher,
   v2LDaiLPPoolElfiFetcher,
-  v2LPPoolDaiFetcher,
-  v2LPPoolEthFetcher,
 } from 'src/clients/BalancesFetcher';
+import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import useReserveData from './useReserveData';
 
 const useTvl = (): { value: number; loading: boolean } => {
@@ -75,12 +74,6 @@ const useTvl = (): { value: number; loading: boolean } => {
       fetcher: v2LDaiLPPoolElfiFetcher(),
     },
   );
-  const { data: v2LPPoolDai } = useSWR([envs.lpStaking.daiElfiV2PoolAddress], {
-    fetcher: v2LPPoolDaiFetcher(),
-  });
-  const { data: v2LPPoolEth } = useSWR([envs.lpStaking.ethElfiV2PoolAddress], {
-    fetcher: v2LPPoolEthFetcher(),
-  });
 
   const [state, setState] = useState({
     v2LPPoolElfi: constants.Zero,
@@ -122,10 +115,23 @@ const useTvl = (): { value: number; loading: boolean } => {
 
   const loadBalances = async () => {
     try {
+      const provider = new providers.JsonRpcProvider(
+        process.env.REACT_APP_JSON_RPC,
+      );
+
+      const daiBalance = await ERC20__factory.connect(
+        envs.token.daiAddress,
+        provider as any,
+      ).balanceOf(envs.lpStaking.daiElfiV2PoolAddress);
+      const wEthBalance = await ERC20__factory.connect(
+        envs.token.wEthAddress,
+        provider as any,
+      ).balanceOf(envs.lpStaking.ethElfiV2PoolAddress);
+
       setState({
         v2LPPoolElfi: v2DaiLPPoolElfi.add(v2EthLPPoolElfi),
-        v2LPPoolDai,
-        v2LPPoolEth,
+        v2LPPoolDai: daiBalance,
+        v2LPPoolEth: wEthBalance,
         stakedEl: elStakingBalance,
         stakedElfi: v1StakingBalance.add(v2StakingBalance),
         stakedElfiOnBSC: bscStakingBalance,
@@ -144,9 +150,7 @@ const useTvl = (): { value: number; loading: boolean } => {
       !v1StakingBalance ||
       !bscStakingBalance ||
       !v2EthLPPoolElfi ||
-      !v2DaiLPPoolElfi ||
-      !v2LPPoolEth ||
-      !v2LPPoolDai
+      !v2DaiLPPoolElfi
     )
       return;
     loadBalances().then(() => {
@@ -160,8 +164,6 @@ const useTvl = (): { value: number; loading: boolean } => {
     bscStakingBalance,
     v2EthLPPoolElfi,
     v2DaiLPPoolElfi,
-    v2LPPoolEth,
-    v2LPPoolDai,
   ]);
 
   return {

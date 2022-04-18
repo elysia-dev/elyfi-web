@@ -8,9 +8,8 @@ import useSWR from 'swr';
 import {
   v2EthLPPoolElfiFetcher,
   v2LDaiLPPoolElfiFetcher,
-  v2LPPoolDaiFetcher,
-  v2LPPoolEthFetcher,
 } from 'src/clients/BalancesFetcher';
+import { ERC20__factory } from '@elysia-dev/contract-typechain';
 
 const provider = new providers.JsonRpcBatchProvider(
   process.env.REACT_APP_JSON_RPC,
@@ -40,22 +39,23 @@ const useUniswapV2Apr = () => {
       fetcher: v2LDaiLPPoolElfiFetcher(),
     },
   );
-  const { data: v2LPPoolDai } = useSWR([envs.lpStaking.daiElfiV2PoolAddress], {
-    fetcher: v2LPPoolDaiFetcher(),
-  });
-  const { data: v2LPPoolEth } = useSWR([envs.lpStaking.ethElfiV2PoolAddress], {
-    fetcher: v2LPPoolEthFetcher(),
-  });
 
   const test = async () => {
-    if (
-      !priceData ||
-      !v2EthLPPoolElfi ||
-      !v2DaiLPPoolElfi ||
-      !v2LPPoolEth ||
-      !v2LPPoolDai
-    )
-      return;
+    if (!priceData || !v2EthLPPoolElfi || !v2DaiLPPoolElfi) return;
+
+    const provider = new providers.JsonRpcProvider(
+      process.env.REACT_APP_JSON_RPC,
+    );
+
+    const daiBalance = await ERC20__factory.connect(
+      envs.token.daiAddress,
+      provider as any,
+    ).balanceOf(envs.lpStaking.daiElfiV2PoolAddress);
+    const wEthBalance = await ERC20__factory.connect(
+      envs.token.wEthAddress,
+      provider as any,
+    ).balanceOf(envs.lpStaking.ethElfiV2PoolAddress);
+
     const ethPoolContract = StakingPoolV2factory.connect(
       envs.stakingV2MoneyPool.elfiEthLp,
       provider as any,
@@ -80,10 +80,10 @@ const useUniswapV2Apr = () => {
 
     const stakedTokenElfiEthPrice =
       parseFloat(utils.formatEther(v2EthLPPoolElfi)) * priceData.elfiPrice +
-      parseFloat(utils.formatEther(v2LPPoolEth)) * priceData.ethPrice;
+      parseFloat(utils.formatEther(wEthBalance)) * priceData.ethPrice;
     const stakedTokenElfiDaiPrice =
       parseFloat(utils.formatEther(v2DaiLPPoolElfi)) * priceData.elfiPrice +
-      parseFloat(utils.formatEther(v2LPPoolDai)) * priceData.daiPrice;
+      parseFloat(utils.formatEther(daiBalance)) * priceData.daiPrice;
 
     const ethPoolPerToken =
       stakedTokenElfiEthPrice * parseFloat(utils.formatEther(ethTotalSupply));
@@ -116,7 +116,7 @@ const useUniswapV2Apr = () => {
 
   useEffect(() => {
     test();
-  }, [priceData, v2EthLPPoolElfi, v2DaiLPPoolElfi, v2LPPoolEth, v2LPPoolDai]);
+  }, [priceData, v2EthLPPoolElfi, v2DaiLPPoolElfi]);
 
   return { uniswapV2Apr };
 };
