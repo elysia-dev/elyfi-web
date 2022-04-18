@@ -19,9 +19,8 @@ import {
 } from 'src/utiles/formatters';
 
 import Token from 'src/enums/Token';
-import { useTranslation, Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import ReactGA from 'react-ga';
-import RewardPlanButton from 'src/components/RewardPlan/RewardPlanButton';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import DrawWave from 'src/utiles/drawWave';
@@ -343,9 +342,9 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
                 <div>
                   <p>{t('staking.elfi.apr')}</p>
                   <h2 className="percent">
-                    {roundData[0]?.apr.eq(constants.MaxUint256)
+                    {poolApr.eq(constants.MaxUint256)
                       ? '-'
-                      : toPercentWithoutSign(roundData[0]?.apr || 0)}
+                      : toPercentWithoutSign(poolApr || 0)}
                   </h2>
                 </div>
                 <div>
@@ -370,16 +369,15 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
                           </span>
                         </h2>
                         <div
-                          className={`staking__round__button ${
-                            !account || isWrongMainnet ? ' disable' : ''
-                          }`}
+                          className={`staking__round__button ${!account || isWrongMainnet ? ' disable' : ''
+                            }`}
                           onClick={(e) => {
                             if (!account || isWrongMainnet) {
                               return;
                             }
                             ReactGA.modalview(
                               stakedToken +
-                                ModalViewType.StakingOrUnstakingModal,
+                              ModalViewType.StakingOrUnstakingModal,
                             );
                             setModalValue(roundData[0].accountPrincipal);
                             setModalType(StakingModalType.Staking);
@@ -418,11 +416,10 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
                           </span>
                         </h2>
                         <div
-                          className={`staking__round__button ${
-                            expectedReward.value.isZero() || !account
-                              ? ' disable'
-                              : ''
-                          }`}
+                          className={`staking__round__button ${expectedReward.value.isZero() || !account
+                            ? ' disable'
+                            : ''
+                            }`}
                           onClick={(e) => {
                             if (expectedReward.value.isZero() || !account) {
                               return;

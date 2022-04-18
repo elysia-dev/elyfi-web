@@ -35,10 +35,10 @@ const useStakingRoundDataV2 = (
           ? envs.stakingV2MoneyPool.elfiBscStaking
           : envs.stakingV2MoneyPool.elfiStaking
         : stakedToken === Token.ELFI_ETH_LP
-        ? envs.stakingV2MoneyPool.elfiEthLp
-        : stakedToken === Token.ELFI_DAI_LP
-        ? envs.stakingV2MoneyPool.elfiDaiLp
-        : envs.stakingV2MoneyPool.elfiStaking,
+          ? envs.stakingV2MoneyPool.elfiEthLp
+          : stakedToken === Token.ELFI_DAI_LP
+            ? envs.stakingV2MoneyPool.elfiDaiLp
+            : envs.stakingV2MoneyPool.elfiStaking,
       new providers.JsonRpcProvider(
         mainnet === 'BSC'
           ? envs.jsonRpcUrl.bsc
@@ -75,22 +75,22 @@ const useStakingRoundDataV2 = (
         apr:
           stakedToken === Token.ELFI
             ? calcAPR(
-                res.totalPrincipal,
-                priceData.elfiPrice,
-                rewardPerDayByToken(stakedToken, mainnet),
-                priceData.elfiPrice,
-              )
+              res.totalPrincipal,
+              priceData.elfiPrice,
+              res.rewardPerSecond.mul(3600 * 24),
+              priceData.elfiPrice,
+            )
             : calcLpAPR(
-                res.rewardPerSecond.div(
-                  parseEther(priceData.elfiPrice.toFixed(4)),
-                ),
-                res.totalPrincipal,
-                priceData.elPrice,
-                rewardPerDayByToken(stakedToken, mainnet),
-                res.totalPrincipal.div(
-                  parseEther(priceData.elfiPrice.toFixed(4)),
-                ),
+              res.rewardPerSecond.div(
+                parseEther(priceData.elfiPrice.toFixed(4)),
               ),
+              res.totalPrincipal,
+              priceData.elPrice,
+              rewardPerDayByToken(stakedToken, mainnet),
+              res.totalPrincipal.div(
+                parseEther(priceData.elfiPrice.toFixed(4)),
+              ),
+            ),
         loading: false,
       });
     } catch {
