@@ -143,13 +143,15 @@ const StakingModalV2: React.FunctionComponent<{
                       return;
                     }
                     setAmount({
-                      value: Math.floor(
-                        parseFloat(
-                          utils.formatEther(
-                            stakingMode ? balance : stakedBalance,
-                          ),
-                        ),
-                      ).toFixed(8),
+                      value: (
+                        Math.floor(
+                          parseFloat(
+                            utils.formatEther(
+                              stakingMode ? balance : stakedBalance,
+                            ),
+                          ) * 10000000,
+                        ) / 10000000
+                      ).toString(),
                       max: true,
                     });
                   }}>
