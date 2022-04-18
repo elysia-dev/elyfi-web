@@ -99,7 +99,7 @@ const LegacyStaking: React.FC = () => {
   }, [stakedPositions, account, incentiveIds, positionsByOwner]);
 
   const accountNull: boolean =
-    rewardToReceive.elfiReward !== 0 && stakedPositions.length !== 0;
+    rewardToReceive.elfiReward !== 0 || stakedPositions.length !== 0;
 
   const filterPosition = (position: Position) => {
     return position.incentivePotisions.some((incentivePotision) =>

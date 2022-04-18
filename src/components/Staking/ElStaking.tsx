@@ -70,7 +70,7 @@ const ElStaking: React.FC = () => {
         <p>
           <Trans i18nKey="staking.el.content" />
         </p>
-        <div onClick={() => window.open(`https://gov.elysia.land/${lng}`)}>
+        <div onClick={() => window.open(`https://gov.elysia.land/`)}>
           <p>{t('staking.el.button')}</p>
         </div>
         <section ref={headerRef} />
