@@ -302,7 +302,7 @@ const LegacyStaking: React.FC = () => {
           <div ref={headerRef} />
         </section>
         <section className="legacy__lp">
-          {accountNull ? (
+          {accountNull && getMainnetType === MainnetType.Ethereum ? (
             <>
               <section className="staking__lp__detail-box">
                 <DetailBox
@@ -374,7 +374,7 @@ const LegacyStaking: React.FC = () => {
                     <h2>{t('staking.legacy.undefined.wallet')}</h2>
                   </div>
                 ) : (
-                  !accountNull && (
+                  (!accountNull || getMainnetType === MainnetType.BSC) && (
                     <div className="legacy__body__undefined-data">
                       <h2>
                         {t('staking.legacy.undefined.amount', {

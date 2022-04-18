@@ -231,6 +231,7 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
               transactionWait={transactionWait}
               setTransactionWait={() => setTransactionWait(true)}
               disableTransactionWait={() => setTransactionWait(false)}
+              title={Token.ELFI}
             />
           </>
         )}
@@ -335,7 +336,7 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
             )}
           </div>
           {loading ? (
-            <Skeleton width={'100%'} height={600} />
+            <Skeleton width={'100%'} height={300} />
           ) : (
             <>
               <section className="staking__round__header">

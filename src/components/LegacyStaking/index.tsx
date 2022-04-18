@@ -204,7 +204,11 @@ const LegacyStaking: React.FC = () => {
       </Suspense>
       <section className="legacy__header">
         <h2>{t('staking.legacy.title')}</h2>
-        <p>{t('staking.legacy.content')}</p>
+        {getMainnetType === MainnetType.Ethereum ? (
+          <p>{t('staking.legacy.content')}</p>
+        ) : (
+          <p>{t('staking.legacy.bsc-content')}</p>
+        )}
         <div ref={headerRef} />
       </section>
       {loading ? (
@@ -238,10 +242,17 @@ const LegacyStaking: React.FC = () => {
           ) : (
             <>
               <div className="legacy__body--left">
-                <div className="legacy__body__all-round">
-                  <h2>{t('staking.legacy.round')}</h2>
-                  <p>2021.07.27 ~ 2022.04.17 KST</p>
-                </div>
+                {getMainnetType === MainnetType.Ethereum ? (
+                  <div className="legacy__body__all-round">
+                    <h2>{t('staking.legacy.round')}</h2>
+                    <p>2021.07.27 ~ 2022.04.17 KST</p>
+                  </div>
+                ) : (
+                  <div className="legacy__body__all-round">
+                    <h2>{t('staking.legacy.bsc-round')}</h2>
+                    <p>2022.02.25 ~ 2022.04.17 KST</p>
+                  </div>
+                )}
               </div>
               <div className="legacy__body--right">
                 {!account ? (

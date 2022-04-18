@@ -7,7 +7,7 @@ import { poolAddressV2 } from 'src/utiles/stakingPoolAddress';
 import MainnetContext from 'src/contexts/MainnetContext';
 
 const useStakingPoolV2 = (
-  staked: Token.UNI | Token.ELFI,
+  staked: Token,
 ): {
   contract: StakingPoolV2 | undefined;
 } => {

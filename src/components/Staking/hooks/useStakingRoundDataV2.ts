@@ -31,8 +31,14 @@ const useStakingRoundDataV2 = (
   const stakingPool = useMemo(() => {
     return StakingPoolV2factory.connect(
       stakedToken === Token.ELFI
-        ? envs.stakingV2MoneyPool.elfiStaking
-        : envs.stakingV2MoneyPool.lpStaking,
+        ? mainnet === 'BSC'
+          ? envs.stakingV2MoneyPool.elfiBscStaking
+          : envs.stakingV2MoneyPool.elfiStaking
+        : stakedToken === Token.ELFI_ETH_LP
+        ? envs.stakingV2MoneyPool.elfiEthLp
+        : stakedToken === Token.ELFI_DAI_LP
+        ? envs.stakingV2MoneyPool.elfiDaiLp
+        : envs.stakingV2MoneyPool.elfiStaking,
       new providers.JsonRpcProvider(
         mainnet === 'BSC'
           ? envs.jsonRpcUrl.bsc
@@ -63,11 +69,6 @@ const useStakingRoundDataV2 = (
     if (!priceData) return;
     try {
       const res = await stakingPool.getPoolData();
-      console.log(
-        formatEther(
-          res.totalPrincipal.div(parseEther(priceData.elfiPrice.toFixed(4))),
-        ),
-      );
 
       setState({
         totalPrincipal: res.totalPrincipal,

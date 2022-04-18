@@ -25,7 +25,7 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
 import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
 import useCurrentChain from 'src/hooks/useCurrentChain';
-import { formatEther } from 'ethers/lib/utils';
+import { formatEther, parseEther } from 'ethers/lib/utils';
 import calcExpectedReward from 'src/core/utils/calcExpectedReward';
 import { rewardPerDayByToken } from 'src/utiles/stakingReward';
 import {
@@ -59,14 +59,28 @@ function LPStaking(): JSX.Element {
   const { value: mediaQuery } = useMediaQueryType();
   const { type: getMainnetType } = useContext(MainnetContext);
   const isWrongMainnet = isWrongNetwork(getMainnetType, currentChain?.name);
+  const [selectToken, setToken] = useState(Token.ELFI_DAI_LP);
 
   const rewardToken = Token.ELFI;
 
-  const { apr: EthPoolApr, totalPrincipal: EthTotalPrincipal } =
+  const { apr: ethPoolApr, totalPrincipal: ethTotalPrincipal } =
     useStakingRoundDataV2(Token.ELFI_ETH_LP, Token.ELFI);
 
-  const { apr: DaiPoolApr, totalPrincipal: DaiTotalPrincipal } =
+  const { apr: daiPoolApr, totalPrincipal: daiTotalPrincipal } =
     useStakingRoundDataV2(Token.ELFI_DAI_LP, Token.ELFI);
+
+  const {
+    roundData: ethRoundData,
+    loading: ethLoading,
+    error: ethError,
+    fetchRoundData: ethFetchData,
+  } = useStakingFetchRoundDataV2(Token.ELFI_ETH_LP, rewardToken, ethPoolApr);
+  const {
+    roundData: daiRoundData,
+    loading: daiLoading,
+    error: daiError,
+    fetchRoundData: daiFetchData,
+  } = useStakingFetchRoundDataV2(Token.ELFI_DAI_LP, rewardToken, daiPoolApr);
 
   const [modalType, setModalType] = useState('');
   const [transactionModal, setTransactionModal] = useState(false);
@@ -83,6 +97,7 @@ function LPStaking(): JSX.Element {
     before: constants.Zero,
     value: constants.Zero,
   });
+
   const [daiExpectedReward, setDaiExpectedReward] = useState({
     before: constants.Zero,
     value: constants.Zero,
@@ -94,9 +109,6 @@ function LPStaking(): JSX.Element {
     },
     [modalType],
   );
-
-  const { roundData, loading, error, fetchRoundData } =
-    useStakingFetchRoundDataV2(Token.UNI, rewardToken, EthPoolApr);
 
   const draw = () => {
     const dpr = window.devicePixelRatio;
@@ -148,18 +160,40 @@ function LPStaking(): JSX.Element {
   }, [document.body.clientHeight]);
 
   useEffect(() => {
-    if (error || loading) return;
+    if (ethLoading || ethError) return;
 
     const interval = setInterval(() => {
       if (!account) return;
 
       setEthExpectedReward({
         before: ethExpectedReward.value.isZero()
-          ? roundData[0].accountReward
+          ? ethRoundData[0].accountReward
           : ethExpectedReward.value,
         value: calcExpectedReward(
-          roundData[0],
-          rewardPerDayByToken(Token.UNI, getMainnetType),
+          ethRoundData[0],
+          rewardPerDayByToken(Token.ELFI_ETH_LP, getMainnetType),
+        ),
+      });
+    }, 2000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  });
+
+  useEffect(() => {
+    if (daiLoading || daiError) return;
+
+    const interval = setInterval(() => {
+      if (!account) return;
+
+      setDaiExpectedReward({
+        before: daiExpectedReward.value.isZero()
+          ? daiRoundData[0].accountReward
+          : daiExpectedReward.value,
+        value: calcExpectedReward(
+          daiRoundData[0],
+          rewardPerDayByToken(Token.ELFI_DAI_LP, getMainnetType),
         ),
       });
     }, 2000);
@@ -193,7 +227,7 @@ function LPStaking(): JSX.Element {
         }}
       />
       <Suspense fallback={null}>
-        {roundData.length !== 0 && (
+        {ethRoundData.length !== 0 && daiRoundData.length !== 0 && (
           <>
             <TransactionConfirmModal
               visible={transactionModal}
@@ -203,20 +237,39 @@ function LPStaking(): JSX.Element {
             />
             <ClaimStakingRewardModalV2
               visible={modalVisible(StakingModalType.Claim)}
-              stakedToken={Token.UNI}
+              stakedToken={selectToken}
               token={Token.ELFI}
-              balance={ethExpectedReward}
-              endedBalance={roundData[0]?.accountReward || constants.Zero}
-              stakingBalance={
-                loading ? constants.Zero : roundData[0]?.accountPrincipal
+              balance={
+                selectToken === Token.ELFI_ETH_LP
+                  ? ethExpectedReward
+                  : daiExpectedReward
               }
-              currentRound={roundData[0]}
+              endedBalance={
+                (selectToken === Token.ELFI_ETH_LP
+                  ? ethRoundData[0]?.accountReward
+                  : daiRoundData[0]?.accountReward) || constants.Zero
+              }
+              stakingBalance={
+                selectToken === Token.ELFI_ETH_LP
+                  ? ethLoading
+                    ? constants.Zero
+                    : ethRoundData[0]?.accountPrincipal
+                  : daiLoading
+                  ? constants.Zero
+                  : daiRoundData[0]?.accountPrincipal
+              }
+              currentRound={
+                selectToken === Token.ELFI_ETH_LP
+                  ? ethRoundData[0]
+                  : daiRoundData[0]
+              }
               closeHandler={() => {
                 setModalType('');
                 setTransactionWait(false);
               }}
               afterTx={() => {
-                account && fetchRoundData(account);
+                account && daiFetchData(account);
+                ethFetchData(account);
               }}
               transactionModal={() => setTransactionModal(true)}
               transactionWait={transactionWait}
@@ -228,12 +281,19 @@ function LPStaking(): JSX.Element {
                 setModalType('');
                 setTransactionWait(false);
               }}
-              stakedToken={Token.UNI}
+              stakedToken={selectToken}
               stakedBalance={
-                loading ? constants.Zero : roundData[0].accountPrincipal
+                selectToken === Token.ELFI_ETH_LP
+                  ? ethLoading
+                    ? constants.Zero
+                    : ethRoundData[0]?.accountPrincipal
+                  : daiLoading
+                  ? constants.Zero
+                  : daiRoundData[0]?.accountPrincipal
               }
               afterTx={() => {
-                account && fetchRoundData(account);
+                account && daiFetchData(account);
+                ethFetchData(account);
               }}
               endedModal={() => {
                 setModalType(StakingModalType.StakingEnded);
@@ -242,27 +302,46 @@ function LPStaking(): JSX.Element {
               transactionWait={transactionWait}
               setTransactionWait={() => setTransactionWait(true)}
               disableTransactionWait={() => setTransactionWait(false)}
+              title={selectToken}
             />
           </>
         )}
       </Suspense>
       <section className="staking__v2">
         <div className="staking__v2__title">
+          <div ref={headerRef} />
           <h2>{t('staking.lp.title')}</h2>
           <p>{t('staking.lp.content')}</p>
         </div>
-        <div ref={headerRef} />
         {getMainnetType === MainnetType.Ethereum ? (
-          loading ? (
-            <Skeleton width={'100%'} height={600} />
+          ethLoading && daiLoading ? (
+            <Skeleton width={'100%'} height={300} />
           ) : (
             <>
               {[
-                ['ELFI-ETH LP', eth],
-                ['ELFI-DAI LP', dai],
+                [
+                  'ELFI-ETH LP',
+                  eth,
+                  'https://app.uniswap.org/#/add/v2/0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4/ETH?chain=mainnet',
+                ],
+                [
+                  'ELFI-DAI LP',
+                  dai,
+                  'https://app.uniswap.org/#/add/v2/0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4/0x6b175474e89094c44da98b954eedeac495271d0f?chain=mainnet',
+                ],
               ].map((data, index) => {
+                const roundData =
+                  data[0] === 'ELFI-ETH LP' ? ethRoundData : daiRoundData;
+                const totalPrincipal =
+                  data[0] === 'ELFI-ETH LP'
+                    ? ethTotalPrincipal
+                    : daiTotalPrincipal;
+                const expectedReward =
+                  data[0] === 'ELFI-ETH LP'
+                    ? ethExpectedReward
+                    : daiExpectedReward;
                 return (
-                  <section className="staking__v2__container">
+                  <section className="staking__v2__container" key={index}>
                     <div className="staking__v2__header">
                       <div>
                         <div>
@@ -289,7 +368,7 @@ function LPStaking(): JSX.Element {
                         <div>
                           <p>{t('staking.elfi.total_amount')}</p>
                           <h2>
-                            {/* {parseFloat(formatEther(totalPrincipal))}{' '} */}
+                            {parseFloat(formatEther(totalPrincipal))}{' '}
                             {rewardToken}
                           </h2>
                         </div>
@@ -299,7 +378,7 @@ function LPStaking(): JSX.Element {
                         <p>
                           {t('staking.lp.receive_token', { pool: data[0] })}
                         </p>
-                        <div>
+                        <div onClick={() => window.open(data[2])}>
                           <p>{t('staking.lp.receive_button')}</p>
                         </div>
                       </div>
@@ -313,10 +392,11 @@ function LPStaking(): JSX.Element {
                             <div>
                               <h2>
                                 {`${formatCommaSmall(
-                                  roundData[0]?.accountPrincipal || '0',
+                                  roundData[0]?.accountPrincipal ||
+                                    parseEther('0'),
                                 )}`}
                                 <span className="token-amount bold">
-                                  {' ' + Token.UNI}
+                                  {Token.UNI}
                                 </span>
                               </h2>
                               <div
@@ -332,6 +412,11 @@ function LPStaking(): JSX.Element {
                                   //   stakedToken +
                                   //     ModalViewType.StakingOrUnstakingModal,
                                   // );
+                                  setToken(
+                                    data[0] === 'ELFI-ETH LP'
+                                      ? Token.ELFI_ETH_LP
+                                      : Token.ELFI_DAI_LP,
+                                  );
                                   setModalValue(roundData[0].accountPrincipal);
                                   setModalType(StakingModalType.Staking);
                                 }}>
@@ -343,19 +428,18 @@ function LPStaking(): JSX.Element {
                             <h2>{t('staking.reward_amount')}</h2>
                             <div>
                               <h2>
-                                {ethExpectedReward.before.isZero() ||
-                                !account ? (
+                                {expectedReward.before.isZero() || !account ? (
                                   '-'
                                 ) : (
                                   <CountUp
                                     start={parseFloat(
-                                      formatEther(ethExpectedReward.before),
+                                      formatEther(expectedReward.before),
                                     )}
                                     end={parseFloat(
                                       formatEther(
-                                        ethExpectedReward.before.isZero()
+                                        expectedReward.before.isZero()
                                           ? roundData[0].accountReward
-                                          : ethExpectedReward.value,
+                                          : expectedReward.value,
                                       ),
                                     )}
                                     formattingFn={(number) => {
@@ -366,18 +450,18 @@ function LPStaking(): JSX.Element {
                                   />
                                 )}
                                 <span className="token-amount bold">
-                                  {' ' + rewardToken}
+                                  {rewardToken}
                                 </span>
                               </h2>
                               <div
                                 className={`staking__round__button ${
-                                  ethExpectedReward.value.isZero() || !account
+                                  expectedReward.value.isZero() || !account
                                     ? ' disable'
                                     : ''
                                 }`}
                                 onClick={(e) => {
                                   if (
-                                    ethExpectedReward.value.isZero() ||
+                                    expectedReward.value.isZero() ||
                                     !account
                                   ) {
                                     return;
@@ -387,7 +471,7 @@ function LPStaking(): JSX.Element {
                                   // ReactGA.modalview(
                                   //   stakedToken + ModalViewType.StakingIncentiveModal,
                                   // );
-                                  setModalValue(ethExpectedReward.value);
+                                  setModalValue(expectedReward.value);
                                   setModalType(StakingModalType.Claim);
                                 }}>
                                 <p>{t('staking.claim_reward')}</p>

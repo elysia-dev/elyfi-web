@@ -21,7 +21,7 @@ import ModalHeader from 'src/components/Modal/ModalHeader';
 import useStakingPoolV2 from 'src/components/Staking/hooks/useStakingPoolV2';
 
 const ClaimStakingRewardModalV2: FunctionComponent<{
-  stakedToken: Token.ELFI | Token.UNI;
+  stakedToken: Token;
   token: Token.ELFI | Token.UNI;
   balance?: {
     before: BigNumber;

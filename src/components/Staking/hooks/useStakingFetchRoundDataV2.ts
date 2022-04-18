@@ -17,7 +17,7 @@ import priceMiddleware from 'src/middleware/priceMiddleware';
 import useStakingPoolV2 from './useStakingPoolV2';
 
 const useStakingFetchRoundDataV2 = (
-  stakedToken: Token.UNI | Token.ELFI,
+  stakedToken: Token,
   rewardToken: string,
   poolApr: BigNumber,
 ): {
@@ -71,10 +71,11 @@ const useStakingFetchRoundDataV2 = (
       if (!priceData) return;
       const data: RoundData[] = [];
       if (stakingPool && account) {
-        const poolData = await stakingPool.getPoolData();
         const userData = await stakingPool.getUserData(account);
         const accountReward = await stakingPool.getUserReward(account);
+        const poolData = await stakingPool.getPoolData();
 
+        console.log(poolData);
         data.push(
           stakedData(
             priceData,

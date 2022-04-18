@@ -9,6 +9,8 @@ import { useWeb3React } from '@web3-react/core';
 import Token from 'src/enums/Token';
 import moment from 'moment';
 import { roundTimes } from 'src/core/data/stakingRoundTimes';
+import eth from 'src/assets/images/eth-color.png';
+import dai from 'src/assets/images/dai.png';
 import useStakingPoolV2 from 'src/components/Staking/hooks/useStakingPoolV2';
 import useERC20Info from 'src/hooks/useERC20Info';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
@@ -32,13 +34,14 @@ const StakingModalV2: React.FunctionComponent<{
   visible: boolean;
   closeHandler: () => void;
   afterTx: () => void;
-  stakedToken: Token.ELFI | Token.UNI;
+  stakedToken: Token;
   stakedBalance: BigNumber;
   endedModal: () => void;
   transactionModal: () => void;
   transactionWait: boolean;
   setTransactionWait: () => void;
   disableTransactionWait: () => void;
+  title: Token | string;
 }> = ({
   visible,
   closeHandler,
@@ -50,6 +53,7 @@ const StakingModalV2: React.FunctionComponent<{
   transactionWait,
   setTransactionWait,
   disableTransactionWait,
+  title,
 }) => {
   const { t, i18n } = useTranslation();
   const { account, chainId } = useWeb3React();
@@ -67,7 +71,11 @@ const StakingModalV2: React.FunctionComponent<{
     refetch,
     contract,
   } = useERC20Info(
-    stakingRewardTokenAddressV2(getMainnetType, currentChain?.name),
+    stakingRewardTokenAddressV2(
+      getMainnetType,
+      currentChain?.name,
+      stakedToken,
+    ),
     stakingAddress ? stakingAddress.address : '',
     visible,
   );
@@ -90,9 +98,16 @@ const StakingModalV2: React.FunctionComponent<{
     <div className="modal" style={{ display: visible ? 'block' : 'none' }}>
       <div className="modal__container">
         <ModalHeader
-          title={stakedToken}
+          title={title}
           image={ELFI}
           onClose={() => closeHandler()}
+          subImage={
+            title === Token.ELFI_ETH_LP
+              ? eth
+              : title === Token.ELFI_DAI_LP
+              ? dai
+              : undefined
+          }
         />
         <ModalConverter
           handlerProps={stakingMode}

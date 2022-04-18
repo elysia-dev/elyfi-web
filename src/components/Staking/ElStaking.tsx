@@ -4,11 +4,13 @@ import TokenColors from 'src/enums/TokenColors';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import DrawWave from 'src/utiles/drawWave';
 import { useTranslation, Trans } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 
 const ElStaking: React.FC = () => {
   const { t } = useTranslation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
+  const { lng } = useParams<{ lng: string }>();
 
   const { value: mediaQuery } = useMediaQueryType();
 
@@ -68,7 +70,7 @@ const ElStaking: React.FC = () => {
         <p>
           <Trans i18nKey="staking.el.content" />
         </p>
-        <div>
+        <div onClick={() => window.open(`https://gov.elysia.land/${lng}`)}>
           <p>{t('staking.el.button')}</p>
         </div>
         <section ref={headerRef} />

@@ -327,8 +327,10 @@
       "legacy": {
         "title": "Previous Staking Program",
         "content": "The previous ELFI staking program was held for 7 rounds from 2021.07.27 to 2022.04.17 KST.\nOnly users who have remaining staked during this period can see.\nUsers who want to unstake and receive rewards, please connect your wallet.",
+        "bsc-content": "The previous ELFI staking program was held for 2 rounds from 2022.02.25 to 2022.04.17 KST.\nOnly users who have remaining staked during this period can see.\nUsers who want to unstake and receive rewards, please connect your wallet.",
         "lp-content": "The previous LP staking program was held for 4 rounds from 2021.11.05 to 2022.04.17 KST.\nOnly users who have remaining staked during this period can see.\nUsers who want to unstake and receive rewards, please connect your wallet.",
         "round": "1st ~ 7th",
+        "bsc-round": "1st ~ 2nd",
         "undefined": {
           "wallet": "A wallet connection is required.",
           "amount": "There is no amount of {{ token }} tokens staked."
