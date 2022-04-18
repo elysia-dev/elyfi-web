@@ -31,7 +31,7 @@ import { rewardPerDayByToken } from 'src/utiles/stakingReward';
 import {
   formatCommaSmall,
   formatSixFracionDigit,
-  toPercentWithoutSign,
+  toCompact,
 } from 'src/utiles/formatters';
 import StakingModalType from 'src/enums/StakingModalType';
 import Skeleton from 'react-loading-skeleton';
@@ -360,9 +360,9 @@ function LPStaking(): JSX.Element {
                         <div>
                           <p>{t('staking.elfi.apr')}</p>
                           <h2 className="percent">
-                            {v2LPPoolApr[index].eq(constants.MaxUint256)
+                            {v2LPPoolApr[index] === 0
                               ? '-'
-                              : toPercentWithoutSign(v2LPPoolApr[index])}
+                              : toCompact(v2LPPoolApr[index])}
                           </h2>
                         </div>
                         <div>
