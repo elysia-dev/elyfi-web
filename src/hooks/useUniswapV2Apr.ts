@@ -20,6 +20,7 @@ const useUniswapV2Apr = () => {
     elfiEthPool: 0,
     elfiDaiPool: 0,
   });
+  const [aprLoading, setAprLoading] = useState(true);
   const { data: priceData, isValidating: loading } = useSWR(
     envs.externalApiEndpoint.coingackoURL,
     pricesFetcher,
@@ -102,13 +103,14 @@ const useUniswapV2Apr = () => {
       elfiDaiPool: elfiDaiAPR,
       elfiEthPool: elfiEthAPR,
     });
+    setAprLoading(false);
   };
 
   useEffect(() => {
     test();
   }, [priceData, v2EthLPPoolElfi, v2DaiLPPoolElfi]);
 
-  return { uniswapV2Apr };
+  return { uniswapV2Apr, aprLoading };
 };
 
 export default useUniswapV2Apr;
