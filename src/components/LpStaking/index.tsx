@@ -87,7 +87,7 @@ function LPStaking(): JSX.Element {
   const [transactionWait, setTransactionWait] = useState<boolean>(false);
   const [modalValue, setModalValue] = useState(constants.Zero);
 
-  const { uniswapV2Apr } = useUniswapV2Apr();
+  const { uniswapV2Apr, aprLoading } = useUniswapV2Apr();
 
   const v2LPPoolApr = useMemo(() => {
     return [uniswapV2Apr.elfiEthPool, uniswapV2Apr.elfiDaiPool];
@@ -359,11 +359,15 @@ function LPStaking(): JSX.Element {
                       <div>
                         <div>
                           <p>{t('staking.elfi.apr')}</p>
-                          <h2 className="percent">
-                            {v2LPPoolApr[index] === 0
-                              ? '-'
-                              : toCompact(v2LPPoolApr[index])}
-                          </h2>
+                          {aprLoading ? (
+                            <Skeleton width={60} height={15} />
+                          ) : (
+                            <h2 className="percent">
+                              {v2LPPoolApr[index] === 0
+                                ? '-'
+                                : toCompact(v2LPPoolApr[index])}
+                            </h2>
+                          )}
                         </div>
                         <div>
                           <p>{t('staking.elfi.total_amount')}</p>
