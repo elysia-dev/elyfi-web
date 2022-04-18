@@ -9,7 +9,7 @@ import { useWeb3React } from '@web3-react/core';
 import Token from 'src/enums/Token';
 import moment from 'moment';
 import { roundTimes } from 'src/core/data/stakingRoundTimes';
-import useStakingPool from 'src/hooks/useStakingPool';
+import useStakingPoolV2 from 'src/components/Staking/hooks/useStakingPoolV2';
 import useERC20Info from 'src/hooks/useERC20Info';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import TxContext from 'src/contexts/TxContext';
@@ -20,7 +20,7 @@ import buildEventEmitter from 'src/utiles/buildEventEmitter';
 import ModalViewType from 'src/enums/ModalViewType';
 import TransactionType from 'src/enums/TransactionType';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
-import { stakingRewardTokenAddress } from 'src/utiles/stakingPoolAddress';
+import { stakingRewardTokenAddressV2 } from 'src/utiles/stakingPoolAddress';
 import MainnetContext from 'src/contexts/MainnetContext';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import IncreateAllowanceModal, {
@@ -28,46 +28,36 @@ import IncreateAllowanceModal, {
 } from 'src/components/Modal/IncreateAllowanceModal';
 import TxStatus from 'src/enums/TxStatus';
 
-const StakingModal: React.FunctionComponent<{
+const StakingModalV2: React.FunctionComponent<{
   visible: boolean;
   closeHandler: () => void;
   afterTx: () => void;
-  stakedToken: Token.ELFI | Token.EL;
+  stakedToken: Token.ELFI | Token.UNI;
   stakedBalance: BigNumber;
-  round: number;
   endedModal: () => void;
   transactionModal: () => void;
   transactionWait: boolean;
   setTransactionWait: () => void;
   disableTransactionWait: () => void;
-  isUnstaking: boolean;
 }> = ({
   visible,
   closeHandler,
   afterTx,
   stakedBalance,
   stakedToken,
-  round,
   endedModal,
   transactionModal,
   transactionWait,
   setTransactionWait,
   disableTransactionWait,
-  isUnstaking,
 }) => {
   const { t, i18n } = useTranslation();
   const { account, chainId } = useWeb3React();
-  const [stakingMode, setStakingMode] = useState<boolean>(false);
+  const [stakingMode, setStakingMode] = useState<boolean>(true);
   const [amount, setAmount] = useState({ value: '', max: false });
-  const current = moment();
   const { setTransaction, failTransaction, txStatus } = useContext(TxContext);
-  const { contract: stakingPool, elfiV2StakingContract } = useStakingPool(
-    stakedToken,
-    round >= 3,
-  );
-  const stakingAddress = elfiV2StakingContract
-    ? elfiV2StakingContract
-    : stakingPool;
+  const { contract: stakingPool } = useStakingPoolV2(stakedToken);
+  const stakingAddress = stakingPool;
   const { type: getMainnetType } = useContext(MainnetContext);
   const currentChain = useCurrentChain();
   const {
@@ -77,7 +67,7 @@ const StakingModal: React.FunctionComponent<{
     refetch,
     contract,
   } = useERC20Info(
-    stakingRewardTokenAddress(getMainnetType, stakedToken, currentChain?.name),
+    stakingRewardTokenAddressV2(getMainnetType, currentChain?.name),
     stakingAddress ? stakingAddress.address : '',
     visible,
   );
@@ -89,18 +79,12 @@ const StakingModal: React.FunctionComponent<{
   const amountGtStakedBalance =
     !amount.max && utils.parseEther(amount.value || '0').gt(stakedBalance);
 
-  const stakingRoundDate = roundTimes(stakedToken, getMainnetType);
-
   useEffect(() => {
     setAmount({
       max: false,
       value: '',
     });
   }, [stakingMode, visible]);
-
-  useEffect(() => {
-    setStakingMode(isUnstaking);
-  }, [isUnstaking]);
 
   return (
     <div className="modal" style={{ display: visible ? 'block' : 'none' }}>
@@ -109,6 +93,11 @@ const StakingModal: React.FunctionComponent<{
           title={stakedToken}
           image={ELFI}
           onClose={() => closeHandler()}
+        />
+        <ModalConverter
+          handlerProps={stakingMode}
+          setState={setStakingMode}
+          title={[t('staking.staking'), t('staking.unstaking')]}
         />
         {transactionWait ||
         allowanceLoading ||
@@ -194,7 +183,7 @@ const StakingModal: React.FunctionComponent<{
                     {stakingMode
                       ? t('staking.wallet_balance')
                       : t('staking.nth_staking_amount', {
-                          nth: toOrdinalNumber(i18n.language, round),
+                          nth: toOrdinalNumber(i18n.language, 1),
                         })}
                   </h2>
                   <h2>
@@ -222,7 +211,6 @@ const StakingModal: React.FunctionComponent<{
                   chainId,
                   address: account,
                   stakingType: stakedToken,
-                  round,
                 }),
               );
 
@@ -280,7 +268,6 @@ const StakingModal: React.FunctionComponent<{
                       chainId,
                       address: account,
                       stakingType: stakedToken,
-                      round,
                       unstakingAmount: utils.formatEther(
                         utils.parseEther(amount.value),
                       ),
@@ -295,10 +282,6 @@ const StakingModal: React.FunctionComponent<{
                       amount.max
                         ? constants.MaxUint256
                         : utils.parseEther(amount.value),
-                      (round >= 3 && stakedToken === Token.ELFI
-                        ? round - 2
-                        : round
-                      ).toString(),
                     )
                     .then((tx) => {
                       setTransaction(
@@ -346,11 +329,6 @@ const StakingModal: React.FunctionComponent<{
                       transactionWait
                     )
                       return;
-                    if (current.diff(stakingRoundDate[round - 1].endedAt) > 0) {
-                      endedModal();
-                      closeHandler();
-                      return;
-                    }
                     setTransactionWait();
                     const emitter = buildEventEmitter(
                       ModalViewType.StakingOrUnstakingModal,
@@ -360,7 +338,6 @@ const StakingModal: React.FunctionComponent<{
                         chainId,
                         address: account,
                         stakingType: stakedToken,
-                        round,
                         unstakingAmount: utils.formatEther(
                           utils.parseEther(amount.value),
                         ),
@@ -414,4 +391,4 @@ const StakingModal: React.FunctionComponent<{
   );
 };
 
-export default StakingModal;
+export default StakingModalV2;

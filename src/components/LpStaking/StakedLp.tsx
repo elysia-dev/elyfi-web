@@ -26,13 +26,13 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
     isError,
     round,
     isLoading,
-    currentRound,
   } = props;
   const { account } = useWeb3React();
   const { t } = useTranslation();
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const [selectWalletModalVisible, setSelectWalletModalVisible] =
     useState(false);
+
   return (
     <>
       <SelectWalletModal
@@ -115,7 +115,6 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
                         };
                       }}
                       round={round}
-                      currentRound={currentRound}
                     />
                   );
                 })
@@ -153,7 +152,6 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
                 <div>
                   <CountUp
                     className="bold"
-                    start={totalExpectedReward.beforeTotalElfi}
                     end={totalExpectedReward.totalElfi}
                     formattingFn={(number) => {
                       return formatDecimalFracionDigit(number, 2);
@@ -168,7 +166,6 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
                 <div>
                   <CountUp
                     className="bold"
-                    start={totalExpectedReward.beforeTotalEth}
                     end={totalExpectedReward.totalEth}
                     formattingFn={(number) => {
                       return formatDecimalFracionDigit(number, 2);
@@ -183,7 +180,6 @@ const StakedLp: FunctionComponent<StakedTokenProps> = (props) => {
                 <div>
                   <CountUp
                     className="bold"
-                    start={totalExpectedReward.beforeTotalDai}
                     end={totalExpectedReward.totalDai}
                     formattingFn={(number) => {
                       return formatDecimalFracionDigit(number, 2);

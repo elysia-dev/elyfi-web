@@ -58,5 +58,12 @@
   },
   "jsonRpcUrl": {
     "bsc": "https://data-seed-prebsc-1-s1.binance.org:8545/"
+  },
+  "stakingV2MoneyPool": {
+    "elfiStaking": "0x7d22b5A6Cf5dc27AC96a085FB49B67ddC3Aa6C77",
+    "elfiBscStaking": "0x7d22b5A6Cf5dc27AC96a085FB49B67ddC3Aa6C77",
+    "lpStaking": "0xFB9E3212582765892AEF44A7c0084cE183E08e90",
+    "elfiEthLp": "0x727e501ddabf9ab1888abc5042ef4d0569f0c162",
+    "elfiDaiLp": "0x8f9a5bd715c553a94eaf0c67ebd2a8ae2ad60f9e"
   }
 }

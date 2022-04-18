@@ -1719,7 +1719,6 @@ $device-width: 1190px;
           }
         }
         &__content {
-          padding-bottom: 20px;
           > p {
             font-size: 15px;
             line-height: 25px;
@@ -1792,15 +1791,15 @@ $device-width: 1190px;
 
         &__previous {
           &__wrapper {
-            width: 95%;
+            width: 100%;
             border-radius: 10px;
-            margin: 45px 0 45px auto;
+            padding: 20px 30px 5px;
           }
           height: 135px;
-          padding: 14px 75px 17px 14px;
-          &:last-child {
-            border: 0px;
-          }
+          padding: 15px 25px;
+          border: 1px solid $gray-line;
+          border-radius: 10px;
+          margin-bottom: 15px;
           &__title {
             border-radius: 10px;
             > h2 {

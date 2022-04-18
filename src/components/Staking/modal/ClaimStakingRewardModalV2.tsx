@@ -1,0 +1,167 @@
+import { useWeb3React } from '@web3-react/core';
+import { BigNumber, utils } from 'ethers';
+import { FunctionComponent, useContext } from 'react';
+import CountUp from 'react-countup';
+import { formatEther } from '@ethersproject/units';
+
+import LoadingIndicator from 'src/components/Modal/LoadingIndicator';
+import ElifyTokenImage from 'src/assets/images/ELFI.png';
+import { formatCommaSmall, formatSixFracionDigit } from 'src/utiles/formatters';
+import Token from 'src/enums/Token';
+import { useTranslation } from 'react-i18next';
+import TxContext from 'src/contexts/TxContext';
+import RecentActivityType from 'src/enums/RecentActivityType';
+import RoundData from 'src/core/types/RoundData';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
+import TransactionType from 'src/enums/TransactionType';
+import ModalViewType from 'src/enums/ModalViewType';
+import ElyfiVersions from 'src/enums/ElyfiVersions';
+import MainnetContext from 'src/contexts/MainnetContext';
+import ModalHeader from 'src/components/Modal/ModalHeader';
+import useStakingPoolV2 from 'src/components/Staking/hooks/useStakingPoolV2';
+
+const ClaimStakingRewardModalV2: FunctionComponent<{
+  stakedToken: Token.ELFI | Token.UNI;
+  token: Token.ELFI | Token.UNI;
+  balance?: {
+    before: BigNumber;
+    value: BigNumber;
+  };
+  endedBalance: BigNumber;
+  stakingBalance: BigNumber;
+  currentRound: RoundData;
+  visible: boolean;
+  closeHandler: () => void;
+  afterTx: () => void;
+  transactionModal: () => void;
+  transactionWait: boolean;
+  setTransactionWait: () => void;
+}> = ({
+  visible,
+  stakedToken,
+  stakingBalance,
+  token,
+  balance,
+  endedBalance,
+  closeHandler,
+  afterTx,
+  transactionModal,
+  transactionWait,
+  setTransactionWait,
+  currentRound,
+}) => {
+  const { account, chainId } = useWeb3React();
+  const { contract: stakingPool } = useStakingPoolV2(stakedToken);
+  const { t } = useTranslation();
+  const { setTransaction, failTransaction } = useContext(TxContext);
+  const { type: mainnet } = useContext(MainnetContext);
+
+  const claimAddress = stakingPool;
+
+  return (
+    <div
+      className="modal modal__incentive"
+      style={{ display: visible ? 'block' : 'none' }}>
+      <div className="modal__container">
+        <ModalHeader
+          image={ElifyTokenImage}
+          title={token}
+          onClose={closeHandler}
+        />
+        <div className="modal__body">
+          {transactionWait ? (
+            <LoadingIndicator isTxActive={transactionWait} />
+          ) : (
+            <>
+              <div className="modal__incentive__body">
+                <p
+                  className="modal__incentive__value bold"
+                  style={{
+                    fontSize:
+                      window.sessionStorage.getItem('@MediaQuery') !== 'PC'
+                        ? 30
+                        : 60,
+                  }}>
+                  {!endedBalance?.isZero()
+                    ? formatCommaSmall(endedBalance)
+                    : balance && (
+                        <CountUp
+                          className={`spoqa__bold colored ${
+                            token === Token.ELFI ? 'EL' : 'ELFI'
+                          }`}
+                          start={parseFloat(formatEther(balance.before))}
+                          end={parseFloat(
+                            formatEther(
+                              balance.before.isZero()
+                                ? currentRound.accountReward
+                                : balance.value,
+                            ),
+                          )}
+                          formattingFn={(number) => {
+                            return formatSixFracionDigit(number);
+                          }}
+                          decimals={6}
+                          duration={1}
+                        />
+                      )}
+                </p>
+              </div>
+            </>
+          )}
+          <div
+            className={`modal__button ${transactionWait ? 'disable' : ''}`}
+            onClick={() => {
+              transactionWait ? undefined : setTransactionWait();
+              if (!account) return;
+
+              const emitter = buildEventEmitter(
+                ModalViewType.StakingIncentiveModal,
+                TransactionType.Claim,
+                JSON.stringify({
+                  version: ElyfiVersions.V1,
+                  chainId,
+                  address: account,
+                  stakingType: stakedToken,
+                  stakingAmount: utils.formatEther(stakingBalance),
+                  incentiveAmount: utils.formatEther(
+                    balance?.value || endedBalance,
+                  ),
+                }),
+              );
+
+              emitter.clicked();
+
+              claimAddress
+                ?.claim()
+                .then((tx) => {
+                  setTransaction(
+                    tx,
+                    emitter,
+                    (stakedToken + 'Claim') as RecentActivityType,
+                    () => {
+                      transactionModal();
+                      closeHandler();
+                    },
+                    () => {
+                      afterTx();
+                    },
+                  );
+                })
+                .catch((e) => {
+                  failTransaction(
+                    emitter,
+                    closeHandler,
+                    e,
+                    TransactionType.Claim,
+                  );
+                });
+            }}>
+            <p>{t('staking.claim_reward')}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ClaimStakingRewardModalV2;

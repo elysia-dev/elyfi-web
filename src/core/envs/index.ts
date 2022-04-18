@@ -64,6 +64,13 @@ interface EnvironmentVariables {
   jsonRpcUrl: {
     bsc: string;
   };
+  stakingV2MoneyPool: {
+    elfiStaking: string;
+    elfiBscStaking: string;
+    lpStaking: string;
+    elfiEthLp: string;
+    elfiDaiLp: string;
+  };
 }
 
 const vars =

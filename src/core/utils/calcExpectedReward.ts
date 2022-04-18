@@ -7,13 +7,7 @@ const calcExpectedReward = (
   minedPerDay: BigNumber,
 ): BigNumber => {
   const current = moment();
-
-  if (
-    round.totalPrincipal.isZero() ||
-    round.accountPrincipal.isZero() ||
-    current.diff(round.startedAt) < 0 ||
-    current.diff(round.endedAt) > 0
-  ) {
+  if (round.totalPrincipal.isZero() || round.accountPrincipal.isZero()) {
     return round.accountReward;
   }
 

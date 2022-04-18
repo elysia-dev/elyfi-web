@@ -16,15 +16,9 @@ const DetailBoxItemStaking: FunctionComponent<DetailBoxItemStakingProps> = (
   const {
     tokens: { token0, token1 },
     totalStakedLiquidity,
-    setModalAndSetStakeToken,
-    round,
     isLoading,
   } = props;
   const { t } = useTranslation();
-  const isStakingDate = moment().isBetween(
-    lpRoundDate[round - 1].startedAt,
-    lpRoundDate[round - 1].endedAt,
-  );
   const { value: mediaQuery } = useMediaQueryType();
 
   return mediaQuery === MediaQuery.PC ? (
@@ -39,11 +33,7 @@ const DetailBoxItemStaking: FunctionComponent<DetailBoxItemStakingProps> = (
           </p>
           <Guide content={t('guide.staked_total_amount')} />
         </div>
-        <div
-          onClick={() => isStakingDate && account && setModalAndSetStakeToken()}
-          className={`staking__lp__detail-box__staking__button ${
-            !isStakingDate || !account ? 'disable' : ''
-          }`}>
+        <div className="staking__lp__detail-box__staking__button disable">
           <p>{t('staking.staking')}</p>
         </div>
       </div>
@@ -75,11 +65,7 @@ const DetailBoxItemStaking: FunctionComponent<DetailBoxItemStakingProps> = (
           <Skeleton width={80} height={18} />
         )}
       </div>
-      <div
-        onClick={() => isStakingDate && account && setModalAndSetStakeToken()}
-        className={`staking__lp__detail-box__staking__button ${
-          !isStakingDate || !account ? 'disable' : ''
-        }`}>
+      <div className="staking__lp__detail-box__staking__button disable">
         <p>{t('staking.staking')}</p>
       </div>
     </>

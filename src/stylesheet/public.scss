@@ -2131,6 +2131,123 @@ input[type='number'] {
   } // portfolio end
 
   .staking {
+    &__v2 {
+      width: 1190px;
+      margin: 0 auto;
+      padding-top: 100px;
+      position: relative;
+      &__title {
+        text-align: center;
+        margin-top: 80px;
+        margin-bottom: 220px;
+        > h2 {
+          font-size: 30px;
+          margin-bottom: 16px;
+          color: $font-color;
+        }
+        > p {
+          color: $font-color;
+          font-size: 15px;
+        }
+      }
+      &__header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        > div:first-child {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          margin-left: 30px;
+          margin-bottom: 18px;
+          > div {
+            display: flex;
+            flex-direction: row;
+            > img {
+              width: 37px;
+              height: 37px;
+              &:last-child {
+                margin-left: -6px;
+              }
+            }
+          }
+          > h2 {
+            font-size: 18px;
+            color: $font-color;
+            margin-left: 8px;
+          }
+        }
+      }
+      &__container {
+        margin-bottom: 100px;
+      }
+      &__content {
+        > div {
+          background-color: $background-color;
+          &:first-child {
+            border-radius: 10px;
+            border: 1px solid $gray-line;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            z-index: 2;
+            position: relative;
+            > div {
+              flex: 1;
+              padding: 15px 30px;
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              align-items: center;
+              &:first-child {
+                border-right: 1px solid $gray-line;
+              }
+              > p {
+                font-size: 15px;
+                color: $font-color;
+              }
+              > h2 {
+                font-size: 15px;
+                color: $font-color;
+              }
+            }
+          }
+          &:last-child {
+            width: calc(100% - 4px);
+            margin: 0 auto;
+            padding: 20px 30px 16px;
+            position: relative;
+            bottom: 5px;
+            border: 1px solid $gray-line;
+            border-radius: 0px 0 10px 10px;
+            z-index: 1;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            > div {
+              width: 179px;
+              height: 30px;
+              border-radius: 30px;
+              background: #ffffff;
+              @include hover__box-shadow;
+              box-shadow: 0px 0px 6px #00000029;
+              cursor: pointer;
+              display: flex;
+              flex-direction: row;
+              justify-content: center;
+              align-items: center;
+              > p {
+                cursor: pointer;
+                color: $font-color;
+              }
+            }
+          }
+        }
+      }
+    }
     &__title {
       display: flex;
       flex-direction: column;
@@ -2165,7 +2282,7 @@ input[type='number'] {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        align-items: flex-end;
+        align-items: center;
         border-bottom: 1px solid $elysia-color;
         > p {
           width: 100%;
@@ -2272,7 +2389,7 @@ input[type='number'] {
           box-sizing: border-box;
           border-radius: 10px;
           display: flex;
-          flex-direction: column;
+          flex-direction: column-reverse;
         }
         display: flex;
         justify-content: space-between;
@@ -2320,6 +2437,34 @@ input[type='number'] {
           height: 100%;
         }
       } // previous end
+      &__header {
+        margin: 45px 0 0;
+        height: 45px;
+        border-radius: 10px;
+        border: 1px solid $gray-line;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+        > div {
+          display: flex;
+          flex: 1;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          padding: 15px 23px;
+          &:first-child {
+            border: 1px solid $gray-line;
+          }
+          > p {
+            font-size: 15px;
+          }
+          > h2 {
+            font-size: 15px;
+          }
+        }
+      }
       &__remaining-data {
         border-radius: 10px;
         box-sizing: border-box;
@@ -2375,6 +2520,9 @@ input[type='number'] {
               > h2 {
                 text-align: right;
                 color: $font-color;
+                > span {
+                  margin-left: 5px;
+                }
               }
               > div {
                 margin: 0 auto;
@@ -2858,7 +3006,162 @@ input[type='number'] {
         }
       }
     }
+
+    &__el {
+      height: calc(100vh - 322px);
+      margin: 0 auto;
+      width: 1190px;
+      &__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 100px;
+        height: 100%;
+        text-align: center;
+        > h2 {
+          font-size: 30px;
+          color: $font-color;
+          margin-bottom: 25px;
+        }
+        > p {
+          font-size: 15px;
+          line-height: 25px;
+          color: $font-color;
+          margin-bottom: 25px;
+        }
+        > div {
+          @include hover__box-shadow;
+          width: 220px;
+          height: 35px;
+          border-radius: 35px;
+          box-shadow: 0px 0px 6px #00000029;
+          cursor: pointer;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          > p {
+            font-size: 15px;
+            cursor: pointer;
+          }
+        }
+      }
+    }
   } // staking end
+
+  .legacy {
+    min-height: calc(100vh - 322px);
+    margin: 0 auto;
+    width: 1190px;
+    padding-top: 100px;
+    .lp {
+      &__header {
+        &__button {
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+          justify-content: space-around;
+
+          margin-top: 35px;
+          > div {
+            width: 210px;
+            height: 47px;
+            border-radius: 24px;
+
+            transition: all 0.2s ease;
+            background: #ffffff;
+            box-shadow: 0px 1px 6px #00000029;
+            text-align: center;
+            cursor: pointer;
+            @include hover__soft-background;
+            > p {
+              color: $font-color;
+              cursor: pointer;
+              line-height: 47px;
+              font-size: 15px;
+            }
+            &.active {
+              border: 1px solid $elysia-color;
+              > p {
+                font-family: $bold;
+                line-height: 47px;
+                font-size: 15px;
+              }
+            }
+          }
+        }
+      }
+    }
+    &__header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-top: 80px;
+      text-align: center;
+      padding-bottom: 200px;
+      > h2 {
+        font-size: 30px;
+        color: $font-color;
+        margin-bottom: 25px;
+      }
+      > p {
+        font-size: 15px;
+        line-height: 25px;
+        color: $font-color;
+        margin-bottom: 25px;
+      }
+    }
+    &__body {
+      width: 100%;
+      background: $background-color;
+      border: 1px solid $gray-line;
+      border-radius: 10px;
+
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      &--left {
+        border-right: 1px solid $gray-line;
+      }
+      &__all-round {
+        width: 182px;
+        height: 205px;
+        background: $background-color;
+        border: 1px solid $gray-line;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 14px 33px 14px 28px;
+        > h2 {
+          font-size: 15px;
+          color: $elysia-color;
+          margin-bottom: 30px;
+        }
+        > p {
+          width: 90px;
+          text-align: center;
+          font-size: 12px;
+          color: $font-color;
+        }
+      }
+
+      &--right {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+      }
+      &__undefined-data {
+        > h2 {
+          font-size: 15px;
+          text-align: center;
+        }
+      }
+    }
+  }
 
   .guide {
     margin: 0 auto;

@@ -1,8 +1,7 @@
 import { FunctionComponent } from 'react';
 import { utils } from 'ethers';
 import { formatDecimalFracionDigit } from 'src/utiles/formatters';
-import Skeleton from 'react-loading-skeleton';
-import { lpRoundDate, lpUnixTimestamp } from 'src/core/data/lpStakingTime';
+import { lpUnixTimestamp } from 'src/core/data/lpStakingTime';
 import moment from 'moment';
 import Token from 'src/enums/Token';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
@@ -17,15 +16,7 @@ import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
 
 const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
-  const {
-    tokens,
-    totalLiquidity,
-    totalStakedLiquidity,
-    apr,
-    isLoading,
-    setModalAndSetStakeToken,
-    round,
-  } = props;
+  const { tokens, totalStakedLiquidity, isLoading, round } = props;
   const { token0, token1 } = tokens;
   const { pricePerDaiLiquidity, pricePerEthLiquidity } = usePricePerLiquidity();
   const { account } = useWeb3React();
@@ -42,19 +33,7 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
       <>
         <div className="staking__lp__detail-box__body">
           <section className="staking__lp__detail-box__item-header">
-            <DetailBoxItemHeader
-              totalLiquidity={formatDecimalFracionDigit(totalLiquidity, 2)}
-              apr={
-                moment().isBetween(
-                  lpRoundDate[round - 1].startedAt,
-                  lpRoundDate[round - 1].endedAt,
-                )
-                  ? apr
-                  : '-'
-              }
-              token1={token1}
-              isLoading={isLoading}
-            />
+            <DetailBoxItemHeader token1={token1} />
           </section>
           <section className="staking__lp__detail-box__receive-token">
             <DetailBoxItemReceiveToken token0={token0} token1={token1} />
@@ -73,8 +52,6 @@ const DetailBox: FunctionComponent<DetailBoxProps> = (props) => {
                     ) || '0'
                   : '0'
               }
-              setModalAndSetStakeToken={setModalAndSetStakeToken}
-              round={round}
               isLoading={isLoading}
             />
           </section>

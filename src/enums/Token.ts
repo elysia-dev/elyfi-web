@@ -8,6 +8,7 @@ enum Token {
   ELFI_ETH_LP = 'ELFI_ETH_LP',
   ELFI_DAI_LP = 'ELFI_DAI_LP',
   BUSD = 'BUSD',
+  UNI = 'UNI-V2',
 }
 
 export default Token;
