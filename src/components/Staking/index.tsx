@@ -15,6 +15,7 @@ import { formatEther } from 'ethers/lib/utils';
 import {
   formatCommaSmall,
   formatSixFracionDigit,
+  toCompactForBignumber,
   toPercentWithoutSign,
 } from 'src/utiles/formatters';
 
@@ -350,7 +351,7 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
                 <div>
                   <p>{t('staking.elfi.total_amount')}</p>
                   <h2>
-                    {parseFloat(formatEther(totalPrincipal))} {rewardToken}
+                    {toCompactForBignumber(totalPrincipal)} {rewardToken}
                   </h2>
                 </div>
               </section>
