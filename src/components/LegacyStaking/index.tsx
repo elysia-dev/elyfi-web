@@ -59,8 +59,6 @@ const LegacyStaking: React.FC = () => {
   const { roundData, loading, error, fetchRoundData } =
     useStakingFetchRoundData(Token.ELFI, rewardToken, poolApr, currentPhase);
 
-  console.log(loading);
-
   const currentRound = useMemo(() => {
     return roundData[currentPhase];
   }, [currentPhase, roundData]);

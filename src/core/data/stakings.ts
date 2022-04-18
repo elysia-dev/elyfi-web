@@ -8,6 +8,9 @@ export const TETHERPerDayOnELFIStakingPool = utils.parseEther('1250');
 
 export const BUSDPerDayOnELFIStakingPool = utils.parseEther('1250');
 
+export const LPPerDayOnElfiDaiPool = utils.parseEther('20000');
+export const LPPerDayOnElfiEthPool = utils.parseEther('10000');
+
 export const ELFIPerDayOnLpStakingPool = 7500;
 export const DAIPerDayOnElfiDaiPool = 625;
 export const ETHPerDayOnElfiEthPool = 0.1376;

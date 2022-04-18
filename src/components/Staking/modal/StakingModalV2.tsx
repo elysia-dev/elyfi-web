@@ -71,7 +71,6 @@ const StakingModalV2: React.FunctionComponent<{
     stakingAddress ? stakingAddress.address : '',
     visible,
   );
-  console.log(balance);
 
   const amountLteZero =
     !amount.value || utils.parseEther(amount.value || '0').isZero();

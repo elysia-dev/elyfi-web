@@ -15,9 +15,11 @@ import { rewardPerDayByToken } from 'src/utiles/stakingReward';
 import MainnetType from 'src/enums/MainnetType';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
+import calcLpAPR from 'src/core/utils/calcLpAPR';
+import { formatEther, parseEther } from 'ethers/lib/utils';
 
 const useStakingRoundDataV2 = (
-  stakedToken: Token.UNI | Token.ELFI,
+  stakedToken: Token,
   rewardToken: Token.ELFI,
 ): {
   totalPrincipal: BigNumber;
@@ -61,14 +63,33 @@ const useStakingRoundDataV2 = (
     if (!priceData) return;
     try {
       const res = await stakingPool.getPoolData();
+      console.log(
+        formatEther(
+          res.totalPrincipal.div(parseEther(priceData.elfiPrice.toFixed(4))),
+        ),
+      );
+
       setState({
         totalPrincipal: res.totalPrincipal,
-        apr: calcAPR(
-          res.totalPrincipal,
-          stakedToken === Token.UNI ? priceData.elPrice : priceData.elfiPrice,
-          rewardPerDayByToken(stakedToken, mainnet),
-          rewardToken === Token.ELFI ? priceData.elfiPrice : 1,
-        ),
+        apr:
+          stakedToken === Token.ELFI
+            ? calcAPR(
+                res.totalPrincipal,
+                priceData.elfiPrice,
+                rewardPerDayByToken(stakedToken, mainnet),
+                priceData.elfiPrice,
+              )
+            : calcLpAPR(
+                res.rewardPerSecond.div(
+                  parseEther(priceData.elfiPrice.toFixed(4)),
+                ),
+                res.totalPrincipal,
+                priceData.elPrice,
+                rewardPerDayByToken(stakedToken, mainnet),
+                res.totalPrincipal.div(
+                  parseEther(priceData.elfiPrice.toFixed(4)),
+                ),
+              ),
         loading: false,
       });
     } catch {
