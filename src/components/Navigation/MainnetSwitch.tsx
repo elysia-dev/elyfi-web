@@ -2,6 +2,7 @@ import { useWeb3React } from '@web3-react/core';
 import { useContext } from 'react';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { MainnetData, MainnetList } from 'src/core/data/mainnets';
+import MainnetType from 'src/enums/MainnetType';
 import { isMoblie, isWalletConnector } from 'src/utiles/connectWallet';
 
 const MainnetSwitch: React.FunctionComponent<{
@@ -24,7 +25,15 @@ const MainnetSwitch: React.FunctionComponent<{
             onClick={() => {
               setMainNetwork(!mainNetwork);
             }}>
-            <img src={MainnetData[getMainnetType].image} />
+            <img
+              src={
+                MainnetData[
+                  getMainnetType === MainnetType.BSCTest
+                    ? MainnetType.BSC
+                    : getMainnetType
+                ].image
+              }
+            />
             <h2>{getMainnetType}</h2>
           </div>
           {mainNetwork === true && (
@@ -36,6 +45,8 @@ const MainnetSwitch: React.FunctionComponent<{
               {MainnetList.filter((data) => {
                 return data.type !== getMainnetType;
               }).map((_data, index) => {
+                if (_data.type === MainnetType.BSCTest) return;
+
                 return (
                   <div
                     key={index}
@@ -45,11 +56,15 @@ const MainnetSwitch: React.FunctionComponent<{
                         ? isMoblie()
                           ? (setMainNetwork(false),
                             setCurrentMainnet(_data.type))
-                          : changeMainnet(MainnetData[_data.type].chainId).then(
-                              () => {
-                                setMainNetwork(false);
-                              },
-                            )
+                          : changeMainnet(
+                              MainnetData[
+                                _data.type as
+                                  | MainnetType.BSC
+                                  | MainnetType.Ethereum
+                              ].chainId,
+                            ).then(() => {
+                              setMainNetwork(false);
+                            })
                         : (setMainNetwork(false),
                           setCurrentMainnet(_data.type));
                     }}>

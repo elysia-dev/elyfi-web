@@ -26,6 +26,9 @@ export const ImportTokenData: IImportTokens[] = [
       [MainnetType.BSC]: {
         address: envs.token.bscElfiAddress,
       },
+      [MainnetType.BSCTest]: {
+        address: envs.token.bscElfiAddress,
+      },
     },
   },
   {
@@ -37,6 +40,9 @@ export const ImportTokenData: IImportTokens[] = [
         address: envs.staking.elfyV2StakingPoolAddress,
       },
       [MainnetType.BSC]: {
+        address: envs.staking.elfyBscStakingPoolAddress,
+      },
+      [MainnetType.BSCTest]: {
         address: envs.staking.elfyBscStakingPoolAddress,
       },
     },
