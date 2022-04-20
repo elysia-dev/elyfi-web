@@ -316,7 +316,7 @@ function LPStaking(): JSX.Element {
         </div>
         {getMainnetType === MainnetType.Ethereum ? (
           ethLoading && daiLoading ? (
-            <Skeleton width={'100%'} height={300} />
+            <Skeleton width={'100%'} height={900} />
           ) : (
             <>
               {[
