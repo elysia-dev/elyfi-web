@@ -42,7 +42,7 @@ export const stakingRewardTokenAddress = (
       return envs.token.elAddress;
     case Token.ELFI:
       if (mainnet === MainnetType.BSC) {
-        return currentChain === 'BSC Test'
+        return currentChain === MainnetType.BSCTest
           ? envs.token.testBscElfiAddress
           : envs.token.bscElfiAddress;
       }
@@ -58,7 +58,7 @@ export const stakingRewardTokenAddressV2 = (
   token?: Token,
 ): string => {
   if (mainnet === MainnetType.BSC) {
-    return currentChain === 'BSC Test'
+    return currentChain === MainnetType.BSCTest
       ? envs.token.testBscElfiAddress
       : envs.token.bscElfiAddress;
   }
