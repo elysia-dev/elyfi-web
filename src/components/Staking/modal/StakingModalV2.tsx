@@ -199,9 +199,7 @@ const StakingModalV2: React.FunctionComponent<{
                   <h2>
                     {stakingMode
                       ? t('staking.wallet_balance')
-                      : t('staking.nth_staking_amount', {
-                          nth: toOrdinalNumber(i18n.language, 1),
-                        })}
+                      : t('staking.staking_amount')}
                   </h2>
                   <h2>
                     {`${formatComma(
