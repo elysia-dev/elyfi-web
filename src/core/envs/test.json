@@ -63,7 +63,7 @@
   },
   "stakingV2MoneyPool": {
     "elfiStaking": "0xd037fE2bFB78f4bAFAD5903241Dd284f43306B62",
-    "elfiBscStaking": "0x861c2221e4d73a97cd94e64c7287fd968cba03e4",
+    "elfiBscStaking": "0xd037fE2bFB78f4bAFAD5903241Dd284f43306B62",
     "elfiEthLp": "0xFB9E3212582765892AEF44A7c0084cE183E08e90",
     "elfiDaiLp": "0xd037fE2bFB78f4bAFAD5903241Dd284f43306B62"
   }
