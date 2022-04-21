@@ -122,8 +122,16 @@ const useTvlBalances = (): BalanceType => {
         .add(stakingBalance[2])
         .add(v2LPPoolElfi[0])
         .add(v2LPPoolElfi[1])
-        .add(elfiV2Balance[0].totalPrincipal)
-        .add(elfiV2Balance[1].totalPrincipal),
+        .add(
+          elfiV2Balance[0].status === 'rejected'
+            ? constants.Zero
+            : elfiV2Balance[0].value.totalPrincipal,
+        )
+        .add(
+          elfiV2Balance[1].status === 'rejected'
+            ? constants.Zero
+            : elfiV2Balance[1].value.totalPrincipal,
+        ),
       v2LPPoolDai: v2LPPoolTokens[0],
       v2LPPoolEth: v2LPPoolTokens[1],
       ethPoolTotalPrincipal: v2PoolData[0].totalPrincipal,
