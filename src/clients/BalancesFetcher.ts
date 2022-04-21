@@ -15,118 +15,82 @@ const stakingPoolV2Contract = (address: string, provider: any) => {
   return StakingPoolV2factory.connect(address, provider);
 };
 
-export const elBalanceOfFetcher =
-  (): any =>
-  (...args: [string]) => {
-    const [...params] = args;
-    const contract: any = erc20Contract(envs.token.elAddress, provider as any);
-
-    return contract.balanceOf(params[0]);
-  };
 export const elfiBalanceOfFetcher =
   (): any =>
-  (...args: [string]) => {
+  (...args: [string, string, string]) => {
     const [...params] = args;
-    const contract: any = erc20Contract(
+    const ethContract: any = erc20Contract(
       envs.token.governanceAddress,
       provider as any,
     );
-
-    return contract.balanceOf(params[0]);
-  };
-
-export const bscBalanceOfFetcher =
-  (): any =>
-  (...args: [string]) => {
-    const [...params] = args;
-    const contract: any = erc20Contract(
+    const bscContract: any = erc20Contract(
       envs.token.bscElfiAddress,
       bscProvider as any,
     );
 
-    return contract.balanceOf(params[0]);
+    return Promise.all([
+      ethContract.balanceOf(params[0]),
+      ethContract.balanceOf(params[1]),
+      bscContract.balanceOf(params[2]),
+    ]);
   };
-export const v2EthLPPoolElfiFetcher =
+
+export const v2LPPoolElfiFetcher =
   (): any =>
-  (...args: [string]) => {
+  (...args: [string, string]) => {
     const [...params] = args;
     const contract: any = erc20Contract(
       envs.token.governanceAddress,
       provider as any,
     );
 
-    return contract.balanceOf(params[0]);
+    return Promise.all([
+      contract.balanceOf(params[0]),
+      contract.balanceOf(params[1]),
+    ]);
   };
-export const v2LDaiLPPoolElfiFetcher =
+
+export const v2LPPoolTokensFetcher =
   (): any =>
-  (...args: [string]) => {
+  (...args: [string, string]) => {
     const [...params] = args;
-    const contract: any = erc20Contract(
-      envs.token.governanceAddress,
+
+    const daiContract: any = erc20Contract(
+      envs.token.daiAddress,
       provider as any,
     );
-
-    return contract.balanceOf(params[0]);
-  };
-export const v2LPPoolDaiFetcher =
-  (): any =>
-  (...args: [string]) => {
-    const [...params] = args;
-
-    const contract: any = erc20Contract(envs.token.daiAddress, provider as any);
-
-    return contract.balanceOf(params[0]);
-  };
-export const v2LPPoolEthFetcher =
-  (): any =>
-  (...args: [string]) => {
-    const [...params] = args;
-    const contract: any = erc20Contract(
+    const wEthContract: any = erc20Contract(
       envs.token.wEthAddress,
       provider as any,
     );
-
-    return contract.balanceOf(params[0]);
+    return Promise.all([
+      daiContract.balanceOf(params[0]),
+      wEthContract.balanceOf(params[1]),
+    ]);
   };
+
 export const elfiV2BalanceFetcher =
   (): any =>
   (...args: [string]) => {
     const [...params] = args;
-    const contract: any = stakingPoolV2Contract(
+    const ethContract: any = stakingPoolV2Contract(
       envs.stakingV2MoneyPool.elfiStaking,
       provider as any,
     );
-
-    return contract.getPoolData();
-  };
-export const elfiBscV2BalanceFetcher =
-  (): any =>
-  (...args: [string]) => {
-    const [...params] = args;
-    const contract: any = stakingPoolV2Contract(
+    const bscContract: any = stakingPoolV2Contract(
       envs.stakingV2MoneyPool.elfiBscStaking,
       bscProvider as any,
     );
+    return Promise.all([ethContract.getPoolData(), bscContract.getPoolData()]);
+  };
 
-    return contract.getPoolData();
-  };
-export const ethPoolDataFetcher =
+export const v2PoolDataFetcher =
   (): any =>
   (...args: [string]) => {
-    return ethPoolContract.getPoolData();
-  };
-export const daiPoolDataFetcher =
-  (): any =>
-  (...args: [string]) => {
-    return daiPoolContract.getPoolData();
-  };
-export const ethTotalSupplyFetcher =
-  (): any =>
-  (...args: [string]) => {
-    return ethPoolContract.totalSupply();
-  };
-export const daiTotalSupplyFetcher =
-  (): any =>
-  (...args: [string]) => {
-    return daiPoolContract.totalSupply();
+    return Promise.all([
+      ethPoolContract.getPoolData(),
+      daiPoolContract.getPoolData(),
+      ethPoolContract.totalSupply(),
+      daiPoolContract.totalSupply(),
+    ]);
   };
