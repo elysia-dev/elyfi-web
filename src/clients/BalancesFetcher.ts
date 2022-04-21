@@ -79,8 +79,9 @@ export const elfiV2BalanceFetcher =
     );
     const bscContract: any = stakingPoolV2Contract(
       envs.stakingV2MoneyPool.elfiBscStaking,
-      bscProvider as any,
+      process.env.NODE_ENV === 'development' ? provider : (bscProvider as any),
     );
+
     return Promise.all([ethContract.getPoolData(), bscContract.getPoolData()]);
   };
 
