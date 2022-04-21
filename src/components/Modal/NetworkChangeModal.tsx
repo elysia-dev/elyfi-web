@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import ModalHeader from 'src/components/Modal/ModalHeader';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { MainnetData, MainnetList } from 'src/core/data/mainnets';
+import MainnetType from 'src/enums/MainnetType';
 
 const NetworkChangeModal: React.FunctionComponent<{
   visible: boolean;
@@ -25,17 +26,19 @@ const NetworkChangeModal: React.FunctionComponent<{
         </div>
         <div className="modal__network-change-modal__button__wrapper">
           {MainnetList.map((data, index) => {
+            const mainnetType =
+              data.type === MainnetType.BSCTest ? MainnetType.BSC : data.type;
             return (
               <div
                 key={index}
                 className="modal__network-change-modal__button"
                 onClick={() => {
-                  changeMainnet(MainnetData[data.type].chainId).then(() =>
+                  changeMainnet(MainnetData[mainnetType].chainId).then(() =>
                     closeHandler(),
                   );
                 }}>
-                <img src={MainnetData[data.type].image} />
-                <h2>{MainnetData[data.type].name}</h2>
+                <img src={MainnetData[mainnetType].image} />
+                <h2>{MainnetData[mainnetType].name}</h2>
               </div>
             );
           })}

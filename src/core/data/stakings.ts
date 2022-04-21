@@ -2,14 +2,13 @@ import { utils } from 'ethers';
 
 export const ELFIPerDayOnELStakingPool = utils.parseEther('25000');
 
-export const DAIPerDayOnELFIStakingPool = utils.parseEther('1250');
-
 export const TETHERPerDayOnELFIStakingPool = utils.parseEther('1250');
 
-export const BUSDPerDayOnELFIStakingPool = utils.parseEther('1250');
+export const DAIPerDayOnELFIStakingPool = utils.parseEther('531511').div(28);
+export const BUSDPerDayOnELFIStakingPool = utils.parseEther('531511').div(28);
 
-export const LPPerDayOnElfiDaiPool = utils.parseEther('20000');
-export const LPPerDayOnElfiEthPool = utils.parseEther('10000');
+export const LPPerDayOnElfiEthPool = utils.parseEther('531511').div(28);
+export const LPPerDayOnElfiDaiPool = utils.parseEther('531511').div(28);
 
 export const ELFIPerDayOnLpStakingPool = 7500;
 export const DAIPerDayOnElfiDaiPool = 625;

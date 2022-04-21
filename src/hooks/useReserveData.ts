@@ -51,7 +51,9 @@ const useReserveData = (): {
   };
 
   const getAssetBondsByNetwork = (network: MainnetType): IAssetBond[] => {
-    const supportedTokens = MainnetData[network].supportedTokens;
+    const supportedTokens =
+      MainnetData[network === MainnetType.BSCTest ? MainnetType.BSC : network]
+        .supportedTokens;
 
     return reserveState.reserves.reduce((arr, reserve) => {
       if (supportedTokens.includes(reserve.id)) {

@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import envs from 'src/core/envs';
 import { ERC20, ERC20__factory } from '@elysia-dev/contract-typechain';
 import { providers } from 'ethers';
+import MainnetType from 'src/enums/MainnetType';
 import useCurrentChain from './useCurrentChain';
 
 const useERC20 = (address: string): ERC20 => {
@@ -14,7 +15,7 @@ const useERC20 = (address: string): ERC20 => {
       return ERC20__factory.connect(
         address,
         new providers.JsonRpcProvider(
-          currentChain?.name === 'BSC Test'
+          currentChain?.name === MainnetType.BSCTest
             ? address === envs.token.testBscElfiAddress
               ? envs.jsonRpcUrl.bsc
               : process.env.REACT_APP_JSON_RPC

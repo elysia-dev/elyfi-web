@@ -163,7 +163,7 @@ function LPStaking(): JSX.Element {
   useEffect(() => {
     if (ethLoading || ethError) return;
 
-    const interval = setInterval(() => {
+    const ethInterval = setInterval(() => {
       if (!account) return;
 
       setEthExpectedReward({
@@ -178,14 +178,14 @@ function LPStaking(): JSX.Element {
     }, 2000);
 
     return () => {
-      clearInterval(interval);
+      clearInterval(ethInterval);
     };
   });
 
   useEffect(() => {
     if (daiLoading || daiError) return;
 
-    const interval = setInterval(() => {
+    const daiInterval = setInterval(() => {
       if (!account) return;
 
       setDaiExpectedReward({
@@ -200,7 +200,7 @@ function LPStaking(): JSX.Element {
     }, 2000);
 
     return () => {
-      clearInterval(interval);
+      clearInterval(daiInterval);
     };
   });
 
@@ -316,7 +316,7 @@ function LPStaking(): JSX.Element {
         </div>
         {getMainnetType === MainnetType.Ethereum ? (
           ethLoading && daiLoading ? (
-            <Skeleton width={'100%'} height={300} />
+            <Skeleton width={'100%'} height={900} />
           ) : (
             <>
               {[
@@ -407,11 +407,10 @@ function LPStaking(): JSX.Element {
                                 className={`staking__round__button ${
                                   !account || isWrongMainnet ? ' disable' : ''
                                 }`}
-                                onClick={(e) => {
+                                onClick={() => {
                                   if (!account || isWrongMainnet) {
                                     return;
                                   }
-                                  console.log(e);
                                   // ReactGA.modalview(
                                   //   stakedToken +
                                   //     ModalViewType.StakingOrUnstakingModal,
@@ -463,18 +462,21 @@ function LPStaking(): JSX.Element {
                                     ? ' disable'
                                     : ''
                                 }`}
-                                onClick={(e) => {
+                                onClick={() => {
                                   if (
                                     expectedReward.value.isZero() ||
                                     !account
                                   ) {
                                     return;
                                   }
-                                  console.log(e);
-
                                   // ReactGA.modalview(
                                   //   stakedToken + ModalViewType.StakingIncentiveModal,
                                   // );
+                                  setToken(
+                                    data[0] === 'ELFI-ETH LP'
+                                      ? Token.ELFI_ETH_LP
+                                      : Token.ELFI_DAI_LP,
+                                  );
                                   setModalValue(expectedReward.value);
                                   setModalType(StakingModalType.Claim);
                                 }}>
