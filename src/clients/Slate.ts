@@ -18,7 +18,7 @@ export interface ISlateResponse {
   }[];
 }
 
-export const baseUrl = 'https://elysia-public.s3.ap-northeast-2.amazonaws.com/ipfs';
+export const baseUrl = 'https://slate.textile.io/ipfs';
 
 export class Slate {
   static fetctABTokenIpfs = async (
