@@ -363,7 +363,7 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
                       <div>
                         <h2>
                           {`${formatCommaSmall(
-                            roundData[0]?.accountPrincipal || '0',
+                            roundData[0]?.accountPrincipal || constants.Zero,
                           )}`}
                           <span className="token-amount bold">
                             {stakedToken}
