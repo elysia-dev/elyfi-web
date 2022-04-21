@@ -3,19 +3,11 @@ import envs from 'src/core/envs';
 import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
 import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
 import {
-  bscBalanceOfFetcher,
-  daiPoolDataFetcher,
-  daiTotalSupplyFetcher,
-  elBalanceOfFetcher,
   elfiBalanceOfFetcher,
-  elfiBscV2BalanceFetcher,
   elfiV2BalanceFetcher,
-  ethPoolDataFetcher,
-  ethTotalSupplyFetcher,
-  v2EthLPPoolElfiFetcher,
-  v2LDaiLPPoolElfiFetcher,
-  v2LPPoolDaiFetcher,
-  v2LPPoolEthFetcher,
+  v2LPPoolElfiFetcher,
+  v2LPPoolTokensFetcher,
+  v2PoolDataFetcher,
 } from 'src/clients/BalancesFetcher';
 import { useEffect, useState } from 'react';
 import { BigNumber, constants } from 'ethers';
@@ -30,16 +22,9 @@ type BalanceType = {
     totalValueLockedToken1: number;
   };
 
-  v1StakingBalance: BigNumber;
-  v2StakingBalance: BigNumber;
-  bscStakingBalance: BigNumber;
-  elStakingBalance: BigNumber;
-  v2EthLPPoolElfi: BigNumber;
-  v2DaiLPPoolElfi: BigNumber;
+  stakingBalance: BigNumber;
   v2LPPoolDai: BigNumber;
   v2LPPoolEth: BigNumber;
-  elfiV2Balance: BigNumber;
-  elfiBscV2Balance: BigNumber;
   ethPoolTotalPrincipal: BigNumber;
   daiPoolTotalPrincipal: BigNumber;
   ethTotalSupply: BigNumber;
@@ -57,16 +42,9 @@ const useTvlBalances = (): BalanceType => {
       totalValueLockedToken0: 0,
       totalValueLockedToken1: 0,
     },
-    v1StakingBalance: constants.Zero,
-    v2StakingBalance: constants.Zero,
-    bscStakingBalance: constants.Zero,
-    elStakingBalance: constants.Zero,
-    v2EthLPPoolElfi: constants.Zero,
-    v2DaiLPPoolElfi: constants.Zero,
+    stakingBalance: constants.Zero,
     v2LPPoolDai: constants.Zero,
     v2LPPoolEth: constants.Zero,
-    elfiV2Balance: constants.Zero,
-    elfiBscV2Balance: constants.Zero,
     ethPoolTotalPrincipal: constants.Zero,
     daiPoolTotalPrincipal: constants.Zero,
     ethTotalSupply: constants.Zero,
@@ -82,94 +60,51 @@ const useTvlBalances = (): BalanceType => {
     },
   );
 
-  const { data: v1StakingBalance } = useSWR(
-    [envs.staking.elfyStakingPoolAddress],
+  const { data: stakingBalance } = useSWR(
+    [
+      envs.staking.elfyStakingPoolAddress,
+      envs.staking.elfyV2StakingPoolAddress,
+      envs.staking.elfyBscStakingPoolAddress,
+    ],
     {
       fetcher: elfiBalanceOfFetcher(),
     },
   );
-  const { data: v2StakingBalance } = useSWR(
-    [envs.staking.elfyV2StakingPoolAddress],
+
+  const { data: v2LPPoolElfi } = useSWR(
+    [envs.lpStaking.ethElfiV2PoolAddress, envs.lpStaking.daiElfiV2PoolAddress],
     {
-      fetcher: elfiBalanceOfFetcher(),
+      fetcher: v2LPPoolElfiFetcher(),
     },
   );
 
-  const { data: bscStakingBalance } = useSWR(
-    [envs.staking.elfyBscStakingPoolAddress],
+  const { data: v2LPPoolTokens } = useSWR(
+    [
+      envs.lpStaking.daiElfiV2PoolAddress,
+      envs.lpStaking.ethElfiV2PoolAddress,
+      'v2LPPoolTokens',
+    ],
     {
-      fetcher: bscBalanceOfFetcher(),
+      fetcher: v2LPPoolTokensFetcher(),
     },
   );
 
-  const { data: elStakingBalance } = useSWR(
-    [envs.staking.elStakingPoolAddress],
-    {
-      fetcher: elBalanceOfFetcher(),
-    },
-  );
-  const { data: v2EthLPPoolElfi } = useSWR(
-    [envs.lpStaking.ethElfiV2PoolAddress],
-    {
-      fetcher: v2EthLPPoolElfiFetcher(),
-    },
-  );
-  const { data: v2DaiLPPoolElfi } = useSWR(
-    [envs.lpStaking.daiElfiV2PoolAddress],
-    {
-      fetcher: v2LDaiLPPoolElfiFetcher(),
-    },
-  );
-  const { data: v2LPPoolDai } = useSWR(
-    [envs.lpStaking.daiElfiV2PoolAddress, 'v2LPPoolDai'],
-    {
-      fetcher: v2LPPoolDaiFetcher(),
-    },
-  );
-
-  const { data: v2LPPoolEth } = useSWR(
-    [envs.lpStaking.ethElfiV2PoolAddress, 'v2LPPoolEth'],
-    {
-      fetcher: v2LPPoolEthFetcher(),
-    },
-  );
   const { data: elfiV2Balance } = useSWR(['elfiV2Balance'], {
     fetcher: elfiV2BalanceFetcher(),
   });
 
-  const { data: elfiBscV2Balance } = useSWR(['elfiBscV2Balance'], {
-    fetcher: elfiBscV2BalanceFetcher(),
-  });
-  const { data: ethPoolData } = useSWR(['ethPoolData'], {
-    fetcher: ethPoolDataFetcher(),
-  });
-  const { data: daiPoolData } = useSWR(['daiPoolData'], {
-    fetcher: daiPoolDataFetcher(),
-  });
-  const { data: ethTotalSupply } = useSWR(['ethTotalSupply'], {
-    fetcher: ethTotalSupplyFetcher(),
-  });
-  const { data: daiTotalSupply } = useSWR(['daiTotalSupply'], {
-    fetcher: daiTotalSupplyFetcher(),
+  const { data: v2PoolData } = useSWR(['v2PoolData'], {
+    fetcher: v2PoolDataFetcher(),
   });
 
   useEffect(() => {
     if (
       !poolData ||
-      !v1StakingBalance ||
-      !v2StakingBalance ||
-      !bscStakingBalance ||
-      !elStakingBalance ||
-      !v2EthLPPoolElfi ||
-      !v2DaiLPPoolElfi ||
-      !v2LPPoolDai ||
-      !v2LPPoolEth ||
+      !stakingBalance ||
+      !v2LPPoolElfi ||
+      !v2LPPoolTokens ||
       !elfiV2Balance ||
-      !elfiBscV2Balance ||
-      !ethPoolData ||
-      !daiPoolData ||
-      !ethTotalSupply ||
-      !daiTotalSupply
+      !v2PoolData
     )
       return;
 
@@ -182,38 +117,28 @@ const useTvlBalances = (): BalanceType => {
         totalValueLockedToken0: poolData.daiPool.totalValueLockedToken0,
         totalValueLockedToken1: poolData.daiPool.totalValueLockedToken1,
       },
-      v1StakingBalance,
-      v2StakingBalance,
-      bscStakingBalance,
-      elStakingBalance,
-      v2EthLPPoolElfi,
-      v2DaiLPPoolElfi,
-      v2LPPoolDai,
-      v2LPPoolEth,
-      elfiV2Balance: elfiV2Balance.totalPrincipal,
-      elfiBscV2Balance: elfiBscV2Balance.totalPrincipal,
-      ethPoolTotalPrincipal: ethPoolData.totalPrincipal,
-      daiPoolTotalPrincipal: daiPoolData.totalPrincipal,
-      ethTotalSupply,
-      daiTotalSupply,
+      stakingBalance: stakingBalance[0]
+        .add(stakingBalance[1])
+        .add(stakingBalance[2])
+        .add(v2LPPoolElfi[0])
+        .add(v2LPPoolElfi[1])
+        .add(elfiV2Balance[0].totalPrincipal)
+        .add(elfiV2Balance[1].totalPrincipal),
+      v2LPPoolDai: v2LPPoolTokens[0],
+      v2LPPoolEth: v2LPPoolTokens[1],
+      ethPoolTotalPrincipal: v2PoolData[0].totalPrincipal,
+      daiPoolTotalPrincipal: v2PoolData[1].totalPrincipal,
+      ethTotalSupply: v2PoolData[2],
+      daiTotalSupply: v2PoolData[3],
       balanceLoading: false,
     });
   }, [
     poolData,
-    v1StakingBalance,
-    v2StakingBalance,
-    bscStakingBalance,
-    elStakingBalance,
-    v2EthLPPoolElfi,
-    v2DaiLPPoolElfi,
-    v2LPPoolDai,
-    v2LPPoolEth,
+    stakingBalance,
+    v2LPPoolElfi,
+    v2LPPoolTokens,
     elfiV2Balance,
-    elfiBscV2Balance,
-    ethPoolData,
-    daiPoolData,
-    ethTotalSupply,
-    daiTotalSupply,
+    v2PoolData,
   ]);
 
   return state;
