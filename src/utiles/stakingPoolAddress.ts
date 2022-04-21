@@ -1,12 +1,13 @@
 import Token from 'src/enums/Token';
 import envs from 'src/core/envs';
+import MainnetType from 'src/enums/MainnetType';
 
 export const poolAddress = (mainnet: string, stakedToken: string): string => {
   switch (stakedToken) {
     case Token.EL:
       return envs.staking.elStakingPoolAddress;
     case Token.ELFI:
-      if (mainnet === 'BSC') {
+      if (mainnet === MainnetType.BSC) {
         return envs.staking.elfyBscStakingPoolAddress; // elfi busd pool address
       }
       return envs.staking.elfyStakingPoolAddress;
@@ -18,7 +19,7 @@ export const poolAddress = (mainnet: string, stakedToken: string): string => {
 export const poolAddressV2 = (mainnet: string, stakedToken: string): string => {
   switch (stakedToken) {
     case Token.ELFI:
-      if (mainnet === 'BSC') {
+      if (mainnet === MainnetType.BSC) {
         return envs.stakingV2MoneyPool.elfiBscStaking;
       }
       return envs.stakingV2MoneyPool.elfiStaking;
@@ -40,8 +41,8 @@ export const stakingRewardTokenAddress = (
     case Token.EL:
       return envs.token.elAddress;
     case Token.ELFI:
-      if (mainnet === 'BSC') {
-        return currentChain === 'BSC Test'
+      if (mainnet === MainnetType.BSC) {
+        return currentChain === MainnetType.BSCTest
           ? envs.token.testBscElfiAddress
           : envs.token.bscElfiAddress;
       }
@@ -56,8 +57,8 @@ export const stakingRewardTokenAddressV2 = (
   currentChain?: string,
   token?: Token,
 ): string => {
-  if (mainnet === 'BSC') {
-    return currentChain === 'BSC Test'
+  if (mainnet === MainnetType.BSC) {
+    return currentChain === MainnetType.BSCTest
       ? envs.token.testBscElfiAddress
       : envs.token.bscElfiAddress;
   }

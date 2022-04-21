@@ -17,7 +17,7 @@ export const busdStakingRoundTimes: IStakingPoolRound[] = [
   },
   {
     startedAt: '2022.03.08 19:00:00 +9:00',
-    endedAt: '2022.04.12 19:00:00 +9:00',
+    endedAt: '2022.04.17 19:00:00 +9:00',
   },
 ].map((item) => {
   return {
@@ -53,7 +53,7 @@ const stakingRoundTimes: IStakingPoolRound[] = [
   },
   {
     startedAt: '2022.03.08 19:00:00 +9:00',
-    endedAt: '2022.04.13 19:00:00 +9:00',
+    endedAt: '2022.04.17 19:00:00 +9:00',
   },
   // {
   //   startedAt: '2022.04.18 19:00:00 +9:00',

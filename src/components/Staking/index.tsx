@@ -336,7 +336,7 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
             )}
           </div>
           {loading ? (
-            <Skeleton width={'100%'} height={300} />
+            <Skeleton width={'100%'} height={350} />
           ) : (
             <>
               <section className="staking__round__header">
@@ -370,15 +370,16 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
                           </span>
                         </h2>
                         <div
-                          className={`staking__round__button ${!account || isWrongMainnet ? ' disable' : ''
-                            }`}
+                          className={`staking__round__button ${
+                            !account || isWrongMainnet ? ' disable' : ''
+                          }`}
                           onClick={(e) => {
                             if (!account || isWrongMainnet) {
                               return;
                             }
                             ReactGA.modalview(
                               stakedToken +
-                              ModalViewType.StakingOrUnstakingModal,
+                                ModalViewType.StakingOrUnstakingModal,
                             );
                             setModalValue(roundData[0].accountPrincipal);
                             setModalType(StakingModalType.Staking);
@@ -417,10 +418,11 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
                           </span>
                         </h2>
                         <div
-                          className={`staking__round__button ${expectedReward.value.isZero() || !account
-                            ? ' disable'
-                            : ''
-                            }`}
+                          className={`staking__round__button ${
+                            expectedReward.value.isZero() || !account
+                              ? ' disable'
+                              : ''
+                          }`}
                           onClick={(e) => {
                             if (expectedReward.value.isZero() || !account) {
                               return;

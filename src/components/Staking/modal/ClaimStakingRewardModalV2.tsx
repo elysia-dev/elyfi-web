@@ -54,9 +54,6 @@ const ClaimStakingRewardModalV2: FunctionComponent<{
   const { contract: stakingPool } = useStakingPoolV2(stakedToken);
   const { t } = useTranslation();
   const { setTransaction, failTransaction } = useContext(TxContext);
-  const { type: mainnet } = useContext(MainnetContext);
-
-  const claimAddress = stakingPool;
 
   return (
     <div
@@ -131,7 +128,7 @@ const ClaimStakingRewardModalV2: FunctionComponent<{
 
               emitter.clicked();
 
-              claimAddress
+              stakingPool
                 ?.claim()
                 .then((tx) => {
                   setTransaction(

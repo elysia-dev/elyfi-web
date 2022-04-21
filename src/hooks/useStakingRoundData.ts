@@ -37,7 +37,7 @@ const useStakingRoundData = (
         ? envs.staking.elfyV2StakingPoolAddress
         : poolAddress(mainnet, stakedToken),
       new providers.JsonRpcProvider(
-        mainnet === 'BSC'
+        mainnet === MainnetType.BSC
           ? envs.jsonRpcUrl.bsc
           : process.env.REACT_APP_JSON_RPC,
       ) as any,

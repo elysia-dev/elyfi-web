@@ -106,8 +106,11 @@ const Dashboard: React.FunctionComponent = () => {
   const currentChain = useCurrentChain();
   const [transactionWait, setTransactionWait] = useState<boolean>(false);
   const { type: currentNetworkType } = useContext(MainnetContext);
+
   const supportedTokens = useMemo(() => {
-    return MainnetData[currentNetworkType].supportedTokens;
+    return currentNetworkType === MainnetType.BSCTest
+      ? MainnetData[MainnetType.BSC].supportedTokens
+      : MainnetData[currentNetworkType].supportedTokens;
   }, [currentNetworkType]);
   const selectedBalance = useMemo(
     () =>

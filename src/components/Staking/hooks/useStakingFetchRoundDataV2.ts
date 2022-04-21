@@ -75,7 +75,6 @@ const useStakingFetchRoundDataV2 = (
         const accountReward = await stakingPool.getUserReward(account);
         const poolData = await stakingPool.getPoolData();
 
-        console.log(poolData);
         data.push(
           stakedData(
             priceData,
