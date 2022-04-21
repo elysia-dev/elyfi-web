@@ -20,8 +20,8 @@
   "lpStaking": {
     "daiElfiPoolAddress": "0xbde484db131bd2ae80e44a57f865c1dfebb7e31f",
     "ethElfiPoolAddress": "0xc311faebe8802f9cfc91284016d1de9537ec66b7",
-    "daiElfiV2PoolAddress": "0x8f9a5bd715c553a94eaf0c67ebd2a8ae2ad60f9e",
-    "ethElfiV2PoolAddress": "0x727e501ddabf9ab1888abc5042ef4d0569f0c162",
+    "daiElfiV2PoolAddress": "0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4",
+    "ethElfiV2PoolAddress": "0x2781246fe707bb15cee3e5ea354e2154a2877b16",
     "stakerAddress": "0x1f98407aaB862CdDeF78Ed252D6f557aA5b0f00d",
     "nonFungiblePositionAddress": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
     "refundedAddress": "0x23b062F33ed93EE8C8e658e609dbd80797DFdA89"
@@ -62,9 +62,9 @@
     "bsc": "https://data-seed-prebsc-1-s1.binance.org:8545/"
   },
   "stakingV2MoneyPool": {
-    "elfiStaking": "0x24a7fb55e4ac2cb40944bc560423b496dfa8803f",
+    "elfiStaking": "0xd037fE2bFB78f4bAFAD5903241Dd284f43306B62",
     "elfiBscStaking": "0x861c2221e4d73a97cd94e64c7287fd968cba03e4",
-    "elfiEthLp": "0x24a7fb55e4ac2cb40944bc560423b496dfa8803f",
-    "elfiDaiLp": "0x24a7fb55e4ac2cb40944bc560423b496dfa8803f"
+    "elfiEthLp": "0xFB9E3212582765892AEF44A7c0084cE183E08e90",
+    "elfiDaiLp": "0xd037fE2bFB78f4bAFAD5903241Dd284f43306B62"
   }
 }
