@@ -4,11 +4,11 @@ export const ELFIPerDayOnELStakingPool = utils.parseEther('25000');
 
 export const TETHERPerDayOnELFIStakingPool = utils.parseEther('1250');
 
-export const DAIPerDayOnELFIStakingPool = utils.parseEther('18982.5357');
-export const BUSDPerDayOnELFIStakingPool = utils.parseEther('18982.5357');
+export const DAIPerDayOnELFIStakingPool = utils.parseEther('531511').div(28);
+export const BUSDPerDayOnELFIStakingPool = utils.parseEther('531511').div(28);
 
-export const LPPerDayOnElfiEthPool = utils.parseEther('16991.2678');
-export const LPPerDayOnElfiDaiPool = utils.parseEther('16991.2678');
+export const LPPerDayOnElfiEthPool = utils.parseEther('531511').div(28);
+export const LPPerDayOnElfiDaiPool = utils.parseEther('531511').div(28);
 
 export const ELFIPerDayOnLpStakingPool = 7500;
 export const DAIPerDayOnElfiDaiPool = 625;
