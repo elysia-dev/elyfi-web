@@ -195,7 +195,6 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
               stakedToken={Token.ELFI}
               token={Token.ELFI}
               balance={expectedReward}
-              endedBalance={roundData[0]?.accountReward || constants.Zero}
               stakingBalance={
                 loading ? constants.Zero : roundData[0]?.accountPrincipal
               }
