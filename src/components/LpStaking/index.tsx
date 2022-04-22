@@ -161,6 +161,30 @@ function LPStaking(): JSX.Element {
     };
   }, [document.body.clientHeight]);
 
+  const setExpectedReward = (token: Token) => {
+    return token === Token.ELFI_ETH_LP
+      ? setEthExpectedReward({
+          ...ethExpectedReward,
+          before: ethExpectedReward.value.isZero()
+            ? ethRoundData[0].accountReward
+            : ethExpectedReward.value,
+          value: calcExpectedReward(
+            ethRoundData[0],
+            rewardPerDayByToken(Token.ELFI_ETH_LP, getMainnetType),
+          ),
+        })
+      : setDaiExpectedReward({
+          ...daiExpectedReward,
+          before: daiExpectedReward.value.isZero()
+            ? daiRoundData[0].accountReward
+            : daiExpectedReward.value,
+          value: calcExpectedReward(
+            daiRoundData[0],
+            rewardPerDayByToken(Token.ELFI_DAI_LP, getMainnetType),
+          ),
+        });
+  };
+
   useEffect(() => {
     if (ethLoading || ethError) return;
 
@@ -262,11 +286,15 @@ function LPStaking(): JSX.Element {
               }
               closeHandler={() => {
                 setModalType('');
+                setExpectedReward(
+                  selectToken === Token.ELFI_ETH_LP
+                    ? Token.ELFI_ETH_LP
+                    : Token.ELFI_DAI_LP,
+                );
                 setTransactionWait(false);
               }}
               afterTx={() => {
-                account && daiFetchData(account);
-                ethFetchData(account);
+                account && (daiFetchData(account), ethFetchData(account));
               }}
               transactionModal={() => setTransactionModal(true)}
               transactionWait={transactionWait}
@@ -465,6 +493,11 @@ function LPStaking(): JSX.Element {
                                   ) {
                                     return;
                                   }
+                                  setExpectedReward(
+                                    data[0] === 'ELFI-ETH LP'
+                                      ? Token.ELFI_ETH_LP
+                                      : Token.ELFI_DAI_LP,
+                                  );
                                   ReactGA.modalview(
                                     data[0] +
                                       ModalViewType.StakingIncentiveModal,
@@ -474,6 +507,7 @@ function LPStaking(): JSX.Element {
                                       ? Token.ELFI_ETH_LP
                                       : Token.ELFI_DAI_LP,
                                   );
+
                                   setModalValue(expectedReward.value);
                                   setModalType(StakingModalType.Claim);
                                 }}>
