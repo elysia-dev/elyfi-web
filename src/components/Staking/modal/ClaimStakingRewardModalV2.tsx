@@ -27,7 +27,6 @@ const ClaimStakingRewardModalV2: FunctionComponent<{
     before: BigNumber;
     value: BigNumber;
   };
-  endedBalance: BigNumber;
   stakingBalance: BigNumber;
   currentRound: RoundData;
   visible: boolean;
@@ -42,7 +41,6 @@ const ClaimStakingRewardModalV2: FunctionComponent<{
   stakingBalance,
   token,
   balance,
-  endedBalance,
   closeHandler,
   afterTx,
   transactionModal,
@@ -79,28 +77,26 @@ const ClaimStakingRewardModalV2: FunctionComponent<{
                         ? 30
                         : 60,
                   }}>
-                  {!endedBalance?.isZero()
-                    ? formatCommaSmall(endedBalance)
-                    : balance && (
-                        <CountUp
-                          className={`spoqa__bold colored ${
-                            token === Token.ELFI ? 'EL' : 'ELFI'
-                          }`}
-                          start={parseFloat(formatEther(balance.before))}
-                          end={parseFloat(
-                            formatEther(
-                              balance.before.isZero()
-                                ? currentRound.accountReward
-                                : balance.value,
-                            ),
-                          )}
-                          formattingFn={(number) => {
-                            return formatSixFracionDigit(number);
-                          }}
-                          decimals={6}
-                          duration={1}
-                        />
+                  {balance && (
+                    <CountUp
+                      className={`spoqa__bold colored ${
+                        token === Token.ELFI ? 'EL' : 'ELFI'
+                      }`}
+                      start={parseFloat(formatEther(balance.before))}
+                      end={parseFloat(
+                        formatEther(
+                          balance.before.isZero()
+                            ? currentRound.accountReward
+                            : balance.value,
+                        ),
                       )}
+                      formattingFn={(number) => {
+                        return formatSixFracionDigit(number);
+                      }}
+                      decimals={6}
+                      duration={1}
+                    />
+                  )}
                 </p>
               </div>
             </>
@@ -109,7 +105,7 @@ const ClaimStakingRewardModalV2: FunctionComponent<{
             className={`modal__button ${transactionWait ? 'disable' : ''}`}
             onClick={() => {
               transactionWait ? undefined : setTransactionWait();
-              if (!account) return;
+              if (!account || !balance) return;
 
               const emitter = buildEventEmitter(
                 ModalViewType.StakingIncentiveModal,
@@ -120,9 +116,7 @@ const ClaimStakingRewardModalV2: FunctionComponent<{
                   address: account,
                   stakingType: stakedToken,
                   stakingAmount: utils.formatEther(stakingBalance),
-                  incentiveAmount: utils.formatEther(
-                    balance?.value || endedBalance,
-                  ),
+                  incentiveAmount: utils.formatEther(balance.value),
                 }),
               );
 

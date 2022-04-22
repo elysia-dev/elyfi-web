@@ -37,6 +37,7 @@ import {
 import StakingModalType from 'src/enums/StakingModalType';
 import Skeleton from 'react-loading-skeleton';
 import useUniswapV2Apr from 'src/hooks/useUniswapV2Apr';
+import ModalViewType from 'src/enums/ModalViewType';
 import LegacyStakingButton from '../LegacyStaking/LegacyStakingButton';
 import useStakingRoundDataV2 from '../Staking/hooks/useStakingRoundDataV2';
 import useStakingFetchRoundDataV2 from '../Staking/hooks/useStakingFetchRoundDataV2';
@@ -245,11 +246,6 @@ function LPStaking(): JSX.Element {
                   ? ethExpectedReward
                   : daiExpectedReward
               }
-              endedBalance={
-                (selectToken === Token.ELFI_ETH_LP
-                  ? ethRoundData[0]?.accountReward
-                  : daiRoundData[0]?.accountReward) || constants.Zero
-              }
               stakingBalance={
                 selectToken === Token.ELFI_ETH_LP
                   ? ethLoading
@@ -411,10 +407,10 @@ function LPStaking(): JSX.Element {
                                   if (!account || isWrongMainnet) {
                                     return;
                                   }
-                                  // ReactGA.modalview(
-                                  //   stakedToken +
-                                  //     ModalViewType.StakingOrUnstakingModal,
-                                  // );
+                                  ReactGA.modalview(
+                                    data[0] +
+                                      ModalViewType.StakingOrUnstakingModal,
+                                  );
                                   setToken(
                                     data[0] === 'ELFI-ETH LP'
                                       ? Token.ELFI_ETH_LP
@@ -469,9 +465,10 @@ function LPStaking(): JSX.Element {
                                   ) {
                                     return;
                                   }
-                                  // ReactGA.modalview(
-                                  //   stakedToken + ModalViewType.StakingIncentiveModal,
-                                  // );
+                                  ReactGA.modalview(
+                                    data[0] +
+                                      ModalViewType.StakingIncentiveModal,
+                                  );
                                   setToken(
                                     data[0] === 'ELFI-ETH LP'
                                       ? Token.ELFI_ETH_LP
