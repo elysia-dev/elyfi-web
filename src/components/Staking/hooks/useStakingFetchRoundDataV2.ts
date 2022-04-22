@@ -84,10 +84,8 @@ const useStakingFetchRoundDataV2 = (
           ),
         );
       } else {
-        if (!priceData) return;
         data.push(stakedData(priceData));
       }
-
       setroundData(data);
       setLoading(false);
       setError(false);
@@ -104,11 +102,12 @@ const useStakingFetchRoundDataV2 = (
 
   useEffect(() => {
     fetchRoundData(account);
-  }, [account, poolApr, getMainnetType, stakingPool]);
+  }, [poolApr, stakingPool]);
 
   useEffect(() => {
     setLoading(true);
     setError(false);
+    fetchRoundData(account);
   }, [account, getMainnetType]);
 
   return { roundData, loading, error, fetchRoundData };
