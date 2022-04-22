@@ -2,7 +2,7 @@ import CountUp from 'react-countup';
 import HeaderCircle from 'src/assets/images/deposit/title-circle.svg';
 import useTvl from 'src/hooks/useTvl';
 import Skeleton from 'react-loading-skeleton';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 
@@ -13,7 +13,12 @@ const usdFormatter = new Intl.NumberFormat('en', {
 
 const TvlCounter: React.FC = () => {
   const { value: mediaQuery } = useMediaQueryType();
-  const { value: tvl, loading } = useTvl();
+  const { value, loading } = useTvl();
+  const [tvl, setTvl] = useState(0);
+
+  useEffect(() => {
+    setTvl(value);
+  }, [value]);
 
   return (
     <div
