@@ -4,11 +4,12 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
 import { useWeb3React } from '@web3-react/core';
-import { constants } from 'ethers';
+import { constants, providers } from 'ethers';
 import Skeleton from 'react-loading-skeleton';
 import CountUp from 'react-countup';
 import { formatEther } from 'ethers/lib/utils';
@@ -18,7 +19,7 @@ import {
   toCompactForBignumber,
   toPercentWithoutSign,
 } from 'src/utiles/formatters';
-
+import { StakingPoolV2factory } from '@elysia-dev/elyfi-v1-sdk';
 import Token from 'src/enums/Token';
 import { useTranslation } from 'react-i18next';
 import ReactGA from 'react-ga';
@@ -43,6 +44,7 @@ import ModalViewType from 'src/enums/ModalViewType';
 import LegacyStakingButton from '../LegacyStaking/LegacyStakingButton';
 import useStakingFetchRoundDataV2 from './hooks/useStakingFetchRoundDataV2';
 import useStakingRoundDataV2 from './hooks/useStakingRoundDataV2';
+import envs from 'src/core/envs';
 
 const ClaimStakingRewardModalV2 = lazy(
   () => import('src/components/Staking/modal/ClaimStakingRewardModalV2'),
@@ -71,11 +73,25 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
   const { type: getMainnetType } = useContext(MainnetContext);
   const currentChain = useCurrentChain();
 
+  const stakingPool = useMemo(() => {
+    return StakingPoolV2factory.connect(
+      getMainnetType === MainnetType.BSC
+        ? envs.stakingV2MoneyPool.elfiBscStaking
+        : envs.stakingV2MoneyPool.elfiStaking,
+      new providers.JsonRpcProvider(
+        getMainnetType === MainnetType.BSC
+          ? envs.jsonRpcUrl.bsc
+          : process.env.REACT_APP_JSON_RPC,
+      ) as any,
+    );
+  }, [getMainnetType]);
+
   const stakedToken = Token.ELFI;
 
   const { apr: poolApr, totalPrincipal } = useStakingRoundDataV2(
     Token.ELFI,
     Token.ELFI,
+    stakingPool,
   );
 
   const [modalType, setModalType] = useState('');

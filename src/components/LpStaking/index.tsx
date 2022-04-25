@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { constants, utils } from 'ethers';
+import { constants, providers, utils } from 'ethers';
 import {
   useEffect,
   useContext,
@@ -34,6 +34,8 @@ import {
   toCompact,
   toCompactForBignumber,
 } from 'src/utiles/formatters';
+import { StakingPoolV2factory } from '@elysia-dev/elyfi-v1-sdk';
+import envs from 'src/core/envs';
 import StakingModalType from 'src/enums/StakingModalType';
 import Skeleton from 'react-loading-skeleton';
 import useUniswapV2Apr from 'src/hooks/useUniswapV2Apr';
@@ -53,7 +55,7 @@ const TransactionConfirmModal = lazy(
 );
 
 function LPStaking(): JSX.Element {
-  const { account, library } = useWeb3React();
+  const { account } = useWeb3React();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const currentChain = useCurrentChain();
@@ -63,13 +65,22 @@ function LPStaking(): JSX.Element {
   const isWrongMainnet = isWrongNetwork(getMainnetType, currentChain?.name);
   const [selectToken, setToken] = useState(Token.ELFI_DAI_LP);
 
+  const stakingPool = useMemo(() => {
+    return StakingPoolV2factory.connect(
+      selectToken === Token.ELFI_ETH_LP
+        ? envs.stakingV2MoneyPool.elfiEthLp
+        : envs.stakingV2MoneyPool.elfiDaiLp,
+      new providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC) as any,
+    );
+  }, [selectToken, getMainnetType]);
+
   const rewardToken = Token.ELFI;
 
   const { apr: ethPoolApr, totalPrincipal: ethTotalPrincipal } =
-    useStakingRoundDataV2(Token.ELFI_ETH_LP, Token.ELFI);
+    useStakingRoundDataV2(Token.ELFI_ETH_LP, Token.ELFI, stakingPool);
 
   const { apr: daiPoolApr, totalPrincipal: daiTotalPrincipal } =
-    useStakingRoundDataV2(Token.ELFI_DAI_LP, Token.ELFI);
+    useStakingRoundDataV2(Token.ELFI_DAI_LP, Token.ELFI, stakingPool);
 
   const {
     roundData: ethRoundData,

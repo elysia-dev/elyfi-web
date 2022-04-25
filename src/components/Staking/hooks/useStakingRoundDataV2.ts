@@ -1,4 +1,4 @@
-import { StakingPoolV2factory } from '@elysia-dev/elyfi-v1-sdk';
+import { StakingPoolV2, StakingPoolV2factory } from '@elysia-dev/elyfi-v1-sdk';
 import { BigNumber, constants, providers } from 'ethers';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import useSWR from 'swr';
@@ -16,36 +16,18 @@ import MainnetType from 'src/enums/MainnetType';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import calcLpAPR from 'src/core/utils/calcLpAPR';
-import { formatEther, parseEther } from 'ethers/lib/utils';
+import { parseEther } from 'ethers/lib/utils';
 
 const useStakingRoundDataV2 = (
   stakedToken: Token,
   rewardToken: Token.ELFI,
+  stakingPool: StakingPoolV2,
 ): {
   totalPrincipal: BigNumber;
   apr: BigNumber;
   loading: boolean;
 } => {
   const { type: mainnet } = useContext(MainnetContext);
-
-  const stakingPool = useMemo(() => {
-    return StakingPoolV2factory.connect(
-      stakedToken === Token.ELFI
-        ? mainnet === MainnetType.BSC
-          ? envs.stakingV2MoneyPool.elfiBscStaking
-          : envs.stakingV2MoneyPool.elfiStaking
-        : stakedToken === Token.ELFI_ETH_LP
-        ? envs.stakingV2MoneyPool.elfiEthLp
-        : stakedToken === Token.ELFI_DAI_LP
-        ? envs.stakingV2MoneyPool.elfiDaiLp
-        : envs.stakingV2MoneyPool.elfiStaking,
-      new providers.JsonRpcProvider(
-        mainnet === MainnetType.BSC
-          ? envs.jsonRpcUrl.bsc
-          : process.env.REACT_APP_JSON_RPC,
-      ) as any,
-    );
-  }, [stakedToken, mainnet]);
 
   const { data: priceData } = useSWR(
     envs.externalApiEndpoint.coingackoURL,
