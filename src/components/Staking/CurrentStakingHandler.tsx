@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import Token from 'src/enums/Token';
 import { formatSixFracionDigit } from 'src/utiles/formatters';
 import CountUp from 'react-countup';
+import Skeleton from 'react-loading-skeleton';
 
 interface Props {
   stakingAmount: string;
@@ -13,6 +14,7 @@ interface Props {
   isClaim: boolean;
   rewardToken: Token;
   claimOnClick: () => void;
+  isLoading: boolean;
 }
 
 const CurrnetStakingHandler: React.FC<Props> = ({
@@ -25,6 +27,7 @@ const CurrnetStakingHandler: React.FC<Props> = ({
   isClaim,
   rewardToken,
   claimOnClick,
+  isLoading,
 }) => {
   const { t } = useTranslation();
 
@@ -36,7 +39,11 @@ const CurrnetStakingHandler: React.FC<Props> = ({
             <h2>{t('staking.staking_amount')}</h2>
             <div>
               <h2>
-                {stakingAmount}
+                {isLoading ? (
+                  <Skeleton width={70} height={30} />
+                ) : (
+                  stakingAmount
+                )}
                 <span className="token-amount bold">{stakedToken}</span>
               </h2>
               <div
@@ -52,7 +59,9 @@ const CurrnetStakingHandler: React.FC<Props> = ({
             <h2>{t('staking.reward_amount')}</h2>
             <div>
               <h2>
-                {isClaim ? (
+                {isLoading ? (
+                  <Skeleton width={70} height={30} />
+                ) : isClaim ? (
                   '-'
                 ) : (
                   <CountUp
