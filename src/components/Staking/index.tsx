@@ -61,11 +61,7 @@ const CurrentStakingHandler = lazy(
   () => import('src/components/Staking/CurrentStakingHandler'),
 );
 
-interface IProps {
-  rewardToken: Token.ELFI;
-}
-
-const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
+const Staking: React.FunctionComponent = () => {
   const { t } = useTranslation();
   const { account } = useWeb3React();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -87,6 +83,7 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
   }, [getMainnetType]);
 
   const stakedToken = Token.ELFI;
+  const rewardToken = Token.ELFI;
 
   const { apr: poolApr, totalPrincipal } = useStakingRoundDataV2(
     Token.ELFI,
@@ -320,12 +317,6 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
       </section>
     </>
   );
-};
-
-export const StakingELFI = (): JSX.Element => {
-  const { type: mainnet } = useContext(MainnetContext);
-
-  return <Staking rewardToken={Token.ELFI} />;
 };
 
 export default Staking;
