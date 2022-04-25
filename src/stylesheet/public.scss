@@ -2295,6 +2295,9 @@ input[type='number'] {
           flex-direction: row;
           align-items: center;
           justify-content: flex-start;
+          > img:nth-child(2) {
+            margin-left: -7px;
+          }
           > h2 {
             color: $font-color;
           }
