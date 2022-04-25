@@ -107,7 +107,7 @@ const useStakingFetchRoundDataV2 = (
   useEffect(() => {
     setLoading(true);
     setError(false);
-    fetchRoundData(account);
+    setTimeout(() => fetchRoundData(account), 0);
   }, [account, getMainnetType]);
 
   return { roundData, loading, error, fetchRoundData };
