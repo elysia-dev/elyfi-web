@@ -2,7 +2,6 @@ import { lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import MediaQuery from 'src/enums/MediaQuery';
 import LegacyStakingButton from 'src/components/LegacyStaking/LegacyStakingButton';
-import Token from 'src/enums/Token';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
@@ -11,7 +10,7 @@ interface Props {
   image: string;
   subImage: string | undefined;
   title: string;
-  stakingType: Token;
+  stakingType: string;
 }
 
 const StakingHeader: React.FC<Props> = ({
