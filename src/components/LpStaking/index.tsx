@@ -386,10 +386,7 @@ function LPStaking(): JSX.Element {
                         </div>
                         <h2>{data[0]}</h2>
                       </div>
-                      <LegacyStakingButton
-                        stakingType={'LP'}
-                        isStaking={true}
-                      />
+                      <LegacyStakingButton stakingType={'LP'} />
                     </div>
                     <div className="staking__v2__content">
                       <div>
