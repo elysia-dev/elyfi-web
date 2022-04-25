@@ -257,51 +257,53 @@ const Staking: React.FunctionComponent = () => {
             stakingType={Token.ELFI}
           />
         </Suspense>
-        <CurrentStakingInfo
-          poolApr={poolApr}
-          totalPrincipal={totalPrincipal}
-          rewardToken={rewardToken}
-          isLoading={loading}
-        />
-        <CurrentStakingHandler
-          stakingAmount={`${formatCommaSmall(
-            roundData[0]?.accountPrincipal || constants.Zero,
-          )}`}
-          stakedToken={stakedToken}
-          isStaking={!account || isWrongMainnet}
-          stakingOnClick={() => {
-            if (!account || isWrongMainnet) {
-              return;
-            }
-            ReactGA.modalview(
-              stakedToken + ModalViewType.StakingOrUnstakingModal,
-            );
-            setModalValue(roundData[0].accountPrincipal);
-            setModalType(StakingModalType.Staking);
-          }}
-          claimStart={parseFloat(formatEther(expectedReward.before))}
-          claimEnd={parseFloat(
-            formatEther(
-              expectedReward.before.isZero()
-                ? roundData[0]?.accountReward || constants.Zero
-                : expectedReward.value,
-            ),
-          )}
-          claimOnClick={() => {
-            if (expectedReward.value.isZero() || !account) {
-              return;
-            }
+        <Suspense fallback={<div style={{ height: 200 }} />}>
+          <CurrentStakingInfo
+            poolApr={poolApr}
+            totalPrincipal={totalPrincipal}
+            rewardToken={rewardToken}
+            isLoading={loading}
+          />
+          <CurrentStakingHandler
+            stakingAmount={`${formatCommaSmall(
+              roundData[0]?.accountPrincipal || constants.Zero,
+            )}`}
+            stakedToken={stakedToken}
+            isStaking={!account || isWrongMainnet}
+            stakingOnClick={() => {
+              if (!account || isWrongMainnet) {
+                return;
+              }
+              ReactGA.modalview(
+                stakedToken + ModalViewType.StakingOrUnstakingModal,
+              );
+              setModalValue(roundData[0].accountPrincipal);
+              setModalType(StakingModalType.Staking);
+            }}
+            claimStart={parseFloat(formatEther(expectedReward.before))}
+            claimEnd={parseFloat(
+              formatEther(
+                expectedReward.before.isZero()
+                  ? roundData[0]?.accountReward || constants.Zero
+                  : expectedReward.value,
+              ),
+            )}
+            claimOnClick={() => {
+              if (expectedReward.value.isZero() || !account) {
+                return;
+              }
 
-            ReactGA.modalview(
-              stakedToken + ModalViewType.StakingIncentiveModal,
-            );
-            setModalValue(expectedReward.value);
-            setModalType(StakingModalType.Claim);
-          }}
-          isClaim={expectedReward.before.isZero() || !account}
-          rewardToken={rewardToken}
-          isLoading={loading}
-        />
+              ReactGA.modalview(
+                stakedToken + ModalViewType.StakingIncentiveModal,
+              );
+              setModalValue(expectedReward.value);
+              setModalType(StakingModalType.Claim);
+            }}
+            isClaim={expectedReward.before.isZero() || !account}
+            rewardToken={rewardToken}
+            isLoading={loading}
+          />
+        </Suspense>
       </section>
     </>
   );
