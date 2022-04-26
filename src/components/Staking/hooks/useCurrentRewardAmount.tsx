@@ -20,8 +20,8 @@ const useCurrentRewardAmount = (
   const currentRewardTokenAmount = useMemo(() => {
     return isLoading ? (
       <Skeleton width={30} height={20} />
-    ) : rewardBefore.isZero() || !account ? (
-      '-'
+    ) : rewardBefore.isZero() || !account || isError ? (
+      '0'
     ) : (
       <CountUp
         start={parseFloat(formatEther(rewardBefore)) * tokenUsdPrice}
