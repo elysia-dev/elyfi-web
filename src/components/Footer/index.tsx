@@ -3,16 +3,28 @@ import Telegram from 'src/assets/images/footer/telegram.svg';
 import Github from 'src/assets/images/footer/github.svg';
 import Discord from 'src/assets/images/footer/discord.svg';
 import LazyImage from 'src/utiles/lazyImage';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const LanguageConverter = lazy(
   () => import('src/components/Footer/LanguageConverter'),
 );
 
 const Footer = (): JSX.Element => {
+  const location = useLocation();
+  const currentPage = useMemo(() => {
+    return location.pathname.split('/')[3] === 'EL';
+  }, [location]);
+
   return (
     <Suspense fallback={null}>
-      <footer className="footer">
+      <footer
+        className="footer"
+        style={{
+          backgroundColor: currentPage
+            ? 'rgba(247, 251, 255, 1)'
+            : 'transparent',
+        }}>
         <div>
           <div className="footer__right-container">
             <LanguageConverter />

@@ -3009,6 +3009,7 @@ input[type='number'] {
 
     &__el {
       height: calc(100vh - 322px);
+      min-height: 100%;
       margin: 0 auto;
       width: 1190px;
       &__content {
