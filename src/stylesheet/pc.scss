@@ -1829,7 +1829,7 @@ $device-width: 1190px;
         } // previous end
         &__remaining-data {
           margin: 45px 0 0;
-          height: 180px;
+          height: 200px;
           &__title {
             padding: 23px 28px 16px 28px;
             > div:first-child {
@@ -1865,7 +1865,12 @@ $device-width: 1190px;
                   font-size: 25px;
                   margin-top: 25px;
                   margin-right: 25px;
-                  margin-bottom: 21px;
+                  margin-bottom: 11px;
+                }
+                > p {
+                  font-size: 18px;
+                  margin-right: 25px;
+                  margin-bottom: 11px;
                 }
               }
             }

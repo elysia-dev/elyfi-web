@@ -4,11 +4,12 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
 import { useWeb3React } from '@web3-react/core';
-import { constants } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 import Skeleton from 'react-loading-skeleton';
 import CountUp from 'react-countup';
 import { formatEther } from 'ethers/lib/utils';
@@ -40,9 +41,12 @@ import Wormhole from 'src/assets/images/staking/wormhole@2x.svg';
 import Uniswap from 'src/assets/images/staking/uniswap@2x.svg';
 import elfi from 'src/assets/images/token/ELFI.svg';
 import ModalViewType from 'src/enums/ModalViewType';
+import useTokenUsdAmount from 'src/hooks/useTokenUsdAmount';
 import LegacyStakingButton from '../LegacyStaking/LegacyStakingButton';
 import useStakingFetchRoundDataV2 from './hooks/useStakingFetchRoundDataV2';
 import useStakingRoundDataV2 from './hooks/useStakingRoundDataV2';
+import useCurrentStakingAmount from './hooks/useCurrentStakingAmount';
+import useCurrentRewardAmount from './hooks/useCurrentRewardAmount';
 
 const ClaimStakingRewardModalV2 = lazy(
   () => import('src/components/Staking/modal/ClaimStakingRewardModalV2'),
@@ -97,6 +101,27 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
     before: constants.Zero,
     value: constants.Zero,
   });
+
+  const {
+    tokenUsdAmount,
+    loading: tokenLoading,
+    error: tokenError,
+  } = useTokenUsdAmount();
+
+  const { currentStakingTokenAmount } = useCurrentStakingAmount(
+    tokenUsdAmount.elfiPrice,
+    tokenLoading,
+    tokenError,
+    roundData[0]?.accountPrincipal || constants.Zero,
+  );
+  const { currentRewardTokenAmount } = useCurrentRewardAmount(
+    tokenUsdAmount.elfiPrice,
+    tokenLoading,
+    tokenError,
+    roundData[0]?.accountReward || constants.Zero,
+    expectedReward.before,
+    expectedReward.value,
+  );
 
   const { value: mediaQuery } = useMediaQueryType();
 
@@ -368,6 +393,7 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
                             {stakedToken}
                           </span>
                         </h2>
+                        <p className="amount">{currentStakingTokenAmount}</p>
                         <div
                           className={`staking__round__button ${
                             !account || isWrongMainnet ? ' disable' : ''
@@ -416,6 +442,7 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
                             {rewardToken}
                           </span>
                         </h2>
+                        <p className="amount">{currentRewardTokenAmount}</p>
                         <div
                           className={`staking__round__button ${
                             expectedReward.value.isZero() || !account

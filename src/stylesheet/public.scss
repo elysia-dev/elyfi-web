@@ -2524,6 +2524,13 @@ input[type='number'] {
                   margin-left: 5px;
                 }
               }
+              > p {
+                text-align: right;
+                color: $gray-font-color;
+                > span {
+                  color: $gray-font-color;
+                }
+              }
               > div {
                 margin: 0 auto;
               }

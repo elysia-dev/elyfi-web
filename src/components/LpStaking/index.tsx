@@ -38,9 +38,12 @@ import StakingModalType from 'src/enums/StakingModalType';
 import Skeleton from 'react-loading-skeleton';
 import useUniswapV2Apr from 'src/hooks/useUniswapV2Apr';
 import ModalViewType from 'src/enums/ModalViewType';
+import useTokenUsdAmount from 'src/hooks/useTokenUsdAmount';
 import LegacyStakingButton from '../LegacyStaking/LegacyStakingButton';
 import useStakingRoundDataV2 from '../Staking/hooks/useStakingRoundDataV2';
 import useStakingFetchRoundDataV2 from '../Staking/hooks/useStakingFetchRoundDataV2';
+import useCurrentStakingAmount from '../Staking/hooks/useCurrentStakingAmount';
+import useCurrentRewardAmount from '../Staking/hooks/useCurrentRewardAmount';
 
 const ClaimStakingRewardModalV2 = lazy(
   () => import('src/components/Staking/modal/ClaimStakingRewardModalV2'),
@@ -104,6 +107,45 @@ function LPStaking(): JSX.Element {
     before: constants.Zero,
     value: constants.Zero,
   });
+
+  const {
+    tokenUsdAmount,
+    loading: tokenLoading,
+    error: tokenError,
+  } = useTokenUsdAmount();
+
+  const { currentStakingTokenAmount: ethStakingTokenAmount } =
+    useCurrentStakingAmount(
+      tokenUsdAmount.ethLpPrice,
+      tokenLoading,
+      tokenError,
+      ethRoundData[0]?.accountPrincipal || constants.Zero,
+    );
+  const { currentRewardTokenAmount: ethRewardTokenAmount } =
+    useCurrentRewardAmount(
+      tokenUsdAmount.elfiPrice,
+      tokenLoading,
+      tokenError,
+      ethRoundData[0]?.accountReward || constants.Zero,
+      ethExpectedReward.before,
+      ethExpectedReward.value,
+    );
+  const { currentStakingTokenAmount: daiStakingTokenAmount } =
+    useCurrentStakingAmount(
+      tokenUsdAmount.daiLpPrice,
+      tokenLoading,
+      tokenError,
+      daiRoundData[0]?.accountPrincipal || constants.Zero,
+    );
+  const { currentRewardTokenAmount: daiRewardTokenAmount } =
+    useCurrentRewardAmount(
+      tokenUsdAmount.elfiPrice,
+      tokenLoading,
+      tokenError,
+      daiRoundData[0]?.accountReward || constants.Zero,
+      daiExpectedReward.before,
+      daiExpectedReward.value,
+    );
 
   const modalVisible = useCallback(
     (type: StakingModalType) => {
@@ -365,6 +407,14 @@ function LPStaking(): JSX.Element {
                   data[0] === 'ELFI-ETH LP'
                     ? ethExpectedReward
                     : daiExpectedReward;
+                const stakingTokenAmount =
+                  data[0] === 'ELFI-ETH LP'
+                    ? ethStakingTokenAmount
+                    : daiStakingTokenAmount;
+                const rewardTokenAmount =
+                  data[0] === 'ELFI-ETH LP'
+                    ? ethRewardTokenAmount
+                    : daiRewardTokenAmount;
                 return (
                   <section className="staking__v2__container" key={index}>
                     <div className="staking__v2__header">
@@ -427,6 +477,7 @@ function LPStaking(): JSX.Element {
                                   {Token.UNI}
                                 </span>
                               </h2>
+                              <p className="amount">{stakingTokenAmount}</p>
                               <div
                                 className={`staking__round__button ${
                                   !account || isWrongMainnet ? ' disable' : ''
@@ -480,6 +531,7 @@ function LPStaking(): JSX.Element {
                                   {rewardToken}
                                 </span>
                               </h2>
+                              <p className="amount">{rewardTokenAmount}</p>
                               <div
                                 className={`staking__round__button ${
                                   expectedReward.value.isZero() || !account
