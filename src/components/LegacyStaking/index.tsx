@@ -107,7 +107,7 @@ const LegacyStaking: React.FC = () => {
         ? canvas.height / 3 / dpr
         : 90;
     const browserWidth = canvas.width / dpr + 40;
-    const browserHeight = canvas.height;
+    const browserHeight = 4096;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     ctx.scale(dpr, dpr);

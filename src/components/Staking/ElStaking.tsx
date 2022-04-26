@@ -25,7 +25,7 @@ const ElStaking: React.FC = () => {
         ? canvas.height / 2 / dpr
         : 90;
     const browserWidth = canvas.width / dpr + 40;
-    const browserHeight = canvas.height;
+    const browserHeight = 4320;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     ctx.scale(dpr, dpr);
@@ -63,7 +63,7 @@ const ElStaking: React.FC = () => {
           zIndex: -1,
         }}
       />
-      <section ref={headerRef} style={{ position: 'absolute', bottom: 0 }} />
+      <section ref={headerRef} />
       <div className="staking__el__content">
         <h2>{t('staking.el.title')}</h2>
         <p>
