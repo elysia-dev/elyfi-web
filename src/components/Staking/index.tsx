@@ -393,7 +393,9 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
                             {stakedToken}
                           </span>
                         </h2>
-                        <p className="amount">{currentStakingTokenAmount}</p>
+                        <p className="equal_amount">
+                          {currentStakingTokenAmount}
+                        </p>
                         <div
                           className={`staking__round__button ${
                             !account || isWrongMainnet ? ' disable' : ''
@@ -442,7 +444,9 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
                             {rewardToken}
                           </span>
                         </h2>
-                        <p className="amount">{currentRewardTokenAmount}</p>
+                        <p className="equal_amount">
+                          {currentRewardTokenAmount}
+                        </p>
                         <div
                           className={`staking__round__button ${
                             expectedReward.value.isZero() || !account

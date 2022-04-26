@@ -3972,6 +3972,12 @@ input[type='number'] {
       color: $sub-font-color;
     }
   }
+  .equal_amount {
+    &::before {
+      content: '= $';
+      color: $sub-font-color;
+    }
+  }
 
   .footer {
     height: 120px;

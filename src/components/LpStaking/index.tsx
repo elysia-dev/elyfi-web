@@ -477,7 +477,9 @@ function LPStaking(): JSX.Element {
                                   {Token.UNI}
                                 </span>
                               </h2>
-                              <p className="amount">{stakingTokenAmount}</p>
+                              <p className="equal_amount">
+                                {stakingTokenAmount}
+                              </p>
                               <div
                                 className={`staking__round__button ${
                                   !account || isWrongMainnet ? ' disable' : ''
@@ -531,7 +533,9 @@ function LPStaking(): JSX.Element {
                                   {rewardToken}
                                 </span>
                               </h2>
-                              <p className="amount">{rewardTokenAmount}</p>
+                              <p className="equal_amount">
+                                {rewardTokenAmount}
+                              </p>
                               <div
                                 className={`staking__round__button ${
                                   expectedReward.value.isZero() || !account

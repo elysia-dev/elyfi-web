@@ -2743,6 +2743,11 @@ $device-width: 1190px;
         margin-right: 5px;
       }
     }
+    .equal_amount {
+      &::before {
+        margin-right: 2px;
+      }
+    }
 
     .reward-plan-button {
       > a {

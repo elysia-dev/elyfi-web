@@ -3592,6 +3592,11 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
       margin-right: 3px;
     }
   }
+  .equal_amount {
+    &::before {
+      margin-right: 2px;
+    }
+  }
 
   .reward-plan-button {
     > a {
