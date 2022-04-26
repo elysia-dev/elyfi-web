@@ -66,22 +66,13 @@ function LPStaking(): JSX.Element {
   const isWrongMainnet = isWrongNetwork(getMainnetType, currentChain?.name);
   const [selectToken, setToken] = useState(Token.ELFI_DAI_LP);
 
-  const stakingPool = useMemo(() => {
-    return StakingPoolV2factory.connect(
-      selectToken === Token.ELFI_ETH_LP
-        ? envs.stakingV2MoneyPool.elfiEthLp
-        : envs.stakingV2MoneyPool.elfiDaiLp,
-      new providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC) as any,
-    );
-  }, [selectToken, getMainnetType]);
-
   const rewardToken = Token.ELFI;
 
   const { apr: ethPoolApr, totalPrincipal: ethTotalPrincipal } =
-    useStakingRoundDataV2(Token.ELFI_ETH_LP, Token.ELFI, stakingPool);
+    useStakingRoundDataV2(Token.ELFI_ETH_LP, Token.ELFI);
 
   const { apr: daiPoolApr, totalPrincipal: daiTotalPrincipal } =
-    useStakingRoundDataV2(Token.ELFI_DAI_LP, Token.ELFI, stakingPool);
+    useStakingRoundDataV2(Token.ELFI_DAI_LP, Token.ELFI);
 
   const {
     roundData: ethRoundData,

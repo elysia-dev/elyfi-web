@@ -63,26 +63,12 @@ const Staking: React.FunctionComponent = () => {
   const { type: getMainnetType } = useContext(MainnetContext);
   const currentChain = useCurrentChain();
 
-  const stakingPool = useMemo(() => {
-    return StakingPoolV2factory.connect(
-      getMainnetType === MainnetType.BSC
-        ? envs.stakingV2MoneyPool.elfiBscStaking
-        : envs.stakingV2MoneyPool.elfiStaking,
-      new providers.JsonRpcProvider(
-        getMainnetType === MainnetType.BSC
-          ? envs.jsonRpcUrl.bsc
-          : process.env.REACT_APP_JSON_RPC,
-      ) as any,
-    );
-  }, [getMainnetType]);
-
   const stakedToken = Token.ELFI;
   const rewardToken = Token.ELFI;
 
   const { apr: poolApr, totalPrincipal } = useStakingRoundDataV2(
     Token.ELFI,
     Token.ELFI,
-    stakingPool,
   );
 
   const [modalType, setModalType] = useState('');
