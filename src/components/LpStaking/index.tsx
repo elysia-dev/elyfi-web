@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { constants, utils } from 'ethers';
+import { constants } from 'ethers';
 import {
   useEffect,
   useContext,
@@ -19,6 +19,8 @@ import elfi from 'src/assets/images/ELFI.png';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import ReactGA from 'react-ga';
+import envs from 'src/core/envs';
+import useSWR from 'swr';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
 import MainnetContext from 'src/contexts/MainnetContext';
@@ -38,12 +40,14 @@ import StakingModalType from 'src/enums/StakingModalType';
 import Skeleton from 'react-loading-skeleton';
 import useUniswapV2Apr from 'src/hooks/useUniswapV2Apr';
 import ModalViewType from 'src/enums/ModalViewType';
-import useTokenUsdAmount from 'src/hooks/useTokenUsdAmount';
-import LegacyStakingButton from '../LegacyStaking/LegacyStakingButton';
-import useStakingRoundDataV2 from '../Staking/hooks/useStakingRoundDataV2';
-import useStakingFetchRoundDataV2 from '../Staking/hooks/useStakingFetchRoundDataV2';
-import CurrentStakingAmount from '../Staking/CurrentStakingAmount';
-import CurrentRewardAmount from '../Staking/CurrentRewardAmount';
+import useLpPrice from 'src/hooks/useLpPrice';
+import LegacyStakingButton from 'src/components/LegacyStaking/LegacyStakingButton';
+import useStakingRoundDataV2 from 'src/components/Staking/hooks/useStakingRoundDataV2';
+import useStakingFetchRoundDataV2 from 'src/components/Staking/hooks/useStakingFetchRoundDataV2';
+import CurrentStakingAmount from 'src/components/Staking/CurrentStakingAmount';
+import CurrentRewardAmount from 'src/components/Staking/CurrentRewardAmount';
+import { pricesFetcher } from 'src/clients/Coingecko';
+import priceMiddleware from 'src/middleware/priceMiddleware';
 
 const ClaimStakingRewardModalV2 = lazy(
   () => import('src/components/Staking/modal/ClaimStakingRewardModalV2'),
@@ -56,7 +60,7 @@ const TransactionConfirmModal = lazy(
 );
 
 function LPStaking(): JSX.Element {
-  const { account, library } = useWeb3React();
+  const { account } = useWeb3React();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const currentChain = useCurrentChain();
@@ -108,36 +112,36 @@ function LPStaking(): JSX.Element {
     value: constants.Zero,
   });
 
-  const {
-    tokenUsdAmount,
-    loading: tokenLoading,
-    error: tokenError,
-  } = useTokenUsdAmount();
+  const { lpPriceState } = useLpPrice();
+
+  const { data: priceData } = useSWR(
+    envs.externalApiEndpoint.coingackoURL,
+    pricesFetcher,
+    {
+      use: [priceMiddleware],
+    },
+  );
 
   const ethStakingTokenAmount = CurrentStakingAmount(
-    tokenUsdAmount.ethLpPrice,
-    tokenLoading,
-    tokenError,
+    lpPriceState.ethLpPrice,
+    lpPriceState.loading,
     ethRoundData[0]?.accountPrincipal || constants.Zero,
   );
   const ethRewardTokenAmount = CurrentRewardAmount(
-    tokenUsdAmount.elfiPrice,
-    tokenLoading,
-    tokenError,
+    priceData?.elfiPrice || 0,
+    lpPriceState.loading,
     ethRoundData[0]?.accountReward || constants.Zero,
     ethExpectedReward.before,
     ethExpectedReward.value,
   );
   const daiStakingTokenAmount = CurrentStakingAmount(
-    tokenUsdAmount.daiLpPrice,
-    tokenLoading,
-    tokenError,
+    lpPriceState.daiLpPrice,
+    lpPriceState.loading,
     daiRoundData[0]?.accountPrincipal || constants.Zero,
   );
   const daiRewardTokenAmount = CurrentRewardAmount(
-    tokenUsdAmount.elfiPrice,
-    tokenLoading,
-    tokenError,
+    priceData?.elfiPrice || 0,
+    lpPriceState.loading,
     daiRoundData[0]?.accountReward || constants.Zero,
     daiExpectedReward.before,
     daiExpectedReward.value,

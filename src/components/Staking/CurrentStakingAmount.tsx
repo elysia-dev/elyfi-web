@@ -5,13 +5,10 @@ import Skeleton from 'react-loading-skeleton';
 const CurrentStakingAmount = (
   tokenUsdPrice: number,
   isLoading: boolean,
-  isError: boolean,
   roundData: BigNumber,
 ): JSX.Element => {
   return isLoading ? (
     <Skeleton width={30} height={20} />
-  ) : isError ? (
-    <span>-</span>
   ) : roundData.isZero() ? (
     <span>0</span>
   ) : (

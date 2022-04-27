@@ -4,12 +4,11 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react';
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber, constants } from 'ethers';
+import { constants } from 'ethers';
 import Skeleton from 'react-loading-skeleton';
 import CountUp from 'react-countup';
 import { formatEther } from 'ethers/lib/utils';
@@ -19,6 +18,8 @@ import {
   toCompactForBignumber,
   toPercentWithoutSign,
 } from 'src/utiles/formatters';
+import useSWR from 'swr';
+import envs from 'src/core/envs';
 
 import Token from 'src/enums/Token';
 import { useTranslation } from 'react-i18next';
@@ -41,12 +42,14 @@ import Wormhole from 'src/assets/images/staking/wormhole@2x.svg';
 import Uniswap from 'src/assets/images/staking/uniswap@2x.svg';
 import elfi from 'src/assets/images/token/ELFI.svg';
 import ModalViewType from 'src/enums/ModalViewType';
-import useTokenUsdAmount from 'src/hooks/useTokenUsdAmount';
-import LegacyStakingButton from '../LegacyStaking/LegacyStakingButton';
-import useStakingFetchRoundDataV2 from './hooks/useStakingFetchRoundDataV2';
-import useStakingRoundDataV2 from './hooks/useStakingRoundDataV2';
-import CurrentStakingAmount from './CurrentStakingAmount';
-import CurrentRewardAmount from './CurrentRewardAmount';
+import useLpPrice from 'src/hooks/useLpPrice';
+import LegacyStakingButton from 'src/components/LegacyStaking/LegacyStakingButton';
+import useStakingFetchRoundDataV2 from 'src/components/Staking/hooks/useStakingFetchRoundDataV2';
+import useStakingRoundDataV2 from 'src/components/Staking/hooks/useStakingRoundDataV2';
+import CurrentStakingAmount from 'src/components/Staking/CurrentStakingAmount';
+import CurrentRewardAmount from 'src/components/Staking/CurrentRewardAmount';
+import { pricesFetcher } from 'src/clients/Coingecko';
+import priceMiddleware from 'src/middleware/priceMiddleware';
 
 const ClaimStakingRewardModalV2 = lazy(
   () => import('src/components/Staking/modal/ClaimStakingRewardModalV2'),
@@ -102,22 +105,24 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
     value: constants.Zero,
   });
 
-  const {
-    tokenUsdAmount,
-    loading: tokenLoading,
-    error: tokenError,
-  } = useTokenUsdAmount();
+  const { lpPriceState } = useLpPrice();
+
+  const { data: priceData } = useSWR(
+    envs.externalApiEndpoint.coingackoURL,
+    pricesFetcher,
+    {
+      use: [priceMiddleware],
+    },
+  );
 
   const currentStakingTokenAmount = CurrentStakingAmount(
-    tokenUsdAmount.elfiPrice,
-    tokenLoading,
-    tokenError,
+    priceData?.elfiPrice || 0,
+    lpPriceState.loading,
     roundData[0]?.accountPrincipal || constants.Zero,
   );
   const currentRewardTokenAmount = CurrentRewardAmount(
-    tokenUsdAmount.elfiPrice,
-    tokenLoading,
-    tokenError,
+    priceData?.elfiPrice || 0,
+    lpPriceState.loading,
     roundData[0]?.accountReward || constants.Zero,
     expectedReward.before,
     expectedReward.value,

@@ -8,7 +8,6 @@ import { formatSixFracionDigit } from 'src/utiles/formatters';
 const CurrentRewardAmount = (
   tokenUsdPrice: number,
   isLoading: boolean,
-  isError: boolean,
   roundData: BigNumber,
   rewardBefore: BigNumber,
   rewardValue: BigNumber,
@@ -17,7 +16,7 @@ const CurrentRewardAmount = (
 
   return isLoading ? (
     <Skeleton width={30} height={20} />
-  ) : rewardBefore.isZero() || !account || isError ? (
+  ) : rewardBefore.isZero() || !account ? (
     <span>0</span>
   ) : (
     <CountUp
