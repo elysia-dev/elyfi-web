@@ -4,13 +4,12 @@ import TokenColors from 'src/enums/TokenColors';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import DrawWave from 'src/utiles/drawWave';
 import { useTranslation, Trans } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { waveMaximumHeight } from 'src/core/data/waveHeight';
 
 const ElStaking: React.FC = () => {
   const { t } = useTranslation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const { lng } = useParams<{ lng: string }>();
 
   const { value: mediaQuery } = useMediaQueryType();
 
@@ -27,7 +26,7 @@ const ElStaking: React.FC = () => {
         ? canvas.height / 2 / dpr
         : 90;
     const browserWidth = canvas.width / dpr + 40;
-    const browserHeight = canvas.height;
+    const browserHeight = waveMaximumHeight;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     ctx.scale(dpr, dpr);
@@ -65,6 +64,7 @@ const ElStaking: React.FC = () => {
           zIndex: -1,
         }}
       />
+      <section ref={headerRef} />
       <div className="staking__el__content">
         <h2>{t('staking.el.title')}</h2>
         <p>
@@ -73,7 +73,6 @@ const ElStaking: React.FC = () => {
         <div onClick={() => window.open(`https://gov.elysia.land/`)}>
           <p>{t('staking.el.button')}</p>
         </div>
-        <section ref={headerRef} />
       </div>
     </section>
   );

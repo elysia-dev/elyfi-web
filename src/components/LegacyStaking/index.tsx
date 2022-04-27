@@ -24,6 +24,7 @@ import FinishedStaking from 'src/components/Staking/FinishedStaking';
 import { constants, ethers, utils } from 'ethers';
 import StakingModalType from 'src/enums/StakingModalType';
 import Skeleton from 'react-loading-skeleton';
+import { waveMaximumHeight } from 'src/core/data/waveHeight';
 
 const ClaimStakingRewardModal = lazy(
   () => import('src/components/Modal/ClaimStakingRewardModal'),
@@ -107,7 +108,7 @@ const LegacyStaking: React.FC = () => {
         ? canvas.height / 3 / dpr
         : 90;
     const browserWidth = canvas.width / dpr + 40;
-    const browserHeight = canvas.height;
+    const browserHeight = waveMaximumHeight;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     ctx.scale(dpr, dpr);
