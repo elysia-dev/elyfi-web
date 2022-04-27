@@ -66,10 +66,11 @@ const Staking: React.FunctionComponent = () => {
   const stakedToken = Token.ELFI;
   const rewardToken = Token.ELFI;
 
-  const { apr: poolApr, totalPrincipal } = useStakingRoundDataV2(
-    Token.ELFI,
-    Token.ELFI,
-  );
+  const {
+    apr: poolApr,
+    totalPrincipal,
+    loading: poolLoading,
+  } = useStakingRoundDataV2(Token.ELFI, Token.ELFI);
 
   const [modalType, setModalType] = useState('');
   const modalVisible = useCallback(
@@ -248,7 +249,7 @@ const Staking: React.FunctionComponent = () => {
             poolApr={poolApr}
             totalPrincipal={totalPrincipal}
             rewardToken={rewardToken}
-            isLoading={loading}
+            isLoading={poolLoading}
           />
           <CurrentStakingContainer
             stakingAmount={`${formatCommaSmall(
