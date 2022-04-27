@@ -4,6 +4,7 @@ import TokenColors from 'src/enums/TokenColors';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import DrawWave from 'src/utiles/drawWave';
 import { useTranslation, Trans } from 'react-i18next';
+import { waveMaximumHeight } from 'src/core/data/waveHeight';
 
 const ElStaking: React.FC = () => {
   const { t } = useTranslation();
@@ -25,7 +26,7 @@ const ElStaking: React.FC = () => {
         ? canvas.height / 2 / dpr
         : 90;
     const browserWidth = canvas.width / dpr + 40;
-    const browserHeight = 4320;
+    const browserHeight = waveMaximumHeight;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     ctx.scale(dpr, dpr);
