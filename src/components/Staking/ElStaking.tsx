@@ -42,7 +42,7 @@ const ElStaking: React.FC = () => {
   };
 
   useEffect(() => {
-    setTimeout(() => draw(), 0);
+    draw();
     window.addEventListener('scroll', () => draw());
     window.addEventListener('resize', () => draw());
 
