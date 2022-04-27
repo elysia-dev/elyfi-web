@@ -51,8 +51,8 @@ const TransactionConfirmModal = lazy(
 const StakingHeader = lazy(
   () => import('src/components/Staking/StakingHeader'),
 );
-const CurrentStakingHandler = lazy(
-  () => import('src/components/Staking/CurrentStakingHandler'),
+const CurrentStakingContainer = lazy(
+  () => import('src/components/Staking/CurrentStakingContainer'),
 );
 
 const Staking: React.FunctionComponent = () => {
@@ -250,7 +250,7 @@ const Staking: React.FunctionComponent = () => {
             rewardToken={rewardToken}
             isLoading={loading}
           />
-          <CurrentStakingHandler
+          <CurrentStakingContainer
             stakingAmount={`${formatCommaSmall(
               roundData[0]?.accountPrincipal || constants.Zero,
             )}`}

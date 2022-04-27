@@ -20,8 +20,8 @@ const StakingHeader = lazy(
 const CurrentLpStakingInfo = lazy(
   () => import('src/components/LpStaking/CurrentLpStakingInfo'),
 );
-const CurrentStakingHandler = lazy(
-  () => import('src/components/Staking/CurrentStakingHandler'),
+const CurrentStakingContainer = lazy(
+  () => import('src/components/Staking/CurrentStakingContainer'),
 );
 
 interface Props {
@@ -90,7 +90,7 @@ const LpStakingContainer: React.FC<Props> = ({
             isLoading={isAprLoading}
             isRoundDataLoading={isRoundDataLoading}
           />
-          <CurrentStakingHandler
+          <CurrentStakingContainer
             stakingAmount={`${formatCommaSmall(
               roundData?.accountPrincipal || constants.Zero,
             )}`}

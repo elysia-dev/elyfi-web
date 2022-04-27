@@ -17,7 +17,7 @@ interface Props {
   isLoading: boolean;
 }
 
-const CurrnetStakingHandler: React.FC<Props> = ({
+const CurrentStakingContainer: React.FC<Props> = ({
   stakingAmount,
   stakedToken,
   isStaking,
@@ -91,4 +91,4 @@ const CurrnetStakingHandler: React.FC<Props> = ({
   );
 };
 
-export default CurrnetStakingHandler;
+export default CurrentStakingContainer;
