@@ -42,8 +42,8 @@ import useTokenUsdAmount from 'src/hooks/useTokenUsdAmount';
 import LegacyStakingButton from '../LegacyStaking/LegacyStakingButton';
 import useStakingRoundDataV2 from '../Staking/hooks/useStakingRoundDataV2';
 import useStakingFetchRoundDataV2 from '../Staking/hooks/useStakingFetchRoundDataV2';
-import useCurrentStakingAmount from '../Staking/hooks/useCurrentStakingAmount';
-import useCurrentRewardAmount from '../Staking/hooks/useCurrentRewardAmount';
+import CurrentStakingAmount from '../Staking/CurrentStakingAmount';
+import CurrentRewardAmount from '../Staking/CurrentRewardAmount';
 
 const ClaimStakingRewardModalV2 = lazy(
   () => import('src/components/Staking/modal/ClaimStakingRewardModalV2'),
@@ -114,38 +114,34 @@ function LPStaking(): JSX.Element {
     error: tokenError,
   } = useTokenUsdAmount();
 
-  const { currentStakingTokenAmount: ethStakingTokenAmount } =
-    useCurrentStakingAmount(
-      tokenUsdAmount.ethLpPrice,
-      tokenLoading,
-      tokenError,
-      ethRoundData[0]?.accountPrincipal || constants.Zero,
-    );
-  const { currentRewardTokenAmount: ethRewardTokenAmount } =
-    useCurrentRewardAmount(
-      tokenUsdAmount.elfiPrice,
-      tokenLoading,
-      tokenError,
-      ethRoundData[0]?.accountReward || constants.Zero,
-      ethExpectedReward.before,
-      ethExpectedReward.value,
-    );
-  const { currentStakingTokenAmount: daiStakingTokenAmount } =
-    useCurrentStakingAmount(
-      tokenUsdAmount.daiLpPrice,
-      tokenLoading,
-      tokenError,
-      daiRoundData[0]?.accountPrincipal || constants.Zero,
-    );
-  const { currentRewardTokenAmount: daiRewardTokenAmount } =
-    useCurrentRewardAmount(
-      tokenUsdAmount.elfiPrice,
-      tokenLoading,
-      tokenError,
-      daiRoundData[0]?.accountReward || constants.Zero,
-      daiExpectedReward.before,
-      daiExpectedReward.value,
-    );
+  const ethStakingTokenAmount = CurrentStakingAmount(
+    tokenUsdAmount.ethLpPrice,
+    tokenLoading,
+    tokenError,
+    ethRoundData[0]?.accountPrincipal || constants.Zero,
+  );
+  const ethRewardTokenAmount = CurrentRewardAmount(
+    tokenUsdAmount.elfiPrice,
+    tokenLoading,
+    tokenError,
+    ethRoundData[0]?.accountReward || constants.Zero,
+    ethExpectedReward.before,
+    ethExpectedReward.value,
+  );
+  const daiStakingTokenAmount = CurrentStakingAmount(
+    tokenUsdAmount.daiLpPrice,
+    tokenLoading,
+    tokenError,
+    daiRoundData[0]?.accountPrincipal || constants.Zero,
+  );
+  const daiRewardTokenAmount = CurrentRewardAmount(
+    tokenUsdAmount.elfiPrice,
+    tokenLoading,
+    tokenError,
+    daiRoundData[0]?.accountReward || constants.Zero,
+    daiExpectedReward.before,
+    daiExpectedReward.value,
+  );
 
   const modalVisible = useCallback(
     (type: StakingModalType) => {

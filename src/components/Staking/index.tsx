@@ -45,8 +45,8 @@ import useTokenUsdAmount from 'src/hooks/useTokenUsdAmount';
 import LegacyStakingButton from '../LegacyStaking/LegacyStakingButton';
 import useStakingFetchRoundDataV2 from './hooks/useStakingFetchRoundDataV2';
 import useStakingRoundDataV2 from './hooks/useStakingRoundDataV2';
-import useCurrentStakingAmount from './hooks/useCurrentStakingAmount';
-import useCurrentRewardAmount from './hooks/useCurrentRewardAmount';
+import CurrentStakingAmount from './CurrentStakingAmount';
+import CurrentRewardAmount from './CurrentRewardAmount';
 
 const ClaimStakingRewardModalV2 = lazy(
   () => import('src/components/Staking/modal/ClaimStakingRewardModalV2'),
@@ -108,13 +108,13 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
     error: tokenError,
   } = useTokenUsdAmount();
 
-  const { currentStakingTokenAmount } = useCurrentStakingAmount(
+  const currentStakingTokenAmount = CurrentStakingAmount(
     tokenUsdAmount.elfiPrice,
     tokenLoading,
     tokenError,
     roundData[0]?.accountPrincipal || constants.Zero,
   );
-  const { currentRewardTokenAmount } = useCurrentRewardAmount(
+  const currentRewardTokenAmount = CurrentRewardAmount(
     tokenUsdAmount.elfiPrice,
     tokenLoading,
     tokenError,
