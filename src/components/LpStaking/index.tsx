@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { constants, providers } from 'ethers';
+import { constants } from 'ethers';
 import {
   useEffect,
   useContext,
@@ -14,27 +14,19 @@ import { useTranslation } from 'react-i18next';
 import Token from 'src/enums/Token';
 import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
-import elfi from 'src/assets/images/ELFI.png';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
-import ReactGA from 'react-ga';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
-import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
-import useCurrentChain from 'src/hooks/useCurrentChain';
-import { formatEther } from 'ethers/lib/utils';
 import calcExpectedReward from 'src/core/utils/calcExpectedReward';
 import { rewardPerDayByToken } from 'src/utiles/stakingReward';
-import { formatCommaSmall } from 'src/utiles/formatters';
-import { StakingPoolV2factory } from '@elysia-dev/elyfi-v1-sdk';
-import envs from 'src/core/envs';
 import StakingModalType from 'src/enums/StakingModalType';
 import useUniswapV2Apr from 'src/hooks/useUniswapV2Apr';
-import ModalViewType from 'src/enums/ModalViewType';
 import useStakingRoundDataV2 from '../Staking/hooks/useStakingRoundDataV2';
 import useStakingFetchRoundDataV2 from '../Staking/hooks/useStakingFetchRoundDataV2';
+import LpStakingContainer from './LpStakingContainer';
 
 const ClaimStakingRewardModalV2 = lazy(
   () => import('src/components/Staking/modal/ClaimStakingRewardModalV2'),
@@ -45,25 +37,14 @@ const StakingModalV2 = lazy(
 const TransactionConfirmModal = lazy(
   () => import('src/components/Modal/TransactionConfirmModal'),
 );
-const StakingHeader = lazy(
-  () => import('src/components/Staking/StakingHeader'),
-);
-const CurrentLpStakingInfo = lazy(
-  () => import('src/components/LpStaking/CurrentLpStakingInfo'),
-);
-const CurrentStakingHandler = lazy(
-  () => import('src/components/Staking/CurrentStakingHandler'),
-);
 
 function LPStaking(): JSX.Element {
   const { account } = useWeb3React();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const currentChain = useCurrentChain();
   const { t } = useTranslation();
   const { value: mediaQuery } = useMediaQueryType();
   const { type: getMainnetType } = useContext(MainnetContext);
-  const isWrongMainnet = isWrongNetwork(getMainnetType, currentChain?.name);
   const [selectToken, setToken] = useState(Token.ELFI_DAI_LP);
 
   const rewardToken = Token.ELFI;
@@ -342,115 +323,46 @@ function LPStaking(): JSX.Element {
           <p>{t('staking.lp.content')}</p>
         </div>
         {getMainnetType === MainnetType.Ethereum ? (
-          <>
-            {[
-              [
-                'ELFI-ETH LP',
-                eth,
-                'https://app.uniswap.org/#/add/v2/0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4/ETH?chain=mainnet',
-              ],
-              [
-                'ELFI-DAI LP',
-                dai,
-                'https://app.uniswap.org/#/add/v2/0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4/0x6b175474e89094c44da98b954eedeac495271d0f?chain=mainnet',
-              ],
-            ].map((data, index) => {
-              const roundData =
-                data[0] === 'ELFI-ETH LP' ? ethRoundData : daiRoundData;
-              const totalPrincipal =
-                data[0] === 'ELFI-ETH LP'
-                  ? ethTotalPrincipal
-                  : daiTotalPrincipal;
-              const expectedReward =
-                data[0] === 'ELFI-ETH LP'
-                  ? ethExpectedReward
-                  : daiExpectedReward;
-              const getDataLoading =
-                data[0] === 'ELFI-ETH LP' ? ethLoading : daiLoading;
-              return (
-                <section className="staking__v2__container" key={index}>
-                  <Suspense fallback={<div style={{ height: 40 }} />}>
-                    <StakingHeader
-                      mediaQuery={mediaQuery}
-                      image={elfi}
-                      subImage={data[1]}
-                      title={data[0]}
-                      stakingType={'LP'}
-                    />
-                  </Suspense>
-                  <Suspense fallback={<div style={{ height: 200 }} />}>
-                    <>
-                      <CurrentLpStakingInfo
-                        poolApr={v2LPPoolApr[index]}
-                        totalPrincipal={totalPrincipal}
-                        rewardToken={Token.UNI}
-                        tokenName={data[0]}
-                        link={data[2]}
-                        isLoading={aprLoading}
-                        isRoundDataLoading={getDataLoading}
-                      />
-                      <CurrentStakingHandler
-                        stakingAmount={`${formatCommaSmall(
-                          roundData[0]?.accountPrincipal || constants.Zero,
-                        )}`}
-                        stakedToken={Token.UNI}
-                        isStaking={!account || isWrongMainnet}
-                        stakingOnClick={() => {
-                          if (!account || isWrongMainnet) {
-                            return;
-                          }
-                          ReactGA.modalview(
-                            data[0] + ModalViewType.StakingOrUnstakingModal,
-                          );
-                          setToken(
-                            data[0] === 'ELFI-ETH LP'
-                              ? Token.ELFI_ETH_LP
-                              : Token.ELFI_DAI_LP,
-                          );
-                          setModalValue(roundData[0].accountPrincipal);
-                          setModalType(StakingModalType.Staking);
-                        }}
-                        claimStart={parseFloat(
-                          formatEther(expectedReward.before),
-                        )}
-                        claimEnd={parseFloat(
-                          formatEther(
-                            expectedReward.before.isZero()
-                              ? roundData[0]?.accountReward || constants.Zero
-                              : expectedReward.value,
-                          ),
-                        )}
-                        claimOnClick={() => {
-                          if (expectedReward.value.isZero() || !account) {
-                            return;
-                          }
-                          setExpectedReward(
-                            data[0] === 'ELFI-ETH LP'
-                              ? Token.ELFI_ETH_LP
-                              : Token.ELFI_DAI_LP,
-                          );
-                          ReactGA.modalview(
-                            data[0] + ModalViewType.StakingIncentiveModal,
-                          );
-                          setToken(
-                            data[0] === 'ELFI-ETH LP'
-                              ? Token.ELFI_ETH_LP
-                              : Token.ELFI_DAI_LP,
-                          );
-
-                          setModalValue(expectedReward.value);
-                          setModalType(StakingModalType.Claim);
-                        }}
-                        isClaim={expectedReward.value.isZero() || !account}
-                        rewardToken={rewardToken}
-                        isLoading={getDataLoading}
-                      />
-                    </>
-                  </Suspense>
-                </section>
-              );
-            })}
-          </>
+          <section className="staking__v2__body">
+            <LpStakingContainer
+              tokenTitle={'ELFI-ETH LP'}
+              subImage={eth}
+              v2LPPoolApr={v2LPPoolApr[0]}
+              totalPrincipal={ethTotalPrincipal}
+              uniswapLink={
+                'https://app.uniswap.org/#/add/v2/0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4/ETH?chain=mainnet'
+              }
+              isAprLoading={aprLoading}
+              isRoundDataLoading={ethLoading}
+              roundData={ethRoundData[0]}
+              rewardToken={rewardToken}
+              setToken={setToken}
+              setModalValue={setModalValue}
+              setModalType={setModalType}
+              expectedReward={ethExpectedReward}
+              tokenType={Token.ELFI_ETH_LP}
+              setExpectedReward={setExpectedReward}
+            />
+            <LpStakingContainer
+              tokenTitle={'ELFI-DAI LP'}
+              subImage={dai}
+              v2LPPoolApr={v2LPPoolApr[1]}
+              totalPrincipal={daiTotalPrincipal}
+              uniswapLink={
+                'https://app.uniswap.org/#/add/v2/0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4/0x6b175474e89094c44da98b954eedeac495271d0f?chain=mainnet'
+              }
+              isAprLoading={aprLoading}
+              isRoundDataLoading={daiLoading}
+              roundData={daiRoundData[0]}
+              rewardToken={rewardToken}
+              setToken={setToken}
+              setModalValue={setModalValue}
+              setModalType={setModalType}
+              expectedReward={daiExpectedReward}
+              tokenType={Token.ELFI_DAI_LP}
+              setExpectedReward={setExpectedReward}
+            />
+          </section>
         ) : (
           <>
             <div style={{ marginTop: 300 }} />
