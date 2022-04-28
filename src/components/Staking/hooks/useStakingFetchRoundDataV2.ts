@@ -68,18 +68,20 @@ const useStakingFetchRoundDataV2 = (
 
   const fetchRoundData = async (account: string | null | undefined) => {
     try {
+      setLoading(true);
+      setError(false);
       if (!priceData) return;
       const data: RoundData[] = [];
+      const poolData = await stakingPool?.getPoolData();
       if (stakingPool && account) {
         const userData = await stakingPool.getUserData(account);
         const accountReward = await stakingPool.getUserReward(account);
-        const poolData = await stakingPool.getPoolData();
 
         data.push(
           stakedData(
             priceData,
             accountReward,
-            poolData.totalPrincipal,
+            poolData?.totalPrincipal || constants.Zero,
             userData.userPrincipal,
           ),
         );
@@ -87,28 +89,22 @@ const useStakingFetchRoundDataV2 = (
         data.push(stakedData(priceData));
       }
       setroundData(data);
-      setLoading(false);
       setError(false);
+      setLoading(false);
     } catch (error) {
       console.log(error);
       if (!priceData) return;
       const data: RoundData[] = [];
       data.push(stakedData(priceData));
       setroundData(data);
-      setLoading(false);
       setError(true);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchRoundData(account);
-  }, [poolApr, stakingPool]);
-
-  useEffect(() => {
-    setLoading(true);
-    setError(false);
-    fetchRoundData(account);
-  }, [account, getMainnetType]);
+  }, [account, getMainnetType, poolApr, stakingPool]);
 
   return { roundData, loading, error, fetchRoundData };
 };
