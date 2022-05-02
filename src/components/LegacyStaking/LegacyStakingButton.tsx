@@ -4,13 +4,9 @@ import { Link, useParams } from 'react-router-dom';
 
 type Props = {
   stakingType: string;
-  isStaking: boolean;
 };
 
-const LegacyStakingButton: FunctionComponent<Props> = ({
-  stakingType,
-  isStaking,
-}) => {
+const LegacyStakingButton: FunctionComponent<Props> = ({ stakingType }) => {
   const { lng } = useParams<{ lng: string }>();
   const { t } = useTranslation();
   return (

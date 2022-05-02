@@ -43,6 +43,7 @@ import RecentActivityType from 'src/enums/RecentActivityType';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
 import usePricePerLiquidity from 'src/hooks/usePricePerLiquidity';
 import stakerABI from 'src/core/abi/StakerABI.json';
+import { waveMaximumHeight } from 'src/core/data/waveHeight';
 
 const LegacyStaking: React.FC = () => {
   const { account, library } = useWeb3React();
@@ -220,7 +221,7 @@ const LegacyStaking: React.FC = () => {
         ? canvas.height / 3 / dpr
         : 90;
     const browserWidth = canvas.width / dpr + 40;
-    const browserHeight = canvas.height;
+    const browserHeight = waveMaximumHeight;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     ctx.scale(dpr, dpr);

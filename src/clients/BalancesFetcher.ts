@@ -1,8 +1,16 @@
 import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import { StakingPoolV2factory } from '@elysia-dev/elyfi-v1-sdk';
+import axios from 'axios';
 import { providers } from 'ethers';
 import envs from 'src/core/envs';
 import { getV2LPPoolContract } from 'src/utiles/v2LPPoolContract';
+
+export const tvlFetcher = (
+  url: string,
+): Promise<{
+  tvlExceptElTvl: number;
+  elTvl: number;
+}> => axios.get(url).then((res) => res.data);
 
 const provider = new providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC);
 const bscProvider = new providers.JsonRpcProvider(envs.jsonRpcUrl.bsc);

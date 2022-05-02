@@ -1,4 +1,4 @@
-import { StakingPoolV2factory } from '@elysia-dev/elyfi-v1-sdk';
+import { StakingPoolV2, StakingPoolV2factory } from '@elysia-dev/elyfi-v1-sdk';
 import { BigNumber, constants, providers } from 'ethers';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import useSWR from 'swr';
@@ -16,7 +16,7 @@ import MainnetType from 'src/enums/MainnetType';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import calcLpAPR from 'src/core/utils/calcLpAPR';
-import { formatEther, parseEther } from 'ethers/lib/utils';
+import { parseEther } from 'ethers/lib/utils';
 
 const useStakingRoundDataV2 = (
   stakedToken: Token,

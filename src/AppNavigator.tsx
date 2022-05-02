@@ -10,7 +10,7 @@ const Dashboard = lazy(() => import('src/components/Deposit'));
 const Main = lazy(() => import('src/components/Main'));
 const Governance = lazy(() => import('src/components/Governance'));
 const StakingEL = lazy(() => import('src/components/Staking/ElStaking'));
-const { StakingELFI } = lazily(() => import('src/components/Staking'));
+const Staking = lazy(() => import('src/components/Staking'));
 const LPStaking = lazy(() => import('src/components/LpStaking'));
 const RewardPlan = lazy(() => import('src/components/RewardPlan'));
 const MarketDetail = lazy(() => import('src/components/LiquidiryDetails'));
@@ -128,7 +128,7 @@ const AppNavigator: React.FC = () => {
               path="ELFI"
               element={
                 <Suspense fallback={nullFallbackArea()}>
-                  <StakingELFI />
+                  <Staking />
                 </Suspense>
               }
             />
