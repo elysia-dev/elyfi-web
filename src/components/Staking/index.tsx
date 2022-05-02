@@ -9,18 +9,8 @@ import {
 } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { constants } from 'ethers';
-import Skeleton from 'react-loading-skeleton';
-import CountUp from 'react-countup';
 import { formatEther } from 'ethers/lib/utils';
-import {
-  formatCommaSmall,
-  formatSixFracionDigit,
-  toCompactForBignumber,
-  toPercentWithoutSign,
-} from 'src/utiles/formatters';
-import useSWR from 'swr';
-import envs from 'src/core/envs';
-
+import { formatCommaSmall } from 'src/utiles/formatters';
 import Token from 'src/enums/Token';
 import { useTranslation } from 'react-i18next';
 import ReactGA from 'react-ga';
@@ -29,28 +19,21 @@ import MediaQuery from 'src/enums/MediaQuery';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
 import MainnetContext from 'src/contexts/MainnetContext';
-import MainnetType from 'src/enums/MainnetType';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
 import StakingModalType from 'src/enums/StakingModalType';
 import { rewardPerDayByToken } from 'src/utiles/stakingReward';
 import calcExpectedReward from 'src/core/utils/calcExpectedReward';
-import TitleButton from 'src/components/Staking/TitleButton';
 
-import PancakeSwap from 'src/assets/images/staking/pancakeswapcake@2x.svg';
-import Wormhole from 'src/assets/images/staking/wormhole@2x.svg';
-import Uniswap from 'src/assets/images/staking/uniswap@2x.svg';
 import elfi from 'src/assets/images/token/ELFI.svg';
 import ModalViewType from 'src/enums/ModalViewType';
-import useLpPrice from 'src/hooks/useLpPrice';
-import LegacyStakingButton from 'src/components/LegacyStaking/LegacyStakingButton';
 import useStakingFetchRoundDataV2 from 'src/components/Staking/hooks/useStakingFetchRoundDataV2';
 import useStakingRoundDataV2 from 'src/components/Staking/hooks/useStakingRoundDataV2';
-import CurrentStakingAmount from 'src/components/Staking/CurrentStakingAmount';
-import CurrentRewardAmount from 'src/components/Staking/CurrentRewardAmount';
-import { pricesFetcher } from 'src/clients/Coingecko';
-import priceMiddleware from 'src/middleware/priceMiddleware';
 
+const CurrentStakingInfo = lazy(
+  () => import('src/components/Staking/CurrentStakingInfo'),
+);
+const ElfiTitle = lazy(() => import('src/components/Staking/ElfiTitle'));
 const ClaimStakingRewardModalV2 = lazy(
   () => import('src/components/Staking/modal/ClaimStakingRewardModalV2'),
 );
@@ -60,17 +43,14 @@ const StakingModalV2 = lazy(
 const TransactionConfirmModal = lazy(
   () => import('src/components/Modal/TransactionConfirmModal'),
 );
-const GovernanceGuideBox = lazy(
-  () => import('src/components/Governance/GovernanceGuideBox'),
+const StakingHeader = lazy(
+  () => import('src/components/Staking/StakingHeader'),
+);
+const CurrentStakingContainer = lazy(
+  () => import('src/components/Staking/CurrentStakingContainer'),
 );
 
-const LazyImage = lazy(() => import('src/utiles/lazyImage'));
-
-interface IProps {
-  rewardToken: Token.ELFI;
-}
-
-const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
+const Staking: React.FunctionComponent = () => {
   const { t } = useTranslation();
   const { account } = useWeb3React();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -79,11 +59,13 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
   const currentChain = useCurrentChain();
 
   const stakedToken = Token.ELFI;
+  const rewardToken = Token.ELFI;
 
-  const { apr: poolApr, totalPrincipal } = useStakingRoundDataV2(
-    Token.ELFI,
-    Token.ELFI,
-  );
+  const {
+    apr: poolApr,
+    totalPrincipal,
+    loading: poolLoading,
+  } = useStakingRoundDataV2(Token.ELFI, Token.ELFI);
 
   const [modalType, setModalType] = useState('');
   const modalVisible = useCallback(
@@ -104,16 +86,6 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
     before: constants.Zero,
     value: constants.Zero,
   });
-
-  const { lpPriceState } = useLpPrice();
-
-  const { data: priceData } = useSWR(
-    envs.externalApiEndpoint.coingackoURL,
-    pricesFetcher,
-    {
-      use: [priceMiddleware],
-    },
-  );
 
   const { value: mediaQuery } = useMediaQueryType();
 
@@ -253,242 +225,73 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
         )}
       </Suspense>
       <section className="staking">
-        <div ref={headerRef} className="staking__title">
-          <h2>
-            {t('staking.staking__token', {
-              token: Token.ELFI.toUpperCase(),
+        <Suspense fallback={<div style={{ height: 400 }} />}>
+          <ElfiTitle headerRef={headerRef} getMainnetType={getMainnetType} />
+        </Suspense>
+        <Suspense fallback={<div style={{ height: 40 }} />}>
+          <StakingHeader
+            mediaQuery={mediaQuery}
+            image={elfi}
+            subImage={undefined}
+            title={t('staking.staking__token', {
+              token: Token.ELFI,
             })}
-          </h2>
-          <>
-            <p>{t('staking.elfi.staking__content')}</p>
-            {getMainnetType === MainnetType.Ethereum ? (
-              <TitleButton
-                buttonName={t('staking.elfi.staking__content--button.uniswap')}
-                link={
-                  'https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4'
-                }
-                linkName={Token.ELFI}
-                linkImage={Uniswap}
-              />
-            ) : (
-              <div className="staking__title__token">
-                {[
-                  {
-                    linkName: 'pancakeswap',
-                    link: 'https://pancakeswap.finance/swap?inputCurrency=0xe9e7cea3dedca5984780bafc599bd69add087d56&outputCurrency=0x6c619006043eab742355395690c7b42d3411e8c0',
-                    linkImage: PancakeSwap,
-                  },
-                  {
-                    linkName: 'wormhole',
-                    link: 'https://portalbridge.com/#/transfer',
-                    linkImage: Wormhole,
-                  },
-                ].map((value, index) => {
-                  return (
-                    <Suspense fallback={null}>
-                      <TitleButton
-                        key={`btn_${index}`}
-                        buttonName={t(
-                          `staking.elfi.staking__content--button.${value.linkName}`,
-                        )}
-                        link={value.link}
-                        linkName={value.linkName}
-                        linkImage={value.linkImage}
-                      />
-                    </Suspense>
-                  );
-                })}
-              </div>
+            stakingType={Token.ELFI}
+          />
+        </Suspense>
+        <Suspense fallback={<div style={{ height: 200 }} />}>
+          <CurrentStakingInfo
+            poolApr={poolApr}
+            totalPrincipal={totalPrincipal}
+            rewardToken={rewardToken}
+            isLoading={poolLoading}
+          />
+          <CurrentStakingContainer
+            stakingAmount={`${formatCommaSmall(
+              roundData[0]?.accountPrincipal || constants.Zero,
+            )}`}
+            stakedToken={stakedToken}
+            isStaking={!account || isWrongMainnet}
+            stakingOnClick={() => {
+              if (!account || isWrongMainnet) {
+                return;
+              }
+              ReactGA.modalview(
+                stakedToken + ModalViewType.StakingOrUnstakingModal,
+              );
+              setModalValue(roundData[0].accountPrincipal);
+              setModalType(StakingModalType.Staking);
+            }}
+            claimStart={parseFloat(formatEther(expectedReward.before))}
+            claimEnd={parseFloat(
+              formatEther(
+                expectedReward.before.isZero()
+                  ? roundData[0]?.accountReward || constants.Zero
+                  : expectedReward.value,
+              ),
             )}
-          </>
-        </div>
-        <section>
-          <section className="governance__elyfi-graph">
-            <Suspense fallback={<div style={{ height: 120 }} />}>
-              <GovernanceGuideBox />
-            </Suspense>
-          </section>
-          <div className="staking__title__content__wrapper">
-            {mediaQuery === MediaQuery.PC ? (
-              <>
-                <div className="staking__title__content">
-                  <div className="staking__title__content__token-wrapper">
-                    <Suspense
-                      fallback={<div style={{ width: 37, height: 37 }} />}>
-                      <LazyImage src={elfi} name="token-images" />
-                    </Suspense>
-                    <h2>
-                      {t('staking.staking__token', {
-                        token: Token.ELFI.toUpperCase(),
-                      })}
-                    </h2>
-                  </div>
-                  <LegacyStakingButton
-                    stakingType={Token.ELFI}
-                    isStaking={true}
-                  />
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="staking__title__content__token-wrapper">
-                  <div>
-                    <Suspense
-                      fallback={<div style={{ width: 21, height: 21 }} />}>
-                      <LazyImage src={elfi} name="token-images" />
-                    </Suspense>
-                    <h2>
-                      {t('staking.staking__token', {
-                        token: Token.ELFI.toUpperCase(),
-                      })}
-                    </h2>
-                  </div>
-                  <LegacyStakingButton
-                    stakingType={Token.ELFI}
-                    isStaking={true}
-                  />
-                </div>
-              </>
-            )}
-          </div>
-          {loading ? (
-            <Skeleton width={'100%'} height={350} />
-          ) : (
-            <>
-              <section className="staking__round__header">
-                <div>
-                  <p>{t('staking.elfi.apr')}</p>
-                  <h2 className="percent">
-                    {poolApr.eq(constants.MaxUint256)
-                      ? '-'
-                      : toPercentWithoutSign(poolApr || 0)}
-                  </h2>
-                </div>
-                <div>
-                  <p>{t('staking.elfi.total_amount')}</p>
-                  <h2>
-                    {toCompactForBignumber(totalPrincipal)} {rewardToken}
-                  </h2>
-                </div>
-              </section>
-              <section className="staking__round__remaining-data current">
-                <div className="staking__round__remaining-data__body">
-                  <>
-                    <div>
-                      <h2>{t('staking.staking_amount')}</h2>
-                      <div>
-                        <h2>
-                          {`${formatCommaSmall(
-                            roundData[0]?.accountPrincipal || constants.Zero,
-                          )}`}
-                          <span className="token-amount bold">
-                            {stakedToken}
-                          </span>
-                        </h2>
-                        <p className="equal_amount">
-                          <CurrentStakingAmount
-                            tokenUsdPrice={priceData?.elfiPrice || 0}
-                            isLoading={lpPriceState.loading}
-                            roundData={
-                              roundData[0]?.accountPrincipal || constants.Zero
-                            }
-                          />
-                        </p>
-                        <div
-                          className={`staking__round__button ${
-                            !account || isWrongMainnet ? ' disable' : ''
-                          }`}
-                          onClick={(e) => {
-                            if (!account || isWrongMainnet) {
-                              return;
-                            }
-                            ReactGA.modalview(
-                              stakedToken +
-                                ModalViewType.StakingOrUnstakingModal,
-                            );
-                            setModalValue(roundData[0].accountPrincipal);
-                            setModalType(StakingModalType.Staking);
-                          }}>
-                          <p>{t('staking.staking_btn')}</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <h2>{t('staking.reward_amount')}</h2>
-                      <div>
-                        <h2>
-                          {expectedReward.before.isZero() || !account ? (
-                            '-'
-                          ) : (
-                            <CountUp
-                              start={parseFloat(
-                                formatEther(expectedReward.before),
-                              )}
-                              end={parseFloat(
-                                formatEther(
-                                  expectedReward.before.isZero()
-                                    ? roundData[0].accountReward
-                                    : expectedReward.value,
-                                ),
-                              )}
-                              formattingFn={(number) => {
-                                return formatSixFracionDigit(number);
-                              }}
-                              decimals={6}
-                              duration={1}
-                            />
-                          )}
-                          <span className="token-amount bold">
-                            {rewardToken}
-                          </span>
-                        </h2>
-                        <p className="equal_amount">
-                          <CurrentRewardAmount
-                            tokenUsdPrice={priceData?.elfiPrice || 0}
-                            isLoading={lpPriceState.loading}
-                            roundData={
-                              roundData[0]?.accountReward || constants.Zero
-                            }
-                            rewardBefore={expectedReward.before}
-                            rewardValue={expectedReward.value}
-                          />
-                        </p>
-                        <div
-                          className={`staking__round__button ${
-                            expectedReward.value.isZero() || !account
-                              ? ' disable'
-                              : ''
-                          }`}
-                          onClick={(e) => {
-                            if (expectedReward.value.isZero() || !account) {
-                              return;
-                            }
+            claimOnClick={() => {
+              if (expectedReward.value.isZero() || !account) {
+                return;
+              }
 
-                            ReactGA.modalview(
-                              stakedToken + ModalViewType.StakingIncentiveModal,
-                            );
-                            setModalValue(expectedReward.value);
-                            setModalType(StakingModalType.Claim);
-                          }}>
-                          <p>{t('staking.claim_reward')}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                </div>
-              </section>
-            </>
-          )}
-        </section>
+              ReactGA.modalview(
+                stakedToken + ModalViewType.StakingIncentiveModal,
+              );
+              setModalValue(expectedReward.value);
+              setModalType(StakingModalType.Claim);
+            }}
+            isClaim={expectedReward.before.isZero() || !account}
+            rewardToken={rewardToken}
+            isLoading={loading}
+            roundData={roundData[0]}
+            expectedReward={expectedReward}
+            currentToken={Token.ELFI}
+          />
+        </Suspense>
       </section>
     </>
   );
-};
-
-export const StakingELFI = (): JSX.Element => {
-  const { type: mainnet } = useContext(MainnetContext);
-
-  return <Staking rewardToken={Token.ELFI} />;
 };
 
 export default Staking;
