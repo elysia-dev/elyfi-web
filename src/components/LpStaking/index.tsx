@@ -122,31 +122,6 @@ function LPStaking(): JSX.Element {
     },
   );
 
-  const ethStakingTokenAmount = CurrentStakingAmount(
-    lpPriceState.ethLpPrice,
-    lpPriceState.loading,
-    ethRoundData[0]?.accountPrincipal || constants.Zero,
-  );
-  const ethRewardTokenAmount = CurrentRewardAmount(
-    priceData?.elfiPrice || 0,
-    lpPriceState.loading,
-    ethRoundData[0]?.accountReward || constants.Zero,
-    ethExpectedReward.before,
-    ethExpectedReward.value,
-  );
-  const daiStakingTokenAmount = CurrentStakingAmount(
-    lpPriceState.daiLpPrice,
-    lpPriceState.loading,
-    daiRoundData[0]?.accountPrincipal || constants.Zero,
-  );
-  const daiRewardTokenAmount = CurrentRewardAmount(
-    priceData?.elfiPrice || 0,
-    lpPriceState.loading,
-    daiRoundData[0]?.accountReward || constants.Zero,
-    daiExpectedReward.before,
-    daiExpectedReward.value,
-  );
-
   const modalVisible = useCallback(
     (type: StakingModalType) => {
       return modalType === type;
@@ -407,14 +382,6 @@ function LPStaking(): JSX.Element {
                   data[0] === 'ELFI-ETH LP'
                     ? ethExpectedReward
                     : daiExpectedReward;
-                const stakingTokenAmount =
-                  data[0] === 'ELFI-ETH LP'
-                    ? ethStakingTokenAmount
-                    : daiStakingTokenAmount;
-                const rewardTokenAmount =
-                  data[0] === 'ELFI-ETH LP'
-                    ? ethRewardTokenAmount
-                    : daiRewardTokenAmount;
                 return (
                   <section className="staking__v2__container" key={index}>
                     <div className="staking__v2__header">
@@ -478,7 +445,20 @@ function LPStaking(): JSX.Element {
                                 </span>
                               </h2>
                               <p className="equal_amount">
-                                {stakingTokenAmount}
+                                <CurrentStakingAmount
+                                  tokenUsdPrice={
+                                    data[0] === 'ELFI-ETH LP'
+                                      ? lpPriceState.ethLpPrice
+                                      : lpPriceState.daiLpPrice
+                                  }
+                                  isLoading={lpPriceState.loading}
+                                  roundData={
+                                    (data[0] === 'ELFI-ETH LP'
+                                      ? ethRoundData[0]?.accountPrincipal
+                                      : daiRoundData[0]?.accountPrincipal) ||
+                                    constants.Zero
+                                  }
+                                />
                               </p>
                               <div
                                 className={`staking__round__button ${
@@ -534,7 +514,26 @@ function LPStaking(): JSX.Element {
                                 </span>
                               </h2>
                               <p className="equal_amount">
-                                {rewardTokenAmount}
+                                <CurrentRewardAmount
+                                  tokenUsdPrice={priceData?.elfiPrice || 0}
+                                  isLoading={lpPriceState.loading}
+                                  roundData={
+                                    (data[0] === 'ELFI-ETH LP'
+                                      ? ethRoundData[0]?.accountReward
+                                      : daiRoundData[0]?.accountReward) ||
+                                    constants.Zero
+                                  }
+                                  rewardBefore={
+                                    data[0] === 'ELFI-ETH LP'
+                                      ? ethExpectedReward.before
+                                      : daiExpectedReward.before
+                                  }
+                                  rewardValue={
+                                    data[0] === 'ELFI-ETH LP'
+                                      ? ethExpectedReward.value
+                                      : daiExpectedReward.value
+                                  }
+                                />
                               </p>
                               <div
                                 className={`staking__round__button ${

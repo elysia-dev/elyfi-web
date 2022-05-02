@@ -5,13 +5,19 @@ import CountUp from 'react-countup';
 import { useWeb3React } from '@web3-react/core';
 import { formatSixFracionDigit } from 'src/utiles/formatters';
 
-const CurrentRewardAmount = (
-  tokenUsdPrice: number,
-  isLoading: boolean,
-  roundData: BigNumber,
-  rewardBefore: BigNumber,
-  rewardValue: BigNumber,
-): JSX.Element => {
+const CurrentRewardAmount: React.FC<{
+  tokenUsdPrice: number;
+  isLoading: boolean;
+  roundData: BigNumber;
+  rewardBefore: BigNumber;
+  rewardValue: BigNumber;
+}> = ({
+  tokenUsdPrice,
+  isLoading,
+  roundData,
+  rewardBefore,
+  rewardValue,
+}): JSX.Element => {
   const { account } = useWeb3React();
 
   return isLoading ? (

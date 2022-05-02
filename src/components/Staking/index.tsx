@@ -115,19 +115,6 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
     },
   );
 
-  const currentStakingTokenAmount = CurrentStakingAmount(
-    priceData?.elfiPrice || 0,
-    lpPriceState.loading,
-    roundData[0]?.accountPrincipal || constants.Zero,
-  );
-  const currentRewardTokenAmount = CurrentRewardAmount(
-    priceData?.elfiPrice || 0,
-    lpPriceState.loading,
-    roundData[0]?.accountReward || constants.Zero,
-    expectedReward.before,
-    expectedReward.value,
-  );
-
   const { value: mediaQuery } = useMediaQueryType();
 
   const isWrongMainnet = isWrongNetwork(getMainnetType, currentChain?.name);
@@ -399,7 +386,13 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
                           </span>
                         </h2>
                         <p className="equal_amount">
-                          {currentStakingTokenAmount}
+                          <CurrentStakingAmount
+                            tokenUsdPrice={priceData?.elfiPrice || 0}
+                            isLoading={lpPriceState.loading}
+                            roundData={
+                              roundData[0]?.accountPrincipal || constants.Zero
+                            }
+                          />
                         </p>
                         <div
                           className={`staking__round__button ${
@@ -450,7 +443,15 @@ const Staking: React.FunctionComponent<IProps> = ({ rewardToken }) => {
                           </span>
                         </h2>
                         <p className="equal_amount">
-                          {currentRewardTokenAmount}
+                          <CurrentRewardAmount
+                            tokenUsdPrice={priceData?.elfiPrice || 0}
+                            isLoading={lpPriceState.loading}
+                            roundData={
+                              roundData[0]?.accountReward || constants.Zero
+                            }
+                            rewardBefore={expectedReward.before}
+                            rewardValue={expectedReward.value}
+                          />
                         </p>
                         <div
                           className={`staking__round__button ${
