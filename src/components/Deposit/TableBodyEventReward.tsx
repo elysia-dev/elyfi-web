@@ -38,9 +38,9 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
         <div className="deposit__table__body__event-box">
           <div className="deposit__table__body__event-box__content">
             <div>
-              <div className={`bold ${tokenName}`}>
-                <Trans>{t('dashboard.deposit_add_reward_event')}</Trans>
-              </div>
+              <h2 className={`bold ${tokenName}`}>
+                {t('dashboard.deposit_add_reward_event')}
+              </h2>
               <div
                 onClick={buttonEvent}
                 className="deposit__table__body__amount__button event-button">
@@ -82,9 +82,9 @@ const TableBodyEventReward: FunctionComponent<Props> = ({
         <div className="deposit__table__body__event-box">
           <div className="deposit__table__body__event-box__content">
             <div>
-              <div className={`bold ${tokenName}`}>
-                <Trans>{t('dashboard.deposit_add_reward_event')}</Trans>
-              </div>
+              <h2 className={`bold ${tokenName}`}>
+                {t('dashboard.deposit_add_reward_event')}
+              </h2>
               <div>
                 <div className="bold">
                   {' '}

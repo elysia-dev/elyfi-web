@@ -210,7 +210,7 @@ const TokenTable: React.FC<Props> = ({
                   setIncentiveModalVisible();
                   setModalNumber();
                   modalview();
-                  setRound(1);
+                  setRound(2);
                 }}
                 buttonContent={t('dashboard.claim_reward')}
                 value={
@@ -221,10 +221,12 @@ const TokenTable: React.FC<Props> = ({
                       <CountUp
                         className="bold amounts"
                         start={parseFloat(
-                          formatEther(balance.expectedIncentiveBefore),
+                          formatEther(
+                            balance.expectedAdditionalIncentiveBefore,
+                          ),
                         )}
                         end={parseFloat(
-                          formatEther(balance.expectedIncentiveAfter),
+                          formatEther(balance.expectedAdditionalIncentiveAfter),
                         )}
                         formattingFn={(number) => {
                           return formatSixFracionDigit(number);
@@ -236,15 +238,6 @@ const TokenTable: React.FC<Props> = ({
                   ) : (
                     '-'
                   )
-                }
-                moneyPoolTime={
-                  getMainnetType === MainnetType.Ethereum
-                    ? `${moment(daiMoneyPoolTime[0].startedAt).format(
-                        'YYYY.MM.DD',
-                      )} ~ ${moment(daiMoneyPoolTime[0].endedAt).format(
-                        'YYYY.MM.DD',
-                      )} KST`
-                    : undefined
                 }
                 tokenName={'ELFI'}
                 loading={account ? loading : false}
@@ -292,29 +285,33 @@ const TokenTable: React.FC<Props> = ({
                 </div>
               </div>
             )
-          ) : (
+          ) : balance.expectedIncentiveBefore.gt(0) ? (
             <div className="deposit__table__body__event-box">
               <TableBodyEventReward
-                moneyPoolTime={`${moment(daiMoneyPoolTime[1].startedAt).format(
+                moneyPoolTime={`${moment(daiMoneyPoolTime[0].startedAt).format(
                   'YYYY.MM.DD',
-                )} KST ~ `}
+                )} ~ ${moment(daiMoneyPoolTime[0].endedAt).format(
+                  'YYYY.MM.DD',
+                )} KST`}
                 expectedAdditionalIncentiveBefore={
-                  balance.expectedAdditionalIncentiveBefore
+                  balance.expectedIncentiveBefore
                 }
                 expectedAdditionalIncentiveAfter={
-                  balance.expectedAdditionalIncentiveAfter
+                  balance.expectedIncentiveAfter
                 }
                 buttonEvent={(e) => {
                   e.preventDefault();
                   setIncentiveModalVisible();
                   setModalNumber();
                   modalview();
-                  setRound(2);
+                  setRound(1);
                 }}
                 tokenName={balance.tokenName}
                 isWrongMainnet={isWrongMainnet}
               />
             </div>
+          ) : (
+            <></>
           )}
           <div className="deposit__table__body__loan-list">
             <div>
