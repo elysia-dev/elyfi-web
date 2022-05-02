@@ -37,6 +37,7 @@ const useLpPrice = (): {
 
   const loadAmountData = useCallback(() => {
     if (!priceData) return;
+    if (!v2LPPoolElfi) return;
 
     const stakedTokenElfiEthPrice =
       parseFloat(utils.formatEther(v2LPPoolElfi[0])) * priceData.elfiPrice +
