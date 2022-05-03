@@ -1122,6 +1122,9 @@ input[type='number'] {
             }
             > p {
               color: $gray-font-color;
+              > span {
+                color: $gray-font-color;
+              }
             }
           }
 

@@ -34,6 +34,7 @@ import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 import useReserveData from 'src/hooks/useReserveData';
+import CurrentRewardAmount from 'src/components/Staking/CurrentRewardAmount';
 import TableBodyEventReward from './TableBodyEventReward';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
@@ -210,7 +211,7 @@ const TokenTable: React.FC<Props> = ({
                   setIncentiveModalVisible();
                   setModalNumber();
                   modalview();
-                  setRound(1);
+                  setRound(2);
                 }}
                 buttonContent={t('dashboard.claim_reward')}
                 value={
@@ -221,10 +222,12 @@ const TokenTable: React.FC<Props> = ({
                       <CountUp
                         className="bold amounts"
                         start={parseFloat(
-                          formatEther(balance.expectedIncentiveBefore),
+                          formatEther(
+                            balance.expectedAdditionalIncentiveBefore,
+                          ),
                         )}
                         end={parseFloat(
-                          formatEther(balance.expectedIncentiveAfter),
+                          formatEther(balance.expectedAdditionalIncentiveAfter),
                         )}
                         formattingFn={(number) => {
                           return formatSixFracionDigit(number);
@@ -237,17 +240,17 @@ const TokenTable: React.FC<Props> = ({
                     '-'
                   )
                 }
-                moneyPoolTime={
-                  getMainnetType === MainnetType.Ethereum
-                    ? `${moment(daiMoneyPoolTime[0].startedAt).format(
-                        'YYYY.MM.DD',
-                      )} ~ ${moment(daiMoneyPoolTime[0].endedAt).format(
-                        'YYYY.MM.DD',
-                      )} KST`
-                    : undefined
-                }
                 tokenName={'ELFI'}
                 loading={account ? loading : false}
+                rewardUSDAmount={
+                  <CurrentRewardAmount
+                    tokenUsdPrice={priceData?.elfiPrice || 0}
+                    isLoading={account ? loading : false}
+                    roundData={constants.Zero}
+                    rewardBefore={balance.expectedAdditionalIncentiveBefore}
+                    rewardValue={balance.expectedAdditionalIncentiveAfter}
+                  />
+                }
               />
             </div>
           </div>
@@ -292,29 +295,33 @@ const TokenTable: React.FC<Props> = ({
                 </div>
               </div>
             )
-          ) : (
+          ) : balance.expectedIncentiveBefore.gt(0) ? (
             <div className="deposit__table__body__event-box">
               <TableBodyEventReward
-                moneyPoolTime={`${moment(daiMoneyPoolTime[1].startedAt).format(
+                moneyPoolTime={`${moment(daiMoneyPoolTime[0].startedAt).format(
                   'YYYY.MM.DD',
-                )} KST ~ `}
+                )} ~ ${moment(daiMoneyPoolTime[0].endedAt).format(
+                  'YYYY.MM.DD',
+                )} KST`}
                 expectedAdditionalIncentiveBefore={
-                  balance.expectedAdditionalIncentiveBefore
+                  balance.expectedIncentiveBefore
                 }
                 expectedAdditionalIncentiveAfter={
-                  balance.expectedAdditionalIncentiveAfter
+                  balance.expectedIncentiveAfter
                 }
                 buttonEvent={(e) => {
                   e.preventDefault();
                   setIncentiveModalVisible();
                   setModalNumber();
                   modalview();
-                  setRound(2);
+                  setRound(1);
                 }}
                 tokenName={balance.tokenName}
                 isWrongMainnet={isWrongMainnet}
               />
             </div>
+          ) : (
+            <></>
           )}
           <div className="deposit__table__body__loan-list">
             <div>
