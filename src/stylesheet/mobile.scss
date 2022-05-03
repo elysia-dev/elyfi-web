@@ -2368,10 +2368,14 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
               padding: 20px 0 0;
               > h2 {
                 font-size: 12px;
-                margin-bottom: 10px;
+                margin-bottom: 5px;
                 > span {
                   margin-left: 3px;
                 }
+              }
+              > p {
+                font-size: 10px;
+                margin-bottom: 10px;
               }
             }
             > h2 {
@@ -3586,6 +3590,11 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
   .amount {
     &::before {
       margin-right: 3px;
+    }
+  }
+  .equal_amount {
+    &::before {
+      margin-right: 2px;
     }
   }
 

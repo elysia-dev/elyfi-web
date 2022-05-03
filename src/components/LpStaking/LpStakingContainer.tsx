@@ -131,6 +131,9 @@ const LpStakingContainer: React.FC<Props> = ({
             isClaim={expectedReward.value.isZero() || !account}
             rewardToken={rewardToken}
             isLoading={isRoundDataLoading}
+            roundData={roundData}
+            expectedReward={expectedReward}
+            currentToken={tokenType}
           />
         </>
       </Suspense>
