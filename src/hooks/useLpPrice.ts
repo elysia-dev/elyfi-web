@@ -46,9 +46,16 @@ const useLpPrice = (): {
       parseFloat(utils.formatEther(v2LPPoolElfi[1])) * priceData.elfiPrice +
       parseFloat(utils.formatEther(balances.v2LPPoolDai)) * priceData.daiPrice;
 
+    const ethPerTokenPrice =
+      stakedTokenElfiEthPrice /
+      parseFloat(utils.formatEther(balances.ethTotalSupply));
+    const daiPerTokenPrice =
+      stakedTokenElfiDaiPrice /
+      parseFloat(utils.formatEther(balances.daiTotalSupply));
+
     setLpPriceState({
-      ethLpPrice: stakedTokenElfiEthPrice,
-      daiLpPrice: stakedTokenElfiDaiPrice,
+      ethLpPrice: ethPerTokenPrice,
+      daiLpPrice: daiPerTokenPrice,
       loading: false,
     });
   }, [priceData, balances, v2LPPoolElfi]);
