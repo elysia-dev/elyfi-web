@@ -35,9 +35,8 @@ const useLpPrice = (): {
     },
   );
 
-  const loadAmountData = useCallback(() => {
-    if (!priceData) return;
-    if (!v2LPPoolElfi) return;
+  useEffect(() => {
+    if (!priceData || !v2LPPoolElfi) return;
 
     const stakedTokenElfiEthPrice =
       parseFloat(utils.formatEther(v2LPPoolElfi[0])) * priceData.elfiPrice +
@@ -52,10 +51,6 @@ const useLpPrice = (): {
       daiLpPrice: stakedTokenElfiDaiPrice,
       loading: false,
     });
-  }, [priceData, balances, v2LPPoolElfi]);
-
-  useEffect(() => {
-    loadAmountData();
   }, [priceData, balances, v2LPPoolElfi]);
 
   return {
