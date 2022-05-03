@@ -1,6 +1,7 @@
 import { BigNumber, constants } from 'ethers';
 import { formatEther } from 'ethers/lib/utils';
 import Skeleton from 'react-loading-skeleton';
+import { formatSixFracionDigit } from 'src/utiles/formatters';
 
 const CurrentStakingAmount: React.FC<{
   tokenUsdPrice: number;
@@ -13,9 +14,9 @@ const CurrentStakingAmount: React.FC<{
     <span>0</span>
   ) : (
     <span>
-      {(
-        parseFloat(formatEther(roundData || constants.Zero)) * tokenUsdPrice
-      ).toFixed(6)}
+      {formatSixFracionDigit(
+        parseFloat(formatEther(roundData || constants.Zero)) * tokenUsdPrice,
+      )}
     </span>
   );
 };
