@@ -9,7 +9,7 @@ const TableBodyAmount: React.FunctionComponent<{
   buttonContent: string;
   value: string | JSX.Element;
   tokenName: string;
-  moneyPoolTime?: string;
+  rewardUSDAmount?: JSX.Element;
   walletBalance?: string;
   loading: boolean;
 }> = ({
@@ -18,7 +18,7 @@ const TableBodyAmount: React.FunctionComponent<{
   buttonContent,
   value,
   tokenName,
-  moneyPoolTime,
+  rewardUSDAmount,
   walletBalance,
   loading,
 }) => {
@@ -44,13 +44,13 @@ const TableBodyAmount: React.FunctionComponent<{
           {loading ? (
             <Skeleton width={100} />
           ) : (
-            <p>
+            <p className={rewardUSDAmount ? 'equal_amount' : ''}>
               {walletBalance
                 ? `${t('dashboard.wallet_balance')} : ` +
                   walletBalance +
                   ' ' +
                   tokenName
-                : moneyPoolTime}
+                : rewardUSDAmount}
             </p>
           )}
         </div>
@@ -70,13 +70,13 @@ const TableBodyAmount: React.FunctionComponent<{
           {loading ? (
             <Skeleton width={50} />
           ) : (
-            <p>
+            <p className={rewardUSDAmount ? 'equal_amount' : ''}>
               {walletBalance
                 ? `${t('dashboard.wallet_balance')} : ` +
                   walletBalance +
                   ' ' +
                   tokenName
-                : moneyPoolTime}
+                : rewardUSDAmount}
             </p>
           )}
         </div>

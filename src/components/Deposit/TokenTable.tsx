@@ -34,6 +34,7 @@ import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 import useReserveData from 'src/hooks/useReserveData';
+import CurrentRewardAmount from 'src/components/Staking/CurrentRewardAmount';
 import TableBodyEventReward from './TableBodyEventReward';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
@@ -241,6 +242,15 @@ const TokenTable: React.FC<Props> = ({
                 }
                 tokenName={'ELFI'}
                 loading={account ? loading : false}
+                rewardUSDAmount={
+                  <CurrentRewardAmount
+                    tokenUsdPrice={priceData?.elfiPrice || 0}
+                    isLoading={account ? loading : false}
+                    roundData={constants.Zero}
+                    rewardBefore={balance.expectedAdditionalIncentiveBefore}
+                    rewardValue={balance.expectedAdditionalIncentiveAfter}
+                  />
+                }
               />
             </div>
           </div>
