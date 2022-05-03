@@ -24,8 +24,8 @@ import calcExpectedReward from 'src/core/utils/calcExpectedReward';
 import { rewardPerDayByToken } from 'src/utiles/stakingReward';
 import StakingModalType from 'src/enums/StakingModalType';
 import useUniswapV2Apr from 'src/hooks/useUniswapV2Apr';
-import useStakingRoundDataV2 from '../Staking/hooks/useStakingRoundDataV2';
-import useStakingFetchRoundDataV2 from '../Staking/hooks/useStakingFetchRoundDataV2';
+import useStakingRoundDataV2 from 'src/components/Staking/hooks/useStakingRoundDataV2';
+import useStakingFetchRoundDataV2 from 'src/components/Staking/hooks/useStakingFetchRoundDataV2';
 import LpStakingContainer from './LpStakingContainer';
 
 const ClaimStakingRewardModalV2 = lazy(

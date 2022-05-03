@@ -2528,6 +2528,13 @@ input[type='number'] {
                   margin-left: 5px;
                 }
               }
+              > p {
+                text-align: right;
+                color: $gray-font-color;
+                > span {
+                  color: $gray-font-color;
+                }
+              }
               > div {
                 margin: 0 auto;
               }
@@ -3967,6 +3974,12 @@ input[type='number'] {
   .amount {
     &::before {
       content: '$';
+      color: $sub-font-color;
+    }
+  }
+  .equal_amount {
+    &::before {
+      content: '= $';
       color: $sub-font-color;
     }
   }

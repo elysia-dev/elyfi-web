@@ -4,16 +4,13 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react';
 import { useWeb3React } from '@web3-react/core';
-import { constants, providers } from 'ethers';
-import Skeleton from 'react-loading-skeleton';
+import { constants } from 'ethers';
 import { formatEther } from 'ethers/lib/utils';
 import { formatCommaSmall } from 'src/utiles/formatters';
-import { StakingPoolV2factory } from '@elysia-dev/elyfi-v1-sdk';
 import Token from 'src/enums/Token';
 import { useTranslation } from 'react-i18next';
 import ReactGA from 'react-ga';
@@ -22,7 +19,6 @@ import MediaQuery from 'src/enums/MediaQuery';
 import DrawWave from 'src/utiles/drawWave';
 import TokenColors from 'src/enums/TokenColors';
 import MainnetContext from 'src/contexts/MainnetContext';
-import MainnetType from 'src/enums/MainnetType';
 import useCurrentChain from 'src/hooks/useCurrentChain';
 import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
 import StakingModalType from 'src/enums/StakingModalType';
@@ -31,7 +27,6 @@ import calcExpectedReward from 'src/core/utils/calcExpectedReward';
 
 import elfi from 'src/assets/images/token/ELFI.svg';
 import ModalViewType from 'src/enums/ModalViewType';
-import envs from 'src/core/envs';
 import useStakingFetchRoundDataV2 from 'src/components/Staking/hooks/useStakingFetchRoundDataV2';
 import useStakingRoundDataV2 from 'src/components/Staking/hooks/useStakingRoundDataV2';
 
@@ -289,6 +284,9 @@ const Staking: React.FunctionComponent = () => {
             isClaim={expectedReward.before.isZero() || !account}
             rewardToken={rewardToken}
             isLoading={loading}
+            roundData={roundData[0]}
+            expectedReward={expectedReward}
+            currentToken={Token.ELFI}
           />
         </Suspense>
       </section>
