@@ -21,24 +21,28 @@ const erc20Contract = (address: string, provider: any) => {
 
 export const v2LPPoolElfiFetcher =
   (): any =>
-  async (...args: [string, string]) => {
-    const [...params] = args;
+  async (args: {
+    ethElfiV2PoolAddress: string;
+    daiElfiV2PoolAddress: string;
+  }) => {
     const contract: any = erc20Contract(
       envs.token.governanceAddress,
       provider as any,
     );
 
     return {
-      ethPoolElfiBalance: await contract.balanceOf(params[0]),
-      daiPoolElfiBalance: await contract.balanceOf(params[1]),
+      ethPoolElfiBalance: await contract.balanceOf(args.ethElfiV2PoolAddress),
+      daiPoolElfiBalance: await contract.balanceOf(args.daiElfiV2PoolAddress),
     };
   };
 
 export const v2LPPoolTokensFetcher =
   (): any =>
-  async (...args: [string, string]) => {
-    const [...params] = args;
-
+  async (args: {
+    ethElfiV2PoolAddress: string;
+    daiElfiV2PoolAddress: string;
+    v2LPPoolTokens: string;
+  }) => {
     const daiContract: any = erc20Contract(
       envs.token.daiAddress,
       provider as any,
@@ -49,8 +53,8 @@ export const v2LPPoolTokensFetcher =
     );
 
     return {
-      ethPoolBalance: await wEthContract.balanceOf(params[0]),
-      daiPoolBalance: await daiContract.balanceOf(params[1]),
+      ethPoolBalance: await wEthContract.balanceOf(args.ethElfiV2PoolAddress),
+      daiPoolBalance: await daiContract.balanceOf(args.daiElfiV2PoolAddress),
     };
   };
 
