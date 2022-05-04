@@ -36,18 +36,21 @@ const useUniswapV2Apr = (): {
   });
 
   const { data: v2LPPoolElfi } = useSWR(
-    [envs.lpStaking.ethElfiV2PoolAddress, envs.lpStaking.daiElfiV2PoolAddress],
+    {
+      ethElfiV2PoolAddress: envs.lpStaking.ethElfiV2PoolAddress,
+      daiElfiV2PoolAddress: envs.lpStaking.daiElfiV2PoolAddress,
+    },
     {
       fetcher: v2LPPoolElfiFetcher(),
     },
   );
 
   const { data: v2LPPoolTokens } = useSWR(
-    [
-      envs.lpStaking.ethElfiV2PoolAddress,
-      envs.lpStaking.daiElfiV2PoolAddress,
-      'v2LPPoolTokens',
-    ],
+    {
+      ethElfiV2PoolAddress: envs.lpStaking.ethElfiV2PoolAddress,
+      daiElfiV2PoolAddress: envs.lpStaking.daiElfiV2PoolAddress,
+      v2LPPoolTokens: 'v2LPPoolTokens',
+    },
     {
       fetcher: v2LPPoolTokensFetcher(),
     },
