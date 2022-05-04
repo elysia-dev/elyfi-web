@@ -14,7 +14,7 @@ import RoundData from 'src/core/types/RoundData';
 import calcAPR from 'src/core/utils/calcAPR';
 import Token from 'src/enums/Token';
 import priceMiddleware from 'src/middleware/priceMiddleware';
-import useStakingPoolV2 from './useStakingPoolV2';
+import useReadOnlyStakingPool from './useReadOnlyStakingPool';
 
 const useStakingFetchRoundDataV2 = (
   stakedToken: Token,
@@ -28,8 +28,7 @@ const useStakingFetchRoundDataV2 = (
 } => {
   const { type: getMainnetType } = useContext(MainnetContext);
   const { account } = useWeb3React();
-  const { contract: stakingPool } = useStakingPoolV2(stakedToken);
-
+  const stakingPool = useReadOnlyStakingPool(stakedToken)
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [roundData, setroundData] = useState<RoundData[]>([]);

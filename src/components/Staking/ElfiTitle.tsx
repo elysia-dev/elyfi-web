@@ -57,7 +57,7 @@ const ElfiTitle: React.FC<Props> = ({ headerRef, getMainnetType }) => {
                 ]
             ).map((value, index) => {
               return (
-                <Suspense fallback={null}>
+                <Suspense fallback={null} key={index}>
                   <TitleButton
                     key={`btn_${index}`}
                     buttonName={t(
