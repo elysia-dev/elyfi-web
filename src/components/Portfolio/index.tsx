@@ -93,6 +93,7 @@ const PortfolioDetail: FunctionComponent = () => {
       const response = await Slate.fetctABTokenIpfs(ipfs);
       const contractDoc = response.data;
       if (contractDoc) {
+        console.log(contractDoc);
         setContractImage([
           {
             hash: contractDoc.documents[0].hash,
@@ -108,7 +109,7 @@ const PortfolioDetail: FunctionComponent = () => {
           },
           {
             hash: contractDoc.images[0]?.hash,
-            link: contractDoc.images[0]?.link,
+            link: `https://elysia-public.s3.ap-northeast-2.amazonaws.com/ipfs/${contractDoc.images[0]?.hash}`,
           },
         ]);
       }
