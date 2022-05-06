@@ -17,7 +17,7 @@ import isLat from 'src/utiles/isLat';
 import reverseGeocoding from 'src/utiles/reverseGeocoding';
 import LanguageType from 'src/enums/LanguageType';
 import CollateralLogo from 'src/assets/images/ELYFI.png';
-import Slate from 'src/clients/Slate';
+import Slate, { baseUrl } from 'src/clients/Slate';
 import ReserveData from 'src/core/data/reserves';
 import envs from 'src/core/envs';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
@@ -194,7 +194,7 @@ const PortfolioDetail: FunctionComponent = () => {
                           width: 538.5,
                           height: 526,
                         }}
-                        src={contractImage[3]?.link || TempAssets}
+                        src={`${baseUrl}/${contractImage[3]?.hash}`}
                         alt="Asset Image"
                         onError={(e: any) => {
                           e.target.src = UnKnownImage;
