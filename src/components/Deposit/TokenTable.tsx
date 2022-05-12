@@ -254,7 +254,8 @@ const TokenTable: React.FC<Props> = ({
               />
             </div>
           </div>
-          {balance.expectedIncentiveBefore.gt(0) ? (
+          {getMainnetType === MainnetType.Ethereum &&
+          balance.expectedIncentiveBefore.gt(0) ? (
             <div className="deposit__table__body__event-box">
               <TableBodyEventReward
                 moneyPoolTime={`${moment(daiMoneyPoolTime[0].startedAt).format(
