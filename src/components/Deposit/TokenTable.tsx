@@ -254,48 +254,7 @@ const TokenTable: React.FC<Props> = ({
               />
             </div>
           </div>
-          {getMainnetType === MainnetType.BSC ? (
-            mediaQuery === MediaQuery.PC ? (
-              <div className="deposit__table__body__strategy">
-                <h2>{t('dashboard.target_running_strategy')}</h2>
-                <div>
-                  <div style={{ flex: 30 }}>
-                    <p>
-                      {t('dashboard.real_estate_mortgage')}{' '}
-                      <span className="bold">30%</span>
-                    </p>
-                  </div>
-                  <div style={{ flex: 70 }}>
-                    <p>
-                      {t('dashboard.auto_invest_defi__title')}{' '}
-                      <span className="bold">70%</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="deposit__table__body__strategy">
-                <h2>{t('dashboard.target_running_strategy')}</h2>
-                <div>
-                  <div style={{ flex: 30 }}>
-                    <p className="bold">30%</p>
-                  </div>
-                  <div style={{ flex: 70 }}>
-                    <p className="bold">70%</p>
-                  </div>
-                </div>
-
-                <div className="deposit__table__body__strategy__text-info">
-                  <div />
-                  <p>{t('dashboard.real_estate_mortgage')}</p>
-                </div>
-                <div className="deposit__table__body__strategy__text-info">
-                  <div className="last" />
-                  <p>{t('dashboard.auto_invest_defi__title')}</p>
-                </div>
-              </div>
-            )
-          ) : balance.expectedIncentiveBefore.gt(0) ? (
+          {balance.expectedIncentiveBefore.gt(0) ? (
             <div className="deposit__table__body__event-box">
               <TableBodyEventReward
                 moneyPoolTime={`${moment(daiMoneyPoolTime[0].startedAt).format(
