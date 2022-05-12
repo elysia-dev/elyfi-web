@@ -53,7 +53,7 @@ const MarketDetailsBody: React.FunctionComponent<{
         </div>
       </div>
       <div className="detail__data-wrapper__info">
-        <div style={{ height: getMainnetType === MainnetType.BSC ? 274 : 235 }}>
+        <div style={{ height: 235 }}>
           <div>
             <p>{t('dashboard.deposit_apy')}</p>
             <p>{depositAPY}</p>
@@ -72,13 +72,12 @@ const MarketDetailsBody: React.FunctionComponent<{
           </div>
         </div>
 
-        <div
-          style={{ height: getMainnetType === MainnetType.BSC ? 'auto' : 235 }}>
+        <div style={{ height: 235 }}>
           <div>
             <div className="detail__data-wrapper__info__deposit__wrapper">
               <div
                 style={{
-                  marginBottom: getMainnetType === MainnetType.BSC ? 15 : 30,
+                  marginBottom: 30,
                 }}>
                 <div className="detail__data-wrapper__info__deposit">
                   <div
@@ -90,7 +89,7 @@ const MarketDetailsBody: React.FunctionComponent<{
                 </div>
                 <p>{totalBorrowed}</p>
               </div>
-              {getMainnetType === MainnetType.BSC && (
+              {/* {getMainnetType === MainnetType.BSC && (
                 <div className="detail__data-wrapper__info__deposit__strategy">
                   <div>
                     <p>{t('dashboard.real_estate_mortgage')}</p>
@@ -116,10 +115,10 @@ const MarketDetailsBody: React.FunctionComponent<{
                     </div>
                   </div>
                 </div>
-              )}
+              )} */}
               <div
                 style={{
-                  marginBottom: getMainnetType === MainnetType.BSC ? 15 : 30,
+                  marginBottom: 30,
                 }}>
                 <div className="detail__data-wrapper__info__deposit">
                   <div
