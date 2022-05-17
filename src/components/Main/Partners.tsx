@@ -9,6 +9,7 @@ import HOW from 'src/assets/images/main/how.svg';
 import TSMP from 'src/assets/images/main/tsmp.svg';
 import Fbg from 'src/assets/images/main/fbg.svg';
 import Blocore from 'src/assets/images/main/blocore.svg';
+import Certik from 'src/assets/images/main/certik.png';
 import { useTranslation, Trans } from 'react-i18next';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
@@ -26,7 +27,10 @@ const Partners: React.FC<Props> = ({ auditPageY }) => {
         <h2 ref={auditPageY} className="bold">
           <Trans i18nKey={'main.partners.title'} />
         </h2>
-        <LazyImage src={HaechiLabs} name="" />
+        <section>
+          <LazyImage src={Certik} name="" />
+          <LazyImage src={HaechiLabs} name="" />
+        </section>
       </div>
       <div>
         <h2 className="bold">
