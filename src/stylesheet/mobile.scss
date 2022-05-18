@@ -859,6 +859,18 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
             width: 160px;
           }
         }
+        > section {
+          display: flex;
+          margin-top: 25px;
+          > img {
+            width: 125px;
+            height: 125px;
+            object-fit: scale-down;
+          }
+          > img:first-child {
+            margin-right: 20px;
+          }
+        }
       }
       > div:nth-child(2) {
         margin-top: 100px;

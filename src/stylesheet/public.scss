@@ -832,6 +832,12 @@ input[type='number'] {
             color: $elysia-color;
           }
         }
+        > section {
+          display: flex;
+          > img:first-child {
+            margin-right: 112px;
+          }
+        }
       }
     }
     &__governance {
