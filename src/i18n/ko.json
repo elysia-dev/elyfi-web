@@ -233,8 +233,6 @@
 
       "target_running_strategy": "목표 운용전략 (목표 예치 APY: 10%)",
       "real_estate_mortgage": "부동산 담보대출",
-      "auto_invest_defi__title": "디파이 자동투자",
-      "auto_invest_defi": ["앵커프로토콜"],
       "event_title": "ELFI <strong>300%</strong> 보상 이벤트\nBUSD를 예치하고, ELFI 토큰을 받아가세요!"
     },
     "loan": {

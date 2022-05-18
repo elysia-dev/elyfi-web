@@ -226,8 +226,6 @@
 
       "target_running_strategy": "Target running strategy (Target deposit APY: 10%)",
       "real_estate_mortgage": "Real estate mortgage",
-      "auto_invest_defi__title": "Auto investment to DeFi",
-      "auto_invest_defi": ["Anchor Protocol"],
       "event_title": "ELFI <strong>300%</strong> Reward Event\nDeposit BUSD, Get ELFI Tokens!"
     },
     "loan": {
