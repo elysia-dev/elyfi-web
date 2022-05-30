@@ -33,7 +33,7 @@ const Footer = (): JSX.Element => {
                 [Twitter, 'https://twitter.com/Elysia_HQ'],
                 [Telegram, 'https://t.me/elysia_official'],
                 [Github, 'https://github.com/elysia-dev'],
-                [Discord, 'https://discord.gg/JjjYrE5Ww8'],
+                [Discord, 'https://discord.gg/d8zveNum7g'],
               ].map((data, index) => {
                 return (
                   <a key={`footer_${index}`} href={data[1]}>
