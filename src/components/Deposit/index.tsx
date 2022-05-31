@@ -129,7 +129,7 @@ const Dashboard: React.FunctionComponent = () => {
     () =>
       getMainnetType === MainnetType.BSC
         ? [Token.BUSD]
-        : [Token.DAI, Token.USDT],
+        : [Token.DAI, Token.USDT, Token.USDC],
     [getMainnetType],
   );
 
