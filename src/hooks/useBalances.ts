@@ -44,17 +44,31 @@ const initialBalanceState = {
   updatedAt: moment().unix(),
 };
 
+const tokenIncentiveAddress = (token: string, isPrevIncentive?: boolean) => {
+  switch (token) {
+    case Token.USDT:
+      return isPrevIncentive
+        ? envs.incentivePool.prevUSDTIncentivePool
+        : envs.incentivePool.currentUSDTIncentivePool;
+    case Token.DAI:
+      return isPrevIncentive
+        ? envs.incentivePool.prevDaiIncentivePool
+        : envs.incentivePool.currentDaiIncentivePool;
+    case Token.USDC:
+      return envs.incentivePool.currentDaiIncentivePool;
+    case Token.BUSD:
+    default:
+      return envs.incentivePool.busdIncentivePoolAddress;
+  }
+};
+
 const getIncentiveByRound = async (
   library: any,
   tokenName: ReserveToken,
   account: string,
 ) => {
   const incentiveRound1 = await IncentivePool__factory.connect(
-    tokenName === Token.DAI
-      ? envs.incentivePool.prevDaiIncentivePool
-      : tokenName === Token.USDT
-      ? envs.incentivePool.prevUSDTIncentivePool
-      : envs.incentivePool.busdIncentivePoolAddress,
+    tokenIncentiveAddress(tokenName, true),
     library.getSigner(),
   ).getUserIncentive(account);
 
@@ -64,11 +78,7 @@ const getIncentiveByRound = async (
     tokenName === Token.BUSD
       ? incentiveRound1
       : await IncentivePool__factory.connect(
-          tokenName === Token.DAI
-            ? envs.incentivePool.currentDaiIncentivePool
-            : tokenName === Token.USDT
-            ? envs.incentivePool.currentUSDTIncentivePool
-            : envs.incentivePool.busdIncentivePoolAddress,
+          tokenIncentiveAddress(tokenName),
           library.getSigner(),
         ).getUserIncentive(account);
 
