@@ -14,6 +14,7 @@ interface EnvironmentVariables {
     currentDaiIncentivePool: string;
     currentUSDTIncentivePool: string;
     busdIncentivePoolAddress: string;
+    usdcIncentivePoolAddress: string;
   };
   staking: {
     elStakingPoolAddress: string;
@@ -36,6 +37,7 @@ interface EnvironmentVariables {
     elAddress: string;
     daiAddress: string;
     usdtAddress: string;
+    usdcAddress: string;
     wEthAddress: string;
     bscElfiAddress: string;
     busdAddress: string;
