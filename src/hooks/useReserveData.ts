@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useSWR from 'swr';
 import {
   bscReserveDataFetcher,
@@ -16,6 +16,7 @@ import {
   initialReserveSubgraph,
   IReserveSubgraph,
 } from 'src/core/types/reserveSubgraph';
+import envs from 'src/core/envs';
 
 const useReserveData = (): {
   reserveState: IReserveSubgraph;
@@ -41,11 +42,33 @@ const useReserveData = (): {
       use: [ethReserveMiddleware],
     },
   );
+  const testUSDCData = useMemo(() => {
+    if (!ethReserveData) return;
+    return {
+      id: envs.token.usdcAddress,
+      lTokenInterestIndex: ethReserveData[0].lTokenInterestIndex,
+      lastUpdateTimestamp: ethReserveData[0].lastUpdateTimestamp,
+      borrowAPY: ethReserveData[0].borrowAPY,
+      depositAPY: ethReserveData[0].depositAPY,
+      totalBorrow: ethReserveData[0].totalBorrow,
+      totalDeposit: ethReserveData[0].totalDeposit,
+      lTokenUserBalanceCount: ethReserveData[0].lTokenUserBalanceCount,
+      dTokenUserBalanceCount: ethReserveData[0].dTokenUserBalanceCount,
+      deposit: ethReserveData[0].deposit,
+      incentivePool: ethReserveData[0].incentivePool,
+      borrow: ethReserveData[0].borrow,
+      repay: ethReserveData[0].repay,
+      reserveHistory: ethReserveData[0].reserveHistory,
+      lToken: ethReserveData[0].lToken,
+      assetBondTokens: ethReserveData[0].assetBondTokens,
+    };
+  }, [ethReserveData]);
 
   const fetchSubgraph = async () => {
     if (!ethReserveData || !bscReserveData) return;
+    if (!testUSDCData) return;
     setReserveState({
-      reserves: [...bscReserveData, ...ethReserveData],
+      reserves: [testUSDCData, ...bscReserveData, ...ethReserveData],
     });
     setLoading(ethLoading || bscLoading);
   };
@@ -66,7 +89,7 @@ const useReserveData = (): {
 
   useEffect(() => {
     fetchSubgraph();
-  }, [bscReserveData, ethReserveData]);
+  }, [bscReserveData, ethReserveData, testUSDCData]);
 
   return { reserveState, getAssetBondsByNetwork, loading };
 };
