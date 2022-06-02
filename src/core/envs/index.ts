@@ -73,6 +73,7 @@ interface EnvironmentVariables {
     elfiBscStaking: string;
     elfiEthLp: string;
     elfiDaiLp: string;
+    elfiELLp: string;
   };
 }
 
