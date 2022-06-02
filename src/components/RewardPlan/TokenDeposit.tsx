@@ -33,6 +33,10 @@ interface Props {
   reserve: IReserveSubgraphData;
   idx: number;
   moneyPoolInfo: {
+    USDC: {
+      startedMoneyPool: string;
+      endedMoneyPool: string;
+    };
     DAI: {
       startedMoneyPool: string;
       endedMoneyPool: string;
@@ -72,6 +76,8 @@ const TokenDeposit: FunctionComponent<Props> = ({
       ? Token.DAI
       : reserve.id === envs.token.usdtAddress
       ? Token.USDT
+      : reserve.id === envs.token.usdcAddress
+      ? Token.USDC
       : Token.BUSD;
 
   const { data: priceData, isValidating: loading } = useSWR(
