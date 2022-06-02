@@ -9,6 +9,7 @@ export const BUSDPerDayOnELFIStakingPool = utils.parseEther('692704').div(28);
 
 export const LPPerDayOnElfiEthPool = utils.parseEther('545222').div(28);
 export const LPPerDayOnElfiDaiPool = utils.parseEther('545222').div(28);
+export const LPPerDayOnElfiELPool = utils.parseEther('545222').div(28);
 
 export const ELFIPerDayOnLpStakingPool = 7500;
 export const DAIPerDayOnElfiDaiPool = 625;
