@@ -14,12 +14,14 @@ const useUniswapV2Apr = (): {
   uniswapV2Apr: {
     elfiEthPool: number;
     elfiDaiPool: number;
+    elfiElPool: number;
   };
   aprLoading: boolean;
 } => {
   const [uniswapV2Apr, setUniswapV2Apr] = useState({
     elfiEthPool: 0,
     elfiDaiPool: 0,
+    elfiElPool: 0,
   });
   const [aprLoading, setAprLoading] = useState(true);
   const balances = useTvlBalances();
@@ -85,6 +87,7 @@ const useUniswapV2Apr = (): {
       setUniswapV2Apr({
         elfiDaiPool: elfiDaiAPR,
         elfiEthPool: elfiEthAPR,
+        elfiElPool: 222,
       });
       setAprLoading(false);
     } catch (error) {
