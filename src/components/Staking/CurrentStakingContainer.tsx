@@ -80,6 +80,8 @@ const CurrentStakingContainer: React.FC<Props> = ({
                       ? lpPriceState.ethLpPrice
                       : currentToken === Token.ELFI_DAI_LP
                       ? lpPriceState.daiLpPrice
+                      : currentToken === Token.ELFI_EL_LP
+                      ? lpPriceState.elLpPrice
                       : priceData?.elfiPrice || 0
                   }
                   isLoading={lpPriceState.loading}
