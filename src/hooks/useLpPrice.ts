@@ -11,12 +11,14 @@ const useLpPrice = (): {
   lpPriceState: {
     ethLpPrice: number;
     daiLpPrice: number;
+    elLpPrice: number;
     loading: boolean;
   };
 } => {
   const [lpPriceState, setLpPriceState] = useState({
     ethLpPrice: 0,
     daiLpPrice: 0,
+    elLpPrice: 0,
     loading: true,
   });
 
@@ -56,6 +58,7 @@ const useLpPrice = (): {
     setLpPriceState({
       ethLpPrice: ethPerTokenPrice,
       daiLpPrice: daiPerTokenPrice,
+      elLpPrice: 20000,
       loading: false,
     });
   }, [priceData, balances, v2LPPoolElfi]);
