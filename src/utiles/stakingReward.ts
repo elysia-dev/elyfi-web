@@ -4,6 +4,7 @@ import {
   DAIPerDayOnELFIStakingPool,
   ELFIPerDayOnELStakingPool,
   LPPerDayOnElfiDaiPool,
+  LPPerDayOnElfiELPool,
   LPPerDayOnElfiEthPool,
 } from 'src/core/data/stakings';
 import Token from 'src/enums/Token';
@@ -22,6 +23,8 @@ export const rewardPerDayByToken = (
       return LPPerDayOnElfiEthPool;
     case 'ELFI_DAI_LP':
       return LPPerDayOnElfiDaiPool;
+    case 'ELFI_EL_LP':
+      return LPPerDayOnElfiELPool;
     default:
       return ELFIPerDayOnELStakingPool;
   }
