@@ -6,9 +6,7 @@ import Token from 'src/enums/Token';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetType from 'src/enums/MainnetType';
 
-const useReadOnlyStakingPool = (
-  stakedToken: Token,
-): StakingPoolV2 => {
+const useReadOnlyStakingPool = (stakedToken: Token): StakingPoolV2 => {
   const { type: mainnet } = useContext(MainnetContext);
 
   const stakingPool = useMemo(() => {
@@ -21,6 +19,8 @@ const useReadOnlyStakingPool = (
         ? envs.stakingV2MoneyPool.elfiEthLp
         : stakedToken === Token.ELFI_DAI_LP
         ? envs.stakingV2MoneyPool.elfiDaiLp
+        : stakedToken === Token.ELFI_EL_LP
+        ? envs.stakingV2MoneyPool.elfiELLp
         : envs.stakingV2MoneyPool.elfiStaking,
       new providers.JsonRpcProvider(
         mainnet === MainnetType.BSC
@@ -30,7 +30,7 @@ const useReadOnlyStakingPool = (
     );
   }, [stakedToken, mainnet]);
 
-  return stakingPool
+  return stakingPool;
 };
 
 export default useReadOnlyStakingPool;
