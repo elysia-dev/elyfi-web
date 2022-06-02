@@ -11,6 +11,7 @@ import moment from 'moment';
 import { roundTimes } from 'src/core/data/stakingRoundTimes';
 import eth from 'src/assets/images/eth-color.png';
 import dai from 'src/assets/images/dai.png';
+import el from 'src/assets/images/el.png';
 import useStakingPoolV2 from 'src/components/Staking/hooks/useStakingPoolV2';
 import useERC20Info from 'src/hooks/useERC20Info';
 import toOrdinalNumber from 'src/utiles/toOrdinalNumber';
@@ -106,6 +107,8 @@ const StakingModalV2: React.FunctionComponent<{
               ? eth
               : title === Token.ELFI_DAI_LP
               ? dai
+              : title === Token.ELFI_EL_LP
+              ? el
               : undefined
           }
         />
