@@ -5,8 +5,9 @@ enum Token {
   ETH = 'ETH',
   USDT = 'USDT',
   USDC = 'USDC',
-  ELFI_ETH_LP = 'ELFI_ETH_LP',
-  ELFI_DAI_LP = 'ELFI_DAI_LP',
+  ELFI_ETH_LP = 'ELFI-ETH LP',
+  ELFI_DAI_LP = 'ELFI-DAI LP',
+  ELFI_EL_LP = 'ELFI-EL LP',
   BUSD = 'BUSD',
   UNI = 'UNI-V2',
 }
