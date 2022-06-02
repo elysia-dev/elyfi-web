@@ -155,11 +155,14 @@ const RewardPlan: FunctionComponent = () => {
   );
 
   const moneyPoolInfo = {
+    USDC: {
+      startedMoneyPool: daiMoneyPoolTime[0].startedAt.format('yyyy.MM.DD'),
+      endedMoneyPool: daiMoneyPoolTime[0].endedAt.format('yyyy.MM.DD'),
+    },
     DAI: {
       startedMoneyPool: daiMoneyPoolTime[0].startedAt.format('yyyy.MM.DD'),
       endedMoneyPool: daiMoneyPoolTime[0].endedAt.format('yyyy.MM.DD'),
     },
-
     USDT: {
       startedMoneyPool: tetherMoneyPoolTime[0].startedAt.format('yyyy.MM.DD'),
       endedMoneyPool: tetherMoneyPoolTime[0].endedAt.format('yyyy.MM.DD'),
@@ -172,6 +175,7 @@ const RewardPlan: FunctionComponent = () => {
 
   const beforeMintedMoneypool = {
     DAI: { beforeMintedToken: rewardInfo.beforeMintedByDaiMoneypool },
+    USDC: { beforeMintedToken: rewardInfo.beforeMintedByDaiMoneypool },
     USDT: {
       beforeMintedToken: rewardInfo.beforeMintedByTetherMoneypool,
     },
@@ -181,6 +185,7 @@ const RewardPlan: FunctionComponent = () => {
   };
   const mintedMoneypool = {
     DAI: { mintedToken: rewardInfo.mintedByDaiMoneypool },
+    USDC: { mintedToken: rewardInfo.mintedByDaiMoneypool },
     USDT: { mintedToken: rewardInfo.mintedByTetherMoneypool },
     BUSD: {
       mintedToken: rewardInfo.mintedByBusdMoneypool,

@@ -48,6 +48,11 @@ interface ITokencolor {
 
 const tokenColorData: ITokencolor[] = [
   {
+    name: 'USDC',
+    color: '#F9AE19',
+    subColor: '#FFDB8B',
+  },
+  {
     name: 'DAI',
     color: '#F9AE19',
     subColor: '#FFDB8B',
@@ -87,7 +92,8 @@ function MarketDetail(): JSX.Element {
     },
   );
 
-  const { lng, id } = useParams<{ lng: string; id: Token.DAI | Token.USDT }>();
+  const { lng, id } =
+    useParams<{ lng: string; id: Token.DAI | Token.USDT | Token.USDC }>();
   const navigate = useNavigator();
   const { value: mediaQuery } = useMediaQueryType();
   const currentChain = useCurrentChain();
@@ -155,7 +161,7 @@ function MarketDetail(): JSX.Element {
 
   // FIXME
   // const miningAPR = utils.parseUnits('10', 25);
-  if (!data || !tokenInfo)
+  if (!data?.totalBorrow || !tokenInfo)
     return (
       <>
         <canvas
