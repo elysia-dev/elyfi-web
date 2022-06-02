@@ -34,7 +34,9 @@ const StakingHeader: React.FC<Props> = ({
               </Suspense>
               <h2>{title}</h2>
             </div>
-            <LegacyStakingButton stakingType={stakingType} />
+            {title !== 'ELFI-EL LP' && (
+              <LegacyStakingButton stakingType={stakingType} />
+            )}
           </div>
         </>
       ) : (
@@ -47,7 +49,9 @@ const StakingHeader: React.FC<Props> = ({
               </Suspense>
               <h2>{title}</h2>
             </div>
-            <LegacyStakingButton stakingType={stakingType} />
+            {title !== 'ELFI-EL LP' && (
+              <LegacyStakingButton stakingType={stakingType} />
+            )}
           </div>
         </>
       )}
