@@ -45,7 +45,7 @@ export const reserveTokenData = {
     name: 'USDC',
     image: usdc,
     decimals: 6,
-    address: '0x',
+    address: envs.token.usdcAddress,
   },
   BUSD: {
     name: 'BUSD',
