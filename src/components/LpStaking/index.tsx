@@ -434,7 +434,7 @@ function LPStaking(): JSX.Element {
               tokenType={Token.ELFI_ETH_LP}
               setExpectedReward={setExpectedReward}
             />
-            {/* <LpStakingContainer
+            <LpStakingContainer
               tokenTitle={'ELFI-DAI LP'}
               subImage={dai}
               v2LPPoolApr={v2LPPoolApr.v2AprElfiDaiPool}
@@ -452,7 +452,7 @@ function LPStaking(): JSX.Element {
               expectedReward={daiExpectedReward}
               tokenType={Token.ELFI_DAI_LP}
               setExpectedReward={setExpectedReward}
-            /> */}
+            />
           </section>
         ) : (
           <>
