@@ -25,10 +25,12 @@ type BalanceType = {
   stakingBalance: BigNumber;
   v2LPPoolDai: BigNumber;
   v2LPPoolEth: BigNumber;
+  v2LPPoolEl: BigNumber;
   ethPoolTotalPrincipal: BigNumber;
   daiPoolTotalPrincipal: BigNumber;
   ethTotalSupply: BigNumber;
   daiTotalSupply: BigNumber;
+  elTotalSupply: BigNumber;
   balanceLoading: boolean;
 };
 
@@ -45,10 +47,12 @@ const useTvlBalances = (): BalanceType => {
     stakingBalance: constants.Zero,
     v2LPPoolDai: constants.Zero,
     v2LPPoolEth: constants.Zero,
+    v2LPPoolEl: constants.Zero,
     ethPoolTotalPrincipal: constants.Zero,
     daiPoolTotalPrincipal: constants.Zero,
     ethTotalSupply: constants.Zero,
     daiTotalSupply: constants.Zero,
+    elTotalSupply: constants.Zero,
     balanceLoading: true,
   });
 
@@ -62,9 +66,11 @@ const useTvlBalances = (): BalanceType => {
 
   const { data: stakingBalance } = useSWR(
     [
-      envs.staking.elfyStakingPoolAddress,
-      envs.staking.elfyV2StakingPoolAddress,
-      envs.staking.elfyBscStakingPoolAddress,
+      {
+        elfiV1PoolAddress: envs.staking.elfyStakingPoolAddress,
+        elfiV2PoolAddress: envs.staking.elfyV2StakingPoolAddress,
+        bscPoolAddress: envs.staking.elfyBscStakingPoolAddress,
+      },
     ],
     {
       fetcher: elfiBalanceOfFetcher(),
@@ -72,7 +78,13 @@ const useTvlBalances = (): BalanceType => {
   );
 
   const { data: v2LPPoolElfi } = useSWR(
-    [envs.lpStaking.ethElfiV2PoolAddress, envs.lpStaking.daiElfiV2PoolAddress],
+    [
+      {
+        ethElfiAddress: envs.lpStaking.ethElfiV2PoolAddress,
+        daiElfiAddress: envs.lpStaking.daiElfiV2PoolAddress,
+        elElfiAddress: envs.lpStaking.elElfiV2PoolAddress,
+      },
+    ],
     {
       fetcher: v2LPPoolElfiFetcher(),
     },
@@ -80,8 +92,11 @@ const useTvlBalances = (): BalanceType => {
 
   const { data: v2LPPoolTokens } = useSWR(
     [
-      envs.lpStaking.daiElfiV2PoolAddress,
-      envs.lpStaking.ethElfiV2PoolAddress,
+      {
+        ethElfiAddress: envs.lpStaking.ethElfiV2PoolAddress,
+        daiElfiAddress: envs.lpStaking.daiElfiV2PoolAddress,
+        elElfiAddress: envs.lpStaking.elElfiV2PoolAddress,
+      },
       'v2LPPoolTokens',
     ],
     {
@@ -117,11 +132,12 @@ const useTvlBalances = (): BalanceType => {
         totalValueLockedToken0: poolData.daiPool.totalValueLockedToken0,
         totalValueLockedToken1: poolData.daiPool.totalValueLockedToken1,
       },
-      stakingBalance: stakingBalance[0]
-        .add(stakingBalance[1])
-        .add(stakingBalance[2])
-        .add(v2LPPoolElfi[0])
-        .add(v2LPPoolElfi[1])
+      stakingBalance: stakingBalance.elfiV1Balance
+        .add(stakingBalance.elfiV2Balance)
+        .add(stakingBalance.bscBalance)
+        .add(v2LPPoolElfi.ethElfiBalance)
+        .add(v2LPPoolElfi.daiElfiBalance)
+        .add(v2LPPoolElfi.elElfiBalance)
         .add(
           elfiV2Balance[0].status === 'rejected'
             ? constants.Zero
@@ -132,12 +148,14 @@ const useTvlBalances = (): BalanceType => {
             ? constants.Zero
             : elfiV2Balance[1].value.totalPrincipal,
         ),
-      v2LPPoolDai: v2LPPoolTokens[0],
-      v2LPPoolEth: v2LPPoolTokens[1],
-      ethPoolTotalPrincipal: v2PoolData[0].totalPrincipal,
-      daiPoolTotalPrincipal: v2PoolData[1].totalPrincipal,
-      ethTotalSupply: v2PoolData[2],
-      daiTotalSupply: v2PoolData[3],
+      v2LPPoolDai: v2LPPoolTokens.daiTokenBalance,
+      v2LPPoolEth: v2LPPoolTokens.ethTokenBalance,
+      v2LPPoolEl: v2LPPoolTokens.elTokenBalance,
+      ethPoolTotalPrincipal: v2PoolData.ethPoolData.totalPrincipal,
+      daiPoolTotalPrincipal: v2PoolData.daiPoolData.totalPrincipal,
+      ethTotalSupply: v2PoolData.ethTotalSupply,
+      daiTotalSupply: v2PoolData.daiTotalSupply,
+      elTotalSupply: v2PoolData.elTotalSupply,
       balanceLoading: false,
     });
   }, [

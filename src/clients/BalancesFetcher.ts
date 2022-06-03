@@ -14,7 +14,8 @@ export const tvlFetcher = (
 
 const provider = new providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC);
 const bscProvider = new providers.JsonRpcProvider(envs.jsonRpcUrl.bsc);
-const { daiPoolContract, ethPoolContract } = getV2LPPoolContract();
+const { daiPoolContract, ethPoolContract, elPoolContract } =
+  getV2LPPoolContract();
 
 const erc20Contract = (address: string, provider: any) => {
   return ERC20__factory.connect(address, provider);
@@ -25,8 +26,15 @@ const stakingPoolV2Contract = (address: string, provider: any) => {
 
 export const elfiBalanceOfFetcher =
   (): any =>
-  (...args: [string, string, string]) => {
-    const [...params] = args;
+  async (
+    ...args: [
+      {
+        elfiV1PoolAddress: string;
+        elfiV2PoolAddress: string;
+        bscPoolAddress: string;
+      },
+    ]
+  ) => {
     const ethContract: any = erc20Contract(
       envs.token.governanceAddress,
       provider as any,
@@ -36,33 +44,48 @@ export const elfiBalanceOfFetcher =
       bscProvider as any,
     );
 
-    return Promise.all([
-      ethContract.balanceOf(params[0]),
-      ethContract.balanceOf(params[1]),
-      bscContract.balanceOf(params[2]),
-    ]);
+    return {
+      elfiV1Balance: await ethContract.balanceOf(args[0].elfiV1PoolAddress),
+      elfiV2Balance: await ethContract.balanceOf(args[0].elfiV2PoolAddress),
+      bscBalance: await bscContract.balanceOf(args[0].bscPoolAddress),
+    };
   };
 
 export const v2LPPoolElfiFetcher =
   (): any =>
-  (...args: [string, string]) => {
-    const [...params] = args;
+  async (
+    ...args: [
+      {
+        ethElfiAddress: string;
+        daiElfiAddress: string;
+        elElfiAddress: string;
+      },
+    ]
+  ) => {
     const contract: any = erc20Contract(
       envs.token.governanceAddress,
       provider as any,
     );
 
-    return Promise.all([
-      contract.balanceOf(params[0]),
-      contract.balanceOf(params[1]),
-    ]);
+    return {
+      ethElfiBalance: await contract.balanceOf(args[0].ethElfiAddress),
+      daiElfiBalance: await contract.balanceOf(args[0].daiElfiAddress),
+      elElfiBalance: await contract.balanceOf(args[0].elElfiAddress),
+    };
   };
 
 export const v2LPPoolTokensFetcher =
   (): any =>
-  (...args: [string, string]) => {
-    const [...params] = args;
-
+  async (
+    ...args: [
+      {
+        ethElfiAddress: string;
+        daiElfiAddress: string;
+        elElfiAddress: string;
+      },
+      string,
+    ]
+  ) => {
     const daiContract: any = erc20Contract(
       envs.token.daiAddress,
       provider as any,
@@ -71,10 +94,16 @@ export const v2LPPoolTokensFetcher =
       envs.token.wEthAddress,
       provider as any,
     );
-    return Promise.all([
-      daiContract.balanceOf(params[0]),
-      wEthContract.balanceOf(params[1]),
-    ]);
+    const elContract: any = erc20Contract(
+      envs.token.elAddress,
+      provider as any,
+    );
+
+    return {
+      ethTokenBalance: await wEthContract.balanceOf(args[0].ethElfiAddress),
+      daiTokenBalance: await daiContract.balanceOf(args[0].daiElfiAddress),
+      elTokenBalance: await elContract.balanceOf(args[0].elElfiAddress),
+    };
   };
 
 export const elfiV2BalanceFetcher =
@@ -98,11 +127,13 @@ export const elfiV2BalanceFetcher =
 
 export const v2PoolDataFetcher =
   (): any =>
-  (...args: [string]) => {
-    return Promise.all([
-      ethPoolContract.getPoolData(),
-      daiPoolContract.getPoolData(),
-      ethPoolContract.totalSupply(),
-      daiPoolContract.totalSupply(),
-    ]);
+  async (...args: [string]) => {
+    return {
+      ethPoolData: await ethPoolContract.getPoolData(),
+      daiPoolData: await daiPoolContract.getPoolData(),
+      elPoolData: await elPoolContract.getPoolData(),
+      ethTotalSupply: await ethPoolContract.totalSupply(),
+      daiTotalSupply: await daiPoolContract.totalSupply(),
+      elTotalSupply: await elPoolContract.totalSupply(),
+    };
   };

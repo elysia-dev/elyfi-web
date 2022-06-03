@@ -39,7 +39,13 @@ const useUniswapV2Apr = (): {
   });
 
   const { data: v2LPPoolElfi } = useSWR(
-    [envs.lpStaking.ethElfiV2PoolAddress, envs.lpStaking.daiElfiV2PoolAddress],
+    [
+      {
+        ethElfiAddress: envs.lpStaking.ethElfiV2PoolAddress,
+        daiElfiAddress: envs.lpStaking.daiElfiV2PoolAddress,
+        elElfiAddress: envs.lpStaking.elElfiV2PoolAddress,
+      },
+    ],
     {
       fetcher: v2LPPoolElfiFetcher(),
     },
@@ -47,23 +53,33 @@ const useUniswapV2Apr = (): {
 
   const v2Aprs = useCallback(() => {
     try {
-      if (!priceData || balances.balanceLoading || !v2PoolData) return;
+      if (!priceData || balances.balanceLoading || !v2PoolData || !v2LPPoolElfi)
+        return;
 
       const ethUsdPerSecond =
         priceData.elfiPrice *
-        parseFloat(utils.formatEther(v2PoolData[0].rewardPerSecond));
+        parseFloat(utils.formatEther(v2PoolData.ethPoolData.rewardPerSecond));
       const daiUsdPerSecond =
         priceData.elfiPrice *
-        parseFloat(utils.formatEther(v2PoolData[1].rewardPerSecond));
+        parseFloat(utils.formatEther(v2PoolData.daiPoolData.rewardPerSecond));
+      const elUsdPerSecond =
+        priceData.elfiPrice *
+        parseFloat(utils.formatEther(v2PoolData.elPoolData.rewardPerSecond));
 
       const stakedTokenElfiEthPrice =
-        parseFloat(utils.formatEther(v2LPPoolElfi[0])) * priceData.elfiPrice +
+        parseFloat(utils.formatEther(v2LPPoolElfi.ethElfiBalance)) *
+          priceData.elfiPrice +
         parseFloat(utils.formatEther(balances.v2LPPoolEth)) *
           priceData.ethPrice;
       const stakedTokenElfiDaiPrice =
-        parseFloat(utils.formatEther(v2LPPoolElfi[1])) * priceData.elfiPrice +
+        parseFloat(utils.formatEther(v2LPPoolElfi.daiElfiBalance)) *
+          priceData.elfiPrice +
         parseFloat(utils.formatEther(balances.v2LPPoolDai)) *
           priceData.daiPrice;
+      const stakedTokenElfiElPrice =
+        parseFloat(utils.formatEther(v2LPPoolElfi.elElfiBalance)) *
+          priceData.elfiPrice +
+        parseFloat(utils.formatEther(balances.v2LPPoolEl)) * priceData.elPrice;
 
       const ethPoolPerToken =
         stakedTokenElfiEthPrice /
@@ -71,33 +87,41 @@ const useUniswapV2Apr = (): {
       const daiPoolPerToken =
         stakedTokenElfiDaiPrice /
         parseFloat(utils.formatEther(balances.daiTotalSupply));
+      const elPoolPerToken =
+        stakedTokenElfiElPrice /
+        parseFloat(utils.formatEther(balances.elTotalSupply));
 
       const ethTotalUSD =
         ethPoolPerToken *
-        parseFloat(utils.formatEther(v2PoolData[0].totalPrincipal));
+        parseFloat(utils.formatEther(v2PoolData.ethPoolData.totalPrincipal));
       const daiTotalUSD =
         daiPoolPerToken *
-        parseFloat(utils.formatEther(v2PoolData[1].totalPrincipal));
+        parseFloat(utils.formatEther(v2PoolData.daiPoolData.totalPrincipal));
+      const elTotalUSD =
+        elPoolPerToken *
+        parseFloat(utils.formatEther(v2PoolData.elPoolData.totalPrincipal));
 
       const elfiEthAPR =
         (ethUsdPerSecond / ethTotalUSD) * (3600 * 24 * 365 * 100);
       const elfiDaiAPR =
         (daiUsdPerSecond / daiTotalUSD) * (3600 * 24 * 365 * 100);
+      const elfiElAPR = (elUsdPerSecond / elTotalUSD) * (3600 * 24 * 365 * 100);
 
+      console.log(typeof elfiEthAPR);
       setUniswapV2Apr({
         elfiDaiPool: elfiDaiAPR,
         elfiEthPool: elfiEthAPR,
-        elfiElPool: 222,
+        elfiElPool: elfiElAPR,
       });
       setAprLoading(false);
     } catch (error) {
       setAprLoading(false);
     }
-  }, [balances, priceData]);
+  }, [balances, priceData, v2LPPoolElfi, v2PoolData]);
 
   useEffect(() => {
     v2Aprs();
-  }, [priceData, balances]);
+  }, [balances, priceData, v2LPPoolElfi, v2PoolData]);
 
   return { uniswapV2Apr, aprLoading };
 };
