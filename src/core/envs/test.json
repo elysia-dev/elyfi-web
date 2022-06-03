@@ -23,6 +23,7 @@
     "ethElfiPoolAddress": "0xc311faebe8802f9cfc91284016d1de9537ec66b7",
     "daiElfiV2PoolAddress": "0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4",
     "ethElfiV2PoolAddress": "0x2781246fe707bb15cee3e5ea354e2154a2877b16",
+    "elElfiV2PoolAddress": "0x2781246fe707bb15cee3e5ea354e2154a2877b16",
     "stakerAddress": "0x1f98407aaB862CdDeF78Ed252D6f557aA5b0f00d",
     "nonFungiblePositionAddress": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
     "refundedAddress": "0x23b062F33ed93EE8C8e658e609dbd80797DFdA89"
