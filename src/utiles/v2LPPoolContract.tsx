@@ -7,6 +7,7 @@ const provider = new providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC);
 export const getV2LPPoolContract = (): {
   ethPoolContract: StakingPoolV2;
   daiPoolContract: StakingPoolV2;
+  elPoolContract: StakingPoolV2;
 } => {
   const ethPoolContract = StakingPoolV2factory.connect(
     envs.stakingV2MoneyPool.elfiEthLp,
@@ -17,5 +18,9 @@ export const getV2LPPoolContract = (): {
     envs.stakingV2MoneyPool.elfiDaiLp,
     provider as any,
   );
-  return { ethPoolContract, daiPoolContract };
+  const elPoolContract = StakingPoolV2factory.connect(
+    envs.stakingV2MoneyPool.elfiELLp,
+    provider as any,
+  );
+  return { ethPoolContract, daiPoolContract, elPoolContract };
 };
