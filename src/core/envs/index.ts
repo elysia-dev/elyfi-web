@@ -28,6 +28,7 @@ interface EnvironmentVariables {
     ethElfiPoolAddress: string;
     ethElfiV2PoolAddress: string;
     daiElfiV2PoolAddress: string;
+    elElfiV2PoolAddress: string;
     stakerAddress: string;
     nonFungiblePositionAddress: string;
     refundedAddress: string;
