@@ -51,9 +51,9 @@ export const MainnetData = {
     image: ETH,
     chainId: envs.network.requiredChainId,
     supportedTokens: [
+      envs.token.usdcAddress,
       envs.token.daiAddress,
       envs.token.usdtAddress,
-      envs.token.usdcAddress,
     ],
   },
   [MainnetType.BSC]: {
