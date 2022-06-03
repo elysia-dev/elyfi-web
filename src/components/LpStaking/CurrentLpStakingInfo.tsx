@@ -34,7 +34,7 @@ const CurrentLpStakingInfo: React.FC<Props> = ({
             <Skeleton width={60} height={15} />
           ) : (
             <h2 className="percent">
-              {poolApr === 0 ? '-' : toCompact(poolApr)}
+              {poolApr === 0 || !poolApr ? '-' : toCompact(poolApr)}
             </h2>
           )}
         </div>
