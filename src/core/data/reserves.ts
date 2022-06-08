@@ -87,7 +87,8 @@ const reserves: IReserve[] = [
     name: 'USDC',
     image: usdc,
     decimals: 6,
-    address: '0x',
+    address: envs.token.usdcAddress,
+    tokenizer: envs.tokenizer.usdcTokenizerAddress,
   },
   {
     name: 'BUSD',
