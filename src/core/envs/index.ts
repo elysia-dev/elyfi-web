@@ -64,6 +64,7 @@ interface EnvironmentVariables {
     daiTokenizerAddress: string;
     usdtTokenizerAddress: string;
     busdTokenizerAddress: string;
+    usdcTokenizerAddress: string;
   };
   jsonRpcUrl: {
     bsc: string;
