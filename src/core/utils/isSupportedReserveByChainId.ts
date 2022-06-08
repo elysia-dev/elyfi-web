@@ -7,7 +7,7 @@ const isSupportedReserveByChainId = (
   switch (chainId) {
     case 1:
     case 1337:
-      return [Token.DAI, Token.USDT].includes(token);
+      return [Token.DAI, Token.USDT, Token.USDC].includes(token);
     case 56:
     case 97:
       return [Token.BUSD].includes(token);
