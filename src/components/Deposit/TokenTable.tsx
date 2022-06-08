@@ -255,6 +255,7 @@ const TokenTable: React.FC<Props> = ({
             </div>
           </div>
           {getMainnetType === MainnetType.Ethereum &&
+          reserveData?.id !== envs.token.usdcAddress &&
           balance.expectedIncentiveBefore.gt(0) ? (
             <div className="deposit__table__body__event-box">
               <TableBodyEventReward
