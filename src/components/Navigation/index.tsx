@@ -8,7 +8,7 @@ import {
   Suspense,
 } from 'react';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
-import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
+import ElysiaLogo from 'src/assets/images/elysia_logo.svg';
 import NavigationType from 'src/enums/NavigationType';
 import {
   INavigation,
@@ -209,8 +209,8 @@ const Navigation: React.FunctionComponent<{
                 style={{
                   transform:
                     isBold(_index) && globalNavHover === _index + 1
-                      ? `rotate(135deg)`
-                      : `rotate(-45deg) translateX(-2px) translateY(2px)`,
+                      ? `rotate(-45deg) translateX(-2px) translateY(2px)`
+                      : `rotate(135deg)`,
                 }}
               />
             )}
