@@ -42,6 +42,7 @@ interface EnvironmentVariables {
     bscElfiAddress: string;
     busdAddress: string;
     testBscElfiAddress: string;
+    testUsdcLTokenAddress: string;
   };
   network: {
     requiredNetwork: string;
