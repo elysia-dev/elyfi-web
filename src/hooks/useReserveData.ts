@@ -16,7 +16,6 @@ import {
   initialReserveSubgraph,
   IReserveSubgraph,
 } from 'src/core/types/reserveSubgraph';
-import envs from 'src/core/envs';
 
 const useReserveData = (): {
   reserveState: IReserveSubgraph;
@@ -47,28 +46,7 @@ const useReserveData = (): {
     if (!ethReserveData || !bscReserveData) return;
     // if (!testUSDCData) return;
     setReserveState({
-      reserves: [
-        {
-          id: envs.token.usdcAddress,
-          lTokenInterestIndex: ethReserveData[0].lTokenInterestIndex,
-          lastUpdateTimestamp: ethReserveData[0].lastUpdateTimestamp,
-          borrowAPY: ethReserveData[0].borrowAPY,
-          depositAPY: ethReserveData[0].depositAPY,
-          totalBorrow: ethReserveData[0].totalBorrow,
-          totalDeposit: ethReserveData[0].totalDeposit,
-          lTokenUserBalanceCount: ethReserveData[0].lTokenUserBalanceCount,
-          dTokenUserBalanceCount: ethReserveData[0].dTokenUserBalanceCount,
-          deposit: ethReserveData[0].deposit,
-          incentivePool: ethReserveData[0].incentivePool,
-          borrow: ethReserveData[0].borrow,
-          repay: ethReserveData[0].repay,
-          reserveHistory: ethReserveData[0].reserveHistory,
-          lToken: ethReserveData[0].lToken,
-          assetBondTokens: ethReserveData[0].assetBondTokens,
-        },
-        ...bscReserveData,
-        ...ethReserveData,
-      ],
+      reserves: [...bscReserveData, ...ethReserveData],
     });
     setLoading(ethLoading || bscLoading);
   };
