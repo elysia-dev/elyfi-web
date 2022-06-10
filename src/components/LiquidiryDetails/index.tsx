@@ -49,8 +49,8 @@ interface ITokencolor {
 const tokenColorData: ITokencolor[] = [
   {
     name: 'USDC',
-    color: '#F9AE19',
-    subColor: '#FFDB8B',
+    color: '#2775CA',
+    subColor: '#509DF0',
   },
   {
     name: 'DAI',
@@ -138,6 +138,8 @@ function MarketDetail(): JSX.Element {
         ? TokenColors.DAI
         : id === Token.USDT
         ? TokenColors.USDT
+        : id === Token.USDC
+        ? TokenColors.USDC
         : TokenColors.BUSD,
       browserHeight,
       false,
