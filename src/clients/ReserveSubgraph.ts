@@ -1,4 +1,3 @@
-import axios, { AxiosResponse } from 'axios';
 import envs from 'src/core/envs';
 import moment from 'moment';
 import { request } from 'graphql-request';
