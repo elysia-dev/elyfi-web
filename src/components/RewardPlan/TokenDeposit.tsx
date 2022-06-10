@@ -4,7 +4,8 @@ import {
   lazy,
   SetStateAction,
   Suspense,
-  useContext,
+  useEffect,
+  useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import useSWR from 'swr';
@@ -16,7 +17,7 @@ import {
   toPercent,
 } from 'src/utiles/formatters';
 import calcMiningAPR from 'src/utiles/calcMiningAPR';
-import { BigNumber } from 'ethers';
+import { BigNumber, ethers, utils } from 'ethers';
 import Token from 'src/enums/Token';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
@@ -26,9 +27,13 @@ import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
+import { IncentivePool__factory } from '@elysia-dev/contract-typechain';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
+const provider = new ethers.providers.JsonRpcProvider(
+  process.env.REACT_APP_JSON_RPC,
+);
 interface Props {
   reserve: IReserveSubgraphData;
   idx: number;
@@ -71,6 +76,7 @@ const TokenDeposit: FunctionComponent<Props> = ({
   mintedMoneypool,
 }) => {
   const { t } = useTranslation();
+  const [dailyAllocation, setDailyAllocation] = useState('');
   const token =
     reserve.id === envs.token.daiAddress
       ? Token.DAI
@@ -89,6 +95,18 @@ const TokenDeposit: FunctionComponent<Props> = ({
       use: [priceMiddleware],
     },
   );
+  useEffect(() => {
+    (async () => {
+      const incentivePool = IncentivePool__factory.connect(
+        envs.incentivePool.currentUSDTIncentivePool,
+        provider,
+      );
+      const amountPerSecond = await incentivePool.amountPerSecond();
+      setDailyAllocation(
+        (parseFloat(utils.formatUnits(amountPerSecond)) * 3600 * 24).toFixed(4),
+      );
+    })();
+  }, []);
 
   const { value: mediaQuery } = useMediaQueryType();
 
@@ -225,7 +243,14 @@ const TokenDeposit: FunctionComponent<Props> = ({
           <div className="component__data-info">
             <div>
               <p>{t('reward.daily_mining')}</p>
-              <p className="data">16,666.6667 ELFI</p>
+              <p className="data">
+                {dailyAllocation ? (
+                  dailyAllocation
+                ) : (
+                  <Skeleton width={110} height={16} />
+                )}
+                ELFI
+              </p>
             </div>
             <div>
               <p>{t('reward.accumulated_mining')}</p>
