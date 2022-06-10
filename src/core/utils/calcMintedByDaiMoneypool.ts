@@ -4,6 +4,7 @@ import {
   tetherMoneyPoolStartedAt,
   busdMoneypoolStartedAt,
   busdMoneypoolEndedAt,
+  usdcMoneyPoolStartedAt,
 } from 'src/core/data/moneypoolTimes';
 
 const daiDepositRewardPerSecond = (3000000 * 2) / (365 * 24 * 3600);
@@ -37,4 +38,12 @@ export const calcMintedByBusdMoneypool = (): number => {
         busdDepositRewardPerSecond +
         50000 * 7
     : 1583333;
+};
+
+export const calcMintedByUsdcMoneypool = (): number => {
+  const current = moment();
+
+  return (
+    current.diff(usdcMoneyPoolStartedAt, 'seconds') * daiDepositRewardPerSecond
+  );
 };
