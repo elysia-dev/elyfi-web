@@ -93,6 +93,7 @@ const Dashboard: React.FunctionComponent = () => {
   const { balances, loading, loadBalance } = useBalances(() =>
     mutate(getMainnetType === MainnetType.BSC ? 'bscUser' : 'ethUser'),
   );
+
   const [transactionModal, setTransactionModal] = useState(false);
   const [selectedBalanceId, selectBalanceId] = useState('');
   const [connectWalletModalvisible, setConnectWalletModalvisible] =
@@ -134,9 +135,20 @@ const Dashboard: React.FunctionComponent = () => {
   );
 
   const supportedBalances = useMemo(() => {
-    const supportBlalance = balances.filter((balance) =>
+    const tokenPool = balances.filter((balance) =>
       supportedTokens.some((token) => (balance ? token === balance.id : false)),
     );
+    const supportBlalance = [
+      ...tokenPool.filter((balance) => {
+        return balance.tokenName === Token.USDC;
+      }),
+      ...tokenPool.filter((balance) => {
+        return balance.tokenName !== Token.USDC;
+      }),
+    ];
+
+    console.log(supportBlalance);
+
     return supportBlalance.length === 0
       ? initSupportedTokens.map((token) => ({
           id: '',
