@@ -78,6 +78,8 @@ const TokenDeposit: FunctionComponent<Props> = ({
       ? Token.USDT
       : reserve.id === envs.token.usdcAddress
       ? Token.USDC
+      : reserve.id === envs.token.usdcAddress
+      ? Token.USDC
       : Token.BUSD;
 
   const { data: priceData, isValidating: loading } = useSWR(
