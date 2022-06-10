@@ -271,22 +271,18 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
                 ),
             expectedAdditionalIncentiveBefore:
               balance.expectedAdditionalIncentiveAfter,
-            expectedAdditionalIncentiveAfter: isEndedIncentive(
-              balance.tokenName,
-              1,
-            )
-              ? balance.expectedAdditionalIncentiveAfter
-              : balance.expectedAdditionalIncentiveAfter.add(
-                  calcExpectedIncentive(
+            expectedAdditionalIncentiveAfter:
+              balance.expectedAdditionalIncentiveAfter.add(
+                calcExpectedIncentive(
+                  elfiPrice,
+                  balance.deposit,
+                  calcMiningAPR(
                     elfiPrice,
-                    balance.deposit,
-                    calcMiningAPR(
-                      elfiPrice,
-                      BigNumber.from(reserve.totalDeposit),
-                    ),
-                    balance.updatedAt,
+                    BigNumber.from(reserve.totalDeposit),
                   ),
+                  balance.updatedAt,
                 ),
+              ),
             updatedAt: moment().unix(),
           };
         }),
