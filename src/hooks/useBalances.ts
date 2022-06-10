@@ -55,7 +55,7 @@ const tokenIncentiveAddress = (token: string, isPrevIncentive?: boolean) => {
         ? envs.incentivePool.prevDaiIncentivePool
         : envs.incentivePool.currentDaiIncentivePool;
     case Token.USDC:
-      return envs.incentivePool.currentDaiIncentivePool;
+      return envs.incentivePool.usdcIncentivePoolAddress;
     case Token.BUSD:
     default:
       return envs.incentivePool.busdIncentivePoolAddress;
@@ -75,7 +75,7 @@ const getIncentiveByRound = async (
   // USDT & DAI have two incentivepools
   // BSC have only one incentivepool
   const incentiveRound2 =
-    tokenName === Token.BUSD
+    tokenName === Token.BUSD || tokenName === Token.USDC
       ? incentiveRound1
       : await IncentivePool__factory.connect(
           tokenIncentiveAddress(tokenName),
@@ -110,7 +110,9 @@ const fetchBalanceFrom = async (
       expectedAdditionalIncentiveBefore: incentiveRound2,
       expectedAdditionalIncentiveAfter: incentiveRound2,
       deposit: await ERC20__factory.connect(
-        reserve.lToken.id,
+        tokenName === Token.USDC && process.env.REACT_APP_TEST_MODE
+          ? envs.token.testUsdcLTokenAddress
+          : reserve.lToken.id,
         library,
       ).balanceOf(account),
     };
@@ -148,6 +150,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
       };
     }),
   );
+
   const [loading, setLoading] = useState(true);
   const { data: priceData } = useSWR(
     envs.externalApiEndpoint.coingackoURL,
