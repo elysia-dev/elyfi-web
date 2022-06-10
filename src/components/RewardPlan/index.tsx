@@ -19,18 +19,12 @@ import {
   daiMoneyPoolTime,
   tetherMoneyPoolTime,
   busdMoneyPoolTime,
+  usdcMoneyPoolTime,
 } from 'src/core/data/moneypoolTimes';
 import { roundTimes } from 'src/core/data/stakingRoundTimes';
-import {
-  DAI_REWARD_PER_POOL,
-  ELFI_REWARD_PER_POOL,
-} from 'src/core/data/stakings';
 import Token from 'src/enums/Token';
 import useStakingRoundData from 'src/hooks/useStakingRoundData';
-import { ordinalNumberConverter } from 'src/utiles/ordinalNumberConverter';
 import ELFI from 'src/assets/images/ELFI.png';
-import ETH from 'src/assets/images/eth-color.png';
-import DAI from 'src/assets/images/dai.png';
 import useLpApr from 'src/hooks/useLpApy';
 import {
   IPoolPosition,
@@ -49,12 +43,10 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import getTokenNameByAddress from 'src/core/utils/getTokenNameByAddress';
 import useCalcReward from 'src/hooks/useCalcReward';
 import { rewardToken } from 'src/utiles/stakingReward';
-import { ethRewardByRound } from 'src/utiles/LpStakingRewardByRound';
 import Skeleton from 'react-loading-skeleton';
 import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
 import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
 import useReserveData from 'src/hooks/useReserveData';
-import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 const LpStakingBox = lazy(
@@ -156,8 +148,8 @@ const RewardPlan: FunctionComponent = () => {
 
   const moneyPoolInfo = {
     USDC: {
-      startedMoneyPool: daiMoneyPoolTime[0].startedAt.format('yyyy.MM.DD'),
-      endedMoneyPool: daiMoneyPoolTime[0].endedAt.format('yyyy.MM.DD'),
+      startedMoneyPool: usdcMoneyPoolTime[0].startedAt.format('yyyy.MM.DD'),
+      endedMoneyPool: usdcMoneyPoolTime[0].endedAt.format('yyyy.MM.DD'),
     },
     DAI: {
       startedMoneyPool: daiMoneyPoolTime[0].startedAt.format('yyyy.MM.DD'),
@@ -175,7 +167,7 @@ const RewardPlan: FunctionComponent = () => {
 
   const beforeMintedMoneypool = {
     DAI: { beforeMintedToken: rewardInfo.beforeMintedByDaiMoneypool },
-    USDC: { beforeMintedToken: rewardInfo.beforeMintedByDaiMoneypool },
+    USDC: { beforeMintedToken: rewardInfo.beforeMintedByUsdcMoneypool },
     USDT: {
       beforeMintedToken: rewardInfo.beforeMintedByTetherMoneypool,
     },
@@ -185,7 +177,7 @@ const RewardPlan: FunctionComponent = () => {
   };
   const mintedMoneypool = {
     DAI: { mintedToken: rewardInfo.mintedByDaiMoneypool },
-    USDC: { mintedToken: rewardInfo.mintedByDaiMoneypool },
+    USDC: { mintedToken: rewardInfo.mintedByUsdcMoneypool },
     USDT: { mintedToken: rewardInfo.mintedByTetherMoneypool },
     BUSD: {
       mintedToken: rewardInfo.mintedByBusdMoneypool,
