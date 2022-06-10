@@ -25,7 +25,6 @@ import Token from 'src/enums/Token';
 import ReserveToken from 'src/core/types/ReserveToken';
 import MainnetType from 'src/enums/MainnetType';
 import request from 'graphql-request';
-import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
 const TokenTable = lazy(() => import('src/components/Deposit/TokenTable'));
 const TransactionConfirmModal = lazy(
@@ -146,8 +145,6 @@ const Dashboard: React.FunctionComponent = () => {
         return balance.tokenName !== Token.USDC;
       }),
     ];
-
-    console.log(supportBlalance);
 
     return supportBlalance.length === 0
       ? initSupportedTokens.map((token) => ({
