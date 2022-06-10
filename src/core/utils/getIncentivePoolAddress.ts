@@ -11,6 +11,8 @@ const getIncentivePoolAddress = (round: number, token: Token): string => {
       return round === 1
         ? envs.incentivePool.prevUSDTIncentivePool
         : envs.incentivePool.currentUSDTIncentivePool;
+    case Token.USDC:
+      return envs.incentivePool.usdcIncentivePoolAddress;
     case Token.BUSD:
       return envs.incentivePool.busdIncentivePoolAddress;
     default:
