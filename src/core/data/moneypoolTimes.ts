@@ -10,7 +10,7 @@ export const tetherMoneyPoolStartedAt = moment(
   'YYYY.MM.DD hh:mm:ss Z',
 );
 export const usdcMoneyPoolStartedAt = moment(
-  '2022.06.08 19:00:00 +9:00',
+  '2022.06.13 19:00:00 +9:00',
   'YYYY.MM.DD hh:mm:ss Z',
 );
 
@@ -68,7 +68,7 @@ export const busdMoneyPoolTime = [
 
 export const usdcMoneyPoolTime = [
   {
-    startedAt: moment('2022.06.08 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
+    startedAt: moment('2022.06.13 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
     endedAt: moment('2022.08.20 20:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z'),
   },
 ];
