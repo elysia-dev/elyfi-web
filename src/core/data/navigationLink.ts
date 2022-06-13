@@ -34,11 +34,6 @@ export const navigationLink: INavigation[] = [
     subNavigation: [
       {
         type: NavigationType.Link,
-        location: `/staking/EL`,
-        i18nKeyword: 'navigation.ELStake',
-      },
-      {
-        type: NavigationType.Link,
         location: `/staking/ELFI`,
         i18nKeyword: 'navigation.ELFIStake',
       },
