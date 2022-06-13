@@ -209,8 +209,8 @@ const Navigation: React.FunctionComponent<{
                 style={{
                   transform:
                     isBold(_index) && globalNavHover === _index + 1
-                      ? `rotate(135deg)`
-                      : `rotate(-45deg) translateX(-2px) translateY(2px)`,
+                      ? `rotate(-45deg) translateX(-2px) translateY(2px)`
+                      : `rotate(135deg)`,
                 }}
               />
             )}
