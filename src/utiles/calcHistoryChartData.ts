@@ -5,8 +5,8 @@ import {
   IReserveHistory,
   IReserveSubgraphData,
 } from 'src/core/types/reserveSubgraph';
-import calcMiningAPR from './calcMiningAPR';
 import { toCompact } from './formatters';
+import calcChartMiningAPR from './calcChartMiningAPR';
 
 interface ICalculatedData extends IReserveHistory {
   selectedAmount: string;
@@ -21,6 +21,7 @@ const calcHistoryChartData = (
     date: number;
   }[],
   decimals: number,
+  allocation: number,
 ): (string | number)[][] => {
   const current = moment();
   const times = Array(30)
@@ -103,9 +104,11 @@ const calcHistoryChartData = (
         historyType === 'deposit'
           ? utils.formatUnits(
               BigNumber.from(data.depositAPY).add(
-                calcMiningAPR(
+                calcChartMiningAPR(
                   parseFloat(prices[index].token1Price) || avgPrice,
                   BigNumber.from(data.totalDeposit),
+                  data.timestamp,
+                  allocation,
                   decimals,
                 ),
               ),
