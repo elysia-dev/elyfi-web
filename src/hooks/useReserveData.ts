@@ -44,7 +44,6 @@ const useReserveData = (): {
 
   const fetchSubgraph = async () => {
     if (!ethReserveData || !bscReserveData) return;
-    // if (!testUSDCData) return;
     setReserveState({
       reserves: [...bscReserveData, ...ethReserveData],
     });
