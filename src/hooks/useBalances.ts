@@ -11,7 +11,6 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import getTokenNameFromAddress from 'src/utiles/getTokenNameFromAddress';
 import isEndedIncentive from 'src/core/utils/isEndedIncentive';
 import calcExpectedIncentive from 'src/utiles/calcExpectedIncentive';
-import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import { useWeb3React } from '@web3-react/core';
 import MainnetContext from 'src/contexts/MainnetContext';
 import ReserveToken from 'src/core/types/ReserveToken';
@@ -20,6 +19,7 @@ import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 import useReserveData from './useReserveData';
+import useCalcMiningAPR from './useCalcMiningAPR';
 
 export type BalanceType = {
   id: string;
@@ -141,6 +141,7 @@ type ReturnType = {
 const useBalances = (refetchUserData: () => void): ReturnType => {
   const { account, chainId, library } = useWeb3React();
   const { reserveState } = useReserveData();
+  const { calcMiningAPR } = useCalcMiningAPR();
   const [balances, setBalances] = useState<BalanceType[]>(
     reserveState.reserves.map((reserve) => {
       return {

@@ -16,7 +16,6 @@ import {
   toCompactForBignumber,
   toPercent,
 } from 'src/utiles/formatters';
-import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import { BigNumber, ethers, utils } from 'ethers';
 import Token from 'src/enums/Token';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
@@ -27,7 +26,7 @@ import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
-import { IncentivePool__factory } from '@elysia-dev/contract-typechain';
+import useCalcMiningAPR from 'src/hooks/useCalcMiningAPR';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
@@ -76,7 +75,7 @@ const TokenDeposit: FunctionComponent<Props> = ({
   mintedMoneypool,
 }) => {
   const { t } = useTranslation();
-  const [dailyAllocation, setDailyAllocation] = useState('');
+  const { dailyAllocation, calcMiningAPR } = useCalcMiningAPR();
   const token =
     reserve.id === envs.token.daiAddress
       ? Token.DAI
@@ -95,19 +94,6 @@ const TokenDeposit: FunctionComponent<Props> = ({
       use: [priceMiddleware],
     },
   );
-  useEffect(() => {
-    (async () => {
-      const incentivePool = IncentivePool__factory.connect(
-        envs.incentivePool.currentUSDTIncentivePool,
-        provider,
-      );
-      const amountPerSecond = await incentivePool.amountPerSecond();
-      setDailyAllocation(
-        (parseFloat(utils.formatUnits(amountPerSecond)) * 3600 * 24).toFixed(4),
-      );
-    })();
-  }, []);
-
   const { value: mediaQuery } = useMediaQueryType();
 
   return (
@@ -245,7 +231,7 @@ const TokenDeposit: FunctionComponent<Props> = ({
               <p>{t('reward.daily_mining')}</p>
               <p className="data">
                 {dailyAllocation ? (
-                  dailyAllocation
+                  dailyAllocation.toFixed(4)
                 ) : (
                   <Skeleton width={110} height={16} />
                 )}

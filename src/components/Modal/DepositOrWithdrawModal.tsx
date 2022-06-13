@@ -12,7 +12,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import LoadingIndicator from 'src/components/Modal/LoadingIndicator';
 import { GetUser_user } from 'src/core/types/GetUser';
-import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcAccumulatedYield from 'src/utiles/calcAccumulatedYield';
 import { toPercent } from 'src/utiles/formatters';
 import calcCurrentIndex from 'src/utiles/calcCurrentIndex';
@@ -34,6 +33,7 @@ import IncreateAllowanceModal, {
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
+import useCalcMiningAPR from 'src/hooks/useCalcMiningAPR';
 import DepositBody from './DepositBody';
 import WithdrawBody from './WithdrawBody';
 
@@ -69,6 +69,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
   round,
 }) => {
   const { account, chainId } = useWeb3React();
+  const { calcMiningAPR } = useCalcMiningAPR();
   const { data: priceData } = useSWR(
     envs.externalApiEndpoint.coingackoURL,
     pricesFetcher,

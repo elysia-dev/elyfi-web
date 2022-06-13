@@ -7,7 +7,6 @@ import useSWR from 'swr';
 
 import { reserveTokenData } from 'src/core/data/reserves';
 import { toUsd, toPercent } from 'src/utiles/formatters';
-import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcHistoryChartData from 'src/utiles/calcHistoryChartData';
 import TransactionConfirmModal from 'src/components/Modal/TransactionConfirmModal';
 import Token from 'src/enums/Token';
@@ -39,6 +38,7 @@ import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import useReserveData from 'src/hooks/useReserveData';
+import useCalcMiningAPR from 'src/hooks/useCalcMiningAPR';
 
 interface ITokencolor {
   name: string;
@@ -107,6 +107,7 @@ function MarketDetail(): JSX.Element {
   const [cellInBarIdx, setCellInBarIdx] = useState(-1);
   const [token, setToken] = useState(id || Token.DAI);
   const { type: getMainnetType } = useContext(MainnetContext);
+  const { dailyAllocation, calcMiningAPR } = useCalcMiningAPR();
 
   const selectToken = tokenColorData.find((color) => {
     return color.name === id;
@@ -322,12 +323,14 @@ function MarketDetail(): JSX.Element {
                               graphConverter ? 'borrow' : 'deposit',
                               poolData.poolDayData,
                               tokenInfo!.decimals,
+                              dailyAllocation,
                             )
                           : calcHistoryChartData(
                               data,
                               graphConverter ? 'borrow' : 'deposit',
                               poolData.poolDayData,
                               tokenInfo!.decimals,
+                              dailyAllocation,
                             ).slice(20)
                       }>
                       <Tooltip
@@ -350,6 +353,7 @@ function MarketDetail(): JSX.Element {
                           graphConverter ? 'borrow' : 'deposit',
                           poolData.poolDayData,
                           tokenInfo!.decimals,
+                          dailyAllocation,
                         ).map((cData, index) => (
                           <Cell
                             key={index}
