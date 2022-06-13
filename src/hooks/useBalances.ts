@@ -110,9 +110,7 @@ const fetchBalanceFrom = async (
       expectedAdditionalIncentiveBefore: incentiveRound2,
       expectedAdditionalIncentiveAfter: incentiveRound2,
       deposit: await ERC20__factory.connect(
-        tokenName === Token.USDC && process.env.REACT_APP_TEST_MODE
-          ? envs.token.testUsdcLTokenAddress
-          : reserve.lToken.id,
+        reserve.lToken.id,
         library,
       ).balanceOf(account),
     };
