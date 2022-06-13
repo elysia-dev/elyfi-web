@@ -44,8 +44,7 @@ const SelectWalletModal: FunctionComponent<Props> = ({
       <div
         className="wallet_select_modal__content"
         style={{
-          height:
-            global.ethereum && typeof global.ethereum === 'object' ? 263 : 180,
+          height: 263,
         }}>
         <>
           <div className="wallet_select_modal__content__header">
@@ -57,45 +56,49 @@ const SelectWalletModal: FunctionComponent<Props> = ({
             </div>
           </div>
           <div className="wallet_select_modal__content__line" />
-          {global.ethereum && typeof global.ethereum === 'object' && (
+          <div
+            className="wallet_select_modal__content__wallet_btn"
+            style={{
+              border: `1px solid ${hoverColor.metamask}`,
+            }}
+            onClick={async () => {
+              if (!(global.ethereum && typeof global.ethereum === 'object')) {
+                window.open('https://metamask.io/', '_blank');
+                return;
+              }
+              activate(injectedConnector)
+                .then((e) => {
+                  setWalletConnect('metamask');
+                  modalClose();
+                })
+                .catch((e) => {
+                  console.error('Reject');
+                });
+            }}
+            onMouseEnter={() => {
+              setHoverColor({
+                ...hoverColor,
+                metamask: AppColors.hoverColor,
+              });
+            }}
+            onMouseLeave={() => {
+              setHoverColor({
+                ...hoverColor,
+                metamask: AppColors.selectWalletBorderColor,
+              });
+            }}>
+            <img src={walletImg} alt={walletImg} />
             <div
-              className="wallet_select_modal__content__wallet_btn"
               style={{
-                border: `1px solid ${hoverColor.metamask}`,
-              }}
-              onClick={async () => {
-                activate(injectedConnector)
-                  .then((e) => {
-                    setWalletConnect('metamask');
-                    modalClose();
-                  })
-                  .catch((e) => {
-                    console.error('Reject');
-                  });
-              }}
-              onMouseEnter={() => {
-                setHoverColor({
-                  ...hoverColor,
-                  metamask: AppColors.hoverColor,
-                });
-              }}
-              onMouseLeave={() => {
-                setHoverColor({
-                  ...hoverColor,
-                  metamask: AppColors.selectWalletBorderColor,
-                });
+                fontSize: isMoblie() ? 12 : 15,
               }}>
-              <img src={walletImg} alt={walletImg} />
-              <div
-                style={{
-                  fontSize: isMoblie() ? 12 : 15,
-                }}>
-                {isMoblie()
+              {global.ethereum && typeof global.ethereum === 'object'
+                ? isMoblie()
                   ? 'Browser Wallet\n(MetaMask / Trust Wallet / imToken)'
-                  : 'Metamask'}
-              </div>
+                  : 'Metamask'
+                : 'Install Metamask'}
             </div>
-          )}
+          </div>
           <div
             className="wallet_select_modal__content__wallet_btn"
             style={{
