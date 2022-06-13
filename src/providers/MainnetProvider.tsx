@@ -19,7 +19,7 @@ const MainnetProvider: React.FC = (props) => {
       ? window.sessionStorage.getItem('@network') === 'Ethereum'
         ? MainnetType.Ethereum
         : MainnetType.BSC
-      : MainnetType.BSC,
+      : MainnetType.Ethereum,
     unsupportedChainid: true,
     active: false,
   });
