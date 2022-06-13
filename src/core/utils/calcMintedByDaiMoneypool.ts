@@ -17,7 +17,7 @@ export const calcMintedByDaiMoneypool = (): number => {
   );
 };
 
-const tetherDepositRewardPerSecond = (1583333 * (365 / 95)) / (365 * 24 * 3600);
+const tetherDepositRewardPerSecond = (3000000 * 2) / (365 * 24 * 3600);
 
 export const calcMintedByTetherMoneypool = (): number => {
   const current = moment();
@@ -42,7 +42,7 @@ export const calcMintedByBusdMoneypool = (): number => {
 
 export const calcMintedByUsdcMoneypool = (): number => {
   const current = moment();
-
+  if (moment().isBefore(usdcMoneyPoolStartedAt)) return 0;
   return (
     current.diff(usdcMoneyPoolStartedAt, 'seconds') * daiDepositRewardPerSecond
   );
