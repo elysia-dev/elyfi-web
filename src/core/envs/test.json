@@ -9,7 +9,7 @@
     "currentDaiIncentivePool": "0x3Fed75D8f58A0Ca57ecaB7446580266AC846De06",
     "currentUSDTIncentivePool": "0x94aa0e263f7fCae5648A1062877FE66788402f71",
     "busdIncentivePoolAddress": "0xcE9cEcd4c320C1F244e95269109E46275390A482",
-    "usdcIncentivePoolAddress": "0x13aFd64ae9B8698D8bf368966844a470a7F8f53D"
+    "usdcIncentivePoolAddress": "0x788d432297CA4288EC8E9DDa84da40c5dF70D74e"
   },
   "staking": {
     "elStakingPoolAddress": "0xd804e198d25a1920522ca0094a670184a9c972d7",
@@ -31,12 +31,13 @@
     "governanceAddress": "0x4da34f8264cb33a5c9f17081b9ef5ff6091116f4",
     "elAddress": "0x2781246fe707bb15cee3e5ea354e2154a2877b16",
     "daiAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
-    "usdcAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
     "usdtAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+    "usdcAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
     "wEthAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
     "bscElfiAddress": "0x9803cd5851b24C8CAE5ebbAD46D69C400553cf4b",
     "busdAddress": "0xc93b97b01455454fba11b806ea645d021212c4c9",
-    "testBscElfiAddress": "0xA1Dd9cDb09871e7dC0E050E7aE18BA385D192C75"
+    "testBscElfiAddress": "0xA1Dd9cDb09871e7dC0E050E7aE18BA385D192C75",
+    "testUsdcLTokenAddress": "0x312268a6E0F10391647160E3fF296fAa67EeD453"
   },
   "network": {
     "requiredNetwork": "ganache",
@@ -59,7 +60,7 @@
     "daiTokenizerAddress": "0xc6701e7be98A79485364419961838EB141141aAf",
     "usdtTokenizerAddress": "0x68f69Ab21242e194ebd7534B598e26180dD92616",
     "busdTokenizerAddress": "0x0d768c1507B5099CB37e5D28B1959B831B5EbF9e",
-    "usdcTokenizerAddress": "0x1Eb519eaaD1a0DE41f5a9C9f3ab314a7544F589E"
+    "usdcTokenizerAddress": "0x94DE02C799EdcED78bbDF253a7b563D4069A62Fb"
   },
   "jsonRpcUrl": {
     "bsc": "https://data-seed-prebsc-1-s1.binance.org:8545/"

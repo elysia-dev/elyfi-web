@@ -24,7 +24,6 @@ import MainnetType from 'src/enums/MainnetType';
 import { daiMoneyPoolTime } from 'src/core/data/moneypoolTimes';
 import { BalanceType } from 'src/hooks/useBalances';
 import moment from 'moment';
-import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import { parseTokenId } from 'src/utiles/parseTokenId';
 import useNavigator from 'src/hooks/useNavigator';
 import CollateralCategory from 'src/enums/CollateralCategory';
@@ -35,6 +34,7 @@ import priceMiddleware from 'src/middleware/priceMiddleware';
 import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 import useReserveData from 'src/hooks/useReserveData';
 import CurrentRewardAmount from 'src/components/Staking/CurrentRewardAmount';
+import useCalcMiningAPR from 'src/hooks/useCalcMiningAPR';
 import TableBodyEventReward from './TableBodyEventReward';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
@@ -79,6 +79,7 @@ const TokenTable: React.FC<Props> = ({
       use: [priceMiddleware],
     },
   );
+  const { calcMiningAPR } = useCalcMiningAPR();
   const assetBondTokensBackedByEstate = reserveData?.id
     ? reserveData.assetBondTokens
         .filter((ab) => {
@@ -255,6 +256,7 @@ const TokenTable: React.FC<Props> = ({
             </div>
           </div>
           {getMainnetType === MainnetType.Ethereum &&
+          reserveData?.id !== envs.token.usdcAddress &&
           balance.expectedIncentiveBefore.gt(0) ? (
             <div className="deposit__table__body__event-box">
               <TableBodyEventReward

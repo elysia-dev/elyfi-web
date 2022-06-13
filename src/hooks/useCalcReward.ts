@@ -15,6 +15,7 @@ import {
   calcMintedByBusdMoneypool,
   calcMintedByDaiMoneypool,
   calcMintedByTetherMoneypool,
+  calcMintedByUsdcMoneypool,
 } from 'src/core/utils/calcMintedByDaiMoneypool';
 import { rewardPerDayByToken } from 'src/utiles/stakingReward';
 
@@ -50,6 +51,8 @@ const initState = (
     ethRewardByLp: calcEthRewardByLp(),
     beforeMintedByBuscMoneypool: state ? state.mintedByBusdMoneypool : 0,
     mintedByBusdMoneypool: calcMintedByBusdMoneypool(),
+    beforeMintedByUsdcMoneypool: state ? state.mintedByUsdcMoneypool : 0,
+    mintedByUsdcMoneypool: calcMintedByUsdcMoneypool(),
   };
 };
 

@@ -25,7 +25,6 @@ import Token from 'src/enums/Token';
 import ReserveToken from 'src/core/types/ReserveToken';
 import MainnetType from 'src/enums/MainnetType';
 import request from 'graphql-request';
-import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 
 const TokenTable = lazy(() => import('src/components/Deposit/TokenTable'));
 const TransactionConfirmModal = lazy(
@@ -93,6 +92,7 @@ const Dashboard: React.FunctionComponent = () => {
   const { balances, loading, loadBalance } = useBalances(() =>
     mutate(getMainnetType === MainnetType.BSC ? 'bscUser' : 'ethUser'),
   );
+
   const [transactionModal, setTransactionModal] = useState(false);
   const [selectedBalanceId, selectBalanceId] = useState('');
   const [connectWalletModalvisible, setConnectWalletModalvisible] =
@@ -129,14 +129,23 @@ const Dashboard: React.FunctionComponent = () => {
     () =>
       getMainnetType === MainnetType.BSC
         ? [Token.BUSD]
-        : [Token.DAI, Token.USDT],
+        : [Token.USDC, Token.DAI, Token.USDT],
     [getMainnetType],
   );
 
   const supportedBalances = useMemo(() => {
-    const supportBlalance = balances.filter((balance) =>
+    const tokenPool = balances.filter((balance) =>
       supportedTokens.some((token) => (balance ? token === balance.id : false)),
     );
+    const supportBlalance = [
+      ...tokenPool.filter((balance) => {
+        return balance.tokenName === Token.USDC;
+      }),
+      ...tokenPool.filter((balance) => {
+        return balance.tokenName !== Token.USDC;
+      }),
+    ];
+
     return supportBlalance.length === 0
       ? initSupportedTokens.map((token) => ({
           id: '',

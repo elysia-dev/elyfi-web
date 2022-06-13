@@ -15,6 +15,8 @@ type RoundRewardType = {
   ethRewardByLp: number[];
   beforeMintedByBuscMoneypool: number;
   mintedByBusdMoneypool: number;
+  beforeMintedByUsdcMoneypool: number;
+  mintedByUsdcMoneypool: number;
 };
 
 export default RoundRewardType;

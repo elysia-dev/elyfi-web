@@ -7,7 +7,6 @@ import useSWR from 'swr';
 
 import { reserveTokenData } from 'src/core/data/reserves';
 import { toUsd, toPercent } from 'src/utiles/formatters';
-import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import calcHistoryChartData from 'src/utiles/calcHistoryChartData';
 import TransactionConfirmModal from 'src/components/Modal/TransactionConfirmModal';
 import Token from 'src/enums/Token';
@@ -39,6 +38,7 @@ import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import useReserveData from 'src/hooks/useReserveData';
+import useCalcMiningAPR from 'src/hooks/useCalcMiningAPR';
 
 interface ITokencolor {
   name: string;
@@ -47,6 +47,11 @@ interface ITokencolor {
 }
 
 const tokenColorData: ITokencolor[] = [
+  {
+    name: 'USDC',
+    color: '#2775CA',
+    subColor: '#509DF0',
+  },
   {
     name: 'DAI',
     color: '#F9AE19',
@@ -87,7 +92,8 @@ function MarketDetail(): JSX.Element {
     },
   );
 
-  const { lng, id } = useParams<{ lng: string; id: Token.DAI | Token.USDT }>();
+  const { lng, id } =
+    useParams<{ lng: string; id: Token.DAI | Token.USDT | Token.USDC }>();
   const navigate = useNavigator();
   const { value: mediaQuery } = useMediaQueryType();
   const currentChain = useCurrentChain();
@@ -101,6 +107,7 @@ function MarketDetail(): JSX.Element {
   const [cellInBarIdx, setCellInBarIdx] = useState(-1);
   const [token, setToken] = useState(id || Token.DAI);
   const { type: getMainnetType } = useContext(MainnetContext);
+  const { dailyAllocation, calcMiningAPR } = useCalcMiningAPR();
 
   const selectToken = tokenColorData.find((color) => {
     return color.name === id;
@@ -132,6 +139,8 @@ function MarketDetail(): JSX.Element {
         ? TokenColors.DAI
         : id === Token.USDT
         ? TokenColors.USDT
+        : id === Token.USDC
+        ? TokenColors.USDC
         : TokenColors.BUSD,
       browserHeight,
       false,
@@ -155,7 +164,7 @@ function MarketDetail(): JSX.Element {
 
   // FIXME
   // const miningAPR = utils.parseUnits('10', 25);
-  if (!data || !tokenInfo)
+  if (!data?.totalBorrow || !tokenInfo)
     return (
       <>
         <canvas
@@ -314,12 +323,14 @@ function MarketDetail(): JSX.Element {
                               graphConverter ? 'borrow' : 'deposit',
                               poolData.poolDayData,
                               tokenInfo!.decimals,
+                              dailyAllocation,
                             )
                           : calcHistoryChartData(
                               data,
                               graphConverter ? 'borrow' : 'deposit',
                               poolData.poolDayData,
                               tokenInfo!.decimals,
+                              dailyAllocation,
                             ).slice(20)
                       }>
                       <Tooltip
@@ -342,6 +353,7 @@ function MarketDetail(): JSX.Element {
                           graphConverter ? 'borrow' : 'deposit',
                           poolData.poolDayData,
                           tokenInfo!.decimals,
+                          dailyAllocation,
                         ).map((cData, index) => (
                           <Cell
                             key={index}

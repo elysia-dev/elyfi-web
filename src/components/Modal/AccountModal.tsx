@@ -128,7 +128,7 @@ const AccountModal: React.FunctionComponent<{
             </a>
           </div>
           <div className="modal__account__add-tokens">
-            <h2>토큰 불러오기</h2>
+            <h2>{t('modal.account.addToken')}</h2>
             <div>
               {ImportTokenData.map((data, index) => {
                 const currnetAddress =

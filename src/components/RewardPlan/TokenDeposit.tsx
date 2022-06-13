@@ -4,7 +4,8 @@ import {
   lazy,
   SetStateAction,
   Suspense,
-  useContext,
+  useEffect,
+  useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import useSWR from 'swr';
@@ -15,8 +16,7 @@ import {
   toCompactForBignumber,
   toPercent,
 } from 'src/utiles/formatters';
-import calcMiningAPR from 'src/utiles/calcMiningAPR';
-import { BigNumber } from 'ethers';
+import { BigNumber, ethers, utils } from 'ethers';
 import Token from 'src/enums/Token';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
@@ -26,13 +26,21 @@ import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 import FallbackSkeleton from 'src/utiles/FallbackSkeleton';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
+import useCalcMiningAPR from 'src/hooks/useCalcMiningAPR';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
+const provider = new ethers.providers.JsonRpcProvider(
+  process.env.REACT_APP_JSON_RPC,
+);
 interface Props {
   reserve: IReserveSubgraphData;
   idx: number;
   moneyPoolInfo: {
+    USDC: {
+      startedMoneyPool: string;
+      endedMoneyPool: string;
+    };
     DAI: {
       startedMoneyPool: string;
       endedMoneyPool: string;
@@ -67,11 +75,16 @@ const TokenDeposit: FunctionComponent<Props> = ({
   mintedMoneypool,
 }) => {
   const { t } = useTranslation();
+  const { dailyAllocation, calcMiningAPR } = useCalcMiningAPR();
   const token =
     reserve.id === envs.token.daiAddress
       ? Token.DAI
       : reserve.id === envs.token.usdtAddress
       ? Token.USDT
+      : reserve.id === envs.token.usdcAddress
+      ? Token.USDC
+      : reserve.id === envs.token.usdcAddress
+      ? Token.USDC
       : Token.BUSD;
 
   const { data: priceData, isValidating: loading } = useSWR(
@@ -81,7 +94,6 @@ const TokenDeposit: FunctionComponent<Props> = ({
       use: [priceMiddleware],
     },
   );
-
   const { value: mediaQuery } = useMediaQueryType();
 
   return (
@@ -217,7 +229,14 @@ const TokenDeposit: FunctionComponent<Props> = ({
           <div className="component__data-info">
             <div>
               <p>{t('reward.daily_mining')}</p>
-              <p className="data">16,666.6667 ELFI</p>
+              <p className="data">
+                {dailyAllocation ? (
+                  dailyAllocation.toFixed(4)
+                ) : (
+                  <Skeleton width={110} height={16} />
+                )}
+                ELFI
+              </p>
             </div>
             <div>
               <p>{t('reward.accumulated_mining')}</p>

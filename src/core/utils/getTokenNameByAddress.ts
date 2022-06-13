@@ -3,8 +3,10 @@ import Token from 'src/enums/Token';
 
 const getTokenNameByAddress = (
   address: string,
-): Token.DAI | Token.USDT | Token.BUSD => {
+): Token.DAI | Token.USDT | Token.BUSD | Token.USDC => {
   switch (address) {
+    case envs.token.usdcAddress:
+      return Token.USDC;
     case envs.token.daiAddress:
       return Token.DAI;
     case envs.token.usdtAddress:

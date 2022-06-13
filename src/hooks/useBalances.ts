@@ -11,7 +11,6 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import getTokenNameFromAddress from 'src/utiles/getTokenNameFromAddress';
 import isEndedIncentive from 'src/core/utils/isEndedIncentive';
 import calcExpectedIncentive from 'src/utiles/calcExpectedIncentive';
-import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import { useWeb3React } from '@web3-react/core';
 import MainnetContext from 'src/contexts/MainnetContext';
 import ReserveToken from 'src/core/types/ReserveToken';
@@ -20,6 +19,7 @@ import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 import useReserveData from './useReserveData';
+import useCalcMiningAPR from './useCalcMiningAPR';
 
 export type BalanceType = {
   id: string;
@@ -44,31 +44,41 @@ const initialBalanceState = {
   updatedAt: moment().unix(),
 };
 
+const tokenIncentiveAddress = (token: string, isPrevIncentive?: boolean) => {
+  switch (token) {
+    case Token.USDT:
+      return isPrevIncentive
+        ? envs.incentivePool.prevUSDTIncentivePool
+        : envs.incentivePool.currentUSDTIncentivePool;
+    case Token.DAI:
+      return isPrevIncentive
+        ? envs.incentivePool.prevDaiIncentivePool
+        : envs.incentivePool.currentDaiIncentivePool;
+    case Token.USDC:
+      return envs.incentivePool.usdcIncentivePoolAddress;
+    case Token.BUSD:
+    default:
+      return envs.incentivePool.busdIncentivePoolAddress;
+  }
+};
+
 const getIncentiveByRound = async (
   library: any,
   tokenName: ReserveToken,
   account: string,
 ) => {
   const incentiveRound1 = await IncentivePool__factory.connect(
-    tokenName === Token.DAI
-      ? envs.incentivePool.prevDaiIncentivePool
-      : tokenName === Token.USDT
-      ? envs.incentivePool.prevUSDTIncentivePool
-      : envs.incentivePool.busdIncentivePoolAddress,
+    tokenIncentiveAddress(tokenName, true),
     library.getSigner(),
   ).getUserIncentive(account);
 
   // USDT & DAI have two incentivepools
   // BSC have only one incentivepool
   const incentiveRound2 =
-    tokenName === Token.BUSD
+    tokenName === Token.BUSD || tokenName === Token.USDC
       ? incentiveRound1
       : await IncentivePool__factory.connect(
-          tokenName === Token.DAI
-            ? envs.incentivePool.currentDaiIncentivePool
-            : tokenName === Token.USDT
-            ? envs.incentivePool.currentUSDTIncentivePool
-            : envs.incentivePool.busdIncentivePoolAddress,
+          tokenIncentiveAddress(tokenName),
           library.getSigner(),
         ).getUserIncentive(account);
 
@@ -100,7 +110,9 @@ const fetchBalanceFrom = async (
       expectedAdditionalIncentiveBefore: incentiveRound2,
       expectedAdditionalIncentiveAfter: incentiveRound2,
       deposit: await ERC20__factory.connect(
-        reserve.lToken.id,
+        tokenName === Token.USDC && process.env.REACT_APP_TEST_MODE
+          ? envs.token.testUsdcLTokenAddress
+          : reserve.lToken.id,
         library,
       ).balanceOf(account),
     };
@@ -129,6 +141,7 @@ type ReturnType = {
 const useBalances = (refetchUserData: () => void): ReturnType => {
   const { account, chainId, library } = useWeb3React();
   const { reserveState } = useReserveData();
+  const { calcMiningAPR } = useCalcMiningAPR();
   const [balances, setBalances] = useState<BalanceType[]>(
     reserveState.reserves.map((reserve) => {
       return {
@@ -138,6 +151,7 @@ const useBalances = (refetchUserData: () => void): ReturnType => {
       };
     }),
   );
+
   const [loading, setLoading] = useState(true);
   const { data: priceData } = useSWR(
     envs.externalApiEndpoint.coingackoURL,

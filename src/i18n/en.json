@@ -622,6 +622,9 @@
         "content": "To use {{network}} in ELYFI, please select the network\nin your wallet and connect your wallet again!",
         "subContent": "(Please check if the connected wallet supports the network.)",
         "button": "Connect wallet again"
+      },
+      "account": {
+        "addToken": "Import tokens"
       }
     },
     "guide": {

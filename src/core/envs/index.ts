@@ -14,6 +14,7 @@ interface EnvironmentVariables {
     currentDaiIncentivePool: string;
     currentUSDTIncentivePool: string;
     busdIncentivePoolAddress: string;
+    usdcIncentivePoolAddress: string;
   };
   staking: {
     elStakingPoolAddress: string;
@@ -36,10 +37,12 @@ interface EnvironmentVariables {
     elAddress: string;
     daiAddress: string;
     usdtAddress: string;
+    usdcAddress: string;
     wEthAddress: string;
     bscElfiAddress: string;
     busdAddress: string;
     testBscElfiAddress: string;
+    testUsdcLTokenAddress: string;
   };
   network: {
     requiredNetwork: string;
@@ -62,6 +65,7 @@ interface EnvironmentVariables {
     daiTokenizerAddress: string;
     usdtTokenizerAddress: string;
     busdTokenizerAddress: string;
+    usdcTokenizerAddress: string;
   };
   jsonRpcUrl: {
     bsc: string;
