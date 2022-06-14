@@ -44,18 +44,7 @@ const AppNavigator: React.FC = () => {
   usePageTracking();
 
   useEffect(() => {
-    if (isWalletConnector()) {
-      activate(walletConnectProvider);
-      return;
-    }
-    if (isMetamask()) {
-      activate(InjectedConnector);
-      // return;
-    } else {
-      deactivate();
-      window.sessionStorage.removeItem('@network');
-    }
-    // deactivate();
+    activate(isWalletConnector() ? walletConnectProvider : InjectedConnector);
   }, []);
 
   const LanguageDetctionPage = () => {
