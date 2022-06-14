@@ -27,7 +27,7 @@ const OffChainContainer: React.FC<Props> = ({ data }) => {
       <Suspense fallback={<FallbackSkeleton width={'100%'} height={300} />}>
         <div>
           <img
-            src={`https://${data.images}`}
+            src={data.images}
             alt="vote image"
             onError={(e: any) => {
               e.target.src = UnKnownImage;
