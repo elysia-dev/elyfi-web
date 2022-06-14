@@ -11,6 +11,7 @@ export const offChainGovernanceMiddleware: Middleware =
   (useSWRNext: SWRHook) => (key, fetcher, config) => {
     const swr = useSWRNext(key, fetcher, config);
     const dataRef = useRef<any>(null);
+    const htmlParser = new DOMParser();
     const [offChainLoading, setOffChainLoading] = useState(true);
     const [offChainNapData, setOffChainNapData] = useState<
       {
@@ -37,7 +38,6 @@ export const offChainGovernanceMiddleware: Middleware =
               const getNATData = await OffChainTopic.getTopicResult(_res);
               const getHTMLStringData: string =
                 getNATData.data.post_stream.posts[0].cooked.toString();
-              const htmlParser = new DOMParser();
               const parsedHTMLData = htmlParser.parseFromString(
                 getHTMLStringData,
                 'text/html',
