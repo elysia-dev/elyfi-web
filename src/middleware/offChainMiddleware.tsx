@@ -44,7 +44,9 @@ export const offChainGovernanceMiddleware: Middleware =
               );
               const getAllAnchorTag = parsedHTMLData.body.querySelectorAll('a');
               const result = Array.from(getAllAnchorTag).find((arrayData) => {
-                return arrayData.innerHTML === 'Collateral Image';
+                return (
+                  arrayData.innerHTML.toLocaleLowerCase() === 'collateral image'
+                );
               });
               const regexNap = /NAP#: .*(?=<)/;
               const regexNetwork = /Network: BSC.*(?=<)/;
