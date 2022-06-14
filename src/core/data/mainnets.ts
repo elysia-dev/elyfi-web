@@ -1,5 +1,5 @@
-import ETH from 'src/assets/images/navigation__eth.png';
-import BSC from 'src/assets/images/navigation__bsc.png';
+import ETH from 'src/assets/images/eth_logo.svg';
+import BSC from 'src/assets/images/bsc_logo.svg';
 import MainnetType from 'src/enums/MainnetType';
 import envs from '../envs';
 
