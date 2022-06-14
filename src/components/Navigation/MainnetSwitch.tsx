@@ -52,6 +52,7 @@ const MainnetSwitch: React.FunctionComponent<{
                     key={index}
                     className="navigation__mainnet__change-network"
                     onClick={() => {
+                      window.sessionStorage.setItem('@network', _data.type);
                       active && !isWalletConnector()
                         ? isMoblie()
                           ? (setMainNetwork(false),
