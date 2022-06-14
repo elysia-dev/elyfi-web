@@ -1586,6 +1586,9 @@ $device-width: 1190px;
           padding: 5px 30px;
           &__wrapper {
             margin: 40px;
+            p {
+              font-size: 15px;
+            }
           }
         }
       }
