@@ -92,7 +92,6 @@ const PortfolioDetail: FunctionComponent = () => {
     try {
       const response = await Slate.fetctABTokenIpfs(ipfs);
       const contractDoc = response.data;
-      console.log('asdsad', contractDoc);
       if (contractDoc) {
         setContractImage([
           {
