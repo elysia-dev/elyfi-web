@@ -92,19 +92,29 @@ const PortfolioDetail: FunctionComponent = () => {
     try {
       const response = await Slate.fetctABTokenIpfs(ipfs);
       const contractDoc = response.data;
+      console.log('asdsad', contractDoc);
       if (contractDoc) {
         setContractImage([
           {
             hash: contractDoc.documents[0].hash,
-            link: contractDoc.documents[0].link,
+            link: contractDoc.documents[0].link.replace(
+              'https://slate.textile.io',
+              'https://ipfs.io',
+            ),
           },
           {
             hash: contractDoc.documents[1].hash,
-            link: contractDoc.documents[1].link,
+            link: contractDoc.documents[1].link.replace(
+              'https://slate.textile.io',
+              'https://ipfs.io',
+            ),
           },
           {
             hash: contractDoc.documents[2].hash,
-            link: contractDoc.documents[2].link,
+            link: contractDoc.documents[2].link.replace(
+              'https://slate.textile.io',
+              'https://ipfs.io',
+            ),
           },
           {
             hash: contractDoc.images[0]?.hash,
