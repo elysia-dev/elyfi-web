@@ -96,15 +96,24 @@ const PortfolioDetail: FunctionComponent = () => {
         setContractImage([
           {
             hash: contractDoc.documents[0].hash,
-            link: contractDoc.documents[0].link,
+            link: contractDoc.documents[0].link.replace(
+              'https://slate.textile.io',
+              'https://ipfs.io',
+            ),
           },
           {
             hash: contractDoc.documents[1].hash,
-            link: contractDoc.documents[1].link,
+            link: contractDoc.documents[1].link.replace(
+              'https://slate.textile.io',
+              'https://ipfs.io',
+            ),
           },
           {
             hash: contractDoc.documents[2].hash,
-            link: contractDoc.documents[2].link,
+            link: contractDoc.documents[2].link.replace(
+              'https://slate.textile.io',
+              'https://ipfs.io',
+            ),
           },
           {
             hash: contractDoc.images[0]?.hash,
