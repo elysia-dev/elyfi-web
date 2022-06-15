@@ -8,7 +8,7 @@ import {
   Suspense,
 } from 'react';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
-import ElysiaLogo from 'src/assets/images/Elysia_Logo.png';
+import ElysiaLogo from 'src/assets/images/elysia_logo.svg';
 import NavigationType from 'src/enums/NavigationType';
 import {
   INavigation,
