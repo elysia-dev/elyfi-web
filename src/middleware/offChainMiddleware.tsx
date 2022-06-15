@@ -11,6 +11,7 @@ export const offChainGovernanceMiddleware: Middleware =
   (useSWRNext: SWRHook) => (key, fetcher, config) => {
     const swr = useSWRNext(key, fetcher, config);
     const dataRef = useRef<any>(null);
+    const htmlParser = new DOMParser();
     const [offChainLoading, setOffChainLoading] = useState(true);
     const [offChainNapData, setOffChainNapData] = useState<
       {
@@ -37,6 +38,16 @@ export const offChainGovernanceMiddleware: Middleware =
               const getNATData = await OffChainTopic.getTopicResult(_res);
               const getHTMLStringData: string =
                 getNATData.data.post_stream.posts[0].cooked.toString();
+              const parsedHTMLData = htmlParser.parseFromString(
+                getHTMLStringData,
+                'text/html',
+              );
+              const getAllAnchorTag = parsedHTMLData.body.querySelectorAll('a');
+              const result = Array.from(getAllAnchorTag).find((arrayData) => {
+                return (
+                  arrayData.innerHTML.toLocaleLowerCase() === 'collateral image'
+                );
+              });
               const regexNap = /NAP#: .*(?=<)/;
               const regexNetwork = /Network: BSC.*(?=<)/;
               setOffChainNapData((napData: any) => [
@@ -53,12 +64,7 @@ export const offChainGovernanceMiddleware: Middleware =
                       .match(/Status: .*(?=<)/)
                       ?.toString()
                       .split('Status: ') || '',
-                  images:
-                    getHTMLStringData
-                      .match(
-                        /slate.textile.io.*(?=" rel="noopener nofollow ugc">Collateral Image)/,
-                      )
-                      ?.toString() || '',
+                  images: result?.href || '',
                   votes: getNATData.data.post_stream.posts[0].polls
                     ? getNATData.data.post_stream.posts[0].polls[0].options
                     : ([
