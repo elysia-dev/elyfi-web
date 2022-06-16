@@ -49,18 +49,18 @@ interface ITokencolor {
 const tokenColorData: ITokencolor[] = [
   {
     name: 'USDC',
-    color: '#2775CA',
-    subColor: '#509DF0',
+    color: '#509DF0',
+    subColor: '#2775CA',
   },
   {
     name: 'DAI',
-    color: '#F9AE19',
-    subColor: '#FFDB8B',
+    color: '#FFDB8B',
+    subColor: '#F9AE19',
   },
   {
     name: 'USDT',
-    color: '#26A17B',
-    subColor: '#70E8C3',
+    color: '#70E8C3',
+    subColor: '#26A17B',
   },
   {
     name: 'BUSD',
