@@ -125,7 +125,7 @@ export const depositInfoFetcher =
       tokenName: Token;
     }[]
   > => {
-    const bscDataprovider = new JsonRpcProvider(envs.token.busdAddress);
+    const bscDataprovider = new JsonRpcProvider(envs.jsonRpcUrl.bsc);
     const bscData = DataPipelineFactory.connect(args[0].bsc, bscDataprovider);
     let busdInfo;
     if (
@@ -139,7 +139,7 @@ export const depositInfoFetcher =
         totalLTokenSupply: constants.Zero,
       };
     } else {
-      busdInfo = await bscData.getReserveData(envs.jsonRpcUrl.bsc);
+      busdInfo = await bscData.getReserveData(envs.token.busdAddress);
     }
     const ethData = DataPipelineFactory.connect(args[0].eth, provider);
     const daiInfo = await ethData.getReserveData(envs.token.daiAddress);

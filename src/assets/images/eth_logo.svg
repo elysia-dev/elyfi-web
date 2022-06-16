@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="54" height="54" viewBox="0 0 54 54">
+  <defs>
+    <filter id="사각형_2326" x="0" y="0" width="54" height="54" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="그룹_2359" data-name="그룹 2359" transform="translate(-1230 -25)">
+    <g transform="matrix(1, 0, 0, 1, 1230, 25)" filter="url(#사각형_2326)">
+      <rect id="사각형_2326-2" data-name="사각형 2326" width="36" height="36" rx="5" transform="translate(9 9)" fill="#627eea"/>
+    </g>
+    <g id="ethereum-eth" transform="translate(1243 38)">
+      <circle id="타원_434" data-name="타원 434" cx="14" cy="14" r="14" fill="#627eea"/>
+      <g id="그룹_2145" data-name="그룹 2145" transform="translate(7.875 3.5)">
+        <path id="패스_2022" data-name="패스 2022" d="M21.654,5.25v7.761l6.56,2.931Z" transform="translate(-15.093 -5.25)" fill="rgba(255,255,255,0.6)"/>
+        <path id="패스_2023" data-name="패스 2023" d="M18.373,5.25,11.813,15.942l6.561-2.931Z" transform="translate(-11.813 -5.25)" fill="#fff"/>
+        <path id="패스_2024" data-name="패스 2024" d="M21.654,26.929V32.2l6.564-9.082Z" transform="translate(-15.093 -11.207)" fill="rgba(255,255,255,0.6)"/>
+        <path id="패스_2025" data-name="패스 2025" d="M18.373,32.2V26.928l-6.561-3.807Z" transform="translate(-11.813 -11.207)" fill="#fff"/>
+        <path id="패스_2026" data-name="패스 2026" d="M21.654,23.633l6.56-3.809-6.56-2.929Z" transform="translate(-15.093 -9.131)" fill="rgba(255,255,255,0.2)"/>
+        <path id="패스_2027" data-name="패스 2027" d="M11.813,19.824l6.561,3.809V16.894Z" transform="translate(-11.813 -9.131)" fill="rgba(255,255,255,0.6)"/>
+      </g>
+    </g>
+  </g>
+</svg>

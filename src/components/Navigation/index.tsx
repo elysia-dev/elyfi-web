@@ -8,7 +8,7 @@ import {
   Suspense,
 } from 'react';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
-import ElysiaLogo from 'src/assets/images/elysia_logo.svg';
+import ElysiaLogo from 'src/assets/images/ELYFI_logo.svg';
 import NavigationType from 'src/enums/NavigationType';
 import {
   INavigation,
@@ -16,7 +16,7 @@ import {
   navigationLink,
 } from 'src/core/data/navigationLink';
 import { useTranslation } from 'react-i18next';
-import ExternalLinkImage from 'src/assets/images/external_link.png';
+import ExternalLinkImage from 'src/assets/images/external_link.svg';
 import TxStatus from 'src/enums/TxStatus';
 import TxContext from 'src/contexts/TxContext';
 import LanguageContext from 'src/contexts/LanguageContext';
