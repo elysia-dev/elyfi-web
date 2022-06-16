@@ -76,6 +76,10 @@ interface EnvironmentVariables {
     elfiEthLp: string;
     elfiDaiLp: string;
   };
+  dataPipeline: {
+    eth: string;
+    bsc: string;
+  };
 }
 
 const vars =

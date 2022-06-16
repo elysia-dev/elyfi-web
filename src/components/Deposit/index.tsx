@@ -25,6 +25,7 @@ import Token from 'src/enums/Token';
 import ReserveToken from 'src/core/types/ReserveToken';
 import MainnetType from 'src/enums/MainnetType';
 import request from 'graphql-request';
+import { depositInfoFetcher } from 'src/clients/BalancesFetcher';
 
 const TokenTable = lazy(() => import('src/components/Deposit/TokenTable'));
 const TransactionConfirmModal = lazy(
@@ -89,17 +90,19 @@ const Dashboard: React.FunctionComponent = () => {
     ),
   );
 
+  const { data: depositInfo } = useSWR(
+    [{ eth: envs.dataPipeline.eth, bsc: envs.dataPipeline.bsc }],
+    {
+      fetcher: depositInfoFetcher(),
+    },
+  );
+
   const { balances, loading, loadBalance } = useBalances(() =>
     mutate(getMainnetType === MainnetType.BSC ? 'bscUser' : 'ethUser'),
   );
 
   const [transactionModal, setTransactionModal] = useState(false);
   const [selectedBalanceId, selectBalanceId] = useState('');
-  const [connectWalletModalvisible, setConnectWalletModalvisible] =
-    useState<boolean>(false);
-  const [wrongMainnetModalVisible, setWrongMainnetModalVisible] =
-    useState<boolean>(false);
-  const [disconnectModalVisible, setDisconnectModalVisible] = useState(false);
   const [selectWalletModalVisible, setSelectWalletModalVisible] =
     useState(false);
   const [round, setRound] = useState(1);
@@ -241,14 +244,12 @@ const Dashboard: React.FunctionComponent = () => {
           <NetworkChangeModal
             visible={unsupportedChainid}
             closeHandler={() => {
-              setWrongMainnetModalVisible(false);
               setIsModals(false);
             }}
           />
           <ConnectWalletModal
             visible={!account && !selectWalletModalVisible}
             onClose={() => {
-              setConnectWalletModalvisible(false);
               setIsModals(false);
             }}
             selectWalletModalVisible={() => setSelectWalletModalVisible(true)}
@@ -259,7 +260,6 @@ const Dashboard: React.FunctionComponent = () => {
               setSelectWalletModalVisible(true);
             }}
             modalClose={() => {
-              setDisconnectModalVisible(false);
               setIsModals(false);
             }}
           />
@@ -297,7 +297,6 @@ const Dashboard: React.FunctionComponent = () => {
               const reserve = reserveState.reserves.find(
                 (d) => d.id === balance.id,
               );
-
               return (
                 <TokenTable
                   key={index}
@@ -332,6 +331,12 @@ const Dashboard: React.FunctionComponent = () => {
                   }
                   setRound={setRound}
                   loading={loading}
+                  depositInfo={
+                    depositInfo &&
+                    depositInfo?.find((info) => {
+                      return info.tokenName === balance.tokenName;
+                    })
+                  }
                 />
               );
             })}

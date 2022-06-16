@@ -35,6 +35,7 @@ import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 import useReserveData from 'src/hooks/useReserveData';
 import CurrentRewardAmount from 'src/components/Staking/CurrentRewardAmount';
 import useCalcMiningAPR from 'src/hooks/useCalcMiningAPR';
+import Token from 'src/enums/Token';
 import TableBodyEventReward from './TableBodyEventReward';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
@@ -49,6 +50,13 @@ interface Props {
   id: string;
   loading: boolean;
   reserveData?: IReserveSubgraphData;
+  depositInfo?: {
+    depositAPY: BigNumber;
+    borrowAPY: BigNumber;
+    totalDTokenSupply: BigNumber;
+    totalLTokenSupply: BigNumber;
+    tokenName: Token;
+  };
 }
 
 const TokenTable: React.FC<Props> = ({
@@ -61,6 +69,7 @@ const TokenTable: React.FC<Props> = ({
   setRound,
   id,
   loading,
+  depositInfo,
 }) => {
   const { account } = useWeb3React();
   const { unsupportedChainid, type: getMainnetType } =
@@ -96,11 +105,19 @@ const TokenTable: React.FC<Props> = ({
   const tableData = [
     [
       t('dashboard.total_deposit'),
-      reserveData?.id && toUsd(reserveData.totalDeposit, tokenInfo?.decimals),
+      reserveData?.id &&
+        toUsd(
+          depositInfo?.totalLTokenSupply || constants.Zero,
+          tokenInfo?.decimals,
+        ),
     ],
     [
       t('dashboard.total_borrowed'),
-      reserveData?.id && toUsd(reserveData.totalBorrow, tokenInfo?.decimals),
+      reserveData?.id &&
+        toUsd(
+          depositInfo?.totalDTokenSupply || constants.Zero,
+          tokenInfo?.decimals,
+        ),
     ],
     [
       t('dashboard.token_mining_apr'),
@@ -108,7 +125,7 @@ const TokenTable: React.FC<Props> = ({
         toPercent(
           calcMiningAPR(
             priceData?.elfiPrice || 0,
-            BigNumber.from(reserveData.totalDeposit),
+            BigNumber.from(depositInfo?.totalLTokenSupply || constants.Zero),
             reserveTokenData[balance.tokenName].decimals,
           ) || '0',
         )) ||
@@ -116,11 +133,13 @@ const TokenTable: React.FC<Props> = ({
     ],
     [
       t('dashboard.deposit_apy'),
-      (reserveData?.id && toPercent(reserveData.depositAPY)) || 0,
+      (reserveData?.id &&
+        toPercent(depositInfo?.depositAPY || constants.Zero)) ||
+        0,
     ],
     [
       t('dashboard.borrow_apy'),
-      reserveData?.id && toPercent(reserveData.borrowAPY),
+      reserveData?.id && toPercent(depositInfo?.borrowAPY || constants.Zero),
     ],
   ];
 
@@ -147,7 +166,7 @@ const TokenTable: React.FC<Props> = ({
                 return (
                   <div key={index}>
                     <p>{data[0]}</p>
-                    {subgraphLoading || !reserveData?.id ? (
+                    {!depositInfo ? (
                       <Skeleton width={70} height={17.5} />
                     ) : (
                       <p className="bold">{data[1]}</p>
@@ -167,7 +186,7 @@ const TokenTable: React.FC<Props> = ({
                   return (
                     <div key={index}>
                       <p>{data[0]}</p>
-                      {subgraphLoading || !reserveData?.id ? (
+                      {!depositInfo ? (
                         <Skeleton width={50} height={10.5} />
                       ) : (
                         <p className="bold">{data[1]}</p>
