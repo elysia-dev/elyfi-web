@@ -79,8 +79,6 @@ interface EnvironmentVariables {
   dataPipeline: {
     eth: string;
     bsc: string;
-    bscRPC: string;
-    busdAddress: string;
   };
 }
 

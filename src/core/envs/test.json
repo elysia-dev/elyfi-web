@@ -73,8 +73,6 @@
   },
   "dataPipeline": {
     "eth": "0x128AF7E290ECCDe0050f33A1b5A4Bc8b2BB4d817",
-    "bsc": "0xA63830cCCDcd380b00EF00f070357Cb03cDc2E7b",
-    "bscRPC": "https://bsc-dataseed.binance.org/",
-    "busdAddress": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    "bsc": "0xA63830cCCDcd380b00EF00f070357Cb03cDc2E7b"
   }
 }
