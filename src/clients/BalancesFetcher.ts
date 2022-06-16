@@ -7,7 +7,7 @@ import axios from 'axios';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import envs from 'src/core/envs';
 import { getV2LPPoolContract } from 'src/utiles/v2LPPoolContract';
-import { BigNumber } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 import Token from 'src/enums/Token';
 
 export const tvlFetcher = (
@@ -125,15 +125,26 @@ export const depositInfoFetcher =
       tokenName: Token;
     }[]
   > => {
-    const bscDataprovider = new JsonRpcProvider(envs.dataPipeline.bscRPC);
-    const ethData = DataPipelineFactory.connect(args[0].eth, provider);
+    const bscDataprovider = new JsonRpcProvider(envs.token.busdAddress);
     const bscData = DataPipelineFactory.connect(args[0].bsc, bscDataprovider);
+    let busdInfo;
+    if (
+      process.env.NODE_ENV === 'development' ||
+      process.env.REACT_APP_TEST_MODE
+    ) {
+      busdInfo = {
+        depositAPY: constants.Zero,
+        borrowAPY: constants.Zero,
+        totalDTokenSupply: constants.Zero,
+        totalLTokenSupply: constants.Zero,
+      };
+    } else {
+      busdInfo = await bscData.getReserveData(envs.jsonRpcUrl.bsc);
+    }
+    const ethData = DataPipelineFactory.connect(args[0].eth, provider);
     const daiInfo = await ethData.getReserveData(envs.token.daiAddress);
     const usdtInfo = await ethData.getReserveData(envs.token.usdtAddress);
     const usdcInfo = await ethData.getReserveData(envs.token.usdcAddress);
-    const busdInfo = await bscData.getReserveData(
-      envs.dataPipeline.busdAddress,
-    );
 
     return [
       { ...daiInfo, tokenName: Token.DAI },
