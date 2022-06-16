@@ -96,7 +96,11 @@ $bold: 'Inter-Bold', 'SpoqaHanSansNeo-Bold', 'Montserrat-bold', 'Inter-Bold';
   }
   &:hover {
     box-shadow: 0px 0px 15px #00a7ff66;
-    transform: translateY(-5px);
+    transform: translateY(-3px);
+    &::after {
+      position: absolute;
+      transform: translateY(6px);
+    }
   }
   &:active {
     transform: translateY(-1px);
@@ -126,7 +130,11 @@ $bold: 'Inter-Bold', 'SpoqaHanSansNeo-Bold', 'Montserrat-bold', 'Inter-Bold';
   }
   &:hover {
     box-shadow: 0px 0px 15px #00a7ff66;
-    transform: translateY(-5px);
+    transform: translateY(-3px);
+    &::after {
+      position: absolute;
+      transform: translateY(6px);
+    }
   }
   &:active {
     transform: translateY(-1px);
