@@ -34,6 +34,7 @@ import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import { IReserveSubgraphData } from 'src/core/types/reserveSubgraph';
 import useCalcMiningAPR from 'src/hooks/useCalcMiningAPR';
+import { formatUnits } from '@ethersproject/units';
 import DepositBody from './DepositBody';
 import WithdrawBody from './WithdrawBody';
 
@@ -117,6 +118,9 @@ const DepositOrWithdrawModal: FunctionComponent<{
   }, [reserve, userData, currentIndex, balance]);
 
   const yieldProduced = useMemo(() => {
+    const tokenBurn = userData?.lTokenBurn.filter(
+      (burn) => burn.lToken.id === reserve.lToken.id,
+    );
     return accumulatedYield.sub(
       userData?.lTokenBurn.length && userData.lTokenBurn.length > 0
         ? calcAccumulatedYield(
@@ -125,7 +129,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
             // yieldProduced should be calculated with last burn index
             constants.One,
             BigNumber.from(
-              userData.lTokenBurn[userData.lTokenBurn.length - 1].index,
+              tokenBurn ? tokenBurn[tokenBurn.length - 1].index : '',
             ),
             userData?.lTokenMint.filter(
               (mint) => mint.lToken.id === reserve.lToken.id,
