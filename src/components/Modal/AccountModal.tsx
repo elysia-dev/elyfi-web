@@ -96,6 +96,7 @@ const AccountModal: React.FunctionComponent<{
             <div
               onClick={() => {
                 deactivate();
+                window.localStorage.removeItem('wallet');
                 window.sessionStorage.removeItem('@network');
                 reset();
                 closeHandler();

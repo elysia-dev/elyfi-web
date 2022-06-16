@@ -68,6 +68,7 @@ const SelectWalletModal: FunctionComponent<Props> = ({
               }
               activate(injectedConnector)
                 .then((e) => {
+                  localStorage.setItem('wallet', 'injected');
                   setWalletConnect('metamask');
                   modalClose();
                 })

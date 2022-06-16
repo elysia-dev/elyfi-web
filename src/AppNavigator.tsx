@@ -44,7 +44,9 @@ const AppNavigator: React.FC = () => {
   usePageTracking();
 
   useEffect(() => {
-    activate(isWalletConnector() ? walletConnectProvider : InjectedConnector);
+    if (localStorage.getItem('wallet') === 'injected') {
+      activate(isWalletConnector() ? walletConnectProvider : InjectedConnector);
+    }
   }, []);
 
   const LanguageDetctionPage = () => {
