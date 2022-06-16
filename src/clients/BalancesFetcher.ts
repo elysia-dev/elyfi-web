@@ -1,9 +1,14 @@
 import { ERC20__factory } from '@elysia-dev/contract-typechain';
-import { StakingPoolV2factory } from '@elysia-dev/elyfi-v1-sdk';
+import {
+  DataPipelineFactory,
+  StakingPoolV2factory,
+} from '@elysia-dev/elyfi-v1-sdk';
 import axios from 'axios';
-import { providers } from 'ethers';
+import { JsonRpcProvider } from '@ethersproject/providers';
 import envs from 'src/core/envs';
 import { getV2LPPoolContract } from 'src/utiles/v2LPPoolContract';
+import { BigNumber } from 'ethers';
+import Token from 'src/enums/Token';
 
 export const tvlFetcher = (
   url: string,
@@ -12,8 +17,8 @@ export const tvlFetcher = (
   elTvl: number;
 }> => axios.get(url).then((res) => res.data);
 
-const provider = new providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC);
-const bscProvider = new providers.JsonRpcProvider(envs.jsonRpcUrl.bsc);
+const provider = new JsonRpcProvider(process.env.REACT_APP_JSON_RPC);
+const bscProvider = new JsonRpcProvider(envs.jsonRpcUrl.bsc);
 const { daiPoolContract, ethPoolContract } = getV2LPPoolContract();
 
 const erc20Contract = (address: string, provider: any) => {
@@ -105,4 +110,35 @@ export const v2PoolDataFetcher =
       ethPoolContract.totalSupply(),
       daiPoolContract.totalSupply(),
     ]);
+  };
+
+export const depositInfoFetcher =
+  () =>
+  async (
+    ...args: [{ eth: string; bsc: string }] //  Promise< //   { //     averageRealAssetBorrowRate: BigNumber; //     borrowAPY: BigNumber; //     dTokenLastUpdateTimestamp: BigNumber; //     depositAPY: BigNumber;
+  ): Promise<
+    {
+      depositAPY: BigNumber;
+      borrowAPY: BigNumber;
+      totalDTokenSupply: BigNumber;
+      totalLTokenSupply: BigNumber;
+      tokenName: Token;
+    }[]
+  > => {
+    const bscDataprovider = new JsonRpcProvider(envs.dataPipeline.bscRPC);
+    const ethData = DataPipelineFactory.connect(args[0].eth, provider);
+    const bscData = DataPipelineFactory.connect(args[0].bsc, bscDataprovider);
+    const daiInfo = await ethData.getReserveData(envs.token.daiAddress);
+    const usdtInfo = await ethData.getReserveData(envs.token.usdtAddress);
+    const usdcInfo = await ethData.getReserveData(envs.token.usdcAddress);
+    const busdInfo = await bscData.getReserveData(
+      envs.dataPipeline.busdAddress,
+    );
+
+    return [
+      { ...daiInfo, tokenName: Token.DAI },
+      { ...usdtInfo, tokenName: Token.USDT },
+      { ...usdcInfo, tokenName: Token.USDC },
+      { ...busdInfo, tokenName: Token.BUSD },
+    ];
   };
