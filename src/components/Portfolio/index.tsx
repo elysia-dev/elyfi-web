@@ -102,11 +102,19 @@ const PortfolioDetail: FunctionComponent = () => {
             ),
           },
           {
-            hash: contractDoc.documents[1].hash,
-            link: contractDoc.documents[1].link.replace(
-              'https://slate.textile.io',
-              'https://ipfs.io',
-            ),
+            hash:
+              contractDoc.documents[1].hash ===
+              'bafybafybeib7azwyp4abkaoh3zpwygjhqkluborvt2cy255fvnq4a6o6qkkxla'
+                ? 'bafybeib7azwyp4abkaoh3zpwygjhqkluborvt2cy255fvnq4a6o6qkkxla'
+                : contractDoc.documents[1].hash,
+            link:
+              contractDoc.documents[1].hash ===
+              'bafybafybeib7azwyp4abkaoh3zpwygjhqkluborvt2cy255fvnq4a6o6qkkxla'
+                ? 'https://ipfs.io/ipfs/bafybeib7azwyp4abkaoh3zpwygjhqkluborvt2cy255fvnq4a6o6qkkxla'
+                : contractDoc.documents[1].link.replace(
+                    'https://slate.textile.io',
+                    'https://ipfs.io',
+                  ),
           },
           {
             hash: contractDoc.documents[2].hash,
