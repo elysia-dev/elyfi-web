@@ -583,7 +583,7 @@ input[type='number'] {
           &:first-child {
             @include hover__box-shadow--white;
           }
-          @include hover__box-shadow;
+          @include hover__sub_box-shadow;
           cursor: pointer;
           border-radius: 28px;
           > p {
@@ -1186,7 +1186,7 @@ input[type='number'] {
         }
         &__loan-list {
           &__button {
-            @include hover__box-shadow;
+            @include hover__sub_box-shadow;
           }
           > div {
             > div:nth-child(1) {
@@ -2281,7 +2281,7 @@ input[type='number'] {
               height: 30px;
               border-radius: 30px;
               background: #ffffff;
-              @include hover__box-shadow;
+              @include hover__sub_box-shadow;
               box-shadow: 0px 0px 6px #00000029;
               cursor: pointer;
               display: flex;
@@ -2374,7 +2374,7 @@ input[type='number'] {
           justify-content: space-around;
           height: 100%;
         }
-        @include hover__box-shadow;
+        @include hover__sub_box-shadow;
         box-shadow: 0px 0px 6px #00000029;
         cursor: pointer;
         > p {
