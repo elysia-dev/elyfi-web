@@ -1,11 +1,14 @@
 import { utils } from 'ethers';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import envs from 'src/core/envs';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import useSWR from 'swr';
-import useTvlBalances from 'src/hooks/useTvlBalances';
-import { v2LPPoolElfiFetcher } from 'src/clients/BalancesFetcher';
+import {
+  v2LPPoolElfiFetcher,
+  v2LPPoolTokensFetcher,
+  v2PoolDataFetcher,
+} from 'src/clients/BalancesFetcher';
 
 const useLpPrice = (): {
   lpPriceState: {
@@ -27,38 +30,59 @@ const useLpPrice = (): {
       use: [priceMiddleware],
     },
   );
-  const balances = useTvlBalances();
+  const { data: v2PoolData } = useSWR(['v2PoolData'], {
+    fetcher: v2PoolDataFetcher(),
+  });
+
   const { data: v2LPPoolElfi } = useSWR(
-    [envs.lpStaking.ethElfiV2PoolAddress, envs.lpStaking.daiElfiV2PoolAddress],
+    {
+      ethElfiV2PoolAddress: envs.lpStaking.ethElfiV2PoolAddress,
+      daiElfiV2PoolAddress: envs.lpStaking.daiElfiV2PoolAddress,
+    },
     {
       fetcher: v2LPPoolElfiFetcher(),
     },
   );
 
+  const { data: v2LPPoolTokens } = useSWR(
+    {
+      ethElfiV2PoolAddress: envs.lpStaking.ethElfiV2PoolAddress,
+      daiElfiV2PoolAddress: envs.lpStaking.daiElfiV2PoolAddress,
+      v2LPPoolTokens: 'v2LPPoolTokens',
+    },
+    {
+      fetcher: v2LPPoolTokensFetcher(),
+    },
+  );
+
   useEffect(() => {
-    if (!priceData || !v2LPPoolElfi) return;
+    if (!priceData || !v2LPPoolElfi || !v2LPPoolTokens || !v2PoolData) return;
 
     const stakedTokenElfiEthPrice =
-      parseFloat(utils.formatEther(v2LPPoolElfi[0])) * priceData.elfiPrice +
-      parseFloat(utils.formatEther(balances.v2LPPoolEth)) * priceData.ethPrice;
+      parseFloat(utils.formatEther(v2LPPoolElfi.ethPoolElfiBalance)) *
+        priceData.elfiPrice +
+      parseFloat(utils.formatEther(v2LPPoolTokens.ethPoolBalance)) *
+        priceData.ethPrice;
 
     const stakedTokenElfiDaiPrice =
-      parseFloat(utils.formatEther(v2LPPoolElfi[1])) * priceData.elfiPrice +
-      parseFloat(utils.formatEther(balances.v2LPPoolDai)) * priceData.daiPrice;
+      parseFloat(utils.formatEther(v2LPPoolElfi.daiPoolElfiBalance)) *
+        priceData.elfiPrice +
+      parseFloat(utils.formatEther(v2LPPoolTokens.daiPoolBalance)) *
+        priceData.daiPrice;
 
     const ethPerTokenPrice =
       stakedTokenElfiEthPrice /
-      parseFloat(utils.formatEther(balances.ethTotalSupply));
+      parseFloat(utils.formatEther(v2PoolData.v2EthPoolTotalSupply));
     const daiPerTokenPrice =
       stakedTokenElfiDaiPrice /
-      parseFloat(utils.formatEther(balances.daiTotalSupply));
+      parseFloat(utils.formatEther(v2PoolData.v2DaiPoolTotalSupply));
 
     setLpPriceState({
       ethLpPrice: ethPerTokenPrice,
       daiLpPrice: daiPerTokenPrice,
       loading: false,
     });
-  }, [priceData, balances, v2LPPoolElfi]);
+  }, [priceData, v2LPPoolElfi, v2LPPoolTokens, v2PoolData]);
 
   return {
     lpPriceState,
