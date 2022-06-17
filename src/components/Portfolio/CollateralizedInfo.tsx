@@ -138,7 +138,7 @@ const CollateralizedInfo: React.FC<Props> = ({
         ],
       ].map((data, index) => {
         return (
-          <div key={`conten_${index}`}>
+          <div key={`content_${index}`}>
             <div style={divStyle}>
               {data[0] === t('loan.collateral_nft__loan_product') ? (
                 <>
@@ -154,9 +154,8 @@ const CollateralizedInfo: React.FC<Props> = ({
                 data[0]
               )}
             </div>
-            <div
+            <p
               style={{
-                fontFamily: 'SpoqaHanSansNeo',
                 color: '#333333',
                 fontSize: mediaQuery === MediaQuery.PC ? '15px' : '12px',
                 letterSpacing: -0.8,
@@ -172,28 +171,24 @@ const CollateralizedInfo: React.FC<Props> = ({
                   target="_blank"
                   style={{
                     cursor: 'pointer',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}>
-                  <div
+                  <img
+                    src={locationMark}
+                    alt={locationMark}
                     style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <img
-                      src={locationMark}
-                      alt={locationMark}
-                      style={{
-                        width: 23.5,
-                        height: 23.5,
-                      }}
-                    />
-                    {data[1]}
-                  </div>
+                      width: 23.5,
+                      height: 23.5,
+                    }}
+                  />
+                  {data[1]}
                 </a>
               ) : (
                 data[1]
               )}
-            </div>
+            </p>
           </div>
         );
       })}
