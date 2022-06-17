@@ -18,7 +18,7 @@ export interface ISlateResponse {
   }[];
 }
 
-export const baseUrl = 'https://ipfs.io/ipfs/';
+export const baseUrl = 'https://ipfs.io/ipfs';
 
 export class Slate {
   static fetctABTokenIpfs = async (
