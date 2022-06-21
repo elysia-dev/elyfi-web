@@ -121,6 +121,7 @@ const DepositOrWithdrawModal: FunctionComponent<{
     const tokenBurn = userData?.lTokenBurn.filter(
       (burn) => burn.lToken.id === reserve.lToken.id,
     );
+    if (!tokenBurn || tokenBurn.length === 0) return constants.Zero;
     return accumulatedYield.sub(
       userData?.lTokenBurn.length && userData.lTokenBurn.length > 0
         ? calcAccumulatedYield(
