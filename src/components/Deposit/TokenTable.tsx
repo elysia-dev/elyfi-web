@@ -37,6 +37,7 @@ import CurrentRewardAmount from 'src/components/Staking/CurrentRewardAmount';
 import useCalcMiningAPR from 'src/hooks/useCalcMiningAPR';
 import Token from 'src/enums/Token';
 import TableBodyEventReward from './TableBodyEventReward';
+import Questionmark from '../Questionmark';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
@@ -103,44 +104,56 @@ const TokenTable: React.FC<Props> = ({
   const isWrongMainnet = isWrongNetwork(getMainnetType, currentChain?.name);
 
   const tableData = [
-    [
-      t('dashboard.total_deposit'),
-      reserveData?.id &&
+    {
+      name: t('dashboard.total_deposit'),
+      value:
+        reserveData?.id &&
         toUsd(
           depositInfo?.totalLTokenSupply || constants.Zero,
           tokenInfo?.decimals,
         ),
-    ],
-    [
-      t('dashboard.total_borrowed'),
-      reserveData?.id &&
+      isQuestionmark: false,
+      questionmarkContent: '',
+    },
+    {
+      name: t('dashboard.total_borrowed'),
+      value:
+        reserveData?.id &&
         toUsd(
           depositInfo?.totalDTokenSupply || constants.Zero,
           tokenInfo?.decimals,
         ),
-    ],
-    [
-      t('dashboard.token_mining_apr'),
-      (reserveData?.id &&
-        toPercent(
-          calcMiningAPR(
-            priceData?.elfiPrice || 0,
-            BigNumber.from(depositInfo?.totalLTokenSupply || constants.Zero),
-            reserveTokenData[balance.tokenName].decimals,
-          ) || '0',
-        )) ||
+      isQuestionmark: false,
+      questionmarkContent: '',
+    },
+    // [
+    //   t('dashboard.token_mining_apr'),
+    //   (reserveData?.id &&
+    //     toPercent(
+    //       calcMiningAPR(
+    //         priceData?.elfiPrice || 0,
+    //         BigNumber.from(depositInfo?.totalLTokenSupply || constants.Zero),
+    //         reserveTokenData[balance.tokenName].decimals,
+    //       ) || '0',
+    //     )) ||
+    //     0,
+    // ],
+    {
+      name: t('dashboard.deposit_apy'),
+      value:
+        (reserveData?.id &&
+          toPercent(depositInfo?.depositAPY || constants.Zero)) ||
         0,
-    ],
-    [
-      t('dashboard.deposit_apy'),
-      (reserveData?.id &&
-        toPercent(depositInfo?.depositAPY || constants.Zero)) ||
-        0,
-    ],
-    [
-      t('dashboard.borrow_apy'),
-      reserveData?.id && toPercent(depositInfo?.borrowAPY || constants.Zero),
-    ],
+      isQuestionmark: true,
+      questionmarkContent: '예치 APY는 예치 이자율이며, 복리로 계산됩니다.',
+    },
+    {
+      name: t('dashboard.borrow_apy'),
+      value:
+        reserveData?.id && toPercent(depositInfo?.borrowAPY || constants.Zero),
+      isQuestionmark: true,
+      questionmarkContent: '대출 APY는 대출 이자율이며 복리로 계산됩니다.',
+    },
   ];
 
   return (
@@ -155,47 +168,56 @@ const TokenTable: React.FC<Props> = ({
           }}>
           <div className="deposit__table__header__token-info">
             <LazyImage src={tokenInfo.image} name="Token icon" />
-            <p className="bold" style={{ cursor: 'pointer' }}>
-              {balance.tokenName}
-            </p>
+            <section>
+              <p className="bold" style={{ cursor: 'pointer' }}>
+                {balance.tokenName}
+              </p>
+              <p className="bold" style={{ cursor: 'pointer' }}>
+                {balance.tokenName}
+              </p>
+            </section>
           </div>
-          {mediaQuery === MediaQuery.PC && (
-            <div className="deposit__table__header__data-grid">
-              <div />
-              {tableData.map((data, index) => {
-                return (
-                  <div key={index}>
-                    <p>{data[0]}</p>
-                    {!depositInfo ? (
-                      <Skeleton width={70} height={17.5} />
-                    ) : (
-                      <p className="bold">{data[1]}</p>
+          <div className="deposit__table__header__data-grid">
+            {tableData.map((data, index) => {
+              return (
+                <div key={index}>
+                  <p>
+                    {data.name}{' '}
+                    {data.isQuestionmark && (
+                      <p>
+                        <Questionmark content={data.questionmarkContent} />
+                      </p>
                     )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
+                  </p>
+                  {!depositInfo ? (
+                    <Skeleton width={70} height={17.5} />
+                  ) : (
+                    <p className="bold">{data.value}</p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
         <div className="deposit__table__body">
           <div className="deposit__table__body__amount__container">
-            {mediaQuery === MediaQuery.Mobile && (
+            {/* {mediaQuery === MediaQuery.Mobile && (
               <div className="deposit__table__header__data-grid">
                 <div />
                 {tableData.map((data, index) => {
                   return (
                     <div key={index}>
-                      <p>{data[0]}</p>
+                      <p>{data.name}</p>
                       {!depositInfo ? (
                         <Skeleton width={50} height={10.5} />
                       ) : (
-                        <p className="bold">{data[1]}</p>
+                        <p className="bold">{data.value}</p>
                       )}
                     </div>
                   );
                 })}
               </div>
-            )}
+            )} */}
             <div className="deposit__table__body__amount__wrapper left">
               <TableBodyAmount
                 header={t('dashboard.deposit_amount')}
