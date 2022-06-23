@@ -15,15 +15,15 @@ class DrawWave {
     mainHeaderMoblieY: HTMLParagraphElement,
     guideY: HTMLParagraphElement,
     auditPageY: HTMLParagraphElement,
-    governancePageY: HTMLParagraphElement,
     isResize: boolean,
+    // governancePageY: HTMLParagraphElement,
   ): void {
     const headerY = mainHeaderY.offsetTop;
     const mainMoblieY = mainHeaderMoblieY.offsetTop;
     const guidePageY = guideY.offsetTop;
     const auditY = auditPageY.offsetTop;
-    const governanceY = governancePageY.offsetTop;
-    const governanceBottomY = governancePageY.offsetHeight;
+    // const governanceY = governancePageY.offsetTop;
+    // const governanceBottomY = governancePageY.offsetHeight;
 
     this.ctx.strokeStyle = '#00BFFF';
     const yValue = this.browserWidth > 1190 ? headerY : mainMoblieY / 1.12;
@@ -208,107 +208,107 @@ class DrawWave {
     this.ctx.stroke();
 
     // gorvernence
-    this.ctx.beginPath();
-    this.ctx.moveTo(0, governanceY * 0.9936);
-    this.ctx.bezierCurveTo(
-      this.browserWidth / 2,
-      governanceY * 0.961,
-      this.browserWidth / 1.7,
-      governanceY * 1.001,
-      this.browserWidth,
-      governanceY * 0.9663,
-    );
-    this.ctx.stroke();
-    this.ctx.fillStyle = 'rgba(247, 251, 255, 1)';
-    this.ctx.beginPath();
-    this.ctx.moveTo(0, governanceY * 0.996);
-    this.ctx.bezierCurveTo(
-      this.browserWidth / 2,
-      governanceY * 0.96,
-      this.browserWidth / 1.7,
-      governanceY * 1.001,
-      this.browserWidth,
-      governanceY * 0.9708,
-    );
-    this.ctx.lineTo(
-      this.browserWidth,
-      governanceY * 0.9708 + governanceBottomY + 220,
-    );
-    this.ctx.bezierCurveTo(
-      this.browserWidth / 2,
-      governanceY * 0.9708 + governanceBottomY + 110,
-      this.browserWidth / 1.7,
-      governanceY * 0.9708 + governanceBottomY + 280,
-      0,
-      governanceY * 0.9708 + governanceBottomY + 280,
-    );
-    // this.ctx.lineTo(0, governanceY * 0.9708 + governanceBottomY + 220);
-    this.ctx.fill();
-    this.ctx.stroke();
+    // this.ctx.beginPath();
+    // this.ctx.moveTo(0, governanceY * 0.9936);
+    // this.ctx.bezierCurveTo(
+    //   this.browserWidth / 2,
+    //   governanceY * 0.961,
+    //   this.browserWidth / 1.7,
+    //   governanceY * 1.001,
+    //   this.browserWidth,
+    //   governanceY * 0.9663,
+    // );
+    // this.ctx.stroke();
+    // this.ctx.fillStyle = 'rgba(247, 251, 255, 1)';
+    // this.ctx.beginPath();
+    // this.ctx.moveTo(0, governanceY * 0.996);
+    // this.ctx.bezierCurveTo(
+    //   this.browserWidth / 2,
+    //   governanceY * 0.96,
+    //   this.browserWidth / 1.7,
+    //   governanceY * 1.001,
+    //   this.browserWidth,
+    //   governanceY * 0.9708,
+    // );
+    // this.ctx.lineTo(
+    //   this.browserWidth,
+    //   governanceY * 0.9708 + governanceBottomY + 220,
+    // );
+    // this.ctx.bezierCurveTo(
+    //   this.browserWidth / 2,
+    //   governanceY * 0.9708 + governanceBottomY + 110,
+    //   this.browserWidth / 1.7,
+    //   governanceY * 0.9708 + governanceBottomY + 280,
+    //   0,
+    //   governanceY * 0.9708 + governanceBottomY + 280,
+    // );
+    // // this.ctx.lineTo(0, governanceY * 0.9708 + governanceBottomY + 220);
+    // this.ctx.fill();
+    // this.ctx.stroke();
 
-    this.ctx.beginPath();
-    this.ctx.moveTo(0, governanceY * 0.9708 + governanceBottomY + 290);
-    this.ctx.bezierCurveTo(
-      this.browserWidth / 2,
-      governanceY * 0.9708 + governanceBottomY + 290,
-      this.browserWidth / 1.7,
-      governanceY * 0.9708 + governanceBottomY + 100,
-      this.browserWidth,
-      governanceY * 0.9708 + governanceBottomY + 240,
-    );
+    // this.ctx.beginPath();
+    // this.ctx.moveTo(0, governanceY * 0.9708 + governanceBottomY + 290);
+    // this.ctx.bezierCurveTo(
+    //   this.browserWidth / 2,
+    //   governanceY * 0.9708 + governanceBottomY + 290,
+    //   this.browserWidth / 1.7,
+    //   governanceY * 0.9708 + governanceBottomY + 100,
+    //   this.browserWidth,
+    //   governanceY * 0.9708 + governanceBottomY + 240,
+    // );
 
-    this.ctx.stroke();
-    // circle
-    this.ctx.fillStyle = '#ffffff';
-    this.ctx.beginPath();
-    this.ctx.moveTo(this.browserWidth / 3.2 + 10, governanceY * 0.9807);
-    this.ctx.arc(
-      this.browserWidth / 3.2,
-      governanceY * 0.9807,
-      10,
-      0,
-      Math.PI * 2,
-      true,
-    );
+    // this.ctx.stroke();
+    // // circle
+    // this.ctx.fillStyle = '#ffffff';
+    // this.ctx.beginPath();
+    // this.ctx.moveTo(this.browserWidth / 3.2 + 10, governanceY * 0.9807);
+    // this.ctx.arc(
+    //   this.browserWidth / 3.2,
+    //   governanceY * 0.9807,
+    //   10,
+    //   0,
+    //   Math.PI * 2,
+    //   true,
+    // );
 
-    this.ctx.moveTo(this.browserWidth / 3.07 + 5, governanceY * 0.98);
-    this.ctx.arc(
-      this.browserWidth / 3.07,
-      governanceY * 0.98,
-      5,
-      0,
-      Math.PI * 2,
-      true,
-    );
+    // this.ctx.moveTo(this.browserWidth / 3.07 + 5, governanceY * 0.98);
+    // this.ctx.arc(
+    //   this.browserWidth / 3.07,
+    //   governanceY * 0.98,
+    //   5,
+    //   0,
+    //   Math.PI * 2,
+    //   true,
+    // );
 
-    this.ctx.moveTo(
-      this.browserWidth / 2.5 + 10,
-      governanceY * 0.9708 + governanceBottomY + 243,
-    );
-    this.ctx.arc(
-      this.browserWidth / 2.5,
-      governanceY * 0.9708 + governanceBottomY + 243,
-      10,
-      0,
-      Math.PI * 2,
-      true,
-    );
+    // this.ctx.moveTo(
+    //   this.browserWidth / 2.5 + 10,
+    //   governanceY * 0.9708 + governanceBottomY + 243,
+    // );
+    // this.ctx.arc(
+    //   this.browserWidth / 2.5,
+    //   governanceY * 0.9708 + governanceBottomY + 243,
+    //   10,
+    //   0,
+    //   Math.PI * 2,
+    //   true,
+    // );
 
-    this.ctx.moveTo(
-      this.browserWidth / 2.6 + 5,
-      governanceY * 0.9708 + governanceBottomY + 256,
-    );
-    this.ctx.arc(
-      this.browserWidth / 2.6,
-      governanceY * 0.9708 + governanceBottomY + 256,
-      5,
-      0,
-      Math.PI * 2,
-      true,
-    );
+    // this.ctx.moveTo(
+    //   this.browserWidth / 2.6 + 5,
+    //   governanceY * 0.9708 + governanceBottomY + 256,
+    // );
+    // this.ctx.arc(
+    //   this.browserWidth / 2.6,
+    //   governanceY * 0.9708 + governanceBottomY + 256,
+    //   5,
+    //   0,
+    //   Math.PI * 2,
+    //   true,
+    // // );
 
-    this.ctx.fill();
-    this.ctx.stroke();
+    // this.ctx.fill();
+    // this.ctx.stroke();
   }
 
   drawMoblieOnMain(
@@ -316,15 +316,15 @@ class DrawWave {
     mainHeaderMoblieY: HTMLParagraphElement,
     guideY: HTMLParagraphElement,
     auditPageY: HTMLParagraphElement,
-    governancePageY: HTMLParagraphElement,
     isResize: boolean,
+    // governancePageY: HTMLParagraphElement,
   ): void {
     const headerY = mainHeaderY.offsetTop;
     const mainMoblieY = mainHeaderMoblieY.offsetTop;
     const guidePageY = guideY.offsetTop + 120;
     const auditY = auditPageY.offsetTop + 120;
-    const governanceY = governancePageY.offsetTop - 25;
-    const governanceBottomY = governancePageY.offsetHeight;
+    // const governanceY = governancePageY.offsetTop - 25;
+    // const governanceBottomY = governancePageY.offsetHeight;
 
     this.ctx.strokeStyle = '#00BFFF';
     const yValue = mainMoblieY / 1.12;
@@ -509,97 +509,97 @@ class DrawWave {
     this.ctx.stroke();
 
     // gorvernence
-    this.ctx.beginPath();
-    this.ctx.moveTo(0, governanceY * 1.009);
-    this.ctx.bezierCurveTo(
-      this.browserWidth / 2.2,
-      governanceY * 0.98,
-      this.browserWidth / 1.7,
-      governanceY * 1.031,
-      this.browserWidth * 1.1,
-      governanceY * 0.9893,
-    );
-    this.ctx.stroke();
-    this.ctx.fillStyle = 'rgba(247, 251, 255, 1)';
-    this.ctx.beginPath();
-    this.ctx.moveTo(0, governanceY * 1.015);
-    this.ctx.bezierCurveTo(
-      this.browserWidth / 2.2,
-      governanceY * 0.972,
-      this.browserWidth / 1.7,
-      governanceY * 1.04,
-      this.browserWidth * 1.1,
-      governanceY * 0.9893,
-    );
-    this.ctx.lineTo(
-      this.browserWidth,
-      governanceY * 0.9708 + governanceBottomY + 220,
-    );
-    this.ctx.bezierCurveTo(
-      this.browserWidth / 2,
-      governanceY * 0.9708 + governanceBottomY + 110,
-      this.browserWidth / 1.7,
-      governanceY * 0.9708 + governanceBottomY + 280,
-      0,
-      governanceY * 0.9708 + governanceBottomY + 180,
-    );
-    // this.ctx.lineTo(0, governanceY * 0.9708 + governanceBottomY + 220);
-    this.ctx.fill();
-    this.ctx.stroke();
+    // this.ctx.beginPath();
+    // this.ctx.moveTo(0, governanceY * 1.009);
+    // this.ctx.bezierCurveTo(
+    //   this.browserWidth / 2.2,
+    //   governanceY * 0.98,
+    //   this.browserWidth / 1.7,
+    //   governanceY * 1.031,
+    //   this.browserWidth * 1.1,
+    //   governanceY * 0.9893,
+    // );
+    // this.ctx.stroke();
+    // this.ctx.fillStyle = 'rgba(247, 251, 255, 1)';
+    // this.ctx.beginPath();
+    // this.ctx.moveTo(0, governanceY * 1.015);
+    // this.ctx.bezierCurveTo(
+    //   this.browserWidth / 2.2,
+    //   governanceY * 0.972,
+    //   this.browserWidth / 1.7,
+    //   governanceY * 1.04,
+    //   this.browserWidth * 1.1,
+    //   governanceY * 0.9893,
+    // );
+    // this.ctx.lineTo(
+    //   this.browserWidth,
+    //   governanceY * 0.9708 + governanceBottomY + 220,
+    // );
+    // this.ctx.bezierCurveTo(
+    //   this.browserWidth / 2,
+    //   governanceY * 0.9708 + governanceBottomY + 110,
+    //   this.browserWidth / 1.7,
+    //   governanceY * 0.9708 + governanceBottomY + 280,
+    //   0,
+    //   governanceY * 0.9708 + governanceBottomY + 180,
+    // );
+    // // this.ctx.lineTo(0, governanceY * 0.9708 + governanceBottomY + 220);
+    // this.ctx.fill();
+    // this.ctx.stroke();
 
-    this.ctx.beginPath();
-    this.ctx.moveTo(0, governanceY * 0.9708 + governanceBottomY + 190);
-    this.ctx.bezierCurveTo(
-      this.browserWidth / 2,
-      governanceY * 0.9708 + governanceBottomY + 290,
-      this.browserWidth / 1.7,
-      governanceY * 0.9708 + governanceBottomY + 100,
-      this.browserWidth,
-      governanceY * 0.9708 + governanceBottomY + 240,
-    );
+    // this.ctx.beginPath();
+    // this.ctx.moveTo(0, governanceY * 0.9708 + governanceBottomY + 190);
+    // this.ctx.bezierCurveTo(
+    //   this.browserWidth / 2,
+    //   governanceY * 0.9708 + governanceBottomY + 290,
+    //   this.browserWidth / 1.7,
+    //   governanceY * 0.9708 + governanceBottomY + 100,
+    //   this.browserWidth,
+    //   governanceY * 0.9708 + governanceBottomY + 240,
+    // );
 
-    this.ctx.stroke();
-    // circle
-    this.ctx.fillStyle = '#ffffff';
-    this.ctx.beginPath();
-    this.ctx.moveTo(this.browserWidth / 3.2 + 7, governanceY * 0.9998);
-    this.ctx.arc(
-      this.browserWidth / 3.2,
-      governanceY * 0.9998,
-      7,
-      0,
-      Math.PI * 2,
-      true,
-    );
+    // this.ctx.stroke();
+    // // circle
+    // this.ctx.fillStyle = '#ffffff';
+    // this.ctx.beginPath();
+    // this.ctx.moveTo(this.browserWidth / 3.2 + 7, governanceY * 0.9998);
+    // this.ctx.arc(
+    //   this.browserWidth / 3.2,
+    //   governanceY * 0.9998,
+    //   7,
+    //   0,
+    //   Math.PI * 2,
+    //   true,
+    // );
 
-    this.ctx.moveTo(this.browserWidth / 2.9 + 3, governanceY);
-    this.ctx.arc(this.browserWidth / 2.9, governanceY, 3, 0, Math.PI * 2, true);
+    // this.ctx.moveTo(this.browserWidth / 2.9 + 3, governanceY);
+    // this.ctx.arc(this.browserWidth / 2.9, governanceY, 3, 0, Math.PI * 2, true);
 
-    this.ctx.moveTo(
-      this.browserWidth / 2.4 + 7,
-      governanceY * 0.9708 + governanceBottomY + 213,
-    );
-    this.ctx.arc(
-      this.browserWidth / 2.4,
-      governanceY * 0.9708 + governanceBottomY + 213,
-      7,
-      0,
-      Math.PI * 2,
-      true,
-    );
+    // this.ctx.moveTo(
+    //   this.browserWidth / 2.4 + 7,
+    //   governanceY * 0.9708 + governanceBottomY + 213,
+    // );
+    // this.ctx.arc(
+    //   this.browserWidth / 2.4,
+    //   governanceY * 0.9708 + governanceBottomY + 213,
+    //   7,
+    //   0,
+    //   Math.PI * 2,
+    //   true,
+    // );
 
-    this.ctx.moveTo(
-      this.browserWidth / 2.6 + 4,
-      governanceY * 0.9708 + governanceBottomY + 217,
-    );
-    this.ctx.arc(
-      this.browserWidth / 2.6,
-      governanceY * 0.9708 + governanceBottomY + 217,
-      4,
-      0,
-      Math.PI * 2,
-      true,
-    );
+    // this.ctx.moveTo(
+    //   this.browserWidth / 2.6 + 4,
+    //   governanceY * 0.9708 + governanceBottomY + 217,
+    // );
+    // this.ctx.arc(
+    //   this.browserWidth / 2.6,
+    //   governanceY * 0.9708 + governanceBottomY + 217,
+    //   4,
+    //   0,
+    //   Math.PI * 2,
+    //   true,
+    // );
 
     this.ctx.fill();
     this.ctx.stroke();
