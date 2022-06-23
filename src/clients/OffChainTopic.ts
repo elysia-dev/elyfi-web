@@ -28,9 +28,12 @@ export interface INapData {
   link: string;
   endedDate: string;
   network: MainnetType;
+  summary: string;
+  title: string;
+  createdAt: string;
 }
 
-export const topicListFetcher = (url: string): Promise<TopicList[]> =>
+export const topicListFetcher = (url: string): Promise<INapData[]> =>
   axios.get(url).then((res) => res.data);
 
 export default class OffChainTopic {
