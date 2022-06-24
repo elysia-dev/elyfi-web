@@ -32,38 +32,38 @@ export const onChainGovernancBsceMiddleware: Middleware =
           setOnChainData([]);
           dataRef.current = swr.data;
           const data: any = swr.data;
-          const getNAPDatas = data.proposals
-            .filter((proposal: any) => {
-              return proposal.state === 'active';
-            })
-            .map((data: any) => {
-              return {
-                data: {
-                  description: data.title,
-                },
-                status: data.state,
-                timestamp: data.start.toString(),
-                id: data.id,
-              } as IProposals;
+
+          Array(4)
+            .fill(0)
+            .forEach((_v, idx) => {
+              const snapShotData = data.proposals[idx];
+              const count =
+                snapShotData.title.match(/(NAP\d+\s:)/g)?.[0].length;
+              return setOnChainData((_data: any) => {
+                console.log(_data);
+                return [
+                  ..._data,
+                  {
+                    data: {
+                      description: `NAP ${snapShotData.title
+                        .match(/\d.*(?!NAP)(?=:)/)
+                        ?.toString()
+                        .replace(/ /g, '')}`,
+                    },
+                    status: snapShotData.status,
+                    id: snapShotData.id,
+                    timestamp: snapShotData.end,
+                    summary: snapShotData.body
+                      .substring(
+                        snapShotData.body.indexOf('**Summary**') + 15,
+                        snapShotData.body.indexOf('**Collateral Details**'),
+                      )
+                      .trim(),
+                    title: snapShotData.title.substring(0 + count),
+                  } as IProposals,
+                ];
+              });
             });
-          getNAPDatas.map((data: any, index: any) => {
-            setProposalId(data.id);
-            return setOnChainData((_data: any) => {
-              return [
-                ..._data,
-                {
-                  data: {
-                    description: data.data.description
-                      .match(/\d.*(?!NAP)(?=:)/)
-                      ?.toString()
-                      .replace(/ /g, ''),
-                  },
-                  status: data.status,
-                  id: data.id,
-                } as IProposals,
-              ];
-            });
-          });
         }
         setOnChainLoading(false);
       } catch (error) {
@@ -71,24 +71,7 @@ export const onChainGovernancBsceMiddleware: Middleware =
       }
     }, [swr.data]);
 
-    useEffect(() => {
-      if (!voteDatas || !proposalId) return;
-      setOnChainData(() => [
-        {
-          ...onChainData[0],
-          totalVotesCast: voteDatas.votes.length || 0,
-          totalVotesCastAbstained:
-            voteDatas.votes.filter((vote: any) => vote.choice === 3).length ||
-            0,
-          totalVotesCastAgainst:
-            voteDatas.votes.filter((vote: any) => vote.choice === 2).length ||
-            0,
-          totalVotesCastInSupport:
-            voteDatas.votes.filter((vote: any) => vote.choice === 1).length ||
-            0,
-        },
-      ]);
-    }, [voteDatas, proposalId]);
+    useEffect(() => {}, [voteDatas, proposalId]);
 
     const data = swr.data === undefined ? dataRef.current : onChainData;
 
@@ -116,18 +99,24 @@ export const onChainGovernanceMiddleware: Middleware =
           dataRef.current = swr.data;
           const getOnChainApis: any = swr.data;
           const getNAPCodes = getOnChainApis.proposals.filter((topic: any) => {
-            return topic.status === 'ACTIVE';
+            return topic.status !== 'ACTIVE';
           });
           getNAPCodes.map((data: any) => {
             return setOnChainData((_data: any) => {
-              if (!(data.status === 'ACTIVE')) return [..._data];
+              const count = data.data.description.match(/(# NAP\d+:)/g)?.[0]
+                ? data.data.description.match(/(# NAP\d+:)/g)?.[0].length
+                : data.data.description.match(/(# NAP\d+\s:)/)?.[0]
+                ? data.data.description.match(/(# NAP\d+\s:)/)?.[0].length
+                : data.data.description.match(/NAP\d+:/g)?.[0].length;
+
+              if (!(data.status !== 'ACTIVE')) return [..._data];
               return [
                 ..._data,
                 {
                   data: {
-                    description: data.data.description
+                    description: `NAP ${data.data.description
                       .match(/\d.*(?!NAP)(?=:)/)
-                      ?.toString(),
+                      ?.toString()}`,
                   },
                   status: data.status,
                   totalVotesCast: data.totalVotesCast,
@@ -135,6 +124,14 @@ export const onChainGovernanceMiddleware: Middleware =
                   totalVotesCastAgainst: data.totalVotesCastAgainst,
                   totalVotesCastInSupport: data.totalVotesCastInSupport,
                   id: data.id.match(/(?=).*(?=-proposal)/)?.toString(),
+                  summary: data.data.description.substring(
+                    data.data.description.indexOf('**Summary**') + 11,
+                    data.data.description.indexOf('**Collateral Details**'),
+                  ),
+                  title: data.data.description.substring(
+                    0 + count,
+                    data.data.description.indexOf('**Summary**'),
+                  ),
                 } as IProposals,
               ];
             });
