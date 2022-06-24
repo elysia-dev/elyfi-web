@@ -24,6 +24,8 @@ const Main = (): JSX.Element => {
   const governancePageY = useRef<HTMLParagraphElement>(null);
   const governancePageBottomY = useRef<HTMLParagraphElement>(null);
   const { value: mediaQueryType } = useMediaQueryType();
+  const [isPartnersLoading, setIsPartnersLoading] = useState(true);
+  const [isAdvantageLoading, setIsAdvantageLoading] = useState(true);
 
   const draw = (isResize: boolean) => {
     const dpr = window.devicePixelRatio;
@@ -32,11 +34,10 @@ const Main = (): JSX.Element => {
       !mainHeaderY.current ||
       !mainHeaderMoblieY.current ||
       !guideY.current ||
-      !auditPageY.current ||
-      !governancePageY.current ||
-      !governancePageBottomY.current
-    )
+      !auditPageY.current
+    ) {
       return;
+    }
     if (!canvas) return;
     canvas.width = document.body.clientWidth * dpr;
     canvas.height = document.body.clientHeight * dpr;
@@ -50,7 +51,6 @@ const Main = (): JSX.Element => {
           mainHeaderMoblieY.current,
           guideY.current,
           auditPageY.current,
-          governancePageY.current,
           isResize,
         )
       : new DrawWave(ctx, browserWidth).drawOnMain(
@@ -58,23 +58,20 @@ const Main = (): JSX.Element => {
           mainHeaderMoblieY.current,
           guideY.current,
           auditPageY.current,
-          governancePageY.current,
           isResize,
         );
   };
 
   useEffect(() => {
-    draw(false);
-    window.addEventListener('resize', () => draw(true));
+    if (isAdvantageLoading || isPartnersLoading) return;
+    const setTime = setTimeout(() => {
+      draw(false);
+    }, 200);
 
     return () => {
-      window.removeEventListener('resize', () => draw(true));
+      clearTimeout(setTime);
     };
-  }, []);
-
-  useEffect(() => {
-    draw(false);
-  }, [governancePageBottomY.current]);
+  }, [isAdvantageLoading, isPartnersLoading]);
 
   return (
     <>
@@ -107,7 +104,10 @@ const Main = (): JSX.Element => {
         </Suspense>
         <section className="main__advantages main__section">
           <Suspense fallback={<div style={{ height: '80vh' }} />}>
-            <Advantage guideY={guideY} />
+            <Advantage
+              guideY={guideY}
+              setIsAdvantageLoading={() => setIsAdvantageLoading(false)}
+            />
           </Suspense>
         </section>
         {/* <section className="main__service main__section">
@@ -117,16 +117,19 @@ const Main = (): JSX.Element => {
         </section> */}
         <section className="main__partners main__section">
           <Suspense fallback={<div style={{ height: '100vh' }} />}>
-            <Partners auditPageY={auditPageY} />
+            <Partners
+              auditPageY={auditPageY}
+              setIsPartnersLoading={() => setIsPartnersLoading(false)}
+            />
           </Suspense>
         </section>
-        <Suspense fallback={<div style={{ height: '100vh' }} />}>
+        {/* <Suspense fallback={<div style={{ height: '100vh' }} />}>
           <MainGovernanceTable
             governancePageY={governancePageY}
             governancePageBottomY={governancePageBottomY}
             draw={draw}
           />
-        </Suspense>
+        </Suspense> */}
       </div>
     </>
   );
