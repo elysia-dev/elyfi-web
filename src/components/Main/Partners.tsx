@@ -1,4 +1,4 @@
-import { lazy, RefObject, Suspense } from 'react';
+import { lazy, RefObject, useEffect } from 'react';
 
 import HaechiLabs from 'src/assets/images/main/haechi-labs.svg';
 import SHIN from 'src/assets/images/main/shin.svg';
@@ -16,10 +16,15 @@ const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
 interface Props {
   auditPageY: RefObject<HTMLParagraphElement>;
+  setIsPartnersLoading: () => void;
 }
 
-const Partners: React.FC<Props> = ({ auditPageY }) => {
+const Partners: React.FC<Props> = ({ auditPageY, setIsPartnersLoading }) => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    setIsPartnersLoading();
+  }, []);
 
   return (
     <>

@@ -1,9 +1,7 @@
-import { lazy, RefObject, Suspense } from 'react';
+import { lazy, RefObject, Suspense, useEffect } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 
-import Advantages00 from 'src/assets/images/main/advantages00.svg';
 import Advantages01 from 'src/assets/images/main/advantages01.svg';
-import Advantages02 from 'src/assets/images/main/advantages02.svg';
 import Advantages03 from 'src/assets/images/main/advantages03.svg';
 import Advantages04 from 'src/assets/images/main/advantages04.svg';
 import Advantages05 from 'src/assets/images/main/advantages05.svg';
@@ -12,10 +10,15 @@ const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
 interface Props {
   guideY: RefObject<HTMLParagraphElement>;
+  setIsAdvantageLoading: () => void;
 }
 
-const Advantage: React.FC<Props> = ({ guideY }) => {
+const Advantage: React.FC<Props> = ({ guideY, setIsAdvantageLoading }) => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    setIsAdvantageLoading();
+  }, []);
 
   return (
     <>
