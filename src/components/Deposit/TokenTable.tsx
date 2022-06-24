@@ -145,14 +145,14 @@ const TokenTable: React.FC<Props> = ({
           toPercent(depositInfo?.depositAPY || constants.Zero)) ||
         0,
       isQuestionmark: true,
-      questionmarkContent: '예치 APY는 예치 이자율이며, 복리로 계산됩니다.',
+      questionmarkContent: t('dashboard.guide.0'),
     },
     {
       name: t('dashboard.borrow_apy'),
       value:
         reserveData?.id && toPercent(depositInfo?.borrowAPY || constants.Zero),
       isQuestionmark: true,
-      questionmarkContent: '대출 APY는 대출 이자율이며 복리로 계산됩니다.',
+      questionmarkContent: t('dashboard.guide.1'),
     },
   ];
 
@@ -329,7 +329,15 @@ const TokenTable: React.FC<Props> = ({
           <div className="deposit__table__body__loan-list">
             <div>
               <div>
-                <h2>{t('dashboard.recent_loan')}</h2>
+                <h2>
+                  {t('dashboard.recent_loan')}{' '}
+                  <span
+                    style={{
+                      marginLeft: 5,
+                    }}>
+                    <Questionmark content={t('dashboard.guide.2')} />
+                  </span>
+                </h2>
                 {assetBondTokensBackedByEstate && (
                   <Link
                     to={`/${lng}/deposit/${balance.tokenName}`}
