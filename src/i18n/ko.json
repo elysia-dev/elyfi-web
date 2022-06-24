@@ -127,6 +127,7 @@
       "ELStake": "EL 스테이킹",
       "ELFIStake": "ELFI 스테이킹",
       "LPStake": "LP 스테이킹",
+      "faq": "FAQ",
       "link": {
         "docs": "https://docs.elyfi.world/",
         "guide": "https://guide.elyfi.world/v/korean-2/",
@@ -233,7 +234,12 @@
 
       "target_running_strategy": "목표 운용전략 (목표 예치 APY: 10%)",
       "real_estate_mortgage": "부동산 담보대출",
-      "event_title": "ELFI <strong>300%</strong> 보상 이벤트\nBUSD를 예치하고, ELFI 토큰을 받아가세요!"
+      "event_title": "ELFI <strong>300%</strong> 보상 이벤트\nBUSD를 예치하고, ELFI 토큰을 받아가세요!",
+      "guide": [
+        "예치 APY는 예치 이자율이며, 복리로 계산됩니다.",
+        "대출 APY는 대출 이자율이며 복리로 계산됩니다.",
+        "해당 머니풀에서 최근에 대출받은 대출 정보와 담보물의 정보를 나타냅니다."
+      ]
     },
     "loan": {
       "loan__title": "대출 리스트",
@@ -267,15 +273,15 @@
     "governance": {
       "status": "상태",
       "title": "ELYFI 거버넌스",
-      "content": "엘리파이는 탈중앙 조직(DAO)에 의해 운영되는 디파이(DeFi) 프로토콜입니다.\nELFI 토큰을 보유한 홀더는 누구나 탈중앙 조직멤버로서 엘리파이 운영에 참여할 수 있습니다.",
-      "button--staking": "ELFI 스테이킹 하기",
-      "button--governance_faq": "거버넌스 FAQ",
+      "content": "ELYFI 프로토콜은 ELFI 토큰 스테이커로 구성된 ELYFI DAO에 의해 개발되고 운영됩니다.\nELYFI DAO 구성원이면 누구나 의사결정 과정에 참여할 수 있습니다.",
+      "button--staking": "참여하기",
+      "button--governance_faq": "거버넌스 투표방법",
       "graph": ["ELYFI", "권한", "거버넌스 참여", "ELYFI Holder"],
-      "data_verification": "데이터 검증 투표 ({{ count }} 건)",
+      "data_verification": "진행중인 토론",
       "data_verification_plural": "데이터 검증 투표 ({{ count }} 건)",
       "data_verification_plural--mobile": "데이터 검증 투표 ({{ count }} 건)",
       "data_verification__content": "오프체인 거버넌스(DAO)에서 투표가 진행중인 제안서 리스트입니다.",
-      "on_chain_voting": "의사결정 투표 ({{ count }} 건)",
+      "on_chain_voting": "진행중인 투표",
       "on_chain_voting_plural": "의사결정 투표 ({{ count }} 건)",
       "on_chain_voting__content": {
         "tally": "Tally에서 투표가 진행중인 제안서 리스트 입니다.",
@@ -286,14 +292,47 @@
       "loan_list__content": "거버넌스(DAO)의 결정에 따라 머니풀에서 실행된 대출입니다.",
       "onchain_list_zero": "현재 진행중인 의사결정 투표가 없습니다.",
       "offchain_list_zero": "현재 진행중인 데이터 검증 투표가 없습니다.",
-      "forum_button": "ELYFI 포럼으로 이동하기",
+      "forum_button": "ELYFI Forum",
       "onChain_button": {
-        "tally": "Tally로 이동하기",
-        "snapshot": "Snapshot으로 이동하기"
+        "tally": "ELFI Tally",
+        "snapshot": "ELFI Snapshot"
       },
       "link": {
-        "tally": "https://www.tally.xyz/governance/eip155:1:0x0c54629266d7fa40B4BFaF1640ebC2Cd093866C3",
         "snapshot": "https://snapshot.org/#/elyfi-bsc.eth"
+      },
+      "guide": {
+        "offchain": "현재 엘리파이 포럼에서 논의 및 검토가 진행중인 제안서입니다. 엘리파이 포럼은 엘리파이 프로토콜에 대해 자유롭게 제안하고 토론할 수 있는 공간입니다.",
+        "onchain": "현재 스냅샷에서 투표가 진행중인 제안서입니다. 스냅샷은 거버넌스 참여자들의 제안에 대해 투표를 통해 반영 여부를 최종적으로 결정하는 공간입니다. 보유하고 있는 sELFI 토큰 만큼 권리를 행사할 수 있습니다."
+      },
+      "vote": {
+        "header": "거버넌스 투표 방법",
+        "first": {
+          "header": "ELFI 토큰 홀더가 돼 보세요!",
+          "market": "거래소 보기 >",
+          "content": " ELFI 토큰은 엘리파이 프로토콜 개발과 생태계 발전에 기여하고 싶은 누구나 참여할 수 있도록 다양한 탈중앙 거래소(DEX)에 상장돼 있습니다.",
+          "price": "실시간가격",
+          "totalSupply": "총 공급량",
+          "totalCirculation": "총 발행량",
+          "circulatingSupply": "유통량",
+          "guide": [
+            "총 발행량 소각된 수량을 뺀 ELFI 토큰의 개수입니다.",
+            "ELFI 토큰의 총 발행량으로, 스마트 컨트랙트를 통해 정해진 토큰의 개수입니다.",
+            "시중에 유통 중인 ELFI 토큰의 개수입니다."
+          ]
+        },
+        "second": {
+          "header": "스테이킹을 통해 투표권(sELFI)를 받아보세요!",
+          "staking": "ELFI 스테이킹 하기 >",
+          "content": "엘리파이 거버넌스에 참여하기 위해서는 투표권(sELFI)이 있어야 합니다. 보유하고 있는 ELFI 토큰을 스테이킹하면 sELFI 토큰을 받을 수 있으며, 보유한 수량만큼 투표권을 행사할 수 있습니다.",
+          "totalStaking": "총 스테이킹 수량",
+          "elfiStaker": "ELFI 스테이커"
+        },
+        "third": {
+          "header": "의사결정 과정에 참여하세요!",
+          "content": " 엘리파이 DAO 구성원들은 누구나 ELYFI 포럼에서 자유롭게 개선안을 제안하고, 스냅샷에서 투표를 통해 의사결정 과정에 참여할 수 있습니다.",
+          "forum": " 엘리파이 프로토콜에 대해 자유롭게 제안하고 토론할 수 있는 공간입니다.",
+          "snapshot": "거버넌스 참여자들의 제안에 대해 투표를 통해 반영 여부를 최종적으로 결정하는 공간입니다. 보유하고 있는 sELFI 토큰 만큼 권리를 행사할 수 있습니다."
+        }
       }
     },
     "staking": {
@@ -387,7 +426,8 @@
       "error_description_one": "요청하신 트랜잭션이 실패했습니다. 아래 에러 코드/메시지를 복사하여 cs@elysia.land로 문의주세요.",
       "error_description_two": "메타마스크에서 발생한 에러로 인해 요청하신 트랜잭션이 실패했습니다. \n 아래 에러 코드/메시지를 복사하여 cs@elysia.land로 문의주세요.",
       "error_code": "에러 코드&메시지",
-      "error_code_copy": "복사하기"
+      "error_code_copy": "복사하기",
+      "aprGuide": "총 스테이킹 수량 대비 분배되는 ELFI 토큰의 달러가치입니다."
     },
     "reward": {
       "token_staking__reward_plan": "{{ token }} 스테이킹 플랜",
