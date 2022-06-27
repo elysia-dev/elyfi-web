@@ -37,12 +37,12 @@ import useReserveData from 'src/hooks/useReserveData';
 import Footer from 'src/components/Footer';
 import { depositInfoFetcher } from 'src/clients/BalancesFetcher';
 import { toPercent } from 'src/utiles/formatters';
-import calcMiningAPR from 'src/utiles/calcMiningAPR';
 import { reserveTokenData } from 'src/core/data/reserves';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import Token from 'src/enums/Token';
 import TokenColors from 'src/enums/TokenColors';
+import useCalcMiningAPR from 'src/hooks/useCalcMiningAPR';
 import ErrorModal from '../Modal/ErrorModal';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
@@ -82,6 +82,7 @@ const Navigation: React.FunctionComponent<{
 
   // Type.LNB Dropdown Nav Seleted
   const [selectedLocalNavIndex, setSelectedLocalNavIndex] = useState(0);
+  const { calcMiningAPR } = useCalcMiningAPR();
 
   const navigationRef = useRef<HTMLDivElement>(null);
   const localNavigationRef = useRef<HTMLDivElement>(null);
@@ -254,7 +255,7 @@ const Navigation: React.FunctionComponent<{
               <p
                 style={{
                   cursor: 'pointer',
-                  fontWeight: currentRoute === _index ? 'bold' : 400,
+                  // fontWeight: currentRoute === _index ? 'bold' : 400,
                 }}>
                 {t(_data.i18nKeyword).toUpperCase()}
               </p>
@@ -567,7 +568,7 @@ const Navigation: React.FunctionComponent<{
                               )?.totalLTokenSupply || constants.Zero,
                             ),
                             reserveTokenData[token.name].decimals,
-                          ) || '0',
+                          ) || constants.Zero,
                         )
                       ) : (
                         <Skeleton width={40} height-={40} />
