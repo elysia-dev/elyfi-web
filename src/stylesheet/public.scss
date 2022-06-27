@@ -596,7 +596,9 @@ input[type='number'] {
 
       &__button {
         display: flex;
-        > div {
+
+        > div,
+        > a {
           &:first-child {
             @include hover__box-shadow--white;
           }
