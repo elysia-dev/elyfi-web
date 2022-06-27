@@ -541,7 +541,7 @@ const Governance = (): JSX.Element => {
                   </div>
                   <div>
                     <p>{t('governance.vote.second.elfiStaker')}</p>
-                    <p>$0.025</p>
+                    <p>173</p>
                   </div>
                 </article>
               </section>
