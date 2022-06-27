@@ -127,11 +127,13 @@
       "ELStake": "EL Staking",
       "ELFIStake": "ELFI Staking",
       "LPStake": "LP Staking",
+      "faq": "FAQ",
       "link": {
         "docs": "https://docs.elyfi.world/v/eng/",
         "guide": "https://guide.elyfi.world",
         "governance_docs": "https://elysia.gitbook.io/elyfi-user-guide/governance"
-      }
+      },
+      "mining": "Mining APR"
     },
     "dashboard": {
       "token_mining_apr": "ELFI Mining APR",
@@ -140,7 +142,7 @@
       "total_deposit--yield": "Total Deposit Rates",
       "total_borrowed": "Total Borrowed",
       "borrow_apy": "Borrow APY",
-      "deposit_apy": "Deposit APY",
+      "deposit_apy": "Deposit Rates",
       "deposit_amount": "Deposit amount",
       "deposit_amount--button": "Deposit | Withdraw",
       "wallet_balance": "Wallet Balance",
@@ -226,7 +228,12 @@
 
       "target_running_strategy": "Target running strategy (Target deposit APY: 10%)",
       "real_estate_mortgage": "Real estate mortgage",
-      "event_title": "ELFI <strong>300%</strong> Reward Event\nDeposit BUSD, Get ELFI Tokens!"
+      "event_title": "ELFI <strong>300%</strong> Reward Event\nDeposit BUSD, Get ELFI Tokens!",
+      "guide": [
+        "Deposit Rates is the value of the deposit APY plus the mining APR.",
+        "Borrow APY is the borrow interest rate and is compounded.",
+        "Indicates information on loans and collateral recently borrowed from the money pool."
+      ]
     },
     "loan": {
       "loan__title": "Loan List",
@@ -269,12 +276,12 @@
         "Participate in the Governance",
         "ELYFI Holder"
       ],
-      "data_verification": "Vote for data verification ({{ count }} case)",
+      "data_verification": "List of discussion proposals",
       "data_verification_plural": "Vote for data verification ({{ count }} cases)",
       "data_verification--mobile": "Vote for data verification\n({{ count }} case)",
       "data_verification--mobile_plural": "Vote for data verification\n({{ count }} cases)",
       "data_verification__content": "This is a list of proposals for which voting is in progress in off-chain governance(DAO).",
-      "on_chain_voting": "Vote for final decision ({{ count }} case)",
+      "on_chain_voting": "List of votes for proposals",
       "on_chain_voting_plural": "Vote for final decision ({{ count }} cases)",
       "on_chain_voting__content": {
         "tally": "This is a list of proposals for which voting is in progress in Tally.",
@@ -293,6 +300,40 @@
       "link": {
         "tally": "https://www.tally.xyz/governance/eip155:1:0x0c54629266d7fa40B4BFaF1640ebC2Cd093866C3",
         "snapshot": "https://snapshot.org/#/elyfi-bsc.eth"
+      },
+      "guide": {
+        "offchain": "This is a proposal list that is being discussed and reviewed in the ELYFI forum or has been completed. The ELYFI forum is a space where you can freely propose and discuss the ELYFI protocol.",
+        "onchain": "Proposals that are currently voting or closed for voting in the snapshot. The snapshot is a space where the proposals of the governance participants are finally decided whether to be reflected or not through voting. You can exercise your rights as much as the amount of sELFI tokens you hold."
+      },
+      "vote": {
+        "header": "How to join",
+        "first": {
+          "header": "Get the ELFI tokens!",
+          "market": "Browse exchanges >",
+          "content": "ELFI tokens are listed on various decentralized exchanges (DEXs) so that anyone who wants to contribute to the development of the ELFI protocol and ecosystem can participate.",
+          "price": "Real-time price",
+          "totalSupply": "Total Supply",
+          "totalCirculation": "Total created",
+          "circulatingSupply": "Circulating Supply",
+          "guide": [
+            "The total number of ELFI tokens minus the burned quantity.",
+            "The total issuance of ELFI tokens, the number of tokens determined through smart contracts.",
+            "The number of ELFI tokens in circulation."
+          ]
+        },
+        "second": {
+          "header": "Get voting rights(sELFI) through staking!",
+          "staking": "Stake ELFI >",
+          "content": "Users should have voting rights (sELFI) to participate in ELFI Governance. By staking the ELFI tokens they have, they can receive sELFI tokens, and they can exercise their voting rights as much as they have.",
+          "totalStaking": "Total staked amount",
+          "elfiStaker": "ELFI stakers"
+        },
+        "third": {
+          "header": "Participate in the decision-making process, and make ELYFI together!",
+          "content": "Any member of the ELYFI DAO can freely propose improvements on the ELYFI forum and participate in the decision-making process through voting in the snapshot.",
+          "forum": "ELYFI Forum is a space where you can freely propose and discuss the ELYFI protocol.",
+          "snapshot": "Snapshot is a space where the proposals of governance participants are finally decided whether to be reflected or not through voting. You can exercise your rights as much as the number of sELFI tokens you hold."
+        }
       }
     },
 
@@ -395,7 +436,8 @@
       "error_description_one": "The requested transaction failed due to an error in Metamask. Please contact cs@elysia.land by copying the error code/message below.",
       "error_description_two": "The requested transaction has failed. Please contact cs@elysia.land by copying the error code/message below.",
       "error_code": "error code&message",
-      "error_code_copy": "copy"
+      "error_code_copy": "copy",
+      "aprGuide": "The ratio of the dollar value of ELFI tokens distributed to the total staking quantity."
     },
     "reward": {
       "token_staking__reward_plan": "{{ token }} Staking Plan",
@@ -634,6 +676,56 @@
       "staked_total_amount": "The liquidity of the LP tokens staked with the connected wallet is expressed in dollars.",
       "staked_lp_token": "This is a list of LP tokens staked with the connected wallet. The expected reward represents the amount of rewards that can be obtained by staking each LP token. In order to receive the rewards, you must first unstake the corresponding LP tokens. You can check the reward tokens available for unstaking LP tokens in the ‘Amount of reward’ area located at the bottom. After clicking the ‘Claim rewards’ button, follow the procedure to complete the rewards collection.",
       "receive_reward": "If you unstake the staked LP token, the amount of reward tokens for that LP token is displayed. Click the 'Claim rewards' button to receive the reward, and the reward token will be sent to the connected wallet."
+    },
+    "faq": {
+      "question_first": [
+        "What is ELYFI?",
+        "ELYFI is a real world asset-backed lending DeFi. ELYFI users can borrow cryptocurrency using their real world assets as collateral. The cryptocurrency used for the loan comes from another group of users of ELYFI, the cryptocurrency depositors. They deposit their own tokens or coins in ELYFI for the purpose of deposit interest. Users who want to get a loan borrow cryptocurrency from the money pool formed in this way, and pay the principal and interest to ELYFI on repayment.",
+        "[Glossary]",
+        "Real world assets : ",
+        "Assets whose value is recognized in reality, such as real estate or bonds. Currently, in ELYFI, only real estate mortgage receivables and principal and interest receivables can be used as collateral.",
+        "Crpytocurrency : ",
+        "It is called a coin, token, or virtual asset and refers to a token used to maintain and develop the blockchain ecosystem.",
+        "DeFi : ",
+        "A decentralized financial system that is not controlled by a central entity and operates according to a DAO or system. DeFi uses cryptocurrency rather than fiat currency, and users can use their own cryptocurrency to conduct various financial activities such as investment, loan, and deposit services at DeFi."
+      ],
+      "question_second": [
+        "Why ELYFI?",
+        "ELYFI is the only DeFi that offers both attractive financial products and stability. Existing DeFi is a structure that lends only cryptocurrency as collateral. Due to the high volatility of cryptocurrencies, there are limitations in providing stable collateral value and liquidity. In fact, in the case of A DeFi, which boasted a high yield of 20% per year, it could not afford the interest rate.",
+        "ELYFI minimized loan risk through real world asset collateral. Since real estate or real estate-related bonds are used as collateral, even if the borrower does not repay, the loan can be financed with real world assets held as collateral. Also, from the borrower's point of view, the incentive to repay is greater because they want to maintain their ownership to the real world assets they own. In fact, the NPL ratio has been 0% since the launch of ELYFI."
+      ],
+      "question_third": [
+        "How can real world assets be used in ELYFI?",
+        "In ELYFI, deposit, loan, and repayment activities are all systematically processed on the blockchain. Similarly, ELYFI users must tokenize real assets to use real world assets as collateral. Tokenization here refers to the process of making real world assets into tokens so that they can be used on the blockchain.",
+        "In ELYFI, you can use AToken created through ELYSIA DAO's EL Bridge. Therefore, users who want to borrow cryptocurrency from ELYFI should tokenize real assets through EL Bridge. After a AToken is created, they can borrow virtual currency using the token as collateral.",
+        "*ELYSIA DAO presents the ELYSIA protocol, a standard for tokenization of real world assets, and EL Bridge is the tokenization service developed according to the standard. More information about the ELYSIA Protocol can be found on the ",
+        "ELYSIA Site."
+      ],
+      "question_fourth": [
+        "How can I use ELYFI?",
+        "Participate as a depositor",
+        "Cryptocurrency holders can participate as ‘depositors’ in ELYFI. Depositors can deposit their crypto in any of the various money pools created in ELYFI. And they can receive ‘deposit interest’ and ‘participation reward’ for their deposit. Currently, ELYFI has ‘USDC, USDT, DAI’ money pools on the Ethereum network, and ‘BUSD’ money pools on the BSC network. For more details on how to participate, please refer to ",
+        "‘ELYFI Guide’!",
+        "Participate as a borrower",
+        "Users who want to borrow crypto can participate as ‘borrowers’ in ELYFI. In order to get a loan from ELYFI, they need to tokenize the real world assets they own through the EL Bridge.",
+        "*At this time, the types of real world assets that can be used as collateral are ‘mortgage loan receivables’ and ‘principal and interest receivables’."
+      ],
+      "question_fifth": [
+        "Is there any cost to use ELYFI?",
+        "ELYFI is a decentralized app (Dapp) on the Ethereum network and the BSC network. Therefore, when using functions such as 'deposit' or 'withdrawal', a gas fee, a network fee, is incurred. Since Ether (ETH) is used as the payment method for this cost, users must have ETH and BNB, which are the gas payment methods for each network."
+      ],
+      "question_sixth": [
+        "Is there a limit on the deposit amount?",
+        "There is no minimum or maximum deposit limit on ELYFI, and users can deposit as many as they want."
+      ],
+      "question_seventh": [
+        "ELFI Token",
+        "The ELFI token represents the ownership of the ELFI DAO, and the sELFI token received by staking can be used as a governance voting right. In addition, a portion of the profits generated by ELYFI will be distributed according to the sELFI token ratio.",
+        "Governance Voting Rights (sELFI)",
+        "ELYFI is a decentralized platform that changes according to the ELYFI DAO. The elements that change are various, such as major policies, formulas, and variables, and any governance participant can freely make suggestions. The final decision is made by the participants who hold the voting rights, and they can exercise their voting rights as much as the number of sELFI tokens they have.",
+        "Profit distribution",
+        "When profits are generated in ELYFI, participants can receive money pool deposit margin according to the staked ELFI token (sELFI). Currently, since there is not much protocol net profit, it is distributed from the amount of ELFI allocated to Yield Farming, and will be distributed as protocol net profit from a specific point in the future."
+      ]
     }
   }
 }
