@@ -142,10 +142,20 @@ const TokenTable: React.FC<Props> = ({
       name: t('dashboard.deposit_apy'),
       value:
         (reserveData?.id &&
-          toPercent(depositInfo?.depositAPY || constants.Zero)) ||
+          toPercent(
+            depositInfo?.depositAPY.add(
+              calcMiningAPR(
+                priceData?.elfiPrice || 0,
+                BigNumber.from(
+                  depositInfo?.totalLTokenSupply || constants.Zero,
+                ),
+                reserveTokenData[balance.tokenName].decimals,
+              ),
+            ) || constants.Zero,
+          )) ||
         0,
       isQuestionmark: true,
-      questionmarkContent: t('dashboard.guide.0'),
+      questionmarkContent: t('dashboard.guide.3'),
     },
     {
       name: t('dashboard.borrow_apy'),
@@ -169,10 +179,12 @@ const TokenTable: React.FC<Props> = ({
           <div className="deposit__table__header__token-info">
             <LazyImage src={tokenInfo.image} name="Token icon" />
             <section>
-              <p className="bold" style={{ cursor: 'pointer' }}>
+              {/* <p className="bold" style={{ cursor: 'pointer' }}>
                 {balance.tokenName}
-              </p>
-              <p className="bold" style={{ cursor: 'pointer' }}>
+              </p> */}
+              <p
+                className="bold"
+                style={{ cursor: 'pointer', marginBottom: 0 }}>
                 {balance.tokenName}
               </p>
             </section>
