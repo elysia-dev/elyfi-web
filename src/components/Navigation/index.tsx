@@ -554,7 +554,7 @@ const Navigation: React.FunctionComponent<{
                       ) : (
                         <Skeleton width={40} height-={40} />
                       )}{' '}
-                      (ELFI 채굴 APR :
+                      ({t('navigation.mining')} :
                       {depositInfo ? (
                         toPercent(
                           calcMiningAPR(
