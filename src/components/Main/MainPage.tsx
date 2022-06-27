@@ -3,7 +3,7 @@ import { useTranslation, Trans } from 'react-i18next';
 import reactGA from 'react-ga';
 import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import LanguageType from 'src/enums/LanguageType';
 
 import AssetDom from 'src/assets/images/main/asset-dom.svg';
@@ -43,20 +43,16 @@ const MainPage: React.FC<Props> = ({ mainHeaderY, mainHeaderMoblieY }) => {
             }}>
             <p ref={mainHeaderY}> {t('main.landing.button__deposit')}</p>
           </div>
-          <div
+          <Link
+            to={`/${lng}/faq`}
             onClick={() => {
               reactGA.event({
                 category: PageEventType.MoveToExternalPage,
                 action: ButtonEventType.LearnMoreButton,
               });
-              window.open(
-                lng === LanguageType.KO
-                  ? 'https://elysia.gitbook.io/elysia.finance/'
-                  : 'https://elysia.gitbook.io/elysia.finance/v/eng',
-              );
             }}>
-            <p>{t('main.landing.button__view-more')}</p>
-          </div>
+            <p>FAQ</p>
+          </Link>
         </div>
       </div>
       <div className="main__image-wrapper">
@@ -76,20 +72,16 @@ const MainPage: React.FC<Props> = ({ mainHeaderY, mainHeaderMoblieY }) => {
           }}>
           <p ref={mainHeaderMoblieY}>{t('main.landing.button__deposit')}</p>
         </div>
-        <div
+        <Link
+          to={`/${lng}/faq`}
           onClick={() => {
             reactGA.event({
               category: PageEventType.MoveToExternalPage,
               action: ButtonEventType.LearnMoreButton,
             });
-            window.open(
-              lng === LanguageType.KO
-                ? 'https://elysia.gitbook.io/elysia.finance/'
-                : 'https://elysia.gitbook.io/elysia.finance/v/eng',
-            );
           }}>
-          <p>{t('main.landing.button__view-more')}</p>
-        </div>
+          <p>FAQ</p>
+        </Link>
       </div>
     </>
   );
