@@ -49,6 +49,7 @@ import {
   toCompact,
   toCompactForBignumber,
 } from 'src/utiles/formatters';
+import LanguageType from 'src/enums/LanguageType';
 import ElfiInfoHeader from './ElfiInfoHeader';
 import Questionmark from '../Questionmark';
 import useStakingRoundDataV2 from '../Staking/hooks/useStakingRoundDataV2';
@@ -547,11 +548,30 @@ const Governance = (): JSX.Element => {
               </section>
             </section>
             <section className="governance__elfi__info__third">
-              <header>
+              {/* <header>
                 <span>
                   <strong>03</strong>
                 </span>
                 <strong>{t('governance.vote.third.header')}</strong>
+                <p>{t('governance.vote.third.content')}</p>
+              </header> */}
+              <header>
+                <div>
+                  <span>
+                    <strong>03</strong>
+                  </span>
+                  <strong>{t('governance.vote.third.header')}</strong>
+                  <a
+                    href={
+                      lng === LanguageType.KO
+                        ? 'https://elysia.gitbook.io/elyfi-user-guide/v/korean-2/governance/governance-faq'
+                        : 'https://elysia.gitbook.io/elyfi-user-guide/governance'
+                    }
+                    rel="noopener noreferer"
+                    target="_blank">
+                    <p>{t('governance.vote.third.guide')}</p>
+                  </a>
+                </div>
                 <p>{t('governance.vote.third.content')}</p>
               </header>
               <section>
