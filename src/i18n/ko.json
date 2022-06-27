@@ -136,10 +136,11 @@
       "mining": "채굴 APR"
     },
     "dashboard": {
-      "token_mining_apr": "ELFI 채굴 APR",
+      "token_mining_apr": "채굴 APR",
       "total_deposit": "총 예치량",
-      "total_deposit--reward": "총 예치 수익률",
+      "total_deposit--reward": "예치 수익률",
       "total_deposit--yield": "총 예치 이자율",
+      "deposit--apy": "예치 APY",
       "total_borrowed": "총 대출금",
       "borrow_apy": "대출 APY",
       "deposit_apy": "예치 수익률",
@@ -239,7 +240,8 @@
       "guide": [
         "예치 APY는 예치 이자율이며, 복리로 계산됩니다.",
         "대출 APY는 대출 이자율이며 복리로 계산됩니다.",
-        "해당 머니풀에서 최근에 대출받은 대출 정보와 담보물의 정보를 나타냅니다."
+        "해당 머니풀에서 최근에 대출받은 대출 정보와 담보물의 정보를 나타냅니다.",
+        "예치 수익률은 예치 APY에 채굴 APR을 더한 값입니다. <br/> 예치 APY: 예치 이자율이며, 복리로 계산됩니다. <br/> 채굴 APR: 예치자는 엘리파이 머니풀에 크립토를 예치하면 참여 보상으로 ELFI 토큰을 분배받습니다. 이 때, ‘총 예치량 대비 분배되는 ELFI 달러가치’가 채굴 APR입니다."
       ]
     },
     "loan": {
@@ -293,10 +295,10 @@
       "loan_list__content": "거버넌스(DAO)의 결정에 따라 머니풀에서 실행된 대출입니다.",
       "onchain_list_zero": "현재 진행중인 의사결정 투표가 없습니다.",
       "offchain_list_zero": "현재 진행중인 데이터 검증 투표가 없습니다.",
-      "forum_button": "ELYFI Forum",
+      "forum_button": "ELYFI 포럼",
       "onChain_button": {
         "tally": "ELFI Tally",
-        "snapshot": "ELFI Snapshot"
+        "snapshot": "스냅샷"
       },
       "link": {
         "snapshot": "https://snapshot.org/#/elyfi-bsc.eth"
@@ -330,6 +332,7 @@
         },
         "third": {
           "header": "의사결정 과정에 참여하세요!",
+          "guide": "거버넌스 투표방법 >",
           "content": " 엘리파이 DAO 구성원들은 누구나 ELYFI 포럼에서 자유롭게 개선안을 제안하고, 스냅샷에서 투표를 통해 의사결정 과정에 참여할 수 있습니다.",
           "forum": " 엘리파이 프로토콜에 대해 자유롭게 제안하고 토론할 수 있는 공간입니다.",
           "snapshot": "거버넌스 참여자들의 제안에 대해 투표를 통해 반영 여부를 최종적으로 결정하는 공간입니다. 보유하고 있는 sELFI 토큰 만큼 권리를 행사할 수 있습니다."

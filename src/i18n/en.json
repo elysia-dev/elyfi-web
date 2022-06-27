@@ -136,11 +136,12 @@
       "mining": "Mining APR"
     },
     "dashboard": {
-      "token_mining_apr": "ELFI Mining APR",
+      "token_mining_apr": "Mining APR",
       "total_deposit": "Total Deposit",
-      "total_deposit--reward": "Total Deposit Rates",
+      "total_deposit--reward": "Deposit Rates",
       "total_deposit--yield": "Total Deposit Rates",
       "total_borrowed": "Total Borrowed",
+      "deposit--apy": "Deposit APY",
       "borrow_apy": "Borrow APY",
       "deposit_apy": "Deposit Rates",
       "deposit_amount": "Deposit amount",
@@ -232,7 +233,8 @@
       "guide": [
         "Deposit Rates is the value of the deposit APY plus the mining APR.",
         "Borrow APY is the borrow interest rate and is compounded.",
-        "Indicates information on loans and collateral recently borrowed from the money pool."
+        "Indicates information on loans and collateral recently borrowed from the money pool.",
+        "Deposit Rates is the value of the deposit APY plus the mining APR.<br/> Deposit APY: Deposit interest rate, compounded. <br/> Mining APR: Depositors receive ELFI tokens as a participation reward when depositing crypto into the ELFI money pool. At this time, ‘the value of ELFI distributed relative to the total deposit amount’ is the mining APR."
       ]
     },
     "loan": {
@@ -330,6 +332,7 @@
         },
         "third": {
           "header": "Participate in the decision-making process, and make ELYFI together!",
+          "guide": "Governance FAQ >",
           "content": "Any member of the ELYFI DAO can freely propose improvements on the ELYFI forum and participate in the decision-making process through voting in the snapshot.",
           "forum": "ELYFI Forum is a space where you can freely propose and discuss the ELYFI protocol.",
           "snapshot": "Snapshot is a space where the proposals of governance participants are finally decided whether to be reflected or not through voting. You can exercise your rights as much as the number of sELFI tokens you hold."
