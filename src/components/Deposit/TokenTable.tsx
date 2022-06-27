@@ -189,7 +189,7 @@ const TokenTable: React.FC<Props> = ({
                       </p>
                     )}
                   </p>
-                  {!depositInfo ? (
+                  {!depositInfo || !assetBondTokensBackedByEstate ? (
                     <Skeleton width={70} height={17.5} />
                   ) : (
                     <p className="bold">{data.value}</p>
