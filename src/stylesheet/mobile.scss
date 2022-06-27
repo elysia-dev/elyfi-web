@@ -2027,10 +2027,24 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
           > header {
             font-family: SpoqaHanSansNeo-Bold, Inter-Bold;
             font-size: 12px;
-            margin-bottom: 32px;
-            > span {
-              color: $elysia-color;
-              margin-right: 5px;
+            margin-bottom: 22px;
+            > div {
+              // display: flex;
+              // align-items: center;
+              > span {
+                color: $elysia-color;
+                margin-right: 5px;
+              }
+              > a {
+                > p {
+                  margin-top: 5px;
+                  margin-left: 22px;
+                  cursor: pointer;
+                  font-family: SpoqaHanSansNeo-Bold;
+                  color: #00a7ff;
+                  font-weight: 900;
+                }
+              }
             }
             > p {
               margin-top: 13px;
@@ -2094,7 +2108,7 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
           > h3 {
             display: flex;
             margin: 0px;
-            font-size: 13px;
+            font-size: 11px;
             > span {
               margin-left: 5px;
               display: flex;
@@ -2104,9 +2118,10 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
           > a {
             > p {
               cursor: pointer;
-              font-family: SpoqaHanSansNeo-Bold, Inter-Bold;
+              font-family: SpoqaHanSansNeo-Bold, Inter-Bold, Montserrat-bold;
               color: $elysia-color;
-              font-size: 13px;
+              font-weight: 900;
+              font-size: 11px;
             }
           }
         }

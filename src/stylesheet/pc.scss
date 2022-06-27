@@ -1816,9 +1816,21 @@ $device-width: 1190px;
               font-family: SpoqaHanSansNeo-Bold, Inter-Bold;
               font-size: 15px;
               margin-bottom: 32px;
-              > span {
-                color: $elysia-color;
-                margin-right: 5px;
+              > div {
+                display: flex;
+                > span {
+                  color: $elysia-color;
+                  margin-right: 5px;
+                }
+                > a {
+                  margin-left: auto;
+                  > p {
+                    cursor: pointer;
+                    font-family: SpoqaHanSansNeo-Bold;
+                    color: #00a7ff;
+                    font-weight: 900;
+                  }
+                }
               }
               > p {
                 margin-top: 13px;
@@ -1893,8 +1905,9 @@ $device-width: 1190px;
             > a {
               > p {
                 cursor: pointer;
-                font-family: SpoqaHanSansNeo-Bold, Inter-Bold;
+                font-family: SpoqaHanSansNeo-Bold, Inter-Bold, Montserrat-bold;
                 color: $elysia-color;
+                font-weight: 900;
                 font: 15px;
               }
             }
