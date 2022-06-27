@@ -16,20 +16,33 @@ import {
   navigationLink,
 } from 'src/core/data/navigationLink';
 import { useTranslation } from 'react-i18next';
+import useSWR from 'swr';
+import { BigNumber, constants } from 'ethers';
+import envs from 'src/core/envs';
 import ExternalLinkImage from 'src/assets/images/external_link.svg';
 import TxStatus from 'src/enums/TxStatus';
 import TxContext from 'src/contexts/TxContext';
 import LanguageContext from 'src/contexts/LanguageContext';
 import LanguageType from 'src/enums/LanguageType';
 import reactGA from 'react-ga';
+import Skeleton from 'react-loading-skeleton';
 import PageEventType from 'src/enums/PageEventType';
 import ButtonEventType from 'src/enums/ButtonEventType';
 
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import useCurrentRoute from 'src/hooks/useCurrnetRoute';
+import useReserveData from 'src/hooks/useReserveData';
 
 import Footer from 'src/components/Footer';
+import { depositInfoFetcher } from 'src/clients/BalancesFetcher';
+import { toPercent } from 'src/utiles/formatters';
+import { reserveTokenData } from 'src/core/data/reserves';
+import { pricesFetcher } from 'src/clients/Coingecko';
+import priceMiddleware from 'src/middleware/priceMiddleware';
+import Token from 'src/enums/Token';
+import TokenColors from 'src/enums/TokenColors';
+import useCalcMiningAPR from 'src/hooks/useCalcMiningAPR';
 import ErrorModal from '../Modal/ErrorModal';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
@@ -53,9 +66,23 @@ const Navigation: React.FunctionComponent<{
 }> = ({ hamburgerBar, setHamburgerBar }) => {
   // Hover Value
   const [globalNavHover, setGlobalNavHover] = useState(0);
+  const { data: depositInfo } = useSWR(
+    [{ eth: envs.dataPipeline.eth, bsc: envs.dataPipeline.bsc }],
+    {
+      fetcher: depositInfoFetcher(),
+    },
+  );
+  const { data: priceData } = useSWR(
+    envs.externalApiEndpoint.coingackoURL,
+    pricesFetcher,
+    {
+      use: [priceMiddleware],
+    },
+  );
 
   // Type.LNB Dropdown Nav Seleted
   const [selectedLocalNavIndex, setSelectedLocalNavIndex] = useState(0);
+  const { calcMiningAPR } = useCalcMiningAPR();
 
   const navigationRef = useRef<HTMLDivElement>(null);
   const localNavigationRef = useRef<HTMLDivElement>(null);
@@ -64,6 +91,7 @@ const Navigation: React.FunctionComponent<{
   const { lng } = useParams<{ lng: string }>();
   const { value: mediaQuery } = useMediaQueryType();
   const currentRoute = useCurrentRoute();
+  const headerAPR = useRef<HTMLDivElement>(null);
 
   const location = useLocation();
 
@@ -93,6 +121,16 @@ const Navigation: React.FunctionComponent<{
       : false;
   };
 
+  const tokens: {
+    name: Token.BUSD | Token.DAI | Token.USDT | Token.USDC;
+    color: string;
+  }[] = [
+    { name: Token.DAI, color: TokenColors.DAI },
+    { name: Token.USDT, color: TokenColors.USDT },
+    { name: Token.USDC, color: TokenColors.USDC },
+    { name: Token.BUSD, color: TokenColors.BUSD },
+  ];
+
   function setScrollTrigger() {
     function onScroll() {
       const currentPosition = window.pageYOffset;
@@ -108,6 +146,27 @@ const Navigation: React.FunctionComponent<{
     setSelectedLocalNavIndex(0);
     setGlobalNavHover(0);
   };
+
+  useEffect(() => {
+    if (mediaQuery !== MediaQuery.Mobile || !headerAPR.current || !depositInfo)
+      return;
+    let a = 0;
+    const animation = () => {
+      if (!headerAPR.current) return;
+      if (a < -200) {
+        a = 100;
+      }
+      headerAPR.current.style.transform = `translateX(${a}%)`;
+      a += -0.3;
+      requestAnimationFrame(animation);
+    };
+
+    if (mediaQuery !== MediaQuery.Mobile) {
+      headerAPR.current.style.transform = `translateX(0%)`;
+      return;
+    }
+    animation();
+  }, [headerAPR.current, depositInfo, mediaQuery]);
 
   const setMediaQueryMetamask = (ref: 'mobile' | 'pc') => {
     return (
@@ -196,14 +255,16 @@ const Navigation: React.FunctionComponent<{
               <p
                 style={{
                   cursor: 'pointer',
-                  fontWeight: currentRoute === _index ? 'bold' : 400,
+                  // fontWeight: currentRoute === _index ? 'bold' : 400,
                 }}>
                 {t(_data.i18nKeyword).toUpperCase()}
               </p>
             </div>
-            {!['navigation.dashboard', 'navigation.governance'].includes(
-              _data.i18nKeyword.toLowerCase(),
-            ) && (
+            {![
+              'navigation.dashboard',
+              'navigation.governance',
+              'navigation.faq',
+            ].includes(_data.i18nKeyword.toLowerCase()) && (
               <div
                 className="navigation__arrow"
                 style={{
@@ -470,6 +531,55 @@ const Navigation: React.FunctionComponent<{
               }}
             />
           }>
+          <header className="navigation__apy">
+            <div ref={headerAPR}>
+              {tokens.map((token) => {
+                return (
+                  <>
+                    <h3
+                      style={{
+                        color: token.color,
+                      }}>
+                      {token.name} :
+                    </h3>
+                    <p>
+                      &nbsp;
+                      {depositInfo ? (
+                        toPercent(
+                          depositInfo?.find(
+                            (info) =>
+                              info.tokenName ===
+                              reserveTokenData[token.name].name,
+                          )?.depositAPY || constants.Zero,
+                        )
+                      ) : (
+                        <Skeleton width={40} height-={40} />
+                      )}{' '}
+                      ({t('navigation.mining')} :
+                      {depositInfo ? (
+                        toPercent(
+                          calcMiningAPR(
+                            priceData?.elfiPrice || 0,
+                            BigNumber.from(
+                              depositInfo?.find(
+                                (info) =>
+                                  info.tokenName ===
+                                  reserveTokenData[token.name].name,
+                              )?.totalLTokenSupply || constants.Zero,
+                            ),
+                            reserveTokenData[token.name].decimals,
+                          ) || constants.Zero,
+                        )
+                      ) : (
+                        <Skeleton width={40} height-={40} />
+                      )}
+                      )
+                    </p>
+                  </>
+                );
+              })}
+            </div>
+          </header>
           <div className="navigation__container">
             <div className="navigation__wrapper">
               <div>

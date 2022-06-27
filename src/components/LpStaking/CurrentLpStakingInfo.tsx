@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Skeleton from 'react-loading-skeleton';
 import Token from 'src/enums/Token';
 import { toCompact, toCompactForBignumber } from 'src/utiles/formatters';
+import Questionmark from '../Questionmark';
 
 interface Props {
   poolApr: number;
@@ -29,7 +30,15 @@ const CurrentLpStakingInfo: React.FC<Props> = ({
     <div className="staking__v2__content">
       <div>
         <div>
-          <p>{t('staking.elfi.apr')}</p>
+          <p>
+            {t('staking.elfi.apr')}
+            <span
+              style={{
+                marginLeft: 5,
+              }}>
+              <Questionmark content={t('staking.aprGuide')} />
+            </span>
+          </p>
           {isLoading ? (
             <Skeleton width={60} height={15} />
           ) : (

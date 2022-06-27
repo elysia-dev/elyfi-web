@@ -281,17 +281,6 @@ const Dashboard: React.FunctionComponent = () => {
           <RewardPlanButton stakingType={'deposit'} isStaking={false} />
         </Suspense>
         <div className="deposit__table__wrapper">
-          {isEnoughWide && (
-            <div className="deposit__remote-control__wrapper">
-              <Suspense fallback={null}>
-                <RemoteControl
-                  reserveState={reserveState}
-                  priceData={priceData}
-                  supportedBalances={supportedBalances}
-                />
-              </Suspense>
-            </div>
-          )}
           <Suspense fallback={<div style={{ height: 400 }} />}>
             {supportedBalances.map((balance, index) => {
               const reserve = reserveState.reserves.find(

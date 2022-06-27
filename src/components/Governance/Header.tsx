@@ -29,7 +29,7 @@ const Header: React.FC<Props> = ({ headerRef }) => {
           <h2>{t('governance.title')}</h2>
           <p>{t('governance.content')}</p>
         </div>
-        <div className="governance__content__button__wrapper">
+        {/* <div className="governance__content__button__wrapper">
           <div
             className="governance__content__button"
             onClick={() => navigate(`/${lng}/staking/ELFI`)}>
@@ -46,13 +46,13 @@ const Header: React.FC<Props> = ({ headerRef }) => {
             }>
             <p>{t('governance.button--governance_faq')}</p>
           </div>
-        </div>
+        </div> */}
       </section>
-      <section className="governance__elyfi-graph">
+      {/* <section className="governance__elyfi-graph">
         <Suspense fallback={<div style={{ height: 120 }} />}>
           <GovernanceGuideBox />
         </Suspense>
-      </section>
+      </section> */}
     </>
   );
 };

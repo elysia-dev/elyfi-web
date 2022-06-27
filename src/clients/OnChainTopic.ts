@@ -13,6 +13,8 @@ export interface IProposals {
   totalVotesCastInSupport: BigNumber | number;
   timestamp: string;
   id: string;
+  summary: string;
+  title: string;
 }
 export interface IOnChainTopic {
   proposals: IProposals[];

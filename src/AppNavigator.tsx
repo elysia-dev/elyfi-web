@@ -19,6 +19,7 @@ const LegacyStaking = lazy(() => import('src/components/LegacyStaking'));
 const LegacyStakingLP = lazy(
   () => import('src/components/LegacyStaking/LegacyLpstaking'),
 );
+const Faq = lazy(() => import('src/components/FAQ'));
 
 import 'src/stylesheet/public.scss';
 import 'src/stylesheet/pc.scss';
@@ -198,6 +199,14 @@ const AppNavigator: React.FC = () => {
               }
             />
           </Route>
+          <Route
+            path="faq"
+            element={
+              <Suspense fallback={nullFallbackArea()}>
+                <Faq />
+              </Suspense>
+            }
+          />
         </Route>
       </Routes>
     </div>

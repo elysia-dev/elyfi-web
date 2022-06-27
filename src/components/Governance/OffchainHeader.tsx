@@ -1,13 +1,15 @@
 import { useTranslation } from 'react-i18next';
-import { TopicList } from 'src/clients/OffChainTopic';
+import { INapData, TopicList } from 'src/clients/OffChainTopic';
 import MainnetType from 'src/enums/MainnetType';
 import MediaQuery from 'src/enums/MediaQuery';
 import moment from 'moment';
+import Guide from '../Guide';
+import Questionmark from '../Questionmark';
 
 interface Props {
   mediaQuery: MediaQuery;
   mainnetType: MainnetType;
-  offChainNapData: TopicList[] | undefined;
+  offChainNapData: INapData[] | undefined;
 }
 
 const OffchainHeader: React.FC<Props> = ({
@@ -17,62 +19,24 @@ const OffchainHeader: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
 
-  return mediaQuery === MediaQuery.PC ? (
+  return (
     <>
-      <h3>
-        {t('governance.data_verification', {
-          count:
-            offChainNapData &&
-            offChainNapData
-              .filter((data: any) => data.network === mainnetType)
-              .filter((data: any) => {
-                return moment().isBefore(data.endedDate);
-              }).length,
-        })}
-      </h3>
-      <div>
-        <p>{t('governance.data_verification__content')}</p>
-        <a
-          href="https://forum.elyfi.world/"
-          target="_blank"
-          rel="noopener noreferer">
-          <div
-            className="deposit__table__body__amount__button"
-            style={{
-              width: 230,
-            }}>
-            <p>{t('governance.forum_button')}</p>
-          </div>
-        </a>
-      </div>
-    </>
-  ) : (
-    <>
-      <div>
+      <header>
         <h3>
-          {t('governance.data_verification', {
-            count:
-              offChainNapData &&
-              offChainNapData
-                .filter((data: any) => data.network === mainnetType)
-                .filter((data: any) => moment().isBefore(data.endedDate))
-                .length,
-          })}
+          {t('governance.data_verification')}
+          <span>
+            <Questionmark content={t('governance.guide.offchain')} />
+          </span>
         </h3>
         <a
           href="https://forum.elyfi.world/"
           target="_blank"
           rel="noopener noreferer">
-          <div
-            className="deposit__table__body__amount__button"
-            style={{
-              width: 150,
-            }}>
-            <p>{t('governance.forum_button')}</p>
-          </div>
+          <p>
+            {t('governance.forum_button')} {'>'}
+          </p>
         </a>
-      </div>
-      <p>{t('governance.data_verification__content')}</p>
+      </header>
     </>
   );
 };

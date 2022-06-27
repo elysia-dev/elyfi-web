@@ -6,6 +6,7 @@ import {
   toCompactForBignumber,
   toPercentWithoutSign,
 } from 'src/utiles/formatters';
+import Questionmark from '../Questionmark';
 
 interface Props {
   poolApr: BigNumber;
@@ -24,7 +25,15 @@ const CurrentStakingInfo: React.FC<Props> = ({
   return (
     <section className="staking__round__header">
       <div>
-        <p>{t('staking.elfi.apr')}</p>
+        <p>
+          {t('staking.elfi.apr')}
+          <span
+            style={{
+              marginLeft: 5,
+            }}>
+            <Questionmark content={t('staking.aprGuide')} />
+          </span>
+        </p>
         {isLoading ? (
           <Skeleton width={50} height={20} />
         ) : (

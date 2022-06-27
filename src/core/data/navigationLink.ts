@@ -67,4 +67,10 @@ export const navigationLink: INavigation[] = [
       },
     ],
   },
+  {
+    id: 5,
+    type: NavigationType.Link,
+    location: `/faq`,
+    i18nKeyword: 'navigation.faq',
+  },
 ];

@@ -49,7 +49,7 @@ const MarketDetailsBody: React.FunctionComponent<{
       <div className="detail__data-wrapper__info">
         <div style={{ height: 235 }}>
           <div>
-            <p>{t('dashboard.deposit_apy')}</p>
+            <p>{t('dashboard.deposit--apy')}</p>
             <p>{depositAPY}</p>
           </div>
           <div>
@@ -125,7 +125,7 @@ const MarketDetailsBody: React.FunctionComponent<{
           <h2>{depositReward}</h2>
         </div>
         <div>
-          <p>{t('dashboard.deposit_apy')}</p>
+          <p>{t('dashboard.deposit--apy')}</p>
           <p>{depositAPY}</p>
         </div>
         <div>
