@@ -48,11 +48,11 @@ const Header: React.FC<Props> = ({ headerRef }) => {
           </div>
         </div>
       </section>
-      <section className="governance__elyfi-graph">
+      {/* <section className="governance__elyfi-graph">
         <Suspense fallback={<div style={{ height: 120 }} />}>
           <GovernanceGuideBox />
         </Suspense>
-      </section>
+      </section> */}
     </>
   );
 };
