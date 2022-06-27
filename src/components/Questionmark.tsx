@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 
@@ -54,7 +54,7 @@ function Questionmark(props: Props): JSX.Element {
                 textAlign: 'left',
                 width: value === MediaQuery.PC ? 200 : 120,
               }}>
-              {props.content}
+              <Trans>{props.content}</Trans>
             </p>
           </div>
           <div
