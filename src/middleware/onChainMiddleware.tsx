@@ -40,7 +40,6 @@ export const onChainGovernancBsceMiddleware: Middleware =
               const count =
                 snapShotData.title.match(/(NAP\d+\s:)/g)?.[0].length;
               return setOnChainData((_data: any) => {
-                console.log(_data);
                 return [
                   ..._data,
                   {
