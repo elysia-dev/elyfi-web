@@ -67,7 +67,6 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
       height: 32px;
       max-width: 1190px;
       margin: auto;
-      font-size: 8px;
       overflow: hidden;
       > div {
         display: flex;
@@ -75,9 +74,11 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
           flex: none;
           font-family: Inter;
           margin: 0px;
+          font-size: 12px;
         }
         > p {
           flex: none;
+          font-size: 11px;
         }
         > h3:nth-child(3),
         h3:nth-child(5),
