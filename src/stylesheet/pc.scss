@@ -63,12 +63,15 @@ $device-width: 1190px;
         height: 33px;
         max-width: 1190px;
         margin: auto;
-        font-size: 12px;
         > div {
           display: flex;
           > h3 {
             font-family: Inter;
             margin: 0px;
+            font-size: 13px;
+          }
+          > p {
+            font-size: 12px;
           }
           > h3:nth-child(3),
           h3:nth-child(5),
