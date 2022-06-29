@@ -1837,6 +1837,9 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
               font-family: SpoqaHanSansNeo-Bold, Inter-bold;
               color: #3ca3ff;
               text-align: center;
+              &.ELYIP {
+                color: #00beff;
+              }
             }
           }
           > section {
