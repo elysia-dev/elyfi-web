@@ -296,8 +296,8 @@ const Governance = (): JSX.Element => {
                                   rel="noopener noreferer"
                                   target="_blank">
                                   <article key={`ELYIP_${index}`}>
-                                    <header>
-                                      <p className="ELYIP">{elyIPData.nap}</p>
+                                    <header className="ELYIP">
+                                      <p>{elyIPData.nap}</p>
                                     </header>
                                     <section>
                                       <p>{elyIPData.title}</p>

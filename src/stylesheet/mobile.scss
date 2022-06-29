@@ -1831,15 +1831,18 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
             background-color: #d9edff;
             border-radius: 13px;
             margin-bottom: 15px;
+            &.ELYIP {
+              background-color: #d3f4ff;
+              > p {
+                color: #00beff;
+              }
+            }
             > p {
               font-size: 13px;
               width: 90px;
               font-family: SpoqaHanSansNeo-Bold, Inter-bold;
               color: #3ca3ff;
               text-align: center;
-              &.ELYIP {
-                color: #00beff;
-              }
             }
           }
           > section {
