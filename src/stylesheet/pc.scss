@@ -1619,6 +1619,12 @@ $device-width: 1190px;
               background-color: #d9edff;
               border-radius: 13px;
               margin-bottom: 15px;
+              &.ELYIP {
+                background-color: #d3f4ff;
+                > p {
+                  color: #00beff;
+                }
+              }
               > p {
                 cursor: pointer;
                 font-size: 13px;

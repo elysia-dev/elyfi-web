@@ -11,7 +11,7 @@ const questionBox = {
   visible: false,
 };
 
-const Faq = () => {
+const Faq = (): JSX.Element => {
   const { t, i18n } = useTranslation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
