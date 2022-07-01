@@ -67,6 +67,7 @@ $bold: 'Inter-Bold', 'SpoqaHanSansNeo-Bold', 'Montserrat-bold', 'Inter-Bold';
 
 @mixin hover__soft-background {
   transition: all 0.2s ease;
+  user-select: none;
   &:hover {
     box-shadow: 0px 0px 6px #00a7ff66;
     transition: all 0.2s ease;
@@ -77,6 +78,7 @@ $bold: 'Inter-Bold', 'SpoqaHanSansNeo-Bold', 'Montserrat-bold', 'Inter-Bold';
   box-shadow: 0px 0px 0px #00000029;
   transition: all 0.2s ease;
   border: 1px solid $elysia-color;
+  user-select: none;
   > p {
     border-bottom: 0px;
     background: linear-gradient(
@@ -111,6 +113,7 @@ $bold: 'Inter-Bold', 'SpoqaHanSansNeo-Bold', 'Montserrat-bold', 'Inter-Bold';
   // box-shadow: 0px 0px 0px #00000029;
   transition: all 0.2s ease;
   border: 1px solid $elysia-color;
+  user-select: none;
   > p {
     border-bottom: 0px;
     background: linear-gradient(
@@ -144,6 +147,7 @@ $bold: 'Inter-Bold', 'SpoqaHanSansNeo-Bold', 'Montserrat-bold', 'Inter-Bold';
 @mixin hover__box-shadow--white {
   box-shadow: 0px 0px 0px #00000029;
   transition: all 0.2s ease;
+  user-select: none;
   > p {
     border-bottom: 0px;
     background: linear-gradient(to right, #f0f0f1, #f0f0f1 50%, #ffffff 50%);
@@ -176,12 +180,6 @@ h2 {
   font-family: $bold;
   color: $font-color;
   font-weight: bold;
-  cursor: default;
-  -ms-user-select: none;
-  -moz-user-select: -moz-none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  user-select: none;
   margin: 0;
 }
 p,
@@ -190,12 +188,6 @@ span {
   font-family: 'Inter', 'SpoqaHanSansNeo';
   color: $font-color;
   text-decoration: none;
-  cursor: default;
-  -ms-user-select: none;
-  -moz-user-select: -moz-none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  user-select: none;
   margin: 0;
 }
 .montserrat {
@@ -565,6 +557,7 @@ input[type='number'] {
     &__image-wrapper {
       position: relative;
       display: flex;
+      user-select: none;
       .dom {
         position: relative;
       }
@@ -596,7 +589,7 @@ input[type='number'] {
 
       &__button {
         display: flex;
-
+        user-select: none;
         > div,
         > a {
           &:first-child {
@@ -633,6 +626,7 @@ input[type='number'] {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        user-select: none;
         &--01 {
           &--01 {
             top: 100px;
@@ -779,6 +773,7 @@ input[type='number'] {
             border-radius: 28px;
             @include hover__box-shadow--white;
             > p {
+              user-select: none;
               text-align: center;
               color: #ffffff;
               cursor: pointer;
