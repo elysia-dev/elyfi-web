@@ -11,7 +11,6 @@ import axios from 'axios';
 import envs from 'src/core/envs';
 import Skeleton from 'react-loading-skeleton';
 import { useTranslation } from 'react-i18next';
-import moment from 'moment';
 import { useParams } from 'react-router';
 import useSWR from 'swr';
 import {
@@ -37,7 +36,6 @@ import {
 } from 'src/middleware/offChainMiddleware';
 import { onChainQuery } from 'src/queries/onChainQuery';
 import useReserveData from 'src/hooks/useReserveData';
-import TimeSVG from 'src/assets/images/governance/time.svg';
 import ELFISVG from 'src/assets/images/token/ELFI.svg';
 import ArrowSVG from 'src/assets/images/governance/arrow.svg';
 import SnapShotImg from 'src/assets/images/governance/Snapshot_logo.png';
@@ -46,23 +44,16 @@ import { pricesFetcher } from 'src/clients/Coingecko';
 import Token from 'src/enums/Token';
 import {
   formatCommaSmallFourDisits,
-  toCompact,
   toCompactForBignumber,
 } from 'src/utiles/formatters';
 import LanguageType from 'src/enums/LanguageType';
 import ElfiInfoHeader from './ElfiInfoHeader';
 import Questionmark from '../Questionmark';
 import useStakingRoundDataV2 from '../Staking/hooks/useStakingRoundDataV2';
+import SubHeader from './SubHeader';
+import GovernanceItem from './GovernanceItem';
 
-const OffchainHeader = lazy(() => import('./OffchainHeader'));
-const OnchainHeader = lazy(() => import('./OnchainHeader'));
 const Header = lazy(() => import('./Header'));
-const OffChainContainer = lazy(
-  () => import('src/components/Governance/OffchainContainer'),
-);
-const OnchainContainer = lazy(
-  () => import('src/components/Governance/OnchainContainer'),
-);
 const AssetList = lazy(() => import('src/components/AssetList'));
 
 const Governance = (): JSX.Element => {
@@ -208,13 +199,14 @@ const Governance = (): JSX.Element => {
 
         <section className="governance__validation governance__header">
           <div>
-            <Suspense fallback={<div style={{ height: 30 }} />}>
-              <OffchainHeader
-                mainnetType={mainnetType}
-                offChainNapData={offChainNapData}
-                mediaQuery={mediaQuery}
-              />
-            </Suspense>
+            {/* <Suspense fallback={<div style={{ height: 30 }} />}> */}
+            <SubHeader
+              link={'https://forum.elyfi.world/'}
+              content={t('governance.data_verification')}
+              questionmark={t('governance.guide.offchain')}
+              button={t('governance.forum_button')}
+            />
+            {/* </Suspense> */}
           </div>
 
           <Suspense fallback={<div style={{ height: 600 }} />}>
@@ -235,123 +227,18 @@ const Governance = (): JSX.Element => {
                         )[offChainElyIPData.length - index - 1];
                         return (
                           <>
-                            <a
-                              href={data.link}
-                              rel="noopener noreferer"
-                              target="_blank">
-                              <article key={`NAP_${index}`}>
-                                <header>
-                                  <p>{data.nap}</p>
-                                </header>
-                                <section>
-                                  <p>{data.title}</p>
-                                  <p>{data.summary}</p>
-                                </section>
-                                <div>
-                                  {data.endedDate &&
-                                    moment().isBefore(data.endedDate) && (
-                                      <>
-                                        <img src={TimeSVG} />
-                                        &nbsp;
-                                        <p>
-                                          {moment
-                                            .duration(
-                                              moment().diff(data.endedDate),
-                                            )
-                                            .hours() * -1}{' '}
-                                          hours{' '}
-                                          {moment
-                                            .duration(
-                                              moment().diff(data.endedDate),
-                                            )
-                                            .minutes() * -1}{' '}
-                                          minutes left
-                                        </p>
-                                      </>
-                                    )}
-                                  <div>
-                                    <div
-                                      style={{
-                                        backgroundColor: moment().isBefore(
-                                          data.endedDate,
-                                        )
-                                          ? '#57b275'
-                                          : '#7346E4',
-                                      }}
-                                    />
-                                    <p>
-                                      &nbsp;
-                                      {moment().isBefore(data.endedDate)
-                                        ? `Active`
-                                        : `Closed`}
-                                    </p>
-                                  </div>
-                                </div>
-                              </article>
-                            </a>
+                            <GovernanceItem
+                              data={data}
+                              isSnapshot={false}
+                              key={`NAP_${index}`}
+                            />
                             {offChainElyIPData &&
                               offChainElyIPData.length === 3 && (
-                                <a
-                                  href={elyIPData.link}
-                                  rel="noopener noreferer"
-                                  target="_blank">
-                                  <article key={`ELYIP_${index}`}>
-                                    <header className="ELYIP">
-                                      <p>{elyIPData.nap}</p>
-                                    </header>
-                                    <section>
-                                      <p>{elyIPData.title}</p>
-                                      <p>{elyIPData.summary}</p>
-                                    </section>
-                                    <div>
-                                      {elyIPData.endedDate &&
-                                        moment().isBefore(
-                                          elyIPData.endedDate,
-                                        ) && (
-                                          <>
-                                            <img src={TimeSVG} />
-                                            <p>
-                                              {moment
-                                                .duration(
-                                                  moment().diff(
-                                                    elyIPData.endedDate,
-                                                  ),
-                                                )
-                                                .hours() * -1}{' '}
-                                              hours{' '}
-                                              {moment
-                                                .duration(
-                                                  moment().diff(
-                                                    elyIPData.endedDate,
-                                                  ),
-                                                )
-                                                .minutes() * -1}{' '}
-                                              minutes left
-                                            </p>
-                                          </>
-                                        )}
-                                      <div>
-                                        <div
-                                          style={{
-                                            backgroundColor: moment().isBefore(
-                                              elyIPData.endedDate,
-                                            )
-                                              ? '#57b275'
-                                              : '#7346E4',
-                                          }}
-                                        />
-                                        <p>
-                                          &nbsp;
-                                          {moment().isBefore(
-                                            elyIPData.endedDate,
-                                          )
-                                            ? `Active`
-                                            : `Closed`}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </article>
-                                </a>
+                                <GovernanceItem
+                                  data={elyIPData}
+                                  isSnapshot={false}
+                                  key={`ELYIP_${index}`}
+                                />
                               )}
                           </>
                         );
@@ -369,14 +256,12 @@ const Governance = (): JSX.Element => {
 
         <section className="governance__onchain-vote governance__header">
           <div>
-            <Suspense fallback={<div style={{ height: 50 }} />}>
-              <OnchainHeader
-                mainnetType={mainnetType}
-                onChainData={onChainData}
-                onChainSnapshotData={onChainSnapshotData}
-                mediaQuery={mediaQuery}
-              />
-            </Suspense>
+            <SubHeader
+              link={t(`governance.link.snapshot`)}
+              content={t('governance.on_chain_voting')}
+              questionmark={t('governance.guide.onchain')}
+              button={t(`governance.onChain_button.snapshot`)}
+            />
           </div>
 
           <Suspense fallback={<div style={{ height: 600 }} />}>
@@ -385,55 +270,13 @@ const Governance = (): JSX.Element => {
               <Skeleton width={'100%'} height={600} />
             ) : onChainSnapshotData && onChainSnapshotData.length > 0 ? (
               <div className="governance__grid">
-                {onChainSnapshotData.map((data: any) => {
-                  const endedAt = moment.unix(data.timestamp).format();
+                {onChainSnapshotData.map((data: any, index) => {
                   return (
-                    <a
-                      href={`https://snapshot.org/#/elyfi-bsc.eth/proposal/${data.id}`}
-                      rel="noopener noreferer"
-                      target="_blank">
-                      <article>
-                        <header>
-                          <p>{data.data.description}</p>
-                        </header>
-                        <section>
-                          <p>{data.title}</p>
-                          <p>{data.summary}</p>
-                        </section>
-                        <div>
-                          {moment().isBefore(endedAt) && (
-                            <>
-                              <img src={TimeSVG} />
-                              &nbsp;
-                              <p>
-                                {`${
-                                  moment
-                                    .duration(moment().diff(endedAt))
-                                    .hours() * -1
-                                } hours ${
-                                  moment
-                                    .duration(moment().diff(endedAt))
-                                    .minutes() * -1
-                                } minutes left`}
-                              </p>
-                            </>
-                          )}
-                          <div>
-                            <div
-                              style={{
-                                backgroundColor: moment().isBefore(endedAt)
-                                  ? '#57b275'
-                                  : '#7346E4',
-                              }}
-                            />
-                            <p>
-                              &nbsp;
-                              {moment().isBefore(endedAt) ? `Active` : `Closed`}
-                            </p>
-                          </div>
-                        </div>
-                      </article>
-                    </a>
+                    <GovernanceItem
+                      data={data}
+                      isSnapshot={true}
+                      key={`Snapshot_${index}`}
+                    />
                   );
                 })}
               </div>
@@ -447,30 +290,18 @@ const Governance = (): JSX.Element => {
         <section className="governance__elfi== governance__header">
           <div>
             <Suspense fallback={<div style={{ height: 30 }} />}>
-              <ElfiInfoHeader
-                mainnetType={mainnetType}
-                offChainNapData={offChainNapData}
-                mediaQuery={mediaQuery}
-              />
+              <SubHeader content={t('governance.vote.header')} />
             </Suspense>
           </div>
           <section className="governance__elfi__info">
             <section className="governance__elfi__info__first">
-              <header>
-                <div>
-                  <span>
-                    <strong>01</strong>
-                  </span>
-                  <strong>{t('governance.vote.first.header')}</strong>
-                  <a
-                    href="https://coinmarketcap.com/currencies/elyfi/"
-                    rel="noopener noreferer"
-                    target="_blank">
-                    <p>{t('governance.vote.first.market')}</p>
-                  </a>
-                </div>
-                <p>{t('governance.vote.first.content')}</p>
-              </header>
+              <ElfiInfoHeader
+                index={'01'}
+                content={t('governance.vote.first.header')}
+                link={'https://coinmarketcap.com/currencies/elyfi/'}
+                linkContent={t('governance.vote.first.market')}
+                subContent={t('governance.vote.first.content')}
+              />
               <section>
                 <figure>
                   <img src={ELFISVG} />
@@ -519,21 +350,13 @@ const Governance = (): JSX.Element => {
               </section>
             </section>
             <section className="governance__elfi__info__second">
-              <header>
-                <div>
-                  <span>
-                    <strong>02</strong>
-                  </span>
-                  <strong>{t('governance.vote.second.header')}</strong>
-                  <a
-                    href={`/${lng}/staking/ELFI`}
-                    rel="noopener noreferer"
-                    target="_blank">
-                    <p>{t('governance.vote.second.staking')}</p>
-                  </a>
-                </div>
-                <p>{t('governance.vote.second.content')}</p>
-              </header>
+              <ElfiInfoHeader
+                index={'02'}
+                content={t('governance.vote.second.header')}
+                link={`/${lng}/staking/ELFI`}
+                linkContent={t('governance.vote.second.staking')}
+                subContent={t('governance.vote.second.content')}
+              />
               <section>
                 <article>
                   <div>
@@ -548,32 +371,17 @@ const Governance = (): JSX.Element => {
               </section>
             </section>
             <section className="governance__elfi__info__third">
-              {/* <header>
-                <span>
-                  <strong>03</strong>
-                </span>
-                <strong>{t('governance.vote.third.header')}</strong>
-                <p>{t('governance.vote.third.content')}</p>
-              </header> */}
-              <header>
-                <div>
-                  <span>
-                    <strong>03</strong>
-                  </span>
-                  <strong>{t('governance.vote.third.header')}</strong>
-                  <a
-                    href={
-                      lng === LanguageType.KO
-                        ? 'https://elysia.gitbook.io/elyfi-user-guide/v/korean-2/governance/governance-faq'
-                        : 'https://elysia.gitbook.io/elyfi-user-guide/governance'
-                    }
-                    rel="noopener noreferer"
-                    target="_blank">
-                    <p>{t('governance.vote.third.guide')}</p>
-                  </a>
-                </div>
-                <p>{t('governance.vote.third.content')}</p>
-              </header>
+              <ElfiInfoHeader
+                index={'03'}
+                content={t('governance.vote.third.header')}
+                link={
+                  lng === LanguageType.KO
+                    ? 'https://elysia.gitbook.io/elyfi-user-guide/v/korean-2/governance/governance-faq'
+                    : 'https://elysia.gitbook.io/elyfi-user-guide/governance'
+                }
+                linkContent={t('governance.vote.third.guide')}
+                subContent={t('governance.vote.third.content')}
+              />
               <section>
                 <article>
                   <a
@@ -605,57 +413,6 @@ const Governance = (): JSX.Element => {
             </section>
           </section>
         </section>
-
-        {/* <section className="governance__loan governance__header">
-          <Suspense fallback={<div style={{ height: 300 }} />}>
-            <div>
-              <div>
-                <h3>
-                  {t('governance.loan_list', {
-                    count: assetBondTokensBackedByEstate
-                      ? assetBondTokensBackedByEstate.length
-                      : 0,
-                  })}
-                </h3>
-              </div>
-              <p>{t('governance.loan_list__content')}</p>
-            </div>
-            <>
-              {assetBondTokensBackedByEstate.length === 0 ? (
-                isAssetList ? (
-                  <div className="loan__list--null">
-                    <p>{t('loan.loan_list--null')}</p>
-                  </div>
-                ) : (
-                  <Skeleton width={'100%'} height={300} />
-                )
-              ) : (
-                <>
-                  <AssetList
-                    prevRoute={'governance'}
-                    assetBondTokens={
-                      [...(assetBondTokensBackedByEstate || [])].slice(
-                        0,
-                        pageNumber * defaultShowingLoanData,
-                      ) || []
-                    }
-                  />
-                  {assetBondTokensBackedByEstate &&
-                    assetBondTokensBackedByEstate.length >=
-                      pageNumber * defaultShowingLoanData && (
-                      <div>
-                        <button
-                          className="portfolio__view-button"
-                          onClick={() => viewMoreHandler()}>
-                          {t('loan.view-more')}
-                        </button>
-                      </div>
-                    )}
-                </>
-              )}
-            </>
-          </Suspense>
-        </section> */}
       </div>
     </>
   );
