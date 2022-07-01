@@ -48,10 +48,10 @@ import {
 } from 'src/utiles/formatters';
 import LanguageType from 'src/enums/LanguageType';
 import ElfiInfoHeader from './ElfiInfoHeader';
-import Questionmark from '../Questionmark';
 import useStakingRoundDataV2 from '../Staking/hooks/useStakingRoundDataV2';
 import SubHeader from './SubHeader';
 import GovernanceItem from './GovernanceItem';
+import ElfiInfoItem from './ElfiInfoItem';
 
 const Header = lazy(() => import('./Header'));
 const AssetList = lazy(() => import('src/components/AssetList'));
@@ -307,45 +307,27 @@ const Governance = (): JSX.Element => {
                   <img src={ELFISVG} />
                 </figure>
                 <article>
-                  <div>
-                    <p>{t('governance.vote.first.price')}</p>
-                    <p>${priceData?.elfiPrice}</p>
-                  </div>
-                  <div>
-                    <p>
-                      {t('governance.vote.first.totalSupply')}{' '}
-                      <span>
-                        <Questionmark
-                          content={t('governance.vote.first.guide.0')}
-                        />
-                      </span>
-                    </p>
-                    <p>100,000,000 ELFI</p>
-                  </div>
-                  <div>
-                    <p>
-                      {t('governance.vote.first.totalCirculation')}{' '}
-                      <span>
-                        <Questionmark
-                          content={t('governance.vote.first.guide.1')}
-                        />
-                      </span>
-                    </p>
-                    <p>100,000,000 ELFI</p>
-                  </div>
-                  <div>
-                    <p>
-                      {t('governance.vote.first.circulatingSupply')}{' '}
-                      <span>
-                        <Questionmark
-                          content={t('governance.vote.first.guide.2')}
-                        />
-                      </span>
-                    </p>
-                    <p>
-                      {formatCommaSmallFourDisits(supply).split('.')[0]} ELFI
-                    </p>
-                  </div>
+                  <ElfiInfoItem
+                    title={t('governance.vote.first.price')}
+                    content={`$${priceData?.elfiPrice}`}
+                  />
+                  <ElfiInfoItem
+                    title={t('governance.vote.first.totalSupply')}
+                    content={'100,000,000 ELFI'}
+                    questionmark={t('governance.vote.first.guide.0')}
+                  />
+                  <ElfiInfoItem
+                    title={t('governance.vote.first.totalCirculation')}
+                    content={'100,000,000 ELFI'}
+                    questionmark={t('governance.vote.first.guide.1')}
+                  />
+                  <ElfiInfoItem
+                    title={t('governance.vote.first.circulatingSupply')}
+                    content={`${
+                      formatCommaSmallFourDisits(supply).split('.')[0]
+                    } ELFI`}
+                    questionmark={t('governance.vote.first.guide.2')}
+                  />
                 </article>
               </section>
             </section>
@@ -359,14 +341,14 @@ const Governance = (): JSX.Element => {
               />
               <section>
                 <article>
-                  <div>
-                    <p>{t('governance.vote.second.totalStaking')}</p>
-                    <p>{toCompactForBignumber(totalPrincipal)} ELFI</p>
-                  </div>
-                  <div>
-                    <p>{t('governance.vote.second.elfiStaker')}</p>
-                    <p>29</p>
-                  </div>
+                  <ElfiInfoItem
+                    title={t('governance.vote.second.totalStaking')}
+                    content={`${toCompactForBignumber(totalPrincipal)} ELFI`}
+                  />
+                  <ElfiInfoItem
+                    title={t('governance.vote.second.elfiStaker')}
+                    content={'29'}
+                  />
                 </article>
               </section>
             </section>
