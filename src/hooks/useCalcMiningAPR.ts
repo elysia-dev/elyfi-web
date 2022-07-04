@@ -42,7 +42,7 @@ const useCalcMiningAPR = (): {
 
       return utils.parseUnits(
         (
-          ((mintPrice * dailyAllocation * 364) /
+          ((mintPrice * dailyAllocation * 365) /
             parseFloat(utils.formatUnits(totalDeposit, decimals || '18'))) *
           100
         ).toLocaleString('fullwide', { useGrouping: false }),
