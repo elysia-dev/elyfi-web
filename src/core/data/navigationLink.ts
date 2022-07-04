@@ -73,4 +73,10 @@ export const navigationLink: INavigation[] = [
     location: `/faq`,
     i18nKeyword: 'navigation.faq',
   },
+  {
+    id: 6,
+    type: NavigationType.ExternalLink,
+    location: `https://elyfi.cafe24.com`,
+    i18nKeyword: 'navigation.market',
+  },
 ];
