@@ -359,7 +359,6 @@ const Navigation: React.FunctionComponent<{
     _data: INavigation | ISubNavigation,
     _index: number,
   ) => {
-    console.log(lng);
     return (
       <a
         key={_index}
