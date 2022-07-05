@@ -255,7 +255,7 @@ const Navigation: React.FunctionComponent<{
               <p
                 style={{
                   cursor: 'pointer',
-                  // fontWeight: currentRoute === _index ? 'bold' : 400,
+                  fontWeight: currentRoute === _index ? 'bold' : undefined,
                 }}>
                 {t(_data.i18nKeyword).toUpperCase()}
               </p>
@@ -264,6 +264,7 @@ const Navigation: React.FunctionComponent<{
               'navigation.dashboard',
               'navigation.governance',
               'navigation.faq',
+              'navigation.market',
             ].includes(_data.i18nKeyword.toLowerCase()) && (
               <div
                 className="navigation__arrow"
@@ -354,10 +355,41 @@ const Navigation: React.FunctionComponent<{
     );
   };
 
+  const setExternalLink = (
+    _data: INavigation | ISubNavigation,
+    _index: number,
+  ) => {
+    return (
+      <a
+        key={_index}
+        href={lng === 'en' ? `${_data.location}/en` : _data.location}
+        target="_blank"
+        rel="noopener noreferrer"
+        onMouseEnter={() => {
+          setGlobalNavHover(_index + 1);
+
+          setSelectedLocalNavIndex(0);
+        }}
+        onClick={() => {
+          if (_index === 0) {
+            reactGA.event({
+              category: PageEventType.MoveToInternalPage,
+              action: ButtonEventType.DepositButtonOnTop,
+            });
+          }
+        }}>
+        {globalNavInnerContainer(_data as INavigation, _index)}
+      </a>
+    );
+  };
+
   const setNavigationLink = () => {
     return (
       <div className="navigation__link__container">
         {navigationLink.map((data, index) => {
+          if (data.type === NavigationType.ExternalLink) {
+            return setExternalLink(data, index);
+          }
           return data.type === NavigationType.Link
             ? linkNavigation(data, index, false)
             : linkNavigation(data, index, true);

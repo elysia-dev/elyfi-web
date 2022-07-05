@@ -5,6 +5,7 @@ export enum NavigationRoutes {
   Deposit,
   Governance,
   Staking,
+  Faq = 4,
 }
 
 interface RouteState {
@@ -23,6 +24,8 @@ const useCurrentRoute = (): NavigationRoutes | undefined => {
         return NavigationRoutes.Governance;
       case 'staking':
         return NavigationRoutes.Staking;
+      case 'faq':
+        return NavigationRoutes.Faq;
       case 'rewardplan':
         switch (location.pathname.split('/')[3]) {
           case 'deposit':
