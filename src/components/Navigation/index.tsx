@@ -359,10 +359,11 @@ const Navigation: React.FunctionComponent<{
     _data: INavigation | ISubNavigation,
     _index: number,
   ) => {
+    console.log(lng);
     return (
       <a
         key={_index}
-        href={_data.location}
+        href={lng === 'en' ? `${_data.location}/en` : _data.location}
         target="_blank"
         rel="noopener noreferrer"
         onMouseEnter={() => {
