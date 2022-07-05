@@ -76,7 +76,7 @@ export const navigationLink: INavigation[] = [
   {
     id: 6,
     type: NavigationType.ExternalLink,
-    location: `https://elyfi.cafe24.com`,
+    location: `https://preorder.elyfi.world/`,
     i18nKeyword: 'navigation.market',
   },
 ];
