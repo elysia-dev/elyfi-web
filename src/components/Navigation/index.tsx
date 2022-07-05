@@ -401,10 +401,11 @@ const Navigation: React.FunctionComponent<{
   const mobileHamburgerBar = () => {
     return (
       <div className="navigation__hamburger__content">
-        {navigationLink.map((data) => {
+        {navigationLink.map((data, index) => {
           return data.type === NavigationType.LNB ? (
             <>
               <div
+                key={`hamburgerBar_${index}`}
                 className="navigation__hamburger__lnb"
                 onClick={() => {
                   selectedLocalNavIndex === data.id
@@ -471,8 +472,27 @@ const Navigation: React.FunctionComponent<{
                 </div>
               </div>
             </>
+          ) : data.type === NavigationType.ExternalLink ? (
+            <a
+              key={`hamburgerBar_${index}`}
+              href={t(data.location)}
+              target="_blank"
+              onClick={() => {
+                if (index === 0) {
+                  reactGA.event({
+                    category: PageEventType.MoveToInternalPage,
+                    action: ButtonEventType.DepositButtonOnTop,
+                  });
+                }
+                setHamburgerBar(false);
+              }}>
+              <div>
+                <p>{t(data.i18nKeyword).toUpperCase()}</p>
+              </div>
+            </a>
           ) : (
             <Link
+              key={`hamburgerBar_${index}`}
               to={{
                 pathname: `/${lng + data.location}`,
               }}
