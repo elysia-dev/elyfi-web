@@ -5,11 +5,14 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 
 const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
-const UndefinedImage: React.FC<{ image: string }> = ({ image }) => {
+const UndefinedImage: React.FC<{
+  image: string;
+  setImage: React.Dispatch<React.SetStateAction<string>>;
+}> = ({ image, setImage }) => {
   const { value: mediaQuery } = useMediaQueryType();
 
   return image ? (
-    <LazyImage src={image} name={`csp_image`} />
+    <LazyImage src={image} name={`csp_image`} setImage={setImage} />
   ) : (
     <div
       style={{
