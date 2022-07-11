@@ -1,5 +1,4 @@
 import { useEffect, useState, lazy, Suspense } from 'react';
-import { lazily } from 'react-lazily';
 import { Route, Routes } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import ScrollToTop from 'src/hooks/ScrollToTop';
@@ -20,6 +19,7 @@ const LegacyStakingLP = lazy(
   () => import('src/components/LegacyStaking/LegacyLpstaking'),
 );
 const Faq = lazy(() => import('src/components/FAQ'));
+const Market = lazy(() => import('src/components/Market'));
 
 import 'src/stylesheet/public.scss';
 import 'src/stylesheet/pc.scss';
@@ -96,6 +96,14 @@ const AppNavigator: React.FC = () => {
             element={
               <Suspense fallback={nullFallbackArea()}>
                 <Main />
+              </Suspense>
+            }
+          />
+          <Route
+            path="market"
+            element={
+              <Suspense fallback={nullFallbackArea()}>
+                <Market />
               </Suspense>
             }
           />

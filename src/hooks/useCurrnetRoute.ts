@@ -2,10 +2,11 @@ import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
 export enum NavigationRoutes {
+  Market,
   Deposit,
   Governance,
   Staking,
-  Faq = 4,
+  Faq = 5,
 }
 
 interface RouteState {
@@ -42,6 +43,8 @@ const useCurrentRoute = (): NavigationRoutes | undefined => {
         return location.state === 'governance'
           ? NavigationRoutes.Governance
           : NavigationRoutes.Deposit;
+      case 'market':
+        return NavigationRoutes.Market;
       default:
         return undefined;
     }
