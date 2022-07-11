@@ -12,7 +12,7 @@ const StakingEL = lazy(() => import('src/components/Staking/ElStaking'));
 const Staking = lazy(() => import('src/components/Staking'));
 const LPStaking = lazy(() => import('src/components/LpStaking'));
 const RewardPlan = lazy(() => import('src/components/RewardPlan'));
-const MarketDetail = lazy(() => import('src/components/LiquidiryDetails'));
+const LiquidityDetails = lazy(() => import('src/components/LiquidityDetails'));
 const PortfolioDetail = lazy(() => import('src/components/Portfolio'));
 const LegacyStaking = lazy(() => import('src/components/LegacyStaking'));
 const LegacyStakingLP = lazy(
@@ -20,6 +20,7 @@ const LegacyStakingLP = lazy(
 );
 const Faq = lazy(() => import('src/components/FAQ'));
 const Market = lazy(() => import('src/components/Market'));
+const NFTDetails = lazy(() => import('src/components/NFTDetails'));
 
 import 'src/stylesheet/public.scss';
 import 'src/stylesheet/pc.scss';
@@ -27,7 +28,7 @@ import 'src/stylesheet/mobile.scss';
 
 const Navigation = lazy(() => import('src/components/Navigation'));
 
-import getLocalLanauge from 'src/utiles/getLocalLanguage';
+import getLocalLanguage from 'src/utiles/getLocalLanguage';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import { isMetamask, isWalletConnector } from './utiles/connectWallet';
@@ -54,7 +55,7 @@ const AppNavigator: React.FC = () => {
     const navigate = useNavigator();
 
     useEffect(() => {
-      navigate(`/${getLocalLanauge()}`);
+      navigate(`/${getLocalLanguage()}`);
     }, []);
 
     return <></>;
@@ -107,6 +108,16 @@ const AppNavigator: React.FC = () => {
               </Suspense>
             }
           />
+          <Route path="market">
+            <Route
+              path=":id"
+              element={
+                <Suspense fallback={nullFallbackArea()}>
+                  <NFTDetails />
+                </Suspense>
+              }
+            />
+          </Route>
           <Route path="staking">
             <Route
               path="LP"
@@ -146,7 +157,7 @@ const AppNavigator: React.FC = () => {
               path=":id"
               element={
                 <Suspense fallback={nullFallbackArea()}>
-                  <MarketDetail />
+                  <LiquidityDetails />
                 </Suspense>
               }
             />
@@ -184,7 +195,7 @@ const AppNavigator: React.FC = () => {
               path=":id"
               element={
                 <Suspense fallback={nullFallbackArea()}>
-                  <MarketDetail />
+                  <LiquidityDetails />
                 </Suspense>
               }
             />
