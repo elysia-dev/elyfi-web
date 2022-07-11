@@ -33,7 +33,6 @@ const AssetItem: FunctionComponent<{
     }
     try {
       const response = await Slate.fetctABTokenIpfs(abToken.ipfsHash || '');
-      console.log(abToken.ipfsHash, response.data.images[0]?.hash);
       setImage(`${baseUrl}/${response.data.images[0]?.hash}`);
     } catch (error) {
       console.error(error);
@@ -70,5 +69,3 @@ const AssetItem: FunctionComponent<{
     </div>
   );
 };
-
-export default AssetItem;
