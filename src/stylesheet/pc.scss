@@ -1548,6 +1548,11 @@ $device-width: 1190px;
       }
     } // detail end
 
+    .market {
+      @include page-container;
+    }
+    // market end
+
     .governance {
       @include page-container;
       &__asset {
