@@ -69,3 +69,5 @@ const AssetItem: FunctionComponent<{
     </div>
   );
 };
+
+export default AssetItem;
