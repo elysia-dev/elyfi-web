@@ -1553,6 +1553,11 @@ $device-width: 1190px;
     }
     // market end
 
+    .nft-details {
+      @include page-container;
+    }
+    // nft-details end
+
     .governance {
       @include page-container;
       &__asset {

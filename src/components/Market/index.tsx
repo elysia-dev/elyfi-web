@@ -32,7 +32,7 @@ const tempCardArray: ICardType[] = [
     currentSoldNFTs: 12000,
     totalNFTs: 54000,
     cardImage: BondAsset,
-    onClickLink: '',
+    onClickLink: 'a1',
   },
   {
     PFType: PFType.SHARE,
@@ -41,7 +41,7 @@ const tempCardArray: ICardType[] = [
     currentSoldNFTs: 0,
     totalNFTs: 0,
     cardImage: undefined,
-    onClickLink: '',
+    onClickLink: 'b2',
   },
   {
     PFType: PFType.SHARE,
@@ -50,7 +50,7 @@ const tempCardArray: ICardType[] = [
     currentSoldNFTs: 0,
     totalNFTs: 0,
     cardImage: undefined,
-    onClickLink: '',
+    onClickLink: 'c3',
   },
 ];
 
