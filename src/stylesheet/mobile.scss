@@ -500,14 +500,22 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
       &__button {
         flex-direction: column;
         width: 100%;
-        > div,
-        > a {
-          margin-top: 10px;
-          width: 100%;
-          height: 50px;
+        > div {
           > p {
-            font-size: 15px;
-            line-height: 50px;
+            font-size: 14px;
+            color: $gray-font-color;
+            width: 100%;
+            margin-right: 30px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+          }
+          > a {
+            width: 100%;
+            height: 50px;
+            > p {
+              font-size: 15px;
+              line-height: 50px;
+            }
           }
         }
       }

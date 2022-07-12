@@ -110,11 +110,6 @@ const Main = (): JSX.Element => {
             />
           </Suspense>
         </section>
-        {/* <section className="main__service main__section">
-          <Suspense fallback={<Skeleton width={"100%"} height={'100%'} />}>
-            <Service serviceGraphPageY={serviceGraphPageY} />
-          </Suspense>
-        </section> */}
         <section className="main__partners main__section">
           <Suspense fallback={<div style={{ height: '100vh' }} />}>
             <Partners
@@ -123,13 +118,6 @@ const Main = (): JSX.Element => {
             />
           </Suspense>
         </section>
-        {/* <Suspense fallback={<div style={{ height: '100vh' }} />}>
-          <MainGovernanceTable
-            governancePageY={governancePageY}
-            governancePageBottomY={governancePageBottomY}
-            draw={draw}
-          />
-        </Suspense> */}
       </div>
     </>
   );

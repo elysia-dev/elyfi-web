@@ -4,8 +4,10 @@
       "landing": {
         "header__title": "부동산 기반 NFT를 담보로<br /><strong>가상자산 대출이 이뤄지는 <i>디파이</i></strong>",
         "header__content": "엘리파이는 부동산 자산을 토큰화하여 만들어진 NFT를 담보로\n가상자산 대출이 이뤄지는 랜딩 프로토콜입니다.",
+        "button__market": "구매하기",
+        "button__market--detail": "원하는 부동산 상품을 마켓에서",
         "button__deposit": "예치하기",
-        "button__view-more": "자세히 알아보기"
+        "button__deposit--detail": "무엇을 구매할지 모를 때는 머니풀에"
       },
       "section": [
         {

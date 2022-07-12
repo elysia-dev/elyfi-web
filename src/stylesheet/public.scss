@@ -602,31 +602,38 @@ input[type='number'] {
 
       &__button {
         display: flex;
-        user-select: none;
-        > div,
-        > a {
-          &:first-child {
-            @include hover__box-shadow--white;
-          }
-          @include hover__sub_box-shadow;
-          cursor: pointer;
-          border-radius: 28px;
+        > div {
+          display: flex;
+          flex-direction: column;
           > p {
             text-align: center;
+          }
+          > a {
+            @include hover__sub_box-shadow;
             cursor: pointer;
+            border-radius: 28px;
+            > p {
+              text-align: center;
+              cursor: pointer;
+            }
           }
           &:first-child {
-            background-color: $elysia-color;
-            border: 1px solid $elysia-color;
-            > p {
-              color: #ffffff;
+            > a {
+              @include hover__box-shadow--white;
+              background-color: $elysia-color;
+              border: 1px solid $elysia-color;
+              > p {
+                color: #ffffff;
+              }
             }
           }
           &:last-child {
-            background-color: #ffffff;
-            border: 1px solid $elysia-color;
-            > p {
-              color: $elysia-color;
+            > a {
+              background-color: #ffffff;
+              border: 1px solid $elysia-color;
+              > p {
+                color: $elysia-color;
+              }
             }
           }
         }
