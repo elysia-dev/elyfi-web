@@ -13,6 +13,16 @@ import BondNFT from 'src/components/NFTDetails/BondNFT';
 import Borrower from 'src/components/NFTDetails/Borrower';
 import RealEstateInfo from 'src/components/NFTDetails/RealEstateInfo';
 import moment from 'moment';
+import News00 from 'src/assets/images/market/news00.png';
+import News01 from 'src/assets/images/market/news01.png';
+import News02 from 'src/assets/images/market/news02.png';
+
+interface INews {
+  title: string;
+  content: string;
+  link: string;
+  image: string;
+}
 
 const NFTDetails = (): JSX.Element => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -21,6 +31,27 @@ const NFTDetails = (): JSX.Element => {
   const { t } = useTranslation();
   const navigate = useNavigator();
   const { lng } = useParams<{ lng: string }>();
+
+  const newsData: INews[] = [
+    {
+      title: 'Bloomberg',
+      content: 'ELYFI Launches US Real Estate Investment Product',
+      link: '',
+      image: News00,
+    },
+    {
+      title: 'Yahoo finance',
+      content: 'ELYFI Launches US Real Estate Investment Product',
+      link: '',
+      image: News01,
+    },
+    {
+      title: 'Token Post',
+      content: '엘리파이, 美 부동산 투자 상품 출시…대출채권 조각 구매 가능',
+      link: '',
+      image: News02,
+    },
+  ];
 
   const draw = () => {
     const dpr = window.devicePixelRatio;
@@ -133,6 +164,23 @@ const NFTDetails = (): JSX.Element => {
                 'Eagle Rock은 Occidental College가 위치해 있는 지역으로 근처에 상업거리인 Colorado Blvd가 인접 하여 좋은 입지를 가지고 있습니다.'
               }
             />
+          </article>
+          <article className="nft-details__news">
+            <h2>{t('nftMarket.newsTitle')}</h2>
+            <section>
+              {newsData.map((data, index) => {
+                return (
+                  <section key={index}>
+                    <img src={data.image} alt="News image" />
+                    <b>{data.title}</b>
+                    <p>{data.content}</p>
+                    <a target="_blank" href={data.link}>
+                      {t('nftMarket.newsButton')}
+                    </a>
+                  </section>
+                );
+              })}
+            </section>
           </article>
         </article>
         <article className="nft-details__terms">

@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import NFTStructure from 'src/assets/images/market/NFTStructure.png';
 
-const BondNFT = () => {
+const BondNFT = (): JSX.Element => {
   const { t } = useTranslation();
   return (
     <>
