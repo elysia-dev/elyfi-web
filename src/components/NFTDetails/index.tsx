@@ -96,16 +96,43 @@ const NFTDetails = (): JSX.Element => {
             />
           </article>
           <article className="nft-details__nft-info">
-            <NFTInfo />
+            <NFTInfo
+              type={'채권 NFT'}
+              principal={10}
+              interest={0.3}
+              expectedAPY={12}
+              overdueAPY={15}
+              loanDate={moment('2022.08.01', 'YYYY.MM.DD')}
+              maturityDate={moment('2022.11.30', 'YYYY.MM.DD')}
+              loanAgreementLink={'https://www.elyfi.world/ko'}
+              pledgeAgreementLink={'https://www.elyfi.world/ko'}
+              notaryDeedLink={'https://www.elyfi.world/ko'}
+            />
           </article>
           <article className="nft-details__bond-nft">
             <BondNFT />
           </article>
           <article className="nft-details__borrower">
-            <Borrower />
+            <Borrower
+              name={'Elyloan Inc'}
+              licenseNumber={'220111-0189192'}
+              delinquentTax={'해당없음'}
+              defaultingOnDebt={'해당없음'}
+              registrationLink={
+                'https://ipfs.io/ipfs/bafybeidtfourbfi4oy3nlos4v7vmvn3oyy5ufbtxjdux2gnl3al5pyutsy'
+              }
+            />
           </article>
           <article className="nft-details__real-estate-info">
-            <RealEstateInfo />
+            <RealEstateInfo
+              assetName={'Norwalk Ave'}
+              location={'2046 Norwalk Ave, LA, CA 90041'}
+              buildingArea={'6,214 sqft / 1,034 + 350 sqft'}
+              assetType={'단독 주택'}
+              comment={
+                'Eagle Rock은 Occidental College가 위치해 있는 지역으로 근처에 상업거리인 Colorado Blvd가 인접 하여 좋은 입지를 가지고 있습니다.'
+              }
+            />
           </article>
         </article>
         <article className="nft-details__terms">

@@ -1,7 +1,21 @@
 import { useTranslation } from 'react-i18next';
 import Clip from 'src/assets/images/market/clip.svg';
 
-const Borrower = () => {
+interface Props {
+  name: string;
+  licenseNumber: string;
+  delinquentTax: string;
+  defaultingOnDebt: string;
+  registrationLink: string;
+}
+
+const Borrower: React.FC<Props> = ({
+  name,
+  licenseNumber,
+  delinquentTax,
+  defaultingOnDebt,
+  registrationLink,
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -10,25 +24,25 @@ const Borrower = () => {
       <table>
         <tr>
           <th>{t('nftMarket.borrowerTable.header.0')}</th>
-          <td>Elyloan Inc</td>
+          <td>{name}</td>
         </tr>
         <tr>
           <th>{t('nftMarket.borrowerTable.header.1')}</th>
-          <td>220111-0189192</td>
+          <td>{licenseNumber}</td>
         </tr>
         <tr>
           <th>{t('nftMarket.borrowerTable.header.2')}</th>
-          <td>해당없음</td>
+          <td>{delinquentTax}</td>
         </tr>
         <tr>
           <th>{t('nftMarket.borrowerTable.header.3')}</th>
-          <td>해당없음</td>
+          <td>{defaultingOnDebt}</td>
         </tr>
         <tr>
           <th>{t('nftMarket.borrowerTable.header.4')}</th>
           <td>
             <div>
-              <a>
+              <a target="_blank" href={registrationLink}>
                 <img src={Clip} />
                 {t('nftMarket.borrowerTable.button')}
               </a>

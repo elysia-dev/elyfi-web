@@ -1,8 +1,33 @@
 import ContractImage from 'src/assets/images/market/contract.gif';
 import Clip from 'src/assets/images/market/clip.svg';
 import { useTranslation } from 'react-i18next';
+import moment from 'moment';
 
-const NFTInfo = () => {
+interface Props {
+  type: string;
+  principal: number;
+  interest: number;
+  expectedAPY: number;
+  overdueAPY: number;
+  loanDate: moment.Moment;
+  maturityDate: moment.Moment;
+  loanAgreementLink: string;
+  pledgeAgreementLink: string;
+  notaryDeedLink: string;
+}
+
+const NFTInfo: React.FC<Props> = ({
+  type,
+  principal,
+  interest,
+  expectedAPY,
+  overdueAPY,
+  loanDate,
+  maturityDate,
+  loanAgreementLink,
+  pledgeAgreementLink,
+  notaryDeedLink,
+}) => {
   const { t } = useTranslation();
   return (
     <>
@@ -14,7 +39,7 @@ const NFTInfo = () => {
         <table>
           <tr>
             <th>{t('nftMarket.nftInfoTable.0')}</th>
-            <td colSpan={3}>채권 NFT</td>
+            <td colSpan={3}>{type}</td>
           </tr>
           <tr>
             <th>{t('nftMarket.nftInfoTable.1')}</th>
@@ -36,37 +61,37 @@ const NFTInfo = () => {
           </tr>
           <tr>
             <th>{t('nftMarket.nftInfoTable.2')}</th>
-            <td>$ 10</td>
+            <td>$ {principal}</td>
             <th>{t('nftMarket.nftInfoTable.3')}</th>
-            <td>$ 0.3</td>
+            <td>$ {interest}</td>
           </tr>
           <tr>
             <th>{t('nftMarket.nftInfoTable.4')}</th>
-            <td>12%</td>
+            <td>{expectedAPY}%</td>
             <th>{t('nftMarket.nftInfoTable.5')}</th>
-            <td>15%</td>
+            <td>{overdueAPY}%</td>
           </tr>
           <tr>
             <th>{t('nftMarket.nftInfoTable.6')}</th>
-            <td colSpan={3}>2022.8.1 KST</td>
+            <td colSpan={3}>{moment(loanDate).format('YYYY.MM.DD')} KST</td>
           </tr>
           <tr>
             <th>{t('nftMarket.nftInfoTable.7')}</th>
-            <td colSpan={3}>2022.11.30 KST</td>
+            <td colSpan={3}>{moment(maturityDate).format('YYYY.MM.DD')} KST</td>
           </tr>
           <tr>
             <th>{t('nftMarket.nftInfoTable.8')}</th>
             <td colSpan={3}>
               <div>
-                <a>
+                <a target="_blank" href={loanAgreementLink}>
                   <img src={Clip} />
                   {t('nftMarket.nftInfoTableButton.0')}
                 </a>
-                <a>
+                <a target="_blank" href={pledgeAgreementLink}>
                   <img src={Clip} />
                   {t('nftMarket.nftInfoTableButton.1')}
                 </a>
-                <a>
+                <a target="_blank" href={notaryDeedLink}>
                   <img src={Clip} />
                   {t('nftMarket.nftInfoTableButton.2')}
                 </a>

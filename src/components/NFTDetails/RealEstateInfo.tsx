@@ -1,7 +1,20 @@
 import { useTranslation } from 'react-i18next';
 import BondAsset from 'src/assets/images/market/bondAssets.png';
 
-const RealEstateInfo = () => {
+interface Props {
+  assetName: string;
+  location: string;
+  buildingArea: string;
+  assetType: string;
+  comment: string;
+}
+const RealEstateInfo: React.FC<Props> = ({
+  assetName,
+  location,
+  buildingArea,
+  assetType,
+  comment,
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -12,27 +25,23 @@ const RealEstateInfo = () => {
           <img src={BondAsset} alt="Bond Asset" />
         </figure>
         <section>
-          <b>Norwalk Ave</b>
+          <b>{assetName}</b>
           <table>
             <tr>
               <th>{t('nftMarket.realEstateInfoTable.0')}</th>
-              <td>2046 Norwalk Ave, LA, CA 90041</td>
+              <td>{location}</td>
             </tr>
             <tr>
               <th>{t('nftMarket.realEstateInfoTable.1')}</th>
-              <td>6,214 sqft / 1,034 + 350 sqft</td>
+              <td>{buildingArea}</td>
             </tr>
             <tr>
               <th>{t('nftMarket.realEstateInfoTable.2')}</th>
-              <td>단독 주택</td>
+              <td>{assetType}</td>
             </tr>
             <tr>
               <th>{t('nftMarket.realEstateInfoTable.3')}</th>
-              <td>
-                Eagle Rock은 Occidental College가 위치해 있는 지역으로 근처에
-                상업거리인 Colorado Blvd가 인접 하여 좋은 입지를 가지고
-                있습니다.
-              </td>
+              <td>{comment}</td>
             </tr>
           </table>
         </section>
