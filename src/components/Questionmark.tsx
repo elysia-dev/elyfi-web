@@ -4,7 +4,7 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 
 type Props = {
-  content: string;
+  content: string | React.ReactElement;
 };
 
 function Questionmark(props: Props): JSX.Element {
