@@ -1758,6 +1758,513 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
     }
   } // detail end
 
+  .market {
+    position: relative;
+    width: 320px;
+    margin: 0 auto;
+    padding-top: 100px;
+
+    &__header {
+      text-align: center;
+      margin-top: 30px;
+      > h1 {
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+      > div {
+        width: 54px;
+        height: 18px;
+        margin: 0 auto 7px;
+        > p {
+          font-size: 12px;
+          line-height: 18px;
+        }
+      }
+    }
+    &__content {
+      > h2 {
+        font-size: 11px;
+        padding: 0px 5px 17px 5px;
+        margin-bottom: 20px;
+      }
+      > article {
+        display: flex;
+        flex-direction: column;
+        > a > section {
+          width: 300px;
+          height: 300px;
+          margin: 0 auto;
+          > figure {
+            > img {
+              width: 280px;
+              height: 200px;
+              object-fit: cover;
+            }
+            > figcaption {
+              width: 90px;
+              height: 25px;
+              font-size: 12px;
+            }
+          }
+          > div {
+            margin-top: 10px;
+            > p {
+              font-size: 10px;
+            }
+            > b {
+              margin-top: 5px;
+              font-size: 11px;
+              > span {
+                margin-left: 3px;
+                font-size: 15px;
+                &::after {
+                  content: '%';
+                }
+              }
+            }
+          }
+          > progress {
+            width: 100%;
+            margin-top: 12px;
+            height: 8px;
+            border: 0;
+            vertical-align: 0;
+            &::-webkit-progress-bar {
+              height: 8px;
+              border-radius: 8px;
+              background: #e6e6e6;
+            }
+            &::-webkit-progress-value {
+              border-radius: 8px;
+              height: 8px;
+            }
+            &::-moz-progress-bar {
+              height: 8px;
+              border-radius: 8px;
+            }
+          }
+        }
+      }
+    }
+  }
+  // market end
+
+  .nft-details {
+    width: 320px;
+    margin: 0 auto;
+    padding-top: 130px;
+    &__header {
+      margin-top: 0px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      > div {
+        margin-bottom: 20px;
+        > h1 {
+          text-align: center;
+          font-size: 18px;
+          margin-bottom: 20px;
+        }
+        > p {
+          text-align: center;
+          font-size: 12px;
+        }
+      }
+      > section {
+        width: 320px;
+        height: initial;
+        box-shadow: 0px 0px 6px #00000029;
+        border-radius: 5px;
+        padding: 12px 15px 0px;
+        > div {
+          flex-direction: row;
+          margin-bottom: 30px;
+          > b {
+            text-align: left;
+            font-size: 12px;
+            > span {
+              margin-left: 5px;
+              cursor: pointer;
+            }
+          }
+          > span {
+            font-size: 12px;
+            color: $font-color;
+            text-align: right;
+            display: block;
+            &.null {
+              color: #888;
+            }
+          }
+        }
+        > button {
+          display: block;
+          width: 130px;
+          border-radius: 15px;
+          height: 26px;
+          margin: 0px auto 20px;
+          background: #00bfff;
+          cursor: pointer;
+          font-size: 15px;
+          color: #fff;
+          border: 0;
+        }
+      }
+    }
+    &__content {
+      margin-top: 50px;
+      padding: 15px 10px;
+    }
+    &__purchase {
+      flex-direction: column;
+      align-items: center;
+      > section {
+        flex: 1;
+        padding: 0 !important;
+        width: 100%;
+        > h2 {
+          font-size: 12px;
+          margin-bottom: 15px;
+        }
+        &:last-child {
+          border-left: none;
+        }
+      }
+      &__status {
+        > div {
+          > div {
+            > p {
+              font-size: 10px;
+            }
+            > b {
+              font-size: 12px;
+            }
+          }
+          > progress {
+            margin: 10px 0 0;
+          }
+          > p {
+            font-size: 10px;
+          }
+        }
+      }
+      &__round {
+        > div {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-evenly;
+          > b {
+            font-size: 20px;
+            color: $font-color;
+          }
+          > div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+            > b {
+              font-size: 20px;
+              color: $font-color;
+            }
+            > p {
+              font-size: 12px;
+              color: #707070;
+            }
+          }
+        }
+        > p {
+          font-size: 10px;
+          color: #333333;
+          text-align: right;
+        }
+      }
+    }
+    &__nft-info {
+      margin-top: 50px;
+      > h2 {
+        font-size: 12px;
+      }
+      > div {
+        display: flex;
+        flex-direction: column;
+        margin-top: 22px;
+        > figure {
+          margin: 0;
+          > img {
+            width: 300px;
+            border-radius: 5px;
+          }
+        }
+        > table {
+          margin-left: 0px;
+          font-size: 12px;
+          > tr {
+            height: 38px;
+            > th {
+              width: 70px;
+            }
+            > td {
+              padding-left: 10px;
+              padding-right: 10px;
+              > ul {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+                > li {
+                  margin: 10px 0;
+                  &::marker {
+                    display: none !important;
+                  }
+                }
+              }
+              > div {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                > a {
+                  display: block;
+                  margin: 8px 0;
+                  width: 148px;
+                  height: 28px;
+                  border: 1px solid #3679b5;
+                  border-radius: 5px;
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: flex-start;
+                  align-items: center;
+                  color: #3679b5;
+                  cursor: pointer;
+                  > img {
+                    margin: 0 10px;
+                  }
+                }
+              }
+            }
+
+            > th,
+            > td {
+              border: 1px solid #e3e3e3;
+            }
+            &:first-child {
+              > th {
+                border-radius: 10px 0 0 0;
+              }
+            }
+            &:last-child {
+              > th {
+                border-radius: 0 0 0 10px;
+              }
+            }
+          }
+        }
+      }
+    }
+    &__bond-nft {
+      margin-top: 60px;
+      > h2 {
+        font-size: 12px;
+        margin-bottom: 20px;
+      }
+      > table {
+        box-shadow: 0 0 0 1px #e3e3e3;
+        border-collapse: collapse;
+        border-radius: 10px;
+        border-style: hidden;
+        font-size: 12px;
+        table-layout: fixed;
+        word-wrap: break-word;
+        > tr {
+          height: 38px;
+          text-align: left;
+          > th {
+            padding: 5px 10px;
+            width: 100px;
+            background-color: #f8f9fa;
+          }
+          > td {
+            padding: 5px 10px;
+            word-break: break-all;
+            &.image-wrapper {
+              width: 100%;
+            }
+            > img {
+              margin: 0px auto 10px;
+              display: block;
+              width: 100%;
+            }
+          }
+          > th,
+          > td {
+            border: 1px solid #e3e3e3;
+          }
+          &:last-child {
+            > th {
+              border-radius: 0 0 0 10px;
+            }
+          }
+        }
+      }
+    }
+    &__borrower {
+      margin-top: 60px;
+      > h2 {
+        font-size: 12px;
+        margin-bottom: 20px;
+      }
+      > table {
+        width: 100%;
+        font-size: 12px;
+        > tr {
+          height: 38px;
+          text-align: left;
+          > th {
+            padding: 5px 10px;
+            width: 100px;
+            background-color: #f8f9fa;
+          }
+          > td {
+            padding: 5px 10px;
+            word-break: break-all;
+            > div {
+              display: flex;
+              flex-direction: column;
+              gap: 8px;
+              > a {
+                width: 148px;
+                height: 28px;
+                > img {
+                  margin: 0 10px;
+                }
+              }
+            }
+          }
+          > th,
+          > td {
+            border: 1px solid #e3e3e3;
+          }
+          &:last-child {
+            > th {
+              border-radius: 0 0 0 10px;
+            }
+          }
+        }
+      }
+    }
+    &__real-estate-info {
+      margin-top: 45px;
+      > h2 {
+        font-size: 12px;
+        margin-bottom: 20px;
+      }
+      > div {
+        flex-direction: column;
+        > figure {
+          > img {
+            width: 100%;
+            height: initial;
+            object-fit: cover;
+          }
+        }
+        > section {
+          margin-left: 0px;
+          > b {
+            font-size: 12px;
+            margin-top: 10px;
+          }
+          > table {
+            width: 100%;
+            font-size: 12px;
+            margin: 10px 0 5px;
+            > tr {
+              height: 38px;
+              text-align: left;
+              > th {
+                padding: 5px 10px;
+                width: 100px;
+                background-color: #f8f9fa;
+              }
+              > td {
+                padding: 5px 10px;
+              }
+              > th,
+              > td {
+                border: 1px solid #e3e3e3;
+              }
+              &:last-child {
+                > th {
+                  border-radius: 0 0 0 10px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    &__terms {
+      margin-top: 65px;
+      > b {
+        font-size: 12px;
+        margin: 0 0 20px;
+        display: block;
+      }
+      > ul {
+        padding: 0;
+        list-style: none;
+        > li {
+          font-size: 12px;
+          margin-left: 5px;
+        }
+      }
+    }
+    &__news {
+      margin-top: 45px;
+      > h2 {
+        font-size: 12px;
+        margin-bottom: 20px;
+      }
+      > section {
+        display: flex;
+        flex-direction: column;
+        margin-top: 25px;
+        margin-bottom: 5px;
+        border: 0;
+        grid-gap: 20px;
+        gap: 20px;
+        > section {
+          width: 300px;
+          box-shadow: 0px 0px 6px #00000029;
+          border-radius: 5px;
+          padding: 10px;
+          > img {
+            width: 280px;
+            height: initial;
+            object-fit: cover;
+          }
+          > b {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #262626;
+            display: block;
+            margin-bottom: 5px;
+          }
+          > p {
+            font-size: 13px;
+            color: #262626;
+          }
+          > a {
+            width: 148px;
+            height: 28px;
+            line-height: 28px;
+            font-size: 12px;
+            margin: 10px auto 0;
+          }
+        }
+      }
+    }
+  }
+
+  //nft-details end
+
   .governance {
     @include page-container;
     $asset-width: 150px;
