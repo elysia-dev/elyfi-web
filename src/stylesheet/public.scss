@@ -564,6 +564,23 @@ input[type='number'] {
       border-top: 1px solid #333333;
       border-right: 1px solid #333333;
     }
+    .beta {
+      &::after {
+        content: 'B';
+        position: absolute;
+        top: 5px;
+        right: -8px;
+        width: 12px;
+        height: 12px;
+        font-family: $montserrat--bold;
+        color: $background-color;
+        font-size: 9px;
+        line-height: 12px;
+        border-radius: 2px;
+        background-color: #0087ff;
+        text-align: center;
+      }
+    }
   } // navigation end
 
   .main {
@@ -1897,7 +1914,20 @@ input[type='number'] {
       margin-bottom: 100px;
       > h1 {
         font-size: 30px;
-        margin-bottom: 30px;
+        margin-bottom: 2px;
+      }
+      > div {
+        width: 54px;
+        height: 18px;
+        background: #0087ff;
+        border-radius: 5px;
+        margin: 0 auto 10px;
+        > p {
+          font-size: 12px;
+          line-height: 18px;
+          color: #ffffff;
+          font-family: $montserrat--bold;
+        }
       }
     }
     &__content {

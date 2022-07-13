@@ -10,8 +10,11 @@ const Header: React.FC<Props> = ({ headerRef }) => {
 
   return (
     <section className="market__header" ref={headerRef}>
-      <h1>부동산 상품마켓</h1>
-      <p>원하는 부동산 상품을 직접 고르고 구매할 수 있어요!</p>
+      <h1>{t('market.title')}</h1>
+      <div>
+        <p>BETA</p>
+      </div>
+      <p>{t('market.content')}</p>
     </section>
   );
 };

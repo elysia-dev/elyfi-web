@@ -253,6 +253,7 @@ const Navigation: React.FunctionComponent<{
                 marginRight: 8,
               }}>
               <p
+                className={_data.isBeta ? 'beta' : ''}
                 style={{
                   cursor: 'pointer',
                   fontWeight: currentRoute === _index ? 'bold' : undefined,

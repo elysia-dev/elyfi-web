@@ -11,6 +11,7 @@ export interface INavigation {
   location: string;
   i18nKeyword: string;
   subNavigation?: ISubNavigation[];
+  isBeta?: boolean;
 }
 
 export const navigationLink: INavigation[] = [
@@ -19,6 +20,7 @@ export const navigationLink: INavigation[] = [
     type: NavigationType.Link,
     location: '/market',
     i18nKeyword: 'navigation.market',
+    isBeta: true,
   },
   {
     id: 2,
