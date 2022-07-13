@@ -6,6 +6,12 @@ import TokenColors from 'src/enums/TokenColors';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import useNavigator from 'src/hooks/useNavigator';
 import DrawWave from 'src/utiles/drawWave';
+import Questionmark from 'src/components/Questionmark';
+import ContractImage from 'src/assets/images/market/contract.gif';
+import Clip from 'src/assets/images/market/clip.svg';
+import NFTStructure from 'src/assets/images/market/NFTStructure.png';
+import BondAsset from 'src/assets/images/market/bondAssets.png';
+import MainnetType from 'src/enums/MainnetType';
 import Header from 'src/components/NFTDetails/Header';
 import Purchase from 'src/components/NFTDetails/Purchase';
 import NFTInfo from 'src/components/NFTDetails/NFTInfo';
@@ -16,6 +22,9 @@ import moment from 'moment';
 import News00 from 'src/assets/images/market/news00.png';
 import News01 from 'src/assets/images/market/news01.png';
 import News02 from 'src/assets/images/market/news02.png';
+import ChangeNetworkModal from '../Market/Modals/ChangeNetworkModal';
+import ReconnectWallet from '../Market/Modals/ReconnectWallet';
+import NFTPurchaseModal from '../Market/Modals/NFTPurchaseModal';
 
 interface INews {
   title: string;
@@ -90,6 +99,9 @@ const NFTDetails = (): JSX.Element => {
 
   return (
     <>
+      {/* <ChangeNetworkModal network={MainnetType.Ethereum} /> */}
+      {/* <ReconnectWallet /> */}
+      {/* <NFTPurchaseModal /> */}
       <canvas
         ref={canvasRef}
         style={{
