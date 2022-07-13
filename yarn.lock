@@ -2129,10 +2129,10 @@
   dependencies:
     ethers "^5.4.4"
 
-"@elysia-dev/elyfi-v1-sdk@1.0.0-alpha.4":
-  version "1.0.0-alpha.4"
-  resolved "https://registry.yarnpkg.com/@elysia-dev/elyfi-v1-sdk/-/elyfi-v1-sdk-1.0.0-alpha.4.tgz#a2a4c0e7590f9b9ce3a20c143895309bda4e5e76"
-  integrity sha512-jiz3e54ycjE6gJirsi9zLuXLYmQC0OyT2+qHqGFB/uxEOEjAKzW5pFn7N82GRLcOaFk7djb+KJ3DsGcB8jJaKg==
+"@elysia-dev/elyfi-v1-sdk@1.0.0-alpha.5":
+  version "1.0.0-alpha.5"
+  resolved "https://registry.yarnpkg.com/@elysia-dev/elyfi-v1-sdk/-/elyfi-v1-sdk-1.0.0-alpha.5.tgz#73b441bf20cfea3978e33ceb103454d373a4cdfa"
+  integrity sha512-rgylF3nuZYCsrA6/B4OOpYJ0qP/x7BkH7OPkH5aNHi8Gg7P4AXjhE2p6++JpmvC3jSpmHXFLF5WUAImEj+Vbhw==
   dependencies:
     ethers "^5.6.2"
 
@@ -16781,8 +16781,10 @@ watchpack@^1.7.4:
   resolved "https://registry.yarnpkg.com/watchpack/-/watchpack-1.7.5.tgz#1267e6c55e0b9b5be44c2023aed5437a2c26c453"
   integrity sha512-9P3MWk6SrKjHsGkLT2KHXdQ/9SNkyoJbabxnKOoJepsvJjJG8uYTR3yTPxPQvNDI3w4Nz1xnE0TLHK4RIVe/MQ==
   dependencies:
+    chokidar "^3.4.1"
     graceful-fs "^4.1.2"
     neo-async "^2.5.0"
+    watchpack-chokidar2 "^2.0.1"
   optionalDependencies:
     chokidar "^3.4.1"
     watchpack-chokidar2 "^2.0.1"
