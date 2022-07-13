@@ -11,6 +11,10 @@ import ContractImage from 'src/assets/images/market/contract.gif';
 import Clip from 'src/assets/images/market/clip.svg';
 import NFTStructure from 'src/assets/images/market/NFTStructure.png';
 import BondAsset from 'src/assets/images/market/bondAssets.png';
+import MainnetType from 'src/enums/MainnetType';
+import ChangeNetworkModal from '../Market/Modals/ChangeNetworkModal';
+import ReconnectWallet from '../Market/Modals/ReconnectWallet';
+import NFTPurchaseModal from '../Market/Modals/NFTPurchaseModal';
 
 const NFTDetails = (): JSX.Element => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -57,6 +61,9 @@ const NFTDetails = (): JSX.Element => {
 
   return (
     <>
+      {/* <ChangeNetworkModal network={MainnetType.Ethereum} /> */}
+      {/* <ReconnectWallet /> */}
+      {/* <NFTPurchaseModal /> */}
       <canvas
         ref={canvasRef}
         style={{
