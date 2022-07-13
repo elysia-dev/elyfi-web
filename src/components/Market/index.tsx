@@ -110,7 +110,7 @@ const Market = (): JSX.Element => {
       <main className="market">
         <Header headerRef={headerRef} />
         <article className="market__content">
-          <h2>미국 부동산 상품</h2>
+          <h2>{t('market.useRealEstateInfo')}</h2>
           <article className="market__nft-container">
             {tempCardArray.map((data, index) => {
               return <NFTCard data={data} key={index} />;
