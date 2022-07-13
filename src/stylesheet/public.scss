@@ -2429,6 +2429,57 @@ input[type='number'] {
         }
       }
     }
+    &__news {
+      margin-top: 45px;
+      > h2 {
+        font-size: 18px;
+        margin-bottom: 20px;
+      }
+      > section {
+        display: grid;
+        grid-template-columns: repeat(3, 340px);
+        grid-template-rows: 1fr;
+        justify-content: space-between;
+        margin-top: 25px;
+        margin-bottom: 30px;
+        border: 0;
+        grid-gap: 45px;
+        gap: 45px;
+        > section {
+          width: 340px;
+          box-shadow: 0px 0px 6px #00000029;
+          border-radius: 5px;
+          padding: 10px;
+          > img {
+            width: 320px;
+            height: 222px;
+            object-fit: cover;
+          }
+          > b {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #262626;
+            display: block;
+          }
+          > p {
+            font-size: 15px;
+            color: #262626;
+          }
+          > a {
+            width: 148px;
+            height: 35px;
+            background: #333333;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #fff;
+            display: block;
+            text-align: center;
+            line-height: 35px;
+            margin: 10px auto 0;
+          }
+        }
+      }
+    }
   }
 
   //nft-details end
