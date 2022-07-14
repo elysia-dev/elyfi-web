@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import MediaQuery from 'src/enums/MediaQuery';
@@ -22,11 +22,15 @@ import moment from 'moment';
 import News00 from 'src/assets/images/market/news00.png';
 import News01 from 'src/assets/images/market/news01.png';
 import News02 from 'src/assets/images/market/news02.png';
+import MainnetContext from 'src/contexts/MainnetContext';
+import { useWeb3React } from '@web3-react/core';
+import useUserCryptoBalances from 'src/hooks/useUserCryptoBalances';
 import ChangeNetworkModal from '../Market/Modals/ChangeNetworkModal';
-import ReconnectWallet from '../Market/Modals/ReconnectWallet';
 import NFTPurchaseModal from '../Market/Modals/NFTPurchaseModal';
 import TwitterConfirmModal from '../Market/Modals/TwitterConfirmModal';
 import TokenRewardModal from '../Market/Modals/TokenRewardModal';
+import SelectWalletModal from '../Market/Modals/SelectWalletModal';
+import ReconnectWallet from '../Market/Modals/components/ReconnectWallet';
 
 interface INews {
   title: string;
@@ -36,13 +40,16 @@ interface INews {
 }
 
 const NFTDetails = (): JSX.Element => {
+  const { account, deactivate } = useWeb3React();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const { value: mediaQuery } = useMediaQueryType();
   const { t } = useTranslation();
   const navigate = useNavigator();
   const { lng } = useParams<{ lng: string }>();
-
+  const [modalType, setModalType] = useState('');
+  const { type: mainnetType, changeMainnet } = useContext(MainnetContext);
+  const { balances } = useUserCryptoBalances();
   const newsData: INews[] = [
     {
       title: 'Bloomberg',
@@ -99,11 +106,41 @@ const NFTDetails = (): JSX.Element => {
     };
   }, [document.body.clientHeight]);
 
+  useEffect(() => {
+    if (mainnetType === MainnetType.Ethereum) {
+      setModalType('');
+    }
+  }, [mainnetType]);
+
   return (
     <>
-      {/* <ChangeNetworkModal network={MainnetType.Ethereum} /> */}
-      {/* <ReconnectWallet /> */}
-      {/* <NFTPurchaseModal /> */}
+      {modalType === 'selectWallet' ? (
+        <SelectWalletModal
+          modalClose={() => setModalType('')}
+          selectWalletModalVisible={true}
+        />
+      ) : modalType === 'purchase' ? (
+        <NFTPurchaseModal
+          modalClose={() => setModalType('')}
+          balances={balances}
+        />
+      ) : modalType === 'changeNetwork' ? (
+        <ChangeNetworkModal
+          modalClose={() => setModalType('')}
+          network={MainnetType.Ethereum}
+          onClickHandler={() => changeMainnet(1)}
+        />
+      ) : modalType === 'reconnect' ? (
+        <ReconnectWallet
+          modalClose={() => setModalType('')}
+          onClickHandler={() => {
+            deactivate();
+            setModalType('selectWallet');
+          }}
+        />
+      ) : (
+        <></>
+      )}
       {/* <TwitterConfirmModal
         endedTime={moment('2022.08.01 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z')}
         onClose={() => {}}
@@ -135,7 +172,19 @@ const NFTDetails = (): JSX.Element => {
           <p>{t('nftMarket.title')}</p>
         </div>
         <article className="nft-details__header">
-          <Header onButtonClick={() => {}} />
+          <Header
+            onButtonClick={() => {
+              const wallet = sessionStorage.getItem('@connect');
+
+              return account
+                ? mainnetType === MainnetType.Ethereum
+                  ? setModalType('purchase')
+                  : wallet === 'metamask'
+                  ? setModalType('changeNetwork')
+                  : setModalType('reconnect')
+                : setModalType('selectWallet');
+            }}
+          />
         </article>
         <article className="nft-details__content">
           <article className="nft-details__purchase">

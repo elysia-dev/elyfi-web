@@ -7,8 +7,10 @@ import axios from 'axios';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import envs from 'src/core/envs';
 import { getV2LPPoolContract } from 'src/utiles/v2LPPoolContract';
-import { BigNumber, constants } from 'ethers';
+import { BigNumber, constants, Contract, ethers, utils } from 'ethers';
 import Token from 'src/enums/Token';
+import nftAbi from 'src/abis/NftBond.json';
+import controllerAbi from 'src/abis/Controller.json';
 
 export const tvlFetcher = (
   url: string,
@@ -26,6 +28,17 @@ const erc20Contract = (address: string, provider: any) => {
 };
 const stakingPoolV2Contract = (address: string, provider: any) => {
   return StakingPoolV2factory.connect(address, provider);
+};
+
+const getNFTContract = (provider: any) => {
+  return new ethers.Contract(nftAbi.address, nftAbi.abi, provider);
+};
+export const getControllerContract = (provider: any): Contract => {
+  return new ethers.Contract(
+    controllerAbi.address,
+    controllerAbi.abi,
+    provider,
+  );
 };
 
 export const elfiBalanceOfFetcher =
@@ -152,4 +165,63 @@ export const depositInfoFetcher =
       { ...usdcInfo, tokenName: Token.USDC },
       { ...busdInfo, tokenName: Token.BUSD },
     ];
+  };
+
+export const walletCryptoFetcher =
+  () =>
+  async (
+    ...args: [{ usdc: string; account: string }]
+  ): Promise<{ eth: BigNumber; usdc: BigNumber }> => {
+    if (!args[0].account) {
+      return { eth: constants.Zero, usdc: constants.Zero };
+    }
+    const contract = erc20Contract(args[0].usdc, provider);
+
+    const eth = await provider.getBalance(args[0].account);
+    const usdc = await contract.balanceOf(args[0].account);
+
+    return {
+      eth,
+      usdc,
+    };
+  };
+
+export const gasPriceFetcher =
+  () =>
+  async (...args: [{ account: string }]): Promise<number> => {
+    try {
+      const controllerContract = getControllerContract(provider);
+      const estimatedGas = await controllerContract.estimateGas.deposit(
+        0,
+        utils.parseUnits('10', 6),
+        {
+          from: args[0].account,
+        },
+      );
+      console.log('ada');
+      console.log(
+        'ss',
+        utils.formatEther(await provider.getGasPrice()),
+        utils.formatUnits(estimatedGas, 0),
+      );
+
+      const gasFee =
+        parseFloat(utils.formatEther(await provider.getGasPrice())) *
+        parseFloat(utils.formatUnits(estimatedGas, 0));
+
+      return gasFee;
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+
+    // const nftContract = getNFTContract(provider);
+    // // nftContract.balanceOf(address, projectId);
+
+    // console.log('test', utils.formatUnits(testGas, 0));
+    // console.log(utils.formatEther(await provider.getGasPrice()));
+    // console.log(
+    //   'gas fee',
+    //   parseFloat(utils.formatUnits(testGas, 0)) *
+    //     parseFloat(utils.formatEther(gasPrice)),)
   };

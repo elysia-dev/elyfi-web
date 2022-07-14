@@ -32,6 +32,7 @@ const priceMiddleware: Middleware =
           daiPrice: 0,
           tetherPrice: 0,
           ethPrice: 0,
+          usdcPrice: 0,
         });
         setPriceLoading(false);
       }

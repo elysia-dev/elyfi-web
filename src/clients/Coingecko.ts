@@ -6,6 +6,7 @@ export type PriceType = {
   tetherPrice: number;
   daiPrice: number;
   ethPrice: number;
+  usdcPrice: number;
 };
 
 export const pricesFetcher = (url: string): Promise<PriceType> =>
