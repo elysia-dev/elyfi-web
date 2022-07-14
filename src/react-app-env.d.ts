@@ -15,3 +15,8 @@ interface Window {
 declare module 'jazzicon' {
   export default function (diameter: number, seed: number): HTMLElement;
 }
+
+declare module '*.mp4' {
+  const src: string;
+  export default src;
+}
