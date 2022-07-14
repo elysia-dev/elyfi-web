@@ -25,6 +25,8 @@ import News02 from 'src/assets/images/market/news02.png';
 import ChangeNetworkModal from '../Market/Modals/ChangeNetworkModal';
 import ReconnectWallet from '../Market/Modals/ReconnectWallet';
 import NFTPurchaseModal from '../Market/Modals/NFTPurchaseModal';
+import TwitterConfirmModal from '../Market/Modals/TwitterConfirmModal';
+import TokenRewardModal from '../Market/Modals/TokenRewardModal';
 
 interface INews {
   title: string;
@@ -102,6 +104,18 @@ const NFTDetails = (): JSX.Element => {
       {/* <ChangeNetworkModal network={MainnetType.Ethereum} /> */}
       {/* <ReconnectWallet /> */}
       {/* <NFTPurchaseModal /> */}
+      {/* <TwitterConfirmModal
+        endedTime={moment('2022.08.01 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z')}
+        onClose={() => {}}
+        onSubmit={() => {}}
+        onDiscard={() => {}}
+      />
+      <TokenRewardModal
+        endedTime={moment('2022.08.01 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z')}
+        onClose={() => {}}
+        tokenAmount={1234}
+        tokenName={'ELFI'}
+      /> */}
       <canvas
         ref={canvasRef}
         style={{
@@ -112,7 +126,7 @@ const NFTDetails = (): JSX.Element => {
           zIndex: -1,
         }}
       />
-      <main className="nft-details">
+      <main className="nft-details" ref={headerRef}>
         <div className="component__text-navigation">
           <p onClick={() => navigate(`/${lng}/market`)} className="pointer">
             {t('navigation.market')}
