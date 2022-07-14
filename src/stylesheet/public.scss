@@ -5907,29 +5907,40 @@ input[type='number'] {
         }
       }
       > div:nth-child(1) {
+        cursor: pointer;
         padding-left: 23px;
+        > div:last-child {
+          position: absolute;
+          left: 49.9%;
+          top: -1px;
+          border-top: 32px solid transparent;
+          border-bottom: 32px solid transparent;
+        }
+      }
+      > div:nth-child(1):hover {
         background-color: #666666;
+        > div:last-child {
+          border-left-color: #666666;
+        }
       }
       > div:nth-child(2) {
-        background-color: #e6e6e6;
         text-align: right;
         padding-right: 23px;
         justify-content: end;
       }
-    }
-    &__step::after {
-      content: '';
-      position: absolute;
-      left: 49.9%;
-      top: -1px;
-      border-left: 31px solid #666666;
-      border-top: 32px solid transparent;
-      border-bottom: 32px solid transparent;
-    }
-    .one::after {
-      border-left: 31px solid #e6e6e6;
-      border-top: 32px solid transparent;
-      border-bottom: 32px solid transparent;
+
+      .current {
+        background-color: #666666;
+      }
+      .prev {
+        background-color: #e6e6e6;
+      }
+      .current_polygon {
+        border-left: 31px solid #666666;
+      }
+      .prev_polygon {
+        border-left: 31px solid #e6e6e6;
+      }
     }
     &__input {
       width: 100%;

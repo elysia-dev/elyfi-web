@@ -44,7 +44,9 @@ const Header: React.FC<Props> = ({ onButtonClick }) => {
               />
             </span>
           </b>
-          <button onClick={onButtonClick}>{t('nftMarket.purchase')}</button>
+          <button onClick={() => onButtonClick()}>
+            {t('nftMarket.purchase')}
+          </button>
         </div>
         <b>{currentPurchaseAmount()}</b>
       </section>

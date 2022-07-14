@@ -2,11 +2,16 @@ import ModalHeader from './ModalHeader';
 import WalletButton from './WalletButton';
 import WalletSection from './WalletSection';
 
-const ReconnectWallet: React.FC = () => {
+interface Props {
+  modalClose: () => void;
+  onClickHandler: () => void;
+}
+
+const ReconnectWallet: React.FC<Props> = ({ modalClose, onClickHandler }) => {
   return (
     <div className="market_modal">
       <div className="market_modal__wrapper">
-        <ModalHeader title="네트워크 변경하기" />
+        <ModalHeader title="네트워크 변경하기" modalClose={modalClose} />
         <WalletSection
           content={
             <>
@@ -22,7 +27,10 @@ const ReconnectWallet: React.FC = () => {
             </>
           }
         />
-        <WalletButton content="지갑 다시 연결하기" />
+        <WalletButton
+          content="지갑 다시 연결하기"
+          onClickHandler={onClickHandler}
+        />
       </div>
     </div>
   );

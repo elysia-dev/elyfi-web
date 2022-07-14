@@ -1,19 +1,25 @@
 import MainnetType from 'src/enums/MainnetType';
-import ModalHeader from './ModalHeader';
 // eslint-disable-next-line import/order
 import ETH from 'src/assets/images/eth_logo.svg';
-import WalletButton from './WalletButton';
-import WalletSection from './WalletSection';
+import WalletSection from './components/WalletSection';
+import WalletButton from './components/WalletButton';
+import ModalHeader from './components/ModalHeader';
 
 interface Props {
   network: MainnetType;
+  modalClose: () => void;
+  onClickHandler: () => void;
 }
 
-const ChangeNetworkModal: React.FC<Props> = ({ network }) => {
+const ChangeNetworkModal: React.FC<Props> = ({
+  network,
+  modalClose,
+  onClickHandler,
+}) => {
   return (
     <div className="market_modal" style={{ display: 'block' }}>
       <div className="market_modal__wrapper">
-        <ModalHeader title="네트워크 변경하기" />
+        <ModalHeader title="네트워크 변경하기" modalClose={modalClose} />
         <WalletSection
           content={
             <p>
@@ -23,7 +29,11 @@ const ChangeNetworkModal: React.FC<Props> = ({ network }) => {
             </p>
           }
         />
-        <WalletButton content="Ethereum" image={ETH} />
+        <WalletButton
+          content="Ethereum"
+          image={ETH}
+          onClickHandler={onClickHandler}
+        />
       </div>
     </div>
   );
