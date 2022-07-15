@@ -2238,6 +2238,31 @@ input[type='number'] {
         }
       }
     }
+    &__tab {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 50px;
+      > div {
+        flex: 1;
+        text-align: center;
+        border-bottom: 5px solid #00bfff;
+        cursor: pointer;
+        font-size: 20px;
+        > b {
+          margin: 15px;
+          color: #000000;
+          cursor: pointer;
+          display: block;
+        }
+        &.disable {
+          border-bottom: 5px solid #f0f0f1;
+          > b {
+            color: #b7b7b7;
+          }
+        }
+      }
+    }
     &__nft-info {
       margin-top: 50px;
       > h2 {
@@ -2494,7 +2519,7 @@ input[type='number'] {
       }
     }
     &__news {
-      margin-top: 45px;
+      margin-top: 80px;
       > h2 {
         font-size: 18px;
         margin-bottom: 20px;

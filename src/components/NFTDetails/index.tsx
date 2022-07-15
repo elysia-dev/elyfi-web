@@ -51,6 +51,13 @@ export interface INews {
   image: string;
 }
 
+enum NTFDetailTab {
+  ProductInfo,
+  ProductStructure,
+  RealEstateInfo,
+  BorrowerInfo,
+}
+
 const NFTDetails = (): JSX.Element => {
   const { account, deactivate, library } = useWeb3React();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -64,6 +71,8 @@ const NFTDetails = (): JSX.Element => {
   const { txType, txStatus } = useContext(TxContext);
   const { balances } = useUserCryptoBalances();
   const [purchasedNFT, setPurchasedNFT] = useState(0);
+  const [currentTab, setCurrentTab] = useState(0);
+
   const current = moment();
 
   const totalPurchase = 54000;
@@ -132,6 +141,63 @@ const NFTDetails = (): JSX.Element => {
     setPurchasedNFT(parseInt(utils.formatUnits(count, 0), 10));
     // const info = await nftContract.uri(1); asset ipfs url
   }, [library, account]);
+
+  const setTabPageViewer = (currentTab: number): JSX.Element => {
+    switch (currentTab) {
+      case 0:
+      default:
+        return (
+          <section className="nft-details__nft-info">
+            <NFTInfo
+              type={'채권 NFT'}
+              principal={10}
+              interest={0.3}
+              expectedAPY={12}
+              overdueAPY={15}
+              loanDate={moment('2022.08.01', 'YYYY.MM.DD')}
+              maturityDate={moment('2022.11.30', 'YYYY.MM.DD')}
+              loanAgreementLink={'https://www.elyfi.world/ko'}
+              pledgeAgreementLink={'https://www.elyfi.world/ko'}
+              notaryDeedLink={'https://www.elyfi.world/ko'}
+            />
+          </section>
+        );
+      case 1:
+        return (
+          <section className="nft-details__bond-nft">
+            <BondNFT />
+          </section>
+        );
+      case 2:
+        return (
+          <section className="nft-details__borrower">
+            <Borrower
+              name={'Elyloan Inc'}
+              licenseNumber={'220111-0189192'}
+              delinquentTax={'해당없음'}
+              defaultingOnDebt={'해당없음'}
+              registrationLink={
+                'https://ipfs.io/ipfs/bafybeidtfourbfi4oy3nlos4v7vmvn3oyy5ufbtxjdux2gnl3al5pyutsy'
+              }
+            />
+          </section>
+        );
+      case 3:
+        return (
+          <section className="nft-details__real-estate-info">
+            <RealEstateInfo
+              assetName={'Norwalk Ave'}
+              location={'2046 Norwalk Ave, LA, CA 90041'}
+              buildingArea={'6,214 sqft / 1,034 + 350 sqft'}
+              assetType={'단독 주택'}
+              comment={
+                'Eagle Rock은 Occidental College가 위치해 있는 지역으로 근처에 상업거리인 Colorado Blvd가 인접 하여 좋은 입지를 가지고 있습니다.'
+              }
+            />
+          </section>
+        );
+    }
+  };
 
   useEffect(() => {
     draw();
@@ -265,45 +331,25 @@ const NFTDetails = (): JSX.Element => {
               endedTime={endedTime}
             />
           </article>
-          <article className="nft-details__nft-info">
-            <NFTInfo
-              type={'채권 NFT'}
-              principal={10}
-              interest={0.3}
-              expectedAPY={12}
-              overdueAPY={15}
-              loanDate={moment('2022.08.01', 'YYYY.MM.DD')}
-              maturityDate={moment('2022.11.30', 'YYYY.MM.DD')}
-              loanAgreementLink={'https://www.elyfi.world/ko'}
-              pledgeAgreementLink={'https://www.elyfi.world/ko'}
-              notaryDeedLink={'https://www.elyfi.world/ko'}
-            />
+
+          <article>
+            <section className="nft-details__tab">
+              {['상품정보', '상품구조', '미국부동산정보', '차입자정보'].map(
+                (data, index) => {
+                  console.log(index);
+                  return (
+                    <div
+                      className={currentTab === index ? '' : 'disable'}
+                      onClick={() => setCurrentTab(index)}>
+                      <b>{data}</b>
+                    </div>
+                  );
+                },
+              )}
+            </section>
+            {setTabPageViewer(currentTab)}
           </article>
-          <article className="nft-details__bond-nft">
-            <BondNFT />
-          </article>
-          <article className="nft-details__borrower">
-            <Borrower
-              name={'Elyloan Inc'}
-              licenseNumber={'220111-0189192'}
-              delinquentTax={'해당없음'}
-              defaultingOnDebt={'해당없음'}
-              registrationLink={
-                'https://ipfs.io/ipfs/bafybeidtfourbfi4oy3nlos4v7vmvn3oyy5ufbtxjdux2gnl3al5pyutsy'
-              }
-            />
-          </article>
-          <article className="nft-details__real-estate-info">
-            <RealEstateInfo
-              assetName={'Norwalk Ave'}
-              location={'2046 Norwalk Ave, LA, CA 90041'}
-              buildingArea={'6,214 sqft / 1,034 + 350 sqft'}
-              assetType={'단독 주택'}
-              comment={
-                'Eagle Rock은 Occidental College가 위치해 있는 지역으로 근처에 상업거리인 Colorado Blvd가 인접 하여 좋은 입지를 가지고 있습니다.'
-              }
-            />
-          </article>
+
           <article className="nft-details__news">
             <h2>{t('nftMarket.newsTitle')}</h2>
             <section>
