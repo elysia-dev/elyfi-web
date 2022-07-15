@@ -1,5 +1,4 @@
 import { formatCommaSmallFourDisits } from 'src/utiles/formatters';
-import { NumberLiteralType } from 'typescript';
 
 interface Props {
   setQuantity: React.Dispatch<React.SetStateAction<string>>;
@@ -7,6 +6,7 @@ interface Props {
   dollar: number;
   crypto: number | undefined;
   purchaseType: string;
+  max: () => void;
 }
 
 const InputQuantity: React.FC<Props> = ({
@@ -15,16 +15,16 @@ const InputQuantity: React.FC<Props> = ({
   dollar,
   crypto,
   purchaseType,
+  max,
 }) => {
   return (
     <div className="market_modal__input">
       <section>
-        <div>최대</div>
+        <div onClick={() => max()}>최대</div>
         <input
           type="number"
           value={quantity}
           onChange={(e) => {
-            console.log(e.target.value);
             if (!e.target.value) {
               setQuantity('0');
               return;
