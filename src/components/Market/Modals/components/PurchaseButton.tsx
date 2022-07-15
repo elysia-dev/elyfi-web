@@ -17,7 +17,7 @@ const PurchaseButton: React.FC<WalletBtnType> = ({
         isLoading && 'purchase_loading'
       }`}>
       <button
-        style={{ background: isPayAmount ? '#e6e6e6' : undefined }}
+        style={{ background: isPayAmount || isLoading ? '#e6e6e6' : undefined }}
         onClick={() => onClickHandler()}>
         {content}
       </button>
