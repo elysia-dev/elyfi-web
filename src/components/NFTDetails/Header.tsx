@@ -1,22 +1,30 @@
 import { useWeb3React } from '@web3-react/core';
 import { Trans, useTranslation } from 'react-i18next';
 import Questionmark from 'src/components/Questionmark';
+import MainnetType from 'src/enums/MainnetType';
 
 interface Props {
   onButtonClick: () => void;
   purchasedNFT: number;
+  mainnetType: MainnetType;
 }
 
-const Header: React.FC<Props> = ({ onButtonClick, purchasedNFT }) => {
+const Header: React.FC<Props> = ({
+  onButtonClick,
+  purchasedNFT,
+  mainnetType,
+}) => {
   const { t } = useTranslation();
   const { account } = useWeb3React();
 
   const currentPurchaseAmount = () => {
     return account === undefined
       ? t('nftMarket.purchaseStatus.walletConnect')
-      : purchasedNFT === 0
-      ? t('nftMarket.purchaseStatus.nullPurchase')
-      : purchasedNFT;
+      : mainnetType === MainnetType.Ethereum
+      ? purchasedNFT === 0
+        ? t('nftMarket.purchaseStatus.nullPurchase')
+        : purchasedNFT
+      : '이더리움 네트워크로 변경해주세요.';
   };
 
   return (
