@@ -1,5 +1,5 @@
 import { BigNumber, Contract, ethers, utils } from 'ethers';
-import { useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import useSWR from 'swr';
 import envs from 'src/core/envs';
 import { pricesFetcher } from 'src/clients/Coingecko';
@@ -7,6 +7,15 @@ import priceMiddleware from 'src/middleware/priceMiddleware';
 import { useWeb3React } from '@web3-react/core';
 import { gasPriceFetcher } from 'src/clients/BalancesFetcher';
 import controllerAbi from 'src/abis/Controller.json';
+import nftAbi from 'src/abis/NftBond.json';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
+import ModalViewType from 'src/enums/ModalViewType';
+import TransactionType from 'src/enums/TransactionType';
+import ElyfiVersions from 'src/enums/ElyfiVersions';
+import TxContext from 'src/contexts/TxContext';
+import usePurchaseNFT from 'src/hooks/usePurchaseNFT';
+import RecentActivityType from 'src/enums/RecentActivityType';
+import NFTPurchaseType from 'src/enums/NFTPurchaseType';
 import Confirm from './components/Confirm';
 import InputQuantity from './components/InputQuantity ';
 import LoadingIndicator from './components/LoadingIndicator';
@@ -15,6 +24,7 @@ import PurchaseButton from './components/PurchaseButton';
 import SelectCrypto from './components/SelectCrypto';
 import Step from './components/Step';
 import WalletAmount from './components/WalleAmount';
+import Approve from './components/Approve';
 interface ModalType {
   modalClose: () => void;
   balances: {
@@ -23,19 +33,12 @@ interface ModalType {
   };
 }
 
-const getControllerContract = (provider: any): Contract => {
-  return new ethers.Contract(
-    controllerAbi.address,
-    controllerAbi.abi,
-    provider,
-  );
-};
-
 const NFTPurchaseModal: React.FC<ModalType> = ({ modalClose, balances }) => {
-  const { account, library } = useWeb3React();
+  const { account } = useWeb3React();
   const [quantity, setQuantity] = useState('0');
   const [purchaseType, setPurchaseType] = useState('ETH');
   const [currentStep, setCurrentStep] = useState(1);
+  const { purchaseNFT } = usePurchaseNFT(balances.usdc);
   const { data: priceData } = useSWR(
     envs.externalApiEndpoint.coingackoURL,
     pricesFetcher,
@@ -48,7 +51,16 @@ const NFTPurchaseModal: React.FC<ModalType> = ({ modalClose, balances }) => {
     fetcher: gasPriceFetcher(),
   });
 
-  console.log('gasFee', gasFee);
+  const paymentAmount = useMemo(() => {
+    return priceData
+      ? (parseInt(quantity, 10) * 10) /
+          (purchaseType === 'ETH' ? priceData?.ethPrice : 1)
+      : 0;
+  }, [priceData, quantity, purchaseType]);
+
+  const paymentEth = useMemo(() => {
+    return paymentAmount + paymentAmount * 0.05;
+  }, [paymentAmount]);
 
   return (
     <div className="market_modal">
@@ -63,17 +75,17 @@ const NFTPurchaseModal: React.FC<ModalType> = ({ modalClose, balances }) => {
           currentStep={currentStep}
           setCurrentStep={setCurrentStep}
         />
-        {currentStep === 1 ? (
+        <Approve />
+        {/* {currentStep === 1 ? (
           <>
-            {' '}
             <InputQuantity
               setQuantity={setQuantity}
               quantity={quantity}
               dollar={parseInt(quantity, 10) * 10}
               crypto={
-                priceData &&
-                (parseInt(quantity, 10) * 10) /
-                  (purchaseType === 'ETH' ? priceData?.ethPrice : 1)
+                purchaseType === NFTPurchaseType.ETH
+                  ? paymentEth
+                  : paymentAmount
               }
               purchaseType={purchaseType}
             />
@@ -88,9 +100,7 @@ const NFTPurchaseModal: React.FC<ModalType> = ({ modalClose, balances }) => {
             quantity={quantity}
             dollar={parseInt(quantity, 10) * 10}
             crypto={
-              priceData &&
-              (parseInt(quantity, 10) * 10) /
-                (purchaseType === 'ETH' ? priceData?.ethPrice : 1)
+              purchaseType === NFTPurchaseType.ETH ? paymentEth : paymentAmount
             }
             purchaseType={purchaseType}
             gasFeeInfo={{
@@ -101,13 +111,13 @@ const NFTPurchaseModal: React.FC<ModalType> = ({ modalClose, balances }) => {
           />
         ) : (
           <LoadingIndicator />
-        )}
+        )} */}
         <PurchaseButton
           content={
             currentStep === 1
               ? priceData &&
-                gasFee &&
-                (parseInt(quantity, 10) * 10) / priceData?.ethPrice + gasFee >
+                (parseInt(quantity, 10) * 10) / priceData?.ethPrice +
+                  (gasFee || 0) >
                   balances.eth
                 ? '금액이 부족합니다.'
                 : '다음'
@@ -117,31 +127,14 @@ const NFTPurchaseModal: React.FC<ModalType> = ({ modalClose, balances }) => {
           }
           onClickHandler={async () => {
             if (currentStep === 2) {
-              console.log('deposit');
-              const controllerContract = getControllerContract(
-                library.getSigner(),
+              purchaseNFT(
+                String(parseInt(quantity, 10) * 10),
+                purchaseType,
+                modalClose,
+                purchaseType === NFTPurchaseType.ETH
+                  ? String(paymentEth)
+                  : undefined,
               );
-              controllerContract
-                .deposit(
-                  0,
-                  utils.parseUnits('100', 6),
-                  // utils.parseUnits(String(parseInt(quantity, 10) * 10), 6),
-                  // priceData &&
-                  //   utils.parseUnits(
-                  //     (
-                  //       (parseInt(quantity, 10) * 10) /
-                  //       (purchaseType === 'ETH' ? priceData?.ethPrice : 1)
-                  //     ).toFixed(5),
-                  //     0,
-                  //   ),
-                  // { value: utils.parseEther('0.0910') },
-                )
-                .then((res: any) => {
-                  console.log('res', res);
-                })
-                .catch((error: Error) => {
-                  console.log(error);
-                });
             }
             setCurrentStep((prev) => prev + 1);
           }}
