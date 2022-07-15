@@ -96,32 +96,23 @@ const PortfolioDetail: FunctionComponent = () => {
         setContractImage([
           {
             hash: contractDoc.documents[0].hash,
-            link: contractDoc.documents[0].link.replace(
-              'https://slate.textile.io',
-              'https://ipfs.io',
-            ),
+            link: contractDoc.documents[0].link
           },
           {
             hash:
               contractDoc.documents[1].hash ===
-              'bafybafybeib7azwyp4abkaoh3zpwygjhqkluborvt2cy255fvnq4a6o6qkkxla'
+                'bafybafybeib7azwyp4abkaoh3zpwygjhqkluborvt2cy255fvnq4a6o6qkkxla'
                 ? 'bafybeib7azwyp4abkaoh3zpwygjhqkluborvt2cy255fvnq4a6o6qkkxla'
                 : contractDoc.documents[1].hash,
             link:
               contractDoc.documents[1].hash ===
-              'bafybafybeib7azwyp4abkaoh3zpwygjhqkluborvt2cy255fvnq4a6o6qkkxla'
-                ? 'https://ipfs.io/ipfs/bafybeib7azwyp4abkaoh3zpwygjhqkluborvt2cy255fvnq4a6o6qkkxla'
-                : contractDoc.documents[1].link.replace(
-                    'https://slate.textile.io',
-                    'https://ipfs.io',
-                  ),
+                'bafybafybeib7azwyp4abkaoh3zpwygjhqkluborvt2cy255fvnq4a6o6qkkxla'
+                ? 'https://slate.textile.io/ipfs/bafybeib7azwyp4abkaoh3zpwygjhqkluborvt2cy255fvnq4a6o6qkkxla'
+                : contractDoc.documents[1].link
           },
           {
             hash: contractDoc.documents[2].hash,
-            link: contractDoc.documents[2].link.replace(
-              'https://slate.textile.io',
-              'https://ipfs.io',
-            ),
+            link: contractDoc.documents[2].link
           },
           {
             hash: contractDoc.images[0]?.hash,
