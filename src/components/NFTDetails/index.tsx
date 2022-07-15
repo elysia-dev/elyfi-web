@@ -33,6 +33,7 @@ import { utils } from 'ethers';
 import TxContext from 'src/contexts/TxContext';
 import TxStatus from 'src/enums/TxStatus';
 import useSWR from 'swr';
+import Token from 'src/enums/Token';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ChangeNetworkModal from '../Market/Modals/ChangeNetworkModal';
 import NFTPurchaseModal from '../Market/Modals/NFTPurchaseModal';
@@ -40,8 +41,9 @@ import TwitterConfirmModal from '../Market/Modals/TwitterConfirmModal';
 import TokenRewardModal from '../Market/Modals/TokenRewardModal';
 import SelectWalletModal from '../Market/Modals/SelectWalletModal';
 import ReconnectWallet from '../Market/Modals/components/ReconnectWallet';
+import NewsCard from './NewsCard';
 
-interface INews {
+export interface INews {
   title: string;
   content: string;
   link: string;
@@ -62,6 +64,8 @@ const NFTDetails = (): JSX.Element => {
   const { balances } = useUserCryptoBalances();
   const [purchasedNFT, setPurchasedNFT] = useState(0);
   const current = moment();
+
+  const totalPurchase = 54000;
 
   const startTime = moment(
     '2022.07.21 20:00:00 +9:00',
@@ -171,7 +175,7 @@ const NFTDetails = (): JSX.Element => {
         <NFTPurchaseModal
           modalClose={() => setModalType('')}
           balances={balances}
-          remainingNFT={540000 - (nftTotalSupply || 0)}
+          remainingNFT={totalPurchase - (nftTotalSupply || 0)}
         />
       ) : modalType === 'changeNetwork' ? (
         <ChangeNetworkModal
@@ -199,7 +203,7 @@ const NFTDetails = (): JSX.Element => {
           endedTime={endedTime}
           onClose={() => setModalType('')}
           tokenAmount={1234}
-          tokenName={'ELFI'}
+          tokenName={Token.ELFI}
         />
       ) : (
         <></>
@@ -223,7 +227,7 @@ const NFTDetails = (): JSX.Element => {
           <p>{t('nftMarket.title')}</p>
         </div>
         <a className="nft-details__guide" href="#">
-          가이드에 따라 구매하기 -&gt;
+          가이드에 따라 구매하기 &gt;
         </a>
         <article className="nft-details__header">
           <Header
@@ -239,7 +243,10 @@ const NFTDetails = (): JSX.Element => {
                 : setModalType('selectWallet');
             }}
             purchasedNFT={purchasedNFT}
-            isDisabled={!current.isBetween(startTime, endedTime)}
+            isDisabled={
+              !current.isBetween(startTime, endedTime) ||
+              totalPurchase <= (nftTotalSupply || 0)
+            }
             mainnetType={mainnetType}
           />
         </article>
@@ -247,7 +254,7 @@ const NFTDetails = (): JSX.Element => {
           <article className="nft-details__purchase">
             <Purchase
               userTotalPurchase={nftTotalSupply || 0}
-              totalPurchase={54000}
+              totalPurchase={totalPurchase}
               startTime={startTime}
               endedTime={endedTime}
             />
@@ -295,16 +302,7 @@ const NFTDetails = (): JSX.Element => {
             <h2>{t('nftMarket.newsTitle')}</h2>
             <section>
               {newsData.map((data, index) => {
-                return (
-                  <section key={index}>
-                    <img src={data.image} alt="News image" />
-                    <b>{data.title}</b>
-                    <p>{data.content}</p>
-                    <a target="_blank" href={data.link}>
-                      {t('nftMarket.newsButton')}
-                    </a>
-                  </section>
-                );
+                return <NewsCard data={data} index={index} />;
               })}
             </section>
           </article>
