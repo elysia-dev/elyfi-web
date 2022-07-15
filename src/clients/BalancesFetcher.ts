@@ -200,12 +200,6 @@ export const gasPriceFetcher =
           from: args[0].account,
         },
       );
-      console.log('ada');
-      console.log(
-        'ss',
-        utils.formatEther(await provider.getGasPrice()),
-        utils.formatUnits(estimatedGas, 0),
-      );
 
       const gasFee =
         parseFloat(utils.formatEther(await provider.getGasPrice())) *
@@ -216,14 +210,14 @@ export const gasPriceFetcher =
       console.log(error);
       return 0;
     }
-
-    // const nftContract = getNFTContract(provider);
-    // // nftContract.balanceOf(address, projectId);
-
-    // console.log('test', utils.formatUnits(testGas, 0));
-    // console.log(utils.formatEther(await provider.getGasPrice()));
-    // console.log(
-    //   'gas fee',
-    //   parseFloat(utils.formatUnits(testGas, 0)) *
-    //     parseFloat(utils.formatEther(gasPrice)),)
   };
+
+export const nftTotalSupplyFetcher = () => async (): Promise<number> => {
+  try {
+    const nftContract = getNFTContract(provider);
+    return parseInt(utils.formatUnits(await nftContract.totalSupply(1), 0), 10);
+  } catch (error) {
+    console.log(error);
+    return 0;
+  }
+};
