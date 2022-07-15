@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import {
   DataPipelineFactory,
@@ -30,15 +31,16 @@ const stakingPoolV2Contract = (address: string, provider: any) => {
   return StakingPoolV2factory.connect(address, provider);
 };
 
-const getNFTContract = (provider: any) => {
-  return new ethers.Contract(nftAbi.address, nftAbi.abi, provider);
-};
 export const getControllerContract = (provider: any): Contract => {
   return new ethers.Contract(
     controllerAbi.address,
     controllerAbi.abi,
     provider,
   );
+};
+
+export const getNFTContract = (provider: any) => {
+  return new ethers.Contract(nftAbi.address, nftAbi.abi, provider);
 };
 
 export const elfiBalanceOfFetcher =
@@ -192,7 +194,7 @@ export const gasPriceFetcher =
     try {
       const controllerContract = getControllerContract(provider);
       const estimatedGas = await controllerContract.estimateGas.deposit(
-        0,
+        1,
         utils.parseUnits('10', 6),
         {
           from: args[0].account,
