@@ -21,7 +21,7 @@ export interface ICardType {
   currentSoldNFTs: number;
   totalNFTs: number;
   cardImage: string | undefined;
-  onClickLink: string;
+  onClickLink: string | undefined;
 }
 
 const tempCardArray: ICardType[] = [
@@ -41,7 +41,7 @@ const tempCardArray: ICardType[] = [
     currentSoldNFTs: 0,
     totalNFTs: 0,
     cardImage: undefined,
-    onClickLink: 'b2',
+    onClickLink: undefined,
   },
   {
     PFType: PFType.SHARE,
@@ -50,7 +50,7 @@ const tempCardArray: ICardType[] = [
     currentSoldNFTs: 0,
     totalNFTs: 0,
     cardImage: undefined,
-    onClickLink: 'c3',
+    onClickLink: undefined,
   },
 ];
 

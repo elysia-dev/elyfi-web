@@ -9,6 +9,7 @@ const NFTCard: React.FC<{ data: ICardType }> = ({ data }) => {
 
   return (
     <Link
+      className={data.onClickLink === undefined ? 'disable' : ''}
       to={{
         pathname: `/${lng}/market/${data.onClickLink}`,
       }}>

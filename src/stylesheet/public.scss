@@ -1950,88 +1950,108 @@ input[type='number'] {
         text-align: center;
         justify-items: center;
         gap: 35px 15px;
-        > a > section {
-          width: 345px;
-          height: 300px;
-          padding: 10px;
-          box-shadow: 0px 0px 6px #00000029;
-          border-radius: 5px;
-          cursor: pointer;
-          > figure {
-            margin: 0;
+        > a {
+          &.disable {
             position: relative;
-            > img {
-              width: 325px;
-              height: 210px;
-              object-fit: cover;
-            }
-            > figcaption {
-              top: 10px;
-              left: 10px;
+            z-index: 1;
+            pointer-events: none;
+            cursor: not-allowed;
+            &::after {
+              content: '';
+              z-index: 2;
               position: absolute;
-              width: 90px;
-              height: 25px;
-              line-height: 25px;
-              font-size: 13px;
-              text-align: center;
-              border-radius: 13px;
-              &.bond {
-                background-color: #d9edff;
-                color: #3ca3ff;
-              }
-              &.share {
-                background-color: #d3f4ff;
-                color: #00beff;
-              }
+              width: 345px;
+              height: 300px;
+              left: 0;
+              top: 0;
+              background: #00000013;
             }
           }
-          > div {
-            margin-top: 10px;
-            > p {
-              color: #9d9d9d;
-              text-align: left;
-              font-size: 12px;
-            }
-            > b {
-              margin-top: 5px;
-              color: $font-color;
-              text-align: right;
-              font-size: 12px;
-              display: block;
-              > span {
-                margin-left: 5px;
-                font-size: 18px;
-                &::after {
-                  content: '%';
+          > section {
+            width: 345px;
+            height: 300px;
+            padding: 10px;
+            box-shadow: 0px 0px 6px #00000029;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #ffffff;
+
+            > figure {
+              margin: 0;
+              position: relative;
+              > img {
+                width: 325px;
+                height: 210px;
+                object-fit: cover;
+              }
+              > figcaption {
+                top: 10px;
+                left: 10px;
+                position: absolute;
+                width: 90px;
+                height: 25px;
+                line-height: 25px;
+                font-size: 13px;
+                text-align: center;
+                border-radius: 13px;
+                &.bond {
+                  background-color: #d9edff;
+                  color: #3ca3ff;
+                }
+                &.share {
+                  background-color: #d3f4ff;
+                  color: #00beff;
                 }
               }
             }
-          }
-          > progress {
-            width: 100%;
-            margin-top: 10px;
-            height: 5px;
-            border: 0;
-            vertical-align: 0;
-            &::-webkit-progress-bar {
-              height: 5px;
-              border-radius: 5px;
-              border: 0;
-              border-radius: 5px;
-              background: #e6e6e6;
+            > div {
+              margin-top: 10px;
+              > p {
+                color: #9d9d9d;
+                text-align: left;
+                font-size: 12px;
+              }
+              > b {
+                margin-top: 5px;
+                color: $font-color;
+                text-align: right;
+                font-size: 12px;
+                display: block;
+                > span {
+                  margin-left: 5px;
+                  font-size: 18px;
+                  &::after {
+                    content: '%';
+                  }
+                }
+              }
             }
-            &::-webkit-progress-value {
-              background: #0099cc;
-              border: 0;
-              border-radius: 5px;
+            > progress {
+              width: 100%;
+              margin-top: 10px;
               height: 5px;
-              border-radius: 5px;
-            }
-            &::-moz-progress-bar {
-              background: #0099cc;
               border: 0;
-              height: 5px;
-              border-radius: 5px;
+              vertical-align: 0;
+              &::-webkit-progress-bar {
+                height: 5px;
+                border-radius: 5px;
+                border: 0;
+                border-radius: 5px;
+                background: #e6e6e6;
+              }
+              &::-webkit-progress-value {
+                background: #0099cc;
+                border: 0;
+                border-radius: 5px;
+                height: 5px;
+                border-radius: 5px;
+              }
+              &::-moz-progress-bar {
+                background: #0099cc;
+                border: 0;
+                height: 5px;
+                border-radius: 5px;
+              }
             }
           }
         }
