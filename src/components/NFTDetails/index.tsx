@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import MediaQuery from 'src/enums/MediaQuery';
@@ -25,8 +25,15 @@ import News02 from 'src/assets/images/market/news02.png';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { useWeb3React } from '@web3-react/core';
 import useUserCryptoBalances from 'src/hooks/useUserCryptoBalances';
-import { getNFTContract } from 'src/clients/BalancesFetcher';
+import {
+  getNFTContract,
+  nftTotalSupplyFetcher,
+} from 'src/clients/BalancesFetcher';
 import { utils } from 'ethers';
+import TxContext from 'src/contexts/TxContext';
+import TxStatus from 'src/enums/TxStatus';
+import useSWR from 'swr';
+import RecentActivityType from 'src/enums/RecentActivityType';
 import ChangeNetworkModal from '../Market/Modals/ChangeNetworkModal';
 import NFTPurchaseModal from '../Market/Modals/NFTPurchaseModal';
 import SelectWalletModal from '../Market/Modals/SelectWalletModal';
@@ -49,8 +56,14 @@ const NFTDetails = (): JSX.Element => {
   const { lng } = useParams<{ lng: string }>();
   const [modalType, setModalType] = useState('');
   const { type: mainnetType, changeMainnet } = useContext(MainnetContext);
+  const { txType, txStatus } = useContext(TxContext);
   const { balances } = useUserCryptoBalances();
   const [purchasedNFT, setPurchasedNFT] = useState(0);
+
+  const { data: nftTotalSupply, mutate } = useSWR(['nftTotalSupply'], {
+    fetcher: nftTotalSupplyFetcher(),
+  });
+
   const newsData: INews[] = [
     {
       title: 'Bloomberg',
@@ -96,6 +109,12 @@ const NFTDetails = (): JSX.Element => {
     );
   };
 
+  const getPurchasedNFT = useCallback(async () => {
+    const nftContract = getNFTContract(library.getSigner());
+    const count = await nftContract.balanceOf(account, 1);
+    setPurchasedNFT(parseInt(utils.formatUnits(count, 0), 10));
+  }, [library, account]);
+
   useEffect(() => {
     draw();
     window.addEventListener('scroll', () => draw());
@@ -115,12 +134,19 @@ const NFTDetails = (): JSX.Element => {
 
   useEffect(() => {
     if (!account) return;
-    (async () => {
-      const nftContract = getNFTContract(library.getSigner());
-      const count = await nftContract.balanceOf(account, 1);
-      setPurchasedNFT(parseInt(utils.formatUnits(count, 0), 10));
-    })();
-  }, []);
+    getPurchasedNFT();
+  }, [account]);
+
+  useEffect(() => {
+    if (!account) return;
+    if (
+      txStatus === TxStatus.CONFIRM &&
+      txType === RecentActivityType.PurchasedNFT
+    ) {
+      getPurchasedNFT();
+      mutate();
+    }
+  }, [txStatus, txType]);
 
   return (
     <>
@@ -133,6 +159,7 @@ const NFTDetails = (): JSX.Element => {
         <NFTPurchaseModal
           modalClose={() => setModalType('')}
           balances={balances}
+          remainingNFT={540000 - (nftTotalSupply || 0)}
         />
       ) : modalType === 'changeNetwork' ? (
         <ChangeNetworkModal
@@ -183,12 +210,13 @@ const NFTDetails = (): JSX.Element => {
                 : setModalType('selectWallet');
             }}
             purchasedNFT={purchasedNFT}
+            mainnetType={mainnetType}
           />
         </article>
         <article className="nft-details__content">
           <article className="nft-details__purchase">
             <Purchase
-              userTotalPurchase={500}
+              userTotalPurchase={nftTotalSupply || 0}
               totalPurchase={54000}
               startTime={moment(
                 '2022.07.18 19:00:00 +9:00',
