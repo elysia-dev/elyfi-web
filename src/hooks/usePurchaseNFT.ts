@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import { constants, utils } from 'ethers';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { getControllerContract } from 'src/clients/BalancesFetcher';
 import TxContext from 'src/contexts/TxContext';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
@@ -22,10 +22,16 @@ const usePurchaseNFT = (
     modalClose: () => void,
     ethAmount?: string,
   ) => void;
+  isApprove: boolean;
+  approve: () => Promise<void>;
+  isLoading: boolean;
 } => {
   const { account, library, chainId } = useWeb3React();
-  const { setTransaction, failTransaction } = useContext(TxContext);
+  const { setTransaction, failTransaction, txStatus, txType } =
+    useContext(TxContext);
   const ercContract = useERC20(envs.token.usdcAddress);
+  const [isApprove, setIsApprove] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const purchaseNFT = async (
     amount: string,
@@ -33,13 +39,13 @@ const usePurchaseNFT = (
     modalClose: () => void,
     ethAmount?: string,
   ) => {
-    if (!account) return;
-
+    if (!account) throw Error('No account');
+    setIsLoading(true);
     const controllerContract = getControllerContract(library.getSigner());
 
     const emitter = buildEventEmitter(
-      ModalViewType.DepositOrWithdrawModal,
-      TransactionType.Deposit,
+      ModalViewType.NFTPurchaseModal,
+      TransactionType.PurchaseNFT,
       JSON.stringify({
         version: ElyfiVersions.V1,
         chainId,
@@ -66,7 +72,7 @@ const usePurchaseNFT = (
       setTransaction(
         tx,
         emitter,
-        RecentActivityType.Deposit,
+        RecentActivityType.PurchasedNFT,
         () => {
           modalClose();
         },
@@ -85,22 +91,72 @@ const usePurchaseNFT = (
     }
   };
 
-  const allowance = async () => {
-    if (!account) return;
-
+  const checkAllowance = async (account: string) => {
     const allowanceAmount = await ercContract.allowance(
       account,
       '0xaA9ee17a1aC1658426B61cD5d501c4b00CDC1eD5',
     );
-
-    allowanceAmount.gte(parseEther(String(usdc)));
-    const b = await ercContract.approve(
-      '0xaA9ee17a1aC1658426B61cD5d501c4b00CDC1eD5',
-      constants.MaxUint256,
+    console.log(
+      'allowance',
+      allowanceAmount.gte(parseEther(String(usdc))),
+      parseEther(String(usdc)),
     );
+
+    return allowanceAmount.gte(parseEther(String(usdc)));
   };
 
-  return { purchaseNFT };
+  const approve = async () => {
+    setIsLoading(true);
+    const emitter = buildEventEmitter(
+      ModalViewType.NFTPurchaseModal,
+      TransactionType.Approve,
+      JSON.stringify({
+        version: ElyfiVersions.V1,
+        chainId,
+        address: account,
+      }),
+    );
+
+    try {
+      emitter.clicked();
+
+      const tx = await ercContract.approve(
+        '0xaA9ee17a1aC1658426B61cD5d501c4b00CDC1eD5',
+        constants.MaxUint256,
+      );
+      setTransaction(
+        tx,
+        emitter,
+        RecentActivityType.Approve,
+        () => {},
+        () => {},
+      );
+    } catch (error) {
+      failTransaction(emitter, () => {}, error, TransactionType.Approve);
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!account) return;
+
+    (async () => {
+      setIsApprove(await checkAllowance(account));
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (account && txType === RecentActivityType.Approve) {
+        setIsApprove(await checkAllowance(account));
+      }
+      if (txStatus === 'CONFIRM') {
+        setIsLoading(false);
+      }
+    })();
+  }, [txStatus]);
+
+  return { purchaseNFT, isApprove, approve, isLoading };
 };
 
 export default usePurchaseNFT;
