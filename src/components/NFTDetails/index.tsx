@@ -25,6 +25,8 @@ import News02 from 'src/assets/images/market/news02.png';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { useWeb3React } from '@web3-react/core';
 import useUserCryptoBalances from 'src/hooks/useUserCryptoBalances';
+import { getNFTContract } from 'src/clients/BalancesFetcher';
+import { utils } from 'ethers';
 import ChangeNetworkModal from '../Market/Modals/ChangeNetworkModal';
 import NFTPurchaseModal from '../Market/Modals/NFTPurchaseModal';
 import SelectWalletModal from '../Market/Modals/SelectWalletModal';
@@ -38,7 +40,7 @@ interface INews {
 }
 
 const NFTDetails = (): JSX.Element => {
-  const { account, deactivate } = useWeb3React();
+  const { account, deactivate, library } = useWeb3React();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const { value: mediaQuery } = useMediaQueryType();
@@ -48,6 +50,7 @@ const NFTDetails = (): JSX.Element => {
   const [modalType, setModalType] = useState('');
   const { type: mainnetType, changeMainnet } = useContext(MainnetContext);
   const { balances } = useUserCryptoBalances();
+  const [purchasedNFT, setPurchasedNFT] = useState(0);
   const newsData: INews[] = [
     {
       title: 'Bloomberg',
@@ -110,6 +113,15 @@ const NFTDetails = (): JSX.Element => {
     }
   }, [mainnetType]);
 
+  useEffect(() => {
+    if (!account) return;
+    (async () => {
+      const nftContract = getNFTContract(library.getSigner());
+      const count = await nftContract.balanceOf(account, 1);
+      setPurchasedNFT(parseInt(utils.formatUnits(count, 0), 10));
+    })();
+  }, []);
+
   return (
     <>
       {modalType === 'selectWallet' ? (
@@ -170,6 +182,7 @@ const NFTDetails = (): JSX.Element => {
                   : setModalType('reconnect')
                 : setModalType('selectWallet');
             }}
+            purchasedNFT={purchasedNFT}
           />
         </article>
         <article className="nft-details__content">
