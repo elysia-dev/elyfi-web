@@ -1,19 +1,23 @@
 import { BigNumber } from 'ethers';
-import { formatCommaSmallFourDisits } from 'src/utiles/formatters';
+import {
+  formatCommaSmallFourDisits,
+  formatCommaSmallZeroDisits,
+} from 'src/utiles/formatters';
 
 interface Amount {
   balances: {
     usdc: number;
     eth: number;
   };
+  remainingNFT: number;
 }
 
-const WalletAmount: React.FC<Amount> = ({ balances }) => {
+const WalletAmount: React.FC<Amount> = ({ balances, remainingNFT }) => {
   return (
     <div className="market_modal__amount">
       <div>
         <div>잔여 NFT 수량</div>
-        <div>123,456</div>
+        <div>{formatCommaSmallZeroDisits(remainingNFT)}</div>
       </div>
       <div>
         <div>지갑 잔액</div>
