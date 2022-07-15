@@ -6186,6 +6186,43 @@ input[type='number'] {
         }
       }
     }
+    &__approve {
+      width: 100%;
+      height: 388.25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0px 19.5px;
+      border-bottom: 1px solid $gray-line;
+      > h5 {
+        font-size: 18px;
+        margin: 0px;
+        // padding: 40px 0px;
+        padding-bottom: 40px;
+        text-align: center;
+      }
+      > div {
+        border: 1px solid #e6e6e6;
+        padding: 32px 24px;
+        > P {
+          text-align: center;
+          font-size: 15px;
+          > span {
+            font-weight: 700;
+            color: $elysia-color;
+          }
+        }
+      }
+      > p {
+        font-size: 12px;
+        text-align: center;
+        margin-top: 15px;
+        > span {
+          font-weight: 700;
+          color: $elysia-color;
+        }
+      }
+    }
   }
   @keyframes ldio-17gxvvu9k8u {
     0% {
