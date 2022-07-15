@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import SpinnerToken from 'src/assets/images/market/tokenSpinning.gif';
+import SpinnerToken from 'src/assets/images/market/tokenSpinning.mp4';
 import Logo from 'src/assets/images/ELYFI_logo.svg';
 import moment from 'moment';
 
@@ -39,7 +39,12 @@ const TokenRewardModal: React.FC<Props> = ({
               <br />
               {tokenName} 토큰 {tokenAmount}개를 받았습니다.
             </b>
-            <img src={SpinnerToken} alt="Spinning token image" />
+            <video
+              src={SpinnerToken}
+              muted={true}
+              loop={true}
+              autoPlay={true}
+            />
             <section>
               <p>{tokenName} 토큰 지급일</p>
               <b>{moment(endedTime).format('YYYY.MM.DD')} KST</b>

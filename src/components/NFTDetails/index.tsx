@@ -150,21 +150,29 @@ const NFTDetails = (): JSX.Element => {
             setModalType('selectWallet');
           }}
         />
+      ) : modalType === 'twitter' ? (
+        <TwitterConfirmModal
+          endedTime={moment(
+            '2022.08.01 19:00:00 +9:00',
+            'YYYY.MM.DD hh:mm:ss Z',
+          )}
+          onClose={() => setModalType('')}
+          onSubmit={() => {}}
+          onDiscard={() => {}}
+        />
+      ) : modalType === 'tokenReward' ? (
+        <TokenRewardModal
+          endedTime={moment(
+            '2022.08.01 19:00:00 +9:00',
+            'YYYY.MM.DD hh:mm:ss Z',
+          )}
+          onClose={() => setModalType('')}
+          tokenAmount={1234}
+          tokenName={'ELFI'}
+        />
       ) : (
         <></>
       )}
-      {/* <TwitterConfirmModal
-        endedTime={moment('2022.08.01 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z')}
-        onClose={() => {}}
-        onSubmit={() => {}}
-        onDiscard={() => {}}
-      />
-      <TokenRewardModal
-        endedTime={moment('2022.08.01 19:00:00 +9:00', 'YYYY.MM.DD hh:mm:ss Z')}
-        onClose={() => {}}
-        tokenAmount={1234}
-        tokenName={'ELFI'}
-      /> */}
       <canvas
         ref={canvasRef}
         style={{

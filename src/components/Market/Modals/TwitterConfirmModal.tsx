@@ -2,7 +2,7 @@ import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Logo from 'src/assets/images/ELYFI_logo.svg';
-import Twitter from 'src/assets/images/market/twitter.gif';
+import Twitter from 'src/assets/images/market/twitter.mp4';
 import ModalButton from 'src/components/Modal/ModalButton';
 
 interface Props {
@@ -60,7 +60,7 @@ const TwitterConfirmModal: React.FC<Props> = ({
           </header>
           <section className="market_modal__twitter">
             <figure>
-              <img src={Twitter} alt="Twitter" />
+              <video src={Twitter} muted={true} loop={true} autoPlay={true} />
               <figcaption>
                 <b>
                   리트윗하고
