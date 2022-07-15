@@ -18,8 +18,8 @@ const useUserCryptoBalances = (): {
     [
       {
         usdc: envs.token.usdcAddress,
-        account: '0x3486831d16b8B084e87368E02D298f12d92E6891',
-        // account,
+        // account: '0x3486831d16b8B084e87368E02D298f12d92E6891',
+        account,
       },
     ],
     {
