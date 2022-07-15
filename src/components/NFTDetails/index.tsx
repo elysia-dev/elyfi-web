@@ -113,6 +113,7 @@ const NFTDetails = (): JSX.Element => {
     const nftContract = getNFTContract(library.getSigner());
     const count = await nftContract.balanceOf(account, 1);
     setPurchasedNFT(parseInt(utils.formatUnits(count, 0), 10));
+    // const info = await nftContract.uri(1); asset ipfs url
   }, [library, account]);
 
   useEffect(() => {
