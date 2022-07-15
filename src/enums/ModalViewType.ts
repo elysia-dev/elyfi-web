@@ -9,6 +9,7 @@ enum ModalViewType {
   StakingOrUnstakingModal = 'StakingOrUnstakingModal',
   StakingIncentiveModal = 'StakingIncentiveModal',
   MigrationOrUnstakingModal = 'MigrationOrUnstakingModal',
+  NFTPurchaseModal = 'NFTPurchaseModal',
 }
 
 export default ModalViewType;

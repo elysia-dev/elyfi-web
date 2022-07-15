@@ -1,20 +1,11 @@
-import { BigNumber, Contract, ethers, utils } from 'ethers';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import useSWR from 'swr';
 import envs from 'src/core/envs';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import { useWeb3React } from '@web3-react/core';
 import { gasPriceFetcher } from 'src/clients/BalancesFetcher';
-import controllerAbi from 'src/abis/Controller.json';
-import nftAbi from 'src/abis/NftBond.json';
-import buildEventEmitter from 'src/utiles/buildEventEmitter';
-import ModalViewType from 'src/enums/ModalViewType';
-import TransactionType from 'src/enums/TransactionType';
-import ElyfiVersions from 'src/enums/ElyfiVersions';
-import TxContext from 'src/contexts/TxContext';
 import usePurchaseNFT from 'src/hooks/usePurchaseNFT';
-import RecentActivityType from 'src/enums/RecentActivityType';
 import NFTPurchaseType from 'src/enums/NFTPurchaseType';
 import Confirm from './components/Confirm';
 import InputQuantity from './components/InputQuantity ';
@@ -31,14 +22,21 @@ interface ModalType {
     usdc: number;
     eth: number;
   };
+  remainingNFT: number;
 }
 
-const NFTPurchaseModal: React.FC<ModalType> = ({ modalClose, balances }) => {
+const NFTPurchaseModal: React.FC<ModalType> = ({
+  modalClose,
+  balances,
+  remainingNFT,
+}) => {
   const { account } = useWeb3React();
   const [quantity, setQuantity] = useState('0');
   const [purchaseType, setPurchaseType] = useState('ETH');
   const [currentStep, setCurrentStep] = useState(1);
-  const { purchaseNFT } = usePurchaseNFT(balances.usdc);
+  const { purchaseNFT, isApprove, approve, isLoading } = usePurchaseNFT(
+    balances.usdc,
+  );
   const { data: priceData } = useSWR(
     envs.externalApiEndpoint.coingackoURL,
     pricesFetcher,
@@ -62,6 +60,17 @@ const NFTPurchaseModal: React.FC<ModalType> = ({ modalClose, balances }) => {
     return paymentAmount + paymentAmount * 0.05;
   }, [paymentAmount]);
 
+  const isPayAmount = () => {
+    if (!priceData) return;
+
+    if (purchaseType === NFTPurchaseType.ETH) {
+      return paymentEth > balances.eth;
+    }
+    if (purchaseType === NFTPurchaseType.USDC) {
+      return paymentAmount > balances.usdc || (gasFee || 0) > balances.eth;
+    }
+  };
+
   return (
     <div className="market_modal">
       <div className="market_modal__wrapper">
@@ -75,8 +84,7 @@ const NFTPurchaseModal: React.FC<ModalType> = ({ modalClose, balances }) => {
           currentStep={currentStep}
           setCurrentStep={setCurrentStep}
         />
-        <Approve />
-        {/* {currentStep === 1 ? (
+        {currentStep === 1 ? (
           <>
             <InputQuantity
               setQuantity={setQuantity}
@@ -88,45 +96,77 @@ const NFTPurchaseModal: React.FC<ModalType> = ({ modalClose, balances }) => {
                   : paymentAmount
               }
               purchaseType={purchaseType}
+              max={() => {
+                setQuantity(
+                  purchaseType === NFTPurchaseType.USDC
+                    ? ((balances.usdc * 1) / 10).toString()
+                    : (
+                        ((balances.eth - balances.eth * 0.05 - (gasFee || 0)) *
+                          (priceData?.ethPrice || 0)) /
+                        10
+                      ).toFixed(0),
+                );
+              }}
             />
             <SelectCrypto
               setPurchaseType={setPurchaseType}
               purchaseType={purchaseType}
             />
-            <WalletAmount balances={balances} />
+            <WalletAmount balances={balances} remainingNFT={remainingNFT} />
           </>
-        ) : currentStep === 2 ? (
-          <Confirm
-            quantity={quantity}
-            dollar={parseInt(quantity, 10) * 10}
-            crypto={
-              purchaseType === NFTPurchaseType.ETH ? paymentEth : paymentAmount
-            }
-            purchaseType={purchaseType}
-            gasFeeInfo={{
-              gasFee,
-              gasFeeToDollar:
-                (gasFee ? gasFee : 0) * (priceData ? priceData.ethPrice : 0),
-            }}
-          />
+        ) : !isLoading && currentStep === 2 ? (
+          purchaseType === NFTPurchaseType.USDC && !isApprove ? (
+            <Approve />
+          ) : (
+            <Confirm
+              quantity={quantity}
+              dollar={parseInt(quantity, 10) * 10}
+              crypto={
+                purchaseType === NFTPurchaseType.ETH
+                  ? paymentEth
+                  : paymentAmount
+              }
+              purchaseType={purchaseType}
+              gasFeeInfo={{
+                gasFee,
+                gasFeeToDollar:
+                  (gasFee ? gasFee : 0) * (priceData ? priceData.ethPrice : 0),
+              }}
+            />
+          )
         ) : (
-          <LoadingIndicator />
-        )} */}
+          isLoading && <LoadingIndicator />
+        )}
         <PurchaseButton
           content={
             currentStep === 1
-              ? priceData &&
-                (parseInt(quantity, 10) * 10) / priceData?.ethPrice +
-                  (gasFee || 0) >
-                  balances.eth
+              ? parseInt(quantity, 10) > remainingNFT
+                ? '잔여 NFT 수량보다 많이 입력했습니다.'
+                : isPayAmount()
                 ? '금액이 부족합니다.'
+                : quantity === '0'
+                ? '수량을 입력해주세요.'
                 : '다음'
               : currentStep === 2
-              ? '구매하기'
+              ? purchaseType === NFTPurchaseType.USDC && !isApprove
+                ? '승인하기'
+                : '구매하기'
               : '구매요청 처리중'
           }
+          isPayAmount={isPayAmount() || quantity === '0'}
           onClickHandler={async () => {
+            if (
+              isPayAmount() ||
+              quantity === '0' ||
+              parseInt(quantity, 10) > remainingNFT ||
+              isLoading
+            )
+              return;
             if (currentStep === 2) {
+              if (purchaseType === NFTPurchaseType.USDC && !isApprove) {
+                await approve();
+                return;
+              }
               purchaseNFT(
                 String(parseInt(quantity, 10) * 10),
                 purchaseType,
@@ -138,6 +178,7 @@ const NFTPurchaseModal: React.FC<ModalType> = ({ modalClose, balances }) => {
             }
             setCurrentStep((prev) => prev + 1);
           }}
+          isLoading={isLoading}
         />
       </div>
     </div>
