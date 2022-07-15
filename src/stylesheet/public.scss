@@ -564,6 +564,23 @@ input[type='number'] {
       border-top: 1px solid #333333;
       border-right: 1px solid #333333;
     }
+    .beta {
+      &::after {
+        content: 'B';
+        position: absolute;
+        top: 5px;
+        right: -8px;
+        width: 12px;
+        height: 12px;
+        font-family: $montserrat--bold;
+        color: $background-color;
+        font-size: 9px;
+        line-height: 12px;
+        border-radius: 2px;
+        background-color: #0087ff;
+        text-align: center;
+      }
+    }
   } // navigation end
 
   .main {
@@ -1897,7 +1914,20 @@ input[type='number'] {
       margin-bottom: 100px;
       > h1 {
         font-size: 30px;
-        margin-bottom: 30px;
+        margin-bottom: 2px;
+      }
+      > div {
+        width: 54px;
+        height: 18px;
+        background: #0087ff;
+        border-radius: 5px;
+        margin: 0 auto 10px;
+        > p {
+          font-size: 12px;
+          line-height: 18px;
+          color: #ffffff;
+          font-family: $montserrat--bold;
+        }
       }
     }
     &__content {
@@ -2011,8 +2041,15 @@ input[type='number'] {
   // market end
 
   .nft-details {
+    &__guide {
+      margin-top: 30px;
+      color: #00bfff;
+      text-align: right;
+      display: block;
+      cursor: pointer;
+    }
     &__header {
-      margin-top: 50px;
+      margin-top: 10px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -2034,6 +2071,7 @@ input[type='number'] {
         box-shadow: 0px 0px 6px #00000029;
         border-radius: 5px;
         padding: 28px;
+        background-color: #ffffff;
         > div {
           display: flex;
           flex-direction: row;
@@ -2056,6 +2094,12 @@ input[type='number'] {
             font-size: 15px;
             color: #fff;
             border: 0;
+            &.disabled {
+              pointer-events: none;
+              cursor: not-allowed;
+              background-color: #f0f0f1;
+              color: $font-color;
+            }
           }
         }
         > b {
@@ -2185,7 +2229,7 @@ input[type='number'] {
         margin-top: 22px;
         > figure {
           margin: 0;
-          > img {
+          > video {
             width: 527px;
             border-radius: 5px;
           }
@@ -6186,6 +6230,109 @@ input[type='number'] {
         }
       }
     }
+    &__twitter {
+      width: 470px;
+      margin: 0 auto;
+      text-align: center;
+      > figure {
+        > video {
+          width: 250px;
+        }
+        > figcaption {
+          font-size: 20px;
+        }
+        margin-bottom: 30px;
+      }
+      > section {
+        height: 103px;
+        background-color: #f6f6f8;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+        padding: 0 100px;
+        > div {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-bottom: 10px;
+          > b {
+            font-size: 20px;
+            color: #333333;
+          }
+          > p {
+            font-size: 13px;
+            color: #707070;
+          }
+        }
+        > b {
+          font-size: 20px;
+          color: #333333;
+        }
+      }
+    }
+    &__visible {
+      position: absolute;
+      bottom: -30px;
+      display: flex;
+      align-items: center;
+      > div {
+        width: 16px;
+        height: 16px;
+        border: 1px solid #ffffff;
+        border-radius: 2px;
+        margin-right: 9px;
+        cursor: pointer;
+        &:hover {
+          background-color: #ffffff33;
+        }
+        &:active {
+          background-color: #ffffff88;
+        }
+      }
+      > b {
+        font-size: 15px;
+        color: #fff;
+      }
+    }
+    &__token-reward {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 0 30px;
+      > b {
+        font-size: 20px;
+        line-height: 28px;
+      }
+      > video {
+        width: 250px;
+      }
+      > section {
+        width: 450px;
+        margin: 10px auto 0;
+        height: 120px;
+        border-radius: 10px;
+        background-color: #f6f6f8;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        > p {
+          font-size: 13px;
+          color: #333;
+          &:first-child {
+            color: #707070;
+          }
+        }
+        > b {
+          font-size: 20px;
+          margin-bottom: 12.5px;
+        }
+      }
+    }
+
     &__approve {
       width: 100%;
       height: 388.25px;

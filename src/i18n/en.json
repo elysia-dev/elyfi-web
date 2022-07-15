@@ -599,28 +599,6 @@
       "Deposit": "Deposit",
       "Withdraw": "Withdraw"
     },
-    "market": {
-      "total_size": "Total Market Size",
-      "token--header": "Pool",
-      "asset": "Asset",
-      "total_deposit": "Total Deposits",
-      "deposit_apy": "Deposit APY",
-      "total_borrowed": "Total Borrowed",
-      "borrow_apy": "Borrow APY",
-      "button": "Deposit | Withdraw",
-      "coming_soon": "Coming Soon!",
-      "info": "Details",
-      "total_deposit_yield": "Total Deposit Rates",
-      "deposit_info": "Combines Deposit APY and Mining APR",
-      "mining_apr": "Mining APR",
-      "details": "Liquidity Details",
-      "available_liquidity": "Available Liquidity",
-      "utilization": "Utilization Rate",
-      "depositors": "Number of Depositors",
-      "borrowers": "Number of Borrowers",
-      "deposit": "Deposit",
-      "borrow": "Borrow"
-    },
     "modal": {
       "indicator": {
         "permission_check": "Checking permission to your token..",
@@ -732,6 +710,13 @@
         "Profit distribution",
         "When profits are generated in ELYFI, participants can receive money pool deposit margin according to the staked ELFI token (sELFI). Currently, since there is not much protocol net profit, it is distributed from the amount of ELFI allocated to Yield Farming, and will be distributed as protocol net profit from a specific point in the future."
       ]
+    },
+    "market": {
+      "title": "부동산 상품마켓",
+      "content": "원하는 부동산 상품을 직접 고르고 구매할 수 있어요!",
+      "useRealEstateInfo": "미국 부동산 상품",
+      "apy": "연 수익률",
+      "nftType": ["채권 NFT", "지분 NFT"]
     },
     "nftMarket": {
       "title": "채권 NFT",

@@ -36,6 +36,8 @@ import useSWR from 'swr';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ChangeNetworkModal from '../Market/Modals/ChangeNetworkModal';
 import NFTPurchaseModal from '../Market/Modals/NFTPurchaseModal';
+import TwitterConfirmModal from '../Market/Modals/TwitterConfirmModal';
+import TokenRewardModal from '../Market/Modals/TokenRewardModal';
 import SelectWalletModal from '../Market/Modals/SelectWalletModal';
 import ReconnectWallet from '../Market/Modals/components/ReconnectWallet';
 
@@ -59,6 +61,16 @@ const NFTDetails = (): JSX.Element => {
   const { txType, txStatus } = useContext(TxContext);
   const { balances } = useUserCryptoBalances();
   const [purchasedNFT, setPurchasedNFT] = useState(0);
+  const current = moment();
+
+  const startTime = moment(
+    '2022.07.21 20:00:00 +9:00',
+    'YYYY.MM.DD hh:mm:ss Z',
+  );
+  const endedTime = moment(
+    '2022.08.04 20:00:00 +9:00',
+    'YYYY.MM.DD hh:mm:ss Z',
+  );
 
   const { data: nftTotalSupply, mutate } = useSWR(['nftTotalSupply'], {
     fetcher: nftTotalSupplyFetcher(),
@@ -176,6 +188,20 @@ const NFTDetails = (): JSX.Element => {
             setModalType('selectWallet');
           }}
         />
+      ) : modalType === 'twitter' ? (
+        <TwitterConfirmModal
+          endedTime={endedTime}
+          onClose={() => setModalType('')}
+          onSubmit={() => {}}
+          onDiscard={() => {}}
+        />
+      ) : modalType === 'tokenReward' ? (
+        <TokenRewardModal
+          endedTime={endedTime}
+          onClose={() => setModalType('')}
+          tokenAmount={1234}
+          tokenName={'ELFI'}
+        />
       ) : (
         <></>
       )}
@@ -189,7 +215,7 @@ const NFTDetails = (): JSX.Element => {
           zIndex: -1,
         }}
       />
-      <main className="nft-details">
+      <main className="nft-details" ref={headerRef}>
         <div className="component__text-navigation">
           <p onClick={() => navigate(`/${lng}/market`)} className="pointer">
             {t('navigation.market')}
@@ -197,6 +223,9 @@ const NFTDetails = (): JSX.Element => {
           &nbsp;&gt;&nbsp;
           <p>{t('nftMarket.title')}</p>
         </div>
+        <a className="nft-details__guide" href="#">
+          가이드에 따라 구매하기 -&gt;
+        </a>
         <article className="nft-details__header">
           <Header
             onButtonClick={() => {
@@ -211,6 +240,7 @@ const NFTDetails = (): JSX.Element => {
                 : setModalType('selectWallet');
             }}
             purchasedNFT={purchasedNFT}
+            isDisabled={!current.isBetween(startTime, endedTime)}
             mainnetType={mainnetType}
           />
         </article>
@@ -219,14 +249,8 @@ const NFTDetails = (): JSX.Element => {
             <Purchase
               userTotalPurchase={nftTotalSupply || 0}
               totalPurchase={54000}
-              startTime={moment(
-                '2022.07.18 19:00:00 +9:00',
-                'YYYY.MM.DD hh:mm:ss Z',
-              )}
-              endedTime={moment(
-                '2022.08.01 19:00:00 +9:00',
-                'YYYY.MM.DD hh:mm:ss Z',
-              )}
+              startTime={startTime}
+              endedTime={endedTime}
             />
           </article>
           <article className="nft-details__nft-info">

@@ -1,4 +1,4 @@
-import ContractImage from 'src/assets/images/market/contract.gif';
+import ContractVideo from 'src/assets/images/market/contract.mp4';
 import Clip from 'src/assets/images/market/clip.svg';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
@@ -34,7 +34,11 @@ const NFTInfo: React.FC<Props> = ({
       <h2>{t('nftMarket.nftInfo')}</h2>
       <div>
         <figure>
-          <img src={ContractImage} alt="Contract image" />
+          <video
+            src={ContractVideo}
+            muted={true}
+            loop={true}
+            autoPlay={true}></video>
         </figure>
         <table>
           <tr>
