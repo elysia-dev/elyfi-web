@@ -142,8 +142,10 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
             currentStep === 1
               ? parseInt(quantity, 10) > remainingNFT
                 ? '잔여 NFT 수량보다 많이 입력했습니다.'
-                : isPayAmount() || quantity === '0'
+                : isPayAmount()
                 ? '금액이 부족합니다.'
+                : quantity === '0'
+                ? '수량을 입력해주세요.'
                 : '다음'
               : currentStep === 2
               ? purchaseType === NFTPurchaseType.USDC && !isApprove
@@ -156,7 +158,8 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
             if (
               isPayAmount() ||
               quantity === '0' ||
-              parseInt(quantity, 10) > remainingNFT
+              parseInt(quantity, 10) > remainingNFT ||
+              isLoading
             )
               return;
             if (currentStep === 2) {
@@ -175,6 +178,7 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
             }
             setCurrentStep((prev) => prev + 1);
           }}
+          isLoading={isLoading}
         />
       </div>
     </div>
