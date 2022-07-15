@@ -1,6 +1,7 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 import MediaQuery from 'src/enums/MediaQuery';
 import TokenColors from 'src/enums/TokenColors';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
@@ -227,9 +228,13 @@ const NFTDetails = (): JSX.Element => {
           &nbsp;&gt;&nbsp;
           <p>{t('nftMarket.title')}</p>
         </div>
-        <a className="nft-details__guide" href="#">
+        <Link
+          className="nft-details__guide"
+          to={{
+            pathname: `/${lng}/faq`,
+          }}>
           가이드에 따라 구매하기 &gt;
-        </a>
+        </Link>
         <article className="nft-details__header">
           <Header
             onButtonClick={() => {
