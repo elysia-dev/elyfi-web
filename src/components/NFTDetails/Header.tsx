@@ -4,16 +4,19 @@ import Questionmark from 'src/components/Questionmark';
 
 interface Props {
   onButtonClick: () => void;
+  purchasedNFT: number;
 }
 
-const Header: React.FC<Props> = ({ onButtonClick }) => {
+const Header: React.FC<Props> = ({ onButtonClick, purchasedNFT }) => {
   const { t } = useTranslation();
   const { account } = useWeb3React();
 
   const currentPurchaseAmount = () => {
     return account === undefined
       ? t('nftMarket.purchaseStatus.walletConnect')
-      : t('nftMarket.purchaseStatus.nullPurchase');
+      : purchasedNFT === 0
+      ? t('nftMarket.purchaseStatus.nullPurchase')
+      : purchasedNFT;
   };
 
   return (
@@ -44,7 +47,9 @@ const Header: React.FC<Props> = ({ onButtonClick }) => {
               />
             </span>
           </b>
-          <button onClick={onButtonClick}>{t('nftMarket.purchase')}</button>
+          <button onClick={() => onButtonClick()}>
+            {t('nftMarket.purchase')}
+          </button>
         </div>
         <b>{currentPurchaseAmount()}</b>
       </section>

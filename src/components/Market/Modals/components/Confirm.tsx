@@ -1,18 +1,38 @@
-const Confirm: React.FC = () => {
+import { formatCommaSmallFourDisits } from 'src/utiles/formatters';
+
+type Props = {
+  quantity: string;
+  dollar: number;
+  crypto: number | undefined;
+  purchaseType: string;
+  gasFeeInfo: {
+    gasFee: number | undefined;
+    gasFeeToDollar: number;
+  };
+};
+
+const Confirm: React.FC<Props> = ({
+  quantity,
+  dollar,
+  crypto,
+  purchaseType,
+  gasFeeInfo,
+}) => {
   return (
     <div className="market_modal__confirm">
       <h3>구매정보 확인</h3>
       <div>
         <div>구매 수량</div>
-        <div>123,456</div>
+        <div>{quantity}</div>
       </div>
       <div>
         <div>예상 결제 금액</div>
         <div>
           <div>
-            123,456<span>ETH</span>
+            {crypto && formatCommaSmallFourDisits(crypto)}
+            <span>{purchaseType}</span>
           </div>
-          <div>≒ $0.0</div>
+          <div>≒ ${dollar}</div>
         </div>
       </div>
       <div>
@@ -21,7 +41,10 @@ const Confirm: React.FC = () => {
           <li>
             구매 요청을 할 경우, 이더리움 네트워크 이용 수수료가 발생합니다.
             <br />
-            <span>예상 가스비: 0.1234ETH(≒ $123.xx)</span>
+            <span>
+              예상 가스비: {gasFeeInfo.gasFee}ETH(≒ ${gasFeeInfo.gasFeeToDollar}
+              )
+            </span>
           </li>
           <li>
             이더(ETH)로 구매 요청할 경우, 요청 즉시 예상 결제 금액이 유니스
