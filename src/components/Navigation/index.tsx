@@ -20,6 +20,7 @@ import useSWR from 'swr';
 import { BigNumber, constants } from 'ethers';
 import envs from 'src/core/envs';
 import ExternalLinkImage from 'src/assets/images/external_link.svg';
+import logo_1st from 'src/assets/images/logo_1st.svg';
 import TxStatus from 'src/enums/TxStatus';
 import TxContext from 'src/contexts/TxContext';
 import LanguageContext from 'src/contexts/LanguageContext';
@@ -643,7 +644,14 @@ const Navigation: React.FunctionComponent<{
                     setHamburgerBar(false);
                   }}>
                   <div className="logo-wrapper" style={{ cursor: 'pointer' }}>
-                    <LazyImage src={ElysiaLogo} name="elysia-logo" />
+                    <LazyImage
+                      src={logo_1st}
+                      name="elysia-logo"
+                      style={{
+                        width: mediaQuery === MediaQuery.PC ? 150 : 100,
+                        height: mediaQuery === MediaQuery.PC ? 50 : 30,
+                      }}
+                    />
                   </div>
                 </Link>
               </div>
