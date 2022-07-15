@@ -53,6 +53,16 @@ const NFTDetails = (): JSX.Element => {
   const { type: mainnetType, changeMainnet } = useContext(MainnetContext);
   const { balances } = useUserCryptoBalances();
   const [purchasedNFT, setPurchasedNFT] = useState(0);
+  const current = moment();
+  const startTime = moment(
+    '2022.07.21 20:00:00 +9:00',
+    'YYYY.MM.DD hh:mm:ss Z',
+  );
+  const endedTime = moment(
+    '2022.08.04 20:00:00 +9:00',
+    'YYYY.MM.DD hh:mm:ss Z',
+  );
+
   const newsData: INews[] = [
     {
       title: 'Bloomberg',
@@ -152,20 +162,14 @@ const NFTDetails = (): JSX.Element => {
         />
       ) : modalType === 'twitter' ? (
         <TwitterConfirmModal
-          endedTime={moment(
-            '2022.08.01 19:00:00 +9:00',
-            'YYYY.MM.DD hh:mm:ss Z',
-          )}
+          endedTime={endedTime}
           onClose={() => setModalType('')}
           onSubmit={() => {}}
           onDiscard={() => {}}
         />
       ) : modalType === 'tokenReward' ? (
         <TokenRewardModal
-          endedTime={moment(
-            '2022.08.01 19:00:00 +9:00',
-            'YYYY.MM.DD hh:mm:ss Z',
-          )}
+          endedTime={endedTime}
           onClose={() => setModalType('')}
           tokenAmount={1234}
           tokenName={'ELFI'}
@@ -191,6 +195,9 @@ const NFTDetails = (): JSX.Element => {
           &nbsp;&gt;&nbsp;
           <p>{t('nftMarket.title')}</p>
         </div>
+        <a className="nft-details__guide" href="#">
+          가이드에 따라 구매하기 -&gt;
+        </a>
         <article className="nft-details__header">
           <Header
             onButtonClick={() => {
@@ -205,21 +212,16 @@ const NFTDetails = (): JSX.Element => {
                 : setModalType('selectWallet');
             }}
             purchasedNFT={purchasedNFT}
+            isDisabled={!current.isBetween(startTime, endedTime)}
           />
         </article>
         <article className="nft-details__content">
           <article className="nft-details__purchase">
             <Purchase
-              userTotalPurchase={500}
+              userTotalPurchase={500 + purchasedNFT}
               totalPurchase={54000}
-              startTime={moment(
-                '2022.07.18 19:00:00 +9:00',
-                'YYYY.MM.DD hh:mm:ss Z',
-              )}
-              endedTime={moment(
-                '2022.08.01 19:00:00 +9:00',
-                'YYYY.MM.DD hh:mm:ss Z',
-              )}
+              startTime={startTime}
+              endedTime={endedTime}
             />
           </article>
           <article className="nft-details__nft-info">

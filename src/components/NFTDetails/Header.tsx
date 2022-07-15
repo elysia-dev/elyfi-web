@@ -5,9 +5,14 @@ import Questionmark from 'src/components/Questionmark';
 interface Props {
   onButtonClick: () => void;
   purchasedNFT: number;
+  isDisabled: boolean;
 }
 
-const Header: React.FC<Props> = ({ onButtonClick, purchasedNFT }) => {
+const Header: React.FC<Props> = ({
+  onButtonClick,
+  purchasedNFT,
+  isDisabled,
+}) => {
   const { t } = useTranslation();
   const { account } = useWeb3React();
 
@@ -17,6 +22,14 @@ const Header: React.FC<Props> = ({ onButtonClick, purchasedNFT }) => {
       : purchasedNFT === 0
       ? t('nftMarket.purchaseStatus.nullPurchase')
       : purchasedNFT;
+  };
+
+  const ButtonComponent = (): JSX.Element => {
+    return (
+      <button onClick={onButtonClick} className={isDisabled ? 'disabled' : ''}>
+        {t('nftMarket.purchase')}
+      </button>
+    );
   };
 
   return (
@@ -47,9 +60,7 @@ const Header: React.FC<Props> = ({ onButtonClick, purchasedNFT }) => {
               />
             </span>
           </b>
-          <button onClick={() => onButtonClick()}>
-            {t('nftMarket.purchase')}
-          </button>
+          <ButtonComponent />
         </div>
         <b>{currentPurchaseAmount()}</b>
       </section>
@@ -77,7 +88,7 @@ const Header: React.FC<Props> = ({ onButtonClick, purchasedNFT }) => {
           </b>
           <span>{currentPurchaseAmount()}</span>
         </div>
-        <button onClick={onButtonClick}>{t('nftMarket.purchase')}</button>
+        <ButtonComponent />
       </section>
     </>
   );
