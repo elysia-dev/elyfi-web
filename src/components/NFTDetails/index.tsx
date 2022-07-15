@@ -80,19 +80,19 @@ const NFTDetails = (): JSX.Element => {
     {
       title: 'Bloomberg',
       content: 'ELYFI Launches US Real Estate Investment Product',
-      link: '',
+      link: 'https://www.bloomberg.com/press-releases/2022-07-06/elyfi-launches-us-real-estate-investment-product',
       image: News00,
     },
     {
       title: 'Yahoo finance',
       content: 'ELYFI Launches US Real Estate Investment Product',
-      link: '',
+      link: 'https://finance.yahoo.com/news/elyfi-launches-us-real-estate-120000334.html?guccounter=1',
       image: News01,
     },
     {
       title: 'Token Post',
       content: '엘리파이, 美 부동산 투자 상품 출시…대출채권 조각 구매 가능',
-      link: '',
+      link: 'https://www.tokenpost.kr/article-98820',
       image: News02,
     },
   ];
