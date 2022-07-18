@@ -156,6 +156,7 @@ const NFTDetails = (): JSX.Element => {
       txStatus === TxStatus.CONFIRM &&
       txType === RecentActivityType.PurchasedNFT
     ) {
+      setModalType('twitter');
       getPurchasedNFT();
       mutate();
     }
