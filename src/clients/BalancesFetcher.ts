@@ -1,3 +1,4 @@
+import { JsonRpcProvider, Provider } from '@ethersproject/providers';
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import {
@@ -5,13 +6,12 @@ import {
   StakingPoolV2factory,
 } from '@elysia-dev/elyfi-v1-sdk';
 import axios from 'axios';
-import { JsonRpcProvider } from '@ethersproject/providers';
-import envs from 'src/core/envs';
-import { getV2LPPoolContract } from 'src/utiles/v2LPPoolContract';
 import { BigNumber, constants, Contract, ethers, utils } from 'ethers';
-import Token from 'src/enums/Token';
-import nftAbi from 'src/abis/NftBond.json';
 import controllerAbi from 'src/abis/Controller.json';
+import nftAbi from 'src/abis/NftBond.json';
+import envs from 'src/core/envs';
+import Token from 'src/enums/Token';
+import { getV2LPPoolContract } from 'src/utiles/v2LPPoolContract';
 
 export const tvlFetcher = (
   url: string,
@@ -39,7 +39,7 @@ export const getControllerContract = (provider: any): Contract => {
   );
 };
 
-export const getNFTContract = (provider: any) => {
+export const getNFTContract = (provider: Provider) => {
   return new ethers.Contract(nftAbi.address, nftAbi.abi, provider);
 };
 
