@@ -1,7 +1,5 @@
-import useSWR from 'swr';
-import envs from 'src/core/envs';
-import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
-import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
+import { BigNumber, constants } from 'ethers';
+import { useEffect, useState } from 'react';
 import {
   elfiBalanceOfFetcher,
   elfiV2BalanceFetcher,
@@ -9,8 +7,10 @@ import {
   v2LPPoolTokensFetcher,
   v2PoolDataFetcher,
 } from 'src/clients/BalancesFetcher';
-import { useEffect, useState } from 'react';
-import { BigNumber, constants } from 'ethers';
+import { poolDataFetcher } from 'src/clients/CachedUniswapV3';
+import envs from 'src/core/envs';
+import poolDataMiddleware from 'src/middleware/poolDataMiddleware';
+import useSWR from 'swr';
 
 type BalanceType = {
   ethPool: {

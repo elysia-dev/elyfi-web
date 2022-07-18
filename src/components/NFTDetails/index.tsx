@@ -1,3 +1,8 @@
+import { JsonRpcProvider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
+import axios from 'axios';
+import { utils } from 'ethers';
+import moment from 'moment';
 import {
   useCallback,
   useContext,
@@ -8,47 +13,37 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
-import MediaQuery from 'src/enums/MediaQuery';
-import TokenColors from 'src/enums/TokenColors';
-import useMediaQueryType from 'src/hooks/useMediaQueryType';
-import useNavigator from 'src/hooks/useNavigator';
-import DrawWave from 'src/utiles/drawWave';
-import Questionmark from 'src/components/Questionmark';
-import ContractImage from 'src/assets/images/market/contract.gif';
-import Clip from 'src/assets/images/market/clip.svg';
-import NFTStructure from 'src/assets/images/market/NFTStructure.png';
-import BondAsset from 'src/assets/images/market/bondAssets.png';
-import MainnetType from 'src/enums/MainnetType';
-import Header from 'src/components/NFTDetails/Header';
-import Purchase from 'src/components/NFTDetails/Purchase';
-import NFTInfo from 'src/components/NFTDetails/NFTInfo';
-import BondNFT from 'src/components/NFTDetails/BondNFT';
-import Borrower from 'src/components/NFTDetails/Borrower';
-import RealEstateInfo from 'src/components/NFTDetails/RealEstateInfo';
-import moment from 'moment';
 import News00 from 'src/assets/images/market/news00.png';
 import News01 from 'src/assets/images/market/news01.png';
 import News02 from 'src/assets/images/market/news02.png';
-import MainnetContext from 'src/contexts/MainnetContext';
-import { useWeb3React } from '@web3-react/core';
-import axios from 'axios';
-import useUserCryptoBalances from 'src/hooks/useUserCryptoBalances';
 import {
   getNFTContract,
   nftTotalSupplyFetcher,
 } from 'src/clients/BalancesFetcher';
-import { utils } from 'ethers';
+import BondNFT from 'src/components/NFTDetails/BondNFT';
+import Borrower from 'src/components/NFTDetails/Borrower';
+import Header from 'src/components/NFTDetails/Header';
+import NFTInfo from 'src/components/NFTDetails/NFTInfo';
+import Purchase from 'src/components/NFTDetails/Purchase';
+import RealEstateInfo from 'src/components/NFTDetails/RealEstateInfo';
+import MainnetContext from 'src/contexts/MainnetContext';
 import TxContext from 'src/contexts/TxContext';
-import TxStatus from 'src/enums/TxStatus';
-import useSWR from 'swr';
-import { JsonRpcProvider } from '@ethersproject/providers';
+import MainnetType from 'src/enums/MainnetType';
+import MediaQuery from 'src/enums/MediaQuery';
 import RecentActivityType from 'src/enums/RecentActivityType';
+import TokenColors from 'src/enums/TokenColors';
+import TxStatus from 'src/enums/TxStatus';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
+import useNavigator from 'src/hooks/useNavigator';
+import useUserCryptoBalances from 'src/hooks/useUserCryptoBalances';
+import DrawWave from 'src/utiles/drawWave';
+import useSWR from 'swr';
 import ChangeNetworkModal from '../Market/Modals/ChangeNetworkModal';
-import NFTPurchaseModal from '../Market/Modals/NFTPurchaseModal';
-import TwitterConfirmModal from '../Market/Modals/TwitterConfirmModal';
-import TokenRewardModal from '../Market/Modals/TokenRewardModal';
-import SelectWalletModal from '../Market/Modals/SelectWalletModal';
 import ReconnectWallet from '../Market/Modals/components/ReconnectWallet';
+import NFTPurchaseModal from '../Market/Modals/NFTPurchaseModal';
+import SelectWalletModal from '../Market/Modals/SelectWalletModal';
+import TokenRewardModal from '../Market/Modals/TokenRewardModal';
+import TwitterConfirmModal from '../Market/Modals/TwitterConfirmModal';
 
 interface INews {
   title: string;
@@ -144,7 +139,10 @@ const NFTDetails = (): JSX.Element => {
 
   const getPurchasedNFT = useCallback(async () => {
     const nftContract = getNFTContract(library.getSigner());
-    const count = await nftContract.balanceOf(account, 1);
+    const count =
+      account === undefined || account === null
+        ? 0
+        : await nftContract.balanceOf(account, 1);
     setPurchasedNFT(parseInt(utils.formatUnits(count, 0), 10));
   }, [library, account]);
 

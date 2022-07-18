@@ -1,7 +1,7 @@
-import { ethers } from 'ethers';
+import { JsonRpcProvider } from '@ethersproject/providers';
 
-const getProvider = (): ethers.providers.JsonRpcProvider => {
-  return new ethers.providers.JsonRpcProvider(process.env.REACT_APP_JSON_RPC);
+const getProvider = (): JsonRpcProvider => {
+  return new JsonRpcProvider(process.env.REACT_APP_JSON_RPC);
 };
 
 export default getProvider;

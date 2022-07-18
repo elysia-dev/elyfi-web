@@ -1,16 +1,17 @@
 import { useWeb3React } from '@web3-react/core';
 import { constants, utils } from 'ethers';
+import { parseEther } from 'ethers/lib/utils';
 import { useContext, useEffect, useState } from 'react';
+import { Controller } from 'src/abis/types';
 import { getControllerContract } from 'src/clients/BalancesFetcher';
 import TxContext from 'src/contexts/TxContext';
+import envs from 'src/core/envs';
 import ElyfiVersions from 'src/enums/ElyfiVersions';
 import ModalViewType from 'src/enums/ModalViewType';
 import NFTPurchaseType from 'src/enums/NFTPurchaseType';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import TransactionType from 'src/enums/TransactionType';
 import buildEventEmitter from 'src/utiles/buildEventEmitter';
-import { parseEther } from 'ethers/lib/utils';
-import envs from 'src/core/envs';
 import useERC20 from './useERC20';
 
 const usePurchaseNFT = (
@@ -41,7 +42,9 @@ const usePurchaseNFT = (
   ) => {
     if (!account) throw Error('No account');
     setIsLoading(true);
-    const controllerContract = getControllerContract(library.getSigner());
+    const controllerContract: Controller = getControllerContract(
+      library.getSigner(),
+    );
 
     const emitter = buildEventEmitter(
       ModalViewType.NFTPurchaseModal,
