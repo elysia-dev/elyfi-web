@@ -31,7 +31,7 @@ const Header: React.FC<Props> = ({
 
   const ButtonComponent = (): JSX.Element => {
     return (
-      <button onClick={onButtonClick} className={isDisabled ? 'disabled' : ''}>
+      <button onClick={onButtonClick} className={''}>
         {t('nftMarket.purchase')}
       </button>
     );
