@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "contracts:compile:abi": "typechain --target ethers-v5 --out-dir src/abis/types \"./src/abis/**/*.json\"",
+    "prepare": "yarn contracts:compile:abi",
     "start": "REACT_APP_TEST_MODE=y react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -89,6 +91,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/react-hooks": "^7.0.2",
     "@testing-library/user-event": "^12.1.10",
+    "@typechain/ethers-v5": "^10.1.0",
     "@types/graphql": "^14.5.0",
     "@types/gsap": "^3.0.0",
     "@types/react": "^17.0.3",
@@ -101,6 +104,7 @@
     "cypress-react-selector": "^2.3.16",
     "eslint-plugin-cypress": "^2.12.1",
     "react-test-renderer": "^16.9.0",
-    "sass": "^1.49.9"
+    "sass": "^1.49.9",
+    "typechain": "^8.1.0"
   }
 }
