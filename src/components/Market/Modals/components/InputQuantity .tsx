@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { formatCommaSmallFourDisits } from 'src/utiles/formatters';
 
 interface Props {
@@ -17,10 +18,12 @@ const InputQuantity: React.FC<Props> = ({
   purchaseType,
   max,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="market_modal__input">
       <section>
-        <div onClick={() => max()}>최대</div>
+        <div onClick={() => max()}>{t('nftModal.purchaseModal.max')}</div>
         <input
           type="number"
           value={quantity}
