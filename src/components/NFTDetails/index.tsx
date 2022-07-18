@@ -1,4 +1,11 @@
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import MediaQuery from 'src/enums/MediaQuery';
@@ -24,6 +31,7 @@ import News01 from 'src/assets/images/market/news01.png';
 import News02 from 'src/assets/images/market/news02.png';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { useWeb3React } from '@web3-react/core';
+import axios from 'axios';
 import useUserCryptoBalances from 'src/hooks/useUserCryptoBalances';
 import {
   getNFTContract,
@@ -33,6 +41,7 @@ import { utils } from 'ethers';
 import TxContext from 'src/contexts/TxContext';
 import TxStatus from 'src/enums/TxStatus';
 import useSWR from 'swr';
+import { JsonRpcProvider } from '@ethersproject/providers';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ChangeNetworkModal from '../Market/Modals/ChangeNetworkModal';
 import NFTPurchaseModal from '../Market/Modals/NFTPurchaseModal';
@@ -48,6 +57,17 @@ interface INews {
   image: string;
 }
 
+type NFTType = {
+  'collateral Info': {
+    type: string;
+    link: string;
+  }[];
+  attributes: { trait_type: string; value: string }[];
+  image: string;
+};
+
+const provider = new JsonRpcProvider(process.env.REACT_APP_JSON_RPC);
+
 const NFTDetails = (): JSX.Element => {
   const { account, deactivate, library } = useWeb3React();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -61,6 +81,7 @@ const NFTDetails = (): JSX.Element => {
   const { txType, txStatus } = useContext(TxContext);
   const { balances } = useUserCryptoBalances();
   const [purchasedNFT, setPurchasedNFT] = useState(0);
+  const [nftInfo, setNftInfo] = useState<NFTType | undefined>();
   const current = moment();
 
   const startTime = moment(
@@ -125,8 +146,21 @@ const NFTDetails = (): JSX.Element => {
     const nftContract = getNFTContract(library.getSigner());
     const count = await nftContract.balanceOf(account, 1);
     setPurchasedNFT(parseInt(utils.formatUnits(count, 0), 10));
-    // const info = await nftContract.uri(1); asset ipfs url
   }, [library, account]);
+
+  const getUrl = async () => {
+    const nftContract = getNFTContract(provider);
+    /**
+     * asset ipfs url
+     * */
+    const info = await nftContract.uri(1);
+    axios
+      .get(`https://slate.textile.io/ipfs/${info.split(/ipfs:\/\//)[1]}`)
+      .then((res) => {
+        setNftInfo(res.data);
+        console.log('res', res.data);
+      });
+  };
 
   useEffect(() => {
     draw();
@@ -162,6 +196,10 @@ const NFTDetails = (): JSX.Element => {
     }
   }, [txStatus, txType]);
 
+  useLayoutEffect(() => {
+    getUrl();
+  }, []);
+
   return (
     <>
       {modalType === 'selectWallet' ? (
@@ -193,7 +231,9 @@ const NFTDetails = (): JSX.Element => {
         <TwitterConfirmModal
           endedTime={endedTime}
           onClose={() => setModalType('')}
-          onSubmit={() => {}}
+          onSubmit={() => {
+            setModalType('tokenReward');
+          }}
           onDiscard={() => {}}
         />
       ) : modalType === 'tokenReward' ? (
@@ -257,15 +297,53 @@ const NFTDetails = (): JSX.Element => {
           <article className="nft-details__nft-info">
             <NFTInfo
               type={'채권 NFT'}
-              principal={10}
+              principal={
+                nftInfo?.attributes.find((nft) => {
+                  return nft.trait_type === 'Principal';
+                })?.value
+              }
               interest={0.3}
-              expectedAPY={12}
-              overdueAPY={15}
-              loanDate={moment('2022.08.01', 'YYYY.MM.DD')}
-              maturityDate={moment('2022.11.30', 'YYYY.MM.DD')}
-              loanAgreementLink={'https://www.elyfi.world/ko'}
-              pledgeAgreementLink={'https://www.elyfi.world/ko'}
-              notaryDeedLink={'https://www.elyfi.world/ko'}
+              expectedAPY={
+                nftInfo?.attributes.find((nft) => {
+                  return nft.trait_type === 'Expected APY';
+                })?.value
+              }
+              overdueAPY={
+                nftInfo?.attributes.find((nft) => {
+                  return nft.trait_type === 'Overdue APY';
+                })?.value
+              }
+              loanDate={moment(
+                nftInfo?.attributes
+                  .find((nft) => {
+                    return nft.trait_type === 'Loan Date';
+                  })
+                  ?.value.split('KST')[0],
+              )}
+              maturityDate={moment(
+                moment(
+                  nftInfo?.attributes
+                    .find((nft) => {
+                      return nft.trait_type === 'Maturity Date';
+                    })
+                    ?.value.split('KST')[0],
+                ),
+              )}
+              loanAgreementLink={`https://slate.textile.io/ipfs/${
+                nftInfo
+                  ? nftInfo['collateral Info'][0].link.split(/ipfs:\/\//)[1]
+                  : ''
+              }`}
+              pledgeAgreementLink={`https://slate.textile.io/ipfs/${
+                nftInfo
+                  ? nftInfo['collateral Info'][1].link.split(/ipfs:\/\//)[1]
+                  : ''
+              }`}
+              notaryDeedLink={`https://slate.textile.io/ipfs/${
+                nftInfo
+                  ? nftInfo['collateral Info'][2].link.split(/ipfs:\/\//)[1]
+                  : ''
+              }`}
             />
           </article>
           <article className="nft-details__bond-nft">

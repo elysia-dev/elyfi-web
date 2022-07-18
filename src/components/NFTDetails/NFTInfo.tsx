@@ -5,10 +5,10 @@ import moment from 'moment';
 
 interface Props {
   type: string;
-  principal: number;
+  principal?: string;
   interest: number;
-  expectedAPY: number;
-  overdueAPY: number;
+  expectedAPY?: string;
+  overdueAPY?: string;
   loanDate: moment.Moment;
   maturityDate: moment.Moment;
   loanAgreementLink: string;
@@ -65,15 +65,15 @@ const NFTInfo: React.FC<Props> = ({
           </tr>
           <tr>
             <th>{t('nftMarket.nftInfoTable.2')}</th>
-            <td>$ {principal}</td>
+            <td>{principal}</td>
             <th>{t('nftMarket.nftInfoTable.3')}</th>
-            <td>$ {interest}</td>
+            <td>${interest}</td>
           </tr>
           <tr>
             <th>{t('nftMarket.nftInfoTable.4')}</th>
-            <td>{expectedAPY}%</td>
+            <td>{expectedAPY}</td>
             <th>{t('nftMarket.nftInfoTable.5')}</th>
-            <td>{overdueAPY}%</td>
+            <td>{overdueAPY}</td>
           </tr>
           <tr>
             <th>{t('nftMarket.nftInfoTable.6')}</th>
