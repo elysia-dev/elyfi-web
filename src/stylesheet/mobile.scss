@@ -4995,1269 +4995,241 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
       height: 70px;
     }
   }
-  // .header {
-  //   min-width: $device-width;
-  //   height: $device-width;
-  //   &__title {
-  //     font-size: 20px;
-  //     &__wrapper {
-  //       width: $device-width;
-  //       bottom: 42px;
-  //     }
-  //   }
-  // }
-  // .dashboard {
-  //   background-color: #fff;
-  //   position: relative;
-  //   background-size: cover;
-  //   background-position: 50%;
-  //   background-repeat: no-repeat;
-  //   &__title {
-  //     &-wrapper {
-  //       width: $device-width;
-  //       bottom: 42px;
-  //     }
-  //     &-text {
-  //       font-size: 40px;
-  //     }
-  //   }
+  .market_modal {
+    &__wrapper {
+      width: 310px;
+    }
+    &__header {
+      padding: 20.75px 19px 20.75px 19px;
+      > h3 {
+        font-size: 13px;
+      }
+      > div {
+        width: 20px;
+        height: 20px;
+      }
+    }
+    &__section {
+      font-size: 11px;
+      padding-top: 45px;
+      padding-bottom: 43.25px;
+      line-height: 20px;
+    }
 
-  //   &--disable {
-  //     width: 100%;
-  //     height: calc(100vh - #{$footer-height});
-  //     .dashboard {
-  //       &__content {
-  //         font-size: 20px;
-  //         line-height: 23px;
-  //         margin: 10px;
-  //       }
-  //       &__content--bold {
-  //         font-size: 40px;
-  //         line-height: 50px;
-  //         margin: 0 0 10px 0;
-  //       }
-  //     }
-  //   }
-  // }
+    &__button {
+      > button {
+        width: 470px;
+        height: 38px;
+        > img {
+          width: 35px;
+          height: 35px;
+        }
+        > p {
+          font-size: 12px;
+        }
+      }
+    }
+    &__step {
+      height: 51px;
+      > div {
+        font-size: 12px;
+      }
+      > div:nth-child(1) {
+        padding-left: 20px;
+        > div:last-child {
+          top: -6px;
+          border-top: 31px solid transparent;
+          border-bottom: 31px solid transparent;
+        }
+      }
+      > div:nth-child(2) {
+        padding-right: 20px;
+      }
+    }
+    &__input {
+      height: 120px;
+      padding: 0px 27.25px;
+      > section {
+        > div {
+          font-size: 15px;
+        }
+        > input {
+          height: 53px;
+          font-size: 35px;
+        }
+      }
+      > p {
+        font-size: 12px;
+      }
+    }
+    &__crypto {
+      img {
+        width: 25px;
+        height: 25px;
+      }
+      > p {
+        font-size: 13px;
+      }
+      > div {
+        height: 38px;
+        font-size: 13px;
+        > ul {
+          top: 38px;
+          > li {
+            font-size: 13px;
+            height: 38px;
+            > img {
+              margin-right: 10.25px;
+            }
+          }
+        }
+      }
+    }
+    &__amount {
+      font-size: 13px;
+    }
+    &__purchase_btn {
+      > button {
+        height: 39px;
+        font-size: 16px;
+      }
+    }
+    &__confirm {
+      > h3 {
+        font-size: 14px;
+      }
+      > div:nth-child(2),
+      div:nth-child(3) {
+        font-size: 14px;
+      }
+      > div:last-child {
+        height: 200px;
+        > ul {
+          font-size: 11px;
+          > li:first-child > span {
+            font-size: 10px;
+          }
+        }
+      }
+    }
+    &__twitter {
+      width: 470px;
+      margin: 0 auto;
+      text-align: center;
+      > figure {
+        > video {
+          width: 250px;
+        }
+        > figcaption {
+          font-size: 20px;
+        }
+        margin-bottom: 30px;
+      }
+      > section {
+        height: 103px;
+        background-color: #f6f6f8;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+        padding: 0 100px;
+        > div {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-bottom: 10px;
+          > b {
+            font-size: 20px;
+            color: #333333;
+          }
+          > p {
+            font-size: 13px;
+            color: #707070;
+          }
+        }
+        > b {
+          font-size: 20px;
+          color: #333333;
+        }
+      }
+    }
+    &__visible {
+      position: absolute;
+      bottom: -30px;
+      display: flex;
+      align-items: center;
+      > div {
+        width: 16px;
+        height: 16px;
+        border: 1px solid #ffffff;
+        border-radius: 2px;
+        margin-right: 9px;
+        cursor: pointer;
+        &:hover {
+          background-color: #ffffff33;
+        }
+        &:active {
+          background-color: #ffffff88;
+        }
+      }
+      > b {
+        font-size: 15px;
+        color: #fff;
+      }
+    }
+    &__token-reward {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 0 30px;
+      > b {
+        font-size: 20px;
+        line-height: 28px;
+      }
+      > video {
+        width: 250px;
+      }
+      > section {
+        width: 450px;
+        margin: 10px auto 0;
+        height: 120px;
+        border-radius: 10px;
+        background-color: #f6f6f8;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        > p {
+          font-size: 13px;
+          color: #333;
+          &:first-child {
+            color: #707070;
+          }
+        }
+        > b {
+          font-size: 20px;
+          margin-bottom: 12.5px;
+        }
+      }
+    }
 
-  // .tokens {
-  //   width: $device-width;
-  //   padding-bottom: 100px;
-  //   &__container {
-  //     margin-top: 85px;
-  //   }
-  //   &__elfi {
-  //     .tokens {
-  //       &__table {
-  //         &__content {
-  //           flex-direction: column;
-  //           &__data {
-  //             display: flex;
-  //             justify-content: space-between;
-  //             width: 340px;
-  //             padding: 10px 5px;
-  //             > p:first-child {
-  //               font-size: 12px;
-  //             }
-  //             > p:last-child {
-  //               font-size: 14px;
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  //   &__table {
-  //     &__minted {
-  //       > p {
-  //         margin: 5px;
-  //         text-align: center;
-  //       }
-  //       > .content {
-  //         box-shadow: 0px 0px 6px #00000029;
-  //         box-sizing: border-box;
-  //         display: flex;
-  //         align-items: center;
-  //         padding: 10px 5px;
-  //         justify-content: space-between;
-  //         margin-bottom: 80px;
-  //         > div {
-  //           &:first-child {
-  //             display: flex;
-  //             align-items: center;
-  //             > p {
-  //               margin: 0 0 0 5px;
-  //             }
-  //             > img {
-  //               width: 20px;
-  //               height: 20px;
-  //             }
-  //           }
-  //           &:last-child {
-  //             display: flex;
-  //             flex-direction: column;
-  //             text-align: right;
-  //             > p {
-  //               margin: 0;
-  //               font-size: 12px;
-  //               &:last-child {
-  //                 margin-top: 5px;
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //     &__image {
-  //       display: flex;
-  //       align-items: center;
-  //       justify-content: left;
-  //       padding: 10px 5px;
-  //       border-bottom: 1px solid #00000029;
-  //       &--disable {
-  //         width: 20px;
-  //         height: 20px;
-  //         border-radius: 20px;
-  //       }
-  //       > div {
-  //         > img {
-  //           width: 20px;
-  //           height: 20px;
-  //         }
-  //         > p {
-  //           margin: 0 0 0 5px;
-  //         }
-  //       }
-  //     }
-  //     &__apr {
-  //       width: 78px;
-  //       height: 15px;
-  //       margin: 10px auto 0;
-  //       > img {
-  //         width: 12px;
-  //         height: 12px;
-  //       }
-  //       > p {
-  //         font-size: 10px !important;
-  //         &::after {
-  //           margin-left: 1px;
-  //           font-size: 9px;
-  //         }
-  //       }
-  //     }
-  //     &__button {
-  //       width: 39%;
-  //       height: 15px;
-  //       line-height: 15px;
-  //       padding: 5px;
-  //       > p {
-  //         font-size: 13px !important;
-  //       }
-  //       /* mobile only */
-  //       &__container {
-  //         border-top: 0.5px solid #00000029;
-  //         padding: 13px;
-  //         text-align: center;
-  //         display: flex;
-  //         justify-content: space-between;
-  //       }
-  //     }
-  //     &__row {
-  //       width: 100%;
-  //       border-radius: 5px;
-  //       &--disable {
-  //         border-radius: 5px;
-  //       }
-  //     }
-  //     /* mobile only */
-  //     &__content {
-  //       display: flex;
-  //       padding: 10px 5px;
-  //       justify-content: space-between;
-  //       &__data {
-  //         width: 92px;
-  //         > p {
-  //           margin: 0;
-  //           font-size: 12px;
-  //           text-align: center;
-  //           &:first-child {
-  //             color: #888888;
-  //             font-size: 9px;
-  //             margin: 0 0 6px;
-  //             text-align: center;
-  //           }
-  //           &:last-child {
-  //             font-size: 10px;
-  //             margin-top: 10px;
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
-
-  // .text {
-  //   &__title {
-  //     margin-top: 80px;
-  //     margin-bottom: 35px;
-  //     > p {
-  //       margin: 0 20px 0 0;
-  //       font-size: 17px;
-  //     }
-  //   }
-  // }
-  // .staking {
-  //   width: $device-width;
-  //   margin: 100px auto;
-  //   &__sign {
-  //     font-size: 10px !important;
-  //   }
-  //   &__round {
-  //     width: $device-width;
-  //     margin-top: 50px;
-  //     &__border {
-  //       width: 27px;
-  //       margin-top: 61px;
-  //     }
-  //     &__container {
-  //       flex: 1;
-  //       width: $device-width;
-  //     }
-  //     &__remaining-data {
-  //       margin: 45px 0;
-  //       flex-direction: column;
-  //       &__title {
-  //         padding: 10px 5px;
-  //         > div:first-child {
-  //           display: flex;
-  //           margin-bottom: 10px;
-  //           justify-content: space-evenly;
-  //           align-items: center;
-  //           width: 60%;
-  //           > p:first-child {
-  //             font-size: 14px;
-  //             margin: 0;
-  //           }
-  //           > p:last-child {
-  //             font-size: 10px;
-  //             margin: 0;
-  //           }
-  //         }
-  //         > div:last-child {
-  //           width: 60%;
-  //           > p:first-child {
-  //             font-size: 14px;
-  //             margin: 0px;
-  //           }
-  //           > p:last-child {
-  //             font-size: 14px;
-  //             .staking__sign {
-  //               font-size: 12px !important;
-  //             }
-  //           }
-  //         }
-  //       }
-  //       &__body {
-  //         > div {
-  //           > p {
-  //             font-size: 12px;
-  //             margin: 17px 10px 7px;
-  //           }
-  //           > div {
-  //             > h2 {
-  //               font-size: 14px;
-  //               margin-right: 10px;
-  //               .colored {
-  //                 font-size: 14px;
-  //               }
-  //               > span {
-  //                 font-size: 11px;
-  //               }
-  //             }
-  //             .disable {
-  //               width: 90%;
-  //               height: 24px;
-  //               margin: 0 auto 30px;
-  //               > p {
-  //                 font-size: 12px;
-  //                 line-height: 24px;
-  //               }
-  //             }
-  //             > div {
-  //               width: 90%;
-  //               height: 24px;
-  //               margin: 0 auto 30px;
-  //               > p {
-  //                 font-size: 12px;
-  //                 line-height: 24px;
-  //               }
-  //             }
-  //           }
-  //           &:first-child {
-  //             margin-left: 8px;
-  //           }
-  //           &:last-child {
-  //             margin-right: 8px;
-  //           }
-  //         }
-  //       }
-  //     }
-  //     &__previous {
-  //       &__wrapper {
-  //         width: 100%;
-  //         margin: 45px 0 45px auto;
-  //         padding: 4px 5px 0px 5px;
-  //       }
-  //       height: 130px;
-  //       padding: 10px 0;
-  //       flex-direction: column;
-  //       > div {
-  //         width: 100%;
-  //       }
-  //       &__title {
-  //         > p {
-  //           &:first-child {
-  //             font-size: 11px;
-  //             margin: 7px 3px !important;
-  //           }
-  //           &:last-child {
-  //             font-size: 10px;
-  //             margin: 7px 3px !important;
-  //           }
-  //         }
-  //       }
-  //       &__body {
-  //         margin: 0 5px !important;
-  //         > div {
-  //           > p {
-  //             margin: 0;
-  //             &:first-child {
-  //               font-size: 10px;
-  //             }
-  //             &:last-child {
-  //               font-size: 10px;
-  //             }
-  //           }
-  //         }
-  //       }
-  //       &__button {
-  //         height: 100%;
-  //         flex-direction: row;
-  //         margin-top: 20px;
-  //         justify-content: space-between;
-  //         > div {
-  //           width: 35%;
-  //           height: 24px;
-  //           line-height: 24px;
-  //           padding: 1px 14px;
-  //           cursor: pointer;
-  //           > p {
-  //             font-size: 12px;
-  //           }
-  //         }
-  //       }
-  //     }
-  //     &__current-data {
-  //       padding: 5px 10px;
-  //       > div {
-  //         > div {
-  //           > p {
-  //             font-size: 12px;
-  //           }
-  //         }
-  //         > p {
-  //           font-size: 13px;
-  //         }
-  //         &:last-child {
-  //           flex: 1;
-  //           > p:last-child {
-  //             font-size: 15px;
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  //   .modal {
-  //     &__staking {
-  //       padding: 29px 26px;
-  //       &__button {
-  //         padding: 23.75px 27.5px;
-  //         &:nth-child(2) {
-  //           margin-bottom: 36px;
-  //           margin-top: 58px;
-  //         }
-  //         &__arrow {
-  //           font-size: 25px !important;
-  //         }
-  //         > div {
-  //           > p {
-  //             font-size: 15px;
-  //           }
-  //           > h2 {
-  //             font-size: 20px;
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  //   &__progress-bar {
-  //     width: 330px;
-  //     &__wrapper {
-  //       padding: 10px 10px 50px;
-  //     }
-  //     &__content {
-  //       width: 100%;
-  //       margin-top: 50px;
-  //       font-size: 12px;
-  //       border-radius: 4px;
-  //       box-sizing: border-box;
-  //       display: flex;
-  //       align-items: center;
-  //       justify-content: space-evenly;
-  //       text-align: center;
-  //       > div {
-  //         text-align: right;
-  //       }
-  //     }
-  //     &__button {
-  //       width: 20px;
-  //       height: 20px;
-  //       border-radius: 20px;
-  //       > div {
-  //         width: 200px;
-  //         left: -90px;
-  //         top: 57px;
-  //         > p {
-  //           font-size: 12px;
-  //           &:last-child {
-  //             position: absolute;
-  //             width: 300px;
-  //             left: -50px;
-  //           }
-  //         }
-  //       }
-  //       &__wrapper {
-  //         top: -10px;
-  //       }
-  //       &.now {
-  //         &::after {
-  //           height: 32px;
-  //           left: 9px;
-  //           top: 19px;
-  //         }
-  //       }
-  //     }
-  //   }
-  //   &__button {
-  //     width: 100%;
-  //     height: 30px;
-  //     margin: 16px auto 0;
-  //     > p {
-  //       line-height: 30px;
-  //       font-size: 13px;
-  //     }
-  //   }
-  //   &__value {
-  //     &__reward {
-  //       height: 140px;
-  //     }
-  //   }
-  //   &__content {
-  //     > p {
-  //       margin: 12px 0 0;
-  //       font-size: 12px;
-  //     }
-  //   }
-  //   &__infomation {
-  //     width: $device-width;
-  //     margin-top: 75px;
-  //     flex-direction: column;
-  //     > :nth-child(2) {
-  //       display: block;
-  //       flex: none !important;
-  //       width: 95px;
-  //       height: 105px;
-  //       transform: rotate(90deg);
-  //       > img {
-  //         width: 100% !important;
-  //         height: 200px !important;
-  //         bottom: 0 !important;
-  //         margin: 0 auto;
-  //         top: -50px;
-  //       }
-  //     }
-  //   }
-  //   &__container {
-  //     border-radius: 10px;
-  //     width: 340px;
-  //     padding: 16px;
-  //     &__header {
-  //       padding-bottom: 6.5px;
-  //     }
-  //     > div {
-  //       > h2 {
-  //         font-size: 15px;
-  //         > span {
-  //           font-size: 20px;
-  //         }
-  //         .colored {
-  //           font-size: 25px;
-  //         }
-  //       }
-  //     }
-  //     &__wrapper {
-  //       width: $device-width;
-  //       padding: 10px;
-  //       box-shadow: 0px 0px 6px #00000029;
-  //       gap: 23px;
-  //       box-sizing: border-box;
-  //       > div:first-child {
-  //         height: 110px;
-  //       }
-  //       > div:last-child {
-  //         height: 220px;
-  //       }
-  //     }
-  //   }
-  // }
-
-  // .modal {
-  //   padding: 2.5vh 2.5vw;
-  //   // display: block !important;
-  //   &__account {
-  //     margin: 10px;
-  //     &__mainnet-info {
-  //       border-radius: 10px 10px 0 0;
-  //       padding: 14px 20px;
-  //       flex-direction: column;
-  //       > div:first-child {
-  //         margin-bottom: 15px;
-  //         > p {
-  //           font-size: 12px;
-  //         }
-  //         > div {
-  //           > p {
-  //             font-size: 15px;
-  //           }
-  //           > div {
-  //             width: 14px;
-  //             height: 14px;
-  //             border-radius: 14px;
-  //             margin-right: 6px;
-  //           }
-  //         }
-  //       }
-  //       > div:last-child {
-  //         > p {
-  //           margin: 7px 29px;
-  //           font-size: 15px;
-  //         }
-  //       }
-  //       &__button {
-  //         > div {
-  //           > p {
-  //             font-size: 12px;
-  //             margin: 10px 2px;
-  //           }
-  //         }
-  //         > a {
-  //           > div {
-  //             > p {
-  //               font-size: 12px;
-  //               margin: 10px 2px;
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //     &__status {
-  //       margin-top: 25px;
-  //       margin-bottom: 10px;
-  //       > a {
-  //         > div {
-  //           margin-top: 10px;
-  //           padding: 10px 20px;
-  //           > p {
-  //             font-size: 14px;
-  //           }
-  //           > div {
-  //             display: flex;
-  //             align-items: center;
-  //             > p {
-  //               font-size: 14px;
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  //   &__text-input {
-  //     font-size: 40px !important;
-  //   }
-  //   .arrow-wrapper {
-  //     height: 55px;
-  //     margin: 0px;
-  //     transform: scale(0.7);
-  //     position: relative;
-  //     top: 10px;
-  //   }
-  //   &__container {
-  //     width: 95vw;
-  //     // height: 95vh;
-  //     border-radius: 0px;
-  //     margin: auto;
-  //     min-width: $device-width;
-  //     overflow-y: initial !important;
-  //     top: 50%;
-  //     left: 50%;
-  //     transform: translate(-50%, -50%);
-  //   }
-  //   .close-button {
-  //     transform: scale(0.7);
-  //   }
-  //   &__header {
-  //     padding: 10px;
-  //     &__image {
-  //       width: 24px;
-  //       height: 24px;
-  //     }
-  //     &__name {
-  //       font-size: 15px;
-  //     }
-  //     &__token-info-wrapper {
-  //       gap: 10px;
-  //     }
-  //   }
-  //   &__converter {
-  //     &__column {
-  //       > p {
-  //         margin: 5px;
-  //         font-size: 14px;
-  //       }
-  //       &--selected {
-  //         > p {
-  //           margin: 5px;
-  //           font-size: 14px;
-  //         }
-  //       }
-  //     }
-  //   }
-  //   &__migration {
-  //     &__alert {
-  //       > p {
-  //         &:first-child {
-  //           margin-top: 50px;
-  //           font-size: 17px;
-  //         }
-  //       }
-  //       > div {
-  //         padding: 21px 30px;
-  //         margin: 20px 0;
-  //       }
-  //     }
-  //     &__wrapper {
-  //       margin: 20px 18px 31px;
-  //       > div {
-  //         > p {
-  //           font-size: 15px;
-  //         }
-  //       }
-  //     }
-  //     > div {
-  //       > div {
-  //         &:nth-child(3) {
-  //           top: -30px;
-  //         }
-  //       }
-  //     }
-  //     &__content {
-  //       gap: 5px;
-  //       font-size: 12px;
-  //     }
-  //     &__input {
-  //       height: 70px;
-  //       border-radius: 6px;
-  //       padding: 0px 25px;
-  //       > p {
-  //         > input {
-  //           font-size: 40px !important;
-  //           width: 90%;
-  //           height: 90%;
-  //         }
-  //       }
-  //     }
-  //     &__popup {
-  //       border-radius: 8px;
-  //       padding: 20px 15px;
-  //       font-size: 15px;
-  //       top: 60px;
-  //       &__hover {
-  //         border-radius: 20px;
-  //         width: 20px;
-  //         height: 20px;
-  //         line-height: 20px;
-  //       }
-  //       &__info {
-  //         gap: 5px;
-  //       }
-  //     }
-  //   }
-  //   &__button {
-  //     width: 90%;
-  //     height: 45px;
-  //     border-radius: 5px;
-  //     line-height: 45px;
-  //     margin: 20px auto;
-  //     > p {
-  //       font-size: 16px;
-  //     }
-  //   }
-  //   &__button--disable {
-  //     width: 90%;
-  //     height: 45px;
-  //     border-radius: 5px;
-  //     margin: 20px auto;
-  //     line-height: 45px;
-  //     > p {
-  //       font-size: 16px;
-  //     }
-  //   }
-  //   &__withdraw,
-  //   &__deposit,
-  //   &__migration {
-  //     // position: absolute;
-  //     overflow-y: auto;
-  //     // height: calc(95vh - 45px - 32px - 85px);
-  //     max-height: calc(95vh - 45px - 32px - 85px);
-  //   }
-  //   &__body {
-  //     display: flex;
-  //     flex-direction: column;
-  //     position: relative;
-  //     height: 100%;
-  //   }
-  //   &__withdraw__value-wrapper,
-  //   &__deposit__value-wrapper,
-  //   &__value-wrapper {
-  //     height: 100px;
-  //     // height: 500px;
-  //     padding: 0px 20px;
-  //   }
-  //   &__input {
-  //     &__maximum {
-  //       font-size: 20px;
-  //     }
-  //     &__value {
-  //       margin: 0 0 0 20px;
-  //       font-size: 35px;
-  //       &-converter {
-  //         font-size: 15px;
-  //         &-wrapper {
-  //           padding: 15px 26px;
-  //         }
-  //       }
-  //     }
-  //   }
-  //   &--deposit {
-  //     .modal {
-  //       &__header {
-  //         &__type {
-  //           gap: 10px;
-  //         }
-  //       }
-
-  //       &__withdraw,
-  //       &__deposit {
-  //         &__maximum {
-  //           font-size: 15px;
-  //         }
-  //         &__value {
-  //           margin: 0 0 0 20px;
-  //           font-size: 35px;
-  //           &-converter {
-  //             font-size: 15px;
-  //             &-wrapper {
-  //               padding: 15px 26px;
-  //             }
-  //           }
-  //         }
-  //       }
-  //       &__withdraw {
-  //         &__withdrawalable {
-  //           border-bottom: 2px solid #f0f0f1;
-  //           &__title {
-  //             > p {
-  //               font-size: 12px;
-  //               margin: 0 0 18px 0 !important;
-  //             }
-  //           }
-  //           &-amount-wrapper {
-  //             margin: 20px 18px 0px;
-  //             padding-bottom: 20px;
-  //             > div {
-  //               > p {
-  //                 margin: 10px 0;
-  //                 font-size: 13px;
-  //               }
-  //             }
-  //           }
-  //           &-value-wrapper {
-  //             margin: 20px 18px 31px;
-  //             > div {
-  //               > p {
-  //                 margin: 10px 0;
-  //                 font-size: 14px;
-  //                 &:first-child {
-  //                   width: 200px;
-  //                 }
-  //                 &:last-child {
-  //                   width: 110px;
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //       &__deposit {
-  //         &__container {
-  //           border-bottom: 2px solid #f0f0f1;
-  //         }
-  //         &__despositable {
-  //           &-amount {
-  //             &-container {
-  //               margin: 20px 18px 0px;
-  //               padding-bottom: 20px;
-  //               > p {
-  //                 margin: 0 0 18px 0;
-  //                 font-size: 12px;
-  //               }
-  //             }
-  //             &-wrapper {
-  //               > p {
-  //                 font-size: 13px;
-  //                 margin: 10px 0;
-  //               }
-  //               > div {
-  //                 > p {
-  //                   font-size: 13px;
-  //                   margin: 10px 0;
-  //                 }
-  //               }
-  //             }
-  //           }
-  //           &-value {
-  //             &-wrapper {
-  //               margin: 20px 18px 31px;
-  //               > p {
-  //                 margin: 0 0 16px;
-  //                 font-size: 13px;
-  //               }
-  //               > div {
-  //                 > p {
-  //                   margin: 10px 0;
-  //                   font-size: 13px;
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  //   &--minted {
-  //     .modal {
-  //       &__body {
-  //         height: 173px;
-  //         padding: 0px 40px;
-  //         &__maximum {
-  //           font-size: 20px;
-  //         }
-  //         &__value {
-  //           font-size: 35px;
-  //         }
-  //       }
-  //       &__footer {
-  //         &__text {
-  //           margin: 28px;
-  //         }
-  //         &__amount-wrapper {
-  //           margin: 0px 28px 28px;
-  //         }
-  //       }
-  //     }
-  //   }
-  //   &__staking {
-  //     &__container {
-  //       margin: 20px 18px 31px;
-  //       > p {
-  //         margin: 0 0 16px;
-  //         font-size: 13px;
-  //       }
-  //       > div {
-  //         > p {
-  //           margin: 15px 0;
-  //           font-size: 13px;
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
-  // .footer {
-  //   padding-top: 25px;
-  //   padding-bottom: 25px;
-  //   min-width: $device-width;
-  //   &__content {
-  //     font-size: 15px;
-  //     top: 14px;
-  //   }
-  //   &__container {
-  //     width: $device-width;
-  //   }
-  //   &__white-logo {
-  //     width: 100px;
-  //     height: 25.667px;
-  //   }
-  //   &__wrapper {
-  //     height: 50px;
-  //   }
-  //   &__logo-wrapper {
-  //     width: 120px;
-  //     height: 26px;
-  //   }
-  // }
-  // .loading-indicator {
-  //   height: 450px;
-  //   &__text {
-  //     bottom: 60px;
-  //     font-size: 24px;
-  //     right: 10px;
-  //     &::after {
-  //       width: 30px;
-  //       margin-left: 5px;
-  //     }
-  //   }
-  //   &__text2 {
-  //     bottom: 20px;
-  //     font-size: 24px;
-  //     width: 100%;
-  //     right: 10px;
-  //     > p {
-  //       font-size: 15px;
-  //     }
-  //   }
-
-  //   .loader .l_main {
-  //     width: 172px;
-  //     height: 128px;
-  //   }
-  //   .l_square:nth-child(1) {
-  //     margin-left: 0px;
-  //   }
-  //   .l_square:nth-child(2) {
-  //     margin-left: 44px;
-  //   }
-  //   .l_square:nth-child(3) {
-  //     margin-left: 88px;
-  //   }
-  //   .l_square:nth-child(4) {
-  //     margin-left: 132px;
-  //   }
-  //   .l_square span {
-  //     left: 20px;
-  //     height: 36px;
-  //     width: 36px;
-  //   }
-  //   .l_square span:nth-child(1) {
-  //     top: 0px;
-  //   }
-  //   .l_square span:nth-child(2) {
-  //     top: 44px;
-  //   }
-  //   .l_square span:nth-child(3) {
-  //     top: 88px;
-  //   }
-  // }
-  // .lptoken_reward_Modal_body {
-  //   border-top: 1px solid #f0f0f1;
-  //   border-bottom: 1px solid #f0f0f1;
-  //   padding: 27px 21.5px 30px 30.5px;
-
-  //   img {
-  //     width: 30px;
-  //     height: 30px;
-  //     margin-right: 8px;
-  //   }
-  //   > div {
-  //     display: flex;
-  //     justify-content: space-between;
-  //     margin-bottom: 30px;
-
-  //     > div {
-  //       display: flex;
-  //       align-items: center;
-  //       font-size: 17px;
-  //     }
-  //   }
-  //   .lp_reward_dai {
-  //     display: flex;
-  //     align-items: center;
-  //     color: #fab01d;
-  //     font-size: 30px;
-  //     > div {
-  //       font-size: 25px;
-  //       color: #646464;
-  //       display: inline-block;
-  //       margin-left: 3px;
-  //     }
-  //   }
-  //   .lp_reward_eth {
-  //     display: flex;
-  //     align-items: center;
-  //     color: #627eea;
-  //     font-size: 30px;
-  //     > div {
-  //       font-size: 25px;
-  //       color: #646464;
-  //       display: inline-block;
-  //       margin-left: 3px;
-  //     }
-  //   }
-  //   .lp_reward_elfi {
-  //     display: flex;
-  //     align-items: center;
-  //     color: #00bfff;
-  //     font-size: 30px;
-  //     > div {
-  //       font-size: 25px;
-  //       color: #646464;
-  //       display: inline-block;
-  //       margin-left: 3px;
-  //     }
-  //   }
-  // }
-  // .staking_detail_box {
-  //   display: flex;
-  //   flex-direction: column;
-  //   > div:nth-child(2) {
-  //     display: none;
-  //   }
-  //   .lp_token_description {
-  //     box-shadow: 0px 0px 6px #00000029;
-  //     border-radius: 10px;
-  //   }
-  // }
-  // .lp_token_date {
-  //   text-align: right;
-  //   margin-top: 15px;
-  //   font-size: 12px;
-  //   color: #646464;
-  // }
-  // .total_expected_reward {
-  //   padding: 10.5px 7px 10.5px 7px;
-  //   border: 1px solid #646464;
-  //   border-radius: 10px;
-  //   margin-top: 38px;
-  //   font-size: 13px;
-  //   > div {
-  //     margin-bottom: 5px;
-  //   }
-  //   > div:nth-child(1) {
-  //     color: #888888;
-  //   }
-  //   > div:nth-child(3) {
-  //     border-top: 1px solid #888888;
-  //     width: 100%;
-  //     margin-top: 9px;
-  //     margin-bottom: 9px;
-  //   }
-  //   > div:nth-child(4) {
-  //     color: #888888;
-  //   }
-  //   .total_expected_reward_amount {
-  //     text-align: right;
-  //   }
-  // }
-  // .staked_lp_item_mobile {
-  //   display: flex;
-  //   flex-direction: column;
-  //   margin-bottom: 15px;
-
-  //   > div:nth-child(1) {
-  //     display: flex;
-  //     flex-direction: column;
-  //     text-align: center;
-  //     flex-wrap: nowrap;
-  //     box-shadow: 0px 0px 6px #00000029;
-  //     border-radius: 5px;
-  //     padding: 10px;
-
-  //     > div:nth-child(1) {
-  //       display: flex;
-  //       justify-content: space-between;
-  //       font-size: 14px;
-  //       margin-bottom: 7px;
-  //     }
-  //     > div:nth-child(2) {
-  //       display: flex;
-  //       justify-content: space-between;
-  //       font-size: 14px;
-  //       margin-bottom: 7px;
-  //     }
-  //     > div:nth-child(3) {
-  //       display: flex;
-  //       justify-content: space-between;
-  //       font-size: 14px;
-  //       margin-bottom: 7px;
-  //     }
-  //     > div:nth-child(4) {
-  //     }
-  //   }
-  //   > div:nth-child(2) {
-  //     display: flex;
-  //     justify-content: center;
-
-  //     > div {
-  //       width: 1px;
-  //       border-top: 12px solid #333333;
-  //       border-left: 9px solid transparent;
-  //       border-right: 9px solid transparent;
-  //       margin-top: 15px;
-  //       margin-bottom: 11px;
-  //     }
-  //   }
-  //   > div:nth-child(3) {
-  //     // width: 100%;
-  //     padding: 20px 15px 19px 21px;
-  //     box-shadow: 0px 0px 6px #00000029;
-  //     border-radius: 5px;
-
-  //     > div:nth-child(1) {
-  //       display: flex;
-  //       justify-content: space-between;
-  //       align-items: center;
-  //       margin-bottom: 7px;
-
-  //       > div:nth-child(1) {
-  //         display: flex;
-  //         align-items: center;
-  //         font-size: 15px;
-  //       }
-  //     }
-  //     > div:nth-child(2) {
-  //       display: flex;
-  //       justify-content: space-between;
-  //       align-items: center;
-
-  //       > div:nth-child(1) {
-  //         display: flex;
-  //         align-items: center;
-  //         font-size: 15px;
-  //       }
-  //     }
-  //     img {
-  //       width: 25px;
-  //       height: 25px;
-  //       margin-right: 8px;
-  //     }
-  //     .staked_lp_item_reward {
-  //       font-size: 15px;
-  //     }
-  //     .staked_lp_item_tokenType {
-  //       display: inline-block;
-  //       color: #646464;
-  //     }
-  //   }
-  // }
-  // .staked_lp_content {
-  //   display: none;
-  // }
-  // .header_line {
-  //   display: none;
-  // }
-  // .lp_button {
-  //   width: 160px;
-  //   height: 20px;
-  //   box-shadow: 0px 1px 6px #00000029;
-  //   border: 1px solid #333333;
-  //   background: #ffffff;
-  //   font-size: 12px;
-  //   cursor: pointer;
-  // }
-  // .lp_reward_content_wrapper {
-  //   padding-bottom: 21px;
-  //   margin-top: 18px;
-  //   box-shadow: 0px 0px 6px #00000029;
-  //   border: 1px solid #e6e6e6;
-  //   border-radius: 10px;
-
-  //   .lp_reward_content {
-  //     border-bottom: 1px solid #e6e6e6;
-
-  //     .lp_token_wrapper {
-  //       border-bottom: 1px solid #e6e6e6;
-  //       padding-right: 32.5px;
-
-  //       > div:nth-child(1) {
-  //         display: flex;
-  //         align-items: center;
-  //         padding-top: 12.5px;
-  //       }
-  //       > div:nth-child(2) {
-  //         text-align: right;
-  //         margin-top: 26px;
-  //         margin-bottom: 35px;
-  //         font-size: 20px;
-  //         > div {
-  //           display: inline-block;
-  //           color: #646464;
-  //         }
-  //       }
-  //     }
-  //     img {
-  //       width: 30px;
-  //       height: 30px;
-  //       margin-right: 8px;
-  //       padding-left: 29px;
-  //     }
-  //   }
-  // }
-
-  // .lp_receive_token_wrapper {
-  //   padding: 17px 25px 19px 29px;
-  //   background: #f8f8f8;
-
-  //   > div:nth-child(1) {
-  //     text-align: center;
-  //     > div:nth-child(1) {
-  //       text-align: left;
-  //       font-size: 17px;
-  //       margin-bottom: 7px;
-  //     }
-  //     > div:nth-child(2) {
-  //       > a {
-  //         cursor: pointer;
-
-  //         > button {
-  //           width: 160px;
-  //           height: 20px;
-  //           background: #ffffff;
-  //           box-shadow: 0px 1px 6px #00000029;
-  //           border: 1px solid #333333;
-  //           border-radius: 3px;
-  //           font-size: 12px;
-  //           color: #333333;
-  //           cursor: pointer;
-  //         }
-  //       }
-  //     }
-  //   }
-  //   > div:nth-child(2) {
-  //     font-size: 15px;
-  //     color: #888888;
-  //     margin-top: 21px;
-  //     > span {
-  //       color: #888888;
-  //     }
-  //   }
-  // }
+    &__approve {
+      > h5 {
+        font-size: 16px;
+        padding-bottom: 30px;
+      }
+      > div {
+        border: 1px solid #e6e6e6;
+        padding: 32px 24px;
+        > P {
+          font-size: 12px;
+        }
+      }
+      > p {
+        font-size: 11px;
+      }
+    }
+  }
 }

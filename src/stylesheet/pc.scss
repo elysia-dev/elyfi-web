@@ -3669,4 +3669,245 @@ $device-width: 1190px;
       height: 86px;
     }
   }
+
+  .market_modal {
+    &__wrapper {
+      width: 512px;
+    }
+    &__header {
+      > h3 {
+        font-size: 18px;
+      }
+      > div {
+        width: 24px;
+        height: 24px;
+      }
+      > div:active {
+        > div {
+          border-color: $font-color;
+          background-color: $font-color;
+        }
+      }
+    }
+    &__section {
+      font-size: 15px;
+      padding-top: 56px;
+      padding-bottom: 53.25px;
+      line-height: 25px;
+    }
+
+    &__button {
+      > button {
+        width: 470px;
+        height: 48px;
+        > p {
+          font-size: 15px;
+        }
+      }
+    }
+    &__step {
+      height: 61px;
+      > div {
+        font-size: 15px;
+      }
+      > div:nth-child(1) {
+        padding-left: 23px;
+        > div:last-child {
+          top: -1px;
+          border-top: 32px solid transparent;
+          border-bottom: 32px solid transparent;
+        }
+      }
+      > div:nth-child(2) {
+        padding-right: 23px;
+      }
+    }
+    &__input {
+      height: 145px;
+      padding: 0px 30.25px;
+      > section {
+        > div {
+          font-size: 18px;
+        }
+        > input {
+          height: 65px;
+          font-size: 50px;
+        }
+      }
+      > p {
+        font-size: 12px;
+      }
+    }
+    &__crypto {
+      img {
+        width: 28px;
+        height: 28px;
+      }
+      > p {
+        font-size: 15px;
+      }
+      > div {
+        height: 48px;
+        font-size: 15px;
+        > ul {
+          top: 48px;
+
+          > li {
+            font-size: 15px;
+            height: 46px;
+            > img {
+              margin-right: 10.25px;
+            }
+          }
+        }
+      }
+    }
+    &__amount {
+      font-size: 15px;
+    }
+    &__purchase_btn {
+      > button {
+        height: 47px;
+        font-size: 18px;
+      }
+    }
+    &__confirm {
+      > h3 {
+        font-size: 15px;
+      }
+      > div:nth-child(2),
+      div:nth-child(3) {
+        font-size: 15px;
+      }
+
+      > div:last-child {
+        height: 216px;
+        > ul {
+          font-size: 13px;
+          > li:first-child > span {
+            font-size: 10px;
+          }
+        }
+      }
+    }
+    &__twitter {
+      width: 470px;
+      margin: 0 auto;
+      text-align: center;
+      > figure {
+        > video {
+          width: 250px;
+        }
+        > figcaption {
+          font-size: 20px;
+        }
+        margin-bottom: 30px;
+      }
+      > section {
+        height: 103px;
+        background-color: #f6f6f8;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+        padding: 0 100px;
+        > div {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-bottom: 10px;
+          > b {
+            font-size: 20px;
+            color: #333333;
+          }
+          > p {
+            font-size: 13px;
+            color: #707070;
+          }
+        }
+        > b {
+          font-size: 20px;
+          color: #333333;
+        }
+      }
+    }
+    &__visible {
+      position: absolute;
+      bottom: -30px;
+      display: flex;
+      align-items: center;
+      > div {
+        width: 16px;
+        height: 16px;
+        border: 1px solid #ffffff;
+        border-radius: 2px;
+        margin-right: 9px;
+        cursor: pointer;
+        &:hover {
+          background-color: #ffffff33;
+        }
+        &:active {
+          background-color: #ffffff88;
+        }
+      }
+      > b {
+        font-size: 15px;
+        color: #fff;
+      }
+    }
+    &__token-reward {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 0 30px;
+      > b {
+        font-size: 20px;
+        line-height: 28px;
+      }
+      > video {
+        width: 250px;
+      }
+      > section {
+        width: 450px;
+        margin: 10px auto 0;
+        height: 120px;
+        border-radius: 10px;
+        background-color: #f6f6f8;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        > p {
+          font-size: 13px;
+          color: #333;
+          &:first-child {
+            color: #707070;
+          }
+        }
+        > b {
+          font-size: 20px;
+          margin-bottom: 12.5px;
+        }
+      }
+    }
+
+    &__approve {
+      > h5 {
+        font-size: 18px;
+        padding-bottom: 40px;
+      }
+      > div {
+        border: 1px solid #e6e6e6;
+        padding: 32px 24px;
+        > P {
+          font-size: 15px;
+        }
+      }
+      > p {
+        font-size: 12px;
+      }
+    }
+  }
 }
