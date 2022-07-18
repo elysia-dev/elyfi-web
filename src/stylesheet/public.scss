@@ -2133,8 +2133,9 @@ input[type='number'] {
         }
       }
     }
+
     &__content {
-      margin-top: 60px;
+      margin-top: 15px;
       padding: 40px 30px;
       background-color: #fff;
       box-shadow: 0px 0px 6px #00000029;
@@ -2145,6 +2146,11 @@ input[type='number'] {
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
+      margin-top: 60px;
+      padding: 40px 30px;
+      background-color: #fff;
+      box-shadow: 0px 0px 6px #00000029;
+      border-radius: 5px;
       > section {
         flex: 1;
         > h2 {
@@ -2246,7 +2252,9 @@ input[type='number'] {
       > div {
         flex: 1;
         text-align: center;
-        border-bottom: 5px solid #00bfff;
+        border-top: 5px solid #00bfff;
+        border-left: 1px solid #b7b7b7;
+        border-right: 1px solid #b7b7b7;
         cursor: pointer;
         font-size: 20px;
         > b {
@@ -2256,7 +2264,8 @@ input[type='number'] {
           display: block;
         }
         &.disable {
-          border-bottom: 5px solid #f0f0f1;
+          background-color: #f0f0f1;
+          border: 1px solid #b7b7b7;
           > b {
             color: #b7b7b7;
           }
@@ -2299,7 +2308,7 @@ input[type='number'] {
                 margin: 0;
                 padding: 0;
                 > li {
-                  margin: 10px 0;
+                  margin: 10px 0px 10px 10px;
                   &::marker {
                     font-size: 10px;
                   }
@@ -2347,28 +2356,24 @@ input[type='number'] {
     }
     &__bond-nft {
       margin-top: 70px;
-      > h2 {
-        font-size: 18px;
-        margin-bottom: 20px;
-      }
       > table {
         box-shadow: 0 0 0 1px #e3e3e3;
         border-collapse: collapse;
         border-radius: 10px;
         border-style: hidden;
         font-size: 15px;
-        table-layout: fixed;
         word-wrap: break-word;
+        width: 100%;
         > tr {
           height: 38px;
           text-align: left;
           > th {
-            padding: 10px 17px;
+            padding: 18px 17px;
             width: 282px;
             background-color: #f8f9fa;
           }
           > td {
-            padding: 10px 17px;
+            padding: 18px 17px;
             word-break: break-all;
             &.image-wrapper {
               width: 100%;
@@ -2376,6 +2381,27 @@ input[type='number'] {
             > img {
               margin: 29px auto 20px;
               display: block;
+            }
+            > section {
+              margin-top: 12px;
+              display: flex;
+              align-items: center;
+              > .table-button {
+                display: flex;
+                align-items: center;
+                padding: 6px 10px;
+                margin-right: 5px;
+                border: 1px solid #3679b5;
+                border-radius: 5px;
+                cursor: pointer;
+                > img {
+                  margin-right: 8px;
+                }
+                > p {
+                  font-size: 12px;
+                  color: #3679b5;
+                }
+              }
             }
           }
           > th,

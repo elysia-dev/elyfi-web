@@ -7,11 +7,6 @@ import TokenColors from 'src/enums/TokenColors';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import useNavigator from 'src/hooks/useNavigator';
 import DrawWave from 'src/utiles/drawWave';
-import Questionmark from 'src/components/Questionmark';
-import ContractImage from 'src/assets/images/market/contract.gif';
-import Clip from 'src/assets/images/market/clip.svg';
-import NFTStructure from 'src/assets/images/market/NFTStructure.png';
-import BondAsset from 'src/assets/images/market/bondAssets.png';
 import MainnetType from 'src/enums/MainnetType';
 import Header from 'src/components/NFTDetails/Header';
 import Purchase from 'src/components/NFTDetails/Purchase';
@@ -144,7 +139,7 @@ const NFTDetails = (): JSX.Element => {
 
   const setTabPageViewer = (currentTab: number): JSX.Element => {
     switch (currentTab) {
-      case 0:
+      case NTFDetailTab.ProductInfo:
       default:
         return (
           <section className="nft-details__nft-info">
@@ -165,7 +160,17 @@ const NFTDetails = (): JSX.Element => {
       case 1:
         return (
           <section className="nft-details__bond-nft">
-            <BondNFT />
+            <BondNFT
+              link={{
+                grantDeed: '',
+                ein: '',
+                articleOfOrganization: '',
+                statementOfInformation: '',
+                llcOperationAgreement: '',
+                rentalAgreement: '',
+                collateralAgreement: '',
+              }}
+            />
           </section>
         );
       case 2:
@@ -299,7 +304,7 @@ const NFTDetails = (): JSX.Element => {
           to={{
             pathname: `/${lng}/faq`,
           }}>
-          가이드에 따라 구매하기 &gt;
+          {t('nftMarket.guide')}
         </Link>
         <article className="nft-details__header">
           <Header
@@ -322,16 +327,34 @@ const NFTDetails = (): JSX.Element => {
             mainnetType={mainnetType}
           />
         </article>
+        <article className="nft-details__purchase">
+          <Purchase
+            userTotalPurchase={nftTotalSupply || 0}
+            totalPurchase={totalPurchase}
+            startTime={startTime}
+            endedTime={endedTime}
+          />
+        </article>
         <article className="nft-details__content">
-          <article className="nft-details__purchase">
-            <Purchase
-              userTotalPurchase={nftTotalSupply || 0}
-              totalPurchase={totalPurchase}
-              startTime={startTime}
-              endedTime={endedTime}
-            />
+          <article className="nft-details__product-point">
+            <h2>{t(`nftMarket.productPointTitle`)}</h2>
+            <div>
+              {[News02, News02, News02, News02, News02, News02].map(
+                (image, index) => {
+                  return (
+                    <div>
+                      <h3>{t(`nftMarket.productPoint.title.${index}`)}</h3>
+                      <p>
+                        {t(`nftMarket.productPoint.content.${index}`, {
+                          percent: 12,
+                        })}
+                      </p>
+                    </div>
+                  );
+                },
+              )}
+            </div>
           </article>
-
           <article>
             <section className="nft-details__tab">
               {['상품정보', '상품구조', '미국부동산정보', '차입자정보'].map(
@@ -347,7 +370,7 @@ const NFTDetails = (): JSX.Element => {
                 },
               )}
             </section>
-            {setTabPageViewer(currentTab)}
+            <section>{setTabPageViewer(currentTab)}</section>
           </article>
 
           <article className="nft-details__news">

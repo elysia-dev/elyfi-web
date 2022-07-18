@@ -43,7 +43,7 @@ const Purchase: React.FC<Props> = ({
   return (
     <>
       <section className="nft-details__purchase__status">
-        <h2>{t('nftMarket.currnetPurchase')}</h2>
+        <h2>{t('nftMarket.currentPurchase')}</h2>
         <div>
           <div>
             <p>{t('nftMarket.purchasedNTF')}</p>
