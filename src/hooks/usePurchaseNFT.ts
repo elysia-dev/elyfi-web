@@ -96,11 +96,6 @@ const usePurchaseNFT = (
       account,
       '0xaA9ee17a1aC1658426B61cD5d501c4b00CDC1eD5',
     );
-    console.log(
-      'allowance',
-      allowanceAmount.gte(parseEther(String(usdc))),
-      parseEther(String(usdc)),
-    );
 
     return allowanceAmount.gte(parseEther(String(usdc)));
   };
