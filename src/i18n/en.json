@@ -714,7 +714,35 @@
       "content": "Choose and buy real-estate products you want!",
       "useRealEstateInfo": "The US real-estate products",
       "apy": "Annual return",
-      "nftType": ["Bond NFT", "Equity NFT"]
+      "nftType": ["Bond NFT", "Equity NFT"],
+      "faq": {
+        "title": [
+          "What is ELYFI?",
+          "What is Bond NFT?",
+          "Is the principal guaranteed for this product?",
+          "What is the maximum purchase amount?",
+          "How much is a bond NFT?",
+          "Can I cancel my investment application?",
+          "How can I buy the bond NFT?",
+          "Are there any platform fees for purchases?",
+          "How are the principal and the profits paid out?",
+          "What if the borrower does not repay?",
+          "What if the loan is not executed?"
+        ],
+        "answer": [
+          "ELYFI is a DeFi project by the Elysia team, a decentralized project that connects the real world asset and the cryptocurrency market. With ELYFI, you can conduct various financial activities with crypto. You can get a loan from ELYFI using the asset token (reflecting real asset value) created through the Elysia protocol as a collateral. In addition, users can earn money by depositing their own cryptocurrency into the money pool or purchasing NFT products.",
+          "Bond NFT is the right to receive repayment (principal and interest income) on the maturity date of the bond. By selling bond NFTs through ELYFI, borrowers receive a cryptocurrency loan with the raised amount, and NFT owners can receive the principal and interest repaid by the borrower on the maturity date of the bond.",
+          "This product does not guarantee principal and profits under the current laws. More specifically, it is prohibited to compensate investment of customers’ losses in advance or afterward according to the local regulation of the Republic of Korea. However, ELYFI minimizes investment risks through collateral setting, a thorough examination of investment products, and various investor protections.",
+          "There is no limit to the amount of investment in this product. For this reason, by investing a large amount of money, you, also, can expect high returns.",
+          "One bond NFT price is $10.",
+          "You cannot cancel the purchase of this product. However, you can trade bond NFTs held by OpenSea, an NFT marketplace. In addition, the right to receive reimbursement (principal and interest income) from the sale of the NFT is delegated to the NFT buyer.\n※ NFT sales do not imply a guarantee of principal.",
+          "This product can be purchased with cryptocurrency (ETH, USDC). For specific purchase methods, please refer to this guide as it has been explained in detail in the purchasing guide.",
+          "There is no ELYFI platform fee for this product. However, ELYFI users will use the Ethereum network when purchasing NFTs or receiving repayments, and accordingly, users must pay the Ethereum network usage fee (gas fee) in Ether (ETH). The gas fee is received from the Ethereum network, not from ELYFI.",
+          "The repayment of this product (principal and interest income) can be directly received in USDC tokens on the ELYFI site on the maturity date of the bond. However, it may be replaced with other tokens depending on the situation. In addition, depending on the borrower's financial situation, repayment may be made early before the maturity date, and repayment may be received from the time of repayment.",
+          "In case of delinquency, the interest rate for overdue payment of 15% is charged from the day after the bond maturity date by adding up the interest rate for delinquency (3%). In addition, if the bond is not repaid within 60 days from the day after the maturity date, the NFT of this bond is collected by selling it to another institution with the goal of recovering the full principal and interest.",
+          "If the loan is not executed, the purchase principal can be directly received in USDC, and USDC can be replaced with other coins depending on the circumstances."
+        ]
+      }
     },
     "nftMarket": {
       "title": "Bond NFT",
