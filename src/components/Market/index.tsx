@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import MediaQuery from 'src/enums/MediaQuery';
 import TokenColors from 'src/enums/TokenColors';
@@ -8,6 +8,9 @@ import Header from 'src/components/Market/Header';
 import NFTCard from 'src/components/Market/NFTCard';
 
 import BondAsset from 'src/assets/images/market/bondAssets.png';
+import useSWR from 'swr';
+import { nftTotalSupplyFetcher } from 'src/clients/BalancesFetcher';
+import Skeleton from 'react-loading-skeleton';
 
 export enum PFType {
   BOND,
@@ -25,15 +28,6 @@ export interface ICardType {
 }
 
 const tempCardArray: ICardType[] = [
-  {
-    PFType: PFType.BOND,
-    Location: '2046 Norwalk Ave LA, CA 90041',
-    APY: 12,
-    currentSoldNFTs: 12000,
-    totalNFTs: 54000,
-    cardImage: BondAsset,
-    onClickLink: 'a1',
-  },
   {
     PFType: PFType.SHARE,
     Location: '',
@@ -58,7 +52,26 @@ const Market = (): JSX.Element => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const { value: mediaQuery } = useMediaQueryType();
+  const [tempCards, setTempCards] = useState<ICardType[] | undefined>();
   const { t } = useTranslation();
+
+  const { data: nftTotalSupply } = useSWR(['nftTotalSupply'], {
+    fetcher: nftTotalSupplyFetcher(),
+  });
+
+  useEffect(() => {
+    if (!nftTotalSupply) return;
+    const nft = {
+      PFType: PFType.BOND,
+      Location: '2046 Norwalk Ave LA, CA 90041',
+      APY: 12,
+      currentSoldNFTs: nftTotalSupply,
+      totalNFTs: 54000,
+      cardImage: BondAsset,
+      onClickLink: 'a1',
+    };
+    setTempCards([nft, ...tempCardArray]);
+  }, [nftTotalSupply]);
 
   const draw = () => {
     const dpr = window.devicePixelRatio;
@@ -112,9 +125,15 @@ const Market = (): JSX.Element => {
         <article className="market__content">
           <h2>{t('market.useRealEstateInfo')}</h2>
           <article className="market__nft-container">
-            {tempCardArray.map((data, index) => {
-              return <NFTCard data={data} key={index} />;
-            })}
+            {tempCards
+              ? tempCards.map((data, index) => {
+                  return <NFTCard data={data} key={index} />;
+                })
+              : Array(3)
+                  .fill(0)
+                  .map(() => {
+                    return <Skeleton width={345} height={300} />;
+                  })}
           </article>
         </article>
       </main>
