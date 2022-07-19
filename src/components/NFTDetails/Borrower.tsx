@@ -20,7 +20,6 @@ const Borrower: React.FC<Props> = ({
 
   return (
     <>
-      <h2>{t('nftMarket.borrower')}</h2>
       <table>
         <tr>
           <th>{t('nftMarket.borrowerTable.header.0')}</th>
