@@ -167,6 +167,54 @@ const NFTDetails = (): JSX.Element => {
     setPurchasedNFT(parseInt(utils.formatUnits(count, 0), 10));
   }, [library, account]);
 
+  const getUrl = async () => {
+    const nftContract = getNFTContract(provider);
+    const info = await nftContract.uri(1);
+    axios
+      .get(`https://slate.textile.io/ipfs/${info.split(/ipfs:\/\//)[1]}`)
+      .then((res) => {
+        setNftInfo(res.data);
+      });
+  };
+
+  useEffect(() => {
+    draw();
+    window.addEventListener('scroll', () => draw());
+    window.addEventListener('resize', () => draw());
+
+    return () => {
+      window.removeEventListener('scroll', () => draw());
+      window.removeEventListener('resize', () => draw());
+    };
+  }, [document.body.clientHeight]);
+
+  useEffect(() => {
+    if (mainnetType === MainnetType.Ethereum) {
+      setModalType('');
+    }
+  }, [mainnetType]);
+
+  useEffect(() => {
+    if (!account) return;
+    getPurchasedNFT();
+  }, [account]);
+
+  useEffect(() => {
+    if (!account) return;
+    if (
+      txStatus === TxStatus.CONFIRM &&
+      txType === RecentActivityType.PurchasedNFT
+    ) {
+      setModalType('twitter');
+      getPurchasedNFT();
+      mutate();
+    }
+  }, [txStatus, txType]);
+
+  useEffect(() => {
+    getUrl();
+  }, []);
+
   const setTabPageViewer = (currentTab: number): JSX.Element => {
     switch (currentTab) {
       case NFTDetailTab.ProductInfo:
@@ -247,11 +295,17 @@ const NFTDetails = (): JSX.Element => {
           <section className="nft-details__bond-nft">
             <BondNFT
               link={{
-                grantDeed: '',
-                ein: '',
-                articleOfOrganization: '',
-                statementOfInformation: '',
-                llcOperationAgreement: '',
+                grantDeed: t('nftMarket.document.grantDeed'),
+                ein: t('nftMarket.document.ein'),
+                articleOfOrganization: t(
+                  'nftMarket.document.articlesOfOrganization',
+                ),
+                statementOfInformation: t(
+                  'nftMarket.document.statementOfInformation',
+                ),
+                llcOperationAgreement: t(
+                  'nftMarket.document.llcOperatingAgreement',
+                ),
                 rentalAgreement: '',
                 collateralAgreement: '',
               }}
@@ -272,54 +326,6 @@ const NFTDetails = (): JSX.Element => {
         );
     }
   };
-
-  const getUrl = async () => {
-    const nftContract = getNFTContract(provider);
-    const info = await nftContract.uri(1);
-    axios
-      .get(`https://slate.textile.io/ipfs/${info.split(/ipfs:\/\//)[1]}`)
-      .then((res) => {
-        setNftInfo(res.data);
-      });
-  };
-
-  useEffect(() => {
-    draw();
-    window.addEventListener('scroll', () => draw());
-    window.addEventListener('resize', () => draw());
-
-    return () => {
-      window.removeEventListener('scroll', () => draw());
-      window.removeEventListener('resize', () => draw());
-    };
-  }, [document.body.clientHeight]);
-
-  useEffect(() => {
-    if (mainnetType === MainnetType.Ethereum) {
-      setModalType('');
-    }
-  }, [mainnetType]);
-
-  useEffect(() => {
-    if (!account) return;
-    getPurchasedNFT();
-  }, [account]);
-
-  useEffect(() => {
-    if (!account) return;
-    if (
-      txStatus === TxStatus.CONFIRM &&
-      txType === RecentActivityType.PurchasedNFT
-    ) {
-      setModalType('twitter');
-      getPurchasedNFT();
-      mutate();
-    }
-  }, [txStatus, txType]);
-
-  useEffect(() => {
-    getUrl();
-  }, []);
 
   return (
     <>

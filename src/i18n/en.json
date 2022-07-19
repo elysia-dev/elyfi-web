@@ -893,7 +893,16 @@
         "Please check the disclaimers before purchasing bond NFTs."
       ],
       "newsTitle": "Press",
-      "newsButton": "Read more"
+      "newsButton": "Read more",
+      "document": {
+        "articlesOfOrganization": "https://elysia.mypinata.cloud/ipfs/QmVCJT1FQmnhSh39rBenS3turKDyNehCPYGifzte9Wbc7E",
+        "ein": "https://elysia.mypinata.cloud/ipfs/Qmf8gvkju75fbKaVykTHiCoGZmY1xwYqxdbmJrLy2unRMZ",
+        "statementOfInformation": "https://elysia.mypinata.cloud/ipfs/QmZX2rAbcgRr35B8U7HrmXc74raSt8qQz3oQcRWhb2iXZh",
+        "llcOperatingAgreement": "https://elysia.mypinata.cloud/ipfs/QmaYAHytgmBeM16vVj3S4TVFCouTbJxJhj47wm8YFet8ma",
+        "grantDeed": "https://elysia.mypinata.cloud/ipfs/QmQigAJXwPAzxLPPBrEMCyB6VvuHcBXP6ayT4NCnhoWaGt",
+        "loanAgreement": "https://elysia.mypinata.cloud/ipfs/QmfVVX5U4ig3UcRqHCFqCdrY2a1wN9tpTEpZosAisB7324",
+        "pledgeAgreement": "https://elysia.mypinata.cloud/ipfs/QmcK7hwCWDEWGNUUwR3RqqCgMfgjhegm1SCQ3DZDZj5nFn"
+      }
     },
     "nftModal": {
       "changeNetwork": [
