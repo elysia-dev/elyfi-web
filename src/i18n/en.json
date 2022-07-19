@@ -710,80 +710,103 @@
       ]
     },
     "market": {
-      "title": "부동산 상품마켓",
-      "content": "원하는 부동산 상품을 직접 고르고 구매할 수 있어요!",
-      "useRealEstateInfo": "미국 부동산 상품",
-      "apy": "연 수익률",
-      "nftType": ["채권 NFT", "지분 NFT"]
+      "title": "Real-estate product market",
+      "content": "Choose and buy real-estate products you want!",
+      "useRealEstateInfo": "The US real-estate products",
+      "apy": "Annual return",
+      "nftType": ["Bond NFT", "Equity NFT"]
     },
     "nftMarket": {
-      "title": "채권 NFT",
-      "subTitle": "채권 NFT를 구매하고 채권만기일에 원금과 이자를 받아갈 수 있어요!",
-      "guide": "가이드 보면서 쉽게 구매하기 >",
-      "myPurchase": "나의 구매수량",
-      "myPurchaseInfo": "연결한 지갑으로 구매한 NFT 수량을 표시합니다. 내가 보유한 NFT의 수량과 각 NFT의 토큰 ID를 <1><0>이더스캔</0></1>에서 확인해보세요!",
-      "purchase": "구매하기",
+      "title": "Bond NFT",
+      "subTitle": "Bond NFT holders can receive the principal and interest on the maturity date of the bond!",
+      "guide": "Purchase easily by following the guide >",
+      "myPurchase": "My holdings",
+      "myPurchaseInfo": "Displays the amount of Bond NFTs.",
+      "purchase": "Purchase",
       "purchaseStatus": {
-        "walletConnect": "지갑을 연결해주세요.",
-        "nullPurchase": "아직 구매한 수량이 없습니다"
+        "walletConnect": "Connect wallet",
+        "nullPurchase": "No quantity purchased yet"
       },
-      "currentPurchase": "구매현황",
-      "purchasedNTF": "구매한 NFT",
-      "totalPurchased": "총 NFTs",
-      "purchasedDate": "구매기간",
-      "timeUnit": ["일", "시간", "분", "초"],
-      "productPointTitle": "상품 매력 포인트",
+      "currentPurchase": "Sales Status",
+      "purchasedNTF": "Sold NFT",
+      "totalPurchased": "Total NFT",
+      "purchasedDate": "Sales Period",
+      "timeUnit": ["Days", "Hours", "Minutes", "Seconds"],
+      "productPointTitle": "Product appealing points",
       "productPoint": {
         "title": [
-          "압도적인 수익률을 제공해요!",
-          "플랫폼 이용 수수료 0%이에요!",
-          "언제든지 투자금을 회수할 수 있어요!",
-          "소액 투자가 가능해요!",
-          "코인으로 실물자산에 투자할 수 있어요!",
-          "손쉽게 미국 부동산에 투자할 수 있어요!"
+          "Overwhelming returns",
+          "No Platform Fee",
+          "High liquidity",
+          "Purchase with small amounts",
+          "Purchase in real world assets with coins",
+          "Easy purchase in US real estate"
         ],
         "content": [
-          "해당 상품은 예상 연 수익률이 {{ percent }}%로 기존 금융 상품 대비 높은 수익률을 제공합니다.",
-          "해당 상품은 플랫폼 이용 수수료가 없기 때문에 투자자들은 높은 실 수익금을 받아갈 수 있습니다.",
-          "투자자들은 투자 증표로 발행한 NFT를 오픈 마켓에 판매하여 현금화할 수 있습니다.",
-          "큰 금액으로 투자하기 부담스러운 분들은 소액으로도 투자할 수 있습니다. 최소 $1부터 투자 가능합니다.",
-          "투자자들은 가상화폐로 가치 측정이 가능한 실물자산에 투자할 수 있습니다.",
-          "소류 작성과 같은 복잡한 절차 없이 미국 부동산에 투자할 수 있습니다."
+          "The product offers a higher return than traditional financial products with an expected annual return of {{ percent }}%.",
+          "Since the product has no platform usage fees, you can actually gain high profits.",
+          "Buyers can monetize NFTs issued as proof of investment by selling them on the open market.",
+          "Those who find it difficult to invest in large amounts can purchase even with small amounts.\n* Requires purchasing minimum of $10",
+          "Buyers can sell their Bond NFTs to open markets such as OpenSea.",
+          "You can purchase in U.S. real estate product without the complicated process of filling out paperwork."
         ]
       },
-      "nftInfo": "NFT 정보",
+      "productDetail": "Product Details",
+      "nftInfo": "NFT Info",
       "nftInfoTable": [
-        "NFT명",
-        "NFT 설명",
-        "원금",
-        "예상 이자 수익",
-        "연 수익률",
-        "연체이자율",
-        "대출실행일",
-        "채권만기일",
-        "담보물 정보"
+        "NFT Name",
+        "Details",
+        "Principal",
+        "Expected interest income",
+        "APR",
+        "Overdue APR",
+        "Expected Loan date",
+        "Expected maturity date",
+        "Document"
       ],
-      "nftInfoTableButton": ["대부계약서", "질권설정계약서", "공정증서"],
+      "nftInfoDetails": [
+        "Right to receive principal and interest income",
+        "Bond NFT holders can receive principal and interest on the ELYFI site, www.elyfi.world, on the maturity date of the bond.",
+        "Expected interest income is calculated from the execution date of the loan to the maturity date of the bond.",
+        "Learn more on the ELYFI website."
+      ],
+      "nftInfoTableButton": [
+        "Loan Agreement",
+        "Pledge Agreement",
+        "LLC Operating Agreement",
+        "Statement of Information",
+        "EIN",
+        "Grant Deed",
+        "Articles of Organization"
+      ],
+      "bondNft": "Product Structure",
+      "bondNftGraph": [
+        "ELYLOAN LLC",
+        "Elysia Co., Ltd.",
+        "Elyloan Inc.",
+        "ELYFI",
+        "Buyer"
+      ],
       "bondNftTable": {
         "header": [
-          "1. 100% 소유",
-          "2. 99% 소유",
-          "3. 대출계약 및 담보설정계약",
-          "4. 채권 NFT 구매",
-          "5. 대출채권 담보 및 가상화폐 대출",
-          "6. 원리금 상환",
-          "7. 가상화폐 상환",
-          "8. 상환금 수령"
+          "1. 100% ownership",
+          "2. 99% ownership",
+          "3. Loan Agreement & Pledge Agreement",
+          "4. Purchase Bond NFTs",
+          "5. Collateralize a loan bond & Borrow cryptocurrency",
+          "6. Repay",
+          "7. Repay",
+          "8. Receive repayment"
         ],
         "content": [
-          "ELYLOAN LLC는 미국 부동산({{ location }})을 100% 소유하고 있습니다.",
-          "(주)엘리시아가 ELYLOAN LLC의 주식 99%를 소유하고 있습니다.",
-          "(주)엘리시아는 ELYLOAN LLC 주식을 담보로 (주)엘리파이대부에게 대출 받습니다.",
-          "구매자는 엘리파이에서 가상화폐(USDC, ETH)로 채권 NFT를 구매합니다.",
-          "(주)엘리파이대부는 엘리파이에서 가상화폐를 대출 받기 위해 (주)엘리시아 대출에 대한 채권을 담보물로 설정합니다.\n이와 동시에 엘리파이는 차입자의 지갑으로 가상화폐를 전송합니다.",
-          "(주)엘리시아는 채권만기일에 (주)엘리파이대부에서 원금과 이자를 상환합니다.",
-          "(주)엘리파이대부는 상환 기간에 맞춰 엘리파이에 USDC로 원금과 이자를 상환합니다.",
-          "NFT 구매자는 채권만기일에 채권 NFT로 상환금을 수령하며, 이와 동시에 구매자가 보유하고 있던 NFT는 자동으로 소각됩니다."
+          "ELYLOAN LLC owns 100% of US real estate ({{ location }}).",
+          "Elysia Co., Ltd. owns 99% of the shares of ELYLOAN LLC.",
+          "Elysia Co., Ltd. receives a loan from Elphi Loan Co., Ltd. using ELYLOAN LLC stock as collateral.",
+          "Buyers purchase Bond NFTs with cryptocurrencies (USDC, ETH) on ELYFI.",
+          "The borrower sets the loan bond as collateral in order to obtain a cryptocurrency loan from ELYFI.\nAt the same time, ELYFI transfers cryptocurrency to the borrower's wallet.",
+          "Elysia Co., Ltd. repays the principal and interest to Elyloan Inc. Loan on the due date.",
+          "Elyloan Inc. repays the principal and interest in USDC to ELYFI on the due date.",
+          "The NFT buyer receives the repayment in the Bond NFT on the maturity date of the bond, and at the same time, the NFT held by the buyer is automatically burned."
         ],
         "button": {
           "section01": [
@@ -793,43 +816,102 @@
             "Statement of Information"
           ],
           "section02": ["LLC Operating Agreement"],
-          "section03": ["대여약정서", "담보설정계약서"]
+          "section03": ["Loan Agreement", "Pledge Agreement"]
         }
       },
-      "borrower": "차입자 정보",
+      "borrower": "Borrower Information",
       "borrowerTable": {
         "header": [
-          "법인명",
-          "법인등록번호",
-          "체납세금",
-          "채무불이행",
-          "법인등기부등본"
+          "Corporate Name",
+          "Corporate Registration Number",
+          "Document"
         ],
-        "button": "등기부등본 사본"
+        "button": "Certified Corporate Registration",
+        "data": ["Elyloan Inc."]
       },
-      "realEstateInfo": "미국 부동산 정보",
+      "realEstateInfo": "US Real Estate Information",
       "realEstateInfoTable": [
-        "주소",
-        "매물정보",
-        "대지면적",
-        "리모델링 연도",
-        "건축면적",
-        "층수",
-        "판매예상가"
+        "Address",
+        "Type",
+        "Land area",
+        "Year of remodeling",
+        "Building area",
+        "Number of floors",
+        "Expected sales price"
       ],
-      "termsTitle": "꼭! 확인해주세요",
+      "realEstateInfoData": [
+        "Single-family house",
+        "{{ year }}",
+        "Two-story house(3rooms 4baths)"
+      ],
+      "aroundAsset": [
+        "Surrounding real estate prices",
+        "The latest sale price for a home of similar size and within a 20 minutes drive away."
+      ],
+      "aroundAssetTable": ["Price", "Year of construction", "Building area"],
+      "question": ["FAQ", "Moneypool FAQ", "Market FAQ"],
+      "viewMore": "View more",
+      "termsTitle": "Check before purchase!",
       "terms": [
-        "ELYFI는 해당 사이트에 올라온 어떤 자산에 대해서도 투자 조언, 투자권유를 하지 않습니다.",
-        "본 상품은 구매자들이 ELYFI를 통해 채권 NFT를 구매하여 모집된 금액으로 차입자가 가상화폐를 대출받는 형태입니다.",
-        "본 상품을 구매할 경우 구매 취소가 불가능합니다. 다만, NFT 마켓플레이스인 오픈씨에서 보유하신 채권 NFT를 판매할 수 있습니다.",
-        "구매 기간 후 대출을 실행하며, 대출이 실행 되지 않을 경우 즉시 구매 원금을 직접 가상화폐로 받아갈 수 있습니다.",
-        "본 상품은 원금 및 수익률이 보장되지 않습니다.",
-        "차입자의 자금 상황에 따라 만기일 전에 중도 상환될 수 있으며, 상환 당일 또는 다음 날(영업일 기준)에 원리금을 수령할 수 있습니다.",
-        "연체가 발생할 경우, 기존 대출금리에 연체가산이자율(3%)를 합산하여 최대 연 20%(법정최고금리) 이내 수취합니다.",
-        "엘리파이에서 제공하는 정보를 확인한 후 채권 NFT를 구매하시기 바랍니다."
+        "ELYFI does not advise or solicit any assets posted on this site. The buyers are responsible for choosing and purchasing.",
+        "This product is a form in which buyers purchase bond NFTs through ELYFI and borrowers borrow cryptocurrency with the raised money.",
+        "If you purchase this product, you cannot cancel the purchase. However, you can trade bond NFTs held at OpenSea, an NFT marketplace.",
+        "If the loan is not executed, you can receive the purchase principal directly in USDC.",
+        "Even if the payment coin is Ether (ETH), the redemption amount is calculated according to the bond NFT amount, not the Ether amount, and the redemption amount is received in USDC on the bond maturity date. (USDC can be substituted for other coins.)",
+        "Principal and rate of return are not guaranteed for this product.",
+        "Depending on the borrower's financial situation, repayment may be made mid-term before the maturity date of the bond, and repayment may be received from the time of repayment.",
+        "In case of delinquency, the interest rate (3%) is added to the existing loan interest rate and received within a maximum of 20% per annum (the maximum statutory interest rate).",
+        "Please check the disclaimers before purchasing bond NFTs."
       ],
-      "newsTitle": "관련 기사",
-      "newsButton": "자세히 보기"
+      "newsTitle": "Press",
+      "newsButton": "Read more"
+    },
+    "nftModal": {
+      "changeNetwork": [
+        "Change Network",
+        "To buy Bond NFTs, you need to change to the Ethereum network.\nTo change to the Ethereum network, click the button below.",
+        "To buy Bond NFTs, you need to change to the Ethereum network.\nPlease reconnect the wallet after changing from the connected wallet to the Ethereum network.",
+        "(Please check if the connected wallet supports the Ethereum network.)",
+        "Reconnect Wallet"
+      ],
+      "purchaseModal": {
+        "header": "Bond NFT",
+        "stepOne": "STEP 1<br />Select quantity and method",
+        "stepTwo": "STEP 2<br />Review & Purchase",
+        "max": "Max",
+        "paymentCrypto": "Payment Method",
+        "remainigNFT": "Remaining NFT Quantity",
+        "wallet": "Wallet Balance"
+      },
+      "button": {
+        "next": "Next",
+        "purchase": "Purchase",
+        "pendingTx": "Processing Purchase Request",
+        "insufficientWallet": "Insufficient Balance",
+        "insufficientNFT": "The remaining NFT quantity is insufficient.",
+        "approve": "Approve",
+        "approvePendingTx": "Processing Approvement Request"
+      },
+      "approve": [
+        "Approve the access!",
+        "In order to purchase this product, you must authorize access so that the app can access the connected wallet.",
+        "",
+        "Approval from the wallet owner is required only for the first purchase, and upon successful approval, subsequent purchases can be made without approval.",
+        "There is a fee for using the Ethereum network. Estimated gas fee: {{eth}}ETH(≒ ${{dollar}})"
+      ],
+      "confirm": {
+        "header": "Purchase Information",
+        "purchaseQuantity": "Purchase Quantity",
+        "estimatedAmount": "Estimated Payment Amount",
+        "content": [
+          "Disclaimers",
+          "Ethereum network usage fee is incurred upon a purchase request.",
+          "Estimated gas fee: {{eth}}ETH(≒ ${{dollar}})",
+          "A purchase request in Ether (ETH) will be exchanged to USDC in Uniswap and settled immediately upon request. However, since the price of Ether fluctuates in real time, if the price of Ether falls at the time it is exchanged for USDC, the purchase of the amount entered in the Bond NFT may fail. In this case, the buyer pays an additional 0.5% of the actual required amount of Ether, and when the required amount of USDC is exchanged and paid normally, the remaining amount of Ether is transferred to the connected wallet. When the required amount of USDC is exchanged and payment is made normally, the remaining amount of Ether is transferred to the connected wallet. Even with these methods, if the price of Ether changes dramatically, your purchase request may be rejected. Even if the purchase is unsuccessful, an Ethereum network usage fee will be incurred.",
+          "A payment request in USDC can be settled without any additional process. However, if there is no remaining NFT quantity at the time of the purchase request, the purchase request may be rejected, and in this case, an Ethereum network usage fee will be incurred.",
+          "Please check the disclaimers on this product again before final purchase."
+        ]
+      }
     }
   }
 }
