@@ -1,9 +1,10 @@
 import moment from 'moment';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Skeleton from 'react-loading-skeleton';
 
 interface Props {
-  userTotalPurchase: number;
+  userTotalPurchase?: number;
   totalPurchase: number;
   startTime: moment.Moment;
   endedTime: moment.Moment;
@@ -50,7 +51,13 @@ const Purchase: React.FC<Props> = ({
             <p>{t('nftMarket.totalPurchased')}</p>
           </div>
           <div>
-            <b>{userTotalPurchase}</b>
+            <b>
+              {userTotalPurchase ? (
+                userTotalPurchase
+              ) : (
+                <Skeleton width={60} height={15} />
+              )}
+            </b>
             <b>{totalPurchase}</b>
           </div>
           <progress value={userTotalPurchase} max={totalPurchase} />

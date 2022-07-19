@@ -34,6 +34,9 @@ import MainnetContext from 'src/contexts/MainnetContext';
 import { useWeb3React } from '@web3-react/core';
 import axios from 'axios';
 import useUserCryptoBalances from 'src/hooks/useUserCryptoBalances';
+import { pricesFetcher } from 'src/clients/Coingecko';
+import priceMiddleware from 'src/middleware/priceMiddleware';
+import envs from 'src/core/envs';
 import {
   getNFTContract,
   nftTotalSupplyFetcher,
@@ -95,9 +98,9 @@ const NFTDetails = (): JSX.Element => {
   const { type: mainnetType, changeMainnet } = useContext(MainnetContext);
   const { txType, txStatus } = useContext(TxContext);
   const { balances } = useUserCryptoBalances();
-  const [purchasedNFT, setPurchasedNFT] = useState(0);
   const [currentTab, setCurrentTab] = useState(0);
 
+  const [purchasedNFT, setPurchasedNFT] = useState<number | undefined>();
   const [nftInfo, setNftInfo] = useState<NFTType | undefined>();
   const current = moment();
 
@@ -108,13 +111,20 @@ const NFTDetails = (): JSX.Element => {
     'YYYY.MM.DD hh:mm:ss Z',
   );
   const endedTime = moment(
-    '2022.08.04 20:00:00 +9:00',
+    '2022.08.05 20:00:00 +9:00',
     'YYYY.MM.DD hh:mm:ss Z',
   );
 
   const { data: nftTotalSupply, mutate } = useSWR(['nftTotalSupply'], {
     fetcher: nftTotalSupplyFetcher(),
   });
+  const { data: priceData } = useSWR(
+    envs.externalApiEndpoint.coingackoURL,
+    pricesFetcher,
+    {
+      use: [priceMiddleware],
+    },
+  );
 
   const newsData: INews[] = [
     {
@@ -164,6 +174,7 @@ const NFTDetails = (): JSX.Element => {
   const getPurchasedNFT = useCallback(async () => {
     const nftContract = getNFTContract(library.getSigner());
     const count = await nftContract.balanceOf(account, 1);
+    console.log('co', parseInt(utils.formatUnits(count, 0), 10));
     setPurchasedNFT(parseInt(utils.formatUnits(count, 0), 10));
   }, [library, account]);
 
@@ -367,8 +378,12 @@ const NFTDetails = (): JSX.Element => {
         <TokenRewardModal
           endedTime={endedTime}
           onClose={() => setModalType('')}
-          tokenAmount={1234}
-          tokenName={Token.ELFI}
+          tokenAmount={
+            purchasedNFT
+              ? (purchasedNFT * 10 * 0.01) / (priceData?.elfiPrice || 1)
+              : 0
+          }
+          tokenName={'ELFI'}
         />
       ) : (
         <></>

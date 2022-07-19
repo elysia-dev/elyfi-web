@@ -980,10 +980,10 @@
         "approvePendingTx": "Processing Approvement Request"
       },
       "approve": [
-        "Approve the access!",
+        "Approve the access",
         "In order to purchase this product, you must authorize access so that the app can access the connected wallet.",
-        "",
         "Approval from the wallet owner is required only for the first purchase, and upon successful approval, subsequent purchases can be made without approval.",
+        "After approval, you can check purchase information and purchase again in the purchase pop-up window.",
         "There is a fee for using the Ethereum network. Estimated gas fee: {{eth}}ETH(≒ ${{dollar}})"
       ],
       "confirm": {
@@ -992,7 +992,7 @@
         "estimatedAmount": "Estimated Payment Amount",
         "content": [
           "Disclaimers",
-          "Ethereum network usage fee is incurred upon a purchase request.",
+          "Ethereum network usage fee is incurred upon a purchase request.<br/>There may be a difference in the estimated gas fee depending on the type of the connected wallet.",
           "Estimated gas fee: {{eth}}ETH(≒ ${{dollar}})",
           "A purchase request in Ether (ETH) will be exchanged to USDC in Uniswap and settled immediately upon request. However, since the price of Ether fluctuates in real time, if the price of Ether falls at the time it is exchanged for USDC, the purchase of the amount entered in the Bond NFT may fail. In this case, the buyer pays an additional 0.5% of the actual required amount of Ether, and when the required amount of USDC is exchanged and paid normally, the remaining amount of Ether is transferred to the connected wallet. When the required amount of USDC is exchanged and payment is made normally, the remaining amount of Ether is transferred to the connected wallet. Even with these methods, if the price of Ether changes dramatically, your purchase request may be rejected. Even if the purchase is unsuccessful, an Ethereum network usage fee will be incurred.",
           "A payment request in USDC can be settled without any additional process. However, if there is no remaining NFT quantity at the time of the purchase request, the purchase request may be rejected, and in this case, an Ethereum network usage fee will be incurred.",

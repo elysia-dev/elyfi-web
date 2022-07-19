@@ -1,6 +1,13 @@
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
-const Approve: React.FC = () => {
+type Props = {
+  approveGasFeeInfo: {
+    approveGasFee?: number;
+    gasFeeToDollar: number;
+  };
+};
+
+const Approve: React.FC<Props> = ({ approveGasFeeInfo }) => {
   const { t } = useTranslation();
 
   return (
@@ -10,12 +17,17 @@ const Approve: React.FC = () => {
         <p>{t('nftModal.approve.1')}</p>
         <br />
         <p>
-          <span>{t('nftModal.approve.2')}</span> {t('nftModal.approve.3')}
+          <Trans>{t('nftModal.approve.2')}</Trans>
         </p>
+        <br />
+        <p>{t('nftModal.approve.3')}</p>
       </div>
       <p>
         <span>*</span>
-        {t('nftModal.approve.4', { eth: 123, dollar: 123 })}
+        {t('nftModal.approve.4', {
+          eth: approveGasFeeInfo.approveGasFee?.toFixed(4),
+          dollar: approveGasFeeInfo.gasFeeToDollar?.toFixed(4),
+        })}
       </p>
     </div>
   );

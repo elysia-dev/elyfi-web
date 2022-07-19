@@ -190,12 +190,36 @@ export const walletCryptoFetcher =
 
 export const gasPriceFetcher =
   () =>
-  async (...args: [{ account: string }]): Promise<number> => {
+  async (...args: [{ account: string; library: any }]): Promise<number> => {
     try {
       const controllerContract = getControllerContract(provider);
       const estimatedGas = await controllerContract.estimateGas.deposit(
         1,
-        utils.parseUnits('10', 6),
+        utils.parseUnits('100', 6),
+        {
+          from: args[0].account,
+        },
+      );
+
+      const gasFee =
+        parseFloat(utils.formatEther(await provider.getGasPrice())) *
+        parseFloat(utils.formatUnits(estimatedGas, 0));
+
+      return gasFee;
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  };
+
+export const erc20GasPriceFetcher =
+  () =>
+  async (...args: [{ account: string; library: any }]): Promise<number> => {
+    try {
+      const erc20 = erc20Contract(envs.token.usdcAddress, provider);
+      const estimatedGas = await erc20.estimateGas.approve(
+        '0xaA9ee17a1aC1658426B61cD5d501c4b00CDC1eD5',
+        constants.MaxUint256,
         {
           from: args[0].account,
         },

@@ -4,7 +4,10 @@ import envs from 'src/core/envs';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import { useWeb3React } from '@web3-react/core';
-import { gasPriceFetcher } from 'src/clients/BalancesFetcher';
+import {
+  erc20GasPriceFetcher,
+  gasPriceFetcher,
+} from 'src/clients/BalancesFetcher';
 import usePurchaseNFT from 'src/hooks/usePurchaseNFT';
 import NFTPurchaseType from 'src/enums/NFTPurchaseType';
 import { useTranslation } from 'react-i18next';
@@ -31,7 +34,7 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
   balances,
   remainingNFT,
 }) => {
-  const { account } = useWeb3React();
+  const { account, library } = useWeb3React();
   const { t } = useTranslation();
   const [quantity, setQuantity] = useState('0');
   const [purchaseType, setPurchaseType] = useState('ETH');
@@ -47,9 +50,16 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
     },
   );
 
-  const { data: gasFee } = useSWR([{ account, key: 'gasPrice' }], {
+  const { data: gasFee } = useSWR([{ account, library, key: 'gasPrice' }], {
     fetcher: gasPriceFetcher(),
   });
+
+  const { data: approveGasFee } = useSWR(
+    [{ account, library, key: 'approveGasPrice' }],
+    {
+      fetcher: erc20GasPriceFetcher(),
+    },
+  );
 
   const paymentAmount = useMemo(() => {
     return priceData
@@ -118,7 +128,14 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
           </>
         ) : !isLoading && currentStep === 2 ? (
           purchaseType === NFTPurchaseType.USDC && !isApprove ? (
-            <Approve />
+            <Approve
+              approveGasFeeInfo={{
+                approveGasFee,
+                gasFeeToDollar:
+                  (approveGasFee ? approveGasFee : 0) *
+                  (priceData ? priceData.ethPrice : 0),
+              }}
+            />
           ) : (
             <Confirm
               quantity={quantity}

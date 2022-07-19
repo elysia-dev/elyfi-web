@@ -1,11 +1,12 @@
 import { useWeb3React } from '@web3-react/core';
 import { Trans, useTranslation } from 'react-i18next';
+import Skeleton from 'react-loading-skeleton';
 import Questionmark from 'src/components/Questionmark';
 import MainnetType from 'src/enums/MainnetType';
 
 interface Props {
   onButtonClick: () => void;
-  purchasedNFT: number;
+  purchasedNFT?: number;
   isDisabled: boolean;
   mainnetType: MainnetType;
 }
@@ -20,13 +21,21 @@ const Header: React.FC<Props> = ({
   const { account } = useWeb3React();
 
   const currentPurchaseAmount = () => {
-    return account === undefined
-      ? t('nftMarket.purchaseStatus.walletConnect')
-      : mainnetType === MainnetType.Ethereum
-      ? purchasedNFT === 0
-        ? t('nftMarket.purchaseStatus.nullPurchase')
-        : purchasedNFT
-      : '이더리움 네트워크로 변경해주세요.';
+    return account === undefined ? (
+      t('nftMarket.purchaseStatus.walletConnect')
+    ) : mainnetType === MainnetType.Ethereum ? (
+      purchasedNFT !== undefined ? (
+        purchasedNFT === 0 ? (
+          t('nftMarket.purchaseStatus.nullPurchase')
+        ) : (
+          purchasedNFT
+        )
+      ) : (
+        <Skeleton width={100} height={24} />
+      )
+    ) : (
+      '이더리움 네트워크로 변경해주세요.'
+    );
   };
 
   const ButtonComponent = (): JSX.Element => {
