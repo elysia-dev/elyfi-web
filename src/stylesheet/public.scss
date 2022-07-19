@@ -2244,6 +2244,48 @@ input[type='number'] {
         }
       }
     }
+    &__product-point {
+      margin-bottom: 50px;
+      > h2 {
+        font-size: 18px;
+        margin-bottom: 40px;
+      }
+      > div {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        text-align: center;
+        justify-items: center;
+        grid-gap: 35px 15px;
+        > section {
+          width: 400px;
+          display: flex;
+          flex-direction: row;
+          > img {
+            width: 90px;
+            height: 90px;
+            object-fit: scale-down;
+          }
+          > div {
+            margin-left: 18px;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            > h3 {
+              font-size: 15px;
+              color: $font-color;
+              margin-bottom: 10px;
+            }
+            > p {
+              font-size: 15px;
+              color: #646464;
+            }
+          }
+        }
+      }
+    }
     &__tab {
       width: 100%;
       display: flex;

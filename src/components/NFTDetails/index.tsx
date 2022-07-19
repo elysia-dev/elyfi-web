@@ -35,6 +35,12 @@ import TxContext from 'src/contexts/TxContext';
 import TxStatus from 'src/enums/TxStatus';
 import useSWR from 'swr';
 import Token from 'src/enums/Token';
+import ProductPoint00 from 'src/assets/images/market/productPoint00.svg';
+import ProductPoint01 from 'src/assets/images/market/productPoint01.svg';
+import ProductPoint02 from 'src/assets/images/market/productPoint02.svg';
+import ProductPoint03 from 'src/assets/images/market/productPoint03.svg';
+import ProductPoint04 from 'src/assets/images/market/productPoint04.svg';
+import ProductPoint05 from 'src/assets/images/market/productPoint05.svg';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ChangeNetworkModal from '../Market/Modals/ChangeNetworkModal';
 import NFTPurchaseModal from '../Market/Modals/NFTPurchaseModal';
@@ -192,21 +198,21 @@ const NFTDetails = (): JSX.Element => {
               }}
               aroundAssetInfo={[
                 {
-                  title: 'Crescent St, Los Angeles, CA',
+                  title: 'Crescent St, Los Angeles, CA',
                   image: AroundAsset00,
                   price: '$1,480,000 ~',
                   completion: '1924년',
                   landArea: '1,624sqft',
                 },
                 {
-                  title: 'Minneapolis St, Los Angeles, CA',
+                  title: 'Minneapolis St, Los Angeles, CA',
                   image: AroundAsset01,
                   price: '$1,485,000 ~',
                   completion: '1952년',
                   landArea: '1,600sqft',
                 },
                 {
-                  title: 'Range View Ave, LA, CA',
+                  title: 'Range View Ave, LA, CA',
                   image: AroundAsset02,
                   price: '$1,695,000 ~',
                   completion: '1909년',
@@ -384,9 +390,17 @@ const NFTDetails = (): JSX.Element => {
           <article className="nft-details__product-point">
             <h2>{t(`nftMarket.productPointTitle`)}</h2>
             <div>
-              {[News02, News02, News02, News02, News02, News02].map(
-                (image, index) => {
-                  return (
+              {[
+                ProductPoint00,
+                ProductPoint01,
+                ProductPoint02,
+                ProductPoint03,
+                ProductPoint04,
+                ProductPoint05,
+              ].map((image, index) => {
+                return (
+                  <section>
+                    <img src={image} alt="product image" />
                     <div>
                       <h3>{t(`nftMarket.productPoint.title.${index}`)}</h3>
                       <p>
@@ -395,9 +409,9 @@ const NFTDetails = (): JSX.Element => {
                         })}
                       </p>
                     </div>
-                  );
-                },
-              )}
+                  </section>
+                );
+              })}
             </div>
           </article>
           <article>
