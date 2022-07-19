@@ -37,7 +37,7 @@ const TokenRewardModal: React.FC<Props> = ({
             <b>
               축하합니다!
               <br />
-              {tokenName} 토큰 {tokenAmount}개를 받았습니다.
+              {tokenName} 토큰 {tokenAmount.toFixed(4)}개를 받았습니다.
             </b>
             <video
               src={SpinnerToken}
