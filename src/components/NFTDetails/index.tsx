@@ -1,4 +1,11 @@
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -25,6 +32,7 @@ import AroundAsset02 from 'src/assets/images/market/aroundAsset02.png';
 
 import MainnetContext from 'src/contexts/MainnetContext';
 import { useWeb3React } from '@web3-react/core';
+import axios from 'axios';
 import useUserCryptoBalances from 'src/hooks/useUserCryptoBalances';
 import {
   getNFTContract,
@@ -41,6 +49,7 @@ import ProductPoint02 from 'src/assets/images/market/productPoint02.svg';
 import ProductPoint03 from 'src/assets/images/market/productPoint03.svg';
 import ProductPoint04 from 'src/assets/images/market/productPoint04.svg';
 import ProductPoint05 from 'src/assets/images/market/productPoint05.svg';
+import { JsonRpcProvider } from '@ethersproject/providers';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ChangeNetworkModal from '../Market/Modals/ChangeNetworkModal';
 import NFTPurchaseModal from '../Market/Modals/NFTPurchaseModal';
@@ -63,6 +72,16 @@ enum NFTDetailTab {
   ProductStructure,
   BorrowerInfo,
 }
+export type NFTType = {
+  'collateral Info': {
+    type: string;
+    link: string;
+  }[];
+  attributes: { trait_type: string; value: string }[];
+  image: string;
+};
+
+const provider = new JsonRpcProvider(process.env.REACT_APP_JSON_RPC);
 
 const NFTDetails = (): JSX.Element => {
   const { account, deactivate, library } = useWeb3React();
@@ -79,6 +98,7 @@ const NFTDetails = (): JSX.Element => {
   const [purchasedNFT, setPurchasedNFT] = useState(0);
   const [currentTab, setCurrentTab] = useState(0);
 
+  const [nftInfo, setNftInfo] = useState<NFTType | undefined>();
   const current = moment();
 
   const totalPurchase = 54000;
@@ -106,7 +126,7 @@ const NFTDetails = (): JSX.Element => {
     {
       title: 'Yahoo finance',
       content: 'ELYFI Launches US Real Estate Investment Product',
-      link: 'https://finance.yahoo.com/news/elyfi-launches-us-real-estate-120000334.html?guccounter=1',
+      link: 'https://finance.yahoo.com/news/elyfi-launches-us-real-estate-120000334.html',
       image: News01,
     },
     {
@@ -145,7 +165,6 @@ const NFTDetails = (): JSX.Element => {
     const nftContract = getNFTContract(library.getSigner());
     const count = await nftContract.balanceOf(account, 1);
     setPurchasedNFT(parseInt(utils.formatUnits(count, 0), 10));
-    // const info = await nftContract.uri(1); asset ipfs url
   }, [library, account]);
 
   const setTabPageViewer = (currentTab: number): JSX.Element => {
@@ -154,18 +173,7 @@ const NFTDetails = (): JSX.Element => {
       default:
         return (
           <section className="nft-details__nft-info">
-            <NFTInfo
-              type={'채권 NFT'}
-              principal={10}
-              interest={0.3}
-              expectedAPY={12}
-              overdueAPY={15}
-              loanDate={moment('2022.08.01', 'YYYY.MM.DD')}
-              maturityDate={moment('2022.11.30', 'YYYY.MM.DD')}
-              loanAgreementLink={'https://www.elyfi.world/ko'}
-              pledgeAgreementLink={'https://www.elyfi.world/ko'}
-              notaryDeedLink={'https://www.elyfi.world/ko'}
-            />
+            <NFTInfo type={'채권 NFT'} interest={0.3} nftInfo={nftInfo} />
           </section>
         );
       case NFTDetailTab.RealEstateInfo:
@@ -255,6 +263,16 @@ const NFTDetails = (): JSX.Element => {
     }
   };
 
+  const getUrl = async () => {
+    const nftContract = getNFTContract(provider);
+    const info = await nftContract.uri(1);
+    axios
+      .get(`https://slate.textile.io/ipfs/${info.split(/ipfs:\/\//)[1]}`)
+      .then((res) => {
+        setNftInfo(res.data);
+      });
+  };
+
   useEffect(() => {
     draw();
     window.addEventListener('scroll', () => draw());
@@ -283,10 +301,15 @@ const NFTDetails = (): JSX.Element => {
       txStatus === TxStatus.CONFIRM &&
       txType === RecentActivityType.PurchasedNFT
     ) {
+      setModalType('twitter');
       getPurchasedNFT();
       mutate();
     }
   }, [txStatus, txType]);
+
+  useEffect(() => {
+    getUrl();
+  }, []);
 
   return (
     <>
@@ -319,7 +342,9 @@ const NFTDetails = (): JSX.Element => {
         <TwitterConfirmModal
           endedTime={endedTime}
           onClose={() => setModalType('')}
-          onSubmit={() => {}}
+          onSubmit={() => {
+            setModalType('tokenReward');
+          }}
           onDiscard={() => {}}
         />
       ) : modalType === 'tokenReward' ? (

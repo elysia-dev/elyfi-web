@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ETH from 'src/assets/images/market/eth.svg';
 import USDC from 'src/assets/images/USDC.png';
 
@@ -9,10 +10,10 @@ type Props = {
 
 const SelectCrypto: React.FC<Props> = ({ setPurchaseType, purchaseType }) => {
   const [selectVisible, setSelectVisible] = useState(false);
-
+  const { t } = useTranslation();
   return (
     <div className="market_modal__crypto">
-      <p>결제 코인</p>
+      <p>{t('nftModal.purchaseModal.paymentCrypto')}</p>
       <div>
         <div
           onClick={() => {
@@ -22,12 +23,7 @@ const SelectCrypto: React.FC<Props> = ({ setPurchaseType, purchaseType }) => {
             <div></div>
             <div></div>
           </div>
-          <img
-            src={purchaseType === 'ETH' ? ETH : USDC}
-            alt={'cryptoImage'}
-            width={28}
-            height={28}
-          />
+          <img src={purchaseType === 'ETH' ? ETH : USDC} alt={'cryptoImage'} />
           {purchaseType === 'ETH' ? 'ETH' : 'USDC'}
         </div>
         <ul style={{ display: selectVisible ? 'block' : 'none' }}>
@@ -37,7 +33,7 @@ const SelectCrypto: React.FC<Props> = ({ setPurchaseType, purchaseType }) => {
                 setPurchaseType('USDC');
                 setSelectVisible((prev) => !prev);
               }}>
-              <img src={USDC} alt={'cryptoImage'} width={28} height={28} />
+              <img src={USDC} alt={'cryptoImage'} />
               USDC
             </li>
           ) : (

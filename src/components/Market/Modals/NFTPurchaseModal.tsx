@@ -7,6 +7,7 @@ import { useWeb3React } from '@web3-react/core';
 import { gasPriceFetcher } from 'src/clients/BalancesFetcher';
 import usePurchaseNFT from 'src/hooks/usePurchaseNFT';
 import NFTPurchaseType from 'src/enums/NFTPurchaseType';
+import { useTranslation } from 'react-i18next';
 import Confirm from './components/Confirm';
 import InputQuantity from './components/InputQuantity ';
 import LoadingIndicator from './components/LoadingIndicator';
@@ -31,6 +32,7 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
   remainingNFT,
 }) => {
   const { account } = useWeb3React();
+  const { t } = useTranslation();
   const [quantity, setQuantity] = useState('0');
   const [purchaseType, setPurchaseType] = useState('ETH');
   const [currentStep, setCurrentStep] = useState(1);
@@ -75,7 +77,7 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
     <div className="market_modal">
       <div className="market_modal__wrapper">
         <ModalHeader
-          title="채권 NFT"
+          title={t('nftModal.purchaseModal.header')}
           isPurchaseModal={true}
           modalClose={modalClose}
         />
@@ -141,17 +143,17 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
           content={
             currentStep === 1
               ? parseInt(quantity, 10) > remainingNFT
-                ? '잔여 NFT 수량보다 많이 입력했습니다.'
+                ? t('nftModal.button.insufficientNFT')
                 : isPayAmount()
-                ? '금액이 부족합니다.'
+                ? t('nftModal.button.insufficientWallet')
                 : quantity === '0'
-                ? '수량을 입력해주세요.'
-                : '다음'
+                ? t('nftModal.button.next')
+                : t('nftModal.button.next')
               : currentStep === 2
               ? purchaseType === NFTPurchaseType.USDC && !isApprove
-                ? '승인하기'
-                : '구매하기'
-              : '구매요청 처리중'
+                ? t('nftModal.button.approve')
+                : t('nftModal.button.purchase')
+              : t('nftModal.button.pendingTx')
           }
           isPayAmount={isPayAmount() || quantity === '0'}
           onClickHandler={async () => {

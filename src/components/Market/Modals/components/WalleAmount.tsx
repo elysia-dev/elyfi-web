@@ -1,4 +1,5 @@
 import { BigNumber } from 'ethers';
+import { useTranslation } from 'react-i18next';
 import {
   formatCommaSmallFourDisits,
   formatCommaSmallZeroDisits,
@@ -13,14 +14,16 @@ interface Amount {
 }
 
 const WalletAmount: React.FC<Amount> = ({ balances, remainingNFT }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="market_modal__amount">
       <div>
-        <div>잔여 NFT 수량</div>
+        <div>{t('nftModal.purchaseModal.remainigNFT')}</div>
         <div>{formatCommaSmallZeroDisits(remainingNFT)}</div>
       </div>
       <div>
-        <div>지갑 잔액</div>
+        <div>{t('nftModal.purchaseModal.wallet')}</div>
         <div>
           <div>
             {formatCommaSmallFourDisits(balances.eth)}
