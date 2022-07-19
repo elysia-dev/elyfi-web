@@ -4,24 +4,35 @@ import MainnetType from 'src/enums/MainnetType';
 import MediaQuery from 'src/enums/MediaQuery';
 
 interface Props {
-  mediaQuery: MediaQuery;
-  mainnetType: MainnetType;
-  offChainNapData: INapData[] | undefined;
+  index: string;
+  content: string;
+  link: string;
+  linkContent: string;
+  subContent: string;
 }
 
 const ElfiInfoHeader: React.FC<Props> = ({
-  mainnetType,
-  offChainNapData,
-  mediaQuery,
+  index,
+  content,
+  link,
+  linkContent,
+  subContent,
 }) => {
   const { t } = useTranslation();
 
   return (
-    <>
-      <header>
-        <h3>{t('governance.vote.header')}</h3>
-      </header>
-    </>
+    <header>
+      <div>
+        <span>
+          <strong>{index}</strong>
+        </span>
+        <strong>{content}</strong>
+        <a href={link} rel="noopener noreferer" target="_blank">
+          <p>{linkContent}</p>
+        </a>
+      </div>
+      <p>{subContent}</p>
+    </header>
   );
 };
 
