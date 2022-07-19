@@ -57,7 +57,7 @@ interface INews {
   image: string;
 }
 
-type NFTType = {
+export type NFTType = {
   'collateral Info': {
     type: string;
     link: string;
@@ -101,19 +101,19 @@ const NFTDetails = (): JSX.Element => {
     {
       title: 'Bloomberg',
       content: 'ELYFI Launches US Real Estate Investment Product',
-      link: '',
+      link: 'https://www.bloomberg.com/press-releases/2022-07-06/elyfi-launches-us-real-estate-investment-product',
       image: News00,
     },
     {
       title: 'Yahoo finance',
       content: 'ELYFI Launches US Real Estate Investment Product',
-      link: '',
+      link: 'https://finance.yahoo.com/news/elyfi-launches-us-real-estate-120000334.html',
       image: News01,
     },
     {
       title: 'Token Post',
       content: '엘리파이, 美 부동산 투자 상품 출시…대출채권 조각 구매 가능',
-      link: '',
+      link: 'https://www.tokenpost.kr/article-98820',
       image: News02,
     },
   ];
@@ -150,15 +150,11 @@ const NFTDetails = (): JSX.Element => {
 
   const getUrl = async () => {
     const nftContract = getNFTContract(provider);
-    /**
-     * asset ipfs url
-     * */
     const info = await nftContract.uri(1);
     axios
       .get(`https://slate.textile.io/ipfs/${info.split(/ipfs:\/\//)[1]}`)
       .then((res) => {
         setNftInfo(res.data);
-        console.log('res', res.data);
       });
   };
 
@@ -196,7 +192,7 @@ const NFTDetails = (): JSX.Element => {
     }
   }, [txStatus, txType]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     getUrl();
   }, []);
 
@@ -295,56 +291,7 @@ const NFTDetails = (): JSX.Element => {
             />
           </article>
           <article className="nft-details__nft-info">
-            <NFTInfo
-              type={'채권 NFT'}
-              principal={
-                nftInfo?.attributes.find((nft) => {
-                  return nft.trait_type === 'Principal';
-                })?.value
-              }
-              interest={0.3}
-              expectedAPY={
-                nftInfo?.attributes.find((nft) => {
-                  return nft.trait_type === 'Expected APY';
-                })?.value
-              }
-              overdueAPY={
-                nftInfo?.attributes.find((nft) => {
-                  return nft.trait_type === 'Overdue APY';
-                })?.value
-              }
-              loanDate={moment(
-                nftInfo?.attributes
-                  .find((nft) => {
-                    return nft.trait_type === 'Loan Date';
-                  })
-                  ?.value.split('KST')[0],
-              )}
-              maturityDate={moment(
-                moment(
-                  nftInfo?.attributes
-                    .find((nft) => {
-                      return nft.trait_type === 'Maturity Date';
-                    })
-                    ?.value.split('KST')[0],
-                ),
-              )}
-              loanAgreementLink={`https://slate.textile.io/ipfs/${
-                nftInfo
-                  ? nftInfo['collateral Info'][0].link.split(/ipfs:\/\//)[1]
-                  : ''
-              }`}
-              pledgeAgreementLink={`https://slate.textile.io/ipfs/${
-                nftInfo
-                  ? nftInfo['collateral Info'][1].link.split(/ipfs:\/\//)[1]
-                  : ''
-              }`}
-              notaryDeedLink={`https://slate.textile.io/ipfs/${
-                nftInfo
-                  ? nftInfo['collateral Info'][2].link.split(/ipfs:\/\//)[1]
-                  : ''
-              }`}
-            />
+            <NFTInfo type={'채권 NFT'} interest={0.3} nftInfo={nftInfo} />
           </article>
           <article className="nft-details__bond-nft">
             <BondNFT />
