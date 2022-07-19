@@ -2,12 +2,10 @@
   "translation": {
     "main": {
       "landing": {
-        "header__title": "<i>ELYFI</i> <strong>the first real estate collateralized, decentralized lending protocol</strong>",
-        "header__content": "ELYFI provides digital asset loans by converting real estate into NFTs and using it as collateral",
-        "button__market": "구매하기",
-        "button__market--detail": "원하는 부동산 상품을 마켓에서",
-        "button__deposit": "Deposit",
-        "button__deposit--detail": "무엇을 구매할지 모를 때는 머니풀에"
+        "header__title": "<strong><i>ELYFI</i>,<br/>a new global real-estate investment</strong>",
+        "header__content": "Invest in Korean and the US real estate with crypto now!",
+        "button__market": "Go to market",
+        "button__deposit": "Deposit"
       },
       "section": [
         {

@@ -32,9 +32,8 @@ const MainPage: React.FC<Props> = ({ mainHeaderY, mainHeaderMoblieY }) => {
           </p>
           <p>{t('main.landing.header__content')}</p>
         </div>
-        <div className="main__title__button pc-only">
+        <div className="main__title__button">
           <div>
-            <p>{t('main.landing.button__market--detail')}</p>
             <Link
               to={`/${lng}/market`}
               onClick={() => {
@@ -47,7 +46,6 @@ const MainPage: React.FC<Props> = ({ mainHeaderY, mainHeaderMoblieY }) => {
             </Link>
           </div>
           <div>
-            <p>{t('main.landing.button__deposit--detail')}</p>
             <Link
               to={`/${lng}/deposit`}
               onClick={() => {
@@ -66,34 +64,6 @@ const MainPage: React.FC<Props> = ({ mainHeaderY, mainHeaderMoblieY }) => {
           <LazyImage name="dom" src={AssetDom} />
           <LazyImage name="pit" src={Pit} />
         </Suspense>
-      </div>
-      <div className="main__title__button mobile-only">
-        <div>
-          <p>{t('main.landing.button__market--detail')}</p>
-          <Link
-            to={`/${lng}/market`}
-            onClick={() => {
-              reactGA.event({
-                category: PageEventType.MoveToInternalPage,
-                action: ButtonEventType.DepositButton,
-              });
-            }}>
-            <p ref={mainHeaderY}>{t('main.landing.button__market')}</p>
-          </Link>
-        </div>
-        <div>
-          <p>{t('main.landing.button__deposit--detail')}</p>
-          <Link
-            to={`/${lng}/deposit`}
-            onClick={() => {
-              reactGA.event({
-                category: PageEventType.MoveToExternalPage,
-                action: ButtonEventType.LearnMoreButton,
-              });
-            }}>
-            <p>{t('main.landing.button__deposit')}</p>
-          </Link>
-        </div>
       </div>
     </>
   );
