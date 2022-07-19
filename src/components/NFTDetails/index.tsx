@@ -18,6 +18,11 @@ import moment from 'moment';
 import News00 from 'src/assets/images/market/news00.png';
 import News01 from 'src/assets/images/market/news01.png';
 import News02 from 'src/assets/images/market/news02.png';
+
+import AroundAsset00 from 'src/assets/images/market/aroundAsset00.png';
+import AroundAsset01 from 'src/assets/images/market/aroundAsset01.png';
+import AroundAsset02 from 'src/assets/images/market/aroundAsset02.png';
+
 import MainnetContext from 'src/contexts/MainnetContext';
 import { useWeb3React } from '@web3-react/core';
 import useUserCryptoBalances from 'src/hooks/useUserCryptoBalances';
@@ -46,10 +51,10 @@ export interface INews {
   image: string;
 }
 
-enum NTFDetailTab {
+enum NFTDetailTab {
   ProductInfo,
-  ProductStructure,
   RealEstateInfo,
+  ProductStructure,
   BorrowerInfo,
 }
 
@@ -139,7 +144,7 @@ const NFTDetails = (): JSX.Element => {
 
   const setTabPageViewer = (currentTab: number): JSX.Element => {
     switch (currentTab) {
-      case NTFDetailTab.ProductInfo:
+      case NFTDetailTab.ProductInfo:
       default:
         return (
           <section className="nft-details__nft-info">
@@ -157,7 +162,61 @@ const NFTDetails = (): JSX.Element => {
             />
           </section>
         );
-      case 1:
+      case NFTDetailTab.RealEstateInfo:
+        return (
+          <section className="nft-details__real-estate-info">
+            <RealEstateInfo
+              youtubeLink="zZMusws1Rb8"
+              tableInfo={{
+                location: '2046 Norwalk Ave, LA, CA 90041',
+                locationLink: 'https://naver.com',
+                assetType: '단독주택 (single-family house)',
+                landArea: '6,214sqft',
+                yearOfRemodeling: '2022년',
+                buildingArea: '1,384sqft',
+                floor: '2층 (3rooms 4baths)',
+                estimatedSalesPrice: '$ 1,600,000',
+              }}
+              assetFeature={{
+                title: [
+                  'Flipping을 통한 수익률 극대화',
+                  '우수한 입지',
+                  'No 융자, Low 리스크',
+                ],
+                content: [
+                  '약 175평의 넓은 대지와 뒤뜰을 가지고 있는 2층 단독주택을 최근 리모델링하였고, 이에 높은 수익률이 기대되는 매물입니다.',
+                  'Occidental 대학교가 인근에 위치해 있어 배후수요가 탄탄하며, 베버리힐즈, LA코리아타운 등으로 이어지는 교통환경이 우수한 지역으로 입지가 훌륭합니다.',
+                  '본 부동산은 대출이 없기 때문에 권리상 어떤 선순위도 존재하지 않습니다.',
+                ],
+                image: [AroundAsset00, AroundAsset01, AroundAsset02],
+              }}
+              aroundAssetInfo={[
+                {
+                  title: 'Crescent St, Los Angeles, CA',
+                  image: AroundAsset00,
+                  price: '$1,480,000 ~',
+                  completion: '1924년',
+                  landArea: '1,624sqft',
+                },
+                {
+                  title: 'Minneapolis St, Los Angeles, CA',
+                  image: AroundAsset01,
+                  price: '$1,485,000 ~',
+                  completion: '1952년',
+                  landArea: '1,600sqft',
+                },
+                {
+                  title: 'Range View Ave, LA, CA',
+                  image: AroundAsset02,
+                  price: '$1,695,000 ~',
+                  completion: '1909년',
+                  landArea: '1,721sqft',
+                },
+              ]}
+            />
+          </section>
+        );
+      case NFTDetailTab.ProductStructure:
         return (
           <section className="nft-details__bond-nft">
             <BondNFT
@@ -173,7 +232,7 @@ const NFTDetails = (): JSX.Element => {
             />
           </section>
         );
-      case 2:
+      case NFTDetailTab.BorrowerInfo:
         return (
           <section className="nft-details__borrower">
             <Borrower
@@ -183,20 +242,6 @@ const NFTDetails = (): JSX.Element => {
               defaultingOnDebt={'해당없음'}
               registrationLink={
                 'https://ipfs.io/ipfs/bafybeidtfourbfi4oy3nlos4v7vmvn3oyy5ufbtxjdux2gnl3al5pyutsy'
-              }
-            />
-          </section>
-        );
-      case 3:
-        return (
-          <section className="nft-details__real-estate-info">
-            <RealEstateInfo
-              assetName={'Norwalk Ave'}
-              location={'2046 Norwalk Ave, LA, CA 90041'}
-              buildingArea={'6,214 sqft / 1,034 + 350 sqft'}
-              assetType={'단독 주택'}
-              comment={
-                'Eagle Rock은 Occidental College가 위치해 있는 지역으로 근처에 상업거리인 Colorado Blvd가 인접 하여 좋은 입지를 가지고 있습니다.'
               }
             />
           </section>
@@ -357,7 +402,7 @@ const NFTDetails = (): JSX.Element => {
           </article>
           <article>
             <section className="nft-details__tab">
-              {['상품정보', '상품구조', '미국부동산정보', '차입자정보'].map(
+              {['상품정보', '미국부동산정보', '상품구조', '차입자정보'].map(
                 (data, index) => {
                   console.log(index);
                   return (
