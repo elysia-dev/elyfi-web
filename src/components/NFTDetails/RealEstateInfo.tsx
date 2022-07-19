@@ -130,11 +130,8 @@ const RealEstateInfo: React.FC<Props> = (props) => {
         </div>
       </section>
       <section className="nft-details__real-estate-info__around-asset">
-        <h2>주변 부동산 시세</h2>
-        <p>
-          해당 부동산 위치에서 차로 20분 이내의 거리에 있고 유사 면적을 가진
-          주택의 최신 매매가입니다.
-        </p>
+        <h2>{t('nftMarket.aroundAsset.0')}</h2>
+        <p>{t('nftMarket.aroundAsset.1')}</p>
         <section>
           {props.aroundAssetInfo.map((data, index) => {
             return (
@@ -143,15 +140,15 @@ const RealEstateInfo: React.FC<Props> = (props) => {
                 <b>{data.title}</b>
                 <table>
                   <tr>
-                    <th>가격</th>
+                    <th>{t('nftMarket.aroundAssetTable.0')}</th>
                     <td>{data.price}</td>
                   </tr>
                   <tr>
-                    <th>준공년도</th>
+                    <th>{t('nftMarket.aroundAssetTable.1')}</th>
                     <td>{data.completion}</td>
                   </tr>
                   <tr>
-                    <th>건축면적</th>
+                    <th>{t('nftMarket.aroundAssetTable.2')}</th>
                     <td>{data.landArea}</td>
                   </tr>
                 </table>
@@ -159,7 +156,7 @@ const RealEstateInfo: React.FC<Props> = (props) => {
             );
           })}
         </section>
-        <span>출처 : https://www.zillow.com/</span>
+        <span>{t('nftMarket.source')} : https://www.zillow.com/</span>
       </section>
     </>
   );

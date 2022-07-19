@@ -4,16 +4,12 @@ import Clip from 'src/assets/images/market/clip.svg';
 interface Props {
   name: string;
   licenseNumber: string;
-  delinquentTax: string;
-  defaultingOnDebt: string;
   registrationLink: string;
 }
 
 const Borrower: React.FC<Props> = ({
   name,
   licenseNumber,
-  delinquentTax,
-  defaultingOnDebt,
   registrationLink,
 }) => {
   const { t } = useTranslation();
@@ -31,14 +27,6 @@ const Borrower: React.FC<Props> = ({
         </tr>
         <tr>
           <th>{t('nftMarket.borrowerTable.header.2')}</th>
-          <td>{delinquentTax}</td>
-        </tr>
-        <tr>
-          <th>{t('nftMarket.borrowerTable.header.3')}</th>
-          <td>{defaultingOnDebt}</td>
-        </tr>
-        <tr>
-          <th>{t('nftMarket.borrowerTable.header.4')}</th>
           <td>
             <div>
               <a target="_blank" href={registrationLink}>

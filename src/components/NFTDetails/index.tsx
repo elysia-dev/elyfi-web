@@ -173,7 +173,11 @@ const NFTDetails = (): JSX.Element => {
       default:
         return (
           <section className="nft-details__nft-info">
-            <NFTInfo type={'채권 NFT'} interest={0.3} nftInfo={nftInfo} />
+            <NFTInfo
+              type={t('market.nftType.0')}
+              interest={0.3}
+              nftInfo={nftInfo}
+            />
           </section>
         );
       case NFTDetailTab.RealEstateInfo:
@@ -184,11 +188,13 @@ const NFTDetails = (): JSX.Element => {
               tableInfo={{
                 location: '2046 Norwalk Ave, LA, CA 90041',
                 locationLink: 'https://naver.com',
-                assetType: '단독주택 (single-family house)',
+                assetType: t('nftMarket.realEstateInfoData.0'),
                 landArea: '6,214sqft',
-                yearOfRemodeling: '2022년',
+                yearOfRemodeling: t('nftMarket.realEstateInfoData.1', {
+                  year: 2022,
+                }),
                 buildingArea: '1,384sqft',
-                floor: '2층 (3rooms 4baths)',
+                floor: t('nftMarket.realEstateInfoData.2'),
                 estimatedSalesPrice: '$ 1,600,000',
               }}
               assetFeature={{
@@ -209,21 +215,27 @@ const NFTDetails = (): JSX.Element => {
                   title: 'Crescent St, Los Angeles, CA',
                   image: AroundAsset00,
                   price: '$1,480,000 ~',
-                  completion: '1924년',
+                  completion: t('nftMarket.realEstateInfoData.1', {
+                    year: 1924,
+                  }),
                   landArea: '1,624sqft',
                 },
                 {
                   title: 'Minneapolis St, Los Angeles, CA',
                   image: AroundAsset01,
                   price: '$1,485,000 ~',
-                  completion: '1952년',
+                  completion: t('nftMarket.realEstateInfoData.1', {
+                    year: 1952,
+                  }),
                   landArea: '1,600sqft',
                 },
                 {
                   title: 'Range View Ave, LA, CA',
                   image: AroundAsset02,
                   price: '$1,695,000 ~',
-                  completion: '1909년',
+                  completion: t('nftMarket.realEstateInfoData.1', {
+                    year: 1909,
+                  }),
                   landArea: '1,721sqft',
                 },
               ]}
@@ -250,10 +262,8 @@ const NFTDetails = (): JSX.Element => {
         return (
           <section className="nft-details__borrower">
             <Borrower
-              name={'Elyloan Inc'}
+              name={t('nftMarket.borrowerTable.data.0')}
               licenseNumber={'220111-0189192'}
-              delinquentTax={'해당없음'}
-              defaultingOnDebt={'해당없음'}
               registrationLink={
                 'https://ipfs.io/ipfs/bafybeidtfourbfi4oy3nlos4v7vmvn3oyy5ufbtxjdux2gnl3al5pyutsy'
               }
@@ -441,18 +451,21 @@ const NFTDetails = (): JSX.Element => {
           </article>
           <article>
             <section className="nft-details__tab">
-              {['상품정보', '미국부동산정보', '상품구조', '차입자정보'].map(
-                (data, index) => {
-                  console.log(index);
-                  return (
-                    <div
-                      className={currentTab === index ? '' : 'disable'}
-                      onClick={() => setCurrentTab(index)}>
-                      <b>{data}</b>
-                    </div>
-                  );
-                },
-              )}
+              {[
+                t('nftMarket.productDetail'),
+                t('nftMarket.realEstateInfo'),
+                t('nftMarket.bondNft'),
+                t('nftMarket.borrower'),
+              ].map((data, index) => {
+                console.log(index);
+                return (
+                  <div
+                    className={currentTab === index ? '' : 'disable'}
+                    onClick={() => setCurrentTab(index)}>
+                    <b>{data}</b>
+                  </div>
+                );
+              })}
             </section>
             <section>{setTabPageViewer(currentTab)}</section>
           </article>

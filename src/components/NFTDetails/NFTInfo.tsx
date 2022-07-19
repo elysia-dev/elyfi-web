@@ -74,18 +74,11 @@ const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo }) => {
           <tr>
             <th>{t('nftMarket.nftInfoTable.1')}</th>
             <td colSpan={3}>
-              채권에 대한 소유권
+              {t('nftMarket.nftInfoDetails.0')}
               <ul>
-                <li>
-                  채권 NFT 소유자는 채권만기일에 엘리파이 사이트에서 원금과
-                  이자를 수령할 수 있습니다.
-                </li>
-                <li>
-                  예상 이자 수익은 대출실행일부터 채권만기일까지 발생 합니다.
-                </li>
-                <li>
-                  자세한 상품정보는 엘리파이 사이트에서 확인할 수 있습니다.
-                </li>
+                <li>{t('nftMarket.nftInfoDetails.1')}</li>
+                <li>{t('nftMarket.nftInfoDetails.2')}</li>
+                <li>{t('nftMarket.nftInfoDetails.3')}</li>
               </ul>
             </td>
           </tr>

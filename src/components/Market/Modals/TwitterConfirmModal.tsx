@@ -62,11 +62,7 @@ const TwitterConfirmModal: React.FC<Props> = ({
             <figure>
               <video src={Twitter} muted={true} loop={true} autoPlay={true} />
               <figcaption>
-                <b>
-                  리트윗하고
-                  <br />
-                  1% 페이백을 받아보세요!
-                </b>
+                <b>{t('nftModal.twitter.title')}</b>
               </figcaption>
             </figure>
             <section>
@@ -92,12 +88,12 @@ const TwitterConfirmModal: React.FC<Props> = ({
             </section>
           </section>
           <ModalButton
-            content="리트윗하고 1% 더 페이백 받기"
+            content={t('nftModal.twitter.button')}
             onClick={onSubmit}
           />
           <article className="market_modal__visible">
             <div onClick={onDiscard} />
-            <b>혜택 포기하고, 다시보지 않기</b>
+            <b>{t('nftModal.twitter.abandonButton')}</b>
           </article>
         </div>
       </div>

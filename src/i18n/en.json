@@ -879,6 +879,7 @@
       "aroundAssetTable": ["Price", "Year of construction", "Building area"],
       "question": ["FAQ", "Moneypool FAQ", "Market FAQ"],
       "viewMore": "View more",
+      "source": "source",
       "termsTitle": "Check before purchase!",
       "terms": [
         "ELYFI does not advise or solicit any assets posted on this site. The buyers are responsible for choosing and purchasing.",
@@ -939,6 +940,11 @@
           "A payment request in USDC can be settled without any additional process. However, if there is no remaining NFT quantity at the time of the purchase request, the purchase request may be rejected, and in this case, an Ethereum network usage fee will be incurred.",
           "Please check the disclaimers on this product again before final purchase."
         ]
+      },
+      "twitter": {
+        "title": "Retweet\nand get 1% payback of your purchase!",
+        "button": "Retweet and get 1% more payback",
+        "abandonButton": "Abandon payment reward, don't show this message again"
       }
     }
   }
