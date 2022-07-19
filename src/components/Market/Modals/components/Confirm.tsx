@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { formatCommaSmallFourDisits } from 'src/utiles/formatters';
 
 type Props = {
@@ -41,7 +41,7 @@ const Confirm: React.FC<Props> = ({
         <h5>{t('nftModal.confirm.content.0')}</h5>
         <ul>
           <li>
-            {t('nftModal.confirm.content.1')}
+            <Trans>{t('nftModal.confirm.content.1')}</Trans>
             <br />
             <span>
               {t('nftModal.confirm.content.2', {
