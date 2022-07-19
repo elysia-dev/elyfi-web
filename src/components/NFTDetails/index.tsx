@@ -163,7 +163,7 @@ const NFTDetails = (): JSX.Element => {
     if (!ctx) return;
     ctx.scale(dpr, dpr);
     if (mediaQuery === MediaQuery.Mobile) return;
-    new DrawWave(ctx, browserWidth).drawOnPages(
+    new DrawWave(ctx, browserWidth).drawOnNFTDetailPages(
       headerY,
       TokenColors.ELFI,
       browserHeight,
@@ -398,7 +398,7 @@ const NFTDetails = (): JSX.Element => {
           zIndex: -1,
         }}
       />
-      <main className="nft-details" ref={headerRef}>
+      <main className="nft-details">
         <div className="component__text-navigation">
           <p onClick={() => navigate(`/${lng}/market`)} className="pointer">
             {t('navigation.market')}
@@ -413,7 +413,7 @@ const NFTDetails = (): JSX.Element => {
           }}>
           {t('nftMarket.guide')}
         </Link>
-        <article className="nft-details__header">
+        <article className="nft-details__header" ref={headerRef}>
           <Header
             onButtonClick={() => {
               const wallet = sessionStorage.getItem('@connect');

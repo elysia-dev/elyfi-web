@@ -206,109 +206,6 @@ class DrawWave {
     this.ctx.fill();
 
     this.ctx.stroke();
-
-    // gorvernence
-    // this.ctx.beginPath();
-    // this.ctx.moveTo(0, governanceY * 0.9936);
-    // this.ctx.bezierCurveTo(
-    //   this.browserWidth / 2,
-    //   governanceY * 0.961,
-    //   this.browserWidth / 1.7,
-    //   governanceY * 1.001,
-    //   this.browserWidth,
-    //   governanceY * 0.9663,
-    // );
-    // this.ctx.stroke();
-    // this.ctx.fillStyle = 'rgba(247, 251, 255, 1)';
-    // this.ctx.beginPath();
-    // this.ctx.moveTo(0, governanceY * 0.996);
-    // this.ctx.bezierCurveTo(
-    //   this.browserWidth / 2,
-    //   governanceY * 0.96,
-    //   this.browserWidth / 1.7,
-    //   governanceY * 1.001,
-    //   this.browserWidth,
-    //   governanceY * 0.9708,
-    // );
-    // this.ctx.lineTo(
-    //   this.browserWidth,
-    //   governanceY * 0.9708 + governanceBottomY + 220,
-    // );
-    // this.ctx.bezierCurveTo(
-    //   this.browserWidth / 2,
-    //   governanceY * 0.9708 + governanceBottomY + 110,
-    //   this.browserWidth / 1.7,
-    //   governanceY * 0.9708 + governanceBottomY + 280,
-    //   0,
-    //   governanceY * 0.9708 + governanceBottomY + 280,
-    // );
-    // // this.ctx.lineTo(0, governanceY * 0.9708 + governanceBottomY + 220);
-    // this.ctx.fill();
-    // this.ctx.stroke();
-
-    // this.ctx.beginPath();
-    // this.ctx.moveTo(0, governanceY * 0.9708 + governanceBottomY + 290);
-    // this.ctx.bezierCurveTo(
-    //   this.browserWidth / 2,
-    //   governanceY * 0.9708 + governanceBottomY + 290,
-    //   this.browserWidth / 1.7,
-    //   governanceY * 0.9708 + governanceBottomY + 100,
-    //   this.browserWidth,
-    //   governanceY * 0.9708 + governanceBottomY + 240,
-    // );
-
-    // this.ctx.stroke();
-    // // circle
-    // this.ctx.fillStyle = '#ffffff';
-    // this.ctx.beginPath();
-    // this.ctx.moveTo(this.browserWidth / 3.2 + 10, governanceY * 0.9807);
-    // this.ctx.arc(
-    //   this.browserWidth / 3.2,
-    //   governanceY * 0.9807,
-    //   10,
-    //   0,
-    //   Math.PI * 2,
-    //   true,
-    // );
-
-    // this.ctx.moveTo(this.browserWidth / 3.07 + 5, governanceY * 0.98);
-    // this.ctx.arc(
-    //   this.browserWidth / 3.07,
-    //   governanceY * 0.98,
-    //   5,
-    //   0,
-    //   Math.PI * 2,
-    //   true,
-    // );
-
-    // this.ctx.moveTo(
-    //   this.browserWidth / 2.5 + 10,
-    //   governanceY * 0.9708 + governanceBottomY + 243,
-    // );
-    // this.ctx.arc(
-    //   this.browserWidth / 2.5,
-    //   governanceY * 0.9708 + governanceBottomY + 243,
-    //   10,
-    //   0,
-    //   Math.PI * 2,
-    //   true,
-    // );
-
-    // this.ctx.moveTo(
-    //   this.browserWidth / 2.6 + 5,
-    //   governanceY * 0.9708 + governanceBottomY + 256,
-    // );
-    // this.ctx.arc(
-    //   this.browserWidth / 2.6,
-    //   governanceY * 0.9708 + governanceBottomY + 256,
-    //   5,
-    //   0,
-    //   Math.PI * 2,
-    //   true,
-    // // );
-
-    // this.ctx.fill();
-    // this.ctx.stroke();
   }
 
   drawMoblieOnMain(
@@ -507,99 +404,6 @@ class DrawWave {
     this.ctx.fill();
 
     this.ctx.stroke();
-
-    // gorvernence
-    // this.ctx.beginPath();
-    // this.ctx.moveTo(0, governanceY * 1.009);
-    // this.ctx.bezierCurveTo(
-    //   this.browserWidth / 2.2,
-    //   governanceY * 0.98,
-    //   this.browserWidth / 1.7,
-    //   governanceY * 1.031,
-    //   this.browserWidth * 1.1,
-    //   governanceY * 0.9893,
-    // );
-    // this.ctx.stroke();
-    // this.ctx.fillStyle = 'rgba(247, 251, 255, 1)';
-    // this.ctx.beginPath();
-    // this.ctx.moveTo(0, governanceY * 1.015);
-    // this.ctx.bezierCurveTo(
-    //   this.browserWidth / 2.2,
-    //   governanceY * 0.972,
-    //   this.browserWidth / 1.7,
-    //   governanceY * 1.04,
-    //   this.browserWidth * 1.1,
-    //   governanceY * 0.9893,
-    // );
-    // this.ctx.lineTo(
-    //   this.browserWidth,
-    //   governanceY * 0.9708 + governanceBottomY + 220,
-    // );
-    // this.ctx.bezierCurveTo(
-    //   this.browserWidth / 2,
-    //   governanceY * 0.9708 + governanceBottomY + 110,
-    //   this.browserWidth / 1.7,
-    //   governanceY * 0.9708 + governanceBottomY + 280,
-    //   0,
-    //   governanceY * 0.9708 + governanceBottomY + 180,
-    // );
-    // // this.ctx.lineTo(0, governanceY * 0.9708 + governanceBottomY + 220);
-    // this.ctx.fill();
-    // this.ctx.stroke();
-
-    // this.ctx.beginPath();
-    // this.ctx.moveTo(0, governanceY * 0.9708 + governanceBottomY + 190);
-    // this.ctx.bezierCurveTo(
-    //   this.browserWidth / 2,
-    //   governanceY * 0.9708 + governanceBottomY + 290,
-    //   this.browserWidth / 1.7,
-    //   governanceY * 0.9708 + governanceBottomY + 100,
-    //   this.browserWidth,
-    //   governanceY * 0.9708 + governanceBottomY + 240,
-    // );
-
-    // this.ctx.stroke();
-    // // circle
-    // this.ctx.fillStyle = '#ffffff';
-    // this.ctx.beginPath();
-    // this.ctx.moveTo(this.browserWidth / 3.2 + 7, governanceY * 0.9998);
-    // this.ctx.arc(
-    //   this.browserWidth / 3.2,
-    //   governanceY * 0.9998,
-    //   7,
-    //   0,
-    //   Math.PI * 2,
-    //   true,
-    // );
-
-    // this.ctx.moveTo(this.browserWidth / 2.9 + 3, governanceY);
-    // this.ctx.arc(this.browserWidth / 2.9, governanceY, 3, 0, Math.PI * 2, true);
-
-    // this.ctx.moveTo(
-    //   this.browserWidth / 2.4 + 7,
-    //   governanceY * 0.9708 + governanceBottomY + 213,
-    // );
-    // this.ctx.arc(
-    //   this.browserWidth / 2.4,
-    //   governanceY * 0.9708 + governanceBottomY + 213,
-    //   7,
-    //   0,
-    //   Math.PI * 2,
-    //   true,
-    // );
-
-    // this.ctx.moveTo(
-    //   this.browserWidth / 2.6 + 4,
-    //   governanceY * 0.9708 + governanceBottomY + 217,
-    // );
-    // this.ctx.arc(
-    //   this.browserWidth / 2.6,
-    //   governanceY * 0.9708 + governanceBottomY + 217,
-    //   4,
-    //   0,
-    //   Math.PI * 2,
-    //   true,
-    // );
 
     this.ctx.fill();
     this.ctx.stroke();
@@ -909,6 +713,144 @@ class DrawWave {
     this.ctx.fill();
 
     this.ctx.stroke();
+  }
+
+  drawOnNFTDetailPages(
+    headerY: number,
+    color: TokenColors,
+    browserHeghit: number,
+    isBackgroundColor: boolean,
+    token?: string,
+  ): void {
+    this.ctx.fillStyle = 'rgba(247, 251, 255, 1)';
+    this.ctx.strokeStyle = color;
+
+    this.ctx.beginPath();
+    this.ctx.moveTo(0, headerY / 0.8);
+    this.ctx.lineTo(this.browserWidth, headerY / 0.8);
+    if (isBackgroundColor) {
+      this.ctx.lineTo(this.browserWidth, browserHeghit - 150);
+      this.ctx.bezierCurveTo(
+        this.browserWidth / 1.2,
+        browserHeghit - 330,
+        this.browserWidth / 1.3,
+        browserHeghit - 84,
+        this.browserWidth / 2,
+        browserHeghit - 94,
+      );
+      this.ctx.bezierCurveTo(
+        this.browserWidth / 2.7,
+        browserHeghit - 105,
+        this.browserWidth / 3,
+        browserHeghit - 250,
+        0,
+        browserHeghit - 190,
+      );
+      this.ctx.closePath();
+      this.ctx.fill();
+
+      // this.ctx.beginPath();
+      this.ctx.moveTo(0, browserHeghit - 165);
+      this.ctx.bezierCurveTo(
+        this.browserWidth / 3,
+        browserHeghit - 300,
+        this.browserWidth / 4,
+        browserHeghit - 70,
+        this.browserWidth / 1.68,
+        browserHeghit - 100,
+      );
+      this.ctx.bezierCurveTo(
+        this.browserWidth / 1.11,
+        browserHeghit - 210,
+        this.browserWidth / 1.19,
+        browserHeghit - 240,
+        this.browserWidth,
+        browserHeghit - 170,
+      );
+    }
+    this.ctx.stroke();
+
+    // circle
+    if (isBackgroundColor) {
+      this.ctx.strokeStyle = token
+        ? token === Token.EL
+          ? '#3679B5'
+          : token === 'LP'
+          ? '#F9AE19'
+          : '#00BFFF'
+        : color;
+      this.ctx.beginPath();
+      this.ctx.fillStyle = '#ffffff';
+      this.ctx.moveTo(this.browserWidth / 7 + 10, browserHeghit - 204.5);
+      this.ctx.arc(
+        this.browserWidth / 7,
+        browserHeghit - 204.5,
+        10,
+        0,
+        Math.PI * 2,
+      );
+
+      this.ctx.moveTo(this.browserWidth / 1.64 + 5, browserHeghit - 104.5);
+      this.ctx.arc(
+        this.browserWidth / 1.64,
+        browserHeghit - 104.5,
+        5,
+        0,
+        Math.PI * 2,
+      );
+
+      this.ctx.moveTo(this.browserWidth / 3 + 10, browserHeghit - 167);
+      this.ctx.arc(
+        this.browserWidth / 3,
+        browserHeghit - 167,
+        10,
+        0,
+        Math.PI * 2,
+      );
+
+      this.ctx.fill();
+      this.ctx.stroke();
+
+      this.ctx.beginPath();
+      this.ctx.strokeStyle = token
+        ? token === Token.EL
+          ? '#3679B5'
+          : token === 'LP'
+          ? '#627EEA'
+          : '#00BFFF'
+        : color;
+
+      this.ctx.moveTo(this.browserWidth / 1.7 + 10, browserHeghit - 101);
+      this.ctx.arc(
+        this.browserWidth / 1.7,
+        browserHeghit - 101,
+        10,
+        0,
+        Math.PI * 2,
+      );
+
+      this.ctx.moveTo(this.browserWidth / 7.58 + 5, browserHeghit - 210);
+      this.ctx.arc(
+        this.browserWidth / 7.58,
+        browserHeghit - 210,
+        5,
+        0,
+        Math.PI * 2,
+      );
+
+      this.ctx.moveTo(this.browserWidth / 1.18 + 10, browserHeghit - 203);
+      this.ctx.arc(
+        this.browserWidth / 1.18,
+        browserHeghit - 203,
+        10,
+        0,
+        Math.PI * 2,
+      );
+
+      this.ctx.fill();
+
+      this.ctx.stroke();
+    }
   }
 }
 
