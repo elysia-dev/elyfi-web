@@ -47,7 +47,7 @@ const AssetItem: FunctionComponent<{
     <div className="component__loan-list" style={style} onClick={onClick}>
       <div className="component__loan-list__image">
         <Suspense fallback={<Skeleton width={'100%'} height={'100%'} />}>
-          <UndefinedImage image={image} />
+          <UndefinedImage image={image} setImage={setImage} />
         </Suspense>
       </div>
       <div className="component__loan-list__data">
