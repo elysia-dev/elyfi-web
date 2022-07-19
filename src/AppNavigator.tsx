@@ -21,6 +21,7 @@ const LegacyStakingLP = lazy(
 const Faq = lazy(() => import('src/components/FAQ'));
 const Market = lazy(() => import('src/components/Market'));
 const NFTDetails = lazy(() => import('src/components/NFTDetails'));
+const MarketFaq = lazy(() => import('src/components/MarketFAQ'));
 
 import 'src/stylesheet/public.scss';
 import 'src/stylesheet/pc.scss';
@@ -114,6 +115,14 @@ const AppNavigator: React.FC = () => {
               element={
                 <Suspense fallback={nullFallbackArea()}>
                   <NFTDetails />
+                </Suspense>
+              }
+            />
+            <Route
+              path="faq"
+              element={
+                <Suspense fallback={nullFallbackArea()}>
+                  <MarketFaq />
                 </Suspense>
               }
             />

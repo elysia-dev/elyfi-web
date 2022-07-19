@@ -716,6 +716,60 @@
       "apy": "Annual return",
       "nftType": ["Bond NFT", "Equity NFT"],
       "faq": {
+        "header": "Market Guide",
+        "content": "Follow our Market Guide to buy bond NFTs.",
+        "comment": "* This guide explains how to buy with ETH",
+        "title": [
+          "1. Create Metamask",
+          "2. Buy and send ETH",
+          "3. Wallet connection",
+          "4. Buy Bond NFTs"
+        ],
+        "answer": {
+          "a1": [
+            "To use MetaMask, access the link below and click ‘Add to Chrome’ to install MetaMask in Chrome.",
+            "Install metamask",
+            "Once the installation is complete, a welcome page will open in a new tab. Click the ‘Get Started’ button on that page to start creating a wallet.",
+            "If you are a new user, click  ‘Create Wallet’ on the right button.",
+            "※ If you already have a METAMASK wallet, please click  ‘Import Wallet’ on the left button.",
+            "Please, read the privacy policy and click  'I agree' to proceed.",
+            "Set a password according to the password generation rules. Read the terms and conditions, click the ‘Agree’ button, and then click the ‘Generate’ button.",
+            "After watching a short video about your Secret Recovery Phrase and how to keep your wallet safe, click the ‘Next’ button.",
+            "Please check the secret backup phrases on the screen and note them down.",
+            "※ WARNING: Anyone with a Secret Recovery Phrase can access the wallet, so we recommend that you keep it on a separate piece of paper and never disclose it to anyone.",
+            "On the Secret Recovery Phrase confirmation page, select the phrases in order and click the `OK` button to complete the wallet creation."
+          ],
+          "a3": [
+            "업비트에서 투자를 원하시는 금액만큼 이더리움(ETH)을 매수해주세요.",
+            "업비트 상단의 ‘입출금’ 페이지에 접속한 후 ‘이더리움(ETH)’을 선택하고 ‘출금신청’ 버튼을 클릭해주세요.",
+            "원하시는 출금수량을 선택하신 후 ‘확인’ 버튼을 클릭해주세요.",
+            "이더리움(ETH)을 전송할 메타마스크 주소를 입력하고 ‘출금신청’ 버튼을 클릭해주세요.",
+            "해당 팝업창이 뜨면 ‘아니오’ 버튼을 클릭해주세요.",
+            "지갑주소 및 출금수량을 확인하고 ‘카카오페이 인증하기’ 버튼을 클릭해주세요. 카카오페이 인증까지 완료하면 이더리움(ETH) 출금이 완료됩니다."
+          ],
+          "a4": [
+            "After accessing the ELYFI site, click the ‘Connect Wallet’ button in the upper right corner.",
+            "Select ‘Metamask’ and proceed with the connection.",
+            "When the MetaMask window opens in the upper right corner, check your wallet address and connect MetaMask in two steps.",
+            "Please check if the Metamask is properly connected in the upper right corner of the ELYFI website."
+          ],
+          "a5": [
+            "Please access the ‘Market’ page of the ELYFI website.",
+            "Click the ‘Buy’ button on the `Market` page.",
+            "Enter the amount of bond NFT you want to purchase, set the payment token as ETH, and click the ‘Next’ button.",
+            "※ WARNING: If you set the payment token as USDC, you need to go through the approval process once for the first purchase.",
+            "Check the purchase information and click the ‘Buy’ button.",
+            "※ WARNING: Depending on the conditions of the Ethereum network, it may take some time to complete the purchase.",
+            "Please check the amount you purchased on the ELYFI Market page."
+          ]
+        }
+      }
+    },
+    "nftMarket": {
+      "title": "Bond NFT",
+      "subTitle": "Bond NFT holders can receive the principal and interest on the maturity date of the bond!",
+      "guide": "Purchase easily by following the guide >",
+      "guideData": {
         "title": [
           "What is ELYFI?",
           "What is Bond NFT?",
@@ -742,12 +796,7 @@
           "In case of delinquency, the interest rate for overdue payment of 15% is charged from the day after the bond maturity date by adding up the interest rate for delinquency (3%). In addition, if the bond is not repaid within 60 days from the day after the maturity date, the NFT of this bond is collected by selling it to another institution with the goal of recovering the full principal and interest.",
           "If the loan is not executed, the purchase principal can be directly received in USDC, and USDC can be replaced with other coins depending on the circumstances."
         ]
-      }
-    },
-    "nftMarket": {
-      "title": "Bond NFT",
-      "subTitle": "Bond NFT holders can receive the principal and interest on the maturity date of the bond!",
-      "guide": "Purchase easily by following the guide >",
+      },
       "myPurchase": "My holdings",
       "myPurchaseInfo": "Displays the amount of Bond NFTs.",
       "purchase": "Purchase",
