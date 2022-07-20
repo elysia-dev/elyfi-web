@@ -10,6 +10,7 @@ interface Props {
   purchasedNFT?: number;
   isDisabled: boolean;
   mainnetType: MainnetType;
+  openseaLink: string;
 }
 
 const Header: React.FC<Props> = ({
@@ -17,6 +18,7 @@ const Header: React.FC<Props> = ({
   purchasedNFT,
   isDisabled,
   mainnetType,
+  openseaLink,
 }) => {
   const { t } = useTranslation();
   const { account } = useWeb3React();
@@ -40,6 +42,14 @@ const Header: React.FC<Props> = ({
     );
   };
 
+  const AnchorLinkComponent = (): JSX.Element => {
+    return (
+      <a href={openseaLink} target="_blank">
+        {t('nftMarket.tradeOnOpensea')}
+      </a>
+    );
+  };
+
   const ButtonComponent = (): JSX.Element => {
     return (
       <button onClick={onButtonClick} className={isDisabled ? '' : 'disabled'}>
@@ -54,32 +64,6 @@ const Header: React.FC<Props> = ({
         <h1>{t('nftMarket.title')}</h1>
         <p>{t('nftMarket.subTitle')}</p>
       </div>
-      <section className="pc-only">
-        <div>
-          <b>
-            {t('nftMarket.myPurchase')}
-            <span>
-              <Questionmark
-                content={
-                  <Trans i18nKey={'nftMarket.myPurchaseInfo'}>
-                    text
-                    <u>
-                      <a
-                        target="_blank"
-                        href="https://etherscan.io/"
-                        style={{ color: '#00bfff' }}>
-                        link
-                      </a>
-                    </u>
-                  </Trans>
-                }
-              />
-            </span>
-          </b>
-          <ButtonComponent />
-        </div>
-        <b>{currentPurchaseAmount()}</b>
-      </section>
       <Link
         className="nft-details__guide mobile-only"
         to={{
@@ -87,7 +71,7 @@ const Header: React.FC<Props> = ({
         }}>
         {t('nftMarket.guide')}
       </Link>
-      <section className="mobile-only">
+      <section>
         <div>
           <b>
             {t('nftMarket.myPurchase')}
@@ -111,7 +95,10 @@ const Header: React.FC<Props> = ({
           </b>
           <span>{currentPurchaseAmount()}</span>
         </div>
-        <ButtonComponent />
+        <section>
+          <AnchorLinkComponent />
+          <ButtonComponent />
+        </section>
       </section>
     </>
   );

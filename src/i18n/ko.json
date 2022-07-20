@@ -770,6 +770,7 @@
       "myPurchase": "나의 보유수량",
       "myPurchaseInfo": "보유하고 있는 채권 NFT 수량을 표시합니다.",
       "purchase": "구매하기",
+      "tradeOnOpensea": "OpenSea에서 거래하기",
       "purchaseStatus": {
         "walletConnect": "지갑을 연결해주세요.",
         "nullPurchase": "아직 구매한 수량이 없습니다"

@@ -465,6 +465,7 @@ const NFTDetails = (): JSX.Element => {
               //   advanceReservation.includes(account || ''))
             }
             mainnetType={mainnetType}
+            openseaLink={'https://opensea.io/'}
           />
         </article>
         <article className="nft-details__purchase">

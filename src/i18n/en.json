@@ -800,6 +800,7 @@
       "myPurchase": "My holdings",
       "myPurchaseInfo": "Displays the amount of Bond NFTs.",
       "purchase": "Purchase",
+      "tradeOnOpensea": "Trade on OpenSea",
       "purchaseStatus": {
         "walletConnect": "Connect wallet",
         "nullPurchase": "No quantity purchased yet"
