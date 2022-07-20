@@ -173,19 +173,26 @@ const NFTDetails = (): JSX.Element => {
   };
 
   const getPurchasedNFT = useCallback(async () => {
-    const nftContract = getNFTContract(library.getSigner());
-    const count = await nftContract.balanceOf(account, 1);
-    setPurchasedNFT(parseInt(utils.formatUnits(count, 0), 10));
+    try {
+      const nftContract = getNFTContract(library.getSigner());
+      const count = await nftContract.balanceOf(account, 0);
+      setPurchasedNFT(parseInt(utils.formatUnits(count, 0), 10));
+    } catch (error) {
+      console.log(error);
+      setPurchasedNFT(0);
+    }
   }, [library, account]);
 
   const getUrl = async () => {
-    const nftContract = getNFTContract(provider);
-    const info = await nftContract.uri(1);
-    axios
-      .get(`https://slate.textile.io/ipfs/${info.split(/ipfs:\/\//)[1]}`)
-      .then((res) => {
-        setNftInfo(res.data);
-      });
+    // const nftContract = getNFTContract(provider);
+    // const info = await nftContract.uri(0);
+    // console.log(info);
+    // axios
+    //   .get(`https://slate.textile.io/ipfs/${info.split(/ipfs:\/\//)[1]}`)
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     setNftInfo(res.data);
+    //   });
   };
 
   useEffect(() => {
@@ -451,7 +458,7 @@ const NFTDetails = (): JSX.Element => {
             }}
             purchasedNFT={purchasedNFT}
             isDisabled={
-              nftTotalSupply
+              nftTotalSupply || nftTotalSupply === 0
                 ? !current.isBetween(startTime, endedTime) &&
                   totalPurchase >= nftTotalSupply
                 : false

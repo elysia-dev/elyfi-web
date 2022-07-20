@@ -239,7 +239,7 @@ export const erc20GasPriceFetcher =
 export const nftTotalSupplyFetcher = () => async (): Promise<number> => {
   try {
     const nftContract = getNFTContract(provider);
-    return parseInt(utils.formatUnits(await nftContract.totalSupply(1), 0), 10);
+    return parseInt(utils.formatUnits(await nftContract.totalSupply(0), 0), 10);
   } catch (error) {
     console.log(error);
     return 0;

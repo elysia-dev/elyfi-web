@@ -76,7 +76,7 @@ const Purchase: React.FC<Props> = ({
           </div>
           <div>
             <b>
-              {userTotalPurchase ? (
+              {userTotalPurchase || userTotalPurchase === 0 ? (
                 userTotalPurchase
               ) : (
                 <Skeleton width={60} height={15} />
