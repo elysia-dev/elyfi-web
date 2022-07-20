@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import NFTStructure from 'src/assets/images/market/product.svg';
-import NFTStructureMobile from 'src/assets/images/market/NFTStructureMobile.png';
+import NFTStructureMobile from 'src/assets/images/market/NFTStructureMobile.svg';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import Document from 'src/assets/images/market/document.svg';
