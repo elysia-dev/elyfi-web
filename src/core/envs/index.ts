@@ -16,6 +16,10 @@ interface EnvironmentVariables {
     busdIncentivePoolAddress: string;
     usdcIncentivePoolAddress: string;
   };
+  market: {
+    controllerAddress: string;
+    nftAddress: string;
+  };
   staking: {
     elStakingPoolAddress: string;
     elfyStakingPoolAddress: string;
