@@ -61,6 +61,7 @@ import TokenRewardModal from '../Market/Modals/TokenRewardModal';
 import SelectWalletModal from '../Market/Modals/SelectWalletModal';
 import ReconnectWallet from '../Market/Modals/components/ReconnectWallet';
 import NewsCard from './NewsCard';
+import Guide from './Guide';
 
 export interface INews {
   title: string;
@@ -512,7 +513,18 @@ const NFTDetails = (): JSX.Element => {
             </section>
             <section>{setTabPageViewer(currentTab)}</section>
           </article>
-
+          <article className="nft-details__faq">
+            <div>
+              <h2>{t('nftMarket.question.0')}</h2>
+              <Link
+                to={{
+                  pathname: `/${lng}/faq`,
+                }}>
+                {t('nftMarket.viewMore')}
+              </Link>
+            </div>
+            <Guide />
+          </article>
           <article className="nft-details__news">
             <h2>{t('nftMarket.newsTitle')}</h2>
             <section>

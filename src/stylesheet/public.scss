@@ -2750,6 +2750,61 @@ input[type='number'] {
         }
       }
     }
+    &__faq {
+      margin-top: 50px;
+      > div {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        > h2 {
+          font-size: 18px;
+        }
+        > a {
+          font-size: 15px;
+          color: $elysia-color;
+          cursor: pointer;
+          &::after {
+            content: ' >';
+          }
+        }
+      }
+      &__content {
+        margin-top: 30px;
+        > div {
+          border: 1px solid #f0f0f1;
+          border-radius: 5px;
+          padding: 18px 30px;
+          background-color: $background-color;
+          margin-bottom: 20px;
+          overflow: hidden;
+          transition: all 0.5s cubic-bezier(0.28, 0.6, 0.57, 0.96);
+          > div {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            > h3 {
+              margin: 0;
+              font-size: 18px;
+              > span {
+                font-family: 'SpoqaHanSansNeo-Bold';
+                font-weight: 900;
+                color: $elysia-color;
+                margin-right: 10px;
+              }
+            }
+          }
+          > p {
+            margin-top: 30px;
+            font-size: 15px;
+            color: $sub-font-color;
+            margin-bottom: 14px;
+            line-height: 25px;
+          }
+        }
+      }
+    }
     &__news {
       margin-top: 80px;
       > h2 {

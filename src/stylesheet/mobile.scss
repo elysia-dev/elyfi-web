@@ -2407,6 +2407,51 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
         }
       }
     }
+    &__faq {
+      > div {
+        > h2 {
+          font-size: 12px;
+        }
+        > a {
+          font-size: 10px;
+        }
+      }
+      &__content {
+        margin-top: 30px;
+        > div {
+          border: 1px solid #f0f0f1;
+          border-radius: 5px;
+          padding: 5px 10px;
+          background-color: $background-color;
+          margin-bottom: 10px;
+          overflow: hidden;
+          transition: all 0.5s cubic-bezier(0.28, 0.6, 0.57, 0.96);
+          > div {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            > h3 {
+              margin: 0;
+              font-size: 10px;
+              > span {
+                font-family: 'SpoqaHanSansNeo-Bold';
+                font-weight: 900;
+                color: $elysia-color;
+                margin-right: 3px;
+              }
+            }
+          }
+          > p {
+            margin-top: 20px;
+            font-size: 10px;
+            color: $sub-font-color;
+            margin-bottom: 14px;
+            line-height: 15px;
+          }
+        }
+      }
+    }
     &__news {
       margin-top: 45px;
       > h2 {
