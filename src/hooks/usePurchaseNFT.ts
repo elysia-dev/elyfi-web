@@ -62,12 +62,12 @@ const usePurchaseNFT = (
 
       let tx: any;
       if (purchaseType === NFTPurchaseType.ETH) {
-        tx = await controllerContract?.deposit(1, utils.parseUnits(amount, 6), {
+        tx = await controllerContract?.deposit(0, utils.parseUnits(amount, 6), {
           value: utils.parseEther(ethAmount || ''),
         });
       }
       if (purchaseType === NFTPurchaseType.USDC) {
-        tx = await controllerContract?.deposit(1, utils.parseUnits(amount, 6));
+        tx = await controllerContract?.deposit(0, utils.parseUnits(amount, 6));
       }
       setTransaction(
         tx,

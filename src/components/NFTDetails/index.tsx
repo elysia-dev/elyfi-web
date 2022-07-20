@@ -186,26 +186,33 @@ const NFTDetails = (): JSX.Element => {
   };
 
   const purchaseButtonDisable = useMemo(() => {
-    return nftTotalSupply
+    return nftTotalSupply || nftTotalSupply === 0
       ? !current.isBetween(startTime, endedTime) &&
           totalPurchase >= nftTotalSupply
       : false;
   }, [nftTotalSupply, current, totalPurchase]);
 
   const getPurchasedNFT = useCallback(async () => {
-    const nftContract = getNFTContract(library.getSigner());
-    const count = await nftContract.balanceOf(account, 1);
-    setPurchasedNFT(parseInt(utils.formatUnits(count, 0), 10));
+    try {
+      const nftContract = getNFTContract(library.getSigner());
+      const count = await nftContract.balanceOf(account, 0);
+      setPurchasedNFT(parseInt(utils.formatUnits(count, 0), 10));
+    } catch (error) {
+      console.log(error);
+      setPurchasedNFT(0);
+    }
   }, [library, account]);
 
   const getUrl = async () => {
-    const nftContract = getNFTContract(provider);
-    const info = await nftContract.uri(1);
-    axios
-      .get(`https://slate.textile.io/ipfs/${info.split(/ipfs:\/\//)[1]}`)
-      .then((res) => {
-        setNftInfo(res.data);
-      });
+    // const nftContract = getNFTContract(provider);
+    // const info = await nftContract.uri(0);
+    // console.log(info);
+    // axios
+    //   .get(`https://slate.textile.io/ipfs/${info.split(/ipfs:\/\//)[1]}`)
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     setNftInfo(res.data);
+    //   });
   };
 
   useEffect(() => {
@@ -237,12 +244,7 @@ const NFTDetails = (): JSX.Element => {
       txType === RecentActivityType.PurchasedNFT
     ) {
       if (localStorage.getItem('@event') !== 'false') {
-        setTimeout(() => {
-          setModalType('twitter');
-        }, 2000);
-        window.open(
-          'https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.elyfi.world%2Fko&text=ELYFI[…]%EB%A6%AC%ED%8C%8C%EC%9D%B4,ELFI,%EB%B6%80%EB%8F%99%EC%82%B0,PF',
-        );
+        setModalType('twitter');
       }
       getPurchasedNFT();
       mutate();
@@ -282,7 +284,8 @@ const NFTDetails = (): JSX.Element => {
               youtubeLink="zZMusws1Rb8"
               tableInfo={{
                 location: '2046 Norwalk Ave, LA, CA 90041',
-                locationLink: 'https://naver.com',
+                locationLink:
+                  'https://www.google.com/maps/place/2046%20Norwalk%20Ave,%20LA,%20CA%2090041',
                 assetType: t('nftMarket.realEstateInfoData.0'),
                 landArea: '6,214sqft',
                 yearOfRemodeling: t('nftMarket.realEstateInfoData.1', {

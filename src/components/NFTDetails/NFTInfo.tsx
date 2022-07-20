@@ -18,23 +18,24 @@ interface Props {
 const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo, openseaLink }) => {
   const { t } = useTranslation();
 
-  const nftData = useCallback(
-    (traitType: NFTTraitType, nft?: NFTType) => {
-      if (!nft) {
-        return <Skeleton width={65} height={18} />;
-      }
-      return nft?.attributes.find((info) => {
-        return info.trait_type === traitType;
-      })?.value;
-    },
-    [nftInfo],
-  );
+  // const nftData = useCallback(
+  //   (traitType: NFTTraitType, nft?: NFTType) => {
+  //     if (!nft) {
+  //       return <Skeleton width={65} height={18} />;
+  //     }
+  //     return nft?.attributes.find((info) => {
+  //       return info.trait_type === traitType;
+  //     })?.value;
+  //   },
+  //   [nftInfo],
+  // );
 
   const nftDate = useCallback(
     (traitType: NFTTraitType, nft?: NFTType) => {
       if (!nft) {
         return <Skeleton width={110} height={18} />;
       }
+      // return moment().format('YYYY.MM.DD');
       return moment(
         nft?.attributes
           .find((info) => {
@@ -87,25 +88,30 @@ const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo, openseaLink }) => {
           </tr>
           <tr>
             <th>{t('nftMarket.nftInfoTable.2')}</th>
-            <td>{nftData(NFTTraitType.Principal, nftInfo)}</td>
+            {/* <td>{nftData(NFTTraitType.Principal, nftInfo)}</td> */}
+            <td>$123123</td>
             <th>{t('nftMarket.nftInfoTable.3')}</th>
             <td>${interest}</td>
           </tr>
           <tr>
             <th>{t('nftMarket.nftInfoTable.4')}</th>
-            <td>{nftData(NFTTraitType.ExpectedAPY, nftInfo)}</td>
+            {/* <td>{nftData(NFTTraitType.ExpectedAPY, nftInfo)}</td> */}
+            <td>12%</td>
             <th>{t('nftMarket.nftInfoTable.5')}</th>
-            <td>{nftData(NFTTraitType.OverdueAPY, nftInfo)}</td>
+            {/* <td>{nftData(NFTTraitType.OverdueAPY, nftInfo)}</td> */}
+            <td>15%</td>
           </tr>
           <tr>
             <th>{t('nftMarket.nftInfoTable.6')}</th>
-            <td colSpan={3}>{nftDate(NFTTraitType.LoanDate, nftInfo)} KST</td>
+            {/* <td colSpan={3}>{nftDate(NFTTraitType.LoanDate, nftInfo)} KST</td> */}
+            <td colSpan={3}>2022.08.10 KST</td>
           </tr>
           <tr>
             <th>{t('nftMarket.nftInfoTable.7')}</th>
-            <td colSpan={3}>
+            {/* <td colSpan={3}>
               {nftDate(NFTTraitType.MaturityDate, nftInfo)} KST
-            </td>
+            </td> */}
+            <td colSpan={3}>2022.08.15 KST</td>
           </tr>
           <tr>
             <th>{t('nftMarket.nftInfoTable.8')}</th>

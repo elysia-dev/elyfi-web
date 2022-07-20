@@ -24,7 +24,14 @@ const RealEstateTable: React.FC<Props> = ({ tableInfo }) => {
           <th>
             <b>{t('nftMarket.realEstateInfoTable.0')}</b>
           </th>
-          <td colSpan={3}>
+          <td
+            colSpan={3}
+            style={{
+              cursor: 'pointer',
+            }}
+            onClick={() => {
+              window.open(tableInfo.locationLink);
+            }}>
             <div>
               <a target="_blank" href={tableInfo.locationLink}>
                 <img src={Location} alt={'Location link'} />
@@ -81,7 +88,14 @@ const RealEstateTable: React.FC<Props> = ({ tableInfo }) => {
           <th>
             <b>{t('nftMarket.realEstateInfoTable.0')}</b>
           </th>
-          <td>
+          <td
+            colSpan={3}
+            style={{
+              cursor: 'pointer',
+            }}
+            onClick={() => {
+              window.open(tableInfo.locationLink);
+            }}>
             <div>
               <a target="_blank" href={tableInfo.locationLink}>
                 <img src={Location} alt={'Location link'} />

@@ -3,6 +3,7 @@ import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Skeleton from 'react-loading-skeleton';
 import NewTab from 'src/assets/images/market/new_tab.png';
+import { formatCommaSmallZeroDisits, toCompact } from 'src/utiles/formatters';
 
 interface Props {
   userTotalPurchase?: number;
@@ -84,13 +85,13 @@ const Purchase: React.FC<Props> = ({
           </div>
           <div>
             <b>
-              {userTotalPurchase ? (
-                userTotalPurchase
+              {userTotalPurchase || userTotalPurchase === 0 ? (
+                formatCommaSmallZeroDisits(totalPurchase)
               ) : (
                 <Skeleton width={60} height={15} />
               )}
             </b>
-            <b>{totalPurchase}</b>
+            <b>{formatCommaSmallZeroDisits(totalPurchase)}</b>
           </div>
           <progress value={userTotalPurchase} max={totalPurchase} />
           <p>(* 1NFT = $10)</p>
