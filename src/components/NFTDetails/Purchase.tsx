@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Skeleton from 'react-loading-skeleton';
 
@@ -25,8 +25,32 @@ const Purchase: React.FC<Props> = ({
     second: 0,
   });
 
+  useLayoutEffect(() => {
+    if (current.isAfter(endedTime)) {
+      setRemainingTime({ day: 0, hour: 0, minute: 0, second: 0 });
+      return;
+    }
+    if (current.isBefore(startTime)) {
+      setRemainingTime({ day: 14, hour: 0, minute: 0, second: 0 });
+      return;
+    }
+    const getTime = moment.duration(endedTime.diff(current));
+    setRemainingTime({
+      day: getTime.days(),
+      hour: getTime.hours(),
+      minute: getTime.minutes(),
+      second: getTime.seconds(),
+    });
+  }, []);
+
   useEffect(() => {
     const timeInterval = setInterval(() => {
+      if (current.isAfter(endedTime)) {
+        return;
+      }
+      if (current.isBefore(startTime)) {
+        return;
+      }
       const getTime = moment.duration(endedTime.diff(current));
       setRemainingTime({
         day: getTime.days(),
@@ -88,8 +112,8 @@ const Purchase: React.FC<Props> = ({
           </div>
         </div>
         <p>
-          {moment(startTime).format('YYYY.MM.DD')} ~{' '}
-          {moment(endedTime).format('YYYY.MM.DD')} KST
+          {moment(startTime).format('YYYY.MM.DD HH:mm:ss')} ~{' '}
+          {moment(endedTime).format('YYYY.MM.DD HH:mm:ss')} KST
         </p>
       </section>
     </>

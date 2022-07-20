@@ -52,6 +52,7 @@ import ProductPoint02 from 'src/assets/images/market/productPoint02.svg';
 import ProductPoint03 from 'src/assets/images/market/productPoint03.svg';
 import ProductPoint04 from 'src/assets/images/market/productPoint04.svg';
 import ProductPoint05 from 'src/assets/images/market/productPoint05.svg';
+import advanceReservation from 'src/utiles/advanceReservation';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import ChangeNetworkModal from '../Market/Modals/ChangeNetworkModal';
@@ -112,7 +113,7 @@ const NFTDetails = (): JSX.Element => {
     'YYYY.MM.DD hh:mm:ss Z',
   );
   const endedTime = moment(
-    '2022.08.05 20:00:00 +9:00',
+    '2022.08.04 20:00:00 +9:00',
     'YYYY.MM.DD hh:mm:ss Z',
   );
 
@@ -452,8 +453,16 @@ const NFTDetails = (): JSX.Element => {
             }}
             purchasedNFT={purchasedNFT}
             isDisabled={
-              !current.isBetween(startTime, endedTime) ||
-              totalPurchase <= (nftTotalSupply || 0)
+              nftTotalSupply
+                ? !current.isBetween(startTime, endedTime) &&
+                  totalPurchase >= nftTotalSupply
+                : false
+              // (current.isAfter(
+              //   moment(startTime)
+              //     .subtract(1, 'hours')
+              //     .format('YYYY.MM.DD HH:mm:ss'),
+              // ) &&
+              //   advanceReservation.includes(account || ''))
             }
             mainnetType={mainnetType}
           />
