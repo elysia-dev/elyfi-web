@@ -33,14 +33,14 @@ const stakingPoolV2Contract = (address: string, provider: any) => {
 
 export const getControllerContract = (provider: any): Contract => {
   return new ethers.Contract(
-    controllerAbi.address,
+    envs.market.controllerAddress,
     controllerAbi.abi,
     provider,
   );
 };
 
 export const getNFTContract = (provider: any) => {
-  return new ethers.Contract(nftAbi.address, nftAbi.abi, provider);
+  return new ethers.Contract(envs.market.nftAddress, nftAbi.abi, provider);
 };
 
 export const elfiBalanceOfFetcher =
@@ -195,7 +195,7 @@ export const gasPriceFetcher =
       const controllerContract = getControllerContract(provider);
       const estimatedGas = await controllerContract.estimateGas.deposit(
         1,
-        utils.parseUnits('100', 6),
+        utils.parseUnits('1', 6),
         {
           from: args[0].account,
         },
@@ -218,7 +218,7 @@ export const erc20GasPriceFetcher =
     try {
       const erc20 = erc20Contract(envs.token.usdcAddress, provider);
       const estimatedGas = await erc20.estimateGas.approve(
-        '0xaA9ee17a1aC1658426B61cD5d501c4b00CDC1eD5',
+        envs.market.controllerAddress,
         constants.MaxUint256,
         {
           from: args[0].account,
