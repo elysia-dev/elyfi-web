@@ -2,6 +2,7 @@ import moment from 'moment';
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Skeleton from 'react-loading-skeleton';
+import { formatCommaSmallZeroDisits, toCompact } from 'src/utiles/formatters';
 
 interface Props {
   userTotalPurchase?: number;
@@ -77,12 +78,12 @@ const Purchase: React.FC<Props> = ({
           <div>
             <b>
               {userTotalPurchase || userTotalPurchase === 0 ? (
-                userTotalPurchase
+                formatCommaSmallZeroDisits(totalPurchase)
               ) : (
                 <Skeleton width={60} height={15} />
               )}
             </b>
-            <b>{totalPurchase}</b>
+            <b>{formatCommaSmallZeroDisits(totalPurchase)}</b>
           </div>
           <progress value={userTotalPurchase} max={totalPurchase} />
           <p>(* 1NFT = $10)</p>
