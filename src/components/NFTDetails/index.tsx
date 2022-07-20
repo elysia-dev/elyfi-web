@@ -174,7 +174,6 @@ const NFTDetails = (): JSX.Element => {
   const getPurchasedNFT = useCallback(async () => {
     const nftContract = getNFTContract(library.getSigner());
     const count = await nftContract.balanceOf(account, 1);
-    console.log('co', parseInt(utils.formatUnits(count, 0), 10));
     setPurchasedNFT(parseInt(utils.formatUnits(count, 0), 10));
   }, [library, account]);
 
@@ -478,7 +477,6 @@ const NFTDetails = (): JSX.Element => {
                 t('nftMarket.bondNft'),
                 t('nftMarket.borrower'),
               ].map((data, index) => {
-                console.log(index);
                 return (
                   <div
                     className={currentTab === index ? '' : 'disable'}
