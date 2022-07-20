@@ -215,10 +215,25 @@ const NFTDetails = (): JSX.Element => {
       txStatus === TxStatus.CONFIRM &&
       txType === RecentActivityType.PurchasedNFT
     ) {
-      setModalType('twitter');
+      if (localStorage.getItem('@event') !== 'false') {
+        setTimeout(() => {
+          setModalType('twitter');
+        }, 2000);
+        window.open(
+          'https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.elyfi.world%2Fko&text=ELYFI[…]%EB%A6%AC%ED%8C%8C%EC%9D%B4,ELFI,%EB%B6%80%EB%8F%99%EC%82%B0,PF',
+        );
+      }
       getPurchasedNFT();
       mutate();
     }
+
+    return () => {
+      clearTimeout(
+        setTimeout(() => {
+          setModalType('twitter');
+        }, 3000),
+      );
+    };
   }, [txStatus, txType]);
 
   useEffect(() => {
@@ -317,8 +332,10 @@ const NFTDetails = (): JSX.Element => {
                 llcOperationAgreement: t(
                   'nftMarket.document.llcOperatingAgreement',
                 ),
-                rentalAgreement: '',
-                collateralAgreement: '',
+                rentalAgreement: t('nftMarket.document.rentalAgreement'),
+                collateralAgreement: t(
+                  'nftMarket.document.collateralAgreement',
+                ),
               }}
             />
           </section>
@@ -371,8 +388,14 @@ const NFTDetails = (): JSX.Element => {
           onClose={() => setModalType('')}
           onSubmit={() => {
             setModalType('tokenReward');
+            window.open(
+              'https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.elyfi.world%2Fko&text=ELYFI[…]%EB%A6%AC%ED%8C%8C%EC%9D%B4,ELFI,%EB%B6%80%EB%8F%99%EC%82%B0,PF',
+            );
           }}
-          onDiscard={() => {}}
+          onDiscard={() => {
+            localStorage.setItem('@event', 'false');
+            setModalType('');
+          }}
         />
       ) : modalType === 'tokenReward' ? (
         <TokenRewardModal

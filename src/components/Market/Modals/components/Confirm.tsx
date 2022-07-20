@@ -7,7 +7,7 @@ type Props = {
   crypto: number | undefined;
   purchaseType: string;
   gasFeeInfo: {
-    gasFee: number | undefined;
+    gasFee: number;
     gasFeeToDollar: number;
   };
 };
@@ -45,8 +45,8 @@ const Confirm: React.FC<Props> = ({
             <br />
             <span>
               {t('nftModal.confirm.content.2', {
-                eth: gasFeeInfo.gasFee,
-                dollar: gasFeeInfo.gasFeeToDollar,
+                eth: gasFeeInfo.gasFee.toFixed(4),
+                dollar: gasFeeInfo.gasFeeToDollar.toFixed(4),
               })}
             </span>
           </li>
