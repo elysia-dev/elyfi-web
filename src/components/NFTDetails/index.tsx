@@ -304,6 +304,7 @@ const NFTDetails = (): JSX.Element => {
         return (
           <section className="nft-details__bond-nft">
             <BondNFT
+              location="2046 Norwalk Ave, LA, CA 90041"
               link={{
                 grantDeed: t('nftMarket.document.grantDeed'),
                 ein: t('nftMarket.document.ein'),
@@ -406,9 +407,9 @@ const NFTDetails = (): JSX.Element => {
           <p>{t('nftMarket.title')}</p>
         </div>
         <Link
-          className="nft-details__guide"
+          className="nft-details__guide pc-only"
           to={{
-            pathname: `/${lng}/faq`,
+            pathname: `/${lng}/market/faq`,
           }}>
           {t('nftMarket.guide')}
         </Link>

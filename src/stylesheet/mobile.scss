@@ -103,6 +103,25 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
     }
     &__hamburger {
       &__content {
+        .mobile-beta {
+          > p {
+            position: relative;
+            &::after {
+              content: 'B';
+              position: absolute;
+              top: 4px;
+              right: -20px;
+              width: 12px;
+              height: 12px;
+              color: $background-color;
+              font-size: 9px;
+              line-height: 12px;
+              border-radius: 2px;
+              background-color: #0087ff;
+              text-align: center;
+            }
+          }
+        }
         > div,
         a > div {
           // padding: 33px 0px 36px;
@@ -501,14 +520,7 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
         flex-direction: column;
         width: 100%;
         > div {
-          > p {
-            font-size: 14px;
-            color: $gray-font-color;
-            width: 100%;
-            margin-right: 30px;
-            margin-top: 10px;
-            margin-bottom: 5px;
-          }
+          margin-bottom: 10px;
           > a {
             width: 100%;
             height: 50px;
@@ -1790,57 +1802,70 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
       > article {
         display: flex;
         flex-direction: column;
-        > a > section {
-          width: 300px;
-          height: 300px;
-          margin: 0 auto;
-          > figure {
-            > img {
-              width: 280px;
-              height: 200px;
-              object-fit: cover;
-            }
-            > figcaption {
-              width: 90px;
-              height: 25px;
-              font-size: 12px;
+        > a {
+          &.disable {
+            position: relative;
+            z-index: 1;
+            pointer-events: none;
+            cursor: not-allowed;
+            &::after {
+              content: '';
+              width: 300px;
+              background: #00000013;
             }
           }
-          > div {
-            margin-top: 10px;
-            > p {
-              font-size: 10px;
+          > section {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            > figure {
+              > img {
+                width: 280px;
+                height: 200px;
+                object-fit: cover;
+              }
+              > figcaption {
+                width: 90px;
+                height: 25px;
+                font-size: 12px;
+              }
             }
-            > b {
-              margin-top: 5px;
-              font-size: 11px;
-              > span {
-                margin-left: 3px;
-                font-size: 15px;
-                &::after {
-                  content: '%';
+            > div {
+              margin-top: 10px;
+              > p {
+                font-size: 10px;
+              }
+              > b {
+                margin-top: 5px;
+                font-size: 11px;
+                > span {
+                  margin-left: 3px;
+                  font-size: 15px;
+                  &::after {
+                    content: '%';
+                  }
                 }
               }
             }
-          }
-          > progress {
-            width: 100%;
-            margin-top: 12px;
-            height: 8px;
-            border: 0;
-            vertical-align: 0;
-            &::-webkit-progress-bar {
+            > progress {
+              width: 100%;
+              margin-top: 12px;
               height: 8px;
-              border-radius: 8px;
-              background: #e6e6e6;
-            }
-            &::-webkit-progress-value {
-              border-radius: 8px;
-              height: 8px;
-            }
-            &::-moz-progress-bar {
-              height: 8px;
-              border-radius: 8px;
+              border: 0;
+              vertical-align: 0;
+              &::-webkit-progress-bar {
+                height: 8px;
+                border-radius: 8px;
+                background: #e6e6e6;
+              }
+              &::-webkit-progress-value {
+                border-radius: 8px;
+                height: 8px;
+              }
+              &::-moz-progress-bar {
+                height: 8px;
+                border-radius: 8px;
+              }
             }
           }
         }
@@ -1853,6 +1878,12 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
     width: 320px;
     margin: 0 auto;
     padding-top: 130px;
+    &__guide {
+      font-size: 10px;
+      text-align: right;
+      margin-bottom: 8px;
+      width: 100%;
+    }
     &__header {
       margin-top: 0px;
       display: flex;
@@ -1913,9 +1944,11 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
     }
     &__content {
       margin-top: 50px;
-      padding: 15px 10px;
+      padding: 12px 15px;
     }
     &__purchase {
+      margin-top: 50px;
+      padding: 12px 15px;
       flex-direction: column;
       align-items: center;
       > section {
@@ -1979,6 +2012,46 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
         }
       }
     }
+    &__product-point {
+      > h2 {
+        font-size: 12px;
+        margin-bottom: 20px;
+      }
+      > div {
+        grid-template-columns: repeat(1, 1fr);
+        > section {
+          width: 100%;
+          align-items: center;
+          > img {
+            width: 60px;
+            height: 60px;
+          }
+          > div {
+            margin-left: 10px;
+            flex: 1;
+            > h3 {
+              font-size: 12px;
+              margin: 0 0 10px;
+            }
+            > p {
+              font-size: 10px;
+            }
+          }
+        }
+      }
+    }
+    &__tab {
+      > div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-top: 3px solid #00bfff;
+        > b {
+          margin: 5px 0;
+          font-size: 10px;
+        }
+      }
+    }
     &__nft-info {
       margin-top: 50px;
       > h2 {
@@ -1991,29 +2064,36 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
         > figure {
           margin: 0;
           > video {
-            width: 300px;
+            width: 290px;
             border-radius: 5px;
           }
         }
         > table {
+          width: 290px;
+          margin-top: 10px;
           margin-left: 0px;
-          font-size: 12px;
+          font-size: 11px;
           > tr {
             height: 38px;
             > th {
               width: 70px;
             }
             > td {
-              padding-left: 10px;
-              padding-right: 10px;
+              padding: 5px 10px;
               > ul {
                 margin: 0;
                 padding: 0;
                 list-style: none;
                 > li {
-                  margin: 10px 0;
+                  margin: 10px 0 10px 5px;
+                  position: relative;
                   &::marker {
                     display: none !important;
+                  }
+                  &::before {
+                    content: '·';
+                    position: absolute;
+                    left: -5px;
                   }
                 }
               }
@@ -2024,7 +2104,7 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
                 > a {
                   display: block;
                   margin: 8px 0;
-                  width: 148px;
+                  width: 100%;
                   height: 28px;
                   border: 1px solid #3679b5;
                   border-radius: 5px;
@@ -2034,6 +2114,7 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
                   align-items: center;
                   color: #3679b5;
                   cursor: pointer;
+                  font-size: 10px;
                   > img {
                     margin: 0 10px;
                   }
@@ -2066,24 +2147,33 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
         margin-bottom: 20px;
       }
       > table {
-        box-shadow: 0 0 0 1px #e3e3e3;
-        border-collapse: collapse;
-        border-radius: 10px;
-        border-style: hidden;
-        font-size: 12px;
+        width: 100%;
+        font-size: 10px;
         table-layout: fixed;
-        word-wrap: break-word;
         > tr {
           height: 38px;
           text-align: left;
           > th {
-            padding: 5px 10px;
+            padding: 5px 5px;
             width: 100px;
             background-color: #f8f9fa;
           }
           > td {
             padding: 5px 10px;
             word-break: break-all;
+            > section {
+              flex-direction: column;
+              gap: 10px;
+              > .table-button {
+                width: 100%;
+                > img {
+                  width: 15px;
+                }
+                > p {
+                  font-size: 10px;
+                }
+              }
+            }
             &.image-wrapper {
               width: 100%;
             }
@@ -2107,13 +2197,16 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
     }
     &__borrower {
       margin-top: 60px;
+      &__youtube {
+        height: 220px;
+      }
       > h2 {
         font-size: 12px;
         margin-bottom: 20px;
       }
       > table {
         width: 100%;
-        font-size: 12px;
+        font-size: 10px;
         > tr {
           height: 38px;
           text-align: left;
@@ -2130,10 +2223,14 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
               flex-direction: column;
               gap: 8px;
               > a {
-                width: 148px;
+                width: 100%;
                 height: 28px;
                 > img {
-                  margin: 0 10px;
+                  margin: 0 5px;
+                  width: 10px;
+                }
+                > p {
+                  font-size: 10px;
                 }
               }
             }
@@ -2151,52 +2248,146 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
       }
     }
     &__real-estate-info {
-      margin-top: 45px;
+      margin-top: 40px;
       > h2 {
         font-size: 12px;
         margin-bottom: 20px;
       }
-      > div {
-        flex-direction: column;
-        > figure {
-          > img {
-            width: 100%;
-            height: initial;
-            object-fit: cover;
+      > table {
+        width: 100%;
+        font-size: 10px;
+        margin: 10px 0 5px;
+        > tr {
+          height: 38px;
+          text-align: left;
+          > th {
+            padding: 5px 10px;
+            width: 100px;
+            background-color: #f8f9fa;
           }
-        }
-        > section {
-          margin-left: 0px;
-          > b {
-            font-size: 12px;
-            margin-top: 10px;
-          }
-          > table {
-            width: 100%;
-            font-size: 12px;
-            margin: 10px 0 5px;
-            > tr {
-              height: 38px;
-              text-align: left;
-              > th {
-                padding: 5px 10px;
-                width: 100px;
-                background-color: #f8f9fa;
-              }
-              > td {
-                padding: 5px 10px;
-              }
-              > th,
-              > td {
-                border: 1px solid #e3e3e3;
-              }
-              &:last-child {
-                > th {
-                  border-radius: 0 0 0 10px;
+          > td {
+            padding: 5px 10px;
+            > div {
+              display: flex;
+              align-items: center;
+              > a {
+                display: flex;
+                align-items: center;
+                > img {
+                  width: 15px;
+                  height: 15px;
                 }
               }
             }
           }
+          > th,
+          > td {
+            border: 1px solid #e3e3e3;
+          }
+          &:last-child {
+            > th {
+              border-radius: 0 0 0 10px;
+            }
+          }
+        }
+      }
+      &__asset-feature {
+        > h2 {
+          font-size: 12px;
+          margin-bottom: 20px;
+        }
+        > div {
+          display: flex;
+          flex-direction: column;
+          > section {
+            &:first-child {
+              flex-direction: column;
+              margin: 0;
+              > img {
+                width: 100%;
+                margin: 0;
+                margin-bottom: 10px;
+              }
+              > div {
+                flex-direction: row;
+                > figure {
+                  width: 100%;
+                  &.disable {
+                    &::after {
+                      content: '';
+                      width: 100%;
+                      height: 100%;
+                      z-index: 2;
+                      left: 0;
+                      border-radius: 5px;
+                      position: absolute;
+                      background: rgba(0, 0, 0, 0.6);
+                    }
+                  }
+                  > img {
+                    width: 100%;
+                  }
+                }
+              }
+            }
+            &:last-child {
+              margin-top: 20px;
+              height: initial;
+              > div {
+                > b {
+                  margin-right: 10px;
+                  font-size: 12px;
+                }
+                > div {
+                  margin-bottom: 15px;
+                  > b {
+                    font-size: 12px;
+                    margin-bottom: 5px;
+                  }
+                  > p {
+                    font-size: 10px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      &__around-asset {
+        > h2 {
+          font-size: 12px;
+          margin-bottom: 7px;
+        }
+        > p {
+          font-size: 10px;
+          margin-bottom: 15px;
+        }
+        > section {
+          flex-direction: column;
+          padding: 12px 10px;
+          gap: 15px;
+          > div {
+            width: 100%;
+            > img {
+              width: 100%;
+              height: initial;
+            }
+            > b {
+              font-size: 12px;
+            }
+            > table {
+              font-size: 10px;
+              > tr {
+                > th {
+                  padding: 5px 10px;
+                  width: 110px;
+                }
+              }
+            }
+          }
+        }
+        > span {
+          font-size: 10px;
         }
       }
     }

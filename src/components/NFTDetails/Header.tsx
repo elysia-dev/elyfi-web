@@ -1,6 +1,7 @@
 import { useWeb3React } from '@web3-react/core';
 import { Trans, useTranslation } from 'react-i18next';
 import Skeleton from 'react-loading-skeleton';
+import { Link, useParams } from 'react-router-dom';
 import Questionmark from 'src/components/Questionmark';
 import MainnetType from 'src/enums/MainnetType';
 
@@ -19,6 +20,7 @@ const Header: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const { account } = useWeb3React();
+  const { lng } = useParams<{ lng: string }>();
 
   const currentPurchaseAmount = () => {
     return account === undefined ? (
@@ -78,6 +80,13 @@ const Header: React.FC<Props> = ({
         </div>
         <b>{currentPurchaseAmount()}</b>
       </section>
+      <Link
+        className="nft-details__guide mobile-only"
+        to={{
+          pathname: `/${lng}/market/faq`,
+        }}>
+        {t('nftMarket.guide')}
+      </Link>
       <section className="mobile-only">
         <div>
           <b>

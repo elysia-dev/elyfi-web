@@ -19,7 +19,7 @@ const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo }) => {
   const nftData = useCallback(
     (traitType: NFTTraitType, nft?: NFTType) => {
       if (!nft) {
-        return <Skeleton width={80} height={18} />;
+        return <Skeleton width={65} height={18} />;
       }
       return nft?.attributes.find((info) => {
         return info.trait_type === traitType;

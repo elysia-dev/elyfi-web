@@ -500,7 +500,7 @@ const Navigation: React.FunctionComponent<{
               onClick={() => {
                 setHamburgerBar(false);
               }}>
-              <div>
+              <div className={data.isBeta ? 'mobile-beta' : ''}>
                 <p>{t(data.i18nKeyword).toUpperCase()}</p>
               </div>
             </Link>
