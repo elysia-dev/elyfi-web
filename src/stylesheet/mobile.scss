@@ -1929,11 +1929,12 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
           }
         }
         > section {
+          gap: 10px;
           > a {
             width: 130px;
             height: 26px;
             line-height: 26px;
-            font-size: 12px;
+            font-size: 10px;
           }
           > button {
             display: block;
@@ -1943,7 +1944,7 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
             margin: 0px auto 20px;
             background: #00bfff;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 10px;
             color: #fff;
             border: 0;
           }
@@ -1963,9 +1964,11 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
         flex: 1;
         padding: 0 !important;
         width: 100%;
-        > h2 {
-          font-size: 12px;
+        > section {
           margin-bottom: 15px;
+          > h2 {
+            font-size: 12px;
+          }
         }
         &:last-child {
           border-left: none;
@@ -2062,8 +2065,10 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
     }
     &__nft-info {
       margin-top: 50px;
-      > h2 {
-        font-size: 12px;
+      > section {
+        > h2 {
+          font-size: 12px;
+        }
       }
       > div {
         display: flex;

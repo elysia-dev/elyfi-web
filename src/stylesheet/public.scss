@@ -568,14 +568,14 @@ input[type='number'] {
       &::after {
         content: 'B';
         position: absolute;
-        top: 3px;
-        right: -8px;
+        top: 5px;
+        right: -10px;
         width: 12px;
         height: 12px;
+        line-height: 12px;
         font-family: $montserrat--bold;
         color: $background-color;
         font-size: 9px;
-        line-height: 12px;
         border-radius: 2px;
         background-color: #0087ff;
         text-align: center;
@@ -2203,6 +2203,23 @@ input[type='number'] {
         }
       }
       &__status {
+        > section {
+          display: flex;
+          flex-direction: row;
+          margin-bottom: 25px;
+          align-items: center;
+          > h2 {
+            font-size: 18px;
+            color: $font-color;
+            margin-right: 8px;
+          }
+          > a {
+            cursor: pointer;
+            > img {
+              filter: drop-shadow(0 0 0 #00bfff) opacity(0.7) contrast(200%);
+            }
+          }
+        }
         > div {
           > div {
             display: flex;
@@ -2331,11 +2348,11 @@ input[type='number'] {
       > div {
         flex: 1;
         text-align: center;
-        border-top: 5px solid #00bfff;
-        border-left: 1px solid #b7b7b7;
-        border-right: 1px solid #b7b7b7;
+        border-top: 3px solid #00bfff;
+        border-left: 1px solid #e4e5e4;
+        border-right: 1px solid #e4e5e4;
         cursor: pointer;
-        font-size: 20px;
+        font-size: 18px;
         > b {
           margin: 15px;
           color: #000000;
@@ -2343,8 +2360,8 @@ input[type='number'] {
           display: block;
         }
         &.disable {
-          background-color: #f0f0f1;
-          border: 1px solid #b7b7b7;
+          background-color: #f8f8f7;
+          border: 1px solid #e4e5e4;
           > b {
             color: #b7b7b7;
           }
@@ -2353,8 +2370,20 @@ input[type='number'] {
     }
     &__nft-info {
       margin-top: 50px;
-      > h2 {
-        font-size: 18px;
+      > section {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        > h2 {
+          font-size: 18px;
+          margin-right: 8px;
+        }
+        > a {
+          cursor: pointer;
+          > img {
+            filter: drop-shadow(0 0 0 #00bfff) opacity(0.7) contrast(200%);
+          }
+        }
       }
       > div {
         display: flex;
@@ -2769,6 +2798,27 @@ input[type='number'] {
           margin-left: 15px;
         }
       }
+      > div {
+        text-align: center;
+        > button {
+          margin-top: 50px;
+          width: 130px;
+          height: 30px;
+          background: #00bfff;
+          border-radius: 15px;
+          cursor: pointer;
+          font-size: 15px;
+          color: #fff;
+          border: 0;
+          flex: 1;
+          &.disabled {
+            pointer-events: none;
+            cursor: not-allowed;
+            background-color: #f0f0f1;
+            color: $font-color;
+          }
+        }
+      }
     }
     &__faq {
       margin-top: 50px;
@@ -2856,6 +2906,7 @@ input[type='number'] {
             font-size: 12px;
             color: #262626;
             display: block;
+            margin-bottom: 6px;
           }
           > p {
             font-size: 15px;

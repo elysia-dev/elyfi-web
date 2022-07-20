@@ -5,7 +5,7 @@
         "header__title": "<strong><i>ELYFI</i>,<br/>a new global real-estate investment</strong>",
         "header__content": "Invest in Korean and the US real estate with crypto now!",
         "button__market": "Go to market",
-        "button__deposit": "Deposit"
+        "button__deposit": "Go to deposit"
       },
       "section": [
         {
@@ -835,11 +835,11 @@
         "NFT Name",
         "Details",
         "Principal",
-        "Expected interest income",
+        "Expected interest",
         "APR",
         "Overdue APR",
-        "Expected Loan date",
-        "Expected maturity date",
+        "Expected Loan Date",
+        "Expected Maturity Date",
         "Document"
       ],
       "nftInfoDetails": [
@@ -947,7 +947,7 @@
       "terms": [
         "ELYFI does not advise or solicit any assets posted on this site. The buyers are responsible for choosing and purchasing.",
         "This product is a form in which buyers purchase bond NFTs through ELYFI and borrowers borrow cryptocurrency with the raised money.",
-        "If you purchase this product, you cannot cancel the purchase. However, you can trade bond NFTs held at OpenSea, an NFT marketplace.",
+        "If you purchase this product, you cannot cancel the purchase. However, you can trade bond NFTs held at <1><0>OpenSea</0></1>, an NFT marketplace.",
         "If the loan is not executed, you can receive the purchase principal directly in USDC.",
         "Even if the payment coin is Ether (ETH), the redemption amount is calculated according to the bond NFT amount, not the Ether amount, and the redemption amount is received in USDC on the bond maturity date. (USDC can be substituted for other coins.)",
         "Principal and rate of return are not guaranteed for this product.",

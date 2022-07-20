@@ -2,12 +2,14 @@ import moment from 'moment';
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Skeleton from 'react-loading-skeleton';
+import NewTab from 'src/assets/images/market/new_tab.png';
 
 interface Props {
   userTotalPurchase?: number;
   totalPurchase: number;
   startTime: moment.Moment;
   endedTime: moment.Moment;
+  etherscanLink: string;
 }
 
 const Purchase: React.FC<Props> = ({
@@ -15,6 +17,7 @@ const Purchase: React.FC<Props> = ({
   totalPurchase,
   startTime,
   endedTime,
+  etherscanLink,
 }) => {
   const { t } = useTranslation();
   const current = moment();
@@ -68,7 +71,12 @@ const Purchase: React.FC<Props> = ({
   return (
     <>
       <section className="nft-details__purchase__status">
-        <h2>{t('nftMarket.currentPurchase')}</h2>
+        <section>
+          <h2>{t('nftMarket.currentPurchase')}</h2>
+          <a href={etherscanLink} target="_blank">
+            <img src={NewTab} alt="new tab icon" />
+          </a>
+        </section>
         <div>
           <div>
             <p>{t('nftMarket.purchasedNTF')}</p>

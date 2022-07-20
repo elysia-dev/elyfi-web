@@ -2,11 +2,11 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import MediaQuery from 'src/enums/MediaQuery';
@@ -173,6 +173,25 @@ const NFTDetails = (): JSX.Element => {
     );
   };
 
+  const purchaseButtonAction = () => {
+    const wallet = sessionStorage.getItem('@connect');
+
+    return account
+      ? mainnetType === MainnetType.Ethereum
+        ? setModalType('purchase')
+        : wallet === 'metamask'
+        ? setModalType('changeNetwork')
+        : setModalType('reconnect')
+      : setModalType('selectWallet');
+  };
+
+  const purchaseButtonDisable = useMemo(() => {
+    return nftTotalSupply
+      ? !current.isBetween(startTime, endedTime) &&
+          totalPurchase >= nftTotalSupply
+      : false;
+  }, [nftTotalSupply, current, totalPurchase]);
+
   const getPurchasedNFT = useCallback(async () => {
     const nftContract = getNFTContract(library.getSigner());
     const count = await nftContract.balanceOf(account, 1);
@@ -252,6 +271,7 @@ const NFTDetails = (): JSX.Element => {
               type={t('market.nftType.0')}
               interest={0.3}
               nftInfo={nftInfo}
+              openseaLink={''}
             />
           </section>
         );
@@ -287,7 +307,7 @@ const NFTDetails = (): JSX.Element => {
               }}
               aroundAssetInfo={[
                 {
-                  title: 'Crescent St, Los Angeles, CA',
+                  title: 'Crescent St, LA, CA',
                   image: AroundAsset00,
                   price: '$1,480,000 ~',
                   completion: t('nftMarket.realEstateInfoData.1', {
@@ -296,7 +316,7 @@ const NFTDetails = (): JSX.Element => {
                   landArea: '1,624sqft',
                 },
                 {
-                  title: 'Minneapolis St, Los Angeles, CA',
+                  title: 'Minneapolis St, LA, CA',
                   image: AroundAsset01,
                   price: '$1,485,000 ~',
                   completion: t('nftMarket.realEstateInfoData.1', {
@@ -440,30 +460,9 @@ const NFTDetails = (): JSX.Element => {
         </Link>
         <article className="nft-details__header" ref={headerRef}>
           <Header
-            onButtonClick={() => {
-              const wallet = sessionStorage.getItem('@connect');
-
-              return account
-                ? mainnetType === MainnetType.Ethereum
-                  ? setModalType('purchase')
-                  : wallet === 'metamask'
-                  ? setModalType('changeNetwork')
-                  : setModalType('reconnect')
-                : setModalType('selectWallet');
-            }}
+            onButtonClick={purchaseButtonAction}
             purchasedNFT={purchasedNFT}
-            isDisabled={
-              nftTotalSupply
-                ? !current.isBetween(startTime, endedTime) &&
-                  totalPurchase >= nftTotalSupply
-                : false
-              // (current.isAfter(
-              //   moment(startTime)
-              //     .subtract(1, 'hours')
-              //     .format('YYYY.MM.DD HH:mm:ss'),
-              // ) &&
-              //   advanceReservation.includes(account || ''))
-            }
+            isDisabled={purchaseButtonDisable}
             mainnetType={mainnetType}
             openseaLink={'https://opensea.io/'}
           />
@@ -474,6 +473,7 @@ const NFTDetails = (): JSX.Element => {
             totalPurchase={totalPurchase}
             startTime={startTime}
             endedTime={endedTime}
+            etherscanLink={''}
           />
         </article>
         <article className="nft-details__content">
@@ -549,13 +549,33 @@ const NFTDetails = (): JSX.Element => {
           <ul>
             <li>{t('nftMarket.terms.0')}</li>
             <li>{t('nftMarket.terms.1')}</li>
-            <li>{t('nftMarket.terms.2')}</li>
+            <li>
+              <Trans i18nKey={'nftMarket.terms.2'}>
+                text
+                <u>
+                  <a
+                    target="_blank"
+                    href="https://opensea.io/"
+                    style={{ color: '#00bfff' }}>
+                    link
+                  </a>
+                </u>
+              </Trans>
+            </li>
             <li>{t('nftMarket.terms.3')}</li>
             <li>{t('nftMarket.terms.4')}</li>
             <li>{t('nftMarket.terms.5')}</li>
             <li>{t('nftMarket.terms.6')}</li>
             <li>{t('nftMarket.terms.7')}</li>
+            <li>{t('nftMarket.terms.8')}</li>
           </ul>
+          <div>
+            <button
+              onClick={purchaseButtonAction}
+              className={purchaseButtonDisable ? '' : 'disabled'}>
+              {t('nftMarket.purchase')}
+            </button>
+          </div>
         </article>
       </main>
     </>
