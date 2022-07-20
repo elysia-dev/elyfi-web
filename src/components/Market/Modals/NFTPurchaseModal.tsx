@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useSWR from 'swr';
 import envs from 'src/core/envs';
 import { pricesFetcher } from 'src/clients/Coingecko';
@@ -11,6 +11,7 @@ import {
 import usePurchaseNFT from 'src/hooks/usePurchaseNFT';
 import NFTPurchaseType from 'src/enums/NFTPurchaseType';
 import { useTranslation } from 'react-i18next';
+import { utils } from 'ethers';
 import Confirm from './components/Confirm';
 import InputQuantity from './components/InputQuantity ';
 import LoadingIndicator from './components/LoadingIndicator';
@@ -49,10 +50,10 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
       use: [priceMiddleware],
     },
   );
+  const [gasFee, setGasFee] = useState(0);
 
-  const { data: gasFee } = useSWR([{ account, library, key: 'gasPrice' }], {
-    fetcher: gasPriceFetcher(),
-  });
+  const ethGasFee = 196250 * 0.00000002;
+  const usdcGasFee = 92163 * 0.00000002;
 
   const { data: approveGasFee } = useSWR(
     [{ account, library, key: 'approveGasPrice' }],
@@ -79,9 +80,13 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
       return paymentEth > balances.eth;
     }
     if (purchaseType === NFTPurchaseType.USDC) {
-      return paymentAmount > balances.usdc || (gasFee || 0) > balances.eth;
+      return paymentAmount > balances.usdc || (usdcGasFee || 0) > balances.eth;
     }
   };
+
+  useEffect(() => {
+    setGasFee(purchaseType === 'ETH' ? ethGasFee : usdcGasFee);
+  }, [purchaseType]);
 
   return (
     <div className="market_modal">
@@ -113,7 +118,9 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
                   purchaseType === NFTPurchaseType.USDC
                     ? ((balances.usdc * 1) / 10).toString()
                     : (
-                        ((balances.eth - balances.eth * 0.05 - (gasFee || 0)) *
+                        ((balances.eth -
+                          balances.eth * 0.05 -
+                          (ethGasFee || 0)) *
                           (priceData?.ethPrice || 0)) /
                         10
                       ).toFixed(0),
@@ -148,8 +155,7 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
               purchaseType={purchaseType}
               gasFeeInfo={{
                 gasFee,
-                gasFeeToDollar:
-                  (gasFee ? gasFee : 0) * (priceData ? priceData.ethPrice : 0),
+                gasFeeToDollar: gasFee * (priceData ? priceData.ethPrice : 0),
               }}
             />
           )
