@@ -912,7 +912,9 @@
         "llcOperatingAgreement": "https://elysia.mypinata.cloud/ipfs/QmaYAHytgmBeM16vVj3S4TVFCouTbJxJhj47wm8YFet8ma",
         "grantDeed": "https://elysia.mypinata.cloud/ipfs/QmQigAJXwPAzxLPPBrEMCyB6VvuHcBXP6ayT4NCnhoWaGt",
         "loanAgreement": "https://elysia.mypinata.cloud/ipfs/QmfVVX5U4ig3UcRqHCFqCdrY2a1wN9tpTEpZosAisB7324",
-        "pledgeAgreement": "https://elysia.mypinata.cloud/ipfs/QmcK7hwCWDEWGNUUwR3RqqCgMfgjhegm1SCQ3DZDZj5nFn"
+        "pledgeAgreement": "https://elysia.mypinata.cloud/ipfs/QmcK7hwCWDEWGNUUwR3RqqCgMfgjhegm1SCQ3DZDZj5nFn",
+        "rentalAgreement": "https://elysia.mypinata.cloud/ipfs/QmfVVX5U4ig3UcRqHCFqCdrY2a1wN9tpTEpZosAisB7324",
+        "collateralAgreement": "https://elysia.mypinata.cloud/ipfs/QmcK7hwCWDEWGNUUwR3RqqCgMfgjhegm1SCQ3DZDZj5nFn"
       }
     },
     "nftModal": {
