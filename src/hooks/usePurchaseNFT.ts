@@ -94,7 +94,7 @@ const usePurchaseNFT = (
   const checkAllowance = async (account: string) => {
     const allowanceAmount = await ercContract.allowance(
       account,
-      '0xaA9ee17a1aC1658426B61cD5d501c4b00CDC1eD5',
+      envs.market.controllerAddress,
     );
 
     return allowanceAmount.gte(parseEther(String(usdc)));
@@ -116,7 +116,7 @@ const usePurchaseNFT = (
       emitter.clicked();
 
       const tx = await ercContract.approve(
-        '0xaA9ee17a1aC1658426B61cD5d501c4b00CDC1eD5',
+        envs.market.controllerAddress,
         constants.MaxUint256,
       );
       setTransaction(
