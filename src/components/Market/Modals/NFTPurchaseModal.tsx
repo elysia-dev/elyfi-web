@@ -40,6 +40,7 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
   const [quantity, setQuantity] = useState('0');
   const [purchaseType, setPurchaseType] = useState('ETH');
   const [currentStep, setCurrentStep] = useState(1);
+  const [selectVisible, setSelectVisible] = useState(false);
   const { purchaseNFT, isApprove, approve, isLoading } = usePurchaseNFT(
     balances.usdc,
   );
@@ -130,6 +131,8 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
             <SelectCrypto
               setPurchaseType={setPurchaseType}
               purchaseType={purchaseType}
+              selectVisible={selectVisible}
+              setSelectVisible={setSelectVisible}
             />
             <WalletAmount balances={balances} remainingNFT={remainingNFT} />
           </>
