@@ -921,6 +921,19 @@
         "{{ year }}",
         "Two-story house(3rooms 4baths)"
       ],
+      "realEstateFeature": "Features",
+      "realEstateFeatureContent": {
+        "title": [
+          "Maximizing value through flipping",
+          "Excellent location",
+          "No Loan, Low Risk"
+        ],
+        "content": [
+          "The property is expected to yield a high rate of return due to the recent remodeling of a two-story detached house with a large lot and backyard of about 6,123sqft.",
+          "Demands are high as Occidental College is nearby. The location has an convenient access transportation that connects to Beverly Hills and LA Korean Town.",
+          "The property is not loanable and therefore has no priority in title."
+        ]
+      },
       "aroundAsset": [
         "Surrounding real estate prices",
         "The latest sale price for a home of similar size and within a 20 minutes drive away."
@@ -1004,7 +1017,7 @@
       "twitter": {
         "title": "Retweet\nand get 1% payback of your purchase!",
         "button": "Retweet and get 1% more payback",
-        "abandonButton": "Abandon payment reward, don't show this message again"
+        "abandonButton": "Give up this benefit and do not show this again"
       }
     }
   }
