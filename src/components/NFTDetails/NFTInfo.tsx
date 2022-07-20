@@ -45,12 +45,8 @@ const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo }) => {
   );
 
   const nftLink = useCallback(
-    (index: number) => {
-      return `https://slate.textile.io/ipfs/${
-        nftInfo
-          ? nftInfo['collateral Info'][index].link.split(/ipfs:\/\//)[1]
-          : ''
-      }`;
+    (hash: string) => {
+      return `https://elysia.mypinata.cloud/ipfs/${hash}`;
     },
     [nftInfo],
   );
@@ -108,15 +104,27 @@ const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo }) => {
             <th>{t('nftMarket.nftInfoTable.8')}</th>
             <td colSpan={3}>
               <div>
-                <a target="_blank" href={nftLink(0)}>
+                <a
+                  target="_blank"
+                  href={nftLink(
+                    'QmfVVX5U4ig3UcRqHCFqCdrY2a1wN9tpTEpZosAisB7324',
+                  )}>
                   <img src={Clip} />
                   {t('nftMarket.nftInfoTableButton.0')}
                 </a>
-                <a target="_blank" href={nftLink(1)}>
+                <a
+                  target="_blank"
+                  href={nftLink(
+                    'QmcK7hwCWDEWGNUUwR3RqqCgMfgjhegm1SCQ3DZDZj5nFn',
+                  )}>
                   <img src={Clip} />
                   {t('nftMarket.nftInfoTableButton.1')}
                 </a>
-                <a target="_blank" href={nftLink(2)}>
+                <a
+                  target="_blank"
+                  href={nftLink(
+                    'QmaYAHytgmBeM16vVj3S4TVFCouTbJxJhj47wm8YFet8ma',
+                  )}>
                   <img src={Clip} />
                   {t('nftMarket.nftInfoTableButton.2')}
                 </a>
