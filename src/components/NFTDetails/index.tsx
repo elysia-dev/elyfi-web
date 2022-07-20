@@ -272,14 +272,14 @@ const NFTDetails = (): JSX.Element => {
               }}
               assetFeature={{
                 title: [
-                  'Flipping을 통한 수익률 극대화',
-                  '우수한 입지',
-                  'No 융자, Low 리스크',
+                  t('nftMarket.realEstateFeatureContent.title.0'),
+                  t('nftMarket.realEstateFeatureContent.title.1'),
+                  t('nftMarket.realEstateFeatureContent.title.2'),
                 ],
                 content: [
-                  '약 175평의 넓은 대지와 뒤뜰을 가지고 있는 2층 단독주택을 최근 리모델링하였고, 이에 높은 수익률이 기대되는 매물입니다.',
-                  'Occidental 대학교가 인근에 위치해 있어 배후수요가 탄탄하며, 베버리힐즈, LA코리아타운 등으로 이어지는 교통환경이 우수한 지역으로 입지가 훌륭합니다.',
-                  '본 부동산은 대출이 없기 때문에 권리상 어떤 선순위도 존재하지 않습니다.',
+                  t('nftMarket.realEstateFeatureContent.content.0'),
+                  t('nftMarket.realEstateFeatureContent.content.1'),
+                  t('nftMarket.realEstateFeatureContent.content.2'),
                 ],
                 image: [AroundAsset00, AroundAsset01, AroundAsset02],
               }}
