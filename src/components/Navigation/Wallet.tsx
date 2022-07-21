@@ -110,7 +110,7 @@ const Wallet = (): JSX.Element => {
             localStorage.removeItem(`@eventclose${account}`);
             setModalType('tokenReward');
             window.open(
-              'https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.elyfi.world%2Fko&text=ELYFI[…]%EB%A6%AC%ED%8C%8C%EC%9D%B4,ELFI,%EB%B6%80%EB%8F%99%EC%82%B0,PF',
+              'https://twitter.com/intent/retweet?tweet_id=1550052436622323712',
             );
           }}
           onDiscard={() => {
