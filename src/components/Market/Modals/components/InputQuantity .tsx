@@ -52,7 +52,7 @@ const InputQuantity: React.FC<Props> = ({
       </section>
       <p>
         {crypto && formatCommaSmallFourDisits(crypto)} {purchaseType} ≒ $
-        {dollar}
+        {formatCommaSmallZeroDisits(dollar)}
       </p>
     </div>
   );
