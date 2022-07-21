@@ -28,7 +28,7 @@ const Header: React.FC<Props> = ({
         purchasedNFT === 0 ? (
           t('nftMarket.purchaseStatus.nullPurchase')
         ) : (
-          purchasedNFT
+          `${purchasedNFT} NFT(s)`
         )
       ) : (
         <Skeleton width={100} height={24} />

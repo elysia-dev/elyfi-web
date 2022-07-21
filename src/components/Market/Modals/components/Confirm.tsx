@@ -25,7 +25,7 @@ const Confirm: React.FC<Props> = ({
       <h3>{t('nftModal.confirm.header')}</h3>
       <div>
         <div>{t('nftModal.confirm.purchaseQuantity')}</div>
-        <div>{quantity}</div>
+        <div>{quantity} NFT(s)</div>
       </div>
       <div>
         <div>{t('nftModal.confirm.estimatedAmount')}</div>
