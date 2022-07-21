@@ -366,15 +366,10 @@ const NFTDetails = (): JSX.Element => {
           selectWalletModalVisible={true}
         />
       ) : modalType === 'purchase' ? (
-        <TokenRewardModal
-          endedTime={endedTime}
-          onClose={() => setModalType('')}
-          tokenAmount={
-            purchasedNFT
-              ? (purchasedNFT * 10 * 0.01) / (priceData?.elfiPrice || 1)
-              : 0
-          }
-          tokenName={'ELFI'}
+        <NFTPurchaseModal
+          modalClose={() => setModalType('')}
+          balances={balances}
+          remainingNFT={totalPurchase - (nftTotalSupply || 0)}
         />
       ) : modalType === 'changeNetwork' ? (
         <ChangeNetworkModal
