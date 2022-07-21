@@ -110,14 +110,14 @@ const AppNavigator: React.FC = () => {
             }
           />
           <Route path="market">
-            {/* <Route
+            <Route
               path="guide"
               element={
                 <Suspense fallback={nullFallbackArea()}>
                   <MarketFaq />
                 </Suspense>
               }
-            /> */}
+            />
             <Route path="bondnft">
               <Route
                 path=":id"

@@ -1,50 +1,50 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="196" height="609.375" viewBox="0 0 196 609.375">
-  <g id="그룹_7042" data-name="그룹 7042" transform="translate(-1240 -3424)">
-    <g id="그룹_7021" data-name="그룹 7021" transform="translate(1258.354 3424)">
+  <g id="그룹_7045" data-name="그룹 7045" transform="translate(-1193.646 -3424)">
+    <g id="그룹_7021" data-name="그룹 7021" transform="translate(1212 3424)">
       <g id="사각형_7200" data-name="사각형 7200" transform="translate(0)" fill="#e0f4ff" stroke="#d3f0ff" stroke-width="1">
         <rect width="173.646" height="44" rx="5" stroke="none"/>
         <rect x="0.5" y="0.5" width="172.646" height="43" rx="4.5" fill="none"/>
       </g>
       <text id="구매자" transform="translate(86.751 26.766)" fill="#333" font-size="13" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-17" y="0">구매자</tspan></text>
     </g>
-    <rect id="사각형_7200-2" data-name="사각형 7200" width="173.646" height="44" rx="5" transform="translate(1258.354 3541.124)" fill="#00a6ff"/>
-    <text id="엘리파이" transform="translate(1350.566 3567.066)" fill="#fff" font-size="13" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-23" y="0">엘리파이</tspan></text>
-    <g id="그룹_7022" data-name="그룹 7022" transform="translate(1357.864 3467.829) rotate(90)">
+    <rect id="사각형_7200-2" data-name="사각형 7200" width="173.646" height="44" rx="5" transform="translate(1212 3541)" fill="#00a6ff"/>
+    <text id="엘리파이" transform="translate(1299 3568)" fill="#fff" font-size="13" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-23" y="0">엘리파이</tspan></text>
+    <g id="그룹_7022" data-name="그룹 7022" transform="translate(1289.372 3467.829) rotate(90)">
       <line id="선_10036" data-name="선 10036" x2="61.945" transform="translate(0 3.506)" fill="none" stroke="#707070" stroke-width="1"/>
       <g id="다각형_51" data-name="다각형 51" transform="translate(64.921) rotate(90)" fill="#707070">
         <path d="M 6.069073677062988 4.667018890380859 L 0.9435520768165588 4.667018890380859 L 3.506312847137451 0.8904455900192261 L 6.069073677062988 4.667018890380859 Z" stroke="none"/>
         <path d="M 3.506312847137451 1.78089714050293 L 1.887104511260986 4.167018890380859 L 5.125521183013916 4.167018890380859 L 3.506312847137451 1.78089714050293 M 3.506312847137451 -1.430511474609375e-06 L 7.012622833251953 5.167018890380859 L 2.86102294921875e-06 5.167018890380859 L 3.506312847137451 -1.430511474609375e-06 Z" stroke="none" fill="#707070"/>
       </g>
     </g>
-    <g id="그룹_7034" data-name="그룹 7034" transform="translate(1357.864 3584.917) rotate(90)">
+    <g id="그룹_7034" data-name="그룹 7034" transform="translate(1289.372 3584.917) rotate(90)">
       <line id="선_10036-2" data-name="선 10036" x2="61.945" transform="translate(0 3.506)" fill="none" stroke="#707070" stroke-width="1"/>
       <g id="다각형_51-2" data-name="다각형 51" transform="translate(64.921) rotate(90)" fill="#707070">
         <path d="M 6.069073677062988 4.667018890380859 L 0.9435520768165588 4.667018890380859 L 3.506312847137451 0.8904455900192261 L 6.069073677062988 4.667018890380859 Z" stroke="none"/>
         <path d="M 3.506312847137451 1.78089714050293 L 1.887104511260986 4.167018890380859 L 5.125521183013916 4.167018890380859 L 3.506312847137451 1.78089714050293 M 3.506312847137451 -1.430511474609375e-06 L 7.012622833251953 5.167018890380859 L 2.86102294921875e-06 5.167018890380859 L 3.506312847137451 -1.430511474609375e-06 Z" stroke="none" fill="#707070"/>
       </g>
     </g>
-    <g id="그룹_7035" data-name="그룹 7035" transform="translate(1357.864 3699.733) rotate(90)">
+    <g id="그룹_7035" data-name="그룹 7035" transform="translate(1289.372 3698.733) rotate(90)">
       <line id="선_10036-3" data-name="선 10036" x2="61.945" transform="translate(0 3.506)" fill="none" stroke="#707070" stroke-width="1"/>
       <g id="다각형_51-3" data-name="다각형 51" transform="translate(64.921) rotate(90)" fill="#707070">
         <path d="M 6.069073677062988 4.667018890380859 L 0.9435520768165588 4.667018890380859 L 3.506312847137451 0.8904455900192261 L 6.069073677062988 4.667018890380859 Z" stroke="none"/>
         <path d="M 3.506312847137451 1.78089714050293 L 1.887104511260986 4.167018890380859 L 5.125521183013916 4.167018890380859 L 3.506312847137451 1.78089714050293 M 3.506312847137451 -1.430511474609375e-06 L 7.012622833251953 5.167018890380859 L 2.86102294921875e-06 5.167018890380859 L 3.506312847137451 -1.430511474609375e-06 Z" stroke="none" fill="#707070"/>
       </g>
     </g>
-    <g id="그룹_7023" data-name="그룹 7023" transform="translate(1328.713 3542.338) rotate(-90)">
+    <g id="그룹_7023" data-name="그룹 7023" transform="translate(1304.212 3542.338) rotate(-90)">
       <line id="선_10036-4" data-name="선 10036" x2="61.945" transform="translate(0 3.506)" fill="none" stroke="#707070" stroke-width="1"/>
       <g id="다각형_51-4" data-name="다각형 51" transform="translate(64.921) rotate(90)" fill="#707070">
         <path d="M 6.069073677062988 4.667018890380859 L 0.9435520768165588 4.667018890380859 L 3.506312847137451 0.8904455900192261 L 6.069073677062988 4.667018890380859 Z" stroke="none"/>
         <path d="M 3.506312847137451 1.78089714050293 L 1.887104511260986 4.167018890380859 L 5.125521183013916 4.167018890380859 L 3.506312847137451 1.78089714050293 M 3.506312847137451 -1.430511474609375e-06 L 7.012622833251953 5.167018890380859 L 2.86102294921875e-06 5.167018890380859 L 3.506312847137451 -1.430511474609375e-06 Z" stroke="none" fill="#707070"/>
       </g>
     </g>
-    <g id="그룹_7033" data-name="그룹 7033" transform="translate(1328.713 3659.352) rotate(-90)">
+    <g id="그룹_7033" data-name="그룹 7033" transform="translate(1304.212 3659.352) rotate(-90)">
       <line id="선_10036-5" data-name="선 10036" x2="61.945" transform="translate(0 3.506)" fill="none" stroke="#707070" stroke-width="1"/>
       <g id="다각형_51-5" data-name="다각형 51" transform="translate(64.921) rotate(90)" fill="#707070">
         <path d="M 6.069073677062988 4.667018890380859 L 0.9435520768165588 4.667018890380859 L 3.506312847137451 0.8904455900192261 L 6.069073677062988 4.667018890380859 Z" stroke="none"/>
         <path d="M 3.506312847137451 1.78089714050293 L 1.887104511260986 4.167018890380859 L 5.125521183013916 4.167018890380859 L 3.506312847137451 1.78089714050293 M 3.506312847137451 -1.430511474609375e-06 L 7.012622833251953 5.167018890380859 L 2.86102294921875e-06 5.167018890380859 L 3.506312847137451 -1.430511474609375e-06 Z" stroke="none" fill="#707070"/>
       </g>
     </g>
-    <g id="그룹_7036" data-name="그룹 7036" transform="translate(1328.713 3774.168) rotate(-90)">
+    <g id="그룹_7036" data-name="그룹 7036" transform="translate(1304.548 3774.168) rotate(-90)">
       <line id="선_10036-6" data-name="선 10036" x2="61.945" transform="translate(0 3.506)" fill="none" stroke="#707070" stroke-width="1"/>
       <g id="다각형_51-6" data-name="다각형 51" transform="translate(64.921) rotate(90)" fill="#707070">
         <path d="M 6.069073677062988 4.667018890380859 L 0.9435520768165588 4.667018890380859 L 3.506312847137451 0.8904455900192261 L 6.069073677062988 4.667018890380859 Z" stroke="none"/>
@@ -52,45 +52,45 @@
       </g>
     </g>
     <text id="_4._채권_NFT_구매_ETH_USDC_" data-name="4. 채권 NFT 구매
-(ETH, USDC)" transform="translate(1280 3505.222)" fill="#333" font-size="11" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-39" y="0">4.</tspan><tspan y="0" xml:space="preserve" font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"> 채권 </tspan><tspan y="0" font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400">NFT </tspan><tspan y="0" font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400">구매</tspan><tspan font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"><tspan x="-31" y="15">(</tspan><tspan y="15" fill="#6284f5">ETH</tspan><tspan y="15">, </tspan><tspan y="15" fill="#3679b5">USDC</tspan><tspan y="15">)</tspan></tspan></text>
+(ETH, USDC)" transform="translate(1233.646 3496.002)" fill="#333" font-size="11" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-39" y="0">4.</tspan><tspan y="0" xml:space="preserve" font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"> 채권 NFT 구매</tspan><tspan font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"><tspan x="-31" y="15">(</tspan><tspan y="15" fill="#6284f5">ETH</tspan><tspan y="15">, </tspan><tspan y="15" fill="#3679b5">USDC</tspan><tspan y="15">)</tspan></tspan></text>
     <text id="_8._상환금_수령_USDC_" data-name="8. 상환금 수령
-(USDC)" transform="translate(1398.874 3499.962)" fill="#333" font-size="11" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-32" y="0">8.</tspan><tspan y="0" xml:space="preserve" font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"> 상환금 수령</tspan><tspan font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"><tspan x="-18" y="15">(</tspan><tspan y="15" fill="#3679b5">USDC</tspan><tspan y="15">)</tspan></tspan></text>
-    <rect id="사각형_7199" data-name="사각형 7199" width="173.646" height="44" rx="5" transform="translate(1258.354 3655.27)" fill="#3679b5"/>
-    <text id="_주_엘리파이대부" data-name="(주)엘리파이대부" transform="translate(1345.582 3682.245)" fill="#fff" font-size="13" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-46" y="0">(주)엘리파이대부</tspan></text>
+(USDC)" transform="translate(1352.521 3505.222)" fill="#333" font-size="11" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-32" y="0">8.</tspan><tspan y="0" xml:space="preserve" font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"> 상환금 수령</tspan><tspan font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"><tspan x="-18" y="15">(</tspan><tspan y="15" fill="#3679b5">USDC</tspan><tspan y="15">)</tspan></tspan></text>
+    <rect id="사각형_7199" data-name="사각형 7199" width="173.646" height="44" rx="5" transform="translate(1212 3655.27)" fill="#3679b5"/>
+    <text id="_주_엘리파이대부" data-name="(주)엘리파이대부" transform="translate(1299.229 3682.245)" fill="#fff" font-size="13" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-46" y="0">(주)엘리파이대부</tspan></text>
     <text id="_7._원리금_상환_USDC_" data-name="7. 원리금 상환
-(USDC)" transform="translate(1398.874 3612.836)" fill="#333" font-size="11" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-32" y="0">7.</tspan><tspan y="0" xml:space="preserve" font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"> 원리금 상환</tspan><tspan font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"><tspan x="-18" y="15">(</tspan><tspan y="15" fill="#3679b5">USDC</tspan><tspan y="15">)</tspan></tspan></text>
+(USDC)" transform="translate(1352.521 3619.649)" fill="#333" font-size="11" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-32" y="0">7.</tspan><tspan y="0" xml:space="preserve" font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"> 원리금 상환</tspan><tspan font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"><tspan x="-18" y="15">(</tspan><tspan y="15" fill="#3679b5">USDC</tspan><tspan y="15">)</tspan></tspan></text>
     <text id="_5._대출채권_담보_및_가상화폐_대출_USDC_" data-name="5. 대출채권 담보
 및 가상화폐 대출
-(USDC)" transform="translate(1279.88 3612.149)" fill="#333" font-size="11" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-37" y="0">5.</tspan><tspan y="0" xml:space="preserve" font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"> 대출채권 담보</tspan><tspan font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"><tspan x="-37" y="15">및 가상화폐 대출</tspan><tspan x="-18" y="30">(</tspan><tspan y="30" fill="#3679b5">USDC</tspan><tspan y="30">)</tspan></tspan></text>
-    <rect id="사각형_7201" data-name="사각형 7201" width="173.646" height="44" rx="5" transform="translate(1258.354 3773.386)" fill="#3679b5"/>
-    <text id="_주_엘리시아" data-name="(주)엘리시아" transform="translate(1341.643 3800.402)" fill="#fff" font-size="13" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-34" y="0">(주)엘리시아</tspan></text>
+(USDC)" transform="translate(1233.526 3609.149)" fill="#333" font-size="11" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-37" y="0">5.</tspan><tspan y="0" xml:space="preserve" font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"> 대출채권 담보</tspan><tspan font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"><tspan x="-37" y="15">및 가상화폐 대출</tspan><tspan x="-18" y="30">(</tspan><tspan y="30" fill="#3679b5">USDC</tspan><tspan y="30">)</tspan></tspan></text>
+    <rect id="사각형_7201" data-name="사각형 7201" width="173.646" height="44" rx="5" transform="translate(1212 3773.386)" fill="#3679b5"/>
+    <text id="_주_엘리시아" data-name="(주)엘리시아" transform="translate(1295.289 3800.402)" fill="#fff" font-size="13" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-34" y="0">(주)엘리시아</tspan></text>
     <text id="_6._원리금_상환_USDC_" data-name="6. 원리금 상환
-(USDC)" transform="translate(1399 3727.862)" fill="#333" font-size="11" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-32" y="0">6.</tspan><tspan y="0" xml:space="preserve" font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"> 원리금 상환</tspan><tspan font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"><tspan x="-18" y="15">(</tspan><tspan y="15" fill="#3679b5">USDC</tspan><tspan y="15">)</tspan></tspan></text>
+(USDC)" transform="translate(1352.646 3738.208)" fill="#333" font-size="11" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-32" y="0">6.</tspan><tspan y="0" xml:space="preserve" font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"> 원리금 상환</tspan><tspan font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"><tspan x="-18" y="15">(</tspan><tspan y="15" fill="#3679b5">USDC</tspan><tspan y="15">)</tspan></tspan></text>
     <text id="_3._대출계약_및_담보설정계약_USDC_" data-name="3. 대출계약
 및 담보설정계약
-(USDC)" transform="translate(1282.354 3728.798)" fill="#333" font-size="11" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-26" y="0">3.</tspan><tspan y="0" xml:space="preserve" font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"> 대출계약</tspan><tspan font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"><tspan x="-36" y="15">및 담보설정계약</tspan><tspan x="-18" y="30">(</tspan><tspan y="30" fill="#3679b5">USDC</tspan><tspan y="30">)</tspan></tspan></text>
-    <rect id="사각형_7198" data-name="사각형 7198" width="173.646" height="44" rx="5" transform="translate(1258.354 3880.584)" fill="#e6e6e6"/>
-    <text id="ELYLOAN_LLC" data-name="ELYLOAN LLC" transform="translate(1340.651 3907.638)" fill="#333" font-size="13" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-41" y="0">ELYLOAN LLC</tspan></text>
-    <g id="그룹_7025" data-name="그룹 7025" transform="translate(1350.901 3814.496) rotate(90)">
+(USDC)" transform="translate(1236 3723.467)" fill="#333" font-size="11" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-26" y="0">3.</tspan><tspan y="0" xml:space="preserve" font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"> 대출계약</tspan><tspan font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"><tspan x="-36" y="15">및 담보설정계약</tspan><tspan x="-18" y="30">(</tspan><tspan y="30" fill="#3679b5">USDC</tspan><tspan y="30">)</tspan></tspan></text>
+    <rect id="사각형_7198" data-name="사각형 7198" width="173.646" height="44" rx="5" transform="translate(1212 3880.584)" fill="#e6e6e6"/>
+    <text id="ELYLOAN_LLC" data-name="ELYLOAN LLC" transform="translate(1294.298 3907.638)" fill="#333" font-size="13" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-41" y="0">ELYLOAN LLC</tspan></text>
+    <g id="그룹_7025" data-name="그룹 7025" transform="translate(1304.548 3814.496) rotate(90)">
       <line id="선_10036-7" data-name="선 10036" x2="61.945" transform="translate(0 3.506)" fill="none" stroke="#707070" stroke-width="1"/>
       <g id="다각형_51-7" data-name="다각형 51" transform="translate(64.921) rotate(90)" fill="#707070">
         <path d="M 6.069073677062988 4.667018890380859 L 0.9435520768165588 4.667018890380859 L 3.506312847137451 0.8904455900192261 L 6.069073677062988 4.667018890380859 Z" stroke="none"/>
         <path d="M 3.506312847137451 1.78089714050293 L 1.887104511260986 4.167018890380859 L 5.125521183013916 4.167018890380859 L 3.506312847137451 1.78089714050293 M 3.506312847137451 -1.430511474609375e-06 L 7.012622833251953 5.167018890380859 L 2.86102294921875e-06 5.167018890380859 L 3.506312847137451 -1.430511474609375e-06 Z" stroke="none" fill="#707070"/>
       </g>
     </g>
-    <g id="그룹_7037" data-name="그룹 7037" transform="translate(1350.901 3923.803) rotate(90)">
+    <g id="그룹_7037" data-name="그룹 7037" transform="translate(1304.548 3923.803) rotate(90)">
       <line id="선_10036-8" data-name="선 10036" x2="61.945" transform="translate(0 3.506)" fill="none" stroke="#707070" stroke-width="1"/>
       <g id="다각형_51-8" data-name="다각형 51" transform="translate(64.921) rotate(90)" fill="#707070">
         <path d="M 6.069073677062988 4.667018890380859 L 0.9435520768165588 4.667018890380859 L 3.506312847137451 0.8904455900192261 L 6.069073677062988 4.667018890380859 Z" stroke="none"/>
         <path d="M 3.506312847137451 1.78089714050293 L 1.887104511260986 4.167018890380859 L 5.125521183013916 4.167018890380859 L 3.506312847137451 1.78089714050293 M 3.506312847137451 -1.430511474609375e-06 L 7.012622833251953 5.167018890380859 L 2.86102294921875e-06 5.167018890380859 L 3.506312847137451 -1.430511474609375e-06 Z" stroke="none" fill="#707070"/>
       </g>
     </g>
-    <text id="_2._99_소유" data-name="2. 99% 소유" transform="translate(1305.968 3850.462)" fill="#333" font-size="11" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-28" y="0">2.</tspan><tspan y="0" xml:space="preserve" font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"> 99% 소유</tspan></text>
-    <g id="패스_10565" data-name="패스 10565" transform="translate(1262.038 3989.546)" fill="#e0f4ff">
+    <text id="_2._99_소유" data-name="2. 99% 소유" transform="translate(1259.614 3850.462)" fill="#333" font-size="11" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-28" y="0">2.</tspan><tspan y="0" xml:space="preserve" font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"> 99% 소유</tspan></text>
+    <g id="패스_10565" data-name="패스 10565" transform="translate(1215.685 3989.546)" fill="#e0f4ff">
       <path d="M 169.8975830078125 43.32891082763672 L 4.064542293548584 43.32891082763672 C 2.099042177200317 43.32891082763672 0.4999986290931702 42.01715087890625 0.4999986290931702 40.40478134155273 L 0.4999986290931702 3.424129247665405 C 0.4999986290931702 1.81175971031189 2.099042177200317 0.4999988973140717 4.064542293548584 0.4999988973140717 L 169.8975830078125 0.4999988973140717 C 171.8630828857422 0.4999988973140717 173.4621276855469 1.81175971031189 173.4621276855469 3.424129247665405 L 173.4621276855469 40.40478134155273 C 173.4621276855469 42.01715087890625 171.8630828857422 43.32891082763672 169.8975830078125 43.32891082763672 Z" stroke="none"/>
       <path d="M 4.06451416015625 1 C 2.374740600585938 1 1 2.087455749511719 1 3.424137115478516 L 1 40.4047737121582 C 1 41.741455078125 2.374740600585938 42.82891082763672 4.06451416015625 42.82891082763672 L 169.8975830078125 42.82891082763672 C 171.5873870849609 42.82891082763672 172.9621276855469 41.741455078125 172.9621276855469 40.4047737121582 L 172.9621276855469 3.424137115478516 C 172.9621276855469 2.087455749511719 171.5873870849609 1 169.8975830078125 1 L 4.06451416015625 1 M 4.06451416015625 0 L 169.8975830078125 0 C 172.1423797607422 0 173.9621276855469 1.533023834228516 173.9621276855469 3.424137115478516 L 173.9621276855469 40.4047737121582 C 173.9621276855469 42.29586410522461 172.1423797607422 43.82891082763672 169.8975830078125 43.82891082763672 L 4.06451416015625 43.82891082763672 C 1.819747924804688 43.82891082763672 0 42.29586410522461 0 40.4047737121582 L 0 3.424137115478516 C 0 1.533023834228516 1.819747924804688 0 4.06451416015625 0 Z" stroke="none" fill="#d3f0ff"/>
     </g>
-    <text id="미국_부동산" data-name="미국 부동산" transform="translate(1344.615 4016.77)" fill="#333" font-size="13" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-31" y="0">미국 부동산</tspan></text>
-    <text id="_1._100_소유" data-name="1. 100% 소유" transform="translate(1302.311 3957.005)" fill="#333" font-size="11" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-32" y="0">1.</tspan><tspan y="0" xml:space="preserve" font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"> 100% 소유</tspan></text>
+    <text id="미국_부동산" data-name="미국 부동산" transform="translate(1298.261 4016.77)" fill="#333" font-size="13" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-31" y="0">미국 부동산</tspan></text>
+    <text id="_1._100_소유" data-name="1. 100% 소유" transform="translate(1255.957 3959.005)" fill="#333" font-size="11" font-family="SpoqaHanSansNeo-Bold, Spoqa Han Sans Neo" font-weight="700"><tspan x="-32" y="0">1.</tspan><tspan y="0" xml:space="preserve" font-family="SpoqaHanSansNeo-Regular, Spoqa Han Sans Neo" font-weight="400"> 100% 소유</tspan></text>
   </g>
 </svg>
