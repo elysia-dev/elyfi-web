@@ -6274,12 +6274,14 @@ input[type='number'] {
       align-items: center;
       padding: 0px 30.25px;
       > section {
+        position: relative;
         width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
         font-family: 'SpoqaHanSansNeo-Bold';
         font-weight: 700;
+        padding-right: 50px;
         > div {
           cursor: pointer;
           font-size: 18px;
@@ -6302,6 +6304,13 @@ input[type='number'] {
         > input:focus {
           outline: none;
         }
+      }
+      > section::after {
+        position: absolute;
+        right: 0px;
+        bottom: 20%;
+        font-size: 15px;
+        content: 'NFT(s)';
       }
       > p {
         font-family: 'Montserrat-bold SpoqaHanSansNeo-Bold';
