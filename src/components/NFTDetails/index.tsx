@@ -321,7 +321,11 @@ const NFTDetails = (): JSX.Element => {
                   t('nftMarket.realEstateFeatureContent.content.1'),
                   t('nftMarket.realEstateFeatureContent.content.2'),
                 ],
-                image: [AssetImage00, AssetImage01, AssetImage02],
+                image: [
+                  'https://elysia.mypinata.cloud/ipfs/QmayBV1Vvakd15hFsUdrG6sj5Wztm4G94gagbJwX3MNKSt',
+                  'https://elysia.mypinata.cloud/ipfs/QmdHKQU8fbJpGvcrkSC7kr4MPTbJL5PJn52nCDuSK9pWnZ',
+                  'https://elysia.mypinata.cloud/ipfs/Qma5rzz3EdgkqkuaCSDca7UG8BSnxMuvA5YFasLDHbWr4U',
+                ],
               }}
               aroundAssetInfo={[
                 {
