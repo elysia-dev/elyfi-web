@@ -6307,7 +6307,7 @@ input[type='number'] {
       // padding-bottom: 25.75px;
       padding: 29.75px 19px 25.75px 19px;
       > h3 {
-        font-family: 'SpoqaHanSansNeo-Bold';
+        font-family: 'Inter-Bold';
         font-size: 18px;
         color: $font-color;
         margin: 0px;
@@ -6418,7 +6418,7 @@ input[type='number'] {
         align-items: center;
         font-size: 15px;
         > p {
-          font-family: 'Montserrat-bold SpoqaHanSansNeo-Bold';
+          font-family: 'Inter-Bold';
           color: $background-color;
         }
       }
@@ -6477,6 +6477,7 @@ input[type='number'] {
         font-weight: 700;
         padding-right: 50px;
         > div {
+          font-family: 'Inter-Bold';
           cursor: pointer;
           > p {
             font-size: 18px;
@@ -6524,7 +6525,7 @@ input[type='number'] {
       padding: 12.5px 19.5px;
       border-bottom: 1px solid $gray-line;
       > p {
-        font-family: 'Montserrat-bold SpoqaHanSansNeo-Bold';
+        font-family: 'Inter-Bold';
         font-weight: 700;
         font-size: 15px;
       }
