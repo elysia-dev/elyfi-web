@@ -4,6 +4,7 @@ import envs from 'src/core/envs';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
 import { useWeb3React } from '@web3-react/core';
+import ReactGA from 'react-ga';
 import {
   erc20GasPriceFetcher,
   gasPriceFetcher,
@@ -12,6 +13,9 @@ import usePurchaseNFT from 'src/hooks/usePurchaseNFT';
 import NFTPurchaseType from 'src/enums/NFTPurchaseType';
 import { useTranslation } from 'react-i18next';
 import { utils } from 'ethers';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
+import ModalViewType from 'src/enums/ModalViewType';
+import TransactionType from 'src/enums/TransactionType';
 import Confirm from './components/Confirm';
 import InputQuantity from './components/InputQuantity ';
 import LoadingIndicator from './components/LoadingIndicator';
@@ -35,7 +39,7 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
   balances,
   remainingNFT,
 }) => {
-  const { account, library } = useWeb3React();
+  const { account, library, chainId } = useWeb3React();
   const { t } = useTranslation();
   const [quantity, setQuantity] = useState('');
   const [purchaseType, setPurchaseType] = useState('ETH');
@@ -213,7 +217,29 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
                   : undefined,
               );
             }
-            setCurrentStep((prev) => prev + 1);
+            setCurrentStep((prev) => {
+              if (prev === 1) {
+                const emitter = buildEventEmitter(
+                  ModalViewType.NFTPurchaseModal,
+                  TransactionType.PurchaseNFT,
+                  JSON.stringify({
+                    product: 'Bond NFT_0',
+                    chainId,
+                    address: account,
+                    nftPurchaseType: purchaseType,
+                    nftAmount: `${quantity}(${parseInt(quantity, 10) * 10})`,
+                    depositAmount: utils.parseUnits(
+                      purchaseType === 'ETH'
+                        ? String(paymentEth)
+                        : String(parseInt(quantity, 10) * 10),
+                      purchaseType === 'ETH' ? 18 : 6,
+                    ),
+                  }),
+                );
+                emitter.clicked();
+              }
+              return prev + 1;
+            });
           }}
           isLoading={isLoading}
         />

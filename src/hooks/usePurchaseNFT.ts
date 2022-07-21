@@ -47,12 +47,13 @@ const usePurchaseNFT = (
       ModalViewType.NFTPurchaseModal,
       TransactionType.PurchaseNFT,
       JSON.stringify({
-        version: ElyfiVersions.V1,
+        product: 'Bond NFT_0',
         chainId,
         address: account,
         nftPurchaseType: purchaseType,
+        nftAmount: `${parseInt(amount, 10) / 10}(${amount})`,
         depositAmount: utils.parseUnits(
-          amount,
+          purchaseType === 'ETH' ? ethAmount || '0' : amount,
           purchaseType === 'ETH' ? 18 : 6,
         ),
       }),
