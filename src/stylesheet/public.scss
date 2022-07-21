@@ -2685,6 +2685,7 @@ input[type='number'] {
                 > figure {
                   position: relative;
                   flex: 1;
+                  cursor: pointer;
                   &.disable {
                     &::after {
                       content: '';
