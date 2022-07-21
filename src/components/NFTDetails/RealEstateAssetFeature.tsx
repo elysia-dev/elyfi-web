@@ -15,7 +15,7 @@ const RealEstateAssetFeature: React.FC<Props> = ({ assetFeature }) => {
 
   return (
     <section className="nft-details__real-estate-info__asset-feature">
-      <h2>부동산 특징</h2>
+      <h2>{t('nftMarket.realEstateFeature')}</h2>
       <div>
         <section>
           <img src={assetFeature.image[currentImage]} />

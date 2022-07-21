@@ -5,7 +5,7 @@
         "header__title": "<strong><i>ELYFI</i>,<br/>a new global real-estate investment</strong>",
         "header__content": "Invest in Korean and the US real estate with crypto now!",
         "button__market": "Go to market",
-        "button__deposit": "Deposit"
+        "button__deposit": "Go to deposit"
       },
       "section": [
         {
@@ -720,10 +720,11 @@
         "content": "Follow our Market Guide to buy bond NFTs.",
         "comment": "* This guide explains how to buy with ETH",
         "title": [
-          "1. Create Metamask",
-          "2. Buy and send ETH",
-          "3. Wallet connection",
-          "4. Buy Bond NFTs"
+          "Create Metamask",
+          "",
+          "Buy and send ETH",
+          "Wallet connection",
+          "Buy Bond NFTs"
         ],
         "answer": {
           "a1": [
@@ -740,12 +741,16 @@
             "On the Secret Recovery Phrase confirmation page, select the phrases in order and click the `OK` button to complete the wallet creation."
           ],
           "a3": [
-            "업비트에서 투자를 원하시는 금액만큼 이더리움(ETH)을 매수해주세요.",
-            "업비트 상단의 ‘입출금’ 페이지에 접속한 후 ‘이더리움(ETH)’을 선택하고 ‘출금신청’ 버튼을 클릭해주세요.",
-            "원하시는 출금수량을 선택하신 후 ‘확인’ 버튼을 클릭해주세요.",
-            "이더리움(ETH)을 전송할 메타마스크 주소를 입력하고 ‘출금신청’ 버튼을 클릭해주세요.",
-            "해당 팝업창이 뜨면 ‘아니오’ 버튼을 클릭해주세요.",
-            "지갑주소 및 출금수량을 확인하고 ‘카카오페이 인증하기’ 버튼을 클릭해주세요. 카카오페이 인증까지 완료하면 이더리움(ETH) 출금이 완료됩니다."
+            "Buy the amount of Ethereum (ETH) you want to invest in Binance.",
+            "Click on ‘Fiat and Spot’ in the Wallet tab at the top of Binance.",
+            "Click ‘Withdraw’ in the Ethereum (ETH) tab to proceed with the withdrawal.",
+            "Enter the Metamask address to send Ethereum and, after selecting ETH for the network, choose the desired withdrawal amount, and click the ‘Withdraw’ button.",
+            "When a pop-up window appears, click the ‘Continue’ button.",
+            "Select items B, C, and B in this order and click the ‘Submit’ button.",
+            "After checking both boxes, click the ‘Submit’ button.",
+            "Click the ‘OK’ button.",
+            "Click the ‘Continue’ button.",
+            "After completing mobile phone verification and email verification, click the ‘Submit’ button to complete ETH transfer."
           ],
           "a4": [
             "After accessing the ELYFI site, click the ‘Connect Wallet’ button in the upper right corner.",
@@ -800,6 +805,7 @@
       "myPurchase": "My holdings",
       "myPurchaseInfo": "Displays the amount of Bond NFTs.",
       "purchase": "Purchase",
+      "tradeOnOpensea": "Trade on OpenSea",
       "purchaseStatus": {
         "walletConnect": "Connect wallet",
         "nullPurchase": "No quantity purchased yet",
@@ -835,11 +841,11 @@
         "NFT Name",
         "Details",
         "Principal",
-        "Expected interest income",
+        "Expected interest",
         "APR",
         "Overdue APR",
-        "Expected Loan date",
-        "Expected maturity date",
+        "Expected Loan Date",
+        "Expected Maturity Date",
         "Document",
         "08-04-2022 KST",
         "11-30-2022 KST"
@@ -924,6 +930,19 @@
         "{{ year }}",
         "Two-story house(3rooms 4baths)"
       ],
+      "realEstateFeature": "Features",
+      "realEstateFeatureContent": {
+        "title": [
+          "Maximizing value through flipping",
+          "Excellent location",
+          "No Loan, Low Risk"
+        ],
+        "content": [
+          "The property is expected to yield a high rate of return due to the recent remodeling of a two-story detached house with a large lot and backyard of about 6,123sqft.",
+          "Demands are high as Occidental College is nearby. The location has an convenient access transportation that connects to Beverly Hills and LA Korean Town.",
+          "The property is not loanable and therefore has no priority in title."
+        ]
+      },
       "aroundAsset": [
         "Surrounding real estate prices",
         "The latest sale price for a home of similar size and within a 20 minutes drive away."
@@ -936,7 +955,7 @@
       "terms": [
         "ELYFI does not advise or solicit any assets posted on this site. The buyers are responsible for choosing and purchasing.",
         "This product is a form in which buyers purchase bond NFTs through ELYFI and borrowers borrow cryptocurrency with the raised money.",
-        "If you purchase this product, you cannot cancel the purchase. However, you can trade bond NFTs held at OpenSea, an NFT marketplace.",
+        "If you purchase this product, you cannot cancel the purchase. However, you can trade bond NFTs held at <1><0>OpenSea</0></1>, an NFT marketplace.",
         "If the loan is not executed, you can receive the purchase principal directly in USDC.",
         "Even if the payment coin is Ether (ETH), the redemption amount is calculated according to the bond NFT amount, not the Ether amount, and the redemption amount is received in USDC on the bond maturity date. (USDC can be substituted for other coins.)",
         "Principal and rate of return are not guaranteed for this product.",
@@ -1007,7 +1026,7 @@
       "twitter": {
         "title": "Retweet\nand get 1% payback of your purchase!",
         "button": "Retweet and get 1% more payback",
-        "abandonButton": "Abandon payment reward, don't show this message again"
+        "abandonButton": "Give up this benefit and do not show this again"
       },
       "complete": {
         "header": "Congratulations!<br />You have accumulated<br/> {{tokenAmount}} {{tokenName}} tokens so far.",

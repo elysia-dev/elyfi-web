@@ -2,11 +2,11 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import MediaQuery from 'src/enums/MediaQuery';
@@ -62,6 +62,7 @@ import TokenRewardModal from '../Market/Modals/TokenRewardModal';
 import SelectWalletModal from '../Market/Modals/SelectWalletModal';
 import ReconnectWallet from '../Market/Modals/components/ReconnectWallet';
 import NewsCard from './NewsCard';
+import Guide from './Guide';
 
 export interface INews {
   title: string;
@@ -172,6 +173,30 @@ const NFTDetails = (): JSX.Element => {
     );
   };
 
+  const purchaseButtonAction = () => {
+    const wallet = sessionStorage.getItem('@connect');
+
+    return account
+      ? mainnetType === MainnetType.Ethereum
+        ? setModalType('purchase')
+        : wallet === 'metamask'
+        ? setModalType('changeNetwork')
+        : setModalType('reconnect')
+      : setModalType('selectWallet');
+  };
+
+  const purchaseButtonDisable = useMemo(() => {
+    return (nftTotalSupply || nftTotalSupply === 0) &&
+      current.isBetween(
+        moment(startTime).subtract(1, 'hours').format('YYYY.MM.DD HH:mm:ss'),
+        endedTime,
+      )
+      ? (advanceReservation.includes(account || '') ||
+          current.isBetween(startTime, endedTime)) &&
+          totalPurchase > nftTotalSupply
+      : false;
+  }, [nftTotalSupply, current, totalPurchase]);
+
   const getPurchasedNFT = useCallback(async () => {
     try {
       const nftContract = getNFTContract(library.getSigner());
@@ -253,6 +278,7 @@ const NFTDetails = (): JSX.Element => {
               type={t('market.nftType.0')}
               interest={0.3}
               nftInfo={nftInfo}
+              openseaLink={''}
             />
           </section>
         );
@@ -276,20 +302,20 @@ const NFTDetails = (): JSX.Element => {
               }}
               assetFeature={{
                 title: [
-                  'Flipping을 통한 수익률 극대화',
-                  '우수한 입지',
-                  'No 융자, Low 리스크',
+                  t('nftMarket.realEstateFeatureContent.title.0'),
+                  t('nftMarket.realEstateFeatureContent.title.1'),
+                  t('nftMarket.realEstateFeatureContent.title.2'),
                 ],
                 content: [
-                  '약 175평의 넓은 대지와 뒤뜰을 가지고 있는 2층 단독주택을 최근 리모델링하였고, 이에 높은 수익률이 기대되는 매물입니다.',
-                  'Occidental 대학교가 인근에 위치해 있어 배후수요가 탄탄하며, 베버리힐즈, LA코리아타운 등으로 이어지는 교통환경이 우수한 지역으로 입지가 훌륭합니다.',
-                  '본 부동산은 대출이 없기 때문에 권리상 어떤 선순위도 존재하지 않습니다.',
+                  t('nftMarket.realEstateFeatureContent.content.0'),
+                  t('nftMarket.realEstateFeatureContent.content.1'),
+                  t('nftMarket.realEstateFeatureContent.content.2'),
                 ],
                 image: [AroundAsset00, AroundAsset01, AroundAsset02],
               }}
               aroundAssetInfo={[
                 {
-                  title: 'Crescent St, Los Angeles, CA',
+                  title: 'Crescent St, LA, CA',
                   image: AroundAsset00,
                   price: '$1,480,000 ~',
                   completion: t('nftMarket.realEstateInfoData.1', {
@@ -298,7 +324,7 @@ const NFTDetails = (): JSX.Element => {
                   landArea: '1,624sqft',
                 },
                 {
-                  title: 'Minneapolis St, Los Angeles, CA',
+                  title: 'Minneapolis St, LA, CA',
                   image: AroundAsset01,
                   price: '$1,485,000 ~',
                   completion: t('nftMarket.realEstateInfoData.1', {
@@ -323,6 +349,7 @@ const NFTDetails = (): JSX.Element => {
         return (
           <section className="nft-details__bond-nft">
             <BondNFT
+              location="2046 Norwalk Ave, LA, CA 90041"
               link={{
                 grantDeed: t('nftMarket.document.grantDeed'),
                 ein: t('nftMarket.document.ein'),
@@ -429,40 +456,19 @@ const NFTDetails = (): JSX.Element => {
           <p>{t('nftMarket.title')}</p>
         </div>
         <Link
-          className="nft-details__guide"
+          className="nft-details__guide pc-only"
           to={{
-            pathname: `/${lng}/faq`,
+            pathname: `/${lng}/market/guide`,
           }}>
           {t('nftMarket.guide')}
         </Link>
         <article className="nft-details__header" ref={headerRef}>
           <Header
-            onButtonClick={() => {
-              const wallet = sessionStorage.getItem('@connect');
-
-              return account
-                ? mainnetType === MainnetType.Ethereum
-                  ? setModalType('purchase')
-                  : wallet === 'metamask'
-                  ? setModalType('changeNetwork')
-                  : setModalType('reconnect')
-                : setModalType('selectWallet');
-            }}
+            onButtonClick={purchaseButtonAction}
             purchasedNFT={purchasedNFT}
-            isDisabled={
-              (nftTotalSupply || nftTotalSupply === 0) &&
-              current.isBetween(
-                moment(startTime)
-                  .subtract(1, 'hours')
-                  .format('YYYY.MM.DD HH:mm:ss'),
-                endedTime,
-              )
-                ? (advanceReservation.includes(account || '') ||
-                    current.isBetween(startTime, endedTime)) &&
-                  totalPurchase > nftTotalSupply
-                : false
-            }
+            isDisabled={purchaseButtonDisable}
             mainnetType={mainnetType}
+            openseaLink={'https://opensea.io/'}
           />
         </article>
         <article className="nft-details__purchase">
@@ -471,6 +477,7 @@ const NFTDetails = (): JSX.Element => {
             totalPurchase={totalPurchase}
             startTime={startTime}
             endedTime={endedTime}
+            etherscanLink={''}
           />
         </article>
         <article className="nft-details__content">
@@ -520,7 +527,18 @@ const NFTDetails = (): JSX.Element => {
             </section>
             <section>{setTabPageViewer(currentTab)}</section>
           </article>
-
+          <article className="nft-details__faq">
+            <div>
+              <h2>{t('nftMarket.question.0')}</h2>
+              <Link
+                to={{
+                  pathname: `/${lng}/faq`,
+                }}>
+                {t('nftMarket.viewMore')}
+              </Link>
+            </div>
+            <Guide />
+          </article>
           <article className="nft-details__news">
             <h2>{t('nftMarket.newsTitle')}</h2>
             <section>
@@ -535,13 +553,33 @@ const NFTDetails = (): JSX.Element => {
           <ul>
             <li>{t('nftMarket.terms.0')}</li>
             <li>{t('nftMarket.terms.1')}</li>
-            <li>{t('nftMarket.terms.2')}</li>
+            <li>
+              <Trans i18nKey={'nftMarket.terms.2'}>
+                text
+                <u>
+                  <a
+                    target="_blank"
+                    href="https://opensea.io/"
+                    style={{ color: '#00bfff' }}>
+                    link
+                  </a>
+                </u>
+              </Trans>
+            </li>
             <li>{t('nftMarket.terms.3')}</li>
             <li>{t('nftMarket.terms.4')}</li>
             <li>{t('nftMarket.terms.5')}</li>
             <li>{t('nftMarket.terms.6')}</li>
             <li>{t('nftMarket.terms.7')}</li>
+            <li>{t('nftMarket.terms.8')}</li>
           </ul>
+          <div>
+            <button
+              onClick={purchaseButtonAction}
+              className={purchaseButtonDisable ? '' : 'disabled'}>
+              {t('nftMarket.purchase')}
+            </button>
+          </div>
         </article>
       </main>
     </>

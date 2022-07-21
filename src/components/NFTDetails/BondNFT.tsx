@@ -6,6 +6,7 @@ import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import Document from 'src/assets/images/market/document.svg';
 
 interface Props {
+  location: string;
   link: {
     grantDeed: string;
     ein: string;
@@ -17,14 +18,14 @@ interface Props {
   };
 }
 
-const BondNFT: React.FC<Props> = ({ link }) => {
+const BondNFT: React.FC<Props> = ({ location, link }) => {
   const { t } = useTranslation();
   const { value: mediaQuery } = useMediaQueryType();
 
   return (
     <>
       <table>
-        <tr>
+        <tr className="pc-only">
           <td colSpan={2} className="image-wrapper">
             <img
               src={
@@ -38,7 +39,7 @@ const BondNFT: React.FC<Props> = ({ link }) => {
             <b>{t('nftMarket.bondNftTable.header.0')}</b>
           </th>
           <td>
-            <p>{t('nftMarket.bondNftTable.content.0')}</p>
+            <p>{t('nftMarket.bondNftTable.content.0', { location })}</p>
             <section>
               <a target="_blank" href={link.grantDeed} className="table-button">
                 <img src={Document} alt="Document icon" />

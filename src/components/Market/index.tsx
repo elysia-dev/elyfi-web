@@ -30,7 +30,7 @@ export interface ICardType {
 const tempCardArray: ICardType[] = [
   {
     PFType: PFType.BOND,
-    Location: '2046 Norwalk Ave LA, CA 90041',
+    Location: '2046 Norwalk Ave, LA, CA 90041',
     APY: 12,
     currentSoldNFTs: 0,
     totalNFTs: 54000,
@@ -72,7 +72,7 @@ const Market = (): JSX.Element => {
   // if (!nftTotalSupply) return;
   // // const nft = {
   // //   PFType: PFType.BOND,
-  // //   Location: '2046 Norwalk Ave LA, CA 90041',
+  // //   Location: '2046 Norwalk Ave, LA, CA 90041',
   // //   APY: 12,
   // //   currentSoldNFTs: nftTotalSupply,
   // //   totalNFTs: 54000,

@@ -5,21 +5,23 @@ import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import NFTTraitType from 'src/enums/NFTTraitType';
 import Skeleton from 'react-loading-skeleton';
+import NewTab from 'src/assets/images/market/new_tab.png';
 import { NFTType } from '.';
 
 interface Props {
   type: string;
   interest: number;
   nftInfo: NFTType | undefined;
+  openseaLink: string;
 }
 
-const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo }) => {
+const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo, openseaLink }) => {
   const { t, i18n } = useTranslation();
 
   // const nftData = useCallback(
   //   (traitType: NFTTraitType, nft?: NFTType) => {
   //     if (!nft) {
-  //       return <Skeleton width={80} height={18} />;
+  //       return <Skeleton width={65} height={18} />;
   //     }
   //     return nft?.attributes.find((info) => {
   //       return info.trait_type === traitType;
@@ -33,7 +35,7 @@ const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo }) => {
       if (!nft) {
         return <Skeleton width={110} height={18} />;
       }
-      return moment().format('YYYY.MM.DD');
+      // return moment().format('YYYY.MM.DD');
       return moment(
         nft?.attributes
           .find((info) => {
@@ -54,7 +56,12 @@ const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo }) => {
 
   return (
     <>
-      <h2>{t('nftMarket.nftInfo')}</h2>
+      <section>
+        <h2>{t('nftMarket.nftInfo')}</h2>
+        <a href={openseaLink} target="_blank">
+          <img src={NewTab} alt="new tab icon" />
+        </a>
+      </section>
       <div>
         <figure>
           <video
