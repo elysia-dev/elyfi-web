@@ -89,7 +89,6 @@ const RealEstateTable: React.FC<Props> = ({ tableInfo }) => {
             <b>{t('nftMarket.realEstateInfoTable.0')}</b>
           </th>
           <td
-            colSpan={3}
             style={{
               cursor: 'pointer',
             }}

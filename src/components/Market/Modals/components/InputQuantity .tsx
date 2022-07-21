@@ -26,7 +26,9 @@ const InputQuantity: React.FC<Props> = ({
   return (
     <div className="market_modal__input">
       <section>
-        <div onClick={() => max()}>{t('nftModal.purchaseModal.max')}</div>
+        <div onClick={() => max()}>
+          <p>{t('nftModal.purchaseModal.max')}</p>
+        </div>
         <input
           type="string"
           value={

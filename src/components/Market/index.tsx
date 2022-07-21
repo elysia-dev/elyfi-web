@@ -77,7 +77,7 @@ const Market = (): JSX.Element => {
       currentSoldNFTs: nftTotalSupply,
       totalNFTs: 54000,
       cardImage: BondAsset,
-      onClickLink: 'a1',
+      onClickLink: 'bondnft/0',
     };
     setTempCards([nft, ...tempCardArray]);
   }, [nftTotalSupply]);

@@ -568,7 +568,7 @@ input[type='number'] {
       &::after {
         content: 'B';
         position: absolute;
-        top: 5px;
+        top: 3.5px;
         right: -10px;
         width: 12px;
         height: 12px;
@@ -1914,7 +1914,7 @@ input[type='number'] {
       &__header {
         text-align: center;
         margin-top: 30px;
-        margin-bottom: 100px;
+        margin-bottom: 150px;
         > h1 {
           font-size: 30px;
           margin-bottom: 30px;
@@ -2151,6 +2151,7 @@ input[type='number'] {
           display: flex;
           gap: 30px;
           > a {
+            @include hover__box-shadow;
             width: 130px;
             height: 30px;
             background: #3679b5;
@@ -2165,6 +2166,7 @@ input[type='number'] {
             line-height: 30px;
           }
           > button {
+            @include hover__box-shadow;
             width: 130px;
             height: 30px;
             background: #00bfff;
@@ -2346,6 +2348,7 @@ input[type='number'] {
             display: flex;
             flex-direction: column;
             text-align: left;
+            flex: 1;
             > h3 {
               font-size: 15px;
               color: $font-color;
@@ -2363,7 +2366,22 @@ input[type='number'] {
       width: 100%;
       display: flex;
       justify-content: space-between;
-      margin-top: 50px;
+      &__wrapper {
+        > div {
+          display: flex;
+          flex-direction: row;
+          margin-bottom: 40px;
+          align-items: center;
+          margin-top: 70px;
+          > h2 {
+            font-size: 18px;
+            margin-right: 10px;
+          }
+          > a {
+            height: 18px;
+          }
+        }
+      }
       > div {
         flex: 1;
         text-align: center;
@@ -2371,16 +2389,23 @@ input[type='number'] {
         border-left: 1px solid #e4e5e4;
         border-right: 1px solid #e4e5e4;
         cursor: pointer;
-        font-size: 18px;
         > b {
-          margin: 15px;
+          margin: 15px auto 11px;
           color: #000000;
           cursor: pointer;
           display: block;
+          font-size: 16px;
         }
         &.disable {
           background-color: #f8f8f7;
           border: 1px solid #e4e5e4;
+          transition: all 0.2s ease;
+          &:hover {
+            background-color: #f0f0f1;
+          }
+          &:active {
+            background-color: #e4e5e4;
+          }
           > b {
             color: #b7b7b7;
           }
@@ -2451,6 +2476,7 @@ input[type='number'] {
                 gap: 8px;
                 padding-right: 20px;
                 > a {
+                  @include hover__sub_box-shadow;
                   height: 35px;
                   border: 1px solid #3679b5;
                   border-radius: 5px;
@@ -2521,6 +2547,7 @@ input[type='number'] {
               display: flex;
               align-items: center;
               > .table-button {
+                @include hover__sub_box-shadow;
                 display: flex;
                 align-items: center;
                 padding: 6px 10px;
@@ -2534,6 +2561,8 @@ input[type='number'] {
                 > p {
                   font-size: 12px;
                   color: #3679b5;
+                  background: none;
+                  -webkit-text-fill-color: initial;
                 }
               }
             }
@@ -2580,6 +2609,7 @@ input[type='number'] {
               flex-direction: column;
               gap: 8px;
               > a {
+                @include hover__sub_box-shadow;
                 width: max-content;
                 padding: 5px 10px 5px 0px;
                 height: 35px;
@@ -2637,8 +2667,25 @@ input[type='number'] {
             > div {
               display: flex;
               align-items: center;
+              transition: all 0.2s ease;
+              &:hover {
+                text-shadow: 0px 0px 15px #00a7ff66;
+                transform: translateY(-3px);
+                &::after {
+                  position: absolute;
+                  transform: translateY(6px);
+                }
+              }
+              &:active {
+                transform: translateY(-1px);
+                text-shadow: 0px 0px 5px #00a7ff66;
+              }
               > a {
                 margin-right: 5px;
+                color: $elysia-color;
+              }
+              > p {
+                color: $elysia-color;
               }
             }
           }
@@ -2680,6 +2727,13 @@ input[type='number'] {
                 > figure {
                   position: relative;
                   flex: 1;
+                  cursor: pointer;
+                  transition: all 0.2s ease;
+                  &:not(.disable) {
+                    &:hover {
+                      filter: brightness(120%);
+                    }
+                  }
                   &.disable {
                     &::after {
                       content: '';
@@ -2690,6 +2744,19 @@ input[type='number'] {
                       border-radius: 5px;
                       position: absolute;
                       background: rgba(0, 0, 0, 0.6);
+                      transition: all 0.2s ease;
+                    }
+                    &:hover {
+                      &::after {
+                        transition: all 0.2s ease;
+                        background: rgba(0, 0, 0, 0.3);
+                      }
+                    }
+                    &:active {
+                      &::after {
+                        transition: all 0.2s ease;
+                        background: rgba(0, 0, 0, 0);
+                      }
                     }
                   }
                   > img {
@@ -2752,6 +2819,17 @@ input[type='number'] {
           border: 1px solid #e3e3e3;
           > div {
             width: 330px;
+            transition: all 0.2s ease;
+            &:hover {
+              transform: translateY(-3px);
+              &::after {
+                position: absolute;
+                transform: translateY(6px);
+              }
+            }
+            &:active {
+              transform: translateY(-1px);
+            }
             > img {
               border-radius: 5px;
               margin-bottom: 7px;
@@ -2823,13 +2901,15 @@ input[type='number'] {
       > div {
         text-align: center;
         > button {
+          @include hover__box-shadow--white;
           margin-top: 50px;
-          width: 130px;
-          height: 30px;
+          width: 148px;
+          height: 35px;
           background: #00bfff;
           border-radius: 15px;
           cursor: pointer;
           font-size: 15px;
+          line-height: 35px;
           color: #fff;
           border: 0;
           flex: 1;
@@ -2864,6 +2944,7 @@ input[type='number'] {
       &__content {
         margin-top: 30px;
         > div {
+          @include hover__sub_box-shadow;
           border: 1px solid #f0f0f1;
           border-radius: 5px;
           padding: 18px 30px;
@@ -2913,7 +2994,10 @@ input[type='number'] {
         border: 0;
         grid-gap: 45px;
         gap: 45px;
-        > section {
+        > a {
+          @include hover__sub_box-shadow;
+          border: none;
+          cursor: pointer;
           width: 340px;
           box-shadow: 0px 0px 6px #00000029;
           border-radius: 5px;
@@ -2921,7 +3005,7 @@ input[type='number'] {
           > img {
             width: 320px;
             height: 222px;
-            object-fit: cover;
+            object-fit: fill;
           }
           > b {
             margin-top: 20px;
@@ -2953,6 +3037,31 @@ input[type='number'] {
   }
 
   //nft-details end
+
+  .faq {
+    &__switch {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 20px;
+      margin-top: 20px;
+      > button {
+        border: 0;
+        width: 150px;
+        height: 30px;
+        background: #00bfff;
+        border-radius: 15px;
+        cursor: pointer;
+        font-size: 15px;
+        color: #fff;
+        &.disable {
+          border: 1px solid #00bfff;
+          background-color: #fff;
+          color: #00bfff;
+        }
+      }
+    }
+  }
 
   .governance {
     &__asset {
@@ -6436,8 +6545,10 @@ input[type='number'] {
         > div {
           font-family: 'Inter-Bold';
           cursor: pointer;
-          font-size: 18px;
-          color: #b7b7b7;
+          > p {
+            font-size: 18px;
+            color: #b7b7b7;
+          }
         }
         > div:hover {
           color: $font-color;

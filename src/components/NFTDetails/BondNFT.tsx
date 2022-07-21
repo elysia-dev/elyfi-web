@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import NFTStructure from 'src/assets/images/market/NFTStructure.png';
-import NFTStructureMobile from 'src/assets/images/market/NFTStructureMobile.png';
+import NFTStructureMobile from 'src/assets/images/market/NFTStructureMobile.svg';
 import NFTStructureEn from 'src/assets/images/market/NFTStructureEN.png';
-import NFTStructureMobileEn from 'src/assets/images/market/NFTStructureMobileEN.png';
+import NFTStructureMobileEn from 'src/assets/images/market/NFTStructureMobileEN.svg';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import Document from 'src/assets/images/market/document.svg';
@@ -26,22 +26,32 @@ const BondNFT: React.FC<Props> = ({ location, link }) => {
 
   return (
     <>
+      {mediaQuery === MediaQuery.Mobile && (
+        <img
+          src={
+            i18n.language === 'en' ? NFTStructureMobileEn : NFTStructureMobile
+          }
+          alt="image"
+        />
+      )}
       <table>
-        <tr>
-          <td colSpan={2} className="image-wrapper">
-            <img
-              src={
-                mediaQuery === MediaQuery.PC
-                  ? i18n.language === 'en'
-                    ? NFTStructureEn
-                    : NFTStructure
-                  : i18n.language === 'en'
-                  ? NFTStructureMobileEn
-                  : NFTStructureMobile
-              }
-            />
-          </td>
-        </tr>
+        {mediaQuery === MediaQuery.PC && (
+          <tr>
+            <td colSpan={2} className="image-wrapper">
+              <img
+                src={
+                  mediaQuery === MediaQuery.PC
+                    ? i18n.language === 'en'
+                      ? NFTStructureEn
+                      : NFTStructure
+                    : i18n.language === 'en'
+                    ? NFTStructureMobileEn
+                    : NFTStructureMobile
+                }
+              />
+            </td>
+          </tr>
+        )}
         <tr>
           <th>
             <b>{t('nftMarket.bondNftTable.header.0')}</b>

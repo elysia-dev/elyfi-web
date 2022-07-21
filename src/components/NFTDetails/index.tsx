@@ -33,7 +33,6 @@ import AroundAsset02 from 'src/assets/images/market/aroundAsset02.png';
 
 import MainnetContext from 'src/contexts/MainnetContext';
 import { useWeb3React } from '@web3-react/core';
-import axios from 'axios';
 import useUserCryptoBalances from 'src/hooks/useUserCryptoBalances';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
@@ -46,7 +45,6 @@ import { utils } from 'ethers';
 import TxContext from 'src/contexts/TxContext';
 import TxStatus from 'src/enums/TxStatus';
 import useSWR from 'swr';
-import Token from 'src/enums/Token';
 import ProductPoint00 from 'src/assets/images/market/productPoint00.svg';
 import ProductPoint01 from 'src/assets/images/market/productPoint01.svg';
 import ProductPoint02 from 'src/assets/images/market/productPoint02.svg';
@@ -56,6 +54,7 @@ import ProductPoint05 from 'src/assets/images/market/productPoint05.svg';
 import advanceReservation from 'src/utiles/advanceReservation';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import RecentActivityType from 'src/enums/RecentActivityType';
+import NewTab from 'src/assets/images/market/arrow.svg';
 import ChangeNetworkModal from '../Market/Modals/ChangeNetworkModal';
 import NFTPurchaseModal from '../Market/Modals/NFTPurchaseModal';
 import TwitterConfirmModal from '../Market/Modals/TwitterConfirmModal';
@@ -97,6 +96,7 @@ const NFTDetails = (): JSX.Element => {
   const { t } = useTranslation();
   const navigate = useNavigator();
   const { lng } = useParams<{ lng: string }>();
+  const { id } = useParams<{ id: string }>();
   const [modalType, setModalType] = useState('');
   const { type: mainnetType, changeMainnet } = useContext(MainnetContext);
   const { txType, txStatus } = useContext(TxContext);
@@ -106,6 +106,9 @@ const NFTDetails = (): JSX.Element => {
   const [purchasedNFT, setPurchasedNFT] = useState<number | undefined>();
   const [nftInfo, setNftInfo] = useState<NFTType | undefined>();
   const current = moment();
+  const openSeaLink = (i: number) =>
+    `https://opensea.io/assets/ethereum/${envs.market.nftAddress}/${i}`;
+  const etherscanLink = `https://etherscan.io/address/${envs.market.controllerAddress}`;
 
   const totalPurchase = 54000;
 
@@ -222,6 +225,10 @@ const NFTDetails = (): JSX.Element => {
   };
 
   useEffect(() => {
+    id !== '0' && navigate(`/${lng}/market`);
+  });
+
+  useEffect(() => {
     draw();
     window.addEventListener('scroll', () => draw());
     window.addEventListener('resize', () => draw());
@@ -280,7 +287,6 @@ const NFTDetails = (): JSX.Element => {
               type={t('market.nftType.0')}
               interest={0.39}
               nftInfo={nftInfo}
-              openseaLink={''}
             />
           </section>
         );
@@ -288,7 +294,7 @@ const NFTDetails = (): JSX.Element => {
         return (
           <section className="nft-details__real-estate-info">
             <RealEstateInfo
-              youtubeLink="zZMusws1Rb8"
+              youtubeLink="brUfVSkMFNY"
               tableInfo={{
                 location: '2046 Norwalk Ave, LA, CA 90041',
                 locationLink:
@@ -313,7 +319,11 @@ const NFTDetails = (): JSX.Element => {
                   t('nftMarket.realEstateFeatureContent.content.1'),
                   t('nftMarket.realEstateFeatureContent.content.2'),
                 ],
-                image: [AroundAsset00, AroundAsset01, AroundAsset02],
+                image: [
+                  'https://elysia.mypinata.cloud/ipfs/QmayBV1Vvakd15hFsUdrG6sj5Wztm4G94gagbJwX3MNKSt',
+                  'https://elysia.mypinata.cloud/ipfs/QmdHKQU8fbJpGvcrkSC7kr4MPTbJL5PJn52nCDuSK9pWnZ',
+                  'https://elysia.mypinata.cloud/ipfs/Qma5rzz3EdgkqkuaCSDca7UG8BSnxMuvA5YFasLDHbWr4U',
+                ],
               }}
               aroundAssetInfo={[
                 {
@@ -379,7 +389,7 @@ const NFTDetails = (): JSX.Element => {
               name={t('nftMarket.borrowerTable.data.0')}
               licenseNumber={'220111-0189192'}
               registrationLink={
-                'https://ipfs.io/ipfs/bafybeidtfourbfi4oy3nlos4v7vmvn3oyy5ufbtxjdux2gnl3al5pyutsy'
+                'https://elysia.mypinata.cloud/ipfs/QmR6qCLFtsE4bDZdhEpejPCJNo44vV1cLgZKgTtNW1fh3G'
               }
             />
           </section>
@@ -429,7 +439,7 @@ const NFTDetails = (): JSX.Element => {
             localStorage.removeItem(`@event${account}`);
             localStorage.removeItem(`@eventclose${account}`);
             window.open(
-              'https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.elyfi.world%2Fko&text=ELYFI[…]%EB%A6%AC%ED%8C%8C%EC%9D%B4,ELFI,%EB%B6%80%EB%8F%99%EC%82%B0,PF',
+              'https://twitter.com/intent/retweet?tweet_id=1550052436622323712',
             );
           }}
           onDiscard={() => {
@@ -465,20 +475,20 @@ const NFTDetails = (): JSX.Element => {
           &nbsp;&gt;&nbsp;
           <p>{t('nftMarket.title')}</p>
         </div>
-        <Link
+        {/* <Link
           className="nft-details__guide pc-only"
           to={{
             pathname: `/${lng}/market/guide`,
           }}>
           {t('nftMarket.guide')}
-        </Link>
+        </Link> */}
         <article className="nft-details__header" ref={headerRef}>
           <Header
             onButtonClick={purchaseButtonAction}
             purchasedNFT={purchasedNFT}
             isDisabled={purchaseButtonDisable}
             mainnetType={mainnetType}
-            openseaLink={'https://opensea.io/'}
+            openseaLink={openSeaLink(0)}
           />
         </article>
         <article className="nft-details__purchase">
@@ -487,7 +497,7 @@ const NFTDetails = (): JSX.Element => {
             totalPurchase={totalPurchase}
             startTime={startTime}
             endedTime={endedTime}
-            etherscanLink={'https://etherscan.io/'}
+            etherscanLink={etherscanLink}
           />
         </article>
         <article className="nft-details__content">
@@ -518,10 +528,16 @@ const NFTDetails = (): JSX.Element => {
               })}
             </div>
           </article>
-          <article>
+          <article className="nft-details__tab__wrapper">
+            <div>
+              <h2>{t('nftMarket.productDetail')}</h2>
+              <a href={openSeaLink(0)} target="_blank">
+                <img src={NewTab} alt="new tab icon" />
+              </a>
+            </div>
             <section className="nft-details__tab">
               {[
-                t('nftMarket.productDetail'),
+                t('nftMarket.nftInfo'),
                 t('nftMarket.realEstateInfo'),
                 t('nftMarket.bondNft'),
                 t('nftMarket.borrower'),
@@ -569,7 +585,7 @@ const NFTDetails = (): JSX.Element => {
                 <u>
                   <a
                     target="_blank"
-                    href="https://opensea.io/"
+                    href={openSeaLink(0)}
                     style={{ color: '#00bfff' }}>
                     link
                   </a>
