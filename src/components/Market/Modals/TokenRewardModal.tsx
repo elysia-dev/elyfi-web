@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import SpinnerToken from 'src/assets/images/market/tokenSpinning.mp4';
 import Logo from 'src/assets/images/ELYFI_logo.svg';
 import moment from 'moment';
@@ -16,7 +16,7 @@ const TokenRewardModal: React.FC<Props> = ({
   endedTime,
   onClose,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <>
@@ -35,9 +35,12 @@ const TokenRewardModal: React.FC<Props> = ({
           </header>
           <div className="market_modal__token-reward">
             <b>
-              축하합니다!
-              <br />
-              {tokenName} 토큰 {tokenAmount.toFixed(4)}개를 받았습니다.
+              <Trans>
+                {t('nftModal.complete.header', {
+                  tokenName,
+                  tokenAmount: tokenAmount.toFixed(4),
+                })}
+              </Trans>
             </b>
             <video
               src={SpinnerToken}
@@ -46,9 +49,18 @@ const TokenRewardModal: React.FC<Props> = ({
               autoPlay={true}
             />
             <section>
-              <p>{tokenName} 토큰 지급일</p>
-              <b>{moment(endedTime).format('YYYY.MM.DD')} KST</b>
-              <p>* 토큰 지급 완료 시점까지 트위터 게시물이 유지돼야 합니다</p>
+              <p>{t('nftModal.complete.title')}</p>
+              <b>
+                {moment(endedTime)
+                  .add(1, 'day')
+                  .format(
+                    i18n.language === 'en' ? 'MM-DD-YYYY' : 'YYYY.MM.DD',
+                  )}{' '}
+                KST
+              </b>
+              <p>
+                <Trans>{t('nftModal.complete.content')}</Trans>
+              </p>
             </section>
           </div>
         </div>

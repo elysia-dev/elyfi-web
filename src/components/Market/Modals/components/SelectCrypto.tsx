@@ -17,7 +17,7 @@ const SelectCrypto: React.FC<Props> = ({
   selectVisible,
 }) => {
   const { t } = useTranslation();
-  console.log(selectVisible);
+
   return (
     <div className="market_modal__crypto">
       <p>{t('nftModal.purchaseModal.paymentCrypto')}</p>

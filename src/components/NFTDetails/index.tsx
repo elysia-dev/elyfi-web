@@ -186,9 +186,14 @@ const NFTDetails = (): JSX.Element => {
   };
 
   const purchaseButtonDisable = useMemo(() => {
-    return nftTotalSupply || nftTotalSupply === 0
-      ? !current.isBetween(startTime, endedTime) &&
-          totalPurchase >= nftTotalSupply
+    return (nftTotalSupply || nftTotalSupply === 0) &&
+      current.isBetween(
+        moment(startTime).subtract(1, 'hours').format('YYYY.MM.DD HH:mm:ss'),
+        endedTime,
+      )
+      ? (advanceReservation.includes(account || '') ||
+          current.isBetween(startTime, endedTime)) &&
+          totalPurchase > nftTotalSupply
       : false;
   }, [nftTotalSupply, current, totalPurchase]);
 
@@ -426,11 +431,7 @@ const NFTDetails = (): JSX.Element => {
         <TokenRewardModal
           endedTime={endedTime}
           onClose={() => setModalType('')}
-          tokenAmount={
-            purchasedNFT
-              ? (purchasedNFT * 10 * 0.01) / (priceData?.elfiPrice || 1)
-              : 0
-          }
+          tokenAmount={purchasedNFT ? (purchasedNFT * 10 * 0.01) / 0.01858 : 0}
           tokenName={'ELFI'}
         />
       ) : (

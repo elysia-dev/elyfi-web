@@ -803,7 +803,8 @@
       "tradeOnOpensea": "Trade on OpenSea",
       "purchaseStatus": {
         "walletConnect": "Connect wallet",
-        "nullPurchase": "No quantity purchased yet"
+        "nullPurchase": "No quantity purchased yet",
+        "invalidNetwork": "Please change to the Ethereum network on your wallet."
       },
       "currentPurchase": "Sales Status",
       "purchasedNTF": "Sold NFT",
@@ -840,7 +841,9 @@
         "Overdue APR",
         "Expected Loan Date",
         "Expected Maturity Date",
-        "Document"
+        "Document",
+        "08-04-2022 KST",
+        "11-30-2022 KST"
       ],
       "nftInfoDetails": [
         "Right to receive principal and interest income",
@@ -1019,6 +1022,11 @@
         "title": "Retweet\nand get 1% payback of your purchase!",
         "button": "Retweet and get 1% more payback",
         "abandonButton": "Give up this benefit and do not show this again"
+      },
+      "complete": {
+        "header": "Congratulations!<br />You have accumulated<br/> {{tokenAmount}} {{tokenName}} tokens so far.",
+        "title": "ELFI token payment date",
+        "content": "Twitter posts must not be deleted until token disbursements are complete.<br/>In addition, the quantity of ELFI tokens is calculated based on<br/> the ELFI price of $0.01858 on July 21, 2022 KST."
       }
     }
   }
