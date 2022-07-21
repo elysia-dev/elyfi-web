@@ -2151,6 +2151,7 @@ input[type='number'] {
           display: flex;
           gap: 30px;
           > a {
+            @include hover__box-shadow;
             width: 130px;
             height: 30px;
             background: #3679b5;
@@ -2165,6 +2166,7 @@ input[type='number'] {
             line-height: 30px;
           }
           > button {
+            @include hover__box-shadow;
             width: 130px;
             height: 30px;
             background: #00bfff;
@@ -2397,6 +2399,13 @@ input[type='number'] {
         &.disable {
           background-color: #f8f8f7;
           border: 1px solid #e4e5e4;
+          transition: all 0.2s ease;
+          &:hover {
+            background-color: #f0f0f1;
+          }
+          &:active {
+            background-color: #e4e5e4;
+          }
           > b {
             color: #b7b7b7;
           }
@@ -2467,6 +2476,7 @@ input[type='number'] {
                 gap: 8px;
                 padding-right: 20px;
                 > a {
+                  @include hover__sub_box-shadow;
                   height: 35px;
                   border: 1px solid #3679b5;
                   border-radius: 5px;
@@ -2537,6 +2547,7 @@ input[type='number'] {
               display: flex;
               align-items: center;
               > .table-button {
+                @include hover__sub_box-shadow;
                 display: flex;
                 align-items: center;
                 padding: 6px 10px;
@@ -2550,6 +2561,8 @@ input[type='number'] {
                 > p {
                   font-size: 12px;
                   color: #3679b5;
+                  background: none;
+                  -webkit-text-fill-color: initial;
                 }
               }
             }
@@ -2596,6 +2609,7 @@ input[type='number'] {
               flex-direction: column;
               gap: 8px;
               > a {
+                @include hover__sub_box-shadow;
                 width: max-content;
                 padding: 5px 10px 5px 0px;
                 height: 35px;
@@ -2653,8 +2667,25 @@ input[type='number'] {
             > div {
               display: flex;
               align-items: center;
+              transition: all 0.2s ease;
+              &:hover {
+                text-shadow: 0px 0px 15px #00a7ff66;
+                transform: translateY(-3px);
+                &::after {
+                  position: absolute;
+                  transform: translateY(6px);
+                }
+              }
+              &:active {
+                transform: translateY(-1px);
+                text-shadow: 0px 0px 5px #00a7ff66;
+              }
               > a {
                 margin-right: 5px;
+                color: $elysia-color;
+              }
+              > p {
+                color: $elysia-color;
               }
             }
           }
@@ -2697,6 +2728,12 @@ input[type='number'] {
                   position: relative;
                   flex: 1;
                   cursor: pointer;
+                  transition: all 0.2s ease;
+                  &:not(.disable) {
+                    &:hover {
+                      filter: brightness(120%);
+                    }
+                  }
                   &.disable {
                     &::after {
                       content: '';
@@ -2707,6 +2744,19 @@ input[type='number'] {
                       border-radius: 5px;
                       position: absolute;
                       background: rgba(0, 0, 0, 0.6);
+                      transition: all 0.2s ease;
+                    }
+                    &:hover {
+                      &::after {
+                        transition: all 0.2s ease;
+                        background: rgba(0, 0, 0, 0.3);
+                      }
+                    }
+                    &:active {
+                      &::after {
+                        transition: all 0.2s ease;
+                        background: rgba(0, 0, 0, 0);
+                      }
                     }
                   }
                   > img {
@@ -2769,6 +2819,17 @@ input[type='number'] {
           border: 1px solid #e3e3e3;
           > div {
             width: 330px;
+            transition: all 0.2s ease;
+            &:hover {
+              transform: translateY(-3px);
+              &::after {
+                position: absolute;
+                transform: translateY(6px);
+              }
+            }
+            &:active {
+              transform: translateY(-1px);
+            }
             > img {
               border-radius: 5px;
               margin-bottom: 7px;
@@ -2840,6 +2901,7 @@ input[type='number'] {
       > div {
         text-align: center;
         > button {
+          @include hover__box-shadow--white;
           margin-top: 50px;
           width: 148px;
           height: 35px;
@@ -2882,6 +2944,7 @@ input[type='number'] {
       &__content {
         margin-top: 30px;
         > div {
+          @include hover__sub_box-shadow;
           border: 1px solid #f0f0f1;
           border-radius: 5px;
           padding: 18px 30px;
@@ -2931,7 +2994,10 @@ input[type='number'] {
         border: 0;
         grid-gap: 45px;
         gap: 45px;
-        > section {
+        > a {
+          @include hover__sub_box-shadow;
+          border: none;
+          cursor: pointer;
           width: 340px;
           box-shadow: 0px 0px 6px #00000029;
           border-radius: 5px;
