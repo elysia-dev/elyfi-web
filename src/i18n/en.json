@@ -711,9 +711,9 @@
     },
     "market": {
       "title": "Real-estate product market",
-      "content": "Choose and buy real-estate products you want!",
+      "content": "Choose and purchase real-estate products you want!",
       "useRealEstateInfo": "The US real-estate products",
-      "apy": "Annual return",
+      "apy": "APR",
       "nftType": ["Bond NFT", "Equity NFT"],
       "faq": {
         "header": "Market Guide",
@@ -831,11 +831,11 @@
           "No Platform Fee",
           "High liquidity",
           "Purchase with small amounts",
-          "Purchase in real world assets with coins",
+          "Purchase in real world assets with crypto",
           "Easy purchase in US real estate"
         ],
         "content": [
-          "The product offers a higher return than traditional financial products with an expected annual return of {{ percent }}%.",
+          "The product offers a higher return than traditional financial products with an expected APR of {{ percent }}%.",
           "Since the product has no platform usage fees, you can actually gain high profits.",
           "Buyers can monetize NFTs issued as proof of investment by selling them on the open market.",
           "Those who find it difficult to invest in large amounts can purchase even with small amounts.\n* Requires purchasing minimum of $10",
