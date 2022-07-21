@@ -6,6 +6,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import ReactGA from 'react-ga';
 import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -175,6 +176,7 @@ const NFTDetails = (): JSX.Element => {
 
   const purchaseButtonAction = () => {
     const wallet = sessionStorage.getItem('@connect');
+    ReactGA.modalview('purchaseBondNft');
 
     return account
       ? mainnetType === MainnetType.Ethereum
@@ -186,7 +188,14 @@ const NFTDetails = (): JSX.Element => {
   };
 
   const purchaseButtonDisable = useMemo(() => {
-    return true;
+    return current.isBetween(
+      moment(startTime).subtract(1, 'hours').format('YYYY.MM.DD HH:mm:ss'),
+      endedTime,
+    );
+    // ? (advanceReservation.includes(account || '') ||
+    //     current.isBetween(startTime, endedTime)) &&
+    //     totalPurchase > (nftTotalSupply || 0)
+    // : false;
   }, [nftTotalSupply, current, totalPurchase]);
 
   const getPurchasedNFT = useCallback(async () => {
