@@ -26,6 +26,10 @@ import News00 from 'src/assets/images/market/news00.png';
 import News01 from 'src/assets/images/market/news01.png';
 import News02 from 'src/assets/images/market/news02.png';
 
+import AssetImage00 from 'src/assets/images/market/assetImage00.png';
+import AssetImage01 from 'src/assets/images/market/assetImage01.png';
+import AssetImage02 from 'src/assets/images/market/assetImage02.png';
+
 import AroundAsset00 from 'src/assets/images/market/aroundAsset00.png';
 import AroundAsset01 from 'src/assets/images/market/aroundAsset01.png';
 import AroundAsset02 from 'src/assets/images/market/aroundAsset02.png';
@@ -311,7 +315,7 @@ const NFTDetails = (): JSX.Element => {
                   t('nftMarket.realEstateFeatureContent.content.1'),
                   t('nftMarket.realEstateFeatureContent.content.2'),
                 ],
-                image: [AroundAsset00, AroundAsset01, AroundAsset02],
+                image: [AssetImage00, AssetImage01, AssetImage02],
               }}
               aroundAssetInfo={[
                 {
