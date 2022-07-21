@@ -884,7 +884,7 @@
       "borrower": "차입자 정보",
       "borrowerTable": {
         "header": ["법인명", "법인등록번호", "문서"],
-        "button": "등기부등본 사본",
+        "button": "법인등기부등본",
         "data": ["(주)엘리파이대부"]
       },
       "realEstateInfo": "미국 부동산 정보",

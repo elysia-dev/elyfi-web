@@ -290,7 +290,7 @@ const NFTDetails = (): JSX.Element => {
         return (
           <section className="nft-details__real-estate-info">
             <RealEstateInfo
-              youtubeLink="zZMusws1Rb8"
+              youtubeLink="brUfVSkMFNY"
               tableInfo={{
                 location: '2046 Norwalk Ave, LA, CA 90041',
                 locationLink:
@@ -381,7 +381,7 @@ const NFTDetails = (): JSX.Element => {
               name={t('nftMarket.borrowerTable.data.0')}
               licenseNumber={'220111-0189192'}
               registrationLink={
-                'https://ipfs.io/ipfs/bafybeidtfourbfi4oy3nlos4v7vmvn3oyy5ufbtxjdux2gnl3al5pyutsy'
+                'https://elysia.mypinata.cloud/ipfs/QmR6qCLFtsE4bDZdhEpejPCJNo44vV1cLgZKgTtNW1fh3G'
               }
             />
           </section>
