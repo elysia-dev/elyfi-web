@@ -41,6 +41,7 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
   const [purchaseType, setPurchaseType] = useState('ETH');
   const [currentStep, setCurrentStep] = useState(1);
   const [selectVisible, setSelectVisible] = useState(false);
+  const [isPendingApprove, setIsPendingApprove] = useState(false);
   const { purchaseNFT, isApprove, approve, isLoading } = usePurchaseNFT(
     balances.usdc,
   );
@@ -181,11 +182,13 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
                 : t('nftModal.button.next')
               : currentStep === 2
               ? purchaseType === NFTPurchaseType.USDC && !isApprove
-                ? t('nftModal.button.approve')
+                ? isPendingApprove
+                  ? t('nftModal.button.approvePendingTx')
+                  : t('nftModal.button.approve')
                 : t('nftModal.button.purchase')
               : t('nftModal.button.pendingTx')
           }
-          isPayAmount={isPayAmount() || quantity === '0'}
+          isPayAmount={isPayAmount() || quantity === '' || quantity[0] === '0'}
           onClickHandler={async () => {
             if (
               isPayAmount() ||
@@ -196,7 +199,9 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
               return;
             if (currentStep === 2) {
               if (purchaseType === NFTPurchaseType.USDC && !isApprove) {
+                setIsPendingApprove(true);
                 await approve();
+                setIsPendingApprove(false);
                 return;
               }
               purchaseNFT(
