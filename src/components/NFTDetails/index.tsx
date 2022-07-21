@@ -404,11 +404,7 @@ const NFTDetails = (): JSX.Element => {
         <TokenRewardModal
           endedTime={endedTime}
           onClose={() => setModalType('')}
-          tokenAmount={
-            purchasedNFT
-              ? (purchasedNFT * 10 * 0.01) / (priceData?.elfiPrice || 1)
-              : 0
-          }
+          tokenAmount={purchasedNFT ? (purchasedNFT * 10 * 0.01) / 0.01858 : 0}
           tokenName={'ELFI'}
         />
       ) : (
