@@ -111,14 +111,6 @@ const AppNavigator: React.FC = () => {
           />
           <Route path="market">
             <Route
-              path=":id"
-              element={
-                <Suspense fallback={nullFallbackArea()}>
-                  <NFTDetails />
-                </Suspense>
-              }
-            />
-            <Route
               path="guide"
               element={
                 <Suspense fallback={nullFallbackArea()}>
@@ -126,7 +118,18 @@ const AppNavigator: React.FC = () => {
                 </Suspense>
               }
             />
+            <Route path="bondnft">
+              <Route
+                path=":id"
+                element={
+                  <Suspense fallback={nullFallbackArea()}>
+                    <NFTDetails />
+                  </Suspense>
+                }
+              />
+            </Route>
           </Route>
+
           <Route path="staking">
             <Route
               path="LP"

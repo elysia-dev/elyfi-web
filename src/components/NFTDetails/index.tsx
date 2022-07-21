@@ -98,6 +98,7 @@ const NFTDetails = (): JSX.Element => {
   const { t } = useTranslation();
   const navigate = useNavigator();
   const { lng } = useParams<{ lng: string }>();
+  const { id } = useParams<{ id: string }>();
   const [modalType, setModalType] = useState('');
   const { type: mainnetType, changeMainnet } = useContext(MainnetContext);
   const { txType, txStatus } = useContext(TxContext);
@@ -224,6 +225,10 @@ const NFTDetails = (): JSX.Element => {
     //     setNftInfo(res.data);
     //   });
   };
+
+  useEffect(() => {
+    id !== '0' && navigate(`/${lng}/market`);
+  });
 
   useEffect(() => {
     draw();
