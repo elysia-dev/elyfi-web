@@ -849,7 +849,7 @@
         "NFT Name",
         "Details",
         "Principal",
-        "Expected interest",
+        "Expected Interest Income",
         "APR",
         "Overdue APR",
         "Expected Loan Date",
@@ -895,7 +895,7 @@
         "content": [
           "ELYLOAN LLC owns 100% of US real estate ({{ location }}).",
           "Elysia Co., Ltd. owns 99% of the shares of ELYLOAN LLC.",
-          "Elysia Co., Ltd. receives a loan from Elphi Loan Co., Ltd. using ELYLOAN LLC stock as collateral.",
+          "Loan Agreement and Pledge Agreement: Elysia Co., Ltd. receives a loan from Elyloan Inc. using ELYLOAN LLC stock as collateral.",
           "Buyers purchase Bond NFTs with cryptocurrencies (USDC, ETH) on ELYFI.",
           "The borrower sets the loan bond as collateral in order to obtain a cryptocurrency loan from ELYFI.\nAt the same time, ELYFI transfers cryptocurrency to the borrower's wallet.",
           "Elysia Co., Ltd. repays the principal and interest to Elyloan Inc. Loan on the due date.",
