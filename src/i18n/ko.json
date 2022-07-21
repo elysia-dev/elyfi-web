@@ -987,7 +987,7 @@
         "abandonButton": "혜택 포기하고, 다시보지 않기"
       },
       "complete": {
-        "header": "축하합니다!<br />{{tokenName}} 토큰 {{tokenAmount}}개를 적립했습니다.",
+        "header": "축하합니다!<br />지금까지 {{tokenName}} 토큰 {{tokenAmount}}개를 적립했습니다.",
         "title": "ELFI 토큰 지급일",
         "content": "토큰 지급 완료 시점까지 트위터 게시물이 유지돼야 합니다.<br/>또한 ELFI 토큰 수량은 2022년 7월 21일(KST) ELFI의 가격인<br/> $0.01858를 기준으로 산정합니다."
       }
