@@ -14,7 +14,7 @@ interface Props {
 }
 
 const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   // const nftData = useCallback(
   //   (traitType: NFTTraitType, nft?: NFTType) => {
@@ -82,7 +82,7 @@ const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo }) => {
           <tr>
             <th>{t('nftMarket.nftInfoTable.2')}</th>
             {/* <td>{nftData(NFTTraitType.Principal, nftInfo)}</td> */}
-            <td>$123123</td>
+            <td>$54000</td>
             <th>{t('nftMarket.nftInfoTable.3')}</th>
             <td>${interest}</td>
           </tr>
@@ -97,14 +97,14 @@ const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo }) => {
           <tr>
             <th>{t('nftMarket.nftInfoTable.6')}</th>
             {/* <td colSpan={3}>{nftDate(NFTTraitType.LoanDate, nftInfo)} KST</td> */}
-            <td colSpan={3}>2022.08.10 KST</td>
+            <td colSpan={3}>{t('nftMarket.nftInfoTable.9')}</td>
           </tr>
           <tr>
             <th>{t('nftMarket.nftInfoTable.7')}</th>
             {/* <td colSpan={3}>
               {nftDate(NFTTraitType.MaturityDate, nftInfo)} KST
             </td> */}
-            <td colSpan={3}>2022.08.15 KST</td>
+            <td colSpan={3}>{t('nftMarket.nftInfoTable.10')}</td>
           </tr>
           <tr>
             <th>{t('nftMarket.nftInfoTable.8')}</th>
