@@ -186,14 +186,7 @@ const NFTDetails = (): JSX.Element => {
   };
 
   const purchaseButtonDisable = useMemo(() => {
-    return current.isBetween(
-      moment(startTime).subtract(1, 'hours').format('YYYY.MM.DD HH:mm:ss'),
-      endedTime,
-    )
-      ? (advanceReservation.includes(account || '') ||
-          current.isBetween(startTime, endedTime)) &&
-          totalPurchase > (nftTotalSupply || 0)
-      : false;
+    return true;
   }, [nftTotalSupply, current, totalPurchase]);
 
   const getPurchasedNFT = useCallback(async () => {
@@ -276,7 +269,7 @@ const NFTDetails = (): JSX.Element => {
           <section className="nft-details__nft-info">
             <NFTInfo
               type={t('market.nftType.0')}
-              interest={0.3}
+              interest={0.39}
               nftInfo={nftInfo}
               openseaLink={''}
             />
