@@ -5,8 +5,7 @@ import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import NFTTraitType from 'src/enums/NFTTraitType';
 import Skeleton from 'react-loading-skeleton';
-import NewTab from 'src/assets/images/market/new_tab.png';
-import { formatCommaSmallZeroDisits } from 'src/utiles/formatters';
+import Arrow from 'src/assets/images/market/arrow.svg';
 import { NFTType } from '.';
 
 interface Props {
@@ -60,7 +59,7 @@ const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo, openseaLink }) => {
       <section>
         <h2>{t('nftMarket.nftInfo')}</h2>
         <a href={openseaLink} target="_blank">
-          <img src={NewTab} alt="new tab icon" />
+          <img src={Arrow} alt="new tab icon" />
         </a>
       </section>
       <div>
@@ -90,9 +89,9 @@ const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo, openseaLink }) => {
           <tr>
             <th>{t('nftMarket.nftInfoTable.2')}</th>
             {/* <td>{nftData(NFTTraitType.Principal, nftInfo)}</td> */}
-            <td>${formatCommaSmallZeroDisits(54000)}</td>
+            <td>$10</td>
             <th>{t('nftMarket.nftInfoTable.3')}</th>
-            <td>${interest}</td>
+            <td>$0.39</td>
           </tr>
           <tr>
             <th>{t('nftMarket.nftInfoTable.4')}</th>
