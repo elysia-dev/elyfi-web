@@ -65,7 +65,7 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
 
   const paymentAmount = useMemo(() => {
     return priceData
-      ? (parseInt(quantity, 10) * 10) /
+      ? (parseInt(quantity === '' ? '0' : quantity, 10) * 10) /
           (purchaseType === 'ETH' ? priceData?.ethPrice : 1)
       : 0;
   }, [priceData, quantity, purchaseType]);
@@ -111,7 +111,7 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
             <InputQuantity
               setQuantity={setQuantity}
               quantity={quantity}
-              dollar={parseInt(quantity, 10) * 10}
+              dollar={parseInt(quantity === '' ? '0' : quantity, 10) * 10}
               crypto={
                 purchaseType === NFTPurchaseType.ETH
                   ? paymentEth
