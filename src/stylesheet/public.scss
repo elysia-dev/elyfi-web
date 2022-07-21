@@ -2976,8 +2976,6 @@ input[type='number'] {
         font-size: 15px;
         color: #fff;
         &.disable {
-          pointer-events: none;
-          cursor: not-allowed;
           background-color: #f0f0f1;
           color: #333333;
         }
