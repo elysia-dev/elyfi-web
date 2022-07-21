@@ -477,7 +477,7 @@ const NFTDetails = (): JSX.Element => {
             totalPurchase={totalPurchase}
             startTime={startTime}
             endedTime={endedTime}
-            etherscanLink={''}
+            etherscanLink={'https://etherscan.io/'}
           />
         </article>
         <article className="nft-details__content">
