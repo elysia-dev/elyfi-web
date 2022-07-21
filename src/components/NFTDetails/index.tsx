@@ -26,10 +26,6 @@ import News00 from 'src/assets/images/market/news00.png';
 import News01 from 'src/assets/images/market/news01.png';
 import News02 from 'src/assets/images/market/news02.png';
 
-import AssetImage00 from 'src/assets/images/market/assetImage00.png';
-import AssetImage01 from 'src/assets/images/market/assetImage01.png';
-import AssetImage02 from 'src/assets/images/market/assetImage02.png';
-
 import AroundAsset00 from 'src/assets/images/market/aroundAsset00.png';
 import AroundAsset01 from 'src/assets/images/market/aroundAsset01.png';
 import AroundAsset02 from 'src/assets/images/market/aroundAsset02.png';
@@ -57,7 +53,7 @@ import ProductPoint05 from 'src/assets/images/market/productPoint05.svg';
 import advanceReservation from 'src/utiles/advanceReservation';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import RecentActivityType from 'src/enums/RecentActivityType';
-import NewTab from 'src/assets/images/market/new_tab.png';
+import NewTab from 'src/assets/images/market/arrow.svg';
 import ChangeNetworkModal from '../Market/Modals/ChangeNetworkModal';
 import NFTPurchaseModal from '../Market/Modals/NFTPurchaseModal';
 import TwitterConfirmModal from '../Market/Modals/TwitterConfirmModal';
