@@ -6,6 +6,7 @@ import moment from 'moment';
 import NFTTraitType from 'src/enums/NFTTraitType';
 import Skeleton from 'react-loading-skeleton';
 import NewTab from 'src/assets/images/market/new_tab.png';
+import { formatCommaSmallZeroDisits } from 'src/utiles/formatters';
 import { NFTType } from '.';
 
 interface Props {
@@ -89,7 +90,7 @@ const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo, openseaLink }) => {
           <tr>
             <th>{t('nftMarket.nftInfoTable.2')}</th>
             {/* <td>{nftData(NFTTraitType.Principal, nftInfo)}</td> */}
-            <td>$54000</td>
+            <td>${formatCommaSmallZeroDisits(54000)}</td>
             <th>{t('nftMarket.nftInfoTable.3')}</th>
             <td>${interest}</td>
           </tr>
@@ -140,6 +141,38 @@ const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo, openseaLink }) => {
                   )}>
                   <img src={Clip} />
                   {t('nftMarket.nftInfoTableButton.2')}
+                </a>
+                <a
+                  target="_blank"
+                  href={nftLink(
+                    'QmQigAJXwPAzxLPPBrEMCyB6VvuHcBXP6ayT4NCnhoWaGt',
+                  )}>
+                  <img src={Clip} alt="Document icon" />
+                  {t('nftMarket.bondNftTable.button.section01.0')}
+                </a>
+                <a
+                  target="_blank"
+                  href={nftLink(
+                    'Qmf8gvkju75fbKaVykTHiCoGZmY1xwYqxdbmJrLy2unRMZ',
+                  )}>
+                  <img src={Clip} alt="Document icon" />
+                  {t('nftMarket.bondNftTable.button.section01.1')}
+                </a>
+                <a
+                  target="_blank"
+                  href={nftLink(
+                    'QmVCJT1FQmnhSh39rBenS3turKDyNehCPYGifzte9Wbc7E',
+                  )}>
+                  <img src={Clip} alt="Document icon" />
+                  {t('nftMarket.bondNftTable.button.section01.2')}
+                </a>
+                <a
+                  target="_blank"
+                  href={nftLink(
+                    'QmZX2rAbcgRr35B8U7HrmXc74raSt8qQz3oQcRWhb2iXZh',
+                  )}>
+                  <img src={Clip} alt="Document icon" />
+                  {t('nftMarket.bondNftTable.button.section01.3')}
                 </a>
               </div>
             </td>

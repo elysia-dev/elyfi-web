@@ -1979,6 +1979,7 @@ input[type='number'] {
         justify-items: center;
         gap: 35px 15px;
         > a {
+          transition: all 200ms;
           &.disable {
             position: relative;
             z-index: 1;
@@ -2082,6 +2083,10 @@ input[type='number'] {
               }
             }
           }
+        }
+        > a:hover {
+          transform: translateY(-4px);
+          box-shadow: 0px 6px 23px -4px rgba(0, 0, 0, 0.75);
         }
       }
     }
@@ -2434,13 +2439,11 @@ input[type='number'] {
                 }
               }
               > div {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                flex-direction: column;
+                display: flex;
+                flex-wrap: wrap;
                 gap: 8px;
                 padding-right: 20px;
                 > a {
-                  width: 100%;
                   height: 35px;
                   border: 1px solid #3679b5;
                   border-radius: 5px;

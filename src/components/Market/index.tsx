@@ -28,15 +28,15 @@ export interface ICardType {
 }
 
 const tempCardArray: ICardType[] = [
-  {
-    PFType: PFType.BOND,
-    Location: '2046 Norwalk Ave, LA, CA 90041',
-    APY: 12,
-    currentSoldNFTs: 0,
-    totalNFTs: 54000,
-    cardImage: BondAsset,
-    onClickLink: 'a1',
-  },
+  // {
+  //   PFType: PFType.BOND,
+  //   Location: '2046 Norwalk Ave, LA, CA 90041',
+  //   APY: 12,
+  //   currentSoldNFTs: 0,
+  //   totalNFTs: 54000,
+  //   cardImage: BondAsset,
+  //   onClickLink: 'a1',
+  // },
   {
     PFType: PFType.SHARE,
     Location: '',
@@ -64,23 +64,23 @@ const Market = (): JSX.Element => {
   const [tempCards, setTempCards] = useState<ICardType[] | undefined>();
   const { t } = useTranslation();
 
-  // const { data: nftTotalSupply } = useSWR(['nftTotalSupply'], {
-  //   fetcher: nftTotalSupplyFetcher(),
-  // });
+  const { data: nftTotalSupply } = useSWR(['nftTotalSupply'], {
+    fetcher: nftTotalSupplyFetcher(),
+  });
 
-  // useEffect(() => {
-  // if (!nftTotalSupply) return;
-  // // const nft = {
-  // //   PFType: PFType.BOND,
-  // //   Location: '2046 Norwalk Ave, LA, CA 90041',
-  // //   APY: 12,
-  // //   currentSoldNFTs: nftTotalSupply,
-  // //   totalNFTs: 54000,
-  // //   cardImage: BondAsset,
-  // //   onClickLink: 'a1',
-  // // };
-  // setTempCards([nft, ...tempCardArray]);
-  // }, [nftTotalSupply]);
+  useEffect(() => {
+    if (nftTotalSupply === undefined) return;
+    const nft = {
+      PFType: PFType.BOND,
+      Location: '2046 Norwalk Ave, LA, CA 90041',
+      APY: 12,
+      currentSoldNFTs: nftTotalSupply,
+      totalNFTs: 54000,
+      cardImage: BondAsset,
+      onClickLink: 'a1',
+    };
+    setTempCards([nft, ...tempCardArray]);
+  }, [nftTotalSupply]);
 
   const draw = () => {
     const dpr = window.devicePixelRatio;
@@ -134,10 +134,10 @@ const Market = (): JSX.Element => {
         <article className="market__content">
           <h2>{t('market.useRealEstateInfo')}</h2>
           <article className="market__nft-container">
-            {tempCardArray.map((data, index) => {
+            {/* {tempCardArray.map((data, index) => {
               return <NFTCard data={data} key={index} />;
-            })}
-            {/* {tempCards
+            })} */}
+            {tempCards
               ? tempCards.map((data, index) => {
                   return <NFTCard data={data} key={index} />;
                 })
@@ -145,7 +145,7 @@ const Market = (): JSX.Element => {
                   .fill(0)
                   .map(() => {
                     return <Skeleton width={345} height={300} />;
-                  })} */}
+                  })}
           </article>
         </article>
       </main>
