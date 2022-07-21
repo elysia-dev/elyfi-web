@@ -6467,8 +6467,10 @@ input[type='number'] {
         padding-right: 50px;
         > div {
           cursor: pointer;
-          font-size: 18px;
-          color: #b7b7b7;
+          > p {
+            font-size: 18px;
+            color: #b7b7b7;
+          }
         }
         > div:hover {
           color: $font-color;
