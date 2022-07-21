@@ -366,10 +366,15 @@ const NFTDetails = (): JSX.Element => {
           selectWalletModalVisible={true}
         />
       ) : modalType === 'purchase' ? (
-        <NFTPurchaseModal
-          modalClose={() => setModalType('')}
-          balances={balances}
-          remainingNFT={totalPurchase - (nftTotalSupply || 0)}
+        <TokenRewardModal
+          endedTime={endedTime}
+          onClose={() => setModalType('')}
+          tokenAmount={
+            purchasedNFT
+              ? (purchasedNFT * 10 * 0.01) / (priceData?.elfiPrice || 1)
+              : 0
+          }
+          tokenName={'ELFI'}
         />
       ) : modalType === 'changeNetwork' ? (
         <ChangeNetworkModal
@@ -454,16 +459,17 @@ const NFTDetails = (): JSX.Element => {
             }}
             purchasedNFT={purchasedNFT}
             isDisabled={
-              nftTotalSupply || nftTotalSupply === 0
-                ? !current.isBetween(startTime, endedTime) &&
-                  totalPurchase >= nftTotalSupply
+              (nftTotalSupply || nftTotalSupply === 0) &&
+              current.isBetween(
+                moment(startTime)
+                  .subtract(1, 'hours')
+                  .format('YYYY.MM.DD HH:mm:ss'),
+                endedTime,
+              )
+                ? (advanceReservation.includes(account || '') ||
+                    current.isBetween(startTime, endedTime)) &&
+                  totalPurchase > nftTotalSupply
                 : false
-              // (current.isAfter(
-              //   moment(startTime)
-              //     .subtract(1, 'hours')
-              //     .format('YYYY.MM.DD HH:mm:ss'),
-              // ) &&
-              //   advanceReservation.includes(account || ''))
             }
             mainnetType={mainnetType}
           />
