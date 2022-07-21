@@ -887,7 +887,7 @@
         "층수",
         "판매예상가"
       ],
-      "realEstateInfoData": ["단독주택", "{{ year }}년", "2층(3rooms 4baths)"],
+      "realEstateInfoData": ["단독주택", "{{ year }}년", "2층(방3, 욕조3)"],
       "realEstateFeature": "부동산 특징",
       "realEstateFeatureContent": {
         "title": [

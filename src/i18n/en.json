@@ -928,7 +928,7 @@
       "realEstateInfoData": [
         "Single-family house",
         "{{ year }}",
-        "Two-story house(3rooms 4baths)"
+        "Two-story house(3rooms 3baths)"
       ],
       "realEstateFeature": "Features",
       "realEstateFeatureContent": {
