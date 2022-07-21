@@ -1775,6 +1775,27 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
     width: 320px;
     margin: 0 auto;
     padding-top: 100px;
+    &__guide {
+      width: 320px;
+      margin: 0 auto;
+      padding-top: 150px;
+      &__header {
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 150px;
+        > h1 {
+          font-size: 18px;
+          margin-bottom: 10px;
+        }
+        > p {
+          font-size: 12px;
+        }
+        > span {
+          font-size: 10px;
+          color: $gray-font-color;
+        }
+      }
+    }
 
     &__header {
       text-align: center;
@@ -2457,6 +2478,14 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
           margin-left: 5px;
         }
       }
+      > div {
+        > button {
+          width: 148px;
+          height: 28px;
+          line-height: 28px;
+          font-size: 12px;
+        }
+      }
     }
     &__faq {
       > div {
@@ -2517,13 +2546,13 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
         border: 0;
         grid-gap: 20px;
         gap: 20px;
-        > section {
-          width: 300px;
+        > a {
+          width: 290px;
           box-shadow: 0px 0px 6px #00000029;
           border-radius: 5px;
           padding: 10px;
           > img {
-            width: 280px;
+            width: 270px;
             height: initial;
             object-fit: cover;
           }
@@ -2551,6 +2580,31 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
   }
 
   //nft-details end
+
+  .faq {
+    &__switch {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 20px;
+      margin-top: 20px;
+      > button {
+        border: 0;
+        width: 130px;
+        height: 25px;
+        background: #00bfff;
+        height: 25px;
+        cursor: pointer;
+        font-size: 12px;
+        color: #fff;
+        &.disable {
+          border: 1px solid #00bfff;
+          background-color: #fff;
+          color: #00bfff;
+        }
+      }
+    }
+  }
 
   .governance {
     @include page-container;
@@ -4997,7 +5051,7 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
         > div {
           border: 1px solid #f0f0f1;
           border-radius: 5px;
-          padding: 20px 28px 40px 28px;
+          padding: 20px 20px 40px 20px;
           background-color: $background-color;
           margin-bottom: 20px;
           > div:first-child {
@@ -5008,7 +5062,8 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
             margin-bottom: 28px;
             > h3 {
               margin: 0;
-              font-size: 12px;
+              font-size: 10px;
+              letter-spacing: -0.5px;
               > span {
                 font-family: 'SpoqaHanSansNeo-Bold';
                 font-weight: 900;
