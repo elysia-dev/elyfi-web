@@ -35,6 +35,7 @@ const Faq = (): JSX.Element => {
   const [isQ12Visible, setIsQ12Visible] = useState(questionBox);
   const [isQ13Visible, setIsQ13Visible] = useState(questionBox);
   const [isQ14Visible, setIsQ14Visible] = useState(questionBox);
+  const [isQ15Visible, setIsQ15Visible] = useState(questionBox);
 
   const onClickBox = useCallback(
     (questionNumber: number) => {
@@ -179,6 +180,16 @@ const Faq = (): JSX.Element => {
             visible: !isQ14Visible.visible,
           });
           break;
+        case 15:
+          setIsQ15Visible({
+            ...isQ15Visible,
+            arrow: isQ15Visible.visible ? 'arrow_down' : 'arrow_up',
+            box: isQ15Visible.visible
+              ? `box${questionNumber}_up`
+              : `box${questionNumber}_down`,
+            visible: !isQ15Visible.visible,
+          });
+          break;
         default:
           break;
       }
@@ -191,6 +202,14 @@ const Faq = (): JSX.Element => {
       isQ5Visible,
       isQ6Visible,
       isQ7Visible,
+      isQ8Visible,
+      isQ9Visible,
+      isQ10Visible,
+      isQ11Visible,
+      isQ12Visible,
+      isQ13Visible,
+      isQ14Visible,
+      isQ15Visible,
     ],
   );
 
@@ -259,7 +278,7 @@ const Faq = (): JSX.Element => {
               {t('nftMarket.question.2')}
             </button>
           </article>
-          {questionSelect === Questions.Markets ? (
+          {questionSelect === Questions.MoneyPool ? (
             <section className="faq__wrapper__section">
               <div className={`question_title_box ${isQ1Visible.box}`}>
                 <div onClick={() => onClickBox(1)}>
@@ -421,10 +440,12 @@ const Faq = (): JSX.Element => {
               <div
                 className={`question_title_box`}
                 style={{
+                  height: 'initial',
+                  transition: 'all 0.3s ease-in',
                   maxHeight:
                     mediaQuery === MediaQuery.PC
                       ? isQ1Visible.visible
-                        ? '400px'
+                        ? '300px'
                         : '86px'
                       : isQ1Visible.visible
                       ? '450px'
@@ -441,13 +462,16 @@ const Faq = (): JSX.Element => {
                 </div>
                 <p>{t('nftMarket.guideData.answer.0')}</p>
               </div>
+
               <div
                 className={`question_title_box`}
                 style={{
+                  height: 'initial',
+                  transition: 'all 0.3s ease-in',
                   maxHeight:
                     mediaQuery === MediaQuery.PC
                       ? isQ2Visible.visible
-                        ? '400px'
+                        ? '300px'
                         : '86px'
                       : isQ2Visible.visible
                       ? '450px'
@@ -455,23 +479,25 @@ const Faq = (): JSX.Element => {
                 }}>
                 <div onClick={() => onClickBox(2)}>
                   <h3>
-                    <span>Q</span> {t('nftMarket.guideData.title.2')}
+                    <span>Q</span> {t('nftMarket.guideData.title.1')}
                   </h3>
                   <div className={`arrow ${isQ2Visible.arrow}`}>
                     <div></div>
                     <div></div>
                   </div>
                 </div>
-                <p>{t('nftMarket.guideData.answer.2')}</p>
+                <p>{t('nftMarket.guideData.answer.1')}</p>
               </div>
 
               <div
                 className={`question_title_box `}
                 style={{
+                  height: 'initial',
+                  transition: 'all 0.3s ease-in',
                   maxHeight:
                     mediaQuery === MediaQuery.PC
                       ? isQ3Visible.visible
-                        ? '400px'
+                        ? '300px'
                         : '86px'
                       : isQ3Visible.visible
                       ? '450px'
@@ -479,22 +505,24 @@ const Faq = (): JSX.Element => {
                 }}>
                 <div onClick={() => onClickBox(3)}>
                   <h3>
-                    <span>Q</span> {t('nftMarket.guideData.title.3')}
+                    <span>Q</span> {t('nftMarket.guideData.title.2')}
                   </h3>
                   <div className={`arrow ${isQ3Visible.arrow}`}>
                     <div></div>
                     <div></div>
                   </div>
                 </div>
-                <p>{t('nftMarket.guideData.answer.3')}</p>
+                <p>{t('nftMarket.guideData.answer.2')}</p>
               </div>
               <div
                 className={`question_title_box`}
                 style={{
+                  height: 'initial',
+                  transition: 'all 0.3s ease-in',
                   maxHeight:
                     mediaQuery === MediaQuery.PC
                       ? isQ4Visible.visible
-                        ? '400px'
+                        ? '300px'
                         : '86px'
                       : isQ4Visible.visible
                       ? '450px'
@@ -502,22 +530,25 @@ const Faq = (): JSX.Element => {
                 }}>
                 <div onClick={() => onClickBox(4)}>
                   <h3>
-                    <span>Q</span> {t('nftMarket.guideData.title.4')}
+                    <span>Q</span> {t('nftMarket.guideData.title.3')}
                   </h3>
                   <div className={`arrow ${isQ4Visible.arrow}`}>
                     <div></div>
                     <div></div>
                   </div>
                 </div>
-                <p>{t('nftMarket.guideData.answer.4')}</p>
+                <p>{t('nftMarket.guideData.answer.3')}</p>
               </div>
+
               <div
-                className={`question_title_box `}
+                className={`question_title_box`}
                 style={{
+                  height: 'initial',
+                  transition: 'all 0.3s ease-in',
                   maxHeight:
                     mediaQuery === MediaQuery.PC
                       ? isQ5Visible.visible
-                        ? '400px'
+                        ? '300px'
                         : '86px'
                       : isQ5Visible.visible
                       ? '450px'
@@ -525,22 +556,25 @@ const Faq = (): JSX.Element => {
                 }}>
                 <div onClick={() => onClickBox(5)}>
                   <h3>
-                    <span>Q</span> {t('nftMarket.guideData.title.5')}
+                    <span>Q</span> {t('nftMarket.guideData.title.4')}
                   </h3>
                   <div className={`arrow ${isQ5Visible.arrow}`}>
                     <div></div>
                     <div></div>
                   </div>
                 </div>
-                <p>{t('nftMarket.guideData.answer.5')}</p>
+                <p>{t('nftMarket.guideData.answer.4')}</p>
               </div>
+
               <div
                 className={`question_title_box`}
                 style={{
+                  height: 'initial',
+                  transition: 'all 0.3s ease-in',
                   maxHeight:
                     mediaQuery === MediaQuery.PC
                       ? isQ6Visible.visible
-                        ? '400px'
+                        ? '300px'
                         : '86px'
                       : isQ6Visible.visible
                       ? '450px'
@@ -548,22 +582,25 @@ const Faq = (): JSX.Element => {
                 }}>
                 <div onClick={() => onClickBox(6)}>
                   <h3>
-                    <span>Q</span> {t('nftMarket.guideData.title.6')}
+                    <span>Q</span> {t('nftMarket.guideData.title.5')}
                   </h3>
                   <div className={`arrow ${isQ6Visible.arrow}`}>
                     <div></div>
                     <div></div>
                   </div>
                 </div>
-                <p>{t('nftMarket.guideData.answer.6')}</p>
+                <p>{t('nftMarket.guideData.answer.5')}</p>
               </div>
+
               <div
                 className={`question_title_box `}
                 style={{
+                  height: 'initial',
+                  transition: 'all 0.3s ease-in',
                   maxHeight:
                     mediaQuery === MediaQuery.PC
                       ? isQ7Visible.visible
-                        ? '400px'
+                        ? '300px'
                         : '86px'
                       : isQ7Visible.visible
                       ? '450px'
@@ -571,22 +608,25 @@ const Faq = (): JSX.Element => {
                 }}>
                 <div onClick={() => onClickBox(7)}>
                   <h3>
-                    <span>Q</span> {t('nftMarket.guideData.title.7')}
+                    <span>Q</span> {t('nftMarket.guideData.title.6')}
                   </h3>
                   <div className={`arrow ${isQ7Visible.arrow}`}>
                     <div></div>
                     <div></div>
                   </div>
                 </div>
-                <p>{t('nftMarket.guideData.answer.7')}</p>
+                <p>{t('nftMarket.guideData.answer.6')}</p>
               </div>
+
               <div
                 className={`question_title_box`}
                 style={{
+                  height: 'initial',
+                  transition: 'all 0.3s ease-in',
                   maxHeight:
                     mediaQuery === MediaQuery.PC
                       ? isQ8Visible.visible
-                        ? '400px'
+                        ? '300px'
                         : '86px'
                       : isQ8Visible.visible
                       ? '450px'
@@ -594,22 +634,25 @@ const Faq = (): JSX.Element => {
                 }}>
                 <div onClick={() => onClickBox(8)}>
                   <h3>
-                    <span>Q</span> {t('nftMarket.guideData.title.8')}
+                    <span>Q</span> {t('nftMarket.guideData.title.7')}
                   </h3>
                   <div className={`arrow ${isQ8Visible.arrow}`}>
                     <div></div>
                     <div></div>
                   </div>
                 </div>
-                <p>{t('nftMarket.guideData.answer.8')}</p>
+                <p>{t('nftMarket.guideData.answer.7')}</p>
               </div>
+
               <div
                 className={`question_title_box `}
                 style={{
+                  height: 'initial',
+                  transition: 'all 0.3s ease-in',
                   maxHeight:
                     mediaQuery === MediaQuery.PC
                       ? isQ9Visible.visible
-                        ? '400px'
+                        ? '300px'
                         : '86px'
                       : isQ9Visible.visible
                       ? '450px'
@@ -617,22 +660,25 @@ const Faq = (): JSX.Element => {
                 }}>
                 <div onClick={() => onClickBox(9)}>
                   <h3>
-                    <span>Q</span> {t('nftMarket.guideData.title.9')}
+                    <span>Q</span> {t('nftMarket.guideData.title.8')}
                   </h3>
                   <div className={`arrow ${isQ9Visible.arrow}`}>
                     <div></div>
                     <div></div>
                   </div>
                 </div>
-                <p>{t('nftMarket.guideData.answer.9')}</p>
+                <p>{t('nftMarket.guideData.answer.8')}</p>
               </div>
+
               <div
                 className={`question_title_box`}
                 style={{
+                  height: 'initial',
+                  transition: 'all 0.3s ease-in',
                   maxHeight:
                     mediaQuery === MediaQuery.PC
                       ? isQ10Visible.visible
-                        ? '400px'
+                        ? '300px'
                         : '86px'
                       : isQ10Visible.visible
                       ? '450px'
@@ -640,22 +686,25 @@ const Faq = (): JSX.Element => {
                 }}>
                 <div onClick={() => onClickBox(10)}>
                   <h3>
-                    <span>Q</span> {t('nftMarket.guideData.title.10')}
+                    <span>Q</span> {t('nftMarket.guideData.title.9')}
                   </h3>
                   <div className={`arrow ${isQ10Visible.arrow}`}>
                     <div></div>
                     <div></div>
                   </div>
                 </div>
-                <p>{t('nftMarket.guideData.answer.10')}</p>
+                <p>{t('nftMarket.guideData.answer.9')}</p>
               </div>
+
               <div
                 className={`question_title_box`}
                 style={{
+                  height: 'initial',
+                  transition: 'all 0.3s ease-in',
                   maxHeight:
                     mediaQuery === MediaQuery.PC
                       ? isQ11Visible.visible
-                        ? '400px'
+                        ? '300px'
                         : '86px'
                       : isQ11Visible.visible
                       ? '450px'
@@ -663,22 +712,25 @@ const Faq = (): JSX.Element => {
                 }}>
                 <div onClick={() => onClickBox(11)}>
                   <h3>
-                    <span>Q</span> {t('nftMarket.guideData.title.11')}
+                    <span>Q</span> {t('nftMarket.guideData.title.10')}
                   </h3>
                   <div className={`arrow ${isQ11Visible.arrow}`}>
                     <div></div>
                     <div></div>
                   </div>
                 </div>
-                <p>{t('nftMarket.guideData.answer.11')}</p>
+                <p>{t('nftMarket.guideData.answer.10')}</p>
               </div>
+
               <div
                 className={`question_title_box `}
                 style={{
+                  height: 'initial',
+                  transition: 'all 0.3s ease-in',
                   maxHeight:
                     mediaQuery === MediaQuery.PC
                       ? isQ12Visible.visible
-                        ? '400px'
+                        ? '300px'
                         : '86px'
                       : isQ12Visible.visible
                       ? '450px'
@@ -686,22 +738,25 @@ const Faq = (): JSX.Element => {
                 }}>
                 <div onClick={() => onClickBox(12)}>
                   <h3>
-                    <span>Q</span> {t('nftMarket.guideData.title.12')}
+                    <span>Q</span> {t('nftMarket.guideData.title.11')}
                   </h3>
                   <div className={`arrow ${isQ12Visible.arrow}`}>
                     <div></div>
                     <div></div>
                   </div>
                 </div>
-                <p>{t('nftMarket.guideData.answer.12')}</p>
+                <p>{t('nftMarket.guideData.answer.11')}</p>
               </div>
+
               <div
                 className={`question_title_box `}
                 style={{
+                  height: 'initial',
+                  transition: 'all 0.3s ease-in',
                   maxHeight:
                     mediaQuery === MediaQuery.PC
                       ? isQ13Visible.visible
-                        ? '400px'
+                        ? '300px'
                         : '86px'
                       : isQ13Visible.visible
                       ? '450px'
@@ -709,22 +764,25 @@ const Faq = (): JSX.Element => {
                 }}>
                 <div onClick={() => onClickBox(13)}>
                   <h3>
-                    <span>Q</span> {t('nftMarket.guideData.title.13')}
+                    <span>Q</span> {t('nftMarket.guideData.title.12')}
                   </h3>
                   <div className={`arrow ${isQ13Visible.arrow}`}>
                     <div></div>
                     <div></div>
                   </div>
                 </div>
-                <p>{t('nftMarket.guideData.answer.13')}</p>
+                <p>{t('nftMarket.guideData.answer.12')}</p>
               </div>
+
               <div
                 className={`question_title_box `}
                 style={{
+                  height: 'initial',
+                  transition: 'all 0.3s ease-in',
                   maxHeight:
                     mediaQuery === MediaQuery.PC
                       ? isQ14Visible.visible
-                        ? '400px'
+                        ? '300px'
                         : '86px'
                       : isQ14Visible.visible
                       ? '450px'
@@ -732,9 +790,35 @@ const Faq = (): JSX.Element => {
                 }}>
                 <div onClick={() => onClickBox(14)}>
                   <h3>
-                    <span>Q</span> {t('nftMarket.guideData.title.14')}
+                    <span>Q</span> {t('nftMarket.guideData.title.13')}
                   </h3>
                   <div className={`arrow ${isQ14Visible.arrow}`}>
+                    <div></div>
+                    <div></div>
+                  </div>
+                </div>
+                <p>{t('nftMarket.guideData.answer.13')}</p>
+              </div>
+
+              <div
+                className={`question_title_box `}
+                style={{
+                  height: 'initial',
+                  transition: 'all 0.3s ease-in',
+                  maxHeight:
+                    mediaQuery === MediaQuery.PC
+                      ? isQ15Visible.visible
+                        ? '300px'
+                        : '86px'
+                      : isQ15Visible.visible
+                      ? '450px'
+                      : '42px',
+                }}>
+                <div onClick={() => onClickBox(15)}>
+                  <h3>
+                    <span>Q</span> {t('nftMarket.guideData.title.14')}
+                  </h3>
+                  <div className={`arrow ${isQ15Visible.arrow}`}>
                     <div></div>
                     <div></div>
                   </div>

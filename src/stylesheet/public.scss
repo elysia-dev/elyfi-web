@@ -2978,8 +2978,9 @@ input[type='number'] {
         font-size: 15px;
         color: #fff;
         &.disable {
-          background-color: #f0f0f1;
-          color: #333333;
+          border: 1px solid #00bfff;
+          background-color: #fff;
+          color: #00bfff;
         }
       }
     }
