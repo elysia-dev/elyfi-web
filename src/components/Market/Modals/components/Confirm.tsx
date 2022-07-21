@@ -1,5 +1,8 @@
 import { Trans, useTranslation } from 'react-i18next';
-import { formatCommaSmallFourDisits } from 'src/utiles/formatters';
+import {
+  formatCommaSmallFourDisits,
+  formatCommaSmallZeroDisits,
+} from 'src/utiles/formatters';
 
 type Props = {
   quantity: string;
@@ -25,7 +28,7 @@ const Confirm: React.FC<Props> = ({
       <h3>{t('nftModal.confirm.header')}</h3>
       <div>
         <div>{t('nftModal.confirm.purchaseQuantity')}</div>
-        <div>{quantity} NFT(s)</div>
+        <div>{formatCommaSmallZeroDisits(Number(quantity))} NFT(s)</div>
       </div>
       <div>
         <div>{t('nftModal.confirm.estimatedAmount')}</div>
@@ -34,7 +37,7 @@ const Confirm: React.FC<Props> = ({
             {crypto && formatCommaSmallFourDisits(crypto)}
             <span>{purchaseType}</span>
           </div>
-          <div>≒ ${dollar}</div>
+          <div>≒ ${formatCommaSmallZeroDisits(dollar)}</div>
         </div>
       </div>
       <div>
