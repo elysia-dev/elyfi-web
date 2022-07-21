@@ -64,13 +64,13 @@ const Header: React.FC<Props> = ({
         <h1>{t('nftMarket.title')}</h1>
         <p>{t('nftMarket.subTitle')}</p>
       </div>
-      <Link
+      {/* <Link
         className="nft-details__guide mobile-only"
         to={{
           pathname: `/${lng}/market/guide`,
         }}>
         {t('nftMarket.guide')}
-      </Link>
+      </Link> */}
       <section>
         <div>
           <b>
