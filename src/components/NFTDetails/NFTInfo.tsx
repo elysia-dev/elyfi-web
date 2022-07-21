@@ -56,7 +56,6 @@ const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo }) => {
 
   return (
     <>
-      <section></section>
       <div>
         <figure>
           <video
