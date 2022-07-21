@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import NFTStructure from 'src/assets/images/market/NFTStructure.png';
 import NFTStructureMobile from 'src/assets/images/market/NFTStructureMobile.png';
+import NFTStructureEn from 'src/assets/images/market/NFTStructureEN.png';
+import NFTStructureMobileEn from 'src/assets/images/market/NFTStructureMobileEN.png';
 import MediaQuery from 'src/enums/MediaQuery';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import Document from 'src/assets/images/market/document.svg';
@@ -19,17 +21,23 @@ interface Props {
 }
 
 const BondNFT: React.FC<Props> = ({ location, link }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { value: mediaQuery } = useMediaQueryType();
 
   return (
     <>
       <table>
-        <tr className="pc-only">
+        <tr>
           <td colSpan={2} className="image-wrapper">
             <img
               src={
-                mediaQuery === MediaQuery.PC ? NFTStructure : NFTStructureMobile
+                mediaQuery === MediaQuery.PC
+                  ? i18n.language === 'en'
+                    ? NFTStructureEn
+                    : NFTStructure
+                  : i18n.language === 'en'
+                  ? NFTStructureMobileEn
+                  : NFTStructureMobile
               }
             />
           </td>
