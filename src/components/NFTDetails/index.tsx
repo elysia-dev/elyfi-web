@@ -186,14 +186,13 @@ const NFTDetails = (): JSX.Element => {
   };
 
   const purchaseButtonDisable = useMemo(() => {
-    return (nftTotalSupply || nftTotalSupply === 0) &&
-      current.isBetween(
-        moment(startTime).subtract(1, 'hours').format('YYYY.MM.DD HH:mm:ss'),
-        endedTime,
-      )
+    return current.isBetween(
+      moment(startTime).subtract(1, 'hours').format('YYYY.MM.DD HH:mm:ss'),
+      endedTime,
+    )
       ? (advanceReservation.includes(account || '') ||
           current.isBetween(startTime, endedTime)) &&
-          totalPurchase > nftTotalSupply
+          totalPurchase > (nftTotalSupply || 0)
       : false;
   }, [nftTotalSupply, current, totalPurchase]);
 
