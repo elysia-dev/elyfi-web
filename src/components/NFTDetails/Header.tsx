@@ -34,7 +34,7 @@ const Header: React.FC<Props> = ({
         <Skeleton width={100} height={24} />
       )
     ) : (
-      '이더리움 네트워크로 변경해주세요.'
+      t('nftMarket.purchaseStatus.invalidNetwork')
     );
   };
 
