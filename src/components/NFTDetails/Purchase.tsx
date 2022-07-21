@@ -3,6 +3,7 @@ import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Skeleton from 'react-loading-skeleton';
 import { formatCommaSmallZeroDisits, toCompact } from 'src/utiles/formatters';
+import Arrow from 'src/assets/images/market/arrow.svg';
 
 interface Props {
   userTotalPurchase?: number;
@@ -69,7 +70,18 @@ const Purchase: React.FC<Props> = ({
   return (
     <>
       <section className="nft-details__purchase__status">
-        <h2>{t('nftMarket.currentPurchase')}</h2>
+        <h2>
+          {t('nftMarket.currentPurchase')}
+          <a
+            href="https://etherscan.io/"
+            target="_blank"
+            style={{
+              cursor: 'pointer',
+              marginLeft: 5,
+            }}>
+            <img src={Arrow} alt={'Arrow'} />
+          </a>
+        </h2>
         <div>
           <div>
             <p>{t('nftMarket.purchasedNTF')}</p>
