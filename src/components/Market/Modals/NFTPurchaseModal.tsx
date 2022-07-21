@@ -77,6 +77,10 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
   const isPayAmount = () => {
     if (!priceData) return;
 
+    if (parseInt(quantity, 10) > remainingNFT) {
+      return true;
+    }
+
     if (purchaseType === NFTPurchaseType.ETH) {
       return paymentEth > balances.eth;
     }
