@@ -110,7 +110,7 @@ const NFTDetails = (): JSX.Element => {
   const totalPurchase = 54000;
 
   const startTime = moment(
-    '2022.07.21 17:00:00 +9:00',
+    '2022.07.21 19:00:00 +9:00',
     'YYYY.MM.DD hh:mm:ss Z',
   );
   const endedTime = moment(
@@ -191,11 +191,11 @@ const NFTDetails = (): JSX.Element => {
     return current.isBetween(
       moment(startTime).subtract(1, 'hours').format('YYYY.MM.DD HH:mm:ss'),
       endedTime,
-    );
-    // ? (advanceReservation.includes(account || '') ||
-    //     current.isBetween(startTime, endedTime)) &&
-    //     totalPurchase > (nftTotalSupply || 0)
-    // : false;
+    )
+      ? (advanceReservation.includes(account || '') ||
+          current.isBetween(startTime, endedTime)) &&
+          totalPurchase > (nftTotalSupply || 0)
+      : false;
   }, [nftTotalSupply, current, totalPurchase]);
 
   const getPurchasedNFT = useCallback(async () => {
