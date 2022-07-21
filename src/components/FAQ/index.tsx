@@ -248,13 +248,13 @@ const Faq = (): JSX.Element => {
           <article className="faq__switch">
             <button
               className={
-                questionSelect === Questions.MoneyPool ? '' : 'disable'
+                questionSelect === Questions.MoneyPool ? 'disable' : ''
               }
               onClick={() => setQuestion(Questions.MoneyPool)}>
               {t('nftMarket.question.1')}
             </button>
             <button
-              className={questionSelect === Questions.Markets ? '' : 'disable'}
+              className={questionSelect === Questions.Markets ? 'disable' : ''}
               onClick={() => setQuestion(Questions.Markets)}>
               {t('nftMarket.question.2')}
             </button>

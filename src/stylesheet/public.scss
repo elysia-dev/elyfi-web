@@ -2950,7 +2950,9 @@ input[type='number'] {
       flex-direction: row;
       align-items: center;
       gap: 20px;
+      margin-top: 20px;
       > button {
+        border: 0;
         width: 150px;
         height: 30px;
         background: #00bfff;
