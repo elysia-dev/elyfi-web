@@ -55,6 +55,10 @@ import advanceReservation from 'src/utiles/advanceReservation';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import RecentActivityType from 'src/enums/RecentActivityType';
 import NewTab from 'src/assets/images/market/arrow.svg';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
+import ModalViewType from 'src/enums/ModalViewType';
+import TransactionType from 'src/enums/TransactionType';
+import ElyfiVersions from 'src/enums/ElyfiVersions';
 import ChangeNetworkModal from '../Market/Modals/ChangeNetworkModal';
 import NFTPurchaseModal from '../Market/Modals/NFTPurchaseModal';
 import TwitterConfirmModal from '../Market/Modals/TwitterConfirmModal';
@@ -63,10 +67,6 @@ import SelectWalletModal from '../Market/Modals/SelectWalletModal';
 import ReconnectWallet from '../Market/Modals/components/ReconnectWallet';
 import NewsCard from './NewsCard';
 import Guide from './Guide';
-import buildEventEmitter from 'src/utiles/buildEventEmitter';
-import ModalViewType from 'src/enums/ModalViewType';
-import TransactionType from 'src/enums/TransactionType';
-import ElyfiVersions from 'src/enums/ElyfiVersions';
 
 export interface INews {
   title: string;
@@ -117,7 +117,7 @@ const NFTDetails = (): JSX.Element => {
   const totalPurchase = 54000;
 
   const startTime = moment(
-    '2022.07.21 19:00:00 +9:00',
+    '2022.07.21 20:00:00 +9:00',
     'YYYY.MM.DD hh:mm:ss Z',
   );
   const endedTime = moment(
@@ -441,7 +441,7 @@ const NFTDetails = (): JSX.Element => {
           onSubmit={() => {
             const emitter = buildEventEmitter(
               ModalViewType.NFTPurchaseModal,
-              TransactionType.Approve,
+              TransactionType.Deposit,
               JSON.stringify({
                 version: ElyfiVersions.V1,
                 chainId,
