@@ -109,7 +109,7 @@ const NFTDetails = (): JSX.Element => {
   const totalPurchase = 54000;
 
   const startTime = moment(
-    '2022.07.21 20:00:00 +9:00',
+    '2022.07.20 20:00:00 +9:00',
     'YYYY.MM.DD hh:mm:ss Z',
   );
   const endedTime = moment(
