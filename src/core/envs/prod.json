@@ -12,8 +12,8 @@
     "usdcIncentivePoolAddress": "0xFB9E3212582765892AEF44A7c0084cE183E08e90"
   },
   "market": {
-    "controllerAddress": "0xA1bcE3160B231939e017D62919c23C0f269fE214",
-    "nftAddress": "0x4481a9d47Ff2591a193ddCce73DEeF9E8C769EDf"
+    "controllerAddress": "0x30F5907E7F943e8eBE5db444Ab7e3C8251346344",
+    "nftAddress": "0xA12243a014Ab9d1bC016BA2c1b76AC6a86aE4510"
   },
   "staking": {
     "elStakingPoolAddress": "0xd804e198d25a1920522ca0094a670184a9c972d7",
