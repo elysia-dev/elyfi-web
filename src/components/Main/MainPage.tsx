@@ -33,26 +33,30 @@ const MainPage: React.FC<Props> = ({ mainHeaderY, mainHeaderMoblieY }) => {
           <p>{t('main.landing.header__content')}</p>
         </div>
         <div className="main__title__button pc-only">
-          <div
-            onClick={() => {
-              reactGA.event({
-                category: PageEventType.MoveToInternalPage,
-                action: ButtonEventType.DepositButton,
-              });
-              navigate(`/${lng}/deposit`);
-            }}>
-            <p ref={mainHeaderY}> {t('main.landing.button__deposit')}</p>
+          <div>
+            <Link
+              to={`/${lng}/market`}
+              onClick={() => {
+                reactGA.event({
+                  category: PageEventType.MoveToInternalPage,
+                  action: ButtonEventType.DepositButton,
+                });
+              }}>
+              <p ref={mainHeaderY}>{t('main.landing.button__market')}</p>
+            </Link>
           </div>
-          <Link
-            to={`/${lng}/faq`}
-            onClick={() => {
-              reactGA.event({
-                category: PageEventType.MoveToExternalPage,
-                action: ButtonEventType.LearnMoreButton,
-              });
-            }}>
-            <p>FAQ</p>
-          </Link>
+          <div>
+            <Link
+              to={`/${lng}/deposit`}
+              onClick={() => {
+                reactGA.event({
+                  category: PageEventType.MoveToExternalPage,
+                  action: ButtonEventType.LearnMoreButton,
+                });
+              }}>
+              <p>{t('main.landing.button__deposit')}</p>
+            </Link>
+          </div>
         </div>
       </div>
       <div className="main__image-wrapper">
@@ -62,26 +66,30 @@ const MainPage: React.FC<Props> = ({ mainHeaderY, mainHeaderMoblieY }) => {
         </Suspense>
       </div>
       <div className="main__title__button mobile-only">
-        <div
-          onClick={() => {
-            reactGA.event({
-              category: PageEventType.MoveToInternalPage,
-              action: ButtonEventType.DepositButton,
-            });
-            navigate(`/${lng}/deposit`);
-          }}>
-          <p ref={mainHeaderMoblieY}>{t('main.landing.button__deposit')}</p>
+        <div>
+          <Link
+            to={`/${lng}/market`}
+            onClick={() => {
+              reactGA.event({
+                category: PageEventType.MoveToInternalPage,
+                action: ButtonEventType.DepositButton,
+              });
+            }}>
+            <p ref={mainHeaderY}>{t('main.landing.button__market')}</p>
+          </Link>
         </div>
-        <Link
-          to={`/${lng}/faq`}
-          onClick={() => {
-            reactGA.event({
-              category: PageEventType.MoveToExternalPage,
-              action: ButtonEventType.LearnMoreButton,
-            });
-          }}>
-          <p>FAQ</p>
-        </Link>
+        <div>
+          <Link
+            to={`/${lng}/deposit`}
+            onClick={() => {
+              reactGA.event({
+                category: PageEventType.MoveToExternalPage,
+                action: ButtonEventType.LearnMoreButton,
+              });
+            }}>
+            <p>{t('main.landing.button__deposit')}</p>
+          </Link>
+        </div>
       </div>
     </>
   );

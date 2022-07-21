@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import {
   DataPipelineFactory,
@@ -7,8 +8,10 @@ import axios from 'axios';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import envs from 'src/core/envs';
 import { getV2LPPoolContract } from 'src/utiles/v2LPPoolContract';
-import { BigNumber, constants } from 'ethers';
+import { BigNumber, constants, Contract, ethers, utils } from 'ethers';
 import Token from 'src/enums/Token';
+import nftAbi from 'src/abis/NftBond.json';
+import controllerAbi from 'src/abis/Controller.json';
 
 export const tvlFetcher = (
   url: string,
@@ -26,6 +29,18 @@ const erc20Contract = (address: string, provider: any) => {
 };
 const stakingPoolV2Contract = (address: string, provider: any) => {
   return StakingPoolV2factory.connect(address, provider);
+};
+
+export const getControllerContract = (provider: any): Contract => {
+  return new ethers.Contract(
+    envs.market.controllerAddress,
+    controllerAbi.abi,
+    provider,
+  );
+};
+
+export const getNFTContract = (provider: any) => {
+  return new ethers.Contract(envs.market.nftAddress, nftAbi.abi, provider);
 };
 
 export const elfiBalanceOfFetcher =
@@ -153,3 +168,80 @@ export const depositInfoFetcher =
       { ...busdInfo, tokenName: Token.BUSD },
     ];
   };
+
+export const walletCryptoFetcher =
+  () =>
+  async (
+    ...args: [{ usdc: string; account: string }]
+  ): Promise<{ eth: BigNumber; usdc: BigNumber }> => {
+    if (!args[0].account) {
+      return { eth: constants.Zero, usdc: constants.Zero };
+    }
+    const contract = erc20Contract(args[0].usdc, provider);
+
+    const eth = await provider.getBalance(args[0].account);
+    const usdc = await contract.balanceOf(args[0].account);
+
+    return {
+      eth,
+      usdc,
+    };
+  };
+
+export const gasPriceFetcher =
+  () =>
+  async (...args: [{ account: string; library: any }]): Promise<number> => {
+    try {
+      const controllerContract = getControllerContract(provider);
+      const estimatedGas = await controllerContract.estimateGas.deposit(
+        1,
+        utils.parseUnits('1', 6),
+        {
+          from: args[0].account,
+        },
+      );
+
+      const gasFee =
+        parseFloat(utils.formatEther(await provider.getGasPrice())) *
+        parseFloat(utils.formatUnits(estimatedGas, 0));
+
+      return gasFee;
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  };
+
+export const erc20GasPriceFetcher =
+  () =>
+  async (...args: [{ account: string; library: any }]): Promise<number> => {
+    try {
+      const erc20 = erc20Contract(envs.token.usdcAddress, provider);
+      const estimatedGas = await erc20.estimateGas.approve(
+        envs.market.controllerAddress,
+        constants.MaxUint256,
+        {
+          from: args[0].account,
+        },
+      );
+
+      const gasFee =
+        parseFloat(utils.formatEther(await provider.getGasPrice())) *
+        parseFloat(utils.formatUnits(estimatedGas, 0));
+
+      return gasFee;
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  };
+
+export const nftTotalSupplyFetcher = () => async (): Promise<number> => {
+  try {
+    const nftContract = getNFTContract(provider);
+    return parseInt(utils.formatUnits(await nftContract.totalSupply(0), 0), 10);
+  } catch (error) {
+    console.log(error);
+    return 0;
+  }
+};

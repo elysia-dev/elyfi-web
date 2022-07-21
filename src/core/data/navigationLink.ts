@@ -11,23 +11,31 @@ export interface INavigation {
   location: string;
   i18nKeyword: string;
   subNavigation?: ISubNavigation[];
+  isBeta?: boolean;
 }
 
 export const navigationLink: INavigation[] = [
   {
     id: 1,
     type: NavigationType.Link,
+    location: '/market',
+    i18nKeyword: 'navigation.market',
+    isBeta: true,
+  },
+  {
+    id: 2,
+    type: NavigationType.Link,
     location: '/deposit',
     i18nKeyword: 'navigation.dashboard',
   },
   {
-    id: 2,
+    id: 3,
     type: NavigationType.Link,
     location: `/governance`,
     i18nKeyword: 'navigation.governance',
   },
   {
-    id: 3,
+    id: 4,
     type: NavigationType.LNB,
     location: `/staking`,
     i18nKeyword: 'navigation.staking',
@@ -45,7 +53,7 @@ export const navigationLink: INavigation[] = [
     ],
   },
   {
-    id: 4,
+    id: 5,
     type: NavigationType.LNB,
     location: '/docs',
     i18nKeyword: 'navigation.docs',
@@ -68,15 +76,9 @@ export const navigationLink: INavigation[] = [
     ],
   },
   {
-    id: 5,
+    id: 6,
     type: NavigationType.Link,
     location: `/faq`,
     i18nKeyword: 'navigation.faq',
-  },
-  {
-    id: 6,
-    type: NavigationType.ExternalLink,
-    location: `https://preorder.elyfi.world/`,
-    i18nKeyword: 'navigation.market',
   },
 ];

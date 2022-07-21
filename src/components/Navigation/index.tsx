@@ -254,6 +254,7 @@ const Navigation: React.FunctionComponent<{
                 marginRight: 8,
               }}>
               <p
+                className={_data.isBeta ? 'beta' : ''}
                 style={{
                   cursor: 'pointer',
                   fontWeight: currentRoute === _index ? 'bold' : undefined,
@@ -500,7 +501,7 @@ const Navigation: React.FunctionComponent<{
               onClick={() => {
                 setHamburgerBar(false);
               }}>
-              <div>
+              <div className={data.isBeta ? 'mobile-beta' : ''}>
                 <p>{t(data.i18nKeyword).toUpperCase()}</p>
               </div>
             </Link>

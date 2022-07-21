@@ -13,6 +13,7 @@ enum RecentActivityType {
   Approve = 'Approve',
   Idle = 'Idle',
   LPMigration = 'LPMigration',
+  PurchasedNFT = 'PurchasedNFT',
 }
 
 export default RecentActivityType;

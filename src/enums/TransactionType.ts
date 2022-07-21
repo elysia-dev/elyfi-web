@@ -6,6 +6,7 @@ enum TransactionType {
   Claim = 'Claim',
   Stake = 'Stake',
   Unstake = 'Unstake',
+  PurchaseNFT = 'PurchaseNFT',
 }
 
 export default TransactionType;

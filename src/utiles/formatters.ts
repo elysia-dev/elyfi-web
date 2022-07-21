@@ -64,6 +64,11 @@ export const formatCommaSmallFourDisits = (value: number): string =>
     minimumFractionDigits: 4,
     maximumFractionDigits: 4,
   }).format(value);
+export const formatCommaSmallZeroDisits = (value: number): string =>
+  new Intl.NumberFormat('en', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(value);
 
 export const toCompact = (value: number): string =>
   new Intl.NumberFormat('en-US', {

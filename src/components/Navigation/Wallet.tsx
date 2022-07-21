@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext } from 'react';
+import { useState, useEffect, useRef, useContext, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWeb3React } from '@web3-react/core';
 import Davatar from '@davatar/react';
@@ -9,14 +9,19 @@ import AccountModal from 'src/components/Modal/AccountModal';
 import MainnetContext from 'src/contexts/MainnetContext';
 import MainnetError from 'src/assets/images/network_error.png';
 import useCurrentChain from 'src/hooks/useCurrentChain';
+import moment from 'moment';
+import { getNFTContract } from 'src/clients/BalancesFetcher';
+import { utils } from 'ethers';
 import { isMoblie } from 'src/utiles/connectWallet';
 import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
 import NetworkChangeModal from '../Modal/NetworkChangeModal';
 import SelectWalletModal from '../Modal/SelectWalletModal';
 import WalletDisconnect from '../Modal/WalletDisconnect';
+import TwitterConfirmModal from '../Market/Modals/TwitterConfirmModal';
+import TokenRewardModal from '../Market/Modals/TokenRewardModal';
 
 const Wallet = (): JSX.Element => {
-  const { account, chainId, active } = useWeb3React();
+  const { account, chainId, library } = useWeb3React();
   const [connected, setConnected] = useState<boolean>(false);
 
   const { t } = useTranslation();
@@ -33,12 +38,40 @@ const Wallet = (): JSX.Element => {
   const currentChain = useCurrentChain();
   const { unsupportedChainid, type: getMainnetType } =
     useContext(MainnetContext);
+  const [modalType, setModalType] = useState('');
+  const [purchasedNFT, setPurchasedNFT] = useState<number | undefined>();
 
   const isWrongMainnet = isWrongNetwork(getMainnetType, currentChain?.name);
+
+  const endedTime = moment(
+    '2022.08.05 20:00:00 +9:00',
+    'YYYY.MM.DD hh:mm:ss Z',
+  );
 
   useEffect(() => {
     setConnected(!!account);
   }, [account, chainId]);
+  useEffect(() => {
+    if (localStorage.getItem(`@eventclose${account}`) === account) {
+      setModalType('twitter');
+    }
+  }, [account]);
+
+  const getPurchasedNFT = useCallback(async () => {
+    try {
+      const nftContract = getNFTContract(library.getSigner());
+      const count = await nftContract.balanceOf(account, 0);
+      setPurchasedNFT(parseInt(utils.formatUnits(count, 0), 10));
+    } catch (error) {
+      console.log(error);
+      setPurchasedNFT(0);
+    }
+  }, [library, account]);
+
+  useEffect(() => {
+    if (!account) return;
+    getPurchasedNFT();
+  }, [account]);
 
   return (
     <>
@@ -62,6 +95,40 @@ const Wallet = (): JSX.Element => {
         }}
         selectWalletModalVisible={selectWalletModalVisible}
       />
+      {modalType === 'twitter' ? (
+        <TwitterConfirmModal
+          endedTime={endedTime}
+          onClose={() => {
+            localStorage.setItem(
+              `@eventclose${account}`,
+              account ? account : '',
+            );
+            setModalType('');
+          }}
+          onSubmit={() => {
+            localStorage.removeItem(`@event${account}`);
+            localStorage.removeItem(`@eventclose${account}`);
+            setModalType('tokenReward');
+            window.open(
+              'https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.elyfi.world%2Fko&text=ELYFI[…]%EB%A6%AC%ED%8C%8C%EC%9D%B4,ELFI,%EB%B6%80%EB%8F%99%EC%82%B0,PF',
+            );
+          }}
+          onDiscard={() => {
+            localStorage.setItem(`@event${account}`, account ? account : '');
+            localStorage.removeItem(`@eventclose${account}`);
+            setModalType('');
+          }}
+        />
+      ) : modalType === 'tokenReward' ? (
+        <TokenRewardModal
+          endedTime={endedTime}
+          onClose={() => setModalType('')}
+          tokenAmount={purchasedNFT ? (purchasedNFT * 10 * 0.01) / 0.01858 : 0}
+          tokenName={'ELFI'}
+        />
+      ) : (
+        <></>
+      )}
       <div
         className={`navigation__wallet${
           connected ? '--connected' : isWrongMainnet ? '--connected' : ''
