@@ -119,7 +119,7 @@ const AppNavigator: React.FC = () => {
               }
             />
             <Route
-              path="faq"
+              path="guide"
               element={
                 <Suspense fallback={nullFallbackArea()}>
                   <MarketFaq />

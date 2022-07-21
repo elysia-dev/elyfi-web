@@ -720,10 +720,11 @@
         "content": "Follow our Market Guide to buy bond NFTs.",
         "comment": "* This guide explains how to buy with ETH",
         "title": [
-          "1. Create Metamask",
-          "2. Buy and send ETH",
-          "3. Wallet connection",
-          "4. Buy Bond NFTs"
+          "Create Metamask",
+          "",
+          "Buy and send ETH",
+          "Wallet connection",
+          "Buy Bond NFTs"
         ],
         "answer": {
           "a1": [
@@ -740,12 +741,16 @@
             "On the Secret Recovery Phrase confirmation page, select the phrases in order and click the `OK` button to complete the wallet creation."
           ],
           "a3": [
-            "업비트에서 투자를 원하시는 금액만큼 이더리움(ETH)을 매수해주세요.",
-            "업비트 상단의 ‘입출금’ 페이지에 접속한 후 ‘이더리움(ETH)’을 선택하고 ‘출금신청’ 버튼을 클릭해주세요.",
-            "원하시는 출금수량을 선택하신 후 ‘확인’ 버튼을 클릭해주세요.",
-            "이더리움(ETH)을 전송할 메타마스크 주소를 입력하고 ‘출금신청’ 버튼을 클릭해주세요.",
-            "해당 팝업창이 뜨면 ‘아니오’ 버튼을 클릭해주세요.",
-            "지갑주소 및 출금수량을 확인하고 ‘카카오페이 인증하기’ 버튼을 클릭해주세요. 카카오페이 인증까지 완료하면 이더리움(ETH) 출금이 완료됩니다."
+            "Buy the amount of Ethereum (ETH) you want to invest in Binance.",
+            "Click on ‘Fiat and Spot’ in the Wallet tab at the top of Binance.",
+            "Click ‘Withdraw’ in the Ethereum (ETH) tab to proceed with the withdrawal.",
+            "Enter the Metamask address to send Ethereum and, after selecting ETH for the network, choose the desired withdrawal amount, and click the ‘Withdraw’ button.",
+            "When a pop-up window appears, click the ‘Continue’ button.",
+            "Select items B, C, and B in this order and click the ‘Submit’ button.",
+            "After checking both boxes, click the ‘Submit’ button.",
+            "Click the ‘OK’ button.",
+            "Click the ‘Continue’ button.",
+            "After completing mobile phone verification and email verification, click the ‘Submit’ button to complete ETH transfer."
           ],
           "a4": [
             "After accessing the ELYFI site, click the ‘Connect Wallet’ button in the upper right corner.",

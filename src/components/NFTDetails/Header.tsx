@@ -67,7 +67,7 @@ const Header: React.FC<Props> = ({
       <Link
         className="nft-details__guide mobile-only"
         to={{
-          pathname: `/${lng}/market/faq`,
+          pathname: `/${lng}/market/guide`,
         }}>
         {t('nftMarket.guide')}
       </Link>

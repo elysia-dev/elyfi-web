@@ -458,7 +458,7 @@ const NFTDetails = (): JSX.Element => {
         <Link
           className="nft-details__guide pc-only"
           to={{
-            pathname: `/${lng}/market/faq`,
+            pathname: `/${lng}/market/guide`,
           }}>
           {t('nftMarket.guide')}
         </Link>
