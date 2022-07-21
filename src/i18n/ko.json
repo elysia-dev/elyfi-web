@@ -772,7 +772,8 @@
       "purchase": "구매하기",
       "purchaseStatus": {
         "walletConnect": "지갑을 연결해주세요.",
-        "nullPurchase": "아직 구매한 수량이 없습니다"
+        "nullPurchase": "아직 구매한 수량이 없습니다",
+        "invalidNetwork": "지갑에서 이더리움 네트워크로 연결해주세요."
       },
       "currentPurchase": "판매 현황",
       "purchasedNTF": "판매된 NFT",
@@ -973,7 +974,7 @@
       "complete": {
         "header": "축하합니다!<br />{{tokenName}} 토큰 {{tokenAmount}}개를 적립했습니다.",
         "title": "ELFI 토큰 지급일",
-        "content": "토큰 지급 완료 시점까지 트위터 게시물이 유지돼야 합니다.<br/>또한 ELFI 토큰 수량은 2022년 7월 21일(KST) ELFI의 가격인<br/> $0.xx를 기준으로 산정합니다."
+        "content": "토큰 지급 완료 시점까지 트위터 게시물이 유지돼야 합니다.<br/>또한 ELFI 토큰 수량은 2022년 7월 21일(KST) ELFI의 가격인<br/> $0.01858를 기준으로 산정합니다."
       }
     }
   }

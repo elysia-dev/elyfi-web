@@ -802,7 +802,8 @@
       "purchase": "Purchase",
       "purchaseStatus": {
         "walletConnect": "Connect wallet",
-        "nullPurchase": "No quantity purchased yet"
+        "nullPurchase": "No quantity purchased yet",
+        "invalidNetwork": "Please change to the Ethereum network on your wallet."
       },
       "currentPurchase": "Sales Status",
       "purchasedNTF": "Sold NFT",
@@ -1011,7 +1012,7 @@
       "complete": {
         "header": "Congratulations!<br />You have accumulated<br/> {{tokenAmount}} {{tokenName}} tokens so far.",
         "title": "ELFI token payment date",
-        "content": "Twitter posts must not be deleted until token disbursements are complete.<br/>In addition, the quantity of ELFI tokens is calculated based on<br/> the ELFI price of $0.xx on July 21, 2022 KST."
+        "content": "Twitter posts must not be deleted until token disbursements are complete.<br/>In addition, the quantity of ELFI tokens is calculated based on<br/> the ELFI price of $0.01858 on July 21, 2022 KST."
       }
     }
   }
