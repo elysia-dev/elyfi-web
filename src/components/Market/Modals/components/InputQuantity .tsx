@@ -1,5 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { formatCommaSmallFourDisits } from 'src/utiles/formatters';
+import {
+  formatCommaSmallFourDisits,
+  formatCommaSmallZeroDisits,
+} from 'src/utiles/formatters';
 
 interface Props {
   setQuantity: React.Dispatch<React.SetStateAction<string>>;
@@ -25,19 +28,25 @@ const InputQuantity: React.FC<Props> = ({
       <section>
         <div onClick={() => max()}>{t('nftModal.purchaseModal.max')}</div>
         <input
-          type="number"
-          value={quantity}
+          type="string"
+          value={
+            quantity === '' ? '' : formatCommaSmallZeroDisits(Number(quantity))
+          }
+          placeholder={'0'}
           onChange={(e) => {
+            const regex = new RegExp(/[^0-9,]/g);
+            if (regex.test(e.target.value)) {
+              return;
+            }
             if (!e.target.value) {
               setQuantity('0');
               return;
             }
-            if (e.target.value.includes('.')) return;
             if (e.target.value.length >= 2 && e.target.value[0] === '0') {
-              setQuantity(e.target.value.substring(1));
+              setQuantity(e.target.value.split(',').join(''));
               return;
             }
-            setQuantity(e.target.value);
+            setQuantity(e.target.value.split(',').join(''));
           }}
         />
       </section>
