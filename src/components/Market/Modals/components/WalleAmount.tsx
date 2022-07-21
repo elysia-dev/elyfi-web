@@ -20,7 +20,9 @@ const WalletAmount: React.FC<Amount> = ({ balances, remainingNFT }) => {
     <div className="market_modal__amount">
       <div>
         <div>{t('nftModal.purchaseModal.remainigNFT')}</div>
-        <div>{formatCommaSmallZeroDisits(remainingNFT)} NFT(s)</div>
+        <div>
+          {formatCommaSmallZeroDisits(remainingNFT)} <span>NFT(s)</span>
+        </div>
       </div>
       <div>
         <div>{t('nftModal.purchaseModal.wallet')}</div>
