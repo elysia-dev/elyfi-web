@@ -568,7 +568,7 @@ input[type='number'] {
       &::after {
         content: 'B';
         position: absolute;
-        top: 5px;
+        top: 4px;
         right: -10px;
         width: 12px;
         height: 12px;
@@ -2943,6 +2943,30 @@ input[type='number'] {
   }
 
   //nft-details end
+
+  .faq {
+    &__switch {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 20px;
+      > button {
+        width: 150px;
+        height: 30px;
+        background: #00bfff;
+        border-radius: 15px;
+        cursor: pointer;
+        font-size: 15px;
+        color: #fff;
+        &.disable {
+          pointer-events: none;
+          cursor: not-allowed;
+          background-color: #f0f0f1;
+          color: #333333;
+        }
+      }
+    }
+  }
 
   .governance {
     &__asset {

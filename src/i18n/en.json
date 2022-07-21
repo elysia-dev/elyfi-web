@@ -786,7 +786,11 @@
           "Are there any platform fees for purchases?",
           "How are the principal and the profits paid out?",
           "What if the borrower does not repay?",
-          "What if the loan is not executed?"
+          "What if the loan is not executed?",
+          "How are Bond NFTs created?",
+          "Please tell me more about ELYSIA DAO LLC",
+          "Why is Bond NFT tokenized through ELYSIA DAO LLC?",
+          "How are Bond NFTs linked to real assets?"
         ],
         "answer": [
           "ELYFI is a DeFi project by the Elysia team, a decentralized project that connects the real world asset and the cryptocurrency market. With ELYFI, you can conduct various financial activities with crypto. You can get a loan from ELYFI using the asset token (reflecting real asset value) created through the Elysia protocol as a collateral. In addition, users can earn money by depositing their own cryptocurrency into the money pool or purchasing NFT products.",
@@ -799,7 +803,11 @@
           "There is no ELYFI platform fee for this product. However, ELYFI users will use the Ethereum network when purchasing NFTs or receiving repayments, and accordingly, users must pay the Ethereum network usage fee (gas fee) in Ether (ETH). The gas fee is received from the Ethereum network, not from ELYFI.",
           "The repayment of this product (principal and interest income) can be directly received in USDC tokens on the ELYFI site on the maturity date of the bond. However, it may be replaced with other tokens depending on the situation. In addition, depending on the borrower's financial situation, repayment may be made early before the maturity date, and repayment may be received from the time of repayment.",
           "In case of delinquency, the interest rate for overdue payment of 15% is charged from the day after the bond maturity date by adding up the interest rate for delinquency (3%). In addition, if the bond is not repaid within 60 days from the day after the maturity date, the NFT of this bond is collected by selling it to another institution with the goal of recovering the full principal and interest.",
-          "If the loan is not executed, the purchase principal can be directly received in USDC, and USDC can be replaced with other coins depending on the circumstances."
+          "If the loan is not executed, the purchase principal can be directly received in USDC, and USDC can be replaced with other coins depending on the circumstances.",
+          "Bond NFTs are tokenized through ELYSIA DAO LLC, established in Wyoming, USA. This bond NFT is the first example that real world assets have been tokenized through ELYSIA DAO LLC. As this proves that tokenization can be decentralized through DAO, various real world assets are expected to be tokenized through DAO in the future.",
+          "DAO stands for decentralized autonomous organization. It is the most suitable organizational structure for blockchain. DAO is a system in which individuals gather and autonomously decide and operate by majority vote through proposals and voting without any centralized entity.\nElysia was the first Asian organization to be registered as a DAO LLC in Wyoming, USA–ELYSIA DAO LLC.",
+          "As Elysia's DAO was registered as a DAO LLC in Wyoming, USA, it was granted the same legal status as LLC. Due to the nature of the Elysia project, which deals with both real assets and crypto currency, legal disputes related to real assets may arise. In these legal disputes, ELYSIA DAO LLC can participate as a contracting entity and receive legal protection. For this reason, Bond NFTs have been tokenized through ELYSIA DAO LLC to provide legal protection for participants of Elysia.",
+          "This bond NFT is a case of tokenizing PF (Project Financing) loans for US sites through Elysia, a real world asset tokenization protocol. Here's how bond NFTs are linked to physical loan bonds:\n\nLoan bond owners wishing to tokenize their assets make an asset tokenization agreement with ELYSIA DAO LLC and issue bond NFTs. Through the asset tokenization contract, when the bond NFT buyer presents the NFT to the owner of the physical loan bond, the owner is obligated to transfer the physical loan bond to the NFT buyer. In other words, the bond NFT becomes an exchange right for a real loan bond. If the exchange is refused, the owner of the physical loan bond is obliged to compensate the bond NFT buyer for losses. This allows the bond NFT to have the same value as a physical loan bond."
         ]
       },
       "myPurchase": "My holdings",
