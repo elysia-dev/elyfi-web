@@ -36,7 +36,6 @@ import AroundAsset02 from 'src/assets/images/market/aroundAsset02.png';
 
 import MainnetContext from 'src/contexts/MainnetContext';
 import { useWeb3React } from '@web3-react/core';
-import axios from 'axios';
 import useUserCryptoBalances from 'src/hooks/useUserCryptoBalances';
 import { pricesFetcher } from 'src/clients/Coingecko';
 import priceMiddleware from 'src/middleware/priceMiddleware';
@@ -49,7 +48,6 @@ import { utils } from 'ethers';
 import TxContext from 'src/contexts/TxContext';
 import TxStatus from 'src/enums/TxStatus';
 import useSWR from 'swr';
-import Token from 'src/enums/Token';
 import ProductPoint00 from 'src/assets/images/market/productPoint00.svg';
 import ProductPoint01 from 'src/assets/images/market/productPoint01.svg';
 import ProductPoint02 from 'src/assets/images/market/productPoint02.svg';
@@ -109,6 +107,9 @@ const NFTDetails = (): JSX.Element => {
   const [purchasedNFT, setPurchasedNFT] = useState<number | undefined>();
   const [nftInfo, setNftInfo] = useState<NFTType | undefined>();
   const current = moment();
+  const openSeaLink = (i: number) =>
+    `https://opensea.io/assets/ethereum/${envs.market.nftAddress}/${i}`;
+  const etherscanLink = `https://etherscan.io/address/${envs.market.controllerAddress}`;
 
   const totalPurchase = 54000;
 
@@ -472,7 +473,7 @@ const NFTDetails = (): JSX.Element => {
             purchasedNFT={purchasedNFT}
             isDisabled={purchaseButtonDisable}
             mainnetType={mainnetType}
-            openseaLink={'https://opensea.io/'}
+            openseaLink={openSeaLink(0)}
           />
         </article>
         <article className="nft-details__purchase">
@@ -481,7 +482,7 @@ const NFTDetails = (): JSX.Element => {
             totalPurchase={totalPurchase}
             startTime={startTime}
             endedTime={endedTime}
-            etherscanLink={'https://etherscan.io/'}
+            etherscanLink={etherscanLink}
           />
         </article>
         <article className="nft-details__content">
@@ -563,7 +564,7 @@ const NFTDetails = (): JSX.Element => {
                 <u>
                   <a
                     target="_blank"
-                    href="https://opensea.io/"
+                    href={openSeaLink(0)}
                     style={{ color: '#00bfff' }}>
                     link
                   </a>
