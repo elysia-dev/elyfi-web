@@ -63,6 +63,10 @@ import SelectWalletModal from '../Market/Modals/SelectWalletModal';
 import ReconnectWallet from '../Market/Modals/components/ReconnectWallet';
 import NewsCard from './NewsCard';
 import Guide from './Guide';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
+import ModalViewType from 'src/enums/ModalViewType';
+import TransactionType from 'src/enums/TransactionType';
+import ElyfiVersions from 'src/enums/ElyfiVersions';
 
 export interface INews {
   title: string;
@@ -89,7 +93,7 @@ export type NFTType = {
 const provider = new JsonRpcProvider(process.env.REACT_APP_JSON_RPC);
 
 const NFTDetails = (): JSX.Element => {
-  const { account, deactivate, library } = useWeb3React();
+  const { account, deactivate, library, chainId } = useWeb3React();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const { value: mediaQuery } = useMediaQueryType();
@@ -435,6 +439,18 @@ const NFTDetails = (): JSX.Element => {
             );
           }}
           onSubmit={() => {
+            const emitter = buildEventEmitter(
+              ModalViewType.NFTPurchaseModal,
+              TransactionType.Approve,
+              JSON.stringify({
+                version: ElyfiVersions.V1,
+                chainId,
+                address: account,
+                NFTAmount: `${purchasedNFT}(${(purchasedNFT || 1) * 10})`,
+              }),
+            );
+
+            emitter.clicked();
             setModalType('tokenReward');
             localStorage.removeItem(`@event${account}`);
             localStorage.removeItem(`@eventclose${account}`);
