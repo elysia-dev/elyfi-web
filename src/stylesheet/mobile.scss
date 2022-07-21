@@ -5362,7 +5362,7 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
       }
     }
     &__twitter {
-      width: 470px;
+      width: 100%;
       margin: 0 auto;
       text-align: center;
       > figure {
@@ -5441,9 +5441,10 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
         width: 250px;
       }
       > section {
-        width: 450px;
+        width: 100%;
         margin: 10px auto 0;
-        height: 120px;
+        padding: 10px;
+        // height: 120px;
         border-radius: 10px;
         background-color: #f6f6f8;
         display: flex;
