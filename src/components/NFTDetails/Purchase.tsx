@@ -2,7 +2,7 @@ import moment from 'moment';
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Skeleton from 'react-loading-skeleton';
-import NewTab from 'src/assets/images/market/new_tab.png';
+import Arrow from 'src/assets/images/market/arrow.svg';
 import { formatCommaSmallZeroDisits } from 'src/utiles/formatters';
 
 interface Props {
@@ -75,7 +75,7 @@ const Purchase: React.FC<Props> = ({
         <section>
           <h2>{t('nftMarket.currentPurchase')}</h2>
           <a href={etherscanLink} target="_blank">
-            <img src={NewTab} alt="new tab icon" />
+            <img src={Arrow} alt="new tab icon" />
           </a>
         </section>
         <div>
