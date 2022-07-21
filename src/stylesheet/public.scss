@@ -2380,12 +2380,12 @@ input[type='number'] {
         border-left: 1px solid #e4e5e4;
         border-right: 1px solid #e4e5e4;
         cursor: pointer;
-        font-size: 18px;
         > b {
-          margin: 15px;
+          margin: 15px auto 11px;
           color: #000000;
           cursor: pointer;
           display: block;
+          font-size: 16px;
         }
         &.disable {
           background-color: #f8f8f7;
