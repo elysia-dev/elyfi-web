@@ -2052,6 +2052,19 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
       }
     }
     &__tab {
+      &__wrapper {
+        > div {
+          display: flex;
+          flex-direction: row;
+          margin-bottom: 40px;
+          align-items: center;
+          margin-top: 70px;
+          > h2 {
+            font-size: 12px;
+            margin-right: 5px;
+          }
+        }
+      }
       > div {
         display: flex;
         justify-content: center;

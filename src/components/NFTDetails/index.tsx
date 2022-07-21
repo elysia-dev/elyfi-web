@@ -57,6 +57,7 @@ import ProductPoint05 from 'src/assets/images/market/productPoint05.svg';
 import advanceReservation from 'src/utiles/advanceReservation';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import RecentActivityType from 'src/enums/RecentActivityType';
+import NewTab from 'src/assets/images/market/new_tab.png';
 import ChangeNetworkModal from '../Market/Modals/ChangeNetworkModal';
 import NFTPurchaseModal from '../Market/Modals/NFTPurchaseModal';
 import TwitterConfirmModal from '../Market/Modals/TwitterConfirmModal';
@@ -288,7 +289,6 @@ const NFTDetails = (): JSX.Element => {
               type={t('market.nftType.0')}
               interest={0.3}
               nftInfo={nftInfo}
-              openseaLink={''}
             />
           </section>
         );
@@ -518,10 +518,16 @@ const NFTDetails = (): JSX.Element => {
               })}
             </div>
           </article>
-          <article>
+          <article className="nft-details__tab__wrapper">
+            <div>
+              <h2>{t('nftMarket.productDetail')}</h2>
+              <a href={openSeaLink(0)} target="_blank">
+                <img src={NewTab} alt="new tab icon" />
+              </a>
+            </div>
             <section className="nft-details__tab">
               {[
-                t('nftMarket.productDetail'),
+                t('nftMarket.nftInfo'),
                 t('nftMarket.realEstateInfo'),
                 t('nftMarket.bondNft'),
                 t('nftMarket.borrower'),

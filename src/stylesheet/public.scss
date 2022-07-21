@@ -2360,7 +2360,19 @@ input[type='number'] {
       width: 100%;
       display: flex;
       justify-content: space-between;
-      margin-top: 50px;
+      &__wrapper {
+        > div {
+          display: flex;
+          flex-direction: row;
+          margin-bottom: 40px;
+          align-items: center;
+          margin-top: 70px;
+          > h2 {
+            font-size: 18px;
+            margin-right: 10px;
+          }
+        }
+      }
       > div {
         flex: 1;
         text-align: center;
