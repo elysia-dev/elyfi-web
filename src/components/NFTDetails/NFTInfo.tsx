@@ -6,6 +6,7 @@ import moment from 'moment';
 import NFTTraitType from 'src/enums/NFTTraitType';
 import Skeleton from 'react-loading-skeleton';
 import { formatCommaSmallZeroDisits } from 'src/utiles/formatters';
+import Arrow from 'src/assets/images/market/arrow.svg';
 import { NFTType } from '.';
 
 interface Props {
@@ -83,9 +84,9 @@ const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo }) => {
           <tr>
             <th>{t('nftMarket.nftInfoTable.2')}</th>
             {/* <td>{nftData(NFTTraitType.Principal, nftInfo)}</td> */}
-            <td>${formatCommaSmallZeroDisits(54000)}</td>
+            <td>$10</td>
             <th>{t('nftMarket.nftInfoTable.3')}</th>
-            <td>${interest}</td>
+            <td>$0.39</td>
           </tr>
           <tr>
             <th>{t('nftMarket.nftInfoTable.4')}</th>

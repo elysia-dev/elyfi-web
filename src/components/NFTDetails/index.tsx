@@ -116,11 +116,11 @@ const NFTDetails = (): JSX.Element => {
   const totalPurchase = 54000;
 
   const startTime = moment(
-    '2022.07.20 20:00:00 +9:00',
+    '2022.07.21 17:00:00 +9:00',
     'YYYY.MM.DD hh:mm:ss Z',
   );
   const endedTime = moment(
-    '2022.08.04 20:00:00 +9:00',
+    '2022.08.05 20:00:00 +9:00',
     'YYYY.MM.DD hh:mm:ss Z',
   );
 
@@ -259,9 +259,10 @@ const NFTDetails = (): JSX.Element => {
       txStatus === TxStatus.CONFIRM &&
       txType === RecentActivityType.PurchasedNFT
     ) {
-      if (localStorage.getItem('@event') !== 'false') {
-        setModalType('twitter');
+      if (localStorage.getItem(`@event${account}`) === account) {
+        return;
       }
+      setModalType('twitter');
       getPurchasedNFT();
       mutate();
     }
@@ -429,15 +430,23 @@ const NFTDetails = (): JSX.Element => {
       ) : modalType === 'twitter' ? (
         <TwitterConfirmModal
           endedTime={endedTime}
-          onClose={() => setModalType('')}
+          onClose={() => {
+            setModalType('');
+            localStorage.setItem(
+              `@eventclose${account}`,
+              account ? account : '',
+            );
+          }}
           onSubmit={() => {
             setModalType('tokenReward');
+            localStorage.removeItem(`@event${account}`);
+            localStorage.removeItem(`@eventclose${account}`);
             window.open(
               'https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.elyfi.world%2Fko&text=ELYFI[…]%EB%A6%AC%ED%8C%8C%EC%9D%B4,ELFI,%EB%B6%80%EB%8F%99%EC%82%B0,PF',
             );
           }}
           onDiscard={() => {
-            localStorage.setItem('@event', 'false');
+            localStorage.setItem(`@event${account}`, account ? account : '');
             setModalType('');
           }}
         />

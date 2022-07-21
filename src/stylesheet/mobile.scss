@@ -1994,6 +1994,15 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
             font-size: 10px;
           }
         }
+        > section {
+          > a {
+            > img {
+              top: -7px;
+              width: 13px;
+              height: 13px;
+            }
+          }
+        }
       }
       &__round {
         > div {
@@ -2084,6 +2093,13 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
       > section {
         > h2 {
           font-size: 12px;
+        }
+        > a {
+          > img {
+            top: -7px;
+            width: 13px;
+            height: 13px;
+          }
         }
       }
       > div {

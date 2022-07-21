@@ -113,6 +113,7 @@ const TxProvider: React.FunctionComponent = (props) => {
 
     tx.wait()
       .then(() => {
+        localStorage.removeItem(`@event${account}`);
         callback();
         setState({
           ...state,
