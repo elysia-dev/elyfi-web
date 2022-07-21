@@ -44,7 +44,7 @@ const Wallet = (): JSX.Element => {
   const isWrongMainnet = isWrongNetwork(getMainnetType, currentChain?.name);
 
   const endedTime = moment(
-    '2022.08.05 20:00:00 +9:00',
+    '2022.08.04 20:00:00 +9:00',
     'YYYY.MM.DD hh:mm:ss Z',
   );
 
