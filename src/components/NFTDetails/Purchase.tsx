@@ -78,7 +78,7 @@ const Purchase: React.FC<Props> = ({
           <div>
             <b>
               {userTotalPurchase || userTotalPurchase === 0 ? (
-                formatCommaSmallZeroDisits(totalPurchase)
+                formatCommaSmallZeroDisits(userTotalPurchase)
               ) : (
                 <Skeleton width={60} height={15} />
               )}
