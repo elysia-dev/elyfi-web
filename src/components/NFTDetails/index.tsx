@@ -460,6 +460,7 @@ const NFTDetails = (): JSX.Element => {
           }}
           onDiscard={() => {
             localStorage.setItem(`@event${account}`, account ? account : '');
+            localStorage.removeItem(`@eventclose${account}`);
             setModalType('');
           }}
         />
