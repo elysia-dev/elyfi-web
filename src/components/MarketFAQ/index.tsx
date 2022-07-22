@@ -5,50 +5,67 @@ import TokenColors from 'src/enums/TokenColors';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import DrawWave from 'src/utiles/drawWave';
 
-import KoGuide00 from 'src/assets/images/market/guide/ko/guide00.png';
-import KoGuide01 from 'src/assets/images/market/guide/ko/guide01.png';
-import KoGuide02 from 'src/assets/images/market/guide/ko/guide02.png';
-import KoGuide03 from 'src/assets/images/market/guide/ko/guide03.png';
-import KoGuide04 from 'src/assets/images/market/guide/ko/guide04.png';
-import KoGuide05 from 'src/assets/images/market/guide/ko/guide05.png';
-import KoGuide06 from 'src/assets/images/market/guide/ko/guide06.png';
-import KoGuide07 from 'src/assets/images/market/guide/ko/guide07.png';
-import KoGuide08 from 'src/assets/images/market/guide/ko/guide08.png';
-import KoGuide09 from 'src/assets/images/market/guide/ko/guide09.png';
-import KoGuide10 from 'src/assets/images/market/guide/ko/guide10.png';
-import KoGuide11 from 'src/assets/images/market/guide/ko/guide11.png';
-import KoGuide12 from 'src/assets/images/market/guide/ko/guide12.png';
-import KoGuide13 from 'src/assets/images/market/guide/ko/guide13.png';
-import KoGuide14 from 'src/assets/images/market/guide/ko/guide14.png';
-import KoGuide15 from 'src/assets/images/market/guide/ko/guide15.png';
-import KoGuide16 from 'src/assets/images/market/guide/ko/guide16.png';
-import KoGuide17 from 'src/assets/images/market/guide/ko/guide17.png';
-import KoGuide18 from 'src/assets/images/market/guide/ko/guide18.png';
-import KoGuide19 from 'src/assets/images/market/guide/ko/guide19.png';
-import KoGuide20 from 'src/assets/images/market/guide/ko/guide20.png';
-import KoGuide21 from 'src/assets/images/market/guide/ko/guide21.png';
-import KoGuide22 from 'src/assets/images/market/guide/ko/guide22.png';
+import KoGuide1s00 from 'src/assets/images/market/guide/ko/1/guide01.png';
+import KoGuide1s01 from 'src/assets/images/market/guide/ko/1/guide02.png';
+import KoGuide1s02 from 'src/assets/images/market/guide/ko/1/guide03.png';
+import KoGuide1s03 from 'src/assets/images/market/guide/ko/1/guide04.png';
+import KoGuide1s04 from 'src/assets/images/market/guide/ko/1/guide05.png';
+import KoGuide1s05 from 'src/assets/images/market/guide/ko/1/guide06.png';
+import KoGuide1s06 from 'src/assets/images/market/guide/ko/1/guide07.png';
+import KoGuide1s07 from 'src/assets/images/market/guide/ko/1/guide08.png';
+import KoGuide2s00 from 'src/assets/images/market/guide/ko/2/guide01.png';
+import KoGuide2s01 from 'src/assets/images/market/guide/ko/2/guide02.png';
+import KoGuide2s02 from 'src/assets/images/market/guide/ko/2/guide03.png';
+import KoGuide2s03 from 'src/assets/images/market/guide/ko/2/guide04.png';
+import KoGuide2s04 from 'src/assets/images/market/guide/ko/2/guide05.png';
+import KoGuide2s05 from 'src/assets/images/market/guide/ko/2/guide06.png';
+import KoGuide2s06 from 'src/assets/images/market/guide/ko/2/guide07.png';
+import KoGuide3s00 from 'src/assets/images/market/guide/ko/3/guide01.png';
+import KoGuide3s01 from 'src/assets/images/market/guide/ko/3/guide02.png';
+import KoGuide3s02 from 'src/assets/images/market/guide/ko/3/guide03.png';
+import KoGuide3s03 from 'src/assets/images/market/guide/ko/3/guide04.png';
+import KoGuide3s04 from 'src/assets/images/market/guide/ko/3/guide05.png';
+import KoGuide3s05 from 'src/assets/images/market/guide/ko/3/guide06.png';
+import KoGuide4s00 from 'src/assets/images/market/guide/ko/4/guide01.png';
+import KoGuide4s01 from 'src/assets/images/market/guide/ko/4/guide02.png';
+import KoGuide4s02 from 'src/assets/images/market/guide/ko/4/guide03.png';
+import KoGuide4s03 from 'src/assets/images/market/guide/ko/4/guide04.png';
+import KoGuide5s00 from 'src/assets/images/market/guide/ko/5/guide01.png';
+import KoGuide5s01 from 'src/assets/images/market/guide/ko/5/guide02.png';
+import KoGuide5s02 from 'src/assets/images/market/guide/ko/5/guide03.png';
+import KoGuide5s03 from 'src/assets/images/market/guide/ko/5/guide04.png';
+import KoGuide5s04 from 'src/assets/images/market/guide/ko/5/guide05.png';
+import KoGuide5s05 from 'src/assets/images/market/guide/ko/5/guide06.png';
 
-import EnGuide00 from 'src/assets/images/market/guide/en/guide00.png';
-import EnGuide01 from 'src/assets/images/market/guide/en/guide01.png';
-import EnGuide02 from 'src/assets/images/market/guide/en/guide02.png';
-import EnGuide03 from 'src/assets/images/market/guide/en/guide03.png';
-import EnGuide04 from 'src/assets/images/market/guide/en/guide04.png';
-import EnGuide05 from 'src/assets/images/market/guide/en/guide05.png';
-import EnGuide06 from 'src/assets/images/market/guide/en/guide06.png';
-import EnGuide07 from 'src/assets/images/market/guide/en/guide07.png';
-import EnGuide08 from 'src/assets/images/market/guide/en/guide08.png';
-import EnGuide09 from 'src/assets/images/market/guide/en/guide09.png';
-import EnGuide10 from 'src/assets/images/market/guide/en/guide10.png';
-import EnGuide11 from 'src/assets/images/market/guide/en/guide11.png';
-import EnGuide12 from 'src/assets/images/market/guide/en/guide12.png';
-import EnGuide13 from 'src/assets/images/market/guide/en/guide13.png';
-import EnGuide14 from 'src/assets/images/market/guide/en/guide14.png';
-import EnGuide15 from 'src/assets/images/market/guide/en/guide15.png';
-import EnGuide16 from 'src/assets/images/market/guide/en/guide16.png';
-import EnGuide17 from 'src/assets/images/market/guide/en/guide17.png';
-import EnGuide21 from 'src/assets/images/market/guide/en/guide21.png';
-import EnGuide22 from 'src/assets/images/market/guide/en/guide22.png';
+import EnGuide1s00 from 'src/assets/images/market/guide/en/1/guide01.png';
+import EnGuide1s01 from 'src/assets/images/market/guide/en/1/guide02.png';
+import EnGuide1s02 from 'src/assets/images/market/guide/en/1/guide03.png';
+import EnGuide1s03 from 'src/assets/images/market/guide/en/1/guide04.png';
+import EnGuide1s04 from 'src/assets/images/market/guide/en/1/guide05.png';
+import EnGuide1s05 from 'src/assets/images/market/guide/en/1/guide06.png';
+import EnGuide1s06 from 'src/assets/images/market/guide/en/1/guide07.png';
+import EnGuide1s07 from 'src/assets/images/market/guide/en/1/guide08.png';
+import EnGuide3s00 from 'src/assets/images/market/guide/en/3/guide01.png';
+import EnGuide3s01 from 'src/assets/images/market/guide/en/3/guide02.png';
+import EnGuide3s02 from 'src/assets/images/market/guide/en/3/guide03.png';
+import EnGuide3s03 from 'src/assets/images/market/guide/en/3/guide04.png';
+import EnGuide3s04 from 'src/assets/images/market/guide/en/3/guide05.png';
+import EnGuide3s05 from 'src/assets/images/market/guide/en/3/guide06.png';
+import EnGuide3s06 from 'src/assets/images/market/guide/en/3/guide07.png';
+import EnGuide3s07 from 'src/assets/images/market/guide/en/3/guide08.png';
+import EnGuide3s08 from 'src/assets/images/market/guide/en/3/guide09.png';
+import EnGuide3s09 from 'src/assets/images/market/guide/en/3/guide10.png';
+import EnGuide4s00 from 'src/assets/images/market/guide/en/4/guide01.png';
+import EnGuide4s01 from 'src/assets/images/market/guide/en/4/guide02.png';
+import EnGuide4s02 from 'src/assets/images/market/guide/en/4/guide03.png';
+import EnGuide4s03 from 'src/assets/images/market/guide/en/4/guide04.png';
+import EnGuide5s00 from 'src/assets/images/market/guide/en/5/guide01.png';
+import EnGuide5s01 from 'src/assets/images/market/guide/en/5/guide02.png';
+import EnGuide5s02 from 'src/assets/images/market/guide/en/5/guide03.png';
+import EnGuide5s03 from 'src/assets/images/market/guide/en/5/guide04.png';
+import EnGuide5s04 from 'src/assets/images/market/guide/en/5/guide05.png';
+import EnGuide5s05 from 'src/assets/images/market/guide/en/5/guide06.png';
+import scrollToOffeset from 'src/core/utils/scrollToOffeset';
 
 const questionBox = {
   arrow: '',
@@ -61,6 +78,7 @@ const MarketFAQ = (): JSX.Element => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const { value: mediaQuery } = useMediaQueryType();
+  const FAQRef = useRef<HTMLDivElement>(null);
 
   const [isQ1Visible, setIsQ1Visible] = useState(questionBox);
   const [isQ2Visible, setIsQ2Visible] = useState(questionBox);
@@ -68,10 +86,21 @@ const MarketFAQ = (): JSX.Element => {
   const [isQ4Visible, setIsQ4Visible] = useState(questionBox);
   const [isQ5Visible, setIsQ5Visible] = useState(questionBox);
 
+  const initialAllBox = () => {
+    return (
+      setIsQ1Visible(questionBox),
+      setIsQ2Visible(questionBox),
+      setIsQ3Visible(questionBox),
+      setIsQ4Visible(questionBox),
+      setIsQ5Visible(questionBox)
+    );
+  };
+
   const onClickBox = useCallback(
     (questionNumber: number) => {
       switch (questionNumber) {
         case 1:
+          initialAllBox();
           setIsQ1Visible({
             ...isQ1Visible,
             arrow: isQ1Visible.visible ? 'arrow_down' : 'arrow_up',
@@ -82,6 +111,7 @@ const MarketFAQ = (): JSX.Element => {
           });
           break;
         case 2:
+          initialAllBox();
           setIsQ2Visible({
             ...isQ2Visible,
             arrow: isQ2Visible.visible ? 'arrow_down' : 'arrow_up',
@@ -92,6 +122,7 @@ const MarketFAQ = (): JSX.Element => {
           });
           break;
         case 3:
+          initialAllBox();
           setIsQ3Visible({
             ...isQ3Visible,
             arrow: isQ3Visible.visible ? 'arrow_down' : 'arrow_up',
@@ -102,6 +133,7 @@ const MarketFAQ = (): JSX.Element => {
           });
           break;
         case 4:
+          initialAllBox();
           setIsQ4Visible({
             ...isQ4Visible,
             arrow: isQ4Visible.visible ? 'arrow_down' : 'arrow_up',
@@ -112,6 +144,7 @@ const MarketFAQ = (): JSX.Element => {
           });
           break;
         case 5:
+          initialAllBox();
           setIsQ5Visible({
             ...isQ5Visible,
             arrow: isQ5Visible.visible ? 'arrow_down' : 'arrow_up',
@@ -163,6 +196,19 @@ const MarketFAQ = (): JSX.Element => {
     };
   }, [document.body.clientHeight]);
 
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent): void {
+      if (FAQRef.current && !FAQRef.current.contains(e.target as Node)) {
+        initialAllBox();
+        scrollToOffeset(`FAQ01`, 478);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <>
       <canvas
@@ -182,8 +228,8 @@ const MarketFAQ = (): JSX.Element => {
           <span>{t('market.faq.comment')}</span>
         </section>
         <article className="market__guide__content">
-          <section className="faq__wrapper__section">
-            <div className={`question_title_box ${isQ1Visible.box}`}>
+          <section className="faq__wrapper__section" ref={FAQRef}>
+            <div className={`question_title_box ${isQ1Visible.box}`} id="FAQ01">
               <div onClick={() => onClickBox(1)}>
                 <h3>
                   <span>1.</span> {t('market.faq.title.0')}
@@ -201,57 +247,59 @@ const MarketFAQ = (): JSX.Element => {
                 {' >'}
               </a>
               <img
-                src={i18n.language === 'ko' ? KoGuide00 : EnGuide00}
+                src={i18n.language === 'ko' ? KoGuide1s00 : EnGuide1s00}
                 alt="Guide image"
                 className="market__guide__image"
               />
               <p>{t('market.faq.answer.a1.2')}</p>
               <img
-                src={i18n.language === 'ko' ? KoGuide01 : EnGuide01}
+                src={i18n.language === 'ko' ? KoGuide1s01 : EnGuide1s01}
                 alt="Guide image"
                 className="market__guide__image"
               />
               <p>{t('market.faq.answer.a1.3')}</p>
               <span>{t('market.faq.answer.a1.4')}</span>
               <img
-                src={i18n.language === 'ko' ? KoGuide02 : EnGuide02}
+                src={i18n.language === 'ko' ? KoGuide1s02 : EnGuide1s02}
                 alt="Guide image"
                 className="market__guide__image"
               />
               <p>{t('market.faq.answer.a1.5')}</p>
               <img
-                src={i18n.language === 'ko' ? KoGuide03 : EnGuide03}
+                src={i18n.language === 'ko' ? KoGuide1s03 : EnGuide1s03}
                 alt="Guide image"
                 className="market__guide__image"
               />
               <p>{t('market.faq.answer.a1.6')}</p>
               <img
-                src={i18n.language === 'ko' ? KoGuide04 : EnGuide04}
+                src={i18n.language === 'ko' ? KoGuide1s04 : EnGuide1s04}
                 alt="Guide image"
                 className="market__guide__image"
               />
               <p>{t('market.faq.answer.a1.7')}</p>
               <img
-                src={i18n.language === 'ko' ? KoGuide05 : EnGuide05}
+                src={i18n.language === 'ko' ? KoGuide1s05 : EnGuide1s05}
                 alt="Guide image"
                 className="market__guide__image"
               />
               <p>{t('market.faq.answer.a1.8')}</p>
               <span>{t('market.faq.answer.a1.9')}</span>
               <img
-                src={i18n.language === 'ko' ? KoGuide06 : EnGuide06}
+                src={i18n.language === 'ko' ? KoGuide1s06 : EnGuide1s06}
                 alt="Guide image"
                 className="market__guide__image"
               />
               <p>{t('market.faq.answer.a1.10')}</p>
               <img
-                src={i18n.language === 'ko' ? KoGuide07 : EnGuide07}
+                src={i18n.language === 'ko' ? KoGuide1s07 : EnGuide1s07}
                 alt="Guide image"
                 className="market__guide__image"
               />
             </div>
             {i18n.language === 'ko' && (
-              <div className={`question_title_box ${isQ2Visible.box}`}>
+              <div
+                className={`question_title_box ${isQ2Visible.box}`}
+                id="FAQ02">
                 <div onClick={() => onClickBox(2)}>
                   <h3>
                     <span>2.</span> {t('market.faq.title.1')}
@@ -263,7 +311,7 @@ const MarketFAQ = (): JSX.Element => {
                 </div>
                 <p>{t('market.faq.answer.a2.0')}</p>
                 <img
-                  src={KoGuide08}
+                  src={KoGuide2s00}
                   alt="Guide image"
                   className="market__guide__image"
                 />
@@ -292,13 +340,13 @@ const MarketFAQ = (): JSX.Element => {
                   text
                 </Trans>
                 <img
-                  src={KoGuide09}
+                  src={KoGuide2s01}
                   alt="Guide image"
                   className="market__guide__image"
                 />
                 <p>{t('market.faq.answer.a2.4')}</p>
                 <img
-                  src={KoGuide10}
+                  src={KoGuide2s02}
                   alt="Guide image"
                   className="market__guide__image"
                 />
@@ -306,27 +354,27 @@ const MarketFAQ = (): JSX.Element => {
                 <p>{t('market.faq.answer.a2.5')}</p>
                 <span>{t('market.faq.answer.a2.6')}</span>
                 <img
-                  src={KoGuide11}
+                  src={KoGuide2s03}
                   alt="Guide image"
                   className="market__guide__image"
                 />
 
                 <p>{t('market.faq.answer.a2.7')}</p>
                 <img
-                  src={KoGuide12}
+                  src={KoGuide2s04}
                   alt="Guide image"
                   className="market__guide__image"
                 />
 
                 <p>{t('market.faq.answer.a2.8')}</p>
                 <img
-                  src={KoGuide13}
+                  src={KoGuide2s05}
                   alt="Guide image"
                   className="market__guide__image"
                 />
                 <p>{t('market.faq.answer.a2.9')}</p>
                 <img
-                  src={KoGuide14}
+                  src={KoGuide2s06}
                   alt="Guide image"
                   className="market__guide__image"
                 />
@@ -335,7 +383,9 @@ const MarketFAQ = (): JSX.Element => {
               </div>
             )}
             {i18n.language === 'ko' ? (
-              <div className={`question_title_box ${isQ3Visible.box}`}>
+              <div
+                className={`question_title_box ${isQ3Visible.box}`}
+                id="FAQ03">
                 <div onClick={() => onClickBox(3)}>
                   <h3>
                     <span>3.</span> {t('market.faq.title.2')}
@@ -347,46 +397,48 @@ const MarketFAQ = (): JSX.Element => {
                 </div>
                 <p>{t('market.faq.answer.a3.0')}</p>
                 <img
-                  src={KoGuide15}
+                  src={KoGuide3s00}
                   alt="Guide image"
                   className="market__guide__image"
                 />
 
                 <p>{t('market.faq.answer.a3.1')}</p>
                 <img
-                  src={KoGuide16}
+                  src={KoGuide3s01}
                   alt="Guide image"
                   className="market__guide__image"
                 />
 
                 <p>{t('market.faq.answer.a3.2')}</p>
                 <img
-                  src={KoGuide17}
+                  src={KoGuide3s02}
                   alt="Guide image"
                   className="market__guide__image"
                 />
 
                 <p>{t('market.faq.answer.a3.3')}</p>
                 <img
-                  src={KoGuide18}
+                  src={KoGuide3s03}
                   alt="Guide image"
                   className="market__guide__image"
                 />
                 <p>{t('market.faq.answer.a3.4')}</p>
                 <img
-                  src={KoGuide19}
+                  src={KoGuide3s04}
                   alt="Guide image"
                   className="market__guide__image"
                 />
                 <p>{t('market.faq.answer.a3.5')}</p>
                 <img
-                  src={KoGuide20}
+                  src={KoGuide3s05}
                   alt="Guide image"
                   className="market__guide__image"
                 />
               </div>
             ) : (
-              <div className={`question_title_box ${isQ3Visible.box}`}>
+              <div
+                className={`question_title_box ${isQ3Visible.box}`}
+                id="FAQ03">
                 <div onClick={() => onClickBox(3)}>
                   <h3>
                     <span>2.</span> {t('market.faq.title.2')}
@@ -398,71 +450,71 @@ const MarketFAQ = (): JSX.Element => {
                 </div>
                 <p>{t('market.faq.answer.a3.0')}</p>
                 <img
-                  src={EnGuide08}
+                  src={EnGuide3s00}
                   alt="Guide image"
                   className="market__guide__image"
                 />
 
                 <p>{t('market.faq.answer.a3.1')}</p>
                 <img
-                  src={EnGuide09}
+                  src={EnGuide3s01}
                   alt="Guide image"
                   className="market__guide__image"
                 />
 
                 <p>{t('market.faq.answer.a3.2')}</p>
                 <img
-                  src={EnGuide10}
+                  src={EnGuide3s02}
                   alt="Guide image"
                   className="market__guide__image"
                 />
 
                 <p>{t('market.faq.answer.a3.3')}</p>
                 <img
-                  src={EnGuide11}
+                  src={EnGuide3s03}
                   alt="Guide image"
                   className="market__guide__image"
                 />
                 <p>{t('market.faq.answer.a3.4')}</p>
                 <img
-                  src={EnGuide12}
+                  src={EnGuide3s04}
                   alt="Guide image"
                   className="market__guide__image"
                 />
                 <p>{t('market.faq.answer.a3.5')}</p>
                 <img
-                  src={EnGuide13}
+                  src={EnGuide3s05}
                   alt="Guide image"
                   className="market__guide__image"
                 />
                 <p>{t('market.faq.answer.a3.6')}</p>
                 <img
-                  src={EnGuide14}
+                  src={EnGuide3s06}
                   alt="Guide image"
                   className="market__guide__image"
                 />
                 <p>{t('market.faq.answer.a3.7')}</p>
                 <img
-                  src={EnGuide15}
+                  src={EnGuide3s07}
                   alt="Guide image"
                   className="market__guide__image"
                 />
                 <p>{t('market.faq.answer.a3.8')}</p>
                 <img
-                  src={EnGuide16}
+                  src={EnGuide3s08}
                   alt="Guide image"
                   className="market__guide__image"
                 />
                 <p>{t('market.faq.answer.a3.9')}</p>
                 <img
-                  src={EnGuide17}
+                  src={EnGuide3s09}
                   alt="Guide image"
                   className="market__guide__image"
                 />
               </div>
             )}
 
-            <div className={`question_title_box ${isQ4Visible.box}`}>
+            <div className={`question_title_box ${isQ4Visible.box}`} id="FAQ04">
               <div onClick={() => onClickBox(4)}>
                 <h3>
                   <span>{i18n.language === 'ko' ? '4.' : '3.'}</span>{' '}
@@ -475,26 +527,31 @@ const MarketFAQ = (): JSX.Element => {
               </div>
               <p>{t('market.faq.answer.a4.0')}</p>
               <img
-                src={undefined}
+                src={i18n.language === 'ko' ? KoGuide4s00 : EnGuide4s00}
                 alt="Guide image"
                 className="market__guide__image"
               />
               <p>{t('market.faq.answer.a4.1')}</p>
               <img
-                src={i18n.language === 'ko' ? KoGuide21 : EnGuide21}
+                src={i18n.language === 'ko' ? KoGuide4s01 : EnGuide4s01}
                 alt="Guide image"
                 className="market__guide__image"
               />
 
               <p>{t('market.faq.answer.a4.2')}</p>
+              <img
+                src={i18n.language === 'ko' ? KoGuide4s02 : EnGuide4s02}
+                alt="Guide image"
+                className="market__guide__image"
+              />
               <p>{t('market.faq.answer.a4.3')}</p>
               <img
-                src={undefined}
+                src={i18n.language === 'ko' ? KoGuide4s03 : EnGuide4s03}
                 alt="Guide image"
                 className="market__guide__image"
               />
             </div>
-            <div className={`question_title_box ${isQ5Visible.box}`}>
+            <div className={`question_title_box ${isQ5Visible.box}`} id="FAQ05">
               <div onClick={() => onClickBox(5)}>
                 <h3>
                   <span>{i18n.language === 'ko' ? '5.' : '4.'}</span>{' '}
@@ -507,34 +564,40 @@ const MarketFAQ = (): JSX.Element => {
               </div>
               <p>{t('market.faq.answer.a5.0')}</p>
               <img
-                src={undefined}
+                src={i18n.language === 'ko' ? KoGuide5s00 : EnGuide5s00}
                 alt="Guide image"
                 className="market__guide__image"
               />
               <p>{t('market.faq.answer.a5.1')}</p>
               <img
-                src={undefined}
+                src={i18n.language === 'ko' ? KoGuide5s01 : EnGuide5s01}
                 alt="Guide image"
                 className="market__guide__image"
               />
               <p>{t('market.faq.answer.a5.2')}</p>
-              <span>{t('market.faq.answer.a5.3')}</span>
               <img
-                src={undefined}
+                src={i18n.language === 'ko' ? KoGuide5s02 : EnGuide5s02}
                 alt="Guide image"
                 className="market__guide__image"
               />
-              <p>{t('market.faq.answer.a5.4')}</p>
-              <span>{t('market.faq.answer.a5.5')}</span>
+              <p>{t('market.faq.answer.a5.3')}</p>
+              <span>{t('market.faq.answer.a5.4')}</span>
               <img
-                src={undefined}
+                src={i18n.language === 'ko' ? KoGuide5s03 : EnGuide5s03}
+                alt="Guide image"
+                className="market__guide__image"
+              />
+              <p>{t('market.faq.answer.a5.5')}</p>
+              <span>{t('market.faq.answer.a5.6')}</span>
+              <img
+                src={i18n.language === 'ko' ? KoGuide5s04 : EnGuide5s04}
                 alt="Guide image"
                 className="market__guide__image"
               />
 
-              <p>{t('market.faq.answer.a5.6')}</p>
+              <p>{t('market.faq.answer.a5.7')}</p>
               <img
-                src={undefined}
+                src={i18n.language === 'ko' ? KoGuide5s05 : EnGuide5s05}
                 alt="Guide image"
                 className="market__guide__image"
               />
