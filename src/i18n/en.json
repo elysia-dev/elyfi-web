@@ -760,7 +760,8 @@
           ],
           "a5": [
             "Please access the ‘Market’ page of the ELYFI website.",
-            "Click the ‘Buy’ button on the `Market` page.",
+            "Select ‘Bond NFT’ on the market page.",
+            "Click the ‘Purchase’ button on the Bond NFT page.",
             "Enter the amount of bond NFT you want to purchase, set the payment token as ETH, and click the ‘Next’ button.",
             "※ WARNING: If you set the payment token as USDC, you need to go through the approval process once for the first purchase.",
             "Check the purchase information and click the ‘Buy’ button.",
