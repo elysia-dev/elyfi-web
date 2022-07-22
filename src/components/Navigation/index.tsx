@@ -238,47 +238,35 @@ const Navigation: React.FunctionComponent<{
   ) => {
     return (
       <div key={_index} className="navigation__link__wrapper">
-        <div
-          className="navigation__link"
-          onMouseEnter={() => {
-            setGlobalNavHover(_index + 1);
-          }}>
-          <div
+        <div className="navigation__link">
+          <p
+            onMouseEnter={() => {
+              setGlobalNavHover(_index + 1);
+            }}
+            className={_data.isBeta ? 'beta' : ''}
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
+              cursor: 'pointer',
+              fontWeight: currentRoute === _index ? 'bold' : undefined,
             }}>
-            <div
-              style={{
-                marginRight: 8,
-              }}>
-              <p
-                className={_data.isBeta ? 'beta' : ''}
-                style={{
-                  cursor: 'pointer',
-                  fontWeight: currentRoute === _index ? 'bold' : undefined,
-                }}>
-                {t(_data.i18nKeyword).toUpperCase()}
-              </p>
-            </div>
+            {t(_data.i18nKeyword).toUpperCase()}
             {![
               'navigation.dashboard',
               'navigation.governance',
               'navigation.faq',
               'navigation.market',
             ].includes(_data.i18nKeyword.toLowerCase()) && (
-              <div
+              <span
                 className="navigation__arrow"
                 style={{
                   transform:
                     isBold(_index) && globalNavHover === _index + 1
                       ? `rotate(-45deg) translateX(-2px) translateY(2px)`
                       : `rotate(135deg)`,
+                  borderWidth: currentRoute === _index ? '2px' : undefined,
                 }}
               />
             )}
-          </div>
+          </p>
           <div>
             <div
               className={`navigation__bottom ${
@@ -645,14 +633,7 @@ const Navigation: React.FunctionComponent<{
                     setHamburgerBar(false);
                   }}>
                   <div className="logo-wrapper" style={{ cursor: 'pointer' }}>
-                    <LazyImage
-                      src={logo_1st}
-                      name="elysia-logo"
-                      style={{
-                        width: mediaQuery === MediaQuery.PC ? 150 : 100,
-                        height: mediaQuery === MediaQuery.PC ? 50 : 30,
-                      }}
-                    />
+                    <LazyImage src={ElysiaLogo} name="elysia-logo" />
                   </div>
                 </Link>
               </div>
