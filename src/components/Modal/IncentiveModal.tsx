@@ -1,12 +1,12 @@
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, utils } from 'ethers';
-import { FunctionComponent, useContext, useState } from 'react';
+import { FunctionComponent, useContext } from 'react';
 import ElifyTokenImage from 'src/assets/images/ELFI.png';
 import { formatSixFracionDigit } from 'src/utiles/formatters';
 import { formatEther } from 'ethers/lib/utils';
 import TxContext from 'src/contexts/TxContext';
 import RecentActivityType from 'src/enums/RecentActivityType';
-import { IncentivePool__factory } from '@elysia-dev/contract-typechain';
+import { IncentivePoolFactory } from '@elysia-dev/elyfi-v1-sdk';
 import CountUp from 'react-countup';
 import ModalHeader from 'src/components/Modal/ModalHeader';
 import ModalViewType from 'src/enums/ModalViewType';
@@ -61,7 +61,7 @@ const IncentiveModal: FunctionComponent<{
     );
 
     emitter.clicked();
-    IncentivePool__factory.connect(incentivePoolAddress, library.getSigner())
+    IncentivePoolFactory.connect(incentivePoolAddress, library.getSigner())
       .claimIncentive()
       .then((tx) => {
         emitter.created();

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { ERC20__factory } from '@elysia-dev/contract-typechain';
 import {
+  ERC20Factory,
   DataPipelineFactory,
   StakingPoolV2factory,
 } from '@elysia-dev/elyfi-v1-sdk';
@@ -25,7 +25,7 @@ const bscProvider = new JsonRpcProvider(envs.jsonRpcUrl.bsc);
 const { daiPoolContract, ethPoolContract } = getV2LPPoolContract();
 
 const erc20Contract = (address: string, provider: any) => {
-  return ERC20__factory.connect(address, provider);
+  return ERC20Factory.connect(address, provider);
 };
 const stakingPoolV2Contract = (address: string, provider: any) => {
   return StakingPoolV2factory.connect(address, provider);

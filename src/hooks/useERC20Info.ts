@@ -1,4 +1,4 @@
-import { ERC20 } from '@elysia-dev/contract-typechain';
+import { ERC20 } from '@elysia-dev/elyfi-v1-sdk';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, constants } from 'ethers';
 import { useCallback, useContext, useEffect, useState } from 'react';

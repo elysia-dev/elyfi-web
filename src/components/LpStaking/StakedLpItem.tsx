@@ -1,5 +1,5 @@
 import { FunctionComponent, useContext } from 'react';
-import { BigNumber, utils } from 'ethers';
+import { BigNumber, ethers, utils } from 'ethers';
 import CountUp from 'react-countup';
 import elfi from 'src/assets/images/ELFI.png';
 import { formatDecimalFracionDigit, toCompact } from 'src/utiles/formatters';
@@ -10,7 +10,6 @@ import { StakedLpItemProps } from 'src/core/types/LpStakingTypeProps';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import MediaQuery from 'src/enums/MediaQuery';
 import { useWeb3React } from '@web3-react/core';
-import { ethers } from '@elysia-dev/contract-typechain/node_modules/ethers';
 import envs from 'src/core/envs';
 import stakerABI from 'src/core/abi/StakerABI.json';
 import TxContext from 'src/contexts/TxContext';

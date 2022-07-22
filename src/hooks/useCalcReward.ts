@@ -1,5 +1,4 @@
-import { BigNumber } from '@elysia-dev/contract-typechain/node_modules/ethers';
-import { utils } from 'ethers';
+import { utils, BigNumber } from 'ethers';
 import { useContext, useEffect, useState } from 'react';
 import MainnetContext from 'src/contexts/MainnetContext';
 import { IStakingPoolRound, roundTimes } from 'src/core/data/stakingRoundTimes';

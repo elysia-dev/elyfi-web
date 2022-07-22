@@ -1,7 +1,7 @@
 import { useWeb3React } from '@web3-react/core';
 import { useMemo } from 'react';
 import envs from 'src/core/envs';
-import { ERC20, ERC20__factory } from '@elysia-dev/contract-typechain';
+import { ERC20, ERC20Factory } from '@elysia-dev/elyfi-v1-sdk';
 import { providers } from 'ethers';
 import MainnetType from 'src/enums/MainnetType';
 import useCurrentChain from './useCurrentChain';
@@ -12,7 +12,7 @@ const useERC20 = (address: string): ERC20 => {
 
   const contract = useMemo(() => {
     if (!library) {
-      return ERC20__factory.connect(
+      return ERC20Factory.connect(
         address,
         new providers.JsonRpcProvider(
           currentChain?.name === MainnetType.BSCTest
@@ -25,7 +25,7 @@ const useERC20 = (address: string): ERC20 => {
         ) as any,
       );
     }
-    return ERC20__factory.connect(address, library.getSigner());
+    return ERC20Factory.connect(address, library.getSigner());
   }, [library, address]);
 
   return contract;
