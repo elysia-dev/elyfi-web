@@ -441,9 +441,8 @@ const NFTDetails = (): JSX.Element => {
           onSubmit={() => {
             const emitter = buildEventEmitter(
               ModalViewType.NFTPurchaseModal,
-              TransactionType.Deposit,
+              'Twitter',
               JSON.stringify({
-                version: ElyfiVersions.V1,
                 chainId,
                 address: account,
                 NFTAmount: `${purchasedNFT}(${(purchasedNFT || 1) * 10})`,

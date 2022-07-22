@@ -52,10 +52,7 @@ const usePurchaseNFT = (
         address: account,
         nftPurchaseType: purchaseType,
         nftAmount: `${parseInt(amount, 10) / 10}(${amount})`,
-        depositAmount: utils.parseUnits(
-          purchaseType === 'ETH' ? ethAmount || '0' : amount,
-          purchaseType === 'ETH' ? 18 : 6,
-        ),
+        depositAmount: purchaseType === 'ETH' ? ethAmount : amount,
       }),
     );
     try {

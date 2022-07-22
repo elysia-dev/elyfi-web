@@ -14,6 +14,10 @@ import { getNFTContract } from 'src/clients/BalancesFetcher';
 import { utils } from 'ethers';
 import { isMoblie } from 'src/utiles/connectWallet';
 import { isWrongNetwork } from 'src/utiles/isWrongNetwork';
+import ModalViewType from 'src/enums/ModalViewType';
+import buildEventEmitter from 'src/utiles/buildEventEmitter';
+import TransactionType from 'src/enums/TransactionType';
+import ElyfiVersions from 'src/enums/ElyfiVersions';
 import NetworkChangeModal from '../Modal/NetworkChangeModal';
 import SelectWalletModal from '../Modal/SelectWalletModal';
 import WalletDisconnect from '../Modal/WalletDisconnect';
@@ -106,6 +110,17 @@ const Wallet = (): JSX.Element => {
             setModalType('');
           }}
           onSubmit={() => {
+            const emitter = buildEventEmitter(
+              ModalViewType.NFTPurchaseModal,
+              'Twitter',
+              JSON.stringify({
+                chainId,
+                address: account,
+                NFTAmount: `${purchasedNFT}(${(purchasedNFT || 1) * 10})`,
+              }),
+            );
+
+            emitter.clicked();
             localStorage.removeItem(`@event${account}`);
             localStorage.removeItem(`@eventclose${account}`);
             setModalType('tokenReward');
