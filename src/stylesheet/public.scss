@@ -2906,13 +2906,14 @@ input[type='number'] {
           width: 148px;
           height: 35px;
           background: #00bfff;
-          border-radius: 15px;
+          border-radius: 35px;
           cursor: pointer;
-          font-size: 15px;
+          font-size: 16px;
           line-height: 35px;
           color: #fff;
           border: 0;
           flex: 1;
+          padding: 0 !important;
           &.disabled {
             pointer-events: none;
             cursor: not-allowed;
