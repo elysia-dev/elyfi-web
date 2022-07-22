@@ -354,7 +354,29 @@ input[type='number'] {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-left: 40px;
+        margin-left: auto;
+        margin-right: 20px;
+        // margin-left: 40px;
+        > a,
+        > div {
+          padding: 0px 15px;
+        }
+        > a:first-child {
+          padding-right: 29px;
+        }
+        > a:hover {
+          > div > div > p {
+            font-weight: bold;
+          }
+        }
+        > div:hover {
+          > div > div > p {
+            font-weight: bold;
+            > span {
+              border-width: 2px;
+            }
+          }
+        }
       }
       &__under-line {
         position: absolute;
@@ -372,7 +394,7 @@ input[type='number'] {
       &__wrapper {
         display: flex;
 
-        margin: 0 22px;
+        // margin: 0 22px;
       }
     }
     &__sub-menu {
@@ -555,12 +577,11 @@ input[type='number'] {
       cursor: pointer;
     }
     &__arrow {
-      content: '';
       display: inline-block;
       width: 6px;
       height: 6px;
-      margin-left: 2px;
-      margin-bottom: 2px;
+      margin-left: 5px;
+      margin-bottom: 4px;
       border-top: 1px solid #333333;
       border-right: 1px solid #333333;
     }
@@ -569,7 +590,7 @@ input[type='number'] {
         content: 'B';
         position: absolute;
         top: 3.5px;
-        right: -10px;
+        right: -14px;
         width: 12px;
         height: 12px;
         line-height: 12px;
@@ -579,6 +600,7 @@ input[type='number'] {
         border-radius: 2px;
         background-color: #0087ff;
         text-align: center;
+        // transform: translateX(50%);
       }
     }
   } // navigation end
