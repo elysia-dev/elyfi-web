@@ -1,9 +1,18 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import MediaQuery from 'src/enums/MediaQuery';
 import TokenColors from 'src/enums/TokenColors';
 import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import DrawWave from 'src/utiles/drawWave';
+
+const LazyImage = lazy(() => import('src/utiles/lazyImage'));
 
 import KoGuide1s00 from 'src/assets/images/market/guide/ko/1/guide01.png';
 import KoGuide1s01 from 'src/assets/images/market/guide/ko/1/guide02.png';
@@ -66,6 +75,7 @@ import EnGuide5s03 from 'src/assets/images/market/guide/en/5/guide04.png';
 import EnGuide5s04 from 'src/assets/images/market/guide/en/5/guide05.png';
 import EnGuide5s05 from 'src/assets/images/market/guide/en/5/guide06.png';
 import scrollToOffeset from 'src/core/utils/scrollToOffeset';
+import Skeleton from 'react-loading-skeleton';
 
 const questionBox = {
   arrow: '',
@@ -230,377 +240,279 @@ const MarketFAQ = (): JSX.Element => {
         <article className="market__guide__content">
           <section className="faq__wrapper__section" ref={FAQRef}>
             <div className={`question_title_box ${isQ1Visible.box}`} id="FAQ01">
-              <div onClick={() => onClickBox(1)}>
-                <h3>
-                  <span>1.</span> {t('market.faq.title.0')}
-                </h3>
-                <div className={`arrow ${isQ1Visible.arrow}`}>
-                  <div></div>
-                  <div></div>
+              <Suspense fallback={<Skeleton width={500} height={500} />}>
+                <div onClick={() => onClickBox(1)}>
+                  <h3>
+                    <span>1.</span> {t('market.faq.title.0')}
+                  </h3>
+                  <div className={`arrow ${isQ1Visible.arrow}`}>
+                    <div></div>
+                    <div></div>
+                  </div>
                 </div>
-              </div>
-              <p>{t('market.faq.answer.a1.0')}</p>
-              <a
-                href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn"
-                target="_blank">
-                {t('market.faq.answer.a1.1')}
-                {' >'}
-              </a>
-              <img
-                src={i18n.language === 'ko' ? KoGuide1s00 : EnGuide1s00}
-                alt="Guide image"
-                className="market__guide__image"
-              />
-              <p>{t('market.faq.answer.a1.2')}</p>
-              <img
-                src={i18n.language === 'ko' ? KoGuide1s01 : EnGuide1s01}
-                alt="Guide image"
-                className="market__guide__image"
-              />
-              <p>{t('market.faq.answer.a1.3')}</p>
-              <span>{t('market.faq.answer.a1.4')}</span>
-              <img
-                src={i18n.language === 'ko' ? KoGuide1s02 : EnGuide1s02}
-                alt="Guide image"
-                className="market__guide__image"
-              />
-              <p>{t('market.faq.answer.a1.5')}</p>
-              <img
-                src={i18n.language === 'ko' ? KoGuide1s03 : EnGuide1s03}
-                alt="Guide image"
-                className="market__guide__image"
-              />
-              <p>{t('market.faq.answer.a1.6')}</p>
-              <img
-                src={i18n.language === 'ko' ? KoGuide1s04 : EnGuide1s04}
-                alt="Guide image"
-                className="market__guide__image"
-              />
-              <p>{t('market.faq.answer.a1.7')}</p>
-              <img
-                src={i18n.language === 'ko' ? KoGuide1s05 : EnGuide1s05}
-                alt="Guide image"
-                className="market__guide__image"
-              />
-              <p>{t('market.faq.answer.a1.8')}</p>
-              <span>{t('market.faq.answer.a1.9')}</span>
-              <img
-                src={i18n.language === 'ko' ? KoGuide1s06 : EnGuide1s06}
-                alt="Guide image"
-                className="market__guide__image"
-              />
-              <p>{t('market.faq.answer.a1.10')}</p>
-              <img
-                src={i18n.language === 'ko' ? KoGuide1s07 : EnGuide1s07}
-                alt="Guide image"
-                className="market__guide__image"
-              />
+                <p>{t('market.faq.answer.a1.0')}</p>
+                <a
+                  href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn"
+                  target="_blank">
+                  {t('market.faq.answer.a1.1')}
+                  {' >'}
+                </a>
+                <LazyImage
+                  src={i18n.language === 'ko' ? KoGuide1s00 : EnGuide1s00}
+                  name="market__guide__image"
+                />
+                <p>{t('market.faq.answer.a1.2')}</p>
+                <LazyImage
+                  src={i18n.language === 'ko' ? KoGuide1s01 : EnGuide1s01}
+                  name="market__guide__image"
+                />
+                <p>{t('market.faq.answer.a1.3')}</p>
+                <span>{t('market.faq.answer.a1.4')}</span>
+                <LazyImage
+                  src={i18n.language === 'ko' ? KoGuide1s02 : EnGuide1s02}
+                  name="market__guide__image"
+                />
+                <p>{t('market.faq.answer.a1.5')}</p>
+                <LazyImage
+                  src={i18n.language === 'ko' ? KoGuide1s03 : EnGuide1s03}
+                  name="market__guide__image"
+                />
+                <p>{t('market.faq.answer.a1.6')}</p>
+                <LazyImage
+                  src={i18n.language === 'ko' ? KoGuide1s04 : EnGuide1s04}
+                  name="market__guide__image"
+                />
+                <p>{t('market.faq.answer.a1.7')}</p>
+                <LazyImage
+                  src={i18n.language === 'ko' ? KoGuide1s05 : EnGuide1s05}
+                  name="market__guide__image"
+                />
+                <p>{t('market.faq.answer.a1.8')}</p>
+                <span>{t('market.faq.answer.a1.9')}</span>
+                <LazyImage
+                  src={i18n.language === 'ko' ? KoGuide1s06 : EnGuide1s06}
+                  name="market__guide__image"
+                />
+                <p>{t('market.faq.answer.a1.10')}</p>
+                <LazyImage
+                  src={i18n.language === 'ko' ? KoGuide1s07 : EnGuide1s07}
+                  name="market__guide__image"
+                />
+              </Suspense>
             </div>
             {i18n.language === 'ko' && (
               <div
                 className={`question_title_box ${isQ2Visible.box}`}
                 id="FAQ02">
-                <div onClick={() => onClickBox(2)}>
-                  <h3>
-                    <span>2.</span> {t('market.faq.title.1')}
-                  </h3>
-                  <div className={`arrow ${isQ2Visible.arrow}`}>
-                    <div></div>
-                    <div></div>
+                <Suspense fallback={<Skeleton width={500} height={500} />}>
+                  <div onClick={() => onClickBox(2)}>
+                    <h3>
+                      <span>2.</span> {t('market.faq.title.1')}
+                    </h3>
+                    <div className={`arrow ${isQ2Visible.arrow}`}>
+                      <div></div>
+                      <div></div>
+                    </div>
                   </div>
-                </div>
-                <p>{t('market.faq.answer.a2.0')}</p>
-                <img
-                  src={KoGuide2s00}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
-                <p>{t('market.faq.answer.a2.1')}</p>
-                <Trans i18nKey={'market.faq.answer.a2.2'}>
-                  text
-                  <u>
-                    <a
-                      target="_blank"
-                      href="https://upbitcs.zendesk.com/hc/ko/articles/4406595681817-%EA%B3%A0%EA%B0%9D%ED%99%95%EC%9D%B8%EC%A0%88%EC%B0%A8-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0"
-                      style={{ color: '#00bfff' }}>
-                      link
-                    </a>
-                  </u>
-                </Trans>
-                <Trans i18nKey={'market.faq.answer.a2.3'}>
-                  text
-                  <u>
-                    <a
-                      target="_blank"
-                      href="https://upbitcs.zendesk.com/hc/ko/articles/900006142766-%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%8E%98%EC%9D%B4-%EC%9D%B8%EC%A6%9D%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B3%A0-%EC%8B%B6%EC%96%B4%EC%9A%94-"
-                      style={{ color: '#00bfff' }}>
-                      link
-                    </a>
-                  </u>
-                  text
-                </Trans>
-                <img
-                  src={KoGuide2s01}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
-                <p>{t('market.faq.answer.a2.4')}</p>
-                <img
-                  src={KoGuide2s02}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
+                  <p>{t('market.faq.answer.a2.0')}</p>
+                  <LazyImage src={KoGuide2s00} name="market__guide__image" />
+                  <p>{t('market.faq.answer.a2.1')}</p>
+                  <Trans i18nKey={'market.faq.answer.a2.2'}>
+                    text
+                    <u>
+                      <a
+                        target="_blank"
+                        href="https://upbitcs.zendesk.com/hc/ko/articles/4406595681817-%EA%B3%A0%EA%B0%9D%ED%99%95%EC%9D%B8%EC%A0%88%EC%B0%A8-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0"
+                        style={{ color: '#00bfff' }}>
+                        link
+                      </a>
+                    </u>
+                  </Trans>
+                  <Trans i18nKey={'market.faq.answer.a2.3'}>
+                    text
+                    <u>
+                      <a
+                        target="_blank"
+                        href="https://upbitcs.zendesk.com/hc/ko/articles/900006142766-%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%8E%98%EC%9D%B4-%EC%9D%B8%EC%A6%9D%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B3%A0-%EC%8B%B6%EC%96%B4%EC%9A%94-"
+                        style={{ color: '#00bfff' }}>
+                        link
+                      </a>
+                    </u>
+                    text
+                  </Trans>
+                  <LazyImage src={KoGuide2s01} name="market__guide__image" />
+                  <p>{t('market.faq.answer.a2.4')}</p>
+                  <LazyImage src={KoGuide2s02} name="market__guide__image" />
 
-                <p>{t('market.faq.answer.a2.5')}</p>
-                <span>{t('market.faq.answer.a2.6')}</span>
-                <img
-                  src={KoGuide2s03}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
+                  <p>{t('market.faq.answer.a2.5')}</p>
+                  <span>{t('market.faq.answer.a2.6')}</span>
+                  <LazyImage src={KoGuide2s03} name="market__guide__image" />
 
-                <p>{t('market.faq.answer.a2.7')}</p>
-                <img
-                  src={KoGuide2s04}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
+                  <p>{t('market.faq.answer.a2.7')}</p>
+                  <LazyImage src={KoGuide2s04} name="market__guide__image" />
 
-                <p>{t('market.faq.answer.a2.8')}</p>
-                <img
-                  src={KoGuide2s05}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
-                <p>{t('market.faq.answer.a2.9')}</p>
-                <img
-                  src={KoGuide2s06}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
-                <br />
-                <p>{t('market.faq.answer.a2.10')}</p>
+                  <p>{t('market.faq.answer.a2.8')}</p>
+                  <LazyImage src={KoGuide2s05} name="market__guide__image" />
+                  <p>{t('market.faq.answer.a2.9')}</p>
+                  <LazyImage src={KoGuide2s06} name="market__guide__image" />
+                  <br />
+                  <p>{t('market.faq.answer.a2.10')}</p>
+                </Suspense>
               </div>
             )}
             {i18n.language === 'ko' ? (
               <div
                 className={`question_title_box ${isQ3Visible.box}`}
                 id="FAQ03">
-                <div onClick={() => onClickBox(3)}>
-                  <h3>
-                    <span>3.</span> {t('market.faq.title.2')}
-                  </h3>
-                  <div className={`arrow ${isQ3Visible.arrow}`}>
-                    <div></div>
-                    <div></div>
+                <Suspense fallback={<Skeleton width={500} height={500} />}>
+                  <div onClick={() => onClickBox(3)}>
+                    <h3>
+                      <span>3.</span> {t('market.faq.title.2')}
+                    </h3>
+                    <div className={`arrow ${isQ3Visible.arrow}`}>
+                      <div></div>
+                      <div></div>
+                    </div>
                   </div>
-                </div>
-                <p>{t('market.faq.answer.a3.0')}</p>
-                <img
-                  src={KoGuide3s00}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
+                  <p>{t('market.faq.answer.a3.0')}</p>
+                  <LazyImage src={KoGuide3s00} name="market__guide__image" />
 
-                <p>{t('market.faq.answer.a3.1')}</p>
-                <img
-                  src={KoGuide3s01}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
+                  <p>{t('market.faq.answer.a3.1')}</p>
+                  <LazyImage src={KoGuide3s01} name="market__guide__image" />
 
-                <p>{t('market.faq.answer.a3.2')}</p>
-                <img
-                  src={KoGuide3s02}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
+                  <p>{t('market.faq.answer.a3.2')}</p>
+                  <LazyImage src={KoGuide3s02} name="market__guide__image" />
 
-                <p>{t('market.faq.answer.a3.3')}</p>
-                <img
-                  src={KoGuide3s03}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
-                <p>{t('market.faq.answer.a3.4')}</p>
-                <img
-                  src={KoGuide3s04}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
-                <p>{t('market.faq.answer.a3.5')}</p>
-                <img
-                  src={KoGuide3s05}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
+                  <p>{t('market.faq.answer.a3.3')}</p>
+                  <LazyImage src={KoGuide3s03} name="market__guide__image" />
+                  <p>{t('market.faq.answer.a3.4')}</p>
+                  <LazyImage src={KoGuide3s04} name="market__guide__image" />
+                  <p>{t('market.faq.answer.a3.5')}</p>
+                  <LazyImage src={KoGuide3s05} name="market__guide__image" />
+                </Suspense>
               </div>
             ) : (
               <div
                 className={`question_title_box ${isQ3Visible.box}`}
                 id="FAQ03">
-                <div onClick={() => onClickBox(3)}>
-                  <h3>
-                    <span>2.</span> {t('market.faq.title.2')}
-                  </h3>
-                  <div className={`arrow ${isQ3Visible.arrow}`}>
-                    <div></div>
-                    <div></div>
+                <Suspense fallback={<Skeleton width={500} height={500} />}>
+                  <div onClick={() => onClickBox(3)}>
+                    <h3>
+                      <span>2.</span> {t('market.faq.title.2')}
+                    </h3>
+                    <div className={`arrow ${isQ3Visible.arrow}`}>
+                      <div></div>
+                      <div></div>
+                    </div>
                   </div>
-                </div>
-                <p>{t('market.faq.answer.a3.0')}</p>
-                <img
-                  src={EnGuide3s00}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
+                  <p>{t('market.faq.answer.a3.0')}</p>
+                  <LazyImage src={EnGuide3s00} name="market__guide__image" />
 
-                <p>{t('market.faq.answer.a3.1')}</p>
-                <img
-                  src={EnGuide3s01}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
+                  <p>{t('market.faq.answer.a3.1')}</p>
+                  <LazyImage src={EnGuide3s01} name="market__guide__image" />
 
-                <p>{t('market.faq.answer.a3.2')}</p>
-                <img
-                  src={EnGuide3s02}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
+                  <p>{t('market.faq.answer.a3.2')}</p>
+                  <LazyImage src={EnGuide3s02} name="market__guide__image" />
 
-                <p>{t('market.faq.answer.a3.3')}</p>
-                <img
-                  src={EnGuide3s03}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
-                <p>{t('market.faq.answer.a3.4')}</p>
-                <img
-                  src={EnGuide3s04}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
-                <p>{t('market.faq.answer.a3.5')}</p>
-                <img
-                  src={EnGuide3s05}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
-                <p>{t('market.faq.answer.a3.6')}</p>
-                <img
-                  src={EnGuide3s06}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
-                <p>{t('market.faq.answer.a3.7')}</p>
-                <img
-                  src={EnGuide3s07}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
-                <p>{t('market.faq.answer.a3.8')}</p>
-                <img
-                  src={EnGuide3s08}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
-                <p>{t('market.faq.answer.a3.9')}</p>
-                <img
-                  src={EnGuide3s09}
-                  alt="Guide image"
-                  className="market__guide__image"
-                />
+                  <p>{t('market.faq.answer.a3.3')}</p>
+                  <LazyImage src={EnGuide3s03} name="market__guide__image" />
+                  <p>{t('market.faq.answer.a3.4')}</p>
+                  <LazyImage src={EnGuide3s04} name="market__guide__image" />
+                  <p>{t('market.faq.answer.a3.5')}</p>
+                  <LazyImage src={EnGuide3s05} name="market__guide__image" />
+                  <p>{t('market.faq.answer.a3.6')}</p>
+                  <LazyImage src={EnGuide3s06} name="market__guide__image" />
+                  <p>{t('market.faq.answer.a3.7')}</p>
+                  <LazyImage src={EnGuide3s07} name="market__guide__image" />
+                  <p>{t('market.faq.answer.a3.8')}</p>
+                  <LazyImage src={EnGuide3s08} name="market__guide__image" />
+                  <p>{t('market.faq.answer.a3.9')}</p>
+                  <LazyImage src={EnGuide3s09} name="market__guide__image" />
+                </Suspense>
               </div>
             )}
 
             <div className={`question_title_box ${isQ4Visible.box}`} id="FAQ04">
-              <div onClick={() => onClickBox(4)}>
-                <h3>
-                  <span>{i18n.language === 'ko' ? '4.' : '3.'}</span>{' '}
-                  {t('market.faq.title.3')}
-                </h3>
-                <div className={`arrow ${isQ4Visible.arrow}`}>
-                  <div></div>
-                  <div></div>
+              <Suspense fallback={<Skeleton width={500} height={500} />}>
+                <div onClick={() => onClickBox(4)}>
+                  <h3>
+                    <span>{i18n.language === 'ko' ? '4.' : '3.'}</span>{' '}
+                    {t('market.faq.title.3')}
+                  </h3>
+                  <div className={`arrow ${isQ4Visible.arrow}`}>
+                    <div></div>
+                    <div></div>
+                  </div>
                 </div>
-              </div>
-              <p>{t('market.faq.answer.a4.0')}</p>
-              <img
-                src={i18n.language === 'ko' ? KoGuide4s00 : EnGuide4s00}
-                alt="Guide image"
-                className="market__guide__image"
-              />
-              <p>{t('market.faq.answer.a4.1')}</p>
-              <img
-                src={i18n.language === 'ko' ? KoGuide4s01 : EnGuide4s01}
-                alt="Guide image"
-                className="market__guide__image"
-              />
+                <p>{t('market.faq.answer.a4.0')}</p>
+                <LazyImage
+                  src={i18n.language === 'ko' ? KoGuide4s00 : EnGuide4s00}
+                  name="market__guide__image"
+                />
+                <p>{t('market.faq.answer.a4.1')}</p>
+                <LazyImage
+                  src={i18n.language === 'ko' ? KoGuide4s01 : EnGuide4s01}
+                  name="market__guide__image"
+                />
 
-              <p>{t('market.faq.answer.a4.2')}</p>
-              <img
-                src={i18n.language === 'ko' ? KoGuide4s02 : EnGuide4s02}
-                alt="Guide image"
-                className="market__guide__image"
-              />
-              <p>{t('market.faq.answer.a4.3')}</p>
-              <img
-                src={i18n.language === 'ko' ? KoGuide4s03 : EnGuide4s03}
-                alt="Guide image"
-                className="market__guide__image"
-              />
+                <p>{t('market.faq.answer.a4.2')}</p>
+                <LazyImage
+                  src={i18n.language === 'ko' ? KoGuide4s02 : EnGuide4s02}
+                  name="market__guide__image"
+                />
+                <p>{t('market.faq.answer.a4.3')}</p>
+                <LazyImage
+                  src={i18n.language === 'ko' ? KoGuide4s03 : EnGuide4s03}
+                  name="market__guide__image"
+                />
+              </Suspense>
             </div>
             <div className={`question_title_box ${isQ5Visible.box}`} id="FAQ05">
-              <div onClick={() => onClickBox(5)}>
-                <h3>
-                  <span>{i18n.language === 'ko' ? '5.' : '4.'}</span>{' '}
-                  {t('market.faq.title.4')}
-                </h3>
-                <div className={`arrow ${isQ5Visible.arrow}`}>
-                  <div></div>
-                  <div></div>
+              <Suspense fallback={<Skeleton width={500} height={500} />}>
+                <div onClick={() => onClickBox(5)}>
+                  <h3>
+                    <span>{i18n.language === 'ko' ? '5.' : '4.'}</span>{' '}
+                    {t('market.faq.title.4')}
+                  </h3>
+                  <div className={`arrow ${isQ5Visible.arrow}`}>
+                    <div></div>
+                    <div></div>
+                  </div>
                 </div>
-              </div>
-              <p>{t('market.faq.answer.a5.0')}</p>
-              <img
-                src={i18n.language === 'ko' ? KoGuide5s00 : EnGuide5s00}
-                alt="Guide image"
-                className="market__guide__image"
-              />
-              <p>{t('market.faq.answer.a5.1')}</p>
-              <img
-                src={i18n.language === 'ko' ? KoGuide5s01 : EnGuide5s01}
-                alt="Guide image"
-                className="market__guide__image"
-              />
-              <p>{t('market.faq.answer.a5.2')}</p>
-              <img
-                src={i18n.language === 'ko' ? KoGuide5s02 : EnGuide5s02}
-                alt="Guide image"
-                className="market__guide__image"
-              />
-              <p>{t('market.faq.answer.a5.3')}</p>
-              <span>{t('market.faq.answer.a5.4')}</span>
-              <img
-                src={i18n.language === 'ko' ? KoGuide5s03 : EnGuide5s03}
-                alt="Guide image"
-                className="market__guide__image"
-              />
-              <p>{t('market.faq.answer.a5.5')}</p>
-              <span>{t('market.faq.answer.a5.6')}</span>
-              <img
-                src={i18n.language === 'ko' ? KoGuide5s04 : EnGuide5s04}
-                alt="Guide image"
-                className="market__guide__image"
-              />
+                <p>{t('market.faq.answer.a5.0')}</p>
+                <LazyImage
+                  src={i18n.language === 'ko' ? KoGuide5s00 : EnGuide5s00}
+                  name="market__guide__image"
+                />
+                <p>{t('market.faq.answer.a5.1')}</p>
+                <LazyImage
+                  src={i18n.language === 'ko' ? KoGuide5s01 : EnGuide5s01}
+                  name="market__guide__image"
+                />
+                <p>{t('market.faq.answer.a5.2')}</p>
+                <LazyImage
+                  src={i18n.language === 'ko' ? KoGuide5s02 : EnGuide5s02}
+                  name="market__guide__image"
+                />
+                <p>{t('market.faq.answer.a5.3')}</p>
+                <span>{t('market.faq.answer.a5.4')}</span>
+                <LazyImage
+                  src={i18n.language === 'ko' ? KoGuide5s03 : EnGuide5s03}
+                  name="market__guide__image"
+                />
+                <p>{t('market.faq.answer.a5.5')}</p>
+                <span>{t('market.faq.answer.a5.6')}</span>
+                <LazyImage
+                  src={i18n.language === 'ko' ? KoGuide5s04 : EnGuide5s04}
+                  name="market__guide__image"
+                />
 
-              <p>{t('market.faq.answer.a5.7')}</p>
-              <img
-                src={i18n.language === 'ko' ? KoGuide5s05 : EnGuide5s05}
-                alt="Guide image"
-                className="market__guide__image"
-              />
+                <p>{t('market.faq.answer.a5.7')}</p>
+                <LazyImage
+                  src={i18n.language === 'ko' ? KoGuide5s05 : EnGuide5s05}
+                  name="market__guide__image"
+                />
+              </Suspense>
             </div>
           </section>
         </article>
