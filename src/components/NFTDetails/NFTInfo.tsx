@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import ContractVideo from 'src/assets/images/market/contract.mp4';
+import ContractVideo from 'src/assets/images/market/contractusa.mp4';
 import Clip from 'src/assets/images/market/clip.svg';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
@@ -62,7 +62,8 @@ const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo }) => {
             src={ContractVideo}
             muted={true}
             loop={true}
-            autoPlay={true}></video>
+            autoPlay={true}
+            playsInline></video>
         </figure>
         <table>
           <tr>
