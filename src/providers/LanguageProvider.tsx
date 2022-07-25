@@ -24,7 +24,7 @@ const LanguageProvider: React.FC = (props) => {
 
   useEffect(() => {
     if (
-      [LanguageType.EN, LanguageType.KO].includes(
+      [LanguageType.EN, LanguageType.KO, LanguageType.CN].includes(
         location.pathname.split('/')[1] as LanguageType,
       )
     ) {

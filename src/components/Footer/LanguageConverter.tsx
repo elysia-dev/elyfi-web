@@ -9,6 +9,7 @@ import LanguageType from 'src/enums/LanguageType';
 import LanguageContext from 'src/contexts/LanguageContext';
 import ko from 'src/assets/images/korea@2x.png';
 import en from 'src/assets/images/america@2x.png';
+import cn from 'src/assets/images/china@2x.png';
 import { useParams } from 'react-router-dom';
 
 const languageData = {
@@ -19,6 +20,10 @@ const languageData = {
   [LanguageType.EN]: {
     image: en,
     title: 'English',
+  },
+  [LanguageType.CN]: {
+    image: cn,
+    title: '中文',
   },
 };
 
@@ -56,11 +61,7 @@ export const LanguageConverter: FunctionComponent = () => {
       <div
         className="footer__lang__image-handler"
         style={{ display: visible ? 'flex' : 'none' }}>
-        {[
-          LanguageType.EN,
-          LanguageType.KO,
-          // LanguageType.ZHHANS
-        ]
+        {[LanguageType.EN, LanguageType.KO, LanguageType.CN]
           .filter((languageType) => languageType !== lng)
           .map((languageType, index) => {
             return (

@@ -511,6 +511,13 @@ const Navigation: React.FunctionComponent<{
               }}>
               ENG
             </p>
+            <p
+              className={lng === LanguageType.CN ? `active` : ``}
+              onClick={() => {
+                setLanguage(LanguageType.CN);
+              }}>
+              CHN
+            </p>
           </div>
           <div>{setMediaQueryMetamask('mobile')}</div>
         </section>

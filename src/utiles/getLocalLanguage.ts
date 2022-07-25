@@ -9,6 +9,9 @@ const getLocalLanguage = (): LanguageType => {
   if (userLang?.includes('ko')) {
     localLanguage = LanguageType.KO;
   }
+  if (userLang?.includes('cn')) {
+    localLanguage = LanguageType.CN;
+  }
 
   return language || localLanguage;
 };

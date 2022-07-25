@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import LanguageType from 'src/enums/LanguageType';
 import PortfolioInfoKor from 'src/assets/images/portfolio_info--kor.png';
 import PortfolioInfoEng from 'src/assets/images/portfolio_info--eng.png';
+import PortfolioInfoChn from 'src/assets/images/portfolio_info--cha.png';
 
 type Props = {
   content: string;
@@ -54,6 +55,16 @@ function Guide(props: Props): JSX.Element {
                 {i18n.language === LanguageType.KO ? (
                   <img
                     src={PortfolioInfoKor}
+                    style={{
+                      width: '300px',
+                      marginTop: '20px',
+                      marginBottom: 10,
+                      objectFit: 'scale-down',
+                    }}
+                  />
+                ) : i18n.language === LanguageType.CN ? (
+                  <img
+                    src={PortfolioInfoChn}
                     style={{
                       width: '300px',
                       marginTop: '20px',
