@@ -106,6 +106,16 @@ const MarketFAQ = (): JSX.Element => {
     );
   };
 
+  const scrollToBox = (ref: string): number => {
+    const element = document.getElementById(ref);
+
+    const bodyRect = document.body.getBoundingClientRect().top;
+    const elementRect = element!.getBoundingClientRect().top;
+    const elementPosition = elementRect - bodyRect;
+
+    return elementPosition;
+  };
+
   const onClickBox = useCallback(
     (questionNumber: number) => {
       switch (questionNumber) {
@@ -119,6 +129,13 @@ const MarketFAQ = (): JSX.Element => {
               : `box${questionNumber}_down`,
             visible: !isQ1Visible.visible,
           });
+          setTimeout(() => {
+            window.scrollTo({
+              top: scrollToBox('FAQ01') - 150,
+              behavior: 'smooth',
+            });
+          }, 300);
+
           break;
         case 2:
           initialAllBox();
@@ -130,6 +147,12 @@ const MarketFAQ = (): JSX.Element => {
               : `box${questionNumber}_down`,
             visible: !isQ2Visible.visible,
           });
+          setTimeout(() => {
+            window.scrollTo({
+              top: scrollToBox('FAQ02') - 150,
+              behavior: 'smooth',
+            });
+          }, 300);
           break;
         case 3:
           initialAllBox();
@@ -141,6 +164,12 @@ const MarketFAQ = (): JSX.Element => {
               : `box${questionNumber}_down`,
             visible: !isQ3Visible.visible,
           });
+          setTimeout(() => {
+            window.scrollTo({
+              top: scrollToBox('FAQ03') - 150,
+              behavior: 'smooth',
+            });
+          }, 300);
           break;
         case 4:
           initialAllBox();
@@ -152,6 +181,12 @@ const MarketFAQ = (): JSX.Element => {
               : `box${questionNumber}_down`,
             visible: !isQ4Visible.visible,
           });
+          setTimeout(() => {
+            window.scrollTo({
+              top: scrollToBox('FAQ04') - 150,
+              behavior: 'smooth',
+            });
+          }, 300);
           break;
         case 5:
           initialAllBox();
@@ -163,6 +198,12 @@ const MarketFAQ = (): JSX.Element => {
               : `box${questionNumber}_down`,
             visible: !isQ5Visible.visible,
           });
+          setTimeout(() => {
+            window.scrollTo({
+              top: scrollToBox('FAQ05') - 150,
+              behavior: 'smooth',
+            });
+          }, 300);
           break;
         default:
           break;
@@ -210,7 +251,9 @@ const MarketFAQ = (): JSX.Element => {
     function handleClickOutside(e: MouseEvent): void {
       if (FAQRef.current && !FAQRef.current.contains(e.target as Node)) {
         initialAllBox();
-        scrollToOffeset(`FAQ01`, 478);
+        window.scrollTo({
+          top: scrollToBox('FAQ01') - 150,
+        });
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
