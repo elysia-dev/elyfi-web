@@ -317,29 +317,31 @@ const MarketFAQ = (): JSX.Element => {
                   <p>{t('market.faq.answer.a2.0')}</p>
                   <LazyImage src={KoGuide2s00} name="market__guide__image" />
                   <p>{t('market.faq.answer.a2.1')}</p>
-                  <Trans i18nKey={'market.faq.answer.a2.2'}>
-                    text
-                    <u>
-                      <a
-                        target="_blank"
-                        href="https://upbitcs.zendesk.com/hc/ko/articles/4406595681817-%EA%B3%A0%EA%B0%9D%ED%99%95%EC%9D%B8%EC%A0%88%EC%B0%A8-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0"
-                        style={{ color: '#00bfff' }}>
-                        link
-                      </a>
-                    </u>
-                  </Trans>
-                  <Trans i18nKey={'market.faq.answer.a2.3'}>
-                    text
-                    <u>
-                      <a
-                        target="_blank"
-                        href="https://upbitcs.zendesk.com/hc/ko/articles/900006142766-%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%8E%98%EC%9D%B4-%EC%9D%B8%EC%A6%9D%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B3%A0-%EC%8B%B6%EC%96%B4%EC%9A%94-"
-                        style={{ color: '#00bfff' }}>
-                        link
-                      </a>
-                    </u>
-                    text
-                  </Trans>
+                  <span>
+                    <Trans i18nKey={'market.faq.answer.a2.2'}>
+                      text
+                      <u>
+                        <a
+                          target="_blank"
+                          href="https://upbitcs.zendesk.com/hc/ko/articles/4406595681817-%EA%B3%A0%EA%B0%9D%ED%99%95%EC%9D%B8%EC%A0%88%EC%B0%A8-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0"
+                          style={{ color: '#00bfff' }}>
+                          link
+                        </a>
+                      </u>
+                    </Trans>
+                    <Trans i18nKey={'market.faq.answer.a2.3'}>
+                      text
+                      <u>
+                        <a
+                          target="_blank"
+                          href="https://upbitcs.zendesk.com/hc/ko/articles/900006142766-%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%8E%98%EC%9D%B4-%EC%9D%B8%EC%A6%9D%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B3%A0-%EC%8B%B6%EC%96%B4%EC%9A%94-"
+                          style={{ color: '#00bfff' }}>
+                          link
+                        </a>
+                      </u>
+                      text
+                    </Trans>
+                  </span>
                   <LazyImage src={KoGuide2s01} name="market__guide__image" />
                   <p>{t('market.faq.answer.a2.4')}</p>
                   <LazyImage src={KoGuide2s02} name="market__guide__image" />

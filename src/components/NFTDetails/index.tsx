@@ -492,13 +492,13 @@ const NFTDetails = (): JSX.Element => {
           &nbsp;&gt;&nbsp;
           <p>{t('nftMarket.title')}</p>
         </div>
-        {/* <Link
+        <Link
           className="nft-details__guide pc-only"
           to={{
             pathname: `/${lng}/market/guide`,
           }}>
           {t('nftMarket.guide')}
-        </Link> */}
+        </Link>
         <article className="nft-details__header" ref={headerRef}>
           <Header
             onButtonClick={purchaseButtonAction}
