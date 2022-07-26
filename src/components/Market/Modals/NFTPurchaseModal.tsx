@@ -32,12 +32,14 @@ interface ModalType {
     eth: number;
   };
   remainingNFT: number;
+  btnLocation: string;
 }
 
 const NFTPurchaseModal: React.FC<ModalType> = ({
   modalClose,
   balances,
   remainingNFT,
+  btnLocation,
 }) => {
   const { account, library, chainId } = useWeb3React();
   const { t } = useTranslation();
@@ -46,6 +48,7 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
   const [currentStep, setCurrentStep] = useState(1);
   const [selectVisible, setSelectVisible] = useState(false);
   const [isPendingApprove, setIsPendingApprove] = useState(false);
+  const [isClickedMaxBtn, setIsClickedMaxBtn] = useState(false);
   const { purchaseNFT, isApprove, approve, isLoading } = usePurchaseNFT(
     balances.usdc,
   );
@@ -135,6 +138,7 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
                         10
                       ).toFixed(0),
                 );
+                setIsClickedMaxBtn(true);
               }}
             />
             <SelectCrypto
@@ -212,6 +216,8 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
                 String(parseInt(quantity, 10) * 10),
                 purchaseType,
                 modalClose,
+                btnLocation,
+                isClickedMaxBtn,
                 purchaseType === NFTPurchaseType.ETH
                   ? String(paymentEth)
                   : undefined,
