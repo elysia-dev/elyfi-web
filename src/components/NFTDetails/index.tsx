@@ -441,7 +441,7 @@ const NFTDetails = (): JSX.Element => {
           onSubmit={() => {
             const emitter = buildEventEmitter(
               ModalViewType.NFTPurchaseModal,
-              'Twitter',
+              'Retweet',
               JSON.stringify({
                 chainId,
                 address: account,
