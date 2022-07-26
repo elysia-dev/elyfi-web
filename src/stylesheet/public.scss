@@ -6965,6 +6965,102 @@ input[type='number'] {
         }
       }
     }
+    &__investment-reward {
+      &__burn {
+        padding: 18px 25px 25px 25px;
+        > b {
+          font-size: 15px;
+          color: $font-color;
+        }
+        > div {
+          margin-top: 13px;
+          width: 100%;
+          border-radius: 10px;
+          background: #f0f0f1;
+          padding: 20px 30px;
+          > b {
+            font-size: 30px;
+            text-align: right;
+            display: block;
+            > span {
+              font-size: 25px;
+              margin-left: 5px;
+              color: $gray-font-color;
+            }
+          }
+          margin-bottom: 10px;
+        }
+        > p {
+          font-size: 12px;
+          color: #646464;
+          text-align: right;
+        }
+        border-bottom: 1px solid $gray-line;
+      }
+      &__current {
+        padding: 30px 25px 25px 25px;
+        > div {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          > b {
+            font-size: 15px;
+            color: $font-color;
+            > span {
+              margin-left: 5px;
+              color: #646464;
+            }
+          }
+          margin-bottom: 14px;
+        }
+        > section {
+          border: 1px solid #e6e6e6;
+          border-radius: 10px;
+          padding: 18px 25px;
+          > div {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            &:first-child {
+              margin-bottom: 10px;
+            }
+            > p {
+              font-size: 15px;
+              color: $font-color;
+              > span {
+                margin-left: 5px;
+                color: #646464;
+              }
+            }
+          }
+        }
+        border-bottom: 1px solid $gray-line;
+      }
+      &__button {
+        display: flex;
+        > button {
+          @include hover__box-shadow--white;
+          flex: 1;
+          height: 47px;
+          margin: 25px;
+          background: #00bfff;
+          border-radius: 35px;
+          cursor: pointer;
+          font-size: 18px;
+          line-height: 47px;
+          color: #fff;
+          border: 0;
+          &.disabled {
+            pointer-events: none;
+            cursor: not-allowed;
+            background-color: #f0f0f1;
+            color: $font-color;
+          }
+        }
+      }
+    }
   }
   @keyframes ldio-17gxvvu9k8u {
     0% {

@@ -67,6 +67,7 @@ import SelectWalletModal from '../Market/Modals/SelectWalletModal';
 import ReconnectWallet from '../Market/Modals/components/ReconnectWallet';
 import NewsCard from './NewsCard';
 import Guide from './Guide';
+import InvestRewardModal from '../Market/Modals/InvestmentRewardModal';
 
 export interface INews {
   title: string;
@@ -473,6 +474,8 @@ const NFTDetails = (): JSX.Element => {
           tokenAmount={purchasedNFT ? (purchasedNFT * 10 * 0.01) / 0.01858 : 0}
           tokenName={'ELFI'}
         />
+      ) : modalType !== 'investmentReward' ? (
+        <InvestRewardModal onClose={() => setModalType('')} />
       ) : (
         <></>
       )}
