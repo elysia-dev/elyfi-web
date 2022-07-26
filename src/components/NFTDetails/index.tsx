@@ -106,6 +106,7 @@ const NFTDetails = (): JSX.Element => {
   const { txType, txStatus } = useContext(TxContext);
   const { balances } = useUserCryptoBalances();
   const [currentTab, setCurrentTab] = useState(0);
+  const [btnLocation, setBtnLocation] = useState('');
 
   const [purchasedNFT, setPurchasedNFT] = useState<number | undefined>();
   const [nftInfo, setNftInfo] = useState<NFTType | undefined>();
@@ -181,9 +182,10 @@ const NFTDetails = (): JSX.Element => {
     );
   };
 
-  const purchaseButtonAction = () => {
+  const purchaseButtonAction = (location: string) => {
     const wallet = sessionStorage.getItem('@connect');
     ReactGA.modalview('purchaseBondNft');
+    setBtnLocation(location);
 
     return account
       ? mainnetType === MainnetType.Ethereum
@@ -413,6 +415,7 @@ const NFTDetails = (): JSX.Element => {
           modalClose={() => setModalType('')}
           balances={balances}
           remainingNFT={totalPurchase - (nftTotalSupply || 0)}
+          btnLocation={btnLocation}
         />
       ) : modalType === 'changeNetwork' ? (
         <ChangeNetworkModal
@@ -441,7 +444,7 @@ const NFTDetails = (): JSX.Element => {
           onSubmit={() => {
             const emitter = buildEventEmitter(
               ModalViewType.NFTPurchaseModal,
-              'Twitter',
+              'Retweet',
               JSON.stringify({
                 chainId,
                 address: account,
@@ -500,7 +503,7 @@ const NFTDetails = (): JSX.Element => {
         </Link>
         <article className="nft-details__header" ref={headerRef}>
           <Header
-            onButtonClick={purchaseButtonAction}
+            onButtonClick={() => purchaseButtonAction('TopButton')}
             purchasedNFT={purchasedNFT}
             isDisabled={purchaseButtonDisable}
             mainnetType={mainnetType}
@@ -617,7 +620,7 @@ const NFTDetails = (): JSX.Element => {
           </ul>
           <div>
             <button
-              onClick={purchaseButtonAction}
+              onClick={() => purchaseButtonAction('BottomButton')}
               className={purchaseButtonDisable ? '' : 'disabled'}>
               {t('nftMarket.purchase')}
             </button>

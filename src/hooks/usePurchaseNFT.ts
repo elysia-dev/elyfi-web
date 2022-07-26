@@ -20,6 +20,8 @@ const usePurchaseNFT = (
     amount: string,
     purchaseType: string,
     modalClose: () => void,
+    btnLocation: string,
+    isClickedMaxBtn: boolean,
     ethAmount?: string,
   ) => void;
   isApprove: boolean;
@@ -37,6 +39,8 @@ const usePurchaseNFT = (
     amount: string,
     purchaseType: string,
     modalClose: () => void,
+    btnLocation: string,
+    isClickedMaxBtn: boolean,
     ethAmount?: string,
   ) => {
     if (!account) throw Error('No account');
@@ -53,6 +57,8 @@ const usePurchaseNFT = (
         nftPurchaseType: purchaseType,
         nftAmount: `${parseInt(amount, 10) / 10}(${amount})`,
         depositAmount: purchaseType === 'ETH' ? ethAmount : amount,
+        TopOrBottom: btnLocation,
+        max: isClickedMaxBtn,
       }),
     );
     try {
