@@ -2116,7 +2116,7 @@ input[type='number'] {
 
   .nft-details {
     &__guide {
-      margin-top: 30px;
+      margin-top: 120px;
       color: #00bfff;
       text-align: right;
       display: block;
@@ -2140,78 +2140,94 @@ input[type='number'] {
           color: $font-color;
         }
       }
-      > section {
-        width: 597px;
-        height: 135px;
-        box-shadow: 0px 0px 6px #00000029;
-        border-radius: 5px;
-        padding: 28px;
+    }
+    &__current-nfts {
+      > article {
+        display: flex;
         background-color: #ffffff;
-        > div {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 27px;
-          > b {
-            font-size: 18px;
-            > span {
-              margin-left: 5px;
-              cursor: pointer;
+        box-shadow: 0px 0px 6px #00000029;
+        margin-top: 10px;
+        border-radius: 10px;
+        > section {
+          flex: 1;
+          &:last-child {
+            border-left: 1px solid #e6e6e6;
+          }
+          > div {
+            display: flex;
+            padding: 18px 0px 11px 28px;
+            border-bottom: 1px solid #e6e6e6;
+            flex-direction: row;
+            align-items: center;
+            > b {
+              font-size: 18px;
+              color: $font-color;
+              > span {
+                margin-left: 7px;
+              }
             }
           }
-        }
-        > b {
-          font-size: 20px;
-          color: $font-color;
-          text-align: right;
-          display: block;
-          &.null {
-            color: #888;
-          }
-        }
-        > section {
-          display: flex;
-          gap: 30px;
-          > a {
-            @include hover__box-shadow;
-            width: 130px;
-            height: 30px;
-            background: #3679b5;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 15px;
-            color: #fff;
-            border: 0;
-            display: block;
-            flex: 1;
-            text-align: center;
-            line-height: 30px;
-          }
-          > button {
-            @include hover__box-shadow;
-            width: 130px;
-            height: 30px;
-            background: #00bfff;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 15px;
-            color: #fff;
-            border: 0;
-            flex: 1;
-            &.disabled {
-              pointer-events: none;
-              cursor: not-allowed;
-              background-color: #f0f0f1;
+          > section {
+            height: 125px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            > b {
+              margin-top: 22px;
+              font-size: 25px;
               color: $font-color;
+              text-align: right;
+              padding-right: 30px;
+              display: block;
+              > span {
+                color: #646464;
+              }
+            }
+            > section {
+              display: flex;
+              gap: 30px;
+              margin: 21px auto 19px;
+              > a {
+                @include hover__box-shadow;
+                width: 250px;
+                height: 30px;
+                background: #3679b5;
+                border-radius: 15px;
+                cursor: pointer;
+                font-size: 15px;
+                color: #fff;
+                border: 0;
+                line-height: 30px;
+                align-items: center;
+                display: flex;
+                text-align: center;
+                justify-content: center;
+                gap: 5px;
+              }
+              > button {
+                @include hover__box-shadow;
+                width: 250px;
+                height: 30px;
+                background: #00bfff;
+                border-radius: 15px;
+                cursor: pointer;
+                font-size: 15px;
+                color: #fff;
+                border: 0;
+                &.disabled {
+                  pointer-events: none;
+                  cursor: not-allowed;
+                  background-color: #f0f0f1;
+                  color: $font-color;
+                }
+              }
             }
           }
         }
       }
     }
-
     &__content {
-      margin-top: 15px;
+      margin-top: 20px;
       padding: 40px 30px;
       background-color: #fff;
       box-shadow: 0px 0px 6px #00000029;
@@ -2222,36 +2238,27 @@ input[type='number'] {
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
-      margin-top: 60px;
-      padding: 40px 30px;
-      background-color: #fff;
-      box-shadow: 0px 0px 6px #00000029;
-      border-radius: 5px;
+      margin-top: 20px;
+      gap: 20px;
       > section {
         flex: 1;
-        > h2 {
-          font-size: 18px;
-          color: $font-color;
-          margin-bottom: 25px;
-        }
-        &:not(:last-child) {
-          padding-right: 40px;
-        }
-        &:last-child {
-          border-left: 1px solid #e6e6e6;
-          padding-left: 30px;
-        }
-      }
-      &__status {
+        width: 585px;
+        height: 180px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 6px #00000029;
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         > section {
           display: flex;
+          padding: 18px 0px 11px 28px;
+          border-bottom: 1px solid #e6e6e6;
           flex-direction: row;
-          margin-bottom: 25px;
           align-items: center;
           > h2 {
             font-size: 18px;
             color: $font-color;
-            margin-right: 8px;
           }
           > a {
             position: relative;
@@ -2264,17 +2271,20 @@ input[type='number'] {
             }
           }
         }
+      }
+      &__status {
         > div {
+          padding: 18px 28px;
           > div {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             > p {
               color: #707070;
-              font-size: 13px;
+              font-size: 15px;
             }
             > b {
-              font-size: 15px;
+              font-size: 18px;
               color: #333333;
             }
           }
@@ -2312,33 +2322,37 @@ input[type='number'] {
       }
       &__round {
         > div {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-evenly;
-          > b {
-            font-size: 30px;
-            color: $font-color;
-          }
+          padding: 18px 28px 18px;
           > div {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 10px;
-            width: 44px;
+            flex-direction: row;
+            justify-content: space-evenly;
             > b {
               font-size: 30px;
               color: $font-color;
             }
-            > p {
-              font-size: 13px;
-              color: #707070;
+            > div {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              margin-bottom: 10px;
+              width: 44px;
+              > b {
+                font-size: 30px;
+                color: $font-color;
+              }
+              > p {
+                font-size: 13px;
+                color: #707070;
+              }
             }
           }
-        }
-        > p {
-          font-size: 10px;
-          color: #333333;
-          text-align: right;
+          > p {
+            font-size: 10px;
+            color: #333333;
+            text-align: right;
+            padding-right: 10px;
+          }
         }
       }
     }

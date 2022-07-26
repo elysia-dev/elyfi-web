@@ -494,16 +494,23 @@ const NFTDetails = (): JSX.Element => {
           &nbsp;&gt;&nbsp;
           <p>{t('nftMarket.title')}</p>
         </div>
-        <Link
-          className="nft-details__guide pc-only"
-          to={{
-            pathname: `/${lng}/market/guide`,
-          }}>
-          {t('nftMarket.guide')}
-        </Link>
         <article className="nft-details__header" ref={headerRef}>
+          <div>
+            <h1>{t('nftMarket.title')}</h1>
+            <p>{t('nftMarket.subTitle')}</p>
+          </div>
+        </article>
+        <article className="nft-details__current-nfts">
+          <Link
+            className="nft-details__guide pc-only"
+            to={{
+              pathname: `/${lng}/market/guide`,
+            }}>
+            {t('nftMarket.guide')}
+          </Link>
           <Header
             onButtonClick={() => purchaseButtonAction('TopButton')}
+            onRewardButtonClick={() => {}}
             purchasedNFT={purchasedNFT}
             isDisabled={purchaseButtonDisable}
             mainnetType={mainnetType}

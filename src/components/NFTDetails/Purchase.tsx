@@ -98,32 +98,36 @@ const Purchase: React.FC<Props> = ({
         </div>
       </section>
       <section className="nft-details__purchase__round">
-        <h2>{t('nftMarket.purchasedDate')}</h2>
+        <section>
+          <h2>{t('nftMarket.purchasedDate')}</h2>
+        </section>
         <div>
           <div>
-            <b>{remainingTime.day.toString().padStart(2, '0')}</b>
-            <p>{t('nftMarket.timeUnit.0')}</p>
+            <div>
+              <b>{remainingTime.day.toString().padStart(2, '0')}</b>
+              <p>{t('nftMarket.timeUnit.0')}</p>
+            </div>
+            <b>:</b>
+            <div>
+              <b>{remainingTime.hour.toString().padStart(2, '0')}</b>
+              <p>{t('nftMarket.timeUnit.1')}</p>
+            </div>
+            <b>:</b>
+            <div>
+              <b>{remainingTime.minute.toString().padStart(2, '0')}</b>
+              <p>{t('nftMarket.timeUnit.2')}</p>
+            </div>
+            <b>:</b>
+            <div>
+              <b>{remainingTime.second.toString().padStart(2, '0')}</b>
+              <p>{t('nftMarket.timeUnit.3')}</p>
+            </div>
           </div>
-          <b>:</b>
-          <div>
-            <b>{remainingTime.hour.toString().padStart(2, '0')}</b>
-            <p>{t('nftMarket.timeUnit.1')}</p>
-          </div>
-          <b>:</b>
-          <div>
-            <b>{remainingTime.minute.toString().padStart(2, '0')}</b>
-            <p>{t('nftMarket.timeUnit.2')}</p>
-          </div>
-          <b>:</b>
-          <div>
-            <b>{remainingTime.second.toString().padStart(2, '0')}</b>
-            <p>{t('nftMarket.timeUnit.3')}</p>
-          </div>
+          <p>
+            {moment(startTime).format('YYYY.MM.DD HH:mm:ss')} ~{' '}
+            {moment(endedTime).format('YYYY.MM.DD HH:mm:ss')} KST
+          </p>
         </div>
-        <p>
-          {moment(startTime).format('YYYY.MM.DD HH:mm:ss')} ~{' '}
-          {moment(endedTime).format('YYYY.MM.DD HH:mm:ss')} KST
-        </p>
       </section>
     </>
   );

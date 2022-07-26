@@ -4,9 +4,11 @@ import Skeleton from 'react-loading-skeleton';
 import { Link, useParams } from 'react-router-dom';
 import Questionmark from 'src/components/Questionmark';
 import MainnetType from 'src/enums/MainnetType';
+import NewTab from 'src/assets/images/market/new_tab--button.svg';
 
 interface Props {
   onButtonClick: () => void;
+  onRewardButtonClick: () => void;
   purchasedNFT?: number;
   isDisabled: boolean;
   mainnetType: MainnetType;
@@ -19,6 +21,7 @@ const Header: React.FC<Props> = ({
   isDisabled,
   mainnetType,
   openseaLink,
+  onRewardButtonClick,
 }) => {
   const { t } = useTranslation();
   const { account } = useWeb3React();
@@ -45,7 +48,8 @@ const Header: React.FC<Props> = ({
   const AnchorLinkComponent = (): JSX.Element => {
     return (
       <a href={openseaLink} target="_blank">
-        {t('nftMarket.tradeOnOpensea')}
+        {t('nftMarket.tradeOnOpensea')}{' '}
+        <img src={NewTab} alt="New tab link icon" />
       </a>
     );
   };
@@ -57,13 +61,18 @@ const Header: React.FC<Props> = ({
       </button>
     );
   };
+  const RewardComponent = (): JSX.Element => {
+    return (
+      <button
+        onClick={onRewardButtonClick}
+        className={isDisabled ? '' : 'disabled'}>
+        수령하기
+      </button>
+    );
+  };
 
   return (
     <>
-      <div>
-        <h1>{t('nftMarket.title')}</h1>
-        <p>{t('nftMarket.subTitle')}</p>
-      </div>
       <Link
         className="nft-details__guide mobile-only"
         to={{
@@ -71,35 +80,69 @@ const Header: React.FC<Props> = ({
         }}>
         {t('nftMarket.guide')}
       </Link>
-      <section>
-        <div>
-          <b>
-            {t('nftMarket.myPurchase')}
-            <span>
-              <Questionmark
-                content={
-                  <Trans i18nKey={'nftMarket.myPurchaseInfo'}>
-                    text
-                    <u>
-                      <a
-                        target="_blank"
-                        href="https://etherscan.io/"
-                        style={{ color: '#00bfff' }}>
-                        link
-                      </a>
-                    </u>
-                  </Trans>
-                }
-              />
-            </span>
-          </b>
-          <span>{currentPurchaseAmount()}</span>
-        </div>
-        <section>
-          <AnchorLinkComponent />
-          <ButtonComponent />
+      <article>
+        <section className="nft-details__current-nfts__expected-reward">
+          <div>
+            <b>
+              나의 예상수익금
+              <span>
+                <Questionmark
+                  content={
+                    <Trans i18nKey={'nftMarket.myPurchaseInfo'}>
+                      text
+                      <u>
+                        <a
+                          target="_blank"
+                          href="https://etherscan.io/"
+                          style={{ color: '#00bfff' }}>
+                          link
+                        </a>
+                      </u>
+                    </Trans>
+                  }
+                />
+              </span>
+            </b>
+          </div>
+          <section>
+            <b>{currentPurchaseAmount()}</b>
+            <section>
+              <RewardComponent />
+            </section>
+          </section>
         </section>
-      </section>
+        <section className="nft-details__current-nfts__holds">
+          <div>
+            <b>
+              {t('nftMarket.myPurchase')}
+              <span>
+                <Questionmark
+                  content={
+                    <Trans i18nKey={'nftMarket.myPurchaseInfo'}>
+                      text
+                      <u>
+                        <a
+                          target="_blank"
+                          href="https://etherscan.io/"
+                          style={{ color: '#00bfff' }}>
+                          link
+                        </a>
+                      </u>
+                    </Trans>
+                  }
+                />
+              </span>
+            </b>
+          </div>
+          <section>
+            <b>{currentPurchaseAmount()}</b>
+            <section>
+              <AnchorLinkComponent />
+              <ButtonComponent />
+            </section>
+          </section>
+        </section>
+      </article>
     </>
   );
 };
