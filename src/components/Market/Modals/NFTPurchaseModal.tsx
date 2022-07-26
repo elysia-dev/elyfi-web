@@ -221,7 +221,7 @@ const NFTPurchaseModal: React.FC<ModalType> = ({
               if (prev === 1) {
                 const emitter = buildEventEmitter(
                   ModalViewType.NFTPurchaseModal,
-                  TransactionType.PurchaseNFT,
+                  'Step1NextButton',
                   JSON.stringify({
                     product: 'Bond NFT_0',
                     chainId,
