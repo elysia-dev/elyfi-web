@@ -1,4 +1,4 @@
-import { StakingPool__factory } from '@elysia-dev/contract-typechain';
+import { StakingPoolFactory } from '@elysia-dev/elyfi-v1-sdk';
 import { BigNumber, constants, providers } from 'ethers';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import useSWR from 'swr';
@@ -32,7 +32,7 @@ const useStakingRoundData = (
 
   const { type: mainnet } = useContext(MainnetContext);
   const stakingPool = useMemo(() => {
-    return StakingPool__factory.connect(
+    return StakingPoolFactory.connect(
       stakedToken === Token.ELFI && round > 1
         ? envs.staking.elfyV2StakingPoolAddress
         : poolAddress(mainnet, stakedToken),

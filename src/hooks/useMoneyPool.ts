@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import { useMemo } from 'react';
-import { MoneyPool__factory, MoneyPool } from '@elysia-dev/contract-typechain';
+import { MoneyPoolFactory, MoneyPool } from '@elysia-dev/elyfi-v1-sdk';
 import useCurrentMoneypoolAddress from 'src/hooks/useCurrnetMoneypoolAddress';
 
 const useMoneyPool = (): MoneyPool | undefined => {
@@ -9,7 +9,7 @@ const useMoneyPool = (): MoneyPool | undefined => {
 
   const contract = useMemo(() => {
     if (!library) return;
-    return MoneyPool__factory.connect(
+    return MoneyPoolFactory.connect(
       currentMoneypoolAddress,
       library.getSigner(),
     );

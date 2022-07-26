@@ -2,10 +2,7 @@ import { BigNumber, constants } from 'ethers';
 import envs from 'src/core/envs';
 import moment from 'moment';
 import useSWR from 'swr';
-import {
-  ERC20__factory,
-  IncentivePool__factory,
-} from '@elysia-dev/contract-typechain';
+import { ERC20Factory, IncentivePoolFactory } from '@elysia-dev/elyfi-v1-sdk';
 import Token from 'src/enums/Token';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import getTokenNameFromAddress from 'src/utiles/getTokenNameFromAddress';
@@ -67,7 +64,7 @@ const getIncentiveByRound = async (
   tokenName: ReserveToken,
   account: string,
 ) => {
-  const incentiveRound1 = await IncentivePool__factory.connect(
+  const incentiveRound1 = await IncentivePoolFactory.connect(
     tokenIncentiveAddress(tokenName, true),
     library.getSigner(),
   ).getUserIncentive(account);
@@ -77,7 +74,7 @@ const getIncentiveByRound = async (
   const incentiveRound2 =
     tokenName === Token.BUSD || tokenName === Token.USDC
       ? incentiveRound1
-      : await IncentivePool__factory.connect(
+      : await IncentivePoolFactory.connect(
           tokenIncentiveAddress(tokenName),
           library.getSigner(),
         ).getUserIncentive(account);
@@ -102,17 +99,14 @@ const fetchBalanceFrom = async (
     );
 
     return {
-      value: await ERC20__factory.connect(reserve.id, library).balanceOf(
-        account,
-      ),
+      value: await ERC20Factory.connect(reserve.id, library).balanceOf(account),
       expectedIncentiveBefore: incentiveRound1,
       expectedIncentiveAfter: incentiveRound1,
       expectedAdditionalIncentiveBefore: incentiveRound2,
       expectedAdditionalIncentiveAfter: incentiveRound2,
-      deposit: await ERC20__factory.connect(
-        reserve.lToken.id,
-        library,
-      ).balanceOf(account),
+      deposit: await ERC20Factory.connect(reserve.lToken.id, library).balanceOf(
+        account,
+      ),
     };
   } catch (error) {
     return {

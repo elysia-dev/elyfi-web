@@ -1,9 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import { useContext, useMemo } from 'react';
-import {
-  StakingPool,
-  StakingPool__factory,
-} from '@elysia-dev/contract-typechain';
+import { StakingPool, StakingPoolFactory } from '@elysia-dev/elyfi-v1-sdk';
 import envs from 'src/core/envs';
 import Token from 'src/enums/Token';
 import { poolAddress } from 'src/utiles/stakingPoolAddress';
@@ -21,7 +18,7 @@ const useStakingPool = (
   const { type: getMainnetType } = useContext(MainnetContext);
   const contract = useMemo(() => {
     if (!library) return;
-    return StakingPool__factory.connect(
+    return StakingPoolFactory.connect(
       poolAddress(getMainnetType, staked),
       library.getSigner(),
     );
@@ -30,7 +27,7 @@ const useStakingPool = (
   const rewardContractForV2 = useMemo(() => {
     if (!library) return;
     if (staked === Token.ELFI && v2 && getMainnetType === 'Ethereum') {
-      return StakingPool__factory.connect(
+      return StakingPoolFactory.connect(
         envs.staking.elfyV2StakingPoolRewardAddress,
         library.getSigner(),
       );
@@ -40,7 +37,7 @@ const useStakingPool = (
   const elfiV2StakingContract = useMemo(() => {
     if (!library) return;
     if (staked === Token.ELFI && v2 && getMainnetType === 'Ethereum') {
-      return StakingPool__factory.connect(
+      return StakingPoolFactory.connect(
         envs.staking.elfyV2StakingPoolAddress,
         library.getSigner(),
       );

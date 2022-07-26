@@ -1,4 +1,4 @@
-import { IncentivePool__factory } from '@elysia-dev/contract-typechain';
+import { IncentivePoolFactory } from '@elysia-dev/elyfi-v1-sdk';
 import { BigNumber, constants, ethers, utils } from 'ethers';
 import { useCallback, useEffect, useState } from 'react';
 import envs from 'src/core/envs';
@@ -19,7 +19,7 @@ const useCalcMiningAPR = (): {
 
   useEffect(() => {
     (async () => {
-      const incentivePool = IncentivePool__factory.connect(
+      const incentivePool = IncentivePoolFactory.connect(
         envs.incentivePool.currentUSDTIncentivePool,
         provider,
       );
