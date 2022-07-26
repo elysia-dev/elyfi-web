@@ -117,6 +117,8 @@ const NFTDetails = (): JSX.Element => {
   const etherscanLink = `https://etherscan.io/address/${envs.market.controllerAddress}`;
 
   const totalPurchase = 54000;
+  const nftInterest = 0.39;
+  const nftPerUsdc = 10;
 
   const startTime = moment(
     '2022.07.21 20:00:00 +9:00',
@@ -181,6 +183,20 @@ const NFTDetails = (): JSX.Element => {
       browserHeight,
       true,
     );
+  };
+
+  const rewardButtonAction = () => {
+    const wallet = sessionStorage.getItem('@connect');
+    // ReactGA.modalview('purchaseBondNft');
+    // setBtnLocation(location);
+
+    return account
+      ? mainnetType === MainnetType.Ethereum
+        ? setModalType('investmentReward')
+        : wallet === 'metamask'
+        ? setModalType('changeNetwork')
+        : setModalType('reconnect')
+      : setModalType('selectWallet');
   };
 
   const purchaseButtonAction = (location: string) => {
@@ -292,7 +308,7 @@ const NFTDetails = (): JSX.Element => {
           <section className="nft-details__nft-info">
             <NFTInfo
               type={t('market.nftType.0')}
-              interest={0.39}
+              interest={nftInterest}
               nftInfo={nftInfo}
             />
           </section>
@@ -474,8 +490,12 @@ const NFTDetails = (): JSX.Element => {
           tokenAmount={purchasedNFT ? (purchasedNFT * 10 * 0.01) / 0.01858 : 0}
           tokenName={'ELFI'}
         />
-      ) : modalType !== 'investmentReward' ? (
-        <InvestRewardModal onClose={() => setModalType('')} />
+      ) : modalType === 'investmentReward' ? (
+        <InvestRewardModal
+          onClose={() => setModalType('')}
+          holdingNft={purchasedNFT || 0}
+          nftPerUsdc={nftPerUsdc}
+        />
       ) : (
         <></>
       )}
@@ -513,11 +533,16 @@ const NFTDetails = (): JSX.Element => {
           </Link>
           <Header
             onButtonClick={() => purchaseButtonAction('TopButton')}
-            onRewardButtonClick={() => {}}
+            onRewardButtonClick={() => rewardButtonAction()}
             purchasedNFT={purchasedNFT}
             isDisabled={purchaseButtonDisable}
             mainnetType={mainnetType}
             openseaLink={openSeaLink(0)}
+            rewardTitle={'나의 예상 수익금'}
+            isMoneypoolCharged={false}
+            nftPerUsdc={nftPerUsdc}
+            nftInterest={nftInterest}
+            inviteFriendReward={0}
           />
         </article>
         <article className="nft-details__purchase">

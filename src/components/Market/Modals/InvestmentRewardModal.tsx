@@ -2,6 +2,8 @@ import { Trans, useTranslation } from 'react-i18next';
 
 interface Props {
   onClose: () => void;
+  holdingNft: number;
+  nftPerUsdc: number;
 }
 
 const InvestRewardModal: React.FC<Props> = ({ onClose }) => {
@@ -26,7 +28,6 @@ const InvestRewardModal: React.FC<Props> = ({ onClose }) => {
                   123,456<span>NFT(S)</span>
                 </b>
               </div>
-
               <p>* 수익금 수령 시, 해당 NFT 전부 소각됩니다.</p>
             </section>
             <section className="market_modal__investment-reward__current">
@@ -52,7 +53,7 @@ const InvestRewardModal: React.FC<Props> = ({ onClose }) => {
               </section>
             </section>
           </div>
-          <div className="market_modal__investment-reward__button">
+          <div className={`market_modal__investment-reward__button `}>
             <button>승인하기</button>
           </div>
         </div>
