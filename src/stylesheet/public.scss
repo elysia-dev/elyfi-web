@@ -176,7 +176,8 @@ $bold: 'Inter-Bold', 'SpoqaHanSansNeo-Bold', 'Montserrat-bold', 'Inter-Bold';
 }
 
 h1,
-h2 {
+h2,
+b {
   font-family: $bold;
   color: $font-color;
   font-weight: bold;
