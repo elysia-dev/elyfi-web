@@ -28,15 +28,6 @@ export interface ICardType {
 }
 
 const tempCardArray: ICardType[] = [
-  // {
-  //   PFType: PFType.BOND,
-  //   Location: '2046 Norwalk Ave, LA, CA 90041',
-  //   APY: 12,
-  //   currentSoldNFTs: 0,
-  //   totalNFTs: 54000,
-  //   cardImage: BondAsset,
-  //   onClickLink: 'a1',
-  // },
   {
     PFType: PFType.SHARE,
     Location: '',
@@ -68,14 +59,18 @@ const Market = (): JSX.Element => {
     fetcher: nftTotalSupplyFetcher(),
   });
 
+  const OFF_CHAIN_SELLING_AMOUNT = 560000;
+  const USDC_PER_NFT = 10;
+  const TOTAL_AMOUNT = 1100000;
+
   useEffect(() => {
     if (nftTotalSupply === undefined) return;
     const nft = {
       PFType: PFType.BOND,
       Location: '2046 Norwalk Ave, LA, CA 90041',
       APY: 12,
-      currentSoldNFTs: nftTotalSupply,
-      totalNFTs: 54000,
+      currentSoldNFTs: OFF_CHAIN_SELLING_AMOUNT + nftTotalSupply * USDC_PER_NFT,
+      totalNFTs: TOTAL_AMOUNT,
       cardImage: BondAsset,
       onClickLink: 'bondnft/0',
     };
