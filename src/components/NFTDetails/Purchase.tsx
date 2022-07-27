@@ -92,15 +92,32 @@ const Purchase: React.FC<Props> = ({
           </div>
           <div>
             <b>
-              {userTotalPurchase || userTotalPurchase === 0 ? (
-                formatCommaSmallZeroDisits(userTotalPurchase)
+              {userTotalPurchase ? (
+                formatCommaSmallZeroDisits(
+                  offChainSellingAmount + userTotalPurchase * usdcPerNft,
+                )
               ) : (
-                <Skeleton width={60} height={15} />
+                <Skeleton width={100} height={20} />
               )}
             </b>
-            <b>{formatCommaSmallZeroDisits(totalPurchase)}</b>
+            <b>
+              {userTotalPurchase ? (
+                formatCommaSmallZeroDisits(totalAmount)
+              ) : (
+                <Skeleton width={100} height={20} />
+              )}
+            </b>
           </div>
-          <progress value={userTotalPurchase} max={totalPurchase} />
+          {userTotalPurchase ? (
+            <progress
+              value={
+                offChainSellingAmount + (userTotalPurchase || 0) * usdcPerNft
+              }
+              max={totalAmount}
+            />
+          ) : (
+            <Skeleton width={530} height={10} style={{ marginTop: 10 }} />
+          )}
         </div>
         <section
           className="nft-details__purchase__progress-section"
@@ -108,34 +125,49 @@ const Purchase: React.FC<Props> = ({
             height: unfoldProgress ? 370 : 0,
             paddingBottom: unfoldProgress ? 18 : 0,
           }}>
-          <section>
-            <b>1. 오프체인 백커</b>
-            <div>
-              <div>
-                <p>판매 USD</p>
-                <p>총 USD</p>
-              </div>
-              <div>
-                <b>1234</b>
-                <b>5678</b>
-              </div>
-              <progress value={userTotalPurchase} max={totalPurchase} />
-            </div>
-          </section>
-          <section>
-            <b>2. 온체인 판매 현황</b>
-            <div>
-              <div>
-                <p>판매 NFT</p>
-                <p>총 NFT</p>
-              </div>
-              <div>
-                <b>1234</b>
-                <b>5678</b>
-              </div>
-              <progress value={userTotalPurchase} max={totalPurchase} />
-            </div>
-          </section>
+          {userTotalPurchase ? (
+            <>
+              <section>
+                <b>1. 오프체인 백커</b>
+                <div>
+                  <div>
+                    <p>판매 USD</p>
+                    <p>총 USD</p>
+                  </div>
+                  <div>
+                    <b>{formatCommaSmallZeroDisits(offChainSellingAmount)}</b>
+                    <b>{formatCommaSmallZeroDisits(offChainSellingAmount)}</b>
+                  </div>
+                  <progress
+                    value={offChainSellingAmount}
+                    max={offChainSellingAmount}
+                  />
+                </div>
+              </section>
+              <section>
+                <b>2. 온체인 판매 현황</b>
+                <div>
+                  <div>
+                    <p>판매 NFT</p>
+                    <p>총 NFT</p>
+                  </div>
+                  <div>
+                    <b>
+                      {userTotalPurchase || userTotalPurchase === 0 ? (
+                        formatCommaSmallZeroDisits(userTotalPurchase)
+                      ) : (
+                        <Skeleton width={60} height={15} />
+                      )}
+                    </b>
+                    <b>{formatCommaSmallZeroDisits(totalPurchase)}</b>
+                  </div>
+                  <progress value={userTotalPurchase} max={totalPurchase} />
+                </div>
+              </section>
+            </>
+          ) : (
+            <Skeleton width={530} height={370} />
+          )}
           <span>(* 1NFT = $10)</span>
         </section>
         <section
