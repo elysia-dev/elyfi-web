@@ -116,9 +116,11 @@ const NFTDetails = (): JSX.Element => {
     `https://opensea.io/assets/ethereum/${envs.market.nftAddress}/${i}`;
   const etherscanLink = `https://etherscan.io/address/${envs.market.controllerAddress}`;
 
-  const totalPurchase = 54000;
-  const nftInterest = 0.39;
-  const nftPerUsdc = 10;
+  const TOTAL_NFT_PURCHASE = 54000;
+  const NFT_INTEREST = 0.39;
+  const USDC_PER_NFT = 10;
+  const OFF_CHAIN_SELLING_AMOUNT = 560000;
+  const TOTAL_AMOUNT = 1100000;
 
   const startTime = moment(
     '2022.07.21 20:00:00 +9:00',
@@ -220,9 +222,9 @@ const NFTDetails = (): JSX.Element => {
     )
       ? (advanceReservation.includes(account || '') ||
           current.isBetween(startTime, endedTime)) &&
-          totalPurchase > (nftTotalSupply || 0)
+          TOTAL_NFT_PURCHASE > (nftTotalSupply || 0)
       : false;
-  }, [nftTotalSupply, current, totalPurchase]);
+  }, [nftTotalSupply, current, TOTAL_NFT_PURCHASE]);
 
   const getPurchasedNFT = useCallback(async () => {
     try {
@@ -308,7 +310,7 @@ const NFTDetails = (): JSX.Element => {
           <section className="nft-details__nft-info">
             <NFTInfo
               type={t('market.nftType.0')}
-              interest={nftInterest}
+              interest={NFT_INTEREST}
               nftInfo={nftInfo}
             />
           </section>
@@ -431,7 +433,7 @@ const NFTDetails = (): JSX.Element => {
         <NFTPurchaseModal
           modalClose={() => setModalType('')}
           balances={balances}
-          remainingNFT={totalPurchase - (nftTotalSupply || 0)}
+          remainingNFT={TOTAL_NFT_PURCHASE - (nftTotalSupply || 0)}
           btnLocation={btnLocation}
         />
       ) : modalType === 'changeNetwork' ? (
@@ -494,7 +496,7 @@ const NFTDetails = (): JSX.Element => {
         <InvestRewardModal
           onClose={() => setModalType('')}
           holdingNft={purchasedNFT || 0}
-          nftPerUsdc={nftPerUsdc}
+          usdcPerNft={USDC_PER_NFT}
         />
       ) : (
         <></>
@@ -540,18 +542,21 @@ const NFTDetails = (): JSX.Element => {
             openseaLink={openSeaLink(0)}
             rewardTitle={'나의 예상 수익금'}
             isMoneypoolCharged={false}
-            nftPerUsdc={nftPerUsdc}
-            nftInterest={nftInterest}
+            usdcPerNft={USDC_PER_NFT}
+            nftInterest={NFT_INTEREST}
             inviteFriendReward={0}
           />
         </article>
         <article className="nft-details__purchase">
           <Purchase
             userTotalPurchase={nftTotalSupply || 0}
-            totalPurchase={totalPurchase}
+            totalPurchase={TOTAL_NFT_PURCHASE}
             startTime={startTime}
             endedTime={endedTime}
             etherscanLink={etherscanLink}
+            offChainSellingAmount={OFF_CHAIN_SELLING_AMOUNT}
+            totalAmount={TOTAL_AMOUNT}
+            usdcPerNft={USDC_PER_NFT}
           />
         </article>
         <article className="nft-details__content">
