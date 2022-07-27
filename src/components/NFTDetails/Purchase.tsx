@@ -11,6 +11,9 @@ interface Props {
   startTime: moment.Moment;
   endedTime: moment.Moment;
   etherscanLink: string;
+  offChainSellingAmount: number;
+  totalAmount: number;
+  usdcPerNft: number;
 }
 
 const Purchase: React.FC<Props> = ({
@@ -19,6 +22,9 @@ const Purchase: React.FC<Props> = ({
   startTime,
   endedTime,
   etherscanLink,
+  offChainSellingAmount,
+  totalAmount,
+  usdcPerNft,
 }) => {
   const { t } = useTranslation();
   const current = moment();
@@ -28,6 +34,7 @@ const Purchase: React.FC<Props> = ({
     minute: 0,
     second: 0,
   });
+  const [unfoldProgress, setProgress] = useState(false);
 
   useLayoutEffect(() => {
     if (current.isAfter(endedTime)) {
@@ -72,7 +79,7 @@ const Purchase: React.FC<Props> = ({
   return (
     <>
       <section className="nft-details__purchase__status">
-        <section>
+        <section className="nft-details__purchase__header">
           <h2>{t('nftMarket.currentPurchase')}</h2>
           <a href={etherscanLink} target="_blank">
             <img src={Arrow} alt="new tab icon" />
@@ -94,11 +101,58 @@ const Purchase: React.FC<Props> = ({
             <b>{formatCommaSmallZeroDisits(totalPurchase)}</b>
           </div>
           <progress value={userTotalPurchase} max={totalPurchase} />
-          <p>(* 1NFT = $10)</p>
         </div>
+        <section
+          className="nft-details__purchase__progress-section"
+          style={{
+            height: unfoldProgress ? 370 : 0,
+            paddingBottom: unfoldProgress ? 18 : 0,
+          }}>
+          <section>
+            <b>1. 오프체인 백커</b>
+            <div>
+              <div>
+                <p>판매 USD</p>
+                <p>총 USD</p>
+              </div>
+              <div>
+                <b>1234</b>
+                <b>5678</b>
+              </div>
+              <progress value={userTotalPurchase} max={totalPurchase} />
+            </div>
+          </section>
+          <section>
+            <b>2. 온체인 판매 현황</b>
+            <div>
+              <div>
+                <p>판매 NFT</p>
+                <p>총 NFT</p>
+              </div>
+              <div>
+                <b>1234</b>
+                <b>5678</b>
+              </div>
+              <progress value={userTotalPurchase} max={totalPurchase} />
+            </div>
+          </section>
+          <span>(* 1NFT = $10)</span>
+        </section>
+        <section
+          className="nft-details__purchase__footer"
+          onClick={() => setProgress(!unfoldProgress)}>
+          <span
+            className="nft-details__purchase__arrow"
+            style={{
+              transform: unfoldProgress ? 'rotate(-45deg)' : 'rotate(135deg)',
+              marginBottom: unfoldProgress ? -4 : 9,
+            }}
+          />
+        </section>
       </section>
+
       <section className="nft-details__purchase__round">
-        <section>
+        <section className="nft-details__purchase__header">
           <h2>{t('nftMarket.purchasedDate')}</h2>
         </section>
         <div>
@@ -123,11 +177,14 @@ const Purchase: React.FC<Props> = ({
               <p>{t('nftMarket.timeUnit.3')}</p>
             </div>
           </div>
+        </div>
+
+        <section className="nft-details__purchase__footer">
           <p>
             {moment(startTime).format('YYYY.MM.DD HH:mm:ss')} ~{' '}
             {moment(endedTime).format('YYYY.MM.DD HH:mm:ss')} KST
           </p>
-        </div>
+        </section>
       </section>
     </>
   );

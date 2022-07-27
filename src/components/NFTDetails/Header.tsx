@@ -16,7 +16,7 @@ interface Props {
   mainnetType: MainnetType;
   openseaLink: string;
   isMoneypoolCharged: boolean;
-  nftPerUsdc: number;
+  usdcPerNft: number;
   nftInterest: number;
   inviteFriendReward: number;
 }
@@ -31,7 +31,7 @@ const Header: React.FC<Props> = ({
   inviteFriendReward,
   rewardTitle,
   isMoneypoolCharged,
-  nftPerUsdc,
+  usdcPerNft,
   nftInterest,
 }) => {
   const { t } = useTranslation();
@@ -69,7 +69,7 @@ const Header: React.FC<Props> = ({
         ) : (
           <>
             {formatCommaSmallZeroDisits(
-              purchasedNFT * (nftPerUsdc + nftInterest) + inviteFriendReward,
+              purchasedNFT * (usdcPerNft + nftInterest) + inviteFriendReward,
             )}
             <span> USDC</span>
           </>

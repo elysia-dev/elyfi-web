@@ -3,7 +3,7 @@ import { Trans, useTranslation } from 'react-i18next';
 interface Props {
   onClose: () => void;
   holdingNft: number;
-  nftPerUsdc: number;
+  usdcPerNft: number;
 }
 
 const InvestRewardModal: React.FC<Props> = ({ onClose }) => {

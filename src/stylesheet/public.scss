@@ -2236,40 +2236,134 @@ input[type='number'] {
     &__purchase {
       display: flex;
       flex-direction: row;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
       margin-top: 20px;
       gap: 20px;
+      &__header {
+        display: flex;
+        padding: 18px 0px 11px 28px;
+        border-bottom: 1px solid #e6e6e6;
+        flex-direction: row;
+        align-items: center;
+        height: initial !important;
+        > h2 {
+          font-size: 18px;
+          color: $font-color;
+        }
+        > a {
+          position: relative;
+          cursor: pointer;
+          > img {
+            position: absolute;
+            top: -10px;
+            width: 18px;
+            height: 18px;
+          }
+        }
+      }
+      &__progress-section {
+        padding: 0 28px;
+        padding-bottom: 18px;
+        border-top: 1px solid #e6e6e6;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        transition: all 0.3s ease-in;
+        > section {
+          margin-top: 24px;
+          > b {
+            font-size: 18px;
+          }
+          > div {
+            margin-top: 10px;
+            padding: 21px;
+            border: 1px solid #e6e6e6;
+            border-radius: 10px;
+            > div {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              width: 100%;
+              justify-content: space-between;
+              > p {
+                color: #707070;
+                font-size: 15px;
+              }
+              > b {
+                font-size: 18px;
+                color: #333333;
+              }
+            }
+            > progress {
+              width: 100%;
+              margin-top: 10px;
+              height: 10px;
+              border: 0;
+              vertical-align: 0;
+              &::-webkit-progress-bar {
+                height: 10px;
+                border-radius: 10px;
+                border: 0;
+                background: #e6e6e6;
+              }
+              &::-webkit-progress-value {
+                background: #0099cc;
+                border: 0;
+                border-radius: 10px;
+                height: 10px;
+              }
+              &::-moz-progress-bar {
+                background: #0099cc;
+                border: 0;
+                height: 10px;
+                border-radius: 10px;
+              }
+            }
+          }
+        }
+        > span {
+          font-size: 10px;
+          display: block;
+          text-align: right;
+          color: $gray-font-color;
+          margin-top: 8px;
+        }
+      }
+      &__footer {
+        border-top: 1px solid #e6e6e6;
+        height: 38px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        > p {
+          margin: 9px;
+          color: #333333;
+          font-size: 15px;
+        }
+      }
+      &__arrow {
+        display: inline-block;
+        width: 13px;
+        height: 13px;
+        border-top: 2px solid #3d81db;
+        border-right: 2px solid #3d81db;
+        text-align: center;
+        transition: all 0.3s ease-in;
+      }
       > section {
         flex: 1;
         width: 585px;
-        height: 180px;
+        height: initial;
         border-radius: 10px;
         box-shadow: 0px 0px 6px #00000029;
         background-color: #fff;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        > section {
-          display: flex;
-          padding: 18px 0px 11px 28px;
-          border-bottom: 1px solid #e6e6e6;
-          flex-direction: row;
-          align-items: center;
-          > h2 {
-            font-size: 18px;
-            color: $font-color;
-          }
-          > a {
-            position: relative;
-            cursor: pointer;
-            > img {
-              position: absolute;
-              top: -10px;
-              width: 18px;
-              height: 18px;
-            }
-          }
+        > div {
+          height: 114px;
         }
       }
       &__status {
@@ -2313,11 +2407,6 @@ input[type='number'] {
               border-radius: 10px;
             }
           }
-          > p {
-            text-align: right;
-            color: #888;
-            font-size: 10px;
-          }
         }
       }
       &__round {
@@ -2346,12 +2435,6 @@ input[type='number'] {
                 color: #707070;
               }
             }
-          }
-          > p {
-            font-size: 10px;
-            color: #333333;
-            text-align: right;
-            padding-right: 10px;
           }
         }
       }
