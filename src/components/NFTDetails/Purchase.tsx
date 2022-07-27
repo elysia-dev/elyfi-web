@@ -120,7 +120,11 @@ const Purchase: React.FC<Props> = ({
               max={totalAmount}
             />
           ) : (
-            <Skeleton width={530} height={10} style={{ marginTop: 10 }} />
+            <Skeleton
+              width={mediaQuery === MediaQuery.PC ? 530 : '100%'}
+              height={10}
+              style={{ marginTop: 10 }}
+            />
           )}
         </div>
         <section
@@ -174,7 +178,10 @@ const Purchase: React.FC<Props> = ({
               </section>
             </>
           ) : (
-            <Skeleton width={530} height={370} />
+            <Skeleton
+              width={mediaQuery === MediaQuery.PC ? 530 : '100%'}
+              height={370}
+            />
           )}
           <span>(* 1NFT = $10)</span>
         </section>
