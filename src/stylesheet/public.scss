@@ -2013,15 +2013,16 @@ input[type='number'] {
               z-index: 2;
               position: absolute;
               width: 345px;
-              height: 300px;
+              height: 305px;
               left: 0;
               top: 0;
+              border-radius: 5px;
               background: #00000013;
             }
           }
           > section {
             width: 345px;
-            height: 300px;
+            height: 305px;
             padding: 10px;
             box-shadow: 0px 0px 6px #00000029;
             border-radius: 5px;
@@ -2080,28 +2081,26 @@ input[type='number'] {
             }
             > progress {
               width: 100%;
-              margin-top: 10px;
-              height: 5px;
+              margin-top: 5px;
+              height: 10px;
               border: 0;
               vertical-align: 0;
               &::-webkit-progress-bar {
-                height: 5px;
+                height: 10px;
                 border-radius: 5px;
                 border: 0;
-                border-radius: 5px;
                 background: #e6e6e6;
               }
               &::-webkit-progress-value {
                 background: #0099cc;
                 border: 0;
-                border-radius: 5px;
-                height: 5px;
+                height: 10px;
                 border-radius: 5px;
               }
               &::-moz-progress-bar {
                 background: #0099cc;
                 border: 0;
-                height: 5px;
+                height: 10px;
                 border-radius: 5px;
               }
             }

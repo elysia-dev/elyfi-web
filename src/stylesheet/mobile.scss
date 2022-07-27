@@ -1832,7 +1832,9 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
             &::after {
               content: '';
               width: 300px;
+              height: 300px;
               background: #00000013;
+              border-radius: 5px;
             }
           }
           > section {
