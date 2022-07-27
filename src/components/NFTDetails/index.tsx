@@ -121,6 +121,7 @@ const NFTDetails = (): JSX.Element => {
   const USDC_PER_NFT = 10;
   const OFF_CHAIN_SELLING_AMOUNT = 560000;
   const TOTAL_AMOUNT = 1100000;
+  const USER_EVENT_REWARD = 0;
 
   const startTime = moment(
     '2022.07.21 20:00:00 +9:00',
@@ -497,6 +498,8 @@ const NFTDetails = (): JSX.Element => {
           onClose={() => setModalType('')}
           holdingNft={purchasedNFT || 0}
           usdcPerNft={USDC_PER_NFT}
+          eventReward={USER_EVENT_REWARD}
+          nftInterest={NFT_INTEREST}
         />
       ) : (
         <></>
@@ -544,7 +547,7 @@ const NFTDetails = (): JSX.Element => {
             isMoneypoolCharged={false}
             usdcPerNft={USDC_PER_NFT}
             nftInterest={NFT_INTEREST}
-            inviteFriendReward={0}
+            inviteFriendReward={USER_EVENT_REWARD}
           />
         </article>
         <article className="nft-details__purchase">

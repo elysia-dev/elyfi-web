@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import Questionmark from 'src/components/Questionmark';
 import MainnetType from 'src/enums/MainnetType';
 import NewTab from 'src/assets/images/market/new_tab--button.svg';
-import { formatCommaSmallZeroDisits } from 'src/utiles/formatters';
+import { formatCommaSmallTwoDisits } from 'src/utiles/formatters';
 
 interface Props {
   onButtonClick: () => void;
@@ -47,7 +47,7 @@ const Header: React.FC<Props> = ({
           t('nftMarket.purchaseStatus.nullPurchase')
         ) : (
           <>
-            {formatCommaSmallZeroDisits(purchasedNFT)}
+            {formatCommaSmallTwoDisits(purchasedNFT)}
             <span> NFT(s)</span>
           </>
         )
@@ -68,7 +68,7 @@ const Header: React.FC<Props> = ({
           t('nftMarket.purchaseStatus.nullPurchase')
         ) : (
           <>
-            {formatCommaSmallZeroDisits(
+            {formatCommaSmallTwoDisits(
               purchasedNFT * (usdcPerNft + nftInterest) + inviteFriendReward,
             )}
             <span> USDC</span>

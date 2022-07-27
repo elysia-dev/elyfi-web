@@ -1,12 +1,24 @@
 import { Trans, useTranslation } from 'react-i18next';
+import {
+  formatCommaSmallTwoDisits,
+  formatCommaSmallZeroDisits,
+} from 'src/utiles/formatters';
 
 interface Props {
   onClose: () => void;
   holdingNft: number;
   usdcPerNft: number;
+  eventReward: number;
+  nftInterest: number;
 }
 
-const InvestRewardModal: React.FC<Props> = ({ onClose }) => {
+const InvestRewardModal: React.FC<Props> = ({
+  onClose,
+  holdingNft,
+  usdcPerNft,
+  eventReward,
+  nftInterest,
+}) => {
   const { t, i18n } = useTranslation();
 
   return (
@@ -25,7 +37,8 @@ const InvestRewardModal: React.FC<Props> = ({ onClose }) => {
               <b>나의 보유수량</b>
               <div>
                 <b>
-                  123,456<span>NFT(S)</span>
+                  {formatCommaSmallTwoDisits(holdingNft)}
+                  <span>NFT(S)</span>
                 </b>
               </div>
               <p>* 수익금 수령 시, 해당 NFT 전부 소각됩니다.</p>
@@ -34,20 +47,27 @@ const InvestRewardModal: React.FC<Props> = ({ onClose }) => {
               <div>
                 <b>나의 수익금</b>
                 <b>
-                  123.34<span>USDC</span>
+                  {formatCommaSmallTwoDisits(
+                    holdingNft * (usdcPerNft + nftInterest) + eventReward,
+                  )}
+                  <span>USDC</span>
                 </b>
               </div>
               <section>
                 <div>
                   <p>상환금</p>
                   <p>
-                    100<span>USDC</span>
+                    {formatCommaSmallTwoDisits(
+                      holdingNft * (usdcPerNft + nftInterest),
+                    )}
+                    <span>USDC</span>
                   </p>
                 </div>
                 <div>
                   <p>이벤트 보상</p>
                   <p>
-                    100<span>USDC</span>
+                    {formatCommaSmallTwoDisits(eventReward)}
+                    <span>USDC</span>
                   </p>
                 </div>
               </section>
