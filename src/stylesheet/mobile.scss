@@ -1976,9 +1976,63 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
       margin-top: 50px;
       padding: 12px 15px;
     }
+    &__current-nfts {
+      > article {
+        flex-direction: column;
+        background-color: initial;
+        box-shadow: none;
+        margin-top: 10px;
+        border-radius: 0;
+        width: 100%;
+        > section {
+          background-color: #ffffff;
+          box-shadow: 0px 0px 6px #00000029;
+          margin-top: 10px;
+          border-radius: 10px;
+          &:last-child {
+            border-left: none;
+            margin-top: 20px;
+          }
+          > div {
+            padding: 12px 15px;
+            > b {
+              font-size: 12px;
+              > span {
+                margin-left: 5px;
+              }
+            }
+          }
+          > section {
+            height: initial;
+            > b {
+              margin-top: 22px;
+              font-size: 18px;
+              padding-right: 15px;
+            }
+            > section {
+              display: flex;
+              flex-direction: column;
+              margin: 25px 15px 15px;
+              gap: 10px;
+              > a {
+                width: 100%;
+                height: 26px;
+                font-size: 12px;
+                line-height: 26px;
+              }
+              > button {
+                width: 100%;
+                height: 26px;
+                font-size: 12px;
+                line-height: 26px;
+              }
+            }
+          }
+        }
+      }
+    }
     &__purchase {
-      margin-top: 50px;
-      padding: 12px 15px;
+      margin-top: 20px;
       flex-direction: column;
       align-items: center;
       > section {
@@ -1986,7 +2040,7 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
         padding: 0 !important;
         width: 100%;
         > section {
-          margin-bottom: 15px;
+          padding: 12px 15px;
           > h2 {
             font-size: 12px;
           }
@@ -2000,6 +2054,7 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
       }
       &__status {
         > div {
+          padding: 12px 15px;
           > div {
             > p {
               font-size: 10px;
@@ -2027,32 +2082,33 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
       }
       &__round {
         > div {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-evenly;
-          > b {
-            font-size: 20px;
-            color: $font-color;
-          }
+          padding: 12px 15px;
           > div {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 15px;
+            flex-direction: row;
+            justify-content: space-evenly;
             > b {
               font-size: 20px;
               color: $font-color;
             }
-            > p {
-              font-size: 12px;
-              color: #707070;
+            > div {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              margin-bottom: 15px;
+              > b {
+                font-size: 20px;
+                color: $font-color;
+              }
+              > p {
+                font-size: 12px;
+                color: #707070;
+              }
             }
           }
-        }
-        > p {
-          font-size: 10px;
-          color: #333333;
-          text-align: right;
+          > p {
+            padding: 0;
+          }
         }
       }
     }
