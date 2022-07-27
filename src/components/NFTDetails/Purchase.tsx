@@ -3,6 +3,8 @@ import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Skeleton from 'react-loading-skeleton';
 import Arrow from 'src/assets/images/market/arrow.svg';
+import MediaQuery from 'src/enums/MediaQuery';
+import useMediaQueryType from 'src/hooks/useMediaQueryType';
 import { formatCommaSmallZeroDisits } from 'src/utiles/formatters';
 
 interface Props {
@@ -35,6 +37,8 @@ const Purchase: React.FC<Props> = ({
     second: 0,
   });
   const [unfoldProgress, setProgress] = useState(false);
+
+  const { value: mediaQuery } = useMediaQueryType();
 
   useLayoutEffect(() => {
     if (current.isAfter(endedTime)) {
@@ -122,7 +126,11 @@ const Purchase: React.FC<Props> = ({
         <section
           className="nft-details__purchase__progress-section"
           style={{
-            height: unfoldProgress ? 370 : 0,
+            height: unfoldProgress
+              ? mediaQuery === MediaQuery.PC
+                ? 370
+                : 300
+              : 0,
             paddingBottom: unfoldProgress ? 18 : 0,
           }}>
           {userTotalPurchase ? (
@@ -172,6 +180,7 @@ const Purchase: React.FC<Props> = ({
         </section>
         <section
           className="nft-details__purchase__footer"
+          style={{ cursor: 'pointer' }}
           onClick={() => setProgress(!unfoldProgress)}>
           <span
             className="nft-details__purchase__arrow"
