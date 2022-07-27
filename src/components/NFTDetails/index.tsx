@@ -549,8 +549,8 @@ const NFTDetails = (): JSX.Element => {
             openseaLink={openSeaLink(0)}
             rewardTitle={
               IS_MONEY_POOL_CHARGED
-                ? t('nftMarket.expectedRewardTitle')
-                : t('nftMarket.rewardTitle')
+                ? t('nftMarket.rewardTitle')
+                : t('nftMarket.expectedRewardTitle')
             }
             isMoneypoolCharged={IS_MONEY_POOL_CHARGED}
             usdcPerNft={USDC_PER_NFT}
