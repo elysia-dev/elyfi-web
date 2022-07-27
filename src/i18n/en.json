@@ -823,6 +823,15 @@
       "currentPurchase": "Sales Status",
       "purchasedNTF": "Sold NFT",
       "totalPurchased": "Total NFT",
+      "sellingUSD": "Sold USD",
+      "totalSellingUSD": "Total USD",
+      "offChainBackers": "Off-chain Backers",
+      "onChainPurchased": "On-chain sales",
+      "expectedRewardTitle": "My expected profit",
+      "rewardTitle": "My profit",
+      "expectedContent": "My expected profit represents the proceeds that can be received from the bond NFTs held by them.\nActual profit may differ from expected profit because interest changes depending on the repayment date.",
+      "contentAfterEvent": "My expected profit represents the proceeds that can be received from the bond NFTs held by them.\nIf you participate in a friend invitation event, the event reward is included in the profit.\nActual profit may differ from expected profit because interest changes depending on the repayment date.",
+      "claim": "Claim",
       "purchasedDate": "Sales Period",
       "timeUnit": ["Days", "Hours", "Minutes", "Seconds"],
       "productPointTitle": "Product appealing points",
@@ -1041,6 +1050,15 @@
         "header": "Congratulations!<br />You have accumulated<br/> {{tokenAmount}} {{tokenName}} tokens so far.",
         "title": "ELFI token payment date",
         "content": "Twitter posts must not be deleted until token disbursements are complete.<br/>In addition, the quantity of ELFI tokens is calculated based on<br/> the ELFI price of $0.01858 on July 21, 2022 KST."
+      },
+      "reward": {
+        "title": "Claim profit",
+        "currentHolding": "My holdings",
+        "content": "* When the profit are received, all NFTs will be burned.",
+        "currentReward": "My profit",
+        "repayment": "Repayment",
+        "eventReward": "Reward",
+        "claim": "Claim"
       }
     }
   }

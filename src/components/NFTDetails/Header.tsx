@@ -103,7 +103,7 @@ const Header: React.FC<Props> = ({
       <button
         onClick={onRewardButtonClick}
         className={isMoneypoolCharged ? '' : 'disabled'}>
-        수령하기
+        {t('nftMarket.claim')}
       </button>
     );
   };
@@ -125,7 +125,9 @@ const Header: React.FC<Props> = ({
               <span>
                 <Questionmark
                   content={
-                    '나의 예상 수익금은 보유한 채권 NFT로 수령할 수 있는 수익금을 나타냅니다. 상환일에 따라 이자가 변경되기 때문에 실제 수익금이 예상 수익금과 달라질 수 있습니다.'
+                    inviteFriendReward > 0
+                      ? t('nftMarket.contentAfterEvent')
+                      : t('nftMarket.expectedContent')
                   }
                 />
               </span>

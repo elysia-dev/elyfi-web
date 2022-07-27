@@ -123,6 +123,9 @@ const NFTDetails = (): JSX.Element => {
   const TOTAL_AMOUNT = 1100000;
   const USER_EVENT_REWARD = 0;
 
+  const IS_FRIEND_EVENT_START = false;
+  const IS_MONEY_POOL_CHARGED = false;
+
   const startTime = moment(
     '2022.07.21 20:00:00 +9:00',
     'YYYY.MM.DD hh:mm:ss Z',
@@ -500,6 +503,7 @@ const NFTDetails = (): JSX.Element => {
           usdcPerNft={USDC_PER_NFT}
           eventReward={USER_EVENT_REWARD}
           nftInterest={NFT_INTEREST}
+          onSubmit={() => {}}
         />
       ) : (
         <></>
@@ -543,8 +547,12 @@ const NFTDetails = (): JSX.Element => {
             isDisabled={purchaseButtonDisable}
             mainnetType={mainnetType}
             openseaLink={openSeaLink(0)}
-            rewardTitle={'나의 예상 수익금'}
-            isMoneypoolCharged={false}
+            rewardTitle={
+              IS_MONEY_POOL_CHARGED
+                ? t('nftMarket.expectedRewardTitle')
+                : t('nftMarket.rewardTitle')
+            }
+            isMoneypoolCharged={IS_MONEY_POOL_CHARGED}
             usdcPerNft={USDC_PER_NFT}
             nftInterest={NFT_INTEREST}
             inviteFriendReward={USER_EVENT_REWARD}

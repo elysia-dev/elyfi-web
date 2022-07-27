@@ -87,8 +87,8 @@ const Purchase: React.FC<Props> = ({
         </section>
         <div>
           <div>
-            <p>{t('nftMarket.purchasedNTF')}</p>
-            <p>{t('nftMarket.totalPurchased')}</p>
+            <p>{t('nftMarket.sellingUSD')}</p>
+            <p>{t('nftMarket.totalSellingUSD')}</p>
           </div>
           <div>
             <b>
@@ -128,11 +128,11 @@ const Purchase: React.FC<Props> = ({
           {userTotalPurchase ? (
             <>
               <section>
-                <b>1. 오프체인 백커</b>
+                <b>1. {t('nftMarket.offChainBackers')}</b>
                 <div>
                   <div>
-                    <p>판매 USD</p>
-                    <p>총 USD</p>
+                    <p>{t('nftMarket.sellingUSD')}</p>
+                    <p>{t('nftMarket.totalSellingUSD')}</p>
                   </div>
                   <div>
                     <b>{formatCommaSmallZeroDisits(offChainSellingAmount)}</b>
@@ -145,11 +145,11 @@ const Purchase: React.FC<Props> = ({
                 </div>
               </section>
               <section>
-                <b>2. 온체인 판매 현황</b>
+                <b>2. {t('nftMarket.onChainPurchased')}</b>
                 <div>
                   <div>
-                    <p>판매 NFT</p>
-                    <p>총 NFT</p>
+                    <p>{t('nftMarket.purchasedNTF')}</p>
+                    <p>{t('nftMarket.totalPurchased')}</p>
                   </div>
                   <div>
                     <b>

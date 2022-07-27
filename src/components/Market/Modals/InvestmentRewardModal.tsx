@@ -1,8 +1,5 @@
 import { Trans, useTranslation } from 'react-i18next';
-import {
-  formatCommaSmallTwoDisits,
-  formatCommaSmallZeroDisits,
-} from 'src/utiles/formatters';
+import { formatCommaSmallTwoDisits } from 'src/utiles/formatters';
 
 interface Props {
   onClose: () => void;
@@ -10,6 +7,7 @@ interface Props {
   usdcPerNft: number;
   eventReward: number;
   nftInterest: number;
+  onSubmit: () => void;
 }
 
 const InvestRewardModal: React.FC<Props> = ({
@@ -18,6 +16,7 @@ const InvestRewardModal: React.FC<Props> = ({
   usdcPerNft,
   eventReward,
   nftInterest,
+  onSubmit,
 }) => {
   const { t, i18n } = useTranslation();
 
@@ -26,7 +25,7 @@ const InvestRewardModal: React.FC<Props> = ({
       <div className="market_modal" style={{ display: 'block' }}>
         <div className="market_modal__wrapper">
           <header className={`market_modal__header `}>
-            <h3>수익금 수령하기</h3>
+            <h3>{t('nftModal.reward.title')}</h3>
             <div onClick={onClose}>
               <div></div>
               <div></div>
@@ -34,18 +33,18 @@ const InvestRewardModal: React.FC<Props> = ({
           </header>
           <div className="market_modal__investment-reward">
             <section className="market_modal__investment-reward__burn">
-              <b>나의 보유수량</b>
+              <b>{t('nftModal.reward.currentHolding')}</b>
               <div>
                 <b>
                   {formatCommaSmallTwoDisits(holdingNft)}
                   <span>NFT(S)</span>
                 </b>
               </div>
-              <p>* 수익금 수령 시, 해당 NFT 전부 소각됩니다.</p>
+              <p>{t('nftModal.reward.content')}</p>
             </section>
             <section className="market_modal__investment-reward__current">
               <div>
-                <b>나의 수익금</b>
+                <b>{t('nftModal.reward.currentReward')}</b>
                 <b>
                   {formatCommaSmallTwoDisits(
                     holdingNft * (usdcPerNft + nftInterest) + eventReward,
@@ -55,7 +54,7 @@ const InvestRewardModal: React.FC<Props> = ({
               </div>
               <section>
                 <div>
-                  <p>상환금</p>
+                  <p>{t('nftModal.reward.repayment')}</p>
                   <p>
                     {formatCommaSmallTwoDisits(
                       holdingNft * (usdcPerNft + nftInterest),
@@ -64,7 +63,7 @@ const InvestRewardModal: React.FC<Props> = ({
                   </p>
                 </div>
                 <div>
-                  <p>이벤트 보상</p>
+                  <p>{t('nftModal.reward.eventReward')}</p>
                   <p>
                     {formatCommaSmallTwoDisits(eventReward)}
                     <span>USDC</span>
@@ -74,7 +73,7 @@ const InvestRewardModal: React.FC<Props> = ({
             </section>
           </div>
           <div className={`market_modal__investment-reward__button `}>
-            <button>승인하기</button>
+            <button onClick={onSubmit}>{t('nftModal.reward.claim')}</button>
           </div>
         </div>
       </div>
