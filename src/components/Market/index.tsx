@@ -129,9 +129,6 @@ const Market = (): JSX.Element => {
         <article className="market__content">
           <h2>{t('market.useRealEstateInfo')}</h2>
           <article className="market__nft-container">
-            {/* {tempCardArray.map((data, index) => {
-              return <NFTCard data={data} key={index} />;
-            })} */}
             {tempCards
               ? tempCards.map((data, index) => {
                   return <NFTCard data={data} key={index} />;
