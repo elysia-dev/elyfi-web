@@ -19,7 +19,6 @@ const NFTCard: React.FC<{ data: ICardType }> = ({ data }) => {
             src={data.cardImage === undefined ? TempAsset : data.cardImage}
             alt="NFT Images"
             onError={(e: any) => {
-              console.log('123');
               e.target.src = TempAsset;
             }}
           />

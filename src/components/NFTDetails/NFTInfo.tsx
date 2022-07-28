@@ -86,7 +86,7 @@ const NFTInfo: React.FC<Props> = ({ type, interest, nftInfo }) => {
             {/* <td>{nftData(NFTTraitType.Principal, nftInfo)}</td> */}
             <td>$10</td>
             <th>{t('nftMarket.nftInfoTable.3')}</th>
-            <td>$0.39</td>
+            <td>${interest}</td>
           </tr>
           <tr>
             <th>{t('nftMarket.nftInfoTable.4')}</th>

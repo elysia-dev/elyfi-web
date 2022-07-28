@@ -1832,7 +1832,9 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
             &::after {
               content: '';
               width: 300px;
+              height: 300px;
               background: #00000013;
+              border-radius: 5px;
             }
           }
           > section {
@@ -1976,30 +1978,127 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
       margin-top: 50px;
       padding: 12px 15px;
     }
+    &__current-nfts {
+      > article {
+        flex-direction: column;
+        background-color: initial;
+        box-shadow: none;
+        margin-top: 10px;
+        border-radius: 0;
+        width: 100%;
+        > section {
+          background-color: #ffffff;
+          box-shadow: 0px 0px 6px #00000029;
+          margin-top: 10px;
+          border-radius: 10px;
+          &:last-child {
+            border-left: none;
+            margin-top: 20px;
+          }
+          > div {
+            padding: 12px 15px;
+            > b {
+              font-size: 12px;
+              > span {
+                margin-left: 5px;
+              }
+            }
+          }
+          > section {
+            height: initial;
+            > b {
+              margin-top: 22px;
+              font-size: 18px;
+              padding-right: 15px;
+            }
+            > section {
+              display: flex;
+              flex-direction: column;
+              margin: 25px 15px 15px;
+              gap: 10px;
+              > a {
+                width: 100%;
+                height: 26px;
+                font-size: 12px;
+                line-height: 26px;
+              }
+              > button {
+                width: 100%;
+                height: 26px;
+                font-size: 12px;
+                line-height: 26px;
+              }
+            }
+          }
+        }
+      }
+    }
     &__purchase {
-      margin-top: 50px;
-      padding: 12px 15px;
+      margin-top: 20px;
       flex-direction: column;
       align-items: center;
+      &__header {
+        padding: 12px 15px;
+        > h2 {
+          font-size: 12px;
+        }
+      }
+      &__progress-section {
+        padding: 0 15px;
+        > section {
+          margin-top: 20px;
+          > b {
+            font-size: 12px;
+          }
+          > div {
+            margin-top: 10px;
+            padding: 12px 15px;
+            border: 1px solid #e6e6e6;
+            border-radius: 10px;
+            > div {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              width: 100%;
+              justify-content: space-between;
+              > p {
+                color: #707070;
+                font-size: 10px;
+              }
+              > b {
+                font-size: 12px;
+                color: #333333;
+              }
+            }
+          }
+        }
+        > span {
+          font-size: 10px;
+          display: block;
+          text-align: right;
+          color: $gray-font-color;
+          margin-top: 8px;
+        }
+      }
+      &__footer {
+        height: 30px;
+        > p {
+          margin: 9px;
+          color: #333333;
+          font-size: 10px;
+        }
+      }
       > section {
         flex: 1;
         padding: 0 !important;
         width: 100%;
-        > section {
-          margin-bottom: 15px;
-          > h2 {
-            font-size: 12px;
-          }
-        }
-        > h2 {
-          font-size: 12px;
-        }
-        &:last-child {
-          border-left: none;
+        > div {
+          height: initial;
         }
       }
       &__status {
         > div {
+          padding: 12px 15px;
           > div {
             > p {
               font-size: 10px;
@@ -2027,32 +2126,33 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
       }
       &__round {
         > div {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-evenly;
-          > b {
-            font-size: 20px;
-            color: $font-color;
-          }
+          padding: 12px 15px;
           > div {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 15px;
+            flex-direction: row;
+            justify-content: space-evenly;
             > b {
               font-size: 20px;
               color: $font-color;
             }
-            > p {
-              font-size: 12px;
-              color: #707070;
+            > div {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              margin-bottom: 0px;
+              > b {
+                font-size: 20px;
+                color: $font-color;
+              }
+              > p {
+                font-size: 10px;
+                color: #707070;
+              }
             }
           }
-        }
-        > p {
-          font-size: 10px;
-          color: #333333;
-          text-align: right;
+          > p {
+            padding: 0;
+          }
         }
       }
     }
@@ -5572,6 +5672,70 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
       }
       > p {
         font-size: 11px;
+      }
+    }
+    &__investment-reward {
+      &__burn {
+        padding: 12px 15px;
+        > b {
+          font-size: 12px;
+        }
+        > div {
+          margin-top: 13px;
+          width: 100%;
+          border-radius: 10px;
+          padding: 12x 15px;
+          > b {
+            font-size: 25px;
+            > span {
+              font-size: 20px;
+            }
+          }
+          margin-bottom: 10px;
+        }
+        > p {
+          font-size: 10px;
+        }
+      }
+      &__current {
+        padding: 12px 15px;
+        > div {
+          > b {
+            font-size: 12px;
+            > span {
+              margin-left: 3px;
+              color: #646464;
+            }
+          }
+        }
+        > section {
+          border-radius: 10px;
+          padding: 12px 15px;
+          > div {
+            > p {
+              font-size: 12px;
+              color: $font-color;
+              > span {
+                margin-left: 5px;
+              }
+            }
+          }
+        }
+      }
+      &__button {
+        display: flex;
+        > button {
+          flex: 1;
+          height: 30px;
+          margin: 12px;
+          background: #00bfff;
+          border-radius: 35px;
+          cursor: pointer;
+          font-size: 12px;
+          line-height: 30px;
+          color: #fff;
+          border: 0;
+        }
       }
     }
   }

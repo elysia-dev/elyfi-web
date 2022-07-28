@@ -67,6 +67,7 @@ import SelectWalletModal from '../Market/Modals/SelectWalletModal';
 import ReconnectWallet from '../Market/Modals/components/ReconnectWallet';
 import NewsCard from './NewsCard';
 import Guide from './Guide';
+import InvestRewardModal from '../Market/Modals/InvestmentRewardModal';
 
 export interface INews {
   title: string;
@@ -115,7 +116,15 @@ const NFTDetails = (): JSX.Element => {
     `https://opensea.io/assets/ethereum/${envs.market.nftAddress}/${i}`;
   const etherscanLink = `https://etherscan.io/address/${envs.market.controllerAddress}`;
 
-  const totalPurchase = 54000;
+  const TOTAL_NFT_PURCHASE = 54000;
+  const NFT_INTEREST = 0.39;
+  const USDC_PER_NFT = 10;
+  const OFF_CHAIN_SELLING_AMOUNT = 560000;
+  const TOTAL_AMOUNT = 1100000;
+  const USER_EVENT_REWARD = 0;
+
+  const IS_FRIEND_EVENT_START = false;
+  const IS_MONEY_POOL_CHARGED = false;
 
   const startTime = moment(
     '2022.07.21 20:00:00 +9:00',
@@ -182,6 +191,20 @@ const NFTDetails = (): JSX.Element => {
     );
   };
 
+  const rewardButtonAction = () => {
+    const wallet = sessionStorage.getItem('@connect');
+    // ReactGA.modalview('purchaseBondNft');
+    // setBtnLocation(location);
+
+    return account
+      ? mainnetType === MainnetType.Ethereum
+        ? setModalType('investmentReward')
+        : wallet === 'metamask'
+        ? setModalType('changeNetwork')
+        : setModalType('reconnect')
+      : setModalType('selectWallet');
+  };
+
   const purchaseButtonAction = (location: string) => {
     const wallet = sessionStorage.getItem('@connect');
     ReactGA.modalview('purchaseBondNft');
@@ -203,9 +226,9 @@ const NFTDetails = (): JSX.Element => {
     )
       ? (advanceReservation.includes(account || '') ||
           current.isBetween(startTime, endedTime)) &&
-          totalPurchase > (nftTotalSupply || 0)
+          TOTAL_NFT_PURCHASE > (nftTotalSupply || 0)
       : false;
-  }, [nftTotalSupply, current, totalPurchase]);
+  }, [nftTotalSupply, current, TOTAL_NFT_PURCHASE]);
 
   const getPurchasedNFT = useCallback(async () => {
     try {
@@ -291,7 +314,7 @@ const NFTDetails = (): JSX.Element => {
           <section className="nft-details__nft-info">
             <NFTInfo
               type={t('market.nftType.0')}
-              interest={0.39}
+              interest={NFT_INTEREST}
               nftInfo={nftInfo}
             />
           </section>
@@ -414,7 +437,7 @@ const NFTDetails = (): JSX.Element => {
         <NFTPurchaseModal
           modalClose={() => setModalType('')}
           balances={balances}
-          remainingNFT={totalPurchase - (nftTotalSupply || 0)}
+          remainingNFT={TOTAL_NFT_PURCHASE - (nftTotalSupply || 0)}
           btnLocation={btnLocation}
         />
       ) : modalType === 'changeNetwork' ? (
@@ -473,6 +496,15 @@ const NFTDetails = (): JSX.Element => {
           tokenAmount={purchasedNFT ? (purchasedNFT * 10 * 0.01) / 0.01858 : 0}
           tokenName={'ELFI'}
         />
+      ) : modalType === 'investmentReward' ? (
+        <InvestRewardModal
+          onClose={() => setModalType('')}
+          holdingNft={purchasedNFT || 0}
+          usdcPerNft={USDC_PER_NFT}
+          eventReward={USER_EVENT_REWARD}
+          nftInterest={NFT_INTEREST}
+          onSubmit={() => {}}
+        />
       ) : (
         <></>
       )}
@@ -494,29 +526,48 @@ const NFTDetails = (): JSX.Element => {
           &nbsp;&gt;&nbsp;
           <p>{t('nftMarket.title')}</p>
         </div>
-        <Link
-          className="nft-details__guide pc-only"
-          to={{
-            pathname: `/${lng}/market/guide`,
-          }}>
-          {t('nftMarket.guide')}
-        </Link>
         <article className="nft-details__header" ref={headerRef}>
+          <div>
+            <h1>{t('nftMarket.title')}</h1>
+            <p>{t('nftMarket.subTitle')}</p>
+          </div>
+        </article>
+        <article className="nft-details__current-nfts">
+          <Link
+            className="nft-details__guide pc-only"
+            to={{
+              pathname: `/${lng}/market/guide`,
+            }}>
+            {t('nftMarket.guide')}
+          </Link>
           <Header
             onButtonClick={() => purchaseButtonAction('TopButton')}
+            onRewardButtonClick={() => rewardButtonAction()}
             purchasedNFT={purchasedNFT}
             isDisabled={purchaseButtonDisable}
             mainnetType={mainnetType}
             openseaLink={openSeaLink(0)}
+            rewardTitle={
+              IS_MONEY_POOL_CHARGED
+                ? t('nftMarket.rewardTitle')
+                : t('nftMarket.expectedRewardTitle')
+            }
+            isMoneypoolCharged={IS_MONEY_POOL_CHARGED}
+            usdcPerNft={USDC_PER_NFT}
+            nftInterest={NFT_INTEREST}
+            inviteFriendReward={USER_EVENT_REWARD}
           />
         </article>
         <article className="nft-details__purchase">
           <Purchase
             userTotalPurchase={nftTotalSupply || 0}
-            totalPurchase={totalPurchase}
+            totalPurchase={TOTAL_NFT_PURCHASE}
             startTime={startTime}
             endedTime={endedTime}
             etherscanLink={etherscanLink}
+            offChainSellingAmount={OFF_CHAIN_SELLING_AMOUNT}
+            totalAmount={TOTAL_AMOUNT}
+            usdcPerNft={USDC_PER_NFT}
           />
         </article>
         <article className="nft-details__content">

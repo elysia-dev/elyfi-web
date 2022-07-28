@@ -4,13 +4,21 @@ import Skeleton from 'react-loading-skeleton';
 import { Link, useParams } from 'react-router-dom';
 import Questionmark from 'src/components/Questionmark';
 import MainnetType from 'src/enums/MainnetType';
+import NewTab from 'src/assets/images/market/new_tab--button.svg';
+import { formatCommaSmallTwoDisits } from 'src/utiles/formatters';
 
 interface Props {
   onButtonClick: () => void;
+  onRewardButtonClick: () => void;
+  rewardTitle: string;
   purchasedNFT?: number;
   isDisabled: boolean;
   mainnetType: MainnetType;
   openseaLink: string;
+  isMoneypoolCharged: boolean;
+  usdcPerNft: number;
+  nftInterest: number;
+  inviteFriendReward: number;
 }
 
 const Header: React.FC<Props> = ({
@@ -19,6 +27,12 @@ const Header: React.FC<Props> = ({
   isDisabled,
   mainnetType,
   openseaLink,
+  onRewardButtonClick,
+  inviteFriendReward,
+  rewardTitle,
+  isMoneypoolCharged,
+  usdcPerNft,
+  nftInterest,
 }) => {
   const { t } = useTranslation();
   const { account } = useWeb3React();
@@ -32,7 +46,33 @@ const Header: React.FC<Props> = ({
         purchasedNFT === 0 ? (
           t('nftMarket.purchaseStatus.nullPurchase')
         ) : (
-          `${purchasedNFT} NFT(s)`
+          <>
+            {formatCommaSmallTwoDisits(purchasedNFT)}
+            <span> NFT(s)</span>
+          </>
+        )
+      ) : (
+        <Skeleton width={100} height={24} />
+      )
+    ) : (
+      t('nftMarket.purchaseStatus.invalidNetwork')
+    );
+  };
+
+  const currentRewardAmount = () => {
+    return account === undefined ? (
+      t('nftMarket.purchaseStatus.walletConnect')
+    ) : mainnetType === MainnetType.Ethereum ? (
+      purchasedNFT !== undefined ? (
+        purchasedNFT === 0 ? (
+          t('nftMarket.purchaseStatus.nullPurchase')
+        ) : (
+          <>
+            {formatCommaSmallTwoDisits(
+              purchasedNFT * (usdcPerNft + nftInterest) + inviteFriendReward,
+            )}
+            <span> USDC</span>
+          </>
         )
       ) : (
         <Skeleton width={100} height={24} />
@@ -45,7 +85,8 @@ const Header: React.FC<Props> = ({
   const AnchorLinkComponent = (): JSX.Element => {
     return (
       <a href={openseaLink} target="_blank">
-        {t('nftMarket.tradeOnOpensea')}
+        {t('nftMarket.tradeOnOpensea')}{' '}
+        <img src={NewTab} alt="New tab link icon" />
       </a>
     );
   };
@@ -57,13 +98,18 @@ const Header: React.FC<Props> = ({
       </button>
     );
   };
+  const RewardComponent = (): JSX.Element => {
+    return (
+      <button
+        onClick={onRewardButtonClick}
+        className={isMoneypoolCharged ? '' : 'disabled'}>
+        {t('nftMarket.claim')}
+      </button>
+    );
+  };
 
   return (
     <>
-      <div>
-        <h1>{t('nftMarket.title')}</h1>
-        <p>{t('nftMarket.subTitle')}</p>
-      </div>
       <Link
         className="nft-details__guide mobile-only"
         to={{
@@ -71,35 +117,61 @@ const Header: React.FC<Props> = ({
         }}>
         {t('nftMarket.guide')}
       </Link>
-      <section>
-        <div>
-          <b>
-            {t('nftMarket.myPurchase')}
-            <span>
-              <Questionmark
-                content={
-                  <Trans i18nKey={'nftMarket.myPurchaseInfo'}>
-                    text
-                    <u>
-                      <a
-                        target="_blank"
-                        href="https://etherscan.io/"
-                        style={{ color: '#00bfff' }}>
-                        link
-                      </a>
-                    </u>
-                  </Trans>
-                }
-              />
-            </span>
-          </b>
-          <span>{currentPurchaseAmount()}</span>
-        </div>
-        <section>
-          <AnchorLinkComponent />
-          <ButtonComponent />
+      <article>
+        <section className="nft-details__current-nfts__expected-reward">
+          <div>
+            <b>
+              {rewardTitle}
+              <span>
+                <Questionmark
+                  content={
+                    inviteFriendReward > 0
+                      ? t('nftMarket.contentAfterEvent')
+                      : t('nftMarket.expectedContent')
+                  }
+                />
+              </span>
+            </b>
+          </div>
+          <section>
+            <b>{currentRewardAmount()}</b>
+            <section>
+              <RewardComponent />
+            </section>
+          </section>
         </section>
-      </section>
+        <section className="nft-details__current-nfts__holds">
+          <div>
+            <b>
+              {t('nftMarket.myPurchase')}
+              <span>
+                <Questionmark
+                  content={
+                    <Trans i18nKey={'nftMarket.myPurchaseInfo'}>
+                      text
+                      <u>
+                        <a
+                          target="_blank"
+                          href="https://etherscan.io/"
+                          style={{ color: '#00bfff' }}>
+                          link
+                        </a>
+                      </u>
+                    </Trans>
+                  }
+                />
+              </span>
+            </b>
+          </div>
+          <section>
+            <b>{currentPurchaseAmount()}</b>
+            <section>
+              <AnchorLinkComponent />
+              <ButtonComponent />
+            </section>
+          </section>
+        </section>
+      </article>
     </>
   );
 };
