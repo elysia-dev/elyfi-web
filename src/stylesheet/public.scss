@@ -2172,6 +2172,14 @@ input[type='number'] {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            > p {
+              margin-top: 22px;
+              font-size: 18px;
+              color: $font-color;
+              text-align: right;
+              padding-right: 30px;
+              display: block;
+            }
             > b {
               margin-top: 22px;
               font-size: 25px;

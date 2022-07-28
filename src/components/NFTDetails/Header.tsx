@@ -40,45 +40,45 @@ const Header: React.FC<Props> = ({
 
   const currentPurchaseAmount = () => {
     return account === undefined ? (
-      t('nftMarket.purchaseStatus.walletConnect')
+      <p>{t('nftMarket.purchaseStatus.walletConnect')}</p>
     ) : mainnetType === MainnetType.Ethereum ? (
       purchasedNFT !== undefined ? (
         purchasedNFT === 0 ? (
-          t('nftMarket.purchaseStatus.nullPurchase')
+          <p>{t('nftMarket.purchaseStatus.nullPurchase')}</p>
         ) : (
-          <>
+          <b>
             {formatCommaSmallTwoDisits(purchasedNFT)}
             <span> NFT(s)</span>
-          </>
+          </b>
         )
       ) : (
         <Skeleton width={100} height={24} />
       )
     ) : (
-      t('nftMarket.purchaseStatus.invalidNetwork')
+      <p>{t('nftMarket.purchaseStatus.invalidNetwork')}</p>
     );
   };
 
   const currentRewardAmount = () => {
     return account === undefined ? (
-      t('nftMarket.purchaseStatus.walletConnect')
+      <p>{t('nftMarket.purchaseStatus.walletConnect')}</p>
     ) : mainnetType === MainnetType.Ethereum ? (
       purchasedNFT !== undefined ? (
         purchasedNFT === 0 ? (
-          t('nftMarket.purchaseStatus.nullPurchase')
+          <p>{t('nftMarket.purchaseStatus.nullPurchase')}</p>
         ) : (
-          <>
+          <b>
             {formatCommaSmallTwoDisits(
               purchasedNFT * (usdcPerNft + nftInterest) + inviteFriendReward,
             )}
             <span> USDC</span>
-          </>
+          </b>
         )
       ) : (
         <Skeleton width={100} height={24} />
       )
     ) : (
-      t('nftMarket.purchaseStatus.invalidNetwork')
+      <p>{t('nftMarket.purchaseStatus.invalidNetwork')}</p>
     );
   };
 
@@ -134,7 +134,7 @@ const Header: React.FC<Props> = ({
             </b>
           </div>
           <section>
-            <b>{currentRewardAmount()}</b>
+            {currentRewardAmount()}
             <section>
               <RewardComponent />
             </section>
@@ -164,7 +164,7 @@ const Header: React.FC<Props> = ({
             </b>
           </div>
           <section>
-            <b>{currentPurchaseAmount()}</b>
+            {currentPurchaseAmount()}
             <section>
               <AnchorLinkComponent />
               <ButtonComponent />
