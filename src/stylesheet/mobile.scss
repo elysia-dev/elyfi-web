@@ -2006,6 +2006,11 @@ $bold: 'Inter-Bold', 'Montserrat-bold';
           }
           > section {
             height: initial;
+            > p {
+              margin-top: 22px;
+              font-size: 16px;
+              padding-right: 15px;
+            }
             > b {
               margin-top: 22px;
               font-size: 18px;
